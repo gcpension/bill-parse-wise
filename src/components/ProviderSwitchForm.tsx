@@ -95,11 +95,11 @@ export const ProviderSwitchForm = ({
       const pdfContent = generatePowerOfAttorneyPDF(category, currentProvider, newProvider);
       
       // Create blob and download
-      const blob = new Blob([pdfContent], { type: 'application/pdf' });
+      const blob = new Blob([pdfContent], { type: 'text/plain' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `power-of-attorney-${category}-${Date.now()}.pdf`;
+      link.download = `power-of-attorney-${category}-${Date.now()}.txt`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -116,6 +116,34 @@ export const ProviderSwitchForm = ({
         variant: "destructive"
       });
     }
+  };
+
+  const generatePowerOfAttorneyPDF = (category: string, currentProvider: string, newProvider: string) => {
+    return `ייפוי כוח למעבר ספק ${categoryNames[category]}
+===========================================
+
+אני החתום מטה: _____________________ (שם מלא)
+תעודת זהות: _____________________
+כתובת: _____________________
+
+מסמיך בזאת את ${newProvider} לפעול בשמי לשם ביצוע מעבר מספק ${currentProvider}.
+
+הסמכה זו כוללת:
+• ביטול השירות עם הספק הנוכחי: ${currentProvider}
+• פתיחת שירות חדש עם הספק החדש: ${newProvider}
+• העברת כל הפרטים הרלוונטיים
+• ביצוע כל הפעולות הנדרשות למעבר
+
+תאריך: ${new Date().toLocaleDateString('he-IL')}
+חתימה: ________________
+
+הערות:
+- מסמך זה נוצר אוטומטית על ידי מערכת השוואת הספקים
+- יש לחתום על המסמך ולשלוח אותו לספק החדש
+- מומלץ לשמור עותק למטרות תיעוד
+
+לשאלות נוספות: support@example.com
+`;
   };
 
   const handleSubmit = async () => {

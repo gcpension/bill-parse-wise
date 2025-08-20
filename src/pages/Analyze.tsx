@@ -37,6 +37,7 @@ import {
 import { validateImageFile, formatCurrency } from '@/lib/utils';
 import { getCheapestPlan, calculateAnnualSavings, getProvidersByCategory } from '@/data/providers';
 import { ProviderSwitchForm } from '@/components/ProviderSwitchForm';
+import { DocumentTemplates } from '@/components/DocumentTemplates';
 import { PlanSelector } from '@/components/PlanSelector';
 
 interface UploadedFile {
