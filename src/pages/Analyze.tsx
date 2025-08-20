@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Separator } from '@/components/ui/separator';
 import { 
   Upload as UploadIcon, 
   FileText, 
@@ -23,7 +24,14 @@ import {
   Calculator,
   TrendingDown,
   ArrowRight,
-  Eye
+  Eye,
+  Plus,
+  Minus,
+  DollarSign,
+  Target,
+  Award,
+  Lightbulb,
+  PiggyBank
 } from 'lucide-react';
 import { validateImageFile, formatCurrency } from '@/lib/utils';
 import { getCheapestPlan, calculateAnnualSavings, getProvidersByCategory } from '@/data/providers';
@@ -44,11 +52,23 @@ interface UploadedFile {
   error?: string;
 }
 
-interface ManualData {
-  category: 'electricity' | 'cellular' | 'internet' | '';
+interface CategoryData {
+  category: 'electricity' | 'cellular' | 'internet';
   currentProvider: string;
   monthlyAmount: string;
   accountDetails?: string;
+  isActive: boolean;
+}
+
+interface AnalysisResult {
+  category: 'electricity' | 'cellular' | 'internet';
+  currentAmount: number;
+  currentProvider: string;
+  recommendedPlan: any;
+  monthlySavings: number;
+  annualSavings: number;
+  allProviders: any[];
+  fileId?: string;
 }
 
 const categoryIcons = {
@@ -63,16 +83,42 @@ const categoryNames = {
   internet: 'אינטרנט'
 };
 
-export const Analyze = () => {
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
-  const [manualData, setManualData] = useState<ManualData>({
-    category: '',
+const categoryColors = {
+  electricity: 'from-yellow-500 to-orange-500',
+  cellular: 'from-blue-500 to-purple-500',
+  internet: 'from-green-500 to-teal-500'
+};
+
+const initialCategoryData: Record<string, CategoryData> = {
+  electricity: {
+    category: 'electricity',
     currentProvider: '',
     monthlyAmount: '',
-    accountDetails: ''
-  });
+    accountDetails: '',
+    isActive: false
+  },
+  cellular: {
+    category: 'cellular',
+    currentProvider: '',
+    monthlyAmount: '',
+    accountDetails: '',
+    isActive: false
+  },
+  internet: {
+    category: 'internet',
+    currentProvider: '',
+    monthlyAmount: '',
+    accountDetails: '',
+    isActive: false
+  }
+};
+
+export const Analyze = () => {
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [categoryData, setCategoryData] = useState<Record<string, CategoryData>>(initialCategoryData);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [analysisResults, setAnalysisResults] = useState<any[]>([]);
+  const [analysisResults, setAnalysisResults] = useState<AnalysisResult[]>([]);
+  const [activeStep, setActiveStep] = useState<'input' | 'results'>('input');
 
   // Mock OCR processing
   const processFile = async (file: File): Promise<UploadedFile> => {
@@ -102,7 +148,7 @@ export const Analyze = () => {
 
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Mock parsed results based on filename or random
+    // Mock parsed results
     const mockResults = [
       {
         category: 'electricity' as const,
@@ -173,20 +219,53 @@ export const Analyze = () => {
     multiple: true
   });
 
-  const handleManualSubmit = () => {
-    if (!manualData.category || !manualData.monthlyAmount) return;
+  const toggleCategory = (category: string) => {
+    setCategoryData(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        isActive: !prev[category].isActive
+      }
+    }));
+  };
 
-    const amount = parseFloat(manualData.monthlyAmount);
-    if (isNaN(amount)) return;
+  const updateCategoryData = (category: string, field: string, value: string) => {
+    setCategoryData(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [field]: value
+      }
+    }));
+  };
 
-    const result = {
-      category: manualData.category,
-      currentAmount: amount,
-      currentProvider: manualData.currentProvider,
-      isManual: true
-    };
+  const handleAnalyzeAll = () => {
+    const activeCategories = Object.values(categoryData).filter(cat => 
+      cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0
+    );
 
-    setAnalysisResults(prev => [...prev, result]);
+    if (activeCategories.length === 0) return;
+
+    const results: AnalysisResult[] = [];
+
+    activeCategories.forEach(catData => {
+      const amount = parseFloat(catData.monthlyAmount);
+      const analysis = analyzeData({
+        category: catData.category,
+        amount,
+        provider: catData.currentProvider
+      });
+
+      if (analysis) {
+        results.push({
+          ...analysis,
+          currentProvider: catData.currentProvider || 'לא צוין'
+        });
+      }
+    });
+
+    setAnalysisResults(results);
+    setActiveStep('results');
   };
 
   const analyzeData = (data: { category: 'electricity' | 'cellular' | 'internet', amount: number, provider?: string }) => {
@@ -195,7 +274,7 @@ export const Analyze = () => {
     
     if (!cheapestPlan) return null;
 
-    const currentPrice = data.category === 'electricity' ? data.amount / 850 : data.amount; // Convert electricity to per unit
+    const currentPrice = data.category === 'electricity' ? data.amount / 850 : data.amount;
     const newPrice = cheapestPlan.price;
     const monthlySavings = Math.max(0, currentPrice - newPrice);
     const annualSavings = calculateAnnualSavings(currentPrice, newPrice, data.category);
@@ -207,12 +286,22 @@ export const Analyze = () => {
       recommendedPlan: cheapestPlan,
       monthlySavings,
       annualSavings,
-      allProviders: providers.slice(0, 3) // Show top 3 alternatives
+      allProviders: providers.slice(0, 3)
     };
   };
 
   const removeFile = (id: string) => {
     setUploadedFiles(prev => prev.filter(f => f.id !== id));
+  };
+
+  const getTotalSavings = () => {
+    const monthly = analysisResults.reduce((sum, result) => sum + result.monthlySavings, 0);
+    const annual = analysisResults.reduce((sum, result) => sum + result.annualSavings, 0);
+    return { monthly, annual };
+  };
+
+  const getActiveCategoriesCount = () => {
+    return Object.values(categoryData).filter(cat => cat.isActive).length;
   };
 
   // Auto-analyze completed files
@@ -228,10 +317,253 @@ export const Analyze = () => {
         
         if (analysis) {
           setAnalysisResults(prev => [...prev, { ...analysis, fileId: file.id }]);
+          setActiveStep('results');
         }
       }
     });
   }, [uploadedFiles]);
+
+  if (activeStep === 'results') {
+    const totalSavings = getTotalSavings();
+    
+    return (
+      <div className="space-y-8 animate-fade-in">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold tracking-tight gradient-primary bg-clip-text text-transparent">
+              תוצאות הניתוח
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              הנה כמה תוכל לחסוך על ההוצאות שלך
+            </p>
+          </div>
+          <Button variant="outline" onClick={() => setActiveStep('input')}>
+            <ArrowRight className="ml-2 h-4 w-4" />
+            נתח עוד
+          </Button>
+        </div>
+
+        {/* Total Savings Summary */}
+        <Card className="shadow-elegant bg-gradient-to-br from-success/10 to-success/5 border-success/20">
+          <CardContent className="p-8">
+            <div className="grid md:grid-cols-3 gap-6 text-center">
+              <div className="space-y-2">
+                <div className="p-4 bg-success/20 rounded-full w-fit mx-auto">
+                  <PiggyBank className="h-8 w-8 text-success" />
+                </div>
+                <h3 className="text-sm font-medium text-muted-foreground">חיסכון חודשי כולל</h3>
+                <p className="text-4xl font-bold text-success">
+                  {formatCurrency(totalSavings.monthly)}
+                </p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="p-4 bg-primary/20 rounded-full w-fit mx-auto">
+                  <Target className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-sm font-medium text-muted-foreground">חיסכון שנתי כולל</h3>
+                <p className="text-4xl font-bold text-primary">
+                  {formatCurrency(totalSavings.annual)}
+                </p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="p-4 bg-orange-100 rounded-full w-fit mx-auto">
+                  <Award className="h-8 w-8 text-orange-600" />
+                </div>
+                <h3 className="text-sm font-medium text-muted-foreground">תחומים נותחו</h3>
+                <p className="text-4xl font-bold text-orange-600">
+                  {analysisResults.length}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Individual Results */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold">פירוט לפי תחום</h2>
+          
+          {analysisResults.map((result, index) => {
+            const CategoryIcon = categoryIcons[result.category];
+            const gradientClass = categoryColors[result.category];
+            
+            return (
+              <Card key={index} className="shadow-card hover:shadow-elegant transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center space-x-3 rtl:space-x-reverse">
+                      <div className={`p-3 bg-gradient-to-br ${gradientClass} rounded-xl`}>
+                        <CategoryIcon className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold">{categoryNames[result.category]}</h3>
+                        <p className="text-muted-foreground font-normal">
+                          ספק נוכחי: {result.currentProvider}
+                        </p>
+                      </div>
+                    </CardTitle>
+                    
+                    {result.monthlySavings > 0 && (
+                      <Badge className="bg-success text-success-foreground text-lg px-4 py-2">
+                        <TrendingDown className="ml-1 h-4 w-4" />
+                        חיסכון: {formatCurrency(result.monthlySavings)}/חודש
+                      </Badge>
+                    )}
+                  </div>
+                </CardHeader>
+
+                <CardContent className="space-y-6">
+                  {/* Current vs Recommended Comparison */}
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Current Situation */}
+                    <div className="p-6 border-2 border-destructive/20 bg-destructive/5 rounded-xl">
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                          <div className="p-2 bg-destructive/20 rounded-lg">
+                            <DollarSign className="h-5 w-5 text-destructive" />
+                          </div>
+                          <h4 className="text-lg font-semibold text-destructive">המצב הנוכחי</h4>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <p className="text-sm text-muted-foreground">ספק נוכחי</p>
+                          <p className="text-xl font-semibold">{result.currentProvider}</p>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <p className="text-sm text-muted-foreground">תשלום חודשי</p>
+                          <p className="text-3xl font-bold text-destructive">
+                            {formatCurrency(result.currentAmount)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Recommended Solution */}
+                    {result.recommendedPlan && (
+                      <div className="p-6 border-2 border-success/20 bg-success/5 rounded-xl">
+                        <div className="space-y-4">
+                          <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                            <div className="p-2 bg-success/20 rounded-lg">
+                              <Lightbulb className="h-5 w-5 text-success" />
+                            </div>
+                            <h4 className="text-lg font-semibold text-success">המלצה לחיסכון</h4>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <p className="text-sm text-muted-foreground">ספק מומלץ</p>
+                            <p className="text-xl font-semibold">
+                              {result.recommendedPlan.providerName}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {result.recommendedPlan.name}
+                            </p>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <p className="text-sm text-muted-foreground">תשלום חודשי חדש</p>
+                            <p className="text-3xl font-bold text-success">
+                              {formatCurrency(result.recommendedPlan.price)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Savings Breakdown */}
+                  {result.monthlySavings > 0 && (
+                    <div className="bg-gradient-to-r from-success/10 to-success/5 rounded-xl p-6">
+                      <h4 className="text-lg font-semibold mb-4 text-success">פירוט החיסכון</h4>
+                      <div className="grid md:grid-cols-3 gap-4 text-center">
+                        <div className="space-y-2">
+                          <p className="text-sm text-muted-foreground">חיסכון חודשי</p>
+                          <p className="text-2xl font-bold text-success">
+                            {formatCurrency(result.monthlySavings)}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm text-muted-foreground">חיסכון שנתי</p>
+                          <p className="text-2xl font-bold text-success">
+                            {formatCurrency(result.annualSavings)}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm text-muted-foreground">אחוז חיסכון</p>
+                          <p className="text-2xl font-bold text-success">
+                            {((result.monthlySavings / result.currentAmount) * 100).toFixed(1)}%
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button className="flex-1">
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                      עבור לספק החדש
+                    </Button>
+                    <Button variant="outline" className="flex-1">
+                      <Eye className="ml-2 h-4 w-4" />
+                      השווה עוד אפשרויות
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        {/* Next Steps */}
+        <Card className="shadow-card bg-gradient-to-br from-primary/5 to-primary-glow/5">
+          <CardHeader>
+            <CardTitle>הצעדים הבאים</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <h4 className="font-semibold">איך לעבור לספק חדש:</h4>
+                <ol className="space-y-2 text-sm">
+                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs">1</span>
+                    <span>צור קשר עם הספק החדש</span>
+                  </li>
+                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs">2</span>
+                    <span>חתום על החוזה החדש</span>
+                  </li>
+                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs">3</span>
+                    <span>בטל את השירות הישן</span>
+                  </li>
+                </ol>
+              </div>
+              <div className="space-y-4">
+                <h4 className="font-semibold">טיפים חשובים:</h4>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <CheckCircle2 className="h-4 w-4 text-success" />
+                    <span>בדוק תקופות מחויבות</span>
+                  </li>
+                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <CheckCircle2 className="h-4 w-4 text-success" />
+                    <span>שמור על רציפות השירות</span>
+                  </li>
+                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <CheckCircle2 className="h-4 w-4 text-success" />
+                    <span>תעדכן פרטי חיוב</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -241,22 +573,178 @@ export const Analyze = () => {
           נתח את ההוצאות שלך
         </h1>
         <p className="text-muted-foreground text-lg">
-          העלה חשבונית או הזן נתונים ידנית ותקבל המלצות מיידיות לחיסכון
+          העלה חשבוניות או הזן נתונים ידנית ותגלה כמה תוכל לחסוך
         </p>
       </div>
 
+      {/* Progress Indicator */}
+      <div className="flex items-center justify-center space-x-4 rtl:space-x-reverse">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+          <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+            1
+          </div>
+          <span className="text-sm font-medium">הזן נתונים</span>
+        </div>
+        <div className="w-16 h-0.5 bg-border"></div>
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+          <div className="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-sm font-medium">
+            2
+          </div>
+          <span className="text-sm text-muted-foreground">קבל תוצאות</span>
+        </div>
+      </div>
+
       {/* Input Methods */}
-      <Tabs defaultValue="upload" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="upload" className="text-base">
-            <UploadIcon className="ml-2 h-4 w-4" />
-            העלאת חשבונית
+      <Tabs defaultValue="manual" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2 h-auto p-1">
+          <TabsTrigger value="manual" className="text-base py-3">
+            <Calculator className="ml-2 h-5 w-5" />
+            הזנה ידנית מהירה
           </TabsTrigger>
-          <TabsTrigger value="manual" className="text-base">
-            <Calculator className="ml-2 h-4 w-4" />
-            הזנה ידנית
+          <TabsTrigger value="upload" className="text-base py-3">
+            <UploadIcon className="ml-2 h-5 w-5" />
+            העלאת חשבוניות
           </TabsTrigger>
         </TabsList>
+
+        {/* Manual Input Tab */}
+        <TabsContent value="manual" className="space-y-6">
+          <Card className="shadow-elegant">
+            <CardHeader>
+              <CardTitle className="text-xl">בחר את התחומים לניתוח</CardTitle>
+              <p className="text-muted-foreground">
+                בחר תחום אחד או יותר והזן את הנתונים הנוכחיים שלך
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Category Selection */}
+              <div className="grid md:grid-cols-3 gap-4">
+                {Object.entries(categoryNames).map(([key, name]) => {
+                  const Icon = categoryIcons[key as keyof typeof categoryIcons];
+                  const gradientClass = categoryColors[key as keyof typeof categoryColors];
+                  const isActive = categoryData[key].isActive;
+                  
+                  return (
+                    <Card 
+                      key={key}
+                      className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                        isActive 
+                          ? 'ring-2 ring-primary shadow-glow border-primary' 
+                          : 'hover:border-primary/50'
+                      }`}
+                      onClick={() => toggleCategory(key)}
+                    >
+                      <CardContent className="p-6 text-center">
+                        <div className={`p-4 bg-gradient-to-br ${gradientClass} rounded-xl w-fit mx-auto mb-4`}>
+                          <Icon className="h-8 w-8 text-white" />
+                        </div>
+                        <h3 className="text-lg font-semibold mb-2">{name}</h3>
+                        <div className="flex items-center justify-center">
+                          {isActive ? (
+                            <Badge className="bg-success text-success-foreground">
+                              <CheckCircle2 className="ml-1 h-3 w-3" />
+                              נבחר
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline">
+                              <Plus className="ml-1 h-3 w-3" />
+                              בחר
+                            </Badge>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+
+              {/* Active Categories Forms */}
+              {Object.values(categoryData).some(cat => cat.isActive) && (
+                <div className="space-y-6">
+                  <Separator />
+                  <h3 className="text-xl font-semibold">פרטי התחומים שנבחרו</h3>
+                  
+                  <div className="space-y-6">
+                    {Object.entries(categoryData)
+                      .filter(([_, data]) => data.isActive)
+                      .map(([key, data]) => {
+                        const Icon = categoryIcons[key as keyof typeof categoryIcons];
+                        const name = categoryNames[key as keyof typeof categoryNames];
+                        
+                        return (
+                          <Card key={key} className="shadow-card">
+                            <CardHeader>
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                                  <Icon className="h-6 w-6 text-primary" />
+                                  <CardTitle className="text-lg">{name}</CardTitle>
+                                </div>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => toggleCategory(key)}
+                                >
+                                  <Minus className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                              <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label>ספק נוכחי</Label>
+                                  <Input
+                                    placeholder={`לדוגמא: ${key === 'electricity' ? 'חברת החשמל' : key === 'cellular' ? 'פלפון' : 'בזק'}`}
+                                    value={data.currentProvider}
+                                    onChange={(e) => updateCategoryData(key, 'currentProvider', e.target.value)}
+                                  />
+                                </div>
+                                
+                                <div className="space-y-2">
+                                  <Label>סכום חודשי (₪)</Label>
+                                  <Input
+                                    type="number"
+                                    placeholder="הזן סכום"
+                                    value={data.monthlyAmount}
+                                    onChange={(e) => updateCategoryData(key, 'monthlyAmount', e.target.value)}
+                                  />
+                                </div>
+                              </div>
+                              
+                              <div className="space-y-2">
+                                <Label>פרטים נוספים (אופציונלי)</Label>
+                                <Input
+                                  placeholder="לדוגמא: מספר לקוח, סוג חבילה"
+                                  value={data.accountDetails}
+                                  onChange={(e) => updateCategoryData(key, 'accountDetails', e.target.value)}
+                                />
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                  </div>
+                </div>
+              )}
+
+              {/* Analyze Button */}
+              {getActiveCategoriesCount() > 0 && (
+                <div className="flex justify-center pt-6">
+                  <Button
+                    size="lg"
+                    className="text-lg px-8 py-4 shadow-elegant animate-pulse-glow"
+                    onClick={handleAnalyzeAll}
+                    disabled={!Object.values(categoryData).some(cat => 
+                      cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0
+                    )}
+                  >
+                    <Calculator className="ml-2 h-5 w-5" />
+                    נתח {getActiveCategoriesCount()} תחומים וחשב חיסכון
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         {/* Upload Tab */}
         <TabsContent value="upload" className="space-y-6">
@@ -274,33 +762,36 @@ export const Analyze = () => {
               >
                 <input {...getInputProps()} />
                 <div className="space-y-4">
-                  <div className="mx-auto w-16 h-16 gradient-primary rounded-full flex items-center justify-center shadow-elegant">
-                    <UploadIcon className="h-8 w-8 text-primary-foreground" />
+                  <div className="mx-auto w-20 h-20 gradient-primary rounded-full flex items-center justify-center shadow-elegant">
+                    <UploadIcon className="h-10 w-10 text-primary-foreground" />
                   </div>
                   
                   {isDragActive ? (
                     <div>
-                      <h3 className="text-xl font-semibold text-primary">שחרר כדי להעלות</h3>
+                      <h3 className="text-2xl font-semibold text-primary">שחרר כדי להעלות</h3>
                       <p className="text-muted-foreground">הקבצים שלך מוכנים להעלאה</p>
                     </div>
                   ) : (
                     <div>
-                      <h3 className="text-xl font-semibold">גרור חשבוניות לכאן או לחץ להעלאה</h3>
+                      <h3 className="text-2xl font-semibold">גרור חשבוניות לכאן או לחץ להעלאה</h3>
                       <p className="text-muted-foreground">
-                        תמיכה ב-PDF, JPG, PNG עד 10MB | המערכת תזהה אוטומטically את הנתונים
+                        המערכת תזהה אוטומטית את הנתונים מהחשבוניות שלך
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        תמיכה ב-PDF, JPG, PNG עד 10MB
                       </p>
                     </div>
                   )}
 
-                  <Button variant="outline" disabled={isProcessing}>
+                  <Button variant="outline" size="lg" disabled={isProcessing}>
                     {isProcessing ? (
                       <>
-                        <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                        <Loader2 className="ml-2 h-5 w-5 animate-spin" />
                         מעבד קבצים...
                       </>
                     ) : (
                       <>
-                        <UploadIcon className="ml-2 h-4 w-4" />
+                        <UploadIcon className="ml-2 h-5 w-5" />
                         בחר קבצים
                       </>
                     )}
@@ -365,219 +856,43 @@ export const Analyze = () => {
             </Card>
           )}
         </TabsContent>
-
-        {/* Manual Tab */}
-        <TabsContent value="manual" className="space-y-6">
-          <Card className="shadow-card">
-            <CardHeader>
-              <CardTitle>הזן נתונים ידנית</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="category">קטגוריה</Label>
-                  <Select 
-                    value={manualData.category} 
-                    onValueChange={(value: any) => setManualData(prev => ({ ...prev, category: value }))}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="בחר קטגוריה" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="electricity">חשמל</SelectItem>
-                      <SelectItem value="cellular">סלולר</SelectItem>
-                      <SelectItem value="internet">אינטרנט</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="provider">ספק נוכחי</Label>
-                  <Input
-                    id="provider"
-                    placeholder="לדוגמא: חברת החשמל, פלפון, בזק"
-                    value={manualData.currentProvider}
-                    onChange={(e) => setManualData(prev => ({ ...prev, currentProvider: e.target.value }))}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="amount">סכום חודשי (₪)</Label>
-                  <Input
-                    id="amount"
-                    type="number"
-                    placeholder="הזן סכום"
-                    value={manualData.monthlyAmount}
-                    onChange={(e) => setManualData(prev => ({ ...prev, monthlyAmount: e.target.value }))}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="details">פרטים נוספים (אופציונלי)</Label>
-                  <Input
-                    id="details"
-                    placeholder="לדוגמא: מספר לקוח, חבילה נוכחית"
-                    value={manualData.accountDetails}
-                    onChange={(e) => setManualData(prev => ({ ...prev, accountDetails: e.target.value }))}
-                  />
-                </div>
-              </div>
-
-              <Button 
-                onClick={handleManualSubmit} 
-                className="w-full"
-                disabled={!manualData.category || !manualData.monthlyAmount}
-              >
-                <Calculator className="ml-2 h-4 w-4" />
-                חשב חיסכון
-              </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
 
-      {/* Analysis Results */}
-      {analysisResults.length > 0 && (
-        <div className="space-y-6">
-          <h2 className="text-3xl font-bold">תוצאות הניתוח</h2>
-          
-          {analysisResults.map((result, index) => {
-            const CategoryIcon = categoryIcons[result.category];
-            
-            return (
-              <Card key={index} className="shadow-card">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center space-x-3 rtl:space-x-reverse">
-                      <CategoryIcon className="h-6 w-6 text-primary" />
-                      <span>{categoryNames[result.category]}</span>
-                    </CardTitle>
-                    {result.monthlySavings > 0 && (
-                      <Badge className="bg-success text-success-foreground">
-                        חיסכון: {formatCurrency(result.monthlySavings)}/חודש
-                      </Badge>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Current vs Recommended */}
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="p-4 border border-border rounded-lg">
-                      <h4 className="font-semibold mb-2">המצב הנוכחי</h4>
-                      <p className="text-muted-foreground">ספק: {result.currentProvider}</p>
-                      <p className="text-2xl font-bold text-destructive">
-                        {formatCurrency(result.currentAmount)}/חודש
-                      </p>
-                    </div>
-                    
-                    {result.recommendedPlan && (
-                      <div className="p-4 border border-success rounded-lg bg-success/5">
-                        <h4 className="font-semibold mb-2">המלצה לחיסכון</h4>
-                        <p className="text-muted-foreground">
-                          {result.recommendedPlan.providerName} - {result.recommendedPlan.name}
-                        </p>
-                        <p className="text-2xl font-bold text-success">
-                          {formatCurrency(result.recommendedPlan.price)}/חודש
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Savings Summary */}
-                  {result.monthlySavings > 0 && (
-                    <div className="bg-gradient-to-r from-success/10 to-success/5 rounded-lg p-6">
-                      <div className="grid md:grid-cols-2 gap-4 text-center">
-                        <div>
-                          <p className="text-success font-semibold">חיסכון חודשי</p>
-                          <p className="text-3xl font-bold text-success">
-                            {formatCurrency(result.monthlySavings)}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-success font-semibold">חיסכון שנתי</p>
-                          <p className="text-3xl font-bold text-success">
-                            {formatCurrency(result.annualSavings)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <Button className="flex-1">
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                      עבור לספק החדש
-                    </Button>
-                    <Button variant="outline" className="flex-1">
-                      <Eye className="ml-2 h-4 w-4" />
-                      ראה עוד אפשרויות
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Tips */}
-      <Card className="shadow-card">
+      {/* Benefits Section */}
+      <Card className="shadow-card bg-gradient-to-br from-primary/5 to-primary-glow/5">
         <CardHeader>
-          <CardTitle>טיפים לחיסכון מקסימלי</CardTitle>
+          <CardTitle>למה כדאי לנתח את ההוצאות?</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Zap className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h4 className="font-semibold">חשמל</h4>
-                  <p className="text-sm text-muted-foreground">
-                    רפורמת החשמל מאפשרת חיסכון של עד 20%. בדוק הנחות לצרכנים חדשים.
-                  </p>
-                </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center space-y-3">
+              <div className="p-4 bg-success/20 rounded-full w-fit mx-auto">
+                <PiggyBank className="h-8 w-8 text-success" />
               </div>
-              
-              <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Smartphone className="h-5 w-5 text-blue-600" />
-                </div>
-                <div>
-                  <h4 className="font-semibold">סלולר</h4>
-                  <p className="text-sm text-muted-foreground">
-                    חברות וירטואליות כמו רמי לוי מציעות חבילות זולות יותר ב-50%.
-                  </p>
-                </div>
-              </div>
+              <h3 className="font-semibold">חיסכון מיידי</h3>
+              <p className="text-sm text-muted-foreground">
+                גלה הזדמנויות חיסכון של מאות או אלפי שקלים בשנה
+              </p>
             </div>
             
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Wifi className="h-5 w-5 text-green-600" />
-                </div>
-                <div>
-                  <h4 className="font-semibold">אינטרנט</h4>
-                  <p className="text-sm text-muted-foreground">
-                    חבילות קומבו (אינטרנט + טלוויזיה) לעיתים זולות יותר מחבילות נפרדות.
-                  </p>
-                </div>
+            <div className="text-center space-y-3">
+              <div className="p-4 bg-blue-100 rounded-full w-fit mx-auto">
+                <Target className="h-8 w-8 text-blue-600" />
               </div>
-              
-              <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <TrendingDown className="h-5 w-5 text-orange-600" />
-                </div>
-                <div>
-                  <h4 className="font-semibold">משא ומתן</h4>
-                  <p className="text-sm text-muted-foreground">
-                    השתמש בהמלצות שלנו כדי לנהל משא ומתן עם הספק הנוכחי.
-                  </p>
-                </div>
+              <h3 className="font-semibold">השוואה מדויקת</h3>
+              <p className="text-sm text-muted-foreground">
+                קבל השוואה מלאה בין כל הספקים בשוק
+              </p>
+            </div>
+            
+            <div className="text-center space-y-3">
+              <div className="p-4 bg-purple-100 rounded-full w-fit mx-auto">
+                <Lightbulb className="h-8 w-8 text-purple-600" />
               </div>
+              <h3 className="font-semibold">המלצות אישיות</h3>
+              <p className="text-sm text-muted-foreground">
+                קבל המלצות מותאמות בדיוק לצרכים שלך
+              </p>
             </div>
           </div>
         </CardContent>
