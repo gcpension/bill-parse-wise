@@ -7,6 +7,8 @@ const fs = require('fs');
 const upload = multer({ dest: 'uploads/' });
 const app = express();
 app.use(cors());
+const expenses = [];
+
 app.use(express.json());
 
 // Utility to parse lines into category and amount
@@ -56,22 +58,47 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     fs.unlinkSync(imagePath);
     const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
     const parsed = parseLines(lines);
+        expenses.push(...parsed);
+    
     return res.json({ ok: true, data: { lines: parsed } });
   } catch (err) {
+    
     console.error(err);
+        
     return res.status(500).json({ ok: false, error: 'OCR failed' });
   }
 });
 
 app.get('/api/cost-categories', (req, res) => {
-  // TODO: Replace with DB queries; returns empty for now
-  return res.json({ ok: true, data: [] });
+  
+    // Summarize expenses by category
+  const summary = {};
+  for (const exp of expenses) {
+    const cat = exp.category || 'other';
+    summary[cat] = (summary[cat] || 0) + (exp.amount || 0);
+  }
+  const result = Object.entries(summary).map(([category, total]) => ({ category, total }));
+  return res.json({ ok: true, data: result });
+  
+  
 });
 
 app.get('/api/recommendations', (req, res) => {
-  // TODO: compute recommendations based on parsed data; returns empty for now
-  return res.json({ ok: true, data: [] });
+  const summaryRec = {};
+  for (const exp of expenses) {
+    const cat = exp.category || 'other';
+    summaryRec[cat] = (summaryRec[cat] || 0) + (exp.amount || 0);
+  }
+  const recommendations = Object.entries(summaryRec).map(([category, total]) => {
+    const monthlySavings = Number((total * 0.1).toFixed(2));
+    const annualSavings = Number((monthlySavings * 12).toFixed(2));
+    const title = `Save on ${category}`;
+    const description = 'Based on your spending, you could save about 10% by switching providers or reducing usage.';
+    return { category, title, description, monthlySavings, annualSavings };
+  });
+  return res.json({ ok: true, data: recommendations });
 });
-
+});
+  
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
