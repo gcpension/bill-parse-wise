@@ -1,17 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { 
-  LayoutDashboard, 
-  Upload, 
+  Home, 
+  Calculator, 
   BarChart3, 
   Settings,
   TrendingDown
 } from 'lucide-react';
 
 const navigation = [
-  { name: 'דשבורד', href: '/', icon: LayoutDashboard },
-  { name: 'העלאת חשבוניות', href: '/upload', icon: Upload },
-  { name: 'השוואת עלויות', href: '/compare', icon: BarChart3 },
+  { name: 'בית', href: '/', icon: Home },
+  { name: 'ניתוח חיסכון', href: '/analyze', icon: Calculator },
+  { name: 'השוואת ספקים', href: '/compare', icon: BarChart3 },
   { name: 'הגדרות', href: '/settings', icon: Settings },
 ];
 
@@ -28,10 +28,10 @@ export const Navigation = () => {
                 <TrendingDown className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
-                  מחשבון חיסכון
-                </h1>
-                <p className="text-xs text-muted-foreground">חיסכון חכם</p>
+              <h1 className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
+                חסכונט
+              </h1>
+              <p className="text-xs text-muted-foreground">מחשבון חיסכון חכם</p>
               </div>
             </Link>
             
