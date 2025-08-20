@@ -29,7 +29,7 @@ export const Navigation = () => {
             <div className="hidden md:flex space-x-4 rtl:space-x-reverse">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href || 
-                  (item.href !== '/' && location.pathname.startsWith(item.href));
+                  (item.!==ref !== '/' && location.pathname.startsWith(item.href));
                 const Icon = item.icon;
                 
                 return (
