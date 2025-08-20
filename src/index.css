@@ -50,21 +50,34 @@ body {
 
     --success: 142 76% 36%;
     --success-foreground: 355 100% 97%;
+    --success-glow: 142 76% 50%;
     
     --warning: 48 96% 53%;
     --warning-foreground: 26 83% 14%;
+
+    /* New vibrant colors */
+    --electric-blue: 215 100% 60%;
+    --vibrant-green: 120 100% 40%;
+    --sunset-orange: 25 95% 60%;
+    --royal-purple: 255 65% 60%;
+    --coral-pink: 350 80% 65%;
+    --golden-yellow: 45 100% 55%;
 
     --radius: 0.75rem;
     
     /* Beautiful gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(142 76% 50%));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--success-glow)));
     --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--accent)));
+    --gradient-electric: linear-gradient(135deg, hsl(var(--electric-blue)), hsl(215 100% 70%));
+    --gradient-vibrant: linear-gradient(135deg, hsl(var(--vibrant-green)), hsl(120 100% 60%));
+    --gradient-sunset: linear-gradient(135deg, hsl(var(--sunset-orange)), hsl(var(--golden-yellow)));
     
     /* Elegant shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
     --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
     --shadow-card: 0 4px 20px -2px hsl(var(--foreground) / 0.1);
+    --shadow-colorful: 0 8px 25px -5px hsl(var(--electric-blue) / 0.25);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -140,6 +153,18 @@ body {
     background: var(--gradient-card);
   }
   
+  .gradient-electric {
+    background: var(--gradient-electric);
+  }
+  
+  .gradient-vibrant {
+    background: var(--gradient-vibrant);
+  }
+  
+  .gradient-sunset {
+    background: var(--gradient-sunset);
+  }
+  
   .shadow-elegant {
     box-shadow: var(--shadow-elegant);
   }
@@ -150,5 +175,9 @@ body {
   
   .shadow-card {
     box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-colorful {
+    box-shadow: var(--shadow-colorful);
   }
 }

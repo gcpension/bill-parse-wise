@@ -446,15 +446,43 @@ export const ProviderSwitchForm = ({
               </div>
             </div>
 
-            <Alert className="border-amber-200 bg-amber-50">
-              <AlertTriangle className="h-4 w-4 text-amber-600" />
-              <AlertDescription className="text-amber-800">
-                <strong>דיסקליימר משפטי:</strong> השירות הינו שירות המלצה בלבד. חסכונט אינה נושאת באחריות 
-                לתוצאות בפועל, שינויים בתעריפים, או לכל נזק שעלול להיגרם. המעבר בין ספקים הינו על 
-                אחריותך הבלעדית. מומלץ לוודא פרטים עם הספק החדש לפני החתימה. המידע מבוסס על נתונים 
-                ציבוריים ועלול להשתנות ללא הודעה מוקדמת.
-              </AlertDescription>
-            </Alert>
+            <div className="bg-warning/10 border border-warning rounded-lg p-6">
+              <h4 className="font-semibold text-warning-foreground mb-3 text-lg">
+                <AlertTriangle className="inline ml-2 h-5 w-5" />
+                דיסקליימר משפטי חשוב - אנא קרא בעיון
+              </h4>
+              <div className="text-sm text-warning-foreground space-y-3">
+                <div className="bg-destructive/10 border border-destructive/20 rounded p-3">
+                  <h5 className="font-semibold mb-2">הגבלת אחריות:</h5>
+                  <p>• השירות מסופק "כמות שהוא" ואיננו נושאים באחריות כלשהי לתוצאות, נזקים או הפסדים</p>
+                  <p>• אין אחריות להתאמה בין הצעת המחיר לבין המחיר הסופי שיוצע על ידי הספק</p>
+                  <p>• אין אחריות לזמינות השירות, איכותו או המשכיותו</p>
+                </div>
+                
+                <div className="bg-primary/10 border border-primary/20 rounded p-3">
+                  <h5 className="font-semibold mb-2">אחריות הלקוח:</h5>
+                  <p>• הלקוח אחראי באופן מלא לביטול החוזה הקודם ולתיאום המעבר</p>
+                  <p>• הלקוח מתחייב לוודא את כל התנאים והמחירים עם הספק החדש</p>
+                  <p>• הלקוח אחראי לכל העמלות, קנסות או תשלומים הנובעים מהמעבר</p>
+                </div>
+                
+                <div className="bg-muted border border-border rounded p-3">
+                  <h5 className="font-semibold mb-2">הצהרות כלליות:</h5>
+                  <p>• המחירים והתנאים עשויים להשתנות ללא הודעה מוקדמת</p>
+                  <p>• הנתונים מתעדכנים באופן תקופתי ועשויים שלא להיות מדויקים ברגע זה</p>
+                  <p>• השירות מיועד למידע בלבד ואינו מהווה הצעה מחייבת</p>
+                  <p>• החברה אינה נציגה או שותפה של הספקים המופיעים במערכת</p>
+                </div>
+                
+                <div className="bg-success/10 border border-success/20 rounded p-3">
+                  <h5 className="font-semibold mb-2">המלצות חשובות:</h5>
+                  <p>• התייעץ עם יועץ משפטי/כלכלי לפני ביצוע המעבר</p>
+                  <p>• קרא בעיון את כל החוזים לפני החתימה</p>
+                  <p>• שמור תיעוד של כל השיחות והתכתובות עם הספקים</p>
+                  <p>• וודא שקיבלת אישור בכתב על ביטול החוזה הקודם</p>
+                </div>
+              </div>
+            </div>
           </div>
         );
 
