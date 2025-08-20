@@ -89,6 +89,35 @@ export const ProviderSwitchForm = ({
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleDownloadForm = async (category: string) => {
+    try {
+      // Create PDF content dynamically
+      const pdfContent = generatePowerOfAttorneyPDF(category, currentProvider, newProvider);
+      
+      // Create blob and download
+      const blob = new Blob([pdfContent], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `power-of-attorney-${category}-${Date.now()}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "טופס ייפוי הכוח נוצר!",
+        description: `הטופס עבור מעבר ${categoryNames[category]} נשמר במחשב שלך`,
+      });
+    } catch (error) {
+      toast({
+        title: "שגיאה",
+        description: "לא ניתן ליצור את הטופס כרגע. נסה שוב מאוחר יותר.",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleSubmit = async () => {
     // Validate required fields
     const requiredFields = ['fullName', 'idNumber', 'phone', 'email', 'address'];

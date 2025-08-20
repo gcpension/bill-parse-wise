@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FileText, Download, AlertTriangle, Scale, Shield, Phone, Zap, Wifi, Smartphone } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface DocumentTemplatesProps {
   category: 'electricity' | 'cellular' | 'internet';
@@ -10,11 +11,75 @@ interface DocumentTemplatesProps {
   newProvider: string;
 }
 
+const categoryNames = {
+  electricity: 'חשמל',
+  cellular: 'סלולר',
+  internet: 'אינטרנט'
+};
+
 export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
   category,
   currentProvider,
   newProvider
 }) => {
+  const { toast } = useToast();
+  
+  const handleDownloadForm = async (category: string) => {
+    try {
+      // Create PDF content dynamically
+      const pdfContent = generatePowerOfAttorneyPDF(category, currentProvider, newProvider);
+      
+      // Create blob and download
+      const blob = new Blob([pdfContent], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `power-of-attorney-${category}-${Date.now()}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "טופס ייפוי הכוח נוצר!",
+        description: `הטופס עבור מעבר ${categoryNames[category]} נשמר במחשב שלך`,
+      });
+    } catch (error) {
+      toast({
+        title: "שגיאה",
+        description: "לא ניתן ליצור את הטופס כרגע. נסה שוב מאוחר יותר.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const generatePowerOfAttorneyPDF = (category: string, currentProvider: string, newProvider: string) => {
+    return `ייפוי כוח למעבר ספק ${categoryNames[category]}
+===========================================
+
+אני החתום מטה: _____________________ (שם מלא)
+תעודת זהות: _____________________
+כתובת: _____________________
+
+מסמיך בזאת את ${newProvider} לפעול בשמי לשם ביצוע מעבר מספק ${currentProvider}.
+
+הסמכה זו כוללת:
+• ביטול השירות עם הספק הנוכחי: ${currentProvider}
+• פתיחת שירות חדש עם הספק החדש: ${newProvider}
+• העברת כל הפרטים הרלוונטיים
+• ביצוע כל הפעולות הנדרשות למעבר
+
+תאריך: ${new Date().toLocaleDateString('he-IL')}
+חתימה: ________________
+
+הערות:
+- מסמך זה נוצר אוטומטית על ידי מערכת השוואת הספקים
+- יש לחתום על המסמך ולשלוח אותו לספק החדש
+- מומלץ לשמור עותק למטרות תיעוד
+
+לשאלות נוספות: support@example.com
+`;
+  };
   const categoryIcons = {
     electricity: Zap,
     cellular: Smartphone,
@@ -103,7 +168,11 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
                 </div>
                 
                 {doc.downloadUrl && (
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => handleDownloadForm(category)}
+                  >
                     <Download className="h-4 w-4 ml-2" />
                     הורד טופס
                   </Button>
