@@ -470,77 +470,153 @@ export const Analyze = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-6">
-                  {/* Current vs Recommended Comparison - Enhanced */}
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {/* Current Situation - Enhanced */}
-                    <div className="relative p-6 border-2 border-destructive/20 bg-gradient-to-br from-destructive/5 to-destructive/10 rounded-xl group/current hover:shadow-lg transition-all duration-300">
-                      <div className="absolute top-2 right-2 text-4xl opacity-20">💸</div>
-                      <div className="space-y-4 relative">
-                        <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                          <div className="p-3 bg-destructive/20 rounded-lg group-hover/current:bg-destructive/30 transition-colors duration-300">
-                            <DollarSign className="h-6 w-6 text-destructive" />
+                  {/* Premium Comparison Section */}
+                  <div className="relative overflow-hidden rounded-3xl bg-gradient-to-bl from-slate-50 via-white to-slate-50 border-2 border-slate-200/50 shadow-2xl">
+                    {/* Background Animation */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-success/5 animate-pulse"></div>
+                    
+                    {/* Comparison Header */}
+                    <div className="relative p-6 text-center border-b border-slate-200/50">
+                      <h3 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+                        השוואת עלויות
+                      </h3>
+                      <p className="text-slate-600 mt-2">המצב הנוכחי מול ההמלצה החדשה</p>
+                      
+                      {/* Animated Arrow */}
+                      <div className="flex items-center justify-center mt-4 space-x-4 rtl:space-x-reverse">
+                        <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-slate-300 flex-1"></div>
+                        <div className="p-2 bg-gradient-to-r from-destructive/10 to-success/10 rounded-full animate-pulse">
+                          <ArrowRight className="h-5 w-5 text-primary animate-bounce" />
+                        </div>
+                        <div className="h-px bg-gradient-to-r from-slate-300 via-slate-300 to-transparent flex-1"></div>
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 relative">
+                      {/* Current Provider - Premium Red Card */}
+                      <div className="relative group p-8 bg-gradient-to-br from-red-50 via-rose-50 to-red-100 border-r border-slate-200/50">
+                        {/* Animated Background Elements */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-red-300/20 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-125 transition-transform duration-700"></div>
+                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-rose-300/15 to-transparent rounded-full translate-y-12 -translate-x-12 group-hover:scale-110 transition-transform duration-500"></div>
+                        
+                        {/* Status Badge */}
+                        <div className="absolute top-4 right-4">
+                          <div className="bg-gradient-to-r from-red-500 to-rose-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                            ספק נוכחי
                           </div>
-                          <h4 className="text-xl font-semibold text-destructive">המצב הנוכחי</h4>
                         </div>
-                        
-                        <div className="space-y-3">
-                          <p className="text-sm text-muted-foreground font-medium">ספק נוכחי</p>
-                          <p className="text-xl font-semibold">{result.currentProvider}</p>
+
+                        <div className="relative space-y-6">
+                          {/* Icon and Title */}
+                          <div className="text-center space-y-3">
+                            <div className="relative mx-auto w-fit">
+                              <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-rose-500 rounded-2xl blur-lg scale-110 opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                              <div className="relative p-4 bg-gradient-to-br from-red-400 to-rose-500 rounded-2xl shadow-xl">
+                                <DollarSign className="h-10 w-10 text-white" />
+                              </div>
+                            </div>
+                            <h4 className="text-xl font-bold text-red-700">המצב הנוכחי</h4>
+                          </div>
+
+                          {/* Provider Info */}
+                          <div className="bg-white/60 backdrop-blur rounded-2xl p-4 border border-red-200/50 shadow-lg">
+                            <p className="text-sm text-red-600 font-medium mb-2">ספק נוכחי</p>
+                            <p className="text-lg font-bold text-red-800">{result.currentProvider}</p>
+                          </div>
+
+                          {/* Price Display */}
+                          <div className="text-center bg-white/80 backdrop-blur rounded-2xl p-6 border border-red-200/50 shadow-lg">
+                            <p className="text-sm text-red-600 font-medium mb-2">תשלום חודשי נוכחי</p>
+                            <div className="relative">
+                              <div className="text-5xl font-black text-red-600 group-hover:scale-105 transition-transform duration-300">
+                                ₪{result.currentAmount.toLocaleString()}
+                              </div>
+                              <div className="text-red-500 font-medium mt-1">לחודש</div>
+                              
+                              {/* Warning Icon */}
+                              <div className="absolute -top-2 -left-2 text-2xl animate-bounce">⚠️</div>
+                            </div>
+                          </div>
                         </div>
-                        
-                        <div className="space-y-3">
-                          <p className="text-sm text-muted-foreground font-medium">תשלום חודשי</p>
-                          <div className="flex items-baseline space-x-2 rtl:space-x-reverse">
-                            <p className="text-4xl font-bold text-destructive group-hover/current:scale-105 transition-transform duration-300">
-                              {formatCurrency(result.currentAmount)}
-                            </p>
-                            <span className="text-sm text-muted-foreground">לחודש</span>
+                      </div>
+
+                      {/* Recommended Provider - Premium Green Card */}
+                      {result.recommendedPlan && (
+                        <div className="relative group p-8 bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100">
+                          {/* Animated Background Elements */}
+                          <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-emerald-300/20 to-transparent rounded-full -translate-y-16 -translate-x-16 group-hover:scale-125 transition-transform duration-700"></div>
+                          <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-green-300/15 to-transparent rounded-full translate-y-12 translate-x-12 group-hover:scale-110 transition-transform duration-500"></div>
+                          
+                          {/* Recommendation Badge */}
+                          <div className="absolute top-4 left-4">
+                            <div className="bg-gradient-to-r from-emerald-500 to-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg animate-pulse">
+                              המלצה לחיסכון ⭐
+                            </div>
+                          </div>
+
+                          <div className="relative space-y-6">
+                            {/* Icon and Title */}
+                            <div className="text-center space-y-3">
+                              <div className="relative mx-auto w-fit">
+                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-green-500 rounded-2xl blur-lg scale-110 opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                                <div className="relative p-4 bg-gradient-to-br from-emerald-400 to-green-500 rounded-2xl shadow-xl">
+                                  <Lightbulb className="h-10 w-10 text-white" />
+                                </div>
+                              </div>
+                              <h4 className="text-xl font-bold text-emerald-700">המלצה לחיסכון</h4>
+                            </div>
+
+                            {/* Provider Info */}
+                            <div className="bg-white/60 backdrop-blur rounded-2xl p-4 border border-emerald-200/50 shadow-lg">
+                              <p className="text-sm text-emerald-600 font-medium mb-2">ספק מומלץ</p>
+                              <p className="text-lg font-bold text-emerald-800">{result.recommendedPlan.providerName}</p>
+                              <div className="mt-2">
+                                <span className="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full">
+                                  {result.recommendedPlan.name}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Price Display */}
+                            <div className="text-center bg-white/80 backdrop-blur rounded-2xl p-6 border border-emerald-200/50 shadow-lg">
+                              <p className="text-sm text-emerald-600 font-medium mb-2">תשלום חודשי חדש</p>
+                              <div className="relative">
+                                <div className="text-5xl font-black text-emerald-600 group-hover:scale-105 transition-transform duration-300">
+                                  ₪{result.recommendedPlan.price.toLocaleString()}
+                                </div>
+                                <div className="text-emerald-500 font-medium mt-1">לחודש</div>
+                                
+                                {/* Success Icon */}
+                                <div className="absolute -top-2 -right-2 text-2xl animate-bounce">💡</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Center Divider with Savings */}
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div className="bg-gradient-to-r from-primary via-primary-glow to-success text-white rounded-full p-4 shadow-2xl animate-pulse border-4 border-white">
+                          <div className="text-center">
+                            <div className="text-xs font-bold">חיסכון</div>
+                            <div className="text-lg font-black">₪{result.monthlySavings.toLocaleString()}</div>
+                            <div className="text-xs">לחודש</div>
                           </div>
                         </div>
                       </div>
                     </div>
-
-                    {/* Recommended Solution - Enhanced */}
-                    {result.recommendedPlan && (
-                      <div className="relative p-6 border-2 border-success/20 bg-gradient-to-br from-success/5 to-success/10 rounded-xl group/recommended hover:shadow-xl transition-all duration-300">
-                        <div className="absolute top-2 right-2 text-4xl opacity-20">💰</div>
-                        <div className="space-y-4 relative">
-                          <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                            <div className="p-3 bg-success/20 rounded-lg group-hover/recommended:bg-success/30 transition-colors duration-300">
-                              <Lightbulb className="h-6 w-6 text-success" />
-                            </div>
-                            <h4 className="text-xl font-semibold text-success">המלצה לחיסכון</h4>
-                          </div>
-                          
-                          <div className="space-y-3">
-                            <p className="text-sm text-muted-foreground font-medium">ספק מומלץ</p>
-                            <p className="text-xl font-semibold">
-                              {result.recommendedPlan.providerName}
-                            </p>
-                            <p className="text-sm text-success bg-success/10 px-2 py-1 rounded-full w-fit">
-                              {result.recommendedPlan.name}
-                            </p>
-                          </div>
-                          
-                          <div className="space-y-3">
-                            <p className="text-sm text-muted-foreground font-medium">תשלום חודשי חדש</p>
-                            <div className="flex items-baseline space-x-2 rtl:space-x-reverse">
-                              <p className="text-4xl font-bold text-success group-hover/recommended:scale-105 transition-transform duration-300">
-                                {formatCurrency(result.recommendedPlan.price)}
-                              </p>
-                              <span className="text-sm text-muted-foreground">לחודש</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Recommended Badge */}
-                        <div className="absolute -top-2 -left-2">
-                          <div className="bg-success text-success-foreground px-3 py-1 rounded-full text-xs font-bold animate-pulse">
-                            מומלץ ⭐
-                          </div>
-                        </div>
+                    
+                    {/* Bottom Summary */}
+                    <div className="relative p-6 bg-gradient-to-r from-success/5 via-primary/5 to-success/5 border-t border-slate-200/50">
+                      <div className="text-center space-y-2">
+                        <p className="text-lg font-bold text-success">
+                          🎉 תחסוך {formatCurrency(result.monthlySavings)} בחודש!
+                        </p>
+                        <p className="text-sm text-slate-600">
+                          זה יוצא {formatCurrency(result.annualSavings)} חיסכון בשנה - כמו {Math.round(result.annualSavings / 1000)} משכורות נוספות!
+                        </p>
                       </div>
-                    )}
+                    </div>
                   </div>
 
                   {/* Savings Breakdown */}

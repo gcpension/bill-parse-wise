@@ -40,7 +40,7 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
     },
     {
       title: 'עותק תעודת זהות',
-      description: 'צילום תעודת זהות בתוקף',
+      description: 'צילום תעודת זהות בתוקף - נדרש לאימות זהות ומניעת הונאות. החוק מחייב את כל חברות השירותים לוודא זהות הלקוח לפני פתיחת חשבון חדש או ביצוע מעבר.',
       icon: Shield,
       required: true
     },
