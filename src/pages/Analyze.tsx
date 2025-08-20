@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { validateImageFile, formatCurrency } from '@/lib/utils';
 import { getCheapestPlan, calculateAnnualSavings, getProvidersByCategory } from '@/data/providers';
+import { ProviderSwitchForm } from '@/components/ProviderSwitchForm';
 
 interface UploadedFile {
   file: File;
@@ -502,10 +503,13 @@ export const Analyze = () => {
 
                   {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Button className="flex-1">
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                      עבור לספק החדש
-                    </Button>
+                    <ProviderSwitchForm
+                      category={result.category}
+                      currentProvider={result.currentProvider}
+                      newProvider={result.recommendedPlan?.providerName || ''}
+                      newPlan={result.recommendedPlan?.name || ''}
+                      monthlySavings={result.monthlySavings}
+                    />
                     <Button variant="outline" className="flex-1">
                       <Eye className="ml-2 h-4 w-4" />
                       השווה עוד אפשרויות
