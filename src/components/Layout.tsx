@@ -6,6 +6,7 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children }: LayoutProps) => {
+  console.log('Layout.tsx: Layout component rendering...');
   return (
     <div className="min-h-screen bg-background">
       <Navigation />

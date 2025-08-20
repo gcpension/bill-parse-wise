@@ -4,6 +4,7 @@ import { Upload, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Dashboard = () => {
+  console.log('Dashboard.tsx: Dashboard component rendering...');
   return (
     <div className="space-y-8">
       {/* Header */}
