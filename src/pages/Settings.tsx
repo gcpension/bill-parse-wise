@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { 
   User, 
   Bell, 
@@ -30,11 +29,72 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 
+interface UserProfile {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  monthlyBudget: string;
+  preferredCategories: string[];
+}
+
+interface NotificationSettings {
+  emailNotifications: boolean;
+  smsNotifications: boolean;
+  newDeals: boolean;
+  priceChanges: boolean;
+  monthlyReports: boolean;
+}
+
+const initialProfile: UserProfile = {
+  name: 'משה כהן',
+  email: 'moshe@example.com',
+  phone: '050-1234567',
+  address: 'תל אביב, ישראל',
+  monthlyBudget: '2500',
+  preferredCategories: ['electricity', 'cellular']
+};
+
+const initialNotifications: NotificationSettings = {
+  emailNotifications: true,
+  smsNotifications: false,
+  newDeals: true,
+  priceChanges: true,
+  monthlyReports: true
+};
+
 export const Settings = () => {
+  const [profile, setProfile] = useState<UserProfile>(initialProfile);
+  const [notifications, setNotifications] = useState<NotificationSettings>(initialNotifications);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [autoAnalyze, setAutoAnalyze] = useState(true);
   const [savedAmount] = useState(8750);
+
+  const handleSaveProfile = () => {
+    console.log('Saving profile:', profile);
+  };
+
+  const handleSaveNotifications = () => {
+    console.log('Saving notifications:', notifications);
+  };
+
+  const handleExportData = () => {
+    console.log('Exporting data...');
+  };
+
+  const handleDeleteAccount = () => {
+    console.log('Deleting account...');
+  };
+
+  const categoryNames = {
+    electricity: 'חשמל',
+    cellular: 'סלולר',
+    internet: 'אינטרנט'
+  };
 
   return (
     <div className="space-y-8 animate-fade-in">
+      {/* Header */}
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight gradient-primary bg-clip-text text-transparent">
           הגדרות
@@ -44,6 +104,7 @@ export const Settings = () => {
         </p>
       </div>
 
+      {/* Savings Summary */}
       <Card className="shadow-card bg-gradient-to-br from-success/10 to-success/5">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
@@ -63,258 +124,286 @@ export const Settings = () => {
         </CardContent>
       </Card>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle>פרטים אישיים</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label>שם מלא</Label>
-              <Input defaultValue="משה כהן" />
-            </div>
-            <div className="space-y-2">
-              <Label>אימייל</Label>
-              <Input defaultValue="moshe@example.com" />
-            </div>
-            <Button>שמור שינויים</Button>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle>התראות</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Label>התראות אימייל</Label>
-              <Switch defaultChecked />
-            </div>
-            <div className="flex items-center justify-between">
-              <Label>מבצעים חדשים</Label>
-              <Switch defaultChecked />
-            </div>
-            <div className="flex items-center justify-between">
-              <Label>דוחות חודשיים</Label>
-              <Switch defaultChecked />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-};
-import { 
-  Save, 
-  Trash2, 
-  Download, 
-  Upload, 
-  Bell, 
-  Shield, 
-  Palette,
-  Globe,
-  HelpCircle,
-  Info
-} from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { EXPENSE_CATEGORIES } from '@/lib/categories';
-
-interface UserSettings {
-  notifications: {
-    email: boolean;
-    push: boolean;
-    monthlyReport: boolean;
-    savingsAlerts: boolean;
-  };
-  privacy: {
-    dataCollection: boolean;
-    analytics: boolean;
-    marketing: boolean;
-  };
-  preferences: {
-    currency: string;
-    language: string;
-    theme: string;
-    monthlyBudget: number;
-  };
-  categories: {
-    enabled: string[];
-    customKeywords: Record<string, string[]>;
-  };
-}
-
-export const Settings = () => {
-  const [settings, setSettings] = useState<UserSettings>({
-    notifications: {
-      email: true,
-      push: false,
-      monthlyReport: true,
-      savingsAlerts: true,
-    },
-    privacy: {
-      dataCollection: true,
-      analytics: true,
-      marketing: false,
-    },
-    preferences: {
-      currency: 'ILS',
-      language: 'he',
-      theme: 'system',
-      monthlyBudget: 2000,
-    },
-    categories: {
-      enabled: EXPENSE_CATEGORIES.map(cat => cat.id),
-      customKeywords: {},
-    },
-  });
-
-  const [isSaving, setIsSaving] = useState(false);
-  const [customKeyword, setCustomKeyword] = useState('');
-  const [selectedCategoryForKeyword, setSelectedCategoryForKeyword] = useState('');
-  const { toast } = useToast();
-
-  const handleSave = async () => {
-    setIsSaving(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setIsSaving(false);
-    toast({
-      title: 'ההגדרות נשמרו',
-      description: 'כל ההגדרות עודכנו בהצלחה',
-    });
-  };
-
-  const handleExportData = () => {
-    // Simulate data export
-    const data = JSON.stringify(settings, null, 2);
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'cost-optimizer-settings.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    toast({
-      title: 'הנתונים יוצאו',
-      description: 'קובץ ההגדרות הורד למחשב שלך',
-    });
-  };
-
-  const handleDeleteData = () => {
-    if (confirm('האם אתה בטוח שברצונך למחוק את כל הנתונים? פעולה זו לא ניתנת לביטול.')) {
-      toast({
-        title: 'הנתונים נמחקו',
-        description: 'כל הנתונים האישיים נמחקו מהמערכת',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const addCustomKeyword = () => {
-    if (!customKeyword.trim() || !selectedCategoryForKeyword) return;
-    
-    setSettings(prev => ({
-      ...prev,
-      categories: {
-        ...prev.categories,
-        customKeywords: {
-          ...prev.categories.customKeywords,
-          [selectedCategoryForKeyword]: [
-            ...(prev.categories.customKeywords[selectedCategoryForKeyword] || []),
-            customKeyword.trim()
-          ]
-        }
-      }
-    }));
-    
-    setCustomKeyword('');
-    toast({
-      title: 'מילת מפתח נוספה',
-      description: `המילה "${customKeyword}" נוספה לקטגוריית ${EXPENSE_CATEGORIES.find(c => c.id === selectedCategoryForKeyword)?.nameHebrew}`,
-    });
-  };
-
-  const removeCustomKeyword = (categoryId: string, keyword: string) => {
-    setSettings(prev => ({
-      ...prev,
-      categories: {
-        ...prev.categories,
-        customKeywords: {
-          ...prev.categories.customKeywords,
-          [categoryId]: prev.categories.customKeywords[categoryId]?.filter(k => k !== keyword) || []
-        }
-      }
-    }));
-  };
-
-  return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">הגדרות</h1>
-        <p className="text-muted-foreground">
-          נהל את ההעדפות והפרטיות שלך
-        </p>
-      </div>
-
-      <Tabs defaultValue="general" className="space-y-4">
+      <Tabs defaultValue="profile" className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="general">כללי</TabsTrigger>
-          <TabsTrigger value="notifications">התראות</TabsTrigger>
-          <TabsTrigger value="categories">קטגוריות</TabsTrigger>
-          <TabsTrigger value="privacy">פרטיות</TabsTrigger>
+          <TabsTrigger value="profile" className="flex items-center space-x-2 rtl:space-x-reverse">
+            <User className="h-4 w-4" />
+            <span>פרופיל</span>
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="flex items-center space-x-2 rtl:space-x-reverse">
+            <Bell className="h-4 w-4" />
+            <span>התראות</span>
+          </TabsTrigger>
+          <TabsTrigger value="preferences" className="flex items-center space-x-2 rtl:space-x-reverse">
+            <SettingsIcon className="h-4 w-4" />
+            <span>העדפות</span>
+          </TabsTrigger>
+          <TabsTrigger value="account" className="flex items-center space-x-2 rtl:space-x-reverse">
+            <Shield className="h-4 w-4" />
+            <span>חשבון</span>
+          </TabsTrigger>
         </TabsList>
 
-        {/* General Settings */}
-        <TabsContent value="general" className="space-y-4">
-          <Card>
+        {/* Profile Tab */}
+        <TabsContent value="profile" className="space-y-6">
+          <Card className="shadow-card">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 rtl:space-x-reverse">
-                <Globe className="h-5 w-5" />
-                <span>הגדרות כלליות</span>
+                <User className="h-5 w-5" />
+                <span>פרטים אישיים</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
+            <CardContent className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="currency">מטבע</Label>
-                  <Select 
-                    value={settings.preferences.currency} 
-                    onValueChange={(value) => 
-                      setSettings(prev => ({
-                        ...prev,
-                        preferences: { ...prev.preferences, currency: value }
-                      }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="ILS">שקל ישראלי (₪)</SelectItem>
-                      <SelectItem value="USD">דולר אמריקאי ($)</SelectItem>
-                      <SelectItem value="EUR">יורו (€)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="name">שם מלא</Label>
+                  <Input
+                    id="name"
+                    value={profile.name}
+                    onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="email">אימייל</Label>
+                  <div className="relative">
+                    <Mail className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="email"
+                      type="email"
+                      value={profile.email}
+                      onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                      className="pr-10"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="phone">טלפון</Label>
+                  <div className="relative">
+                    <Phone className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="phone"
+                      value={profile.phone}
+                      onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                      className="pr-10"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="address">כתובת</Label>
+                  <div className="relative">
+                    <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="address"
+                      value={profile.address}
+                      onChange={(e) => setProfile({ ...profile, address: e.target.value })}
+                      className="pr-10"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="budget">תקציב חודשי (₪)</Label>
+                  <div className="relative">
+                    <CreditCard className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="budget"
+                      type="number"
+                      value={profile.monthlyBudget}
+                      onChange={(e) => setProfile({ ...profile, monthlyBudget: e.target.value })}
+                      className="pr-10"
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    התקציב הכולל שלך לחשמל, סלולר ואינטרנט
+                  </p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="language">שפה</Label>
-                  <Select 
-                    value={settings.preferences.language}
-                    onValueChange={(value) => 
-                      setSettings(prev => ({
-                        ...prev,
-                        preferences: { ...prev.preferences, language: value }
-                      }))
+                  <Label>קטגוריות מעדיפות</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(categoryNames).map(([key, name]) => (
+                      <Badge
+                        key={key}
+                        variant={profile.preferredCategories.includes(key) ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          const updated = profile.preferredCategories.includes(key)
+                            ? profile.preferredCategories.filter(cat => cat !== key)
+                            : [...profile.preferredCategories, key];
+                          setProfile({ ...profile, preferredCategories: updated });
+                        }}
+                      >
+                        {name}
+                      </Badge>
+                    ))}
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    בחר קטגוריות שמעניינות אותך להתראות והמלצות
+                  </p>
+                </div>
+              </div>
+
+              <Button onClick={handleSaveProfile}>
+                <Check className="ml-2 h-4 w-4" />
+                שמור שינויים
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Notifications Tab */}
+        <TabsContent value="notifications" className="space-y-6">
+          <Card className="shadow-card">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 rtl:space-x-reverse">
+                <Bell className="h-5 w-5" />
+                <span>הגדרות התראות</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label>התראות באימייל</Label>
+                    <p className="text-sm text-muted-foreground">
+                      קבל עדכונים באימייל על מבצעים וחיסכון
+                    </p>
+                  </div>
+                  <Switch
+                    checked={notifications.emailNotifications}
+                    onCheckedChange={(checked) => 
+                      setNotifications({ ...notifications, emailNotifications: checked })
                     }
-                  >
-                    <SelectTrigger>
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label>התראות SMS</Label>
+                    <p className="text-sm text-muted-foreground">
+                      קבל הודעות טקסט על מבצעים דחופים
+                    </p>
+                  </div>
+                  <Switch
+                    checked={notifications.smsNotifications}
+                    onCheckedChange={(checked) => 
+                      setNotifications({ ...notifications, smsNotifications: checked })
+                    }
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label>מבצעים חדשים</Label>
+                    <p className="text-sm text-muted-foreground">
+                      התראה כשיש מבצע חדש בקטגוריות שבחרת
+                    </p>
+                  </div>
+                  <Switch
+                    checked={notifications.newDeals}
+                    onCheckedChange={(checked) => 
+                      setNotifications({ ...notifications, newDeals: checked })
+                    }
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label>שינויי מחירים</Label>
+                    <p className="text-sm text-muted-foreground">
+                      התראה כשמחירי הספקים משתנים
+                    </p>
+                  </div>
+                  <Switch
+                    checked={notifications.priceChanges}
+                    onCheckedChange={(checked) => 
+                      setNotifications({ ...notifications, priceChanges: checked })
+                    }
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label>דוחות חודשיים</Label>
+                    <p className="text-sm text-muted-foreground">
+                      סיכום חודשי של החיסכון שלך
+                    </p>
+                  </div>
+                  <Switch
+                    checked={notifications.monthlyReports}
+                    onCheckedChange={(checked) => 
+                      setNotifications({ ...notifications, monthlyReports: checked })
+                    }
+                  />
+                </div>
+              </div>
+
+              <Button onClick={handleSaveNotifications}>
+                <Check className="ml-2 h-4 w-4" />
+                שמור הגדרות
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Preferences Tab */}
+        <TabsContent value="preferences" className="space-y-6">
+          <Card className="shadow-card">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 rtl:space-x-reverse">
+                <Palette className="h-5 w-5" />
+                <span>העדפות מערכת</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label>מצב כהה</Label>
+                    <p className="text-sm text-muted-foreground">
+                      החלף למראה כהה של האפליקציה
+                    </p>
+                  </div>
+                  <Switch
+                    checked={isDarkMode}
+                    onCheckedChange={setIsDarkMode}
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label>ניתוח אוטומטי</Label>
+                    <p className="text-sm text-muted-foreground">
+                      נתח אוטומטית חשבוניות שהועלו
+                    </p>
+                  </div>
+                  <Switch
+                    checked={autoAnalyze}
+                    onCheckedChange={setAutoAnalyze}
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="space-y-2">
+                  <Label>שפת ממשק</Label>
+                  <Select defaultValue="he">
+                    <SelectTrigger className="w-48">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -325,373 +414,125 @@ export const Settings = () => {
                   </Select>
                 </div>
 
+                <Separator />
+
                 <div className="space-y-2">
-                  <Label htmlFor="theme">מראה</Label>
-                  <Select 
-                    value={settings.preferences.theme}
-                    onValueChange={(value) => 
-                      setSettings(prev => ({
-                        ...prev,
-                        preferences: { ...prev.preferences, theme: value }
-                      }))
-                    }
-                  >
-                    <SelectTrigger>
+                  <Label>תדירות בדיקת מחירים</Label>
+                  <Select defaultValue="daily">
+                    <SelectTrigger className="w-48">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="system">לפי המערכת</SelectItem>
-                      <SelectItem value="light">בהיר</SelectItem>
-                      <SelectItem value="dark">כהה</SelectItem>
+                      <SelectItem value="daily">יומי</SelectItem>
+                      <SelectItem value="weekly">שבועי</SelectItem>
+                      <SelectItem value="monthly">חודשי</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="budget">תקציב חודשי (₪)</Label>
-                  <Input
-                    id="budget"
-                    type="number"
-                    value={settings.preferences.monthlyBudget}
-                    onChange={(e) => 
-                      setSettings(prev => ({
-                        ...prev,
-                        preferences: { 
-                          ...prev.preferences, 
-                          monthlyBudget: Number(e.target.value) 
-                        }
-                      }))
-                    }
-                    placeholder="2000"
-                  />
+                  <p className="text-sm text-muted-foreground">
+                    באיזו תדירות לבדוק מחירים חדשים
+                  </p>
                 </div>
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
 
-        {/* Notifications Settings */}
-        <TabsContent value="notifications" className="space-y-4">
-          <Card>
+          {/* Help & Support */}
+          <Card className="shadow-card">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 rtl:space-x-reverse">
-                <Bell className="h-5 w-5" />
-                <span>התראות</span>
+                <HelpCircle className="h-5 w-5" />
+                <span>עזרה ותמיכה</span>
               </CardTitle>
-              <CardDescription>
-                בחר איך תרצה לקבל התראות ועדכונים
-              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">התראות באימייל</div>
-                    <div className="text-sm text-muted-foreground">
-                      קבל עדכונים חשובים באימייל
-                    </div>
-                  </div>
-                  <Switch
-                    checked={settings.notifications.email}
-                    onCheckedChange={(checked) =>
-                      setSettings(prev => ({
-                        ...prev,
-                        notifications: { ...prev.notifications, email: checked }
-                      }))
-                    }
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">התראות דחיפה</div>
-                    <div className="text-sm text-muted-foreground">
-                      התראות מיידיות במכשיר
-                    </div>
-                  </div>
-                  <Switch
-                    checked={settings.notifications.push}
-                    onCheckedChange={(checked) =>
-                      setSettings(prev => ({
-                        ...prev,
-                        notifications: { ...prev.notifications, push: checked }
-                      }))
-                    }
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">דוח חודשי</div>
-                    <div className="text-sm text-muted-foreground">
-                      סיכום חודשי של העלויות והחיסכון
-                    </div>
-                  </div>
-                  <Switch
-                    checked={settings.notifications.monthlyReport}
-                    onCheckedChange={(checked) =>
-                      setSettings(prev => ({
-                        ...prev,
-                        notifications: { ...prev.notifications, monthlyReport: checked }
-                      }))
-                    }
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">התראות חיסכון</div>
-                    <div className="text-sm text-muted-foreground">
-                      התראות על הזדמנויות חיסכון חדשות
-                    </div>
-                  </div>
-                  <Switch
-                    checked={settings.notifications.savingsAlerts}
-                    onCheckedChange={(checked) =>
-                      setSettings(prev => ({
-                        ...prev,
-                        notifications: { ...prev.notifications, savingsAlerts: checked }
-                      }))
-                    }
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Categories Settings */}
-        <TabsContent value="categories" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>קטגוריות פעילות</CardTitle>
-              <CardDescription>
-                בחר אילו קטגוריות לעקוב אחריהן
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {EXPENSE_CATEGORIES.map(category => (
-                  <div key={category.id} className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                      <div 
-                        className="w-4 h-4 rounded-full"
-                        style={{ backgroundColor: category.color }}
-                      />
-                      <div>
-                        <div className="font-medium">{category.nameHebrew}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {category.keywords.slice(0, 3).join(', ')}
-                        </div>
-                      </div>
-                    </div>
-                    <Switch
-                      checked={settings.categories.enabled.includes(category.id)}
-                      onCheckedChange={(checked) =>
-                        setSettings(prev => ({
-                          ...prev,
-                          categories: {
-                            ...prev.categories,
-                            enabled: checked 
-                              ? [...prev.categories.enabled, category.id]
-                              : prev.categories.enabled.filter(id => id !== category.id)
-                          }
-                        }))
-                      }
-                    />
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>מילות מפתח מותאמות אישית</CardTitle>
-              <CardDescription>
-                הוסף מילות מפתח לזיהוי טוב יותר של הקטגוריות
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex space-x-2 rtl:space-x-reverse">
-                <Select value={selectedCategoryForKeyword} onValueChange={setSelectedCategoryForKeyword}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue placeholder="בחר קטגוריה" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {EXPENSE_CATEGORIES.map(category => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.nameHebrew}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                
-                <Input
-                  placeholder="מילת מפתח חדשה"
-                  value={customKeyword}
-                  onChange={(e) => setCustomKeyword(e.target.value)}
-                  className="flex-1"
-                />
-                
-                <Button onClick={addCustomKeyword} disabled={!customKeyword.trim() || !selectedCategoryForKeyword}>
-                  הוסף
+              <div className="grid md:grid-cols-2 gap-4">
+                <Button variant="outline" className="justify-start">
+                  <MessageSquare className="ml-2 h-4 w-4" />
+                  צור קשר עם התמיכה
+                </Button>
+                <Button variant="outline" className="justify-start">
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                  מרכז עזרה
+                </Button>
+                <Button variant="outline" className="justify-start">
+                  <Star className="ml-2 h-4 w-4" />
+                  דרג את החסכונט
+                </Button>
+                <Button variant="outline" className="justify-start">
+                  <Download className="ml-2 h-4 w-4" />
+                  הורד מדריך שימוש
                 </Button>
               </div>
-
-              <div className="space-y-2">
-                {EXPENSE_CATEGORIES.map(category => {
-                  const customKeywords = settings.categories.customKeywords[category.id] || [];
-                  if (customKeywords.length === 0) return null;
-
-                  return (
-                    <div key={category.id} className="space-y-2">
-                      <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                        <div 
-                          className="w-3 h-3 rounded-full"
-                          style={{ backgroundColor: category.color }}
-                        />
-                        <span className="font-medium text-sm">{category.nameHebrew}</span>
-                      </div>
-                      <div className="flex flex-wrap gap-1 pr-5 rtl:pl-5">
-                        {customKeywords.map(keyword => (
-                          <Badge key={keyword} variant="secondary" className="text-xs">
-                            {keyword}
-                            <button
-                              onClick={() => removeCustomKeyword(category.id, keyword)}
-                              className="mr-1 rtl:ml-1 hover:text-destructive"
-                            >
-                              ×
-                            </button>
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Privacy Settings */}
-        <TabsContent value="privacy" className="space-y-4">
-          <Card>
+        {/* Account Tab */}
+        <TabsContent value="account" className="space-y-6">
+          <Card className="shadow-card">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 rtl:space-x-reverse">
                 <Shield className="h-5 w-5" />
-                <span>פרטיות ונתונים</span>
+                <span>ניהול חשבון</span>
               </CardTitle>
-              <CardDescription>
-                שלוט בשימוש בנתונים האישיים שלך
-              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">איסוף נתונים</div>
-                    <div className="text-sm text-muted-foreground">
-                      אפשר איסוף נתונים לשיפור השירות
-                    </div>
-                  </div>
-                  <Switch
-                    checked={settings.privacy.dataCollection}
-                    onCheckedChange={(checked) =>
-                      setSettings(prev => ({
-                        ...prev,
-                        privacy: { ...prev.privacy, dataCollection: checked }
-                      }))
-                    }
-                  />
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="font-semibold text-blue-900 mb-2">ייצוא נתונים</h4>
+                  <p className="text-sm text-blue-700 mb-3">
+                    הורד את כל הנתונים שלך בפורמט JSON או CSV
+                  </p>
+                  <Button variant="outline" onClick={handleExportData}>
+                    <Download className="ml-2 h-4 w-4" />
+                    ייצא נתונים
+                  </Button>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">ניתוח שימוש</div>
-                    <div className="text-sm text-muted-foreground">
-                      שיתוף נתוני שימוש אנונימיים לשיפור האפליקציה
-                    </div>
-                  </div>
-                  <Switch
-                    checked={settings.privacy.analytics}
-                    onCheckedChange={(checked) =>
-                      setSettings(prev => ({
-                        ...prev,
-                        privacy: { ...prev.privacy, analytics: checked }
-                      }))
-                    }
-                  />
+                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <h4 className="font-semibold text-yellow-900 mb-2">מדיניות פרטיות</h4>
+                  <p className="text-sm text-yellow-700 mb-3">
+                    הנתונים שלך מוצפנים ולא נמכרים לצדדים שלישיים
+                  </p>
+                  <Button variant="outline">
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                    קרא מדיניות פרטיות
+                  </Button>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">התקשורת שיווקית</div>
-                    <div className="text-sm text-muted-foreground">
-                      קבלת הצעות ועדכונים שיווקיים
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="flex items-start space-x-3 rtl:space-x-reverse">
+                    <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-red-900 mb-2">מחיקת חשבון</h4>
+                      <p className="text-sm text-red-700 mb-3">
+                        מחיקת החשבון תמחק את כל הנתונים שלך לצמתיות. פעולה זו לא ניתנת לביטול.
+                      </p>
+                      <Button 
+                        variant="destructive" 
+                        onClick={handleDeleteAccount}
+                      >
+                        <Trash2 className="ml-2 h-4 w-4" />
+                        מחק חשבון
+                      </Button>
                     </div>
                   </div>
-                  <Switch
-                    checked={settings.privacy.marketing}
-                    onCheckedChange={(checked) =>
-                      setSettings(prev => ({
-                        ...prev,
-                        privacy: { ...prev.privacy, marketing: checked }
-                      }))
-                    }
-                  />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>ניהול נתונים</CardTitle>
-              <CardDescription>
-                ייצא או מחק את הנתונים האישיים שלך
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Alert>
-                <Info className="h-4 w-4" />
-                <AlertDescription>
-                  כל הנתונים נשמרים במכשיר שלך ולא נשלחים לשרתים חיצוניים
-                </AlertDescription>
-              </Alert>
-
-              <div className="flex space-x-2 rtl:space-x-reverse">
-                <Button variant="outline" onClick={handleExportData}>
-                  <Download className="ml-2 h-4 w-4" />
-                  ייצא נתונים
-                </Button>
-                
-                <Button variant="destructive" onClick={handleDeleteData}>
-                  <Trash2 className="ml-2 h-4 w-4" />
-                  מחק את כל הנתונים
-                </Button>
+          {/* Version Info */}
+          <Card className="shadow-card">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>חסכונט גרסה 1.0.0</span>
+                <span>עדכון אחרון: ינואר 2024</span>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-
-      {/* Save Button */}
-      <div className="flex justify-end">
-        <Button onClick={handleSave} disabled={isSaving}>
-          {isSaving ? (
-            <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <div className="w-4 h-4 border-2 border-background border-t-transparent rounded-full animate-spin" />
-              <span>שומר...</span>
-            </div>
-          ) : (
-            <>
-              <Save className="ml-2 h-4 w-4" />
-              שמור הגדרות
-            </>
-          )}
-        </Button>
-      </div>
     </div>
   );
 };
