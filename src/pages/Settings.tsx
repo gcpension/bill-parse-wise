@@ -1,13 +1,109 @@
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { 
+  User, 
+  Bell, 
+  Shield, 
+  Palette, 
+  Download, 
+  Trash2, 
+  Mail,
+  Phone,
+  MapPin,
+  CreditCard,
+  AlertTriangle,
+  Check,
+  Settings as SettingsIcon,
+  HelpCircle,
+  ExternalLink,
+  Star,
+  MessageSquare
+} from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
+
+export const Settings = () => {
+  const [savedAmount] = useState(8750);
+
+  return (
+    <div className="space-y-8 animate-fade-in">
+      <div className="space-y-2">
+        <h1 className="text-4xl font-bold tracking-tight gradient-primary bg-clip-text text-transparent">
+          הגדרות
+        </h1>
+        <p className="text-muted-foreground text-lg">
+          נהל את הפרופיל שלך והתאם את המערכת לצרכים שלך
+        </p>
+      </div>
+
+      <Card className="shadow-card bg-gradient-to-br from-success/10 to-success/5">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">החיסכון שלך עד כה</h3>
+              <p className="text-3xl font-bold text-success">
+                {formatCurrency(savedAmount)}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                חסכת השנה בזכות חסכונט
+              </p>
+            </div>
+            <div className="p-4 bg-success/20 rounded-full">
+              <Star className="h-8 w-8 text-success fill-current" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card className="shadow-card">
+          <CardHeader>
+            <CardTitle>פרטים אישיים</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>שם מלא</Label>
+              <Input defaultValue="משה כהן" />
+            </div>
+            <div className="space-y-2">
+              <Label>אימייל</Label>
+              <Input defaultValue="moshe@example.com" />
+            </div>
+            <Button>שמור שינויים</Button>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-card">
+          <CardHeader>
+            <CardTitle>התראות</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label>התראות אימייל</Label>
+              <Switch defaultChecked />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label>מבצעים חדשים</Label>
+              <Switch defaultChecked />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label>דוחות חודשיים</Label>
+              <Switch defaultChecked />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
 import { 
   Save, 
   Trash2, 
