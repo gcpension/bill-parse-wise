@@ -23,6 +23,7 @@ import {
   Smartphone,
   Calculator,
   TrendingDown,
+  TrendingUp,
   ArrowRight,
   Eye,
   Plus,
@@ -36,6 +37,7 @@ import {
 import { validateImageFile, formatCurrency } from '@/lib/utils';
 import { getCheapestPlan, calculateAnnualSavings, getProvidersByCategory } from '@/data/providers';
 import { ProviderSwitchForm } from '@/components/ProviderSwitchForm';
+import { DocumentTemplates } from '@/components/DocumentTemplates';
 
 interface UploadedFile {
   file: File;
@@ -345,38 +347,78 @@ export const Analyze = () => {
           </Button>
         </div>
 
-        {/* Total Savings Summary */}
-        <Card className="shadow-elegant bg-gradient-to-br from-success/10 to-success/5 border-success/20">
-          <CardContent className="p-8">
-            <div className="grid md:grid-cols-3 gap-6 text-center">
-              <div className="space-y-2">
-                <div className="p-4 bg-success/20 rounded-full w-fit mx-auto">
-                  <PiggyBank className="h-8 w-8 text-success" />
+        {/* Total Savings Summary - Enhanced */}
+        <Card className="shadow-elegant bg-gradient-to-br from-success/10 via-success/5 to-transparent border-success/20 animate-scale-in overflow-hidden relative">
+          {/* Background Animation */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-success/10 to-transparent rounded-full -translate-y-48 translate-x-48 animate-pulse"></div>
+          
+          <CardContent className="p-8 relative">
+            <div className="text-center space-y-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-success/30 rounded-full blur-2xl scale-125 animate-pulse"></div>
+                <div className="relative bg-gradient-to-br from-success via-success/90 to-success/70 text-white rounded-full w-28 h-28 mx-auto flex items-center justify-center shadow-2xl">
+                  <PiggyBank className="h-14 w-14" />
                 </div>
-                <h3 className="text-sm font-medium text-muted-foreground">חיסכון חודשי כולל</h3>
-                <p className="text-4xl font-bold text-success">
-                  {formatCurrency(totalSavings.monthly)}
+              </div>
+              
+              <div className="space-y-4">
+                <h2 className="text-4xl font-bold text-success">סך הכל חיסכון צפוי</h2>
+                <div className="flex justify-center items-baseline space-x-8 rtl:space-x-reverse">
+                  <div className="text-center p-6 bg-white/20 backdrop-blur rounded-2xl border border-success/20">
+                    <p className="text-5xl font-bold text-success animate-pulse">
+                      {formatCurrency(totalSavings.monthly)}
+                    </p>
+                    <p className="text-lg text-success/80 font-medium">לחודש</p>
+                  </div>
+                  <div className="text-6xl text-success/30 animate-bounce">🚀</div>
+                  <div className="text-center p-6 bg-white/20 backdrop-blur rounded-2xl border border-success/20">
+                    <p className="text-5xl font-bold text-success animate-pulse">
+                      {formatCurrency(totalSavings.annual)}
+                    </p>
+                    <p className="text-lg text-success/80 font-medium">לשנה</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-r from-white/80 to-white/60 backdrop-blur rounded-2xl p-6 border border-success/20">
+                <p className="text-xl text-success font-bold">
+                  🎉 מזל טוב! תוכל לחסוך עד {formatCurrency(totalSavings.annual)} בשנה הקרובה
+                </p>
+                <p className="text-success/80 mt-2">
+                  זה כמו לקבל {Math.round(totalSavings.annual / 1000)} משכורות נוספות בשנה!
                 </p>
               </div>
               
-              <div className="space-y-2">
-                <div className="p-4 bg-primary/20 rounded-full w-fit mx-auto">
-                  <Target className="h-8 w-8 text-primary" />
+              <div className="grid md:grid-cols-3 gap-4 mt-8">
+                <div className="text-center p-4 bg-white/10 backdrop-blur rounded-xl border border-primary/20">
+                  <div className="p-3 bg-primary/20 rounded-full w-fit mx-auto mb-2">
+                    <Target className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-sm font-medium text-muted-foreground">תחומים נותחו</h3>
+                  <p className="text-2xl font-bold text-primary">
+                    {analysisResults.length}
+                  </p>
                 </div>
-                <h3 className="text-sm font-medium text-muted-foreground">חיסכון שנתי כולל</h3>
-                <p className="text-4xl font-bold text-primary">
-                  {formatCurrency(totalSavings.annual)}
-                </p>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="p-4 bg-orange-100 rounded-full w-fit mx-auto">
-                  <Award className="h-8 w-8 text-orange-600" />
+                
+                <div className="text-center p-4 bg-white/10 backdrop-blur rounded-xl border border-orange-200">
+                  <div className="p-3 bg-orange-100 rounded-full w-fit mx-auto mb-2">
+                    <Award className="h-6 w-6 text-orange-600" />
+                  </div>
+                  <h3 className="text-sm font-medium text-muted-foreground">% חיסכון ממוצע</h3>
+                  <p className="text-2xl font-bold text-orange-600">
+                    {(analysisResults.reduce((sum, r) => sum + (r.monthlySavings / r.currentAmount * 100), 0) / analysisResults.length).toFixed(1)}%
+                  </p>
                 </div>
-                <h3 className="text-sm font-medium text-muted-foreground">תחומים נותחו</h3>
-                <p className="text-4xl font-bold text-orange-600">
-                  {analysisResults.length}
-                </p>
+                
+                <div className="text-center p-4 bg-white/10 backdrop-blur rounded-xl border border-purple-200">
+                  <div className="p-3 bg-purple-100 rounded-full w-fit mx-auto mb-2">
+                    <TrendingUp className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <h3 className="text-sm font-medium text-muted-foreground">חיסכון בגיל פרישה</h3>
+                  <p className="text-2xl font-bold text-purple-600">
+                    {formatCurrency(totalSavings.annual * 20)}
+                  </p>
+                </div>
               </div>
             </div>
           </CardContent>
@@ -389,14 +431,21 @@ export const Analyze = () => {
           {analysisResults.map((result, index) => {
             const CategoryIcon = categoryIcons[result.category];
             const gradientClass = categoryColors[result.category];
+            const savingsPercentage = ((result.monthlySavings / result.currentAmount) * 100);
             
             return (
-              <Card key={index} className="shadow-card hover:shadow-elegant transition-all duration-300">
-                <CardHeader>
+              <Card key={index} className="shadow-elegant hover:shadow-2xl transition-all duration-500 animate-fade-in overflow-hidden relative group border-0 ring-1 ring-border/50 hover:ring-primary/50">
+                {/* Animated Background Pattern */}
+                <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl ${gradientClass} opacity-5 rounded-full -translate-y-32 translate-x-32 group-hover:scale-110 transition-transform duration-700`}></div>
+                
+                <CardHeader className="relative">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center space-x-3 rtl:space-x-reverse">
-                      <div className={`p-3 bg-gradient-to-br ${gradientClass} rounded-xl`}>
-                        <CategoryIcon className="h-6 w-6 text-white" />
+                    <CardTitle className="flex items-center space-x-4 rtl:space-x-reverse text-2xl">
+                      <div className="relative">
+                        <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} rounded-xl blur-md scale-110 opacity-50 group-hover:opacity-70 transition-opacity duration-300`}></div>
+                        <div className={`relative p-4 bg-gradient-to-br ${gradientClass} rounded-xl shadow-xl`}>
+                          <CategoryIcon className="h-8 w-8 text-white" />
+                        </div>
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold">{categoryNames[result.category]}</h3>
@@ -407,67 +456,87 @@ export const Analyze = () => {
                     </CardTitle>
                     
                     {result.monthlySavings > 0 && (
-                      <Badge className="bg-success text-success-foreground text-lg px-4 py-2">
-                        <TrendingDown className="ml-1 h-4 w-4" />
-                        חיסכון: {formatCurrency(result.monthlySavings)}/חודש
-                      </Badge>
+                      <div className="flex flex-col items-end space-y-2">
+                        <Badge className="bg-success text-success-foreground text-lg px-4 py-2 animate-pulse shadow-lg">
+                          <TrendingDown className="ml-1 h-4 w-4" />
+                          חיסכון: {formatCurrency(result.monthlySavings)}/חודש
+                        </Badge>
+                        <div className="text-3xl font-bold text-success animate-pulse">
+                          -{savingsPercentage.toFixed(1)}%
+                        </div>
+                      </div>
                     )}
                   </div>
                 </CardHeader>
 
                 <CardContent className="space-y-6">
-                  {/* Current vs Recommended Comparison */}
+                  {/* Current vs Recommended Comparison - Enhanced */}
                   <div className="grid md:grid-cols-2 gap-6">
-                    {/* Current Situation */}
-                    <div className="p-6 border-2 border-destructive/20 bg-destructive/5 rounded-xl">
-                      <div className="space-y-4">
+                    {/* Current Situation - Enhanced */}
+                    <div className="relative p-6 border-2 border-destructive/20 bg-gradient-to-br from-destructive/5 to-destructive/10 rounded-xl group/current hover:shadow-lg transition-all duration-300">
+                      <div className="absolute top-2 right-2 text-4xl opacity-20">💸</div>
+                      <div className="space-y-4 relative">
                         <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                          <div className="p-2 bg-destructive/20 rounded-lg">
-                            <DollarSign className="h-5 w-5 text-destructive" />
+                          <div className="p-3 bg-destructive/20 rounded-lg group-hover/current:bg-destructive/30 transition-colors duration-300">
+                            <DollarSign className="h-6 w-6 text-destructive" />
                           </div>
-                          <h4 className="text-lg font-semibold text-destructive">המצב הנוכחי</h4>
+                          <h4 className="text-xl font-semibold text-destructive">המצב הנוכחי</h4>
                         </div>
                         
-                        <div className="space-y-2">
-                          <p className="text-sm text-muted-foreground">ספק נוכחי</p>
+                        <div className="space-y-3">
+                          <p className="text-sm text-muted-foreground font-medium">ספק נוכחי</p>
                           <p className="text-xl font-semibold">{result.currentProvider}</p>
                         </div>
                         
-                        <div className="space-y-2">
-                          <p className="text-sm text-muted-foreground">תשלום חודשי</p>
-                          <p className="text-3xl font-bold text-destructive">
-                            {formatCurrency(result.currentAmount)}
-                          </p>
+                        <div className="space-y-3">
+                          <p className="text-sm text-muted-foreground font-medium">תשלום חודשי</p>
+                          <div className="flex items-baseline space-x-2 rtl:space-x-reverse">
+                            <p className="text-4xl font-bold text-destructive group-hover/current:scale-105 transition-transform duration-300">
+                              {formatCurrency(result.currentAmount)}
+                            </p>
+                            <span className="text-sm text-muted-foreground">לחודש</span>
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Recommended Solution */}
+                    {/* Recommended Solution - Enhanced */}
                     {result.recommendedPlan && (
-                      <div className="p-6 border-2 border-success/20 bg-success/5 rounded-xl">
-                        <div className="space-y-4">
+                      <div className="relative p-6 border-2 border-success/20 bg-gradient-to-br from-success/5 to-success/10 rounded-xl group/recommended hover:shadow-xl transition-all duration-300">
+                        <div className="absolute top-2 right-2 text-4xl opacity-20">💰</div>
+                        <div className="space-y-4 relative">
                           <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                            <div className="p-2 bg-success/20 rounded-lg">
-                              <Lightbulb className="h-5 w-5 text-success" />
+                            <div className="p-3 bg-success/20 rounded-lg group-hover/recommended:bg-success/30 transition-colors duration-300">
+                              <Lightbulb className="h-6 w-6 text-success" />
                             </div>
-                            <h4 className="text-lg font-semibold text-success">המלצה לחיסכון</h4>
+                            <h4 className="text-xl font-semibold text-success">המלצה לחיסכון</h4>
                           </div>
                           
-                          <div className="space-y-2">
-                            <p className="text-sm text-muted-foreground">ספק מומלץ</p>
+                          <div className="space-y-3">
+                            <p className="text-sm text-muted-foreground font-medium">ספק מומלץ</p>
                             <p className="text-xl font-semibold">
                               {result.recommendedPlan.providerName}
                             </p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-success bg-success/10 px-2 py-1 rounded-full w-fit">
                               {result.recommendedPlan.name}
                             </p>
                           </div>
                           
-                          <div className="space-y-2">
-                            <p className="text-sm text-muted-foreground">תשלום חודשי חדש</p>
-                            <p className="text-3xl font-bold text-success">
-                              {formatCurrency(result.recommendedPlan.price)}
-                            </p>
+                          <div className="space-y-3">
+                            <p className="text-sm text-muted-foreground font-medium">תשלום חודשי חדש</p>
+                            <div className="flex items-baseline space-x-2 rtl:space-x-reverse">
+                              <p className="text-4xl font-bold text-success group-hover/recommended:scale-105 transition-transform duration-300">
+                                {formatCurrency(result.recommendedPlan.price)}
+                              </p>
+                              <span className="text-sm text-muted-foreground">לחודש</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Recommended Badge */}
+                        <div className="absolute -top-2 -left-2">
+                          <div className="bg-success text-success-foreground px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+                            מומלץ ⭐
                           </div>
                         </div>
                       </div>
@@ -514,6 +583,15 @@ export const Analyze = () => {
                       <Eye className="ml-2 h-4 w-4" />
                       השווה עוד אפשרויות
                     </Button>
+                  </div>
+                  
+                  {/* Document Templates Section */}
+                  <div className="mt-6">
+                    <DocumentTemplates
+                      category={result.category}
+                      currentProvider={result.currentProvider}
+                      newProvider={result.recommendedPlan?.providerName || ''}
+                    />
                   </div>
                 </CardContent>
               </Card>
