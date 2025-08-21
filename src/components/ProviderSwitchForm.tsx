@@ -91,8 +91,18 @@ export const ProviderSwitchForm = ({
 
   const handleDownloadForm = async (category: string) => {
     try {
-      // Create PDF content dynamically
-      const pdfContent = generatePowerOfAttorneyPDF(category, currentProvider, newProvider);
+      // Create power of attorney content
+      const pdfContent = `ייפוי כוח למעבר ספק ${categoryNames[category]}
+===========================================
+
+אני החתום מטה: _____________________ (שם מלא)
+תעודת זהות: _____________________
+כתובת: _____________________
+
+מסמיך בזאת את ${newProvider} לפעול בשמי לשם ביצוע מעבר מספק ${currentProvider}.
+
+תאריך: ${new Date().toLocaleDateString('he-IL')}
+חתימה: ________________`;
       
       // Create blob and download
       const blob = new Blob([pdfContent], { type: 'text/plain' });
@@ -118,35 +128,61 @@ export const ProviderSwitchForm = ({
     }
   };
 
-  const generatePowerOfAttorneyPDF = (category: string, currentProvider: string, newProvider: string) => {
-    return `ייפוי כוח למעבר ספק ${categoryNames[category]}
-===========================================
+  const generateDigitalDocument = () => {
+    const now = new Date();
+    return `בקשת מעבר ספק ${categoryNames[category]} - אושרה דיגיטלית
+====================================================
 
-אני החתום מטה: _____________________ (שם מלא)
-תעודת זהות: _____________________
-כתובת: _____________________
+פרטי הלקוח:
+שם מלא: ${formData.fullName}
+תעודת זהות: ${formData.idNumber}
+טלפון: ${formData.phone}
+אימייל: ${formData.email}
+כתובת מלאה: ${formData.address}
+עיר: ${formData.city || 'לא צוין'}
+מיקוד: ${formData.zipCode || 'לא צוין'}
 
-מסמיך בזאת את ${newProvider} לפעול בשמי לשם ביצוע מעבר מספק ${currentProvider}.
+פרטי השירות הנוכחי:
+ספק נוכחי: ${currentProvider}
+מספר לקוח נוכחי: ${formData.currentAccountNumber || 'לא צוין'}
+תאריך סיום חוזה: ${formData.currentContractEndDate || 'לא צוין'}
+יש דמי ביטול מוקדם: ${formData.hasEarlyTerminationFee ? 'כן' : 'לא'}
+${formData.hasEarlyTerminationFee ? `סכום דמי ביטול: ₪${formData.earlyTerminationAmount}` : ''}
 
-הסמכה זו כוללת:
-• ביטול השירות עם הספק הנוכחי: ${currentProvider}
-• פתיחת שירות חדש עם הספק החדש: ${newProvider}
-• העברת כל הפרטים הרלוונטיים
-• ביצוע כל הפעולות הנדרשות למעבר
+פרטי השירות החדש:
+ספק חדש: ${newProvider}
+חבילה: ${newPlan}
+תאריך התקנה מועדף: ${formData.preferredInstallationDate || 'לא צוין'}
+זמן מועדף: ${formData.preferredTimeSlot || 'לא צוין'}
+בקשות מיוחדות: ${formData.specialRequests || 'אין'}
 
-תאריך: ${new Date().toLocaleDateString('he-IL')}
-חתימה: ________________
+פרטי תשלום:
+אמצעי תשלום: ${formData.paymentMethod || 'לא צוין'}
+${formData.paymentMethod === 'bank' ? `בנק: ${formData.bankName}, סניף: ${formData.branchNumber}, חשבון: ${formData.accountNumber}` : ''}
+${formData.paymentMethod === 'credit' ? `כרטיס אשראי (4 ספרות אחרונות): ${formData.creditCardLast4}` : ''}
 
-הערות:
-- מסמך זה נוצר אוטומטית על ידי מערכת השוואת הספקים
-- יש לחתום על המסמך ולשלוח אותו לספק החדש
-- מומלץ לשמור עותק למטרות תיעוד
+חיסכון צפוי: ₪${monthlySavings.toFixed(2)} בחודש (₪${(monthlySavings * 12).toFixed(2)} בשנה)
 
-לשאלות נוספות: support@example.com
-`;
+אישורים:
+${formData.agreeToTerms ? '✓' : '✗'} אני מסכים לתנאי השירות של ${newProvider}
+${formData.agreeToDisclaimer ? '✓' : '✗'} אני מבין את תנאי המעבר והדיסקליימר
+${formData.agreeToMarketing ? '✓' : '✗'} אני מסכים לקבל חומר שיווקי
+
+תאריך ושעת הגשה: ${now.toLocaleDateString('he-IL')} ${now.toLocaleTimeString('he-IL')}
+מזהה בקשה: provider-switch-${category}-${now.getTime()}
+
+בקשה זו הוגשה דיגיטלית ותטופל תוך 3-5 ימי עסקים.
+נציג יחזור אליך לתיאום פרטי המעבר.
+
+התחיבות איכות: אנו מתחייבים לביצוע המעבר בצורה חלקה ומקצועית.
+לשאלות: support@savings-platform.co.il | 03-1234567
+
+---
+מסמך זה נוצר אוטומטית על ידי מערכת השוואת ספקים מתקדמת
+מאובטח בטכנולוגיית הצפנה מתקדמת • ${now.toISOString()}`;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmitDigitalForm = async () => {
     // Validate required fields
     const requiredFields = ['fullName', 'idNumber', 'phone', 'email', 'address'];
     const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData]);
@@ -169,14 +205,75 @@ export const ProviderSwitchForm = ({
       return;
     }
 
-    // Simulate form submission
-    toast({
-      title: "הטופס נשלח בהצלחה!",
-      description: "נציגינו יחזרו אליך בתוך 24 שעות לתיאום המעבר",
-    });
+    try {
+      // Create digital document
+      const digitalDocument = generateDigitalDocument();
+      
+      // Save to localStorage for record keeping
+      const submissionId = `provider-switch-${category}-${Date.now()}`;
+      localStorage.setItem(submissionId, JSON.stringify({
+        ...formData,
+        category,
+        currentProvider,
+        newProvider,
+        newPlan,
+        monthlySavings,
+        timestamp: new Date().toISOString(),
+        submissionId
+      }));
 
-    setIsOpen(false);
-    setCurrentStep(1);
+      // Auto-download the confirmation
+      const blob = new Blob([digitalDocument], { type: 'text/plain;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `אישור-מעבר-${categoryNames[category]}-${Date.now()}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "הבקשה נשלחה בהצלחה!",
+        description: `המעבר ל${newProvider} יתחיל בקרוב. תחסוך ₪${monthlySavings.toFixed(2)} בחודש!`,
+      });
+
+      // Reset form and close dialog
+      setFormData({
+        fullName: '',
+        idNumber: '',
+        birthDate: '',
+        phone: '',
+        email: '',
+        address: '',
+        city: '',
+        zipCode: '',
+        currentAccountNumber: '',
+        currentContractEndDate: '',
+        hasEarlyTerminationFee: false,
+        earlyTerminationAmount: '',
+        preferredInstallationDate: '',
+        preferredTimeSlot: '',
+        specialRequests: '',
+        paymentMethod: '',
+        bankName: '',
+        branchNumber: '',
+        accountNumber: '',
+        creditCardLast4: '',
+        agreeToTerms: false,
+        agreeToDisclaimer: false,
+        agreeToMarketing: false
+      });
+      setCurrentStep(1);
+      setIsOpen(false);
+      
+    } catch (error) {
+      toast({
+        title: "שגיאה",
+        description: "אירעה שגיאה בשליחת הבקשה. נסה שוב מאוחר יותר.",
+        variant: "destructive"
+      });
+    }
   };
 
   const steps = [
@@ -612,11 +709,11 @@ export const ProviderSwitchForm = ({
               </Button>
             ) : (
               <Button 
-                onClick={handleSubmit}
+                onClick={handleSubmitDigitalForm}
                 className="bg-gradient-to-r from-success to-success-glow hover:shadow-glow"
               >
                 <Send className="ml-2 h-4 w-4" />
-                שלח בקשה
+                שלח בקשה דיגיטלית
               </Button>
             )}
           </div>

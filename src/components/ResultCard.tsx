@@ -3,9 +3,8 @@ import { Badge } from '@/components/ui/badge';
 import { TrendingDown } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { ComparisonView } from './ComparisonView';
-import { ProviderSwitchForm } from './ProviderSwitchForm';
-import { DocumentTemplates } from './DocumentTemplates';
 import { PlanSelector } from './PlanSelector';
+import { DigitalSignature } from './DigitalSignature';
 
 interface AnalysisResult {
   category: 'electricity' | 'cellular' | 'internet';
@@ -120,7 +119,7 @@ export const ResultCard = ({ result, index }: ResultCardProps) => {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <ProviderSwitchForm
+          <DigitalSignature
             category={result.category}
             currentProvider={result.currentProvider}
             newProvider={result.recommendedPlan?.providerName || ''}
@@ -133,15 +132,6 @@ export const ResultCard = ({ result, index }: ResultCardProps) => {
             onPlanSelect={(provider, plan) => {
               console.log('Selected plan:', plan, 'from provider:', provider);
             }}
-          />
-        </div>
-        
-        {/* Document Templates Section */}
-        <div className="mt-6">
-          <DocumentTemplates
-            category={result.category}
-            currentProvider={result.currentProvider}
-            newProvider={result.recommendedPlan?.providerName || ''}
           />
         </div>
       </CardContent>
