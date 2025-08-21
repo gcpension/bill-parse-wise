@@ -45,9 +45,10 @@ const statsItems = [
 ];
 
 export function AppSidebar() {
-  const { collapsed } = useSidebar();
+  const { state } = useSidebar();
   const location = useLocation();
   const currentPath = location.pathname;
+  const isCollapsed = state === "collapsed";
 
   const isActive = (path: string) => currentPath === path;
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
@@ -59,12 +60,12 @@ export function AppSidebar() {
 
   return (
     <Sidebar
-      className={`${collapsed ? "w-16" : "w-72"} transition-all duration-300 border-r bg-gradient-to-b from-background via-accent/5 to-background`}
-      collapsible
+      className={`${isCollapsed ? "w-16" : "w-72"} transition-all duration-300 border-r bg-gradient-to-b from-background via-accent/5 to-background`}
+      collapsible="icon"
     >
       <SidebarContent className="p-2">
         {/* Header */}
-        {!collapsed && (
+        {!isCollapsed && (
           <div className="p-4 mb-4 bg-gradient-to-r from-primary/10 to-primary-glow/5 rounded-xl border">
             <div className="flex items-center space-x-3 rtl:space-x-reverse">
               <div className="p-2 bg-primary rounded-lg">
@@ -82,7 +83,7 @@ export function AppSidebar() {
 
         {/* Main Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel className={collapsed ? "sr-only" : ""}>
+          <SidebarGroupLabel className={isCollapsed ? "sr-only" : ""}>
             ניווט ראשי
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -91,8 +92,8 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="h-12 mb-1">
                     <NavLink to={item.url} end className={getNavCls}>
-                      <item.icon className={`h-5 w-5 ${collapsed ? "mx-auto" : "ml-2"}`} />
-                      {!collapsed && <span className="text-sm font-medium">{item.title}</span>}
+                      <item.icon className={`h-5 w-5 ${isCollapsed ? "mx-auto" : "ml-2"}`} />
+                      {!isCollapsed && <span className="text-sm font-medium">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -102,7 +103,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Stats Section - only when expanded */}
-        {!collapsed && (
+        {!isCollapsed && (
           <SidebarGroup>
             <SidebarGroupLabel>נתונים מהירים</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -120,7 +121,7 @@ export function AppSidebar() {
 
         {/* Help Section */}
         <SidebarGroup>
-          <SidebarGroupLabel className={collapsed ? "sr-only" : ""}>
+          <SidebarGroupLabel className={isCollapsed ? "sr-only" : ""}>
             עזרה
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -129,8 +130,8 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="h-10">
                     <NavLink to={item.url} className={getNavCls}>
-                      <item.icon className={`h-4 w-4 ${collapsed ? "mx-auto" : "ml-2"}`} />
-                      {!collapsed && <span className="text-sm">{item.title}</span>}
+                      <item.icon className={`h-4 w-4 ${isCollapsed ? "mx-auto" : "ml-2"}`} />
+                      {!isCollapsed && <span className="text-sm">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -140,7 +141,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Quick Action - only when expanded */}
-        {!collapsed && (
+        {!isCollapsed && (
           <div className="mt-auto p-4 bg-gradient-to-r from-success/10 to-primary/5 rounded-xl border">
             <div className="text-center space-y-2">
               <Badge variant="secondary" className="text-xs">
