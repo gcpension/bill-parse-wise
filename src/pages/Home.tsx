@@ -82,7 +82,7 @@ const categories = [
   }
 ];
 
-export const Home = () => {
+const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   return (
@@ -325,3 +325,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default Home;
