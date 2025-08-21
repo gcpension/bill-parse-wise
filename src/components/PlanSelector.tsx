@@ -26,6 +26,8 @@ interface PlanSelectorProps {
   category: 'electricity' | 'cellular' | 'internet';
   onPlanSelect: (provider: Provider, plan: Plan) => void;
   currentAmount?: number;
+  dense?: boolean;
+  showHeader?: boolean;
 }
 
 const categoryIcons = {

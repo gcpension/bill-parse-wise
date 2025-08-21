@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,6 @@ import { PlanSelector } from './PlanSelector';
 import { DigitalSignature } from './DigitalSignature';
 import { SavingsSummaryHeader } from './SavingsSummaryHeader';
 import { useToast } from '@/hooks/use-toast';
-
 interface AnalysisResult {
   category: 'electricity' | 'cellular' | 'internet';
   currentAmount: number;
@@ -50,6 +50,7 @@ const categoryConfig = {
 
 export const ResultsGrid = ({ results }: ResultsGridProps) => {
   const { toast } = useToast();
+  const [activeSignatureIndex, setActiveSignatureIndex] = useState<number | null>(null);
   
   const totalMonthlySavings = results.reduce((sum, result) => sum + result.monthlySavings, 0);
   const totalAnnualSavings = results.reduce((sum, result) => sum + result.annualSavings, 0);

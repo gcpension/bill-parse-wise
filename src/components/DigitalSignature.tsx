@@ -27,6 +27,11 @@ interface DigitalSignatureProps {
   newProvider: string;
   newPlan: string;
   monthlySavings: number;
+  // Optional controlled dialog props
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  // Hide internal trigger button when controlling from outside
+  hideTrigger?: boolean;
 }
 
 const categoryNames = {
@@ -46,7 +51,10 @@ export const DigitalSignature = ({
   currentProvider,
   newProvider,
   newPlan,
-  monthlySavings
+  monthlySavings,
+  open,
+  onOpenChange,
+  hideTrigger
 }: DigitalSignatureProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -67,6 +75,17 @@ export const DigitalSignature = ({
   const [isCompleted, setIsCompleted] = useState(false);
   
   const { toast } = useToast();
+
+  // Controlled/uncontrolled dialog handling
+  const isControlled = typeof open === 'boolean';
+  const dialogOpen = isControlled ? (open as boolean) : isOpen;
+  const handleOpenChange = (value: boolean) => {
+    if (isControlled) {
+      onOpenChange?.(value);
+    } else {
+      setIsOpen(value);
+    }
+  };
 
   const updateFormData = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -465,13 +484,15 @@ ${now.toISOString()}`;
 
   if (isCompleted) {
     return (
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          <Button className="flex-1" size="lg">
-            <CheckCircle2 className="ml-2 h-5 w-5" />
-            מסמך נחתם ✓
-          </Button>
-        </DialogTrigger>
+      <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
+        {hideTrigger ? null : (
+          <DialogTrigger asChild>
+            <Button className="flex-1" size="lg">
+              <CheckCircle2 className="ml-2 h-5 w-5" />
+              מסמך נחתם ✓
+            </Button>
+          </DialogTrigger>
+        )}
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center text-success">
@@ -491,13 +512,15 @@ ${now.toISOString()}`;
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="flex-1" size="lg">
-          <PenTool className="ml-2 h-5 w-5" />
-          חתימה דיגיטלית
-        </Button>
-      </DialogTrigger>
+    <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
+      {hideTrigger ? null : (
+        <DialogTrigger asChild>
+          <Button className="flex-1" size="lg">
+            <PenTool className="ml-2 h-5 w-5" />
+            חתימה דיגיטלית
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-center">
