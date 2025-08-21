@@ -25,6 +25,7 @@ import { allProviders, getProvidersByCategory } from '@/data/providers';
 import { useToast } from '@/hooks/use-toast';
 import { handleError } from '@/lib/errorHandler';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { DigitalSignature } from '@/components/DigitalSignature';
 
 const categoryIcons = {
   electricity: Zap,
@@ -203,7 +204,7 @@ export const Compare = () => {
                   className="group relative overflow-hidden shadow-card hover:shadow-elegant transition-all duration-500 animate-slide-up border-l-4 border-l-primary/20 hover:border-l-primary"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary-glow/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-primary/5 via-transparent to-primary-glow/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
                   <CardHeader className="relative z-10">
                     <div className="flex items-start justify-between">
@@ -432,13 +433,20 @@ export const Compare = () => {
                   <li>3. הספק יטפל בביטול הספק הקודם</li>
                 </ul>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Button 
                   className="flex-1"
                   onClick={() => handleContact(selectedPlan.provider)}
                 >
                   צור קשר עכשיו
                 </Button>
+                <DigitalSignature
+                  category={selectedCategory}
+                  currentProvider={"לא צוין"}
+                  newProvider={selectedPlan.provider.name}
+                  newPlan={selectedPlan.plan.name}
+                  monthlySavings={0}
+                />
                 <Button variant="outline" onClick={() => setSelectedPlan(null)}>
                   סגור
                 </Button>
