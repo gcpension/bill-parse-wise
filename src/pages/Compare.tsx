@@ -22,6 +22,9 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { allProviders, getProvidersByCategory } from '@/data/providers';
+import { useToast } from '@/hooks/use-toast';
+import { handleError } from '@/lib/errorHandler';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const categoryIcons = {
   electricity: Zap,
@@ -40,6 +43,10 @@ export const Compare = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'price' | 'rating' | 'name'>('price');
   const [filterBy, setFilterBy] = useState<'all' | 'recommended' | 'promotion'>('all');
+  const [selectedPlan, setSelectedPlan] = useState<any>(null);
+  const [showContactDialog, setShowContactDialog] = useState<any>(null);
+
+  const { toast } = useToast();
 
   const providers = useMemo(() => {
     let filtered = getProvidersByCategory(selectedCategory);
@@ -88,6 +95,25 @@ export const Compare = () => {
 
   const getBestPlan = (provider: any) => {
     return provider.plans.find((plan: any) => plan.recommended) || provider.plans[0];
+  };
+
+  const handleSwitchProvider = (provider: any, plan: any) => {
+    setSelectedPlan({ provider, plan });
+    toast({
+      title: "בחירה מעולה!",
+      description: `נבחר ${plan.name} מ${provider.name}. מומלץ ליצור קשר עם הספק לסיום התהליך.`,
+    });
+  };
+
+  const handleShowDetails = (provider: any) => {
+    toast({
+      title: "פרטים נוספים",
+      description: `מציג פרטים נוספים על ${provider.name}`,
+    });
+  };
+
+  const handleContact = (provider: any) => {
+    setShowContactDialog(provider);
   };
 
   return (
@@ -318,15 +344,26 @@ export const Compare = () => {
 
                     {/* Actions */}
                     <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gradient-to-r from-transparent via-border to-transparent relative z-10">
-                      <Button className="flex-1 bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-lg hover:shadow-primary/30 transform hover:scale-105 transition-all duration-300">
+                      <Button 
+                        className="flex-1 bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-lg hover:shadow-primary/30 transform hover:scale-105 transition-all duration-300"
+                        onClick={() => handleSwitchProvider(provider, bestPlan)}
+                      >
                         <ArrowRight className="ml-2 h-4 w-4" />
                         עבור לספק זה
                       </Button>
-                      <Button variant="outline" className="flex-1 border-2 hover:border-primary hover:bg-primary/5 transform hover:scale-105 transition-all duration-300">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 border-2 hover:border-primary hover:bg-primary/5 transform hover:scale-105 transition-all duration-300"
+                        onClick={() => handleShowDetails(provider)}
+                      >
                         <Shield className="ml-2 h-4 w-4" />
                         פרטים נוספים
                       </Button>
-                      <Button variant="outline" className="border-2 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transform hover:scale-105 transition-all duration-300">
+                      <Button 
+                        variant="outline" 
+                        className="border-2 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transform hover:scale-105 transition-all duration-300"
+                        onClick={() => handleContact(provider)}
+                      >
                         <Phone className="ml-2 h-4 w-4" />
                         צור קשר
                       </Button>
@@ -338,6 +375,78 @@ export const Compare = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Contact Dialog */}
+      <Dialog open={!!showContactDialog} onOpenChange={() => setShowContactDialog(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>יצירת קשר עם {showContactDialog?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="text-center space-y-2">
+              <div className="text-2xl">📞</div>
+              <p className="font-semibold">טלפון: {showContactDialog?.customerService}</p>
+              <p className="text-sm text-muted-foreground">זמין בין השעות 8:00-20:00</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="text-2xl">🌐</div>
+              <p className="font-semibold">אתר: {showContactDialog?.website}</p>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => {
+                  window.open(`https://${showContactDialog?.website}`, '_blank');
+                  toast({
+                    title: "נפתח באתר הספק",
+                    description: "האתר נפתח בכרטיסייה חדשה",
+                  });
+                }}
+              >
+                <Globe className="ml-2 h-4 w-4" />
+                עבור לאתר הספק
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Selected Plan Confirmation */}
+      {selectedPlan && (
+        <Dialog open={!!selectedPlan} onOpenChange={() => setSelectedPlan(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>בחרת: {selectedPlan.plan.name}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="p-4 bg-success/10 rounded-lg">
+                <h4 className="font-semibold text-success mb-2">✨ בחירה מעולה!</h4>
+                <p className="text-sm">
+                  בחרת את {selectedPlan.plan.name} מ{selectedPlan.provider.name}
+                </p>
+              </div>
+              <div className="space-y-2">
+                <h5 className="font-medium">הצעדים הבאים:</h5>
+                <ul className="text-sm space-y-1 text-muted-foreground">
+                  <li>1. צור קשר עם הספק החדש</li>
+                  <li>2. החתם על החוזה החדש</li>
+                  <li>3. הספק יטפל בביטול הספק הקודם</li>
+                </ul>
+              </div>
+              <div className="flex gap-2">
+                <Button 
+                  className="flex-1"
+                  onClick={() => handleContact(selectedPlan.provider)}
+                >
+                  צור קשר עכשיו
+                </Button>
+                <Button variant="outline" onClick={() => setSelectedPlan(null)}>
+                  סגור
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
 
       {/* Tips Section */}
       <Card className="shadow-card bg-gradient-to-br from-primary/5 to-primary-glow/5">

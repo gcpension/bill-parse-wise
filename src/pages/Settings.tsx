@@ -25,9 +25,12 @@ import {
   HelpCircle,
   ExternalLink,
   Star,
-  MessageSquare
+  MessageSquare,
+  Loader2
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+import { handleError } from '@/lib/errorHandler';
 
 interface UserProfile {
   name: string;
@@ -66,24 +69,156 @@ const initialNotifications: NotificationSettings = {
 export const Settings = () => {
   const [profile, setProfile] = useState<UserProfile>(initialProfile);
   const [notifications, setNotifications] = useState<NotificationSettings>(initialNotifications);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [autoAnalyze, setAutoAnalyze] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('darkMode') === 'true';
+  });
+  const [autoAnalyze, setAutoAnalyze] = useState(() => {
+    return localStorage.getItem('autoAnalyze') !== 'false';
+  });
   const [savedAmount] = useState(8750);
+  const { toast } = useToast();
 
-  const handleSaveProfile = () => {
-    console.log('Saving profile:', profile);
+  const [isLoading, setIsLoading] = useState({
+    profile: false,
+    notifications: false,
+    export: false,
+    delete: false
+  });
+
+  const handleSaveProfile = async () => {
+    setIsLoading(prev => ({ ...prev, profile: true }));
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      localStorage.setItem('userProfile', JSON.stringify(profile));
+      toast({
+        title: "פרופיל נשמר בהצלחה!",
+        description: "השינויים שלך נשמרו במערכת",
+      });
+    } catch (error) {
+      handleError(error, 'Profile save');
+    } finally {
+      setIsLoading(prev => ({ ...prev, profile: false }));
+    }
   };
 
-  const handleSaveNotifications = () => {
-    console.log('Saving notifications:', notifications);
+  const handleSaveNotifications = async () => {
+    setIsLoading(prev => ({ ...prev, notifications: true }));
+    try {
+      await new Promise(resolve => setTimeout(resolve, 800));
+      localStorage.setItem('notificationSettings', JSON.stringify(notifications));
+      toast({
+        title: "הגדרות התראות נשמרו!",
+        description: "ההגדרות החדשות יופעלו מיד",
+      });
+    } catch (error) {
+      handleError(error, 'Notifications save');
+    } finally {
+      setIsLoading(prev => ({ ...prev, notifications: false }));
+    }
   };
 
-  const handleExportData = () => {
-    console.log('Exporting data...');
+  const handleExportData = async () => {
+    setIsLoading(prev => ({ ...prev, export: true }));
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      const userData = {
+        profile,
+        notifications,
+        savedAmount,
+        exportDate: new Date().toISOString(),
+        savedForms: Object.keys(localStorage)
+          .filter(key => key.startsWith('provider-switch-') || key.startsWith('switch-'))
+          .reduce((acc, key) => {
+            acc[key] = JSON.parse(localStorage.getItem(key) || '{}');
+            return acc;
+          }, {} as Record<string, any>)
+      };
+
+      const blob = new Blob([JSON.stringify(userData, null, 2)], { 
+        type: 'application/json;charset=utf-8' 
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `חסכונט-נתונים-${new Date().toLocaleDateString('he-IL')}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "הנתונים יוצאו בהצלחה!",
+        description: "קובץ הנתונים שלך הורד למחשב",
+      });
+    } catch (error) {
+      handleError(error, 'Data export');
+    } finally {
+      setIsLoading(prev => ({ ...prev, export: false }));
+    }
   };
 
-  const handleDeleteAccount = () => {
-    console.log('Deleting account...');
+  const handleToggleDarkMode = (checked: boolean) => {
+    setIsDarkMode(checked);
+    localStorage.setItem('darkMode', checked.toString());
+    
+    // Apply dark mode to document
+    if (checked) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    
+    toast({
+      title: checked ? "מצב כהה הופעל" : "מצב בהיר הופעל",
+      description: "השינויים יישמרו עבור הפעמים הבאות",
+    });
+  };
+
+  const handleToggleAutoAnalyze = (checked: boolean) => {
+    setAutoAnalyze(checked);
+    localStorage.setItem('autoAnalyze', checked.toString());
+    toast({
+      title: `ניתוח אוטומטי ${checked ? 'הופעל' : 'בוטל'}`,
+      description: checked ? "חשבונות ינותחו אוטומטית" : "תצטרך לנתח חשבונות ידנית",
+    });
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!confirm('האם אתה בטוח שברצונך למחוק את החשבון? פעולה זו לא ניתנת לביטול!')) {
+      return;
+    }
+    
+    setIsLoading(prev => ({ ...prev, delete: true }));
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Clear all user data
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('userProfile') || 
+            key.startsWith('notificationSettings') || 
+            key.startsWith('provider-switch-') || 
+            key.startsWith('switch-')) {
+          localStorage.removeItem(key);
+        }
+      });
+
+      toast({
+        title: "החשבון נמחק בהצלחה",
+        description: "כל הנתונים שלך הוסרו מהמערכת",
+        variant: "destructive"
+      });
+
+      // Redirect to home
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2000);
+    } catch (error) {
+      handleError(error, 'Account deletion');
+    } finally {
+      setIsLoading(prev => ({ ...prev, delete: false }));
+    }
   };
 
   const categoryNames = {
@@ -248,9 +383,18 @@ export const Settings = () => {
                 </div>
               </div>
 
-              <Button onClick={handleSaveProfile}>
-                <Check className="ml-2 h-4 w-4" />
-                שמור שינויים
+              <Button onClick={handleSaveProfile} disabled={isLoading.profile}>
+                {isLoading.profile ? (
+                  <>
+                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                    שומר...
+                  </>
+                ) : (
+                  <>
+                    <Check className="ml-2 h-4 w-4" />
+                    שמור שינויים
+                  </>
+                )}
               </Button>
             </CardContent>
           </Card>
@@ -351,9 +495,18 @@ export const Settings = () => {
                 </div>
               </div>
 
-              <Button onClick={handleSaveNotifications}>
-                <Check className="ml-2 h-4 w-4" />
-                שמור הגדרות
+              <Button onClick={handleSaveNotifications} disabled={isLoading.notifications}>
+                {isLoading.notifications ? (
+                  <>
+                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                    שומר...
+                  </>
+                ) : (
+                  <>
+                    <Check className="ml-2 h-4 w-4" />
+                    שמור הגדרות
+                  </>
+                )}
               </Button>
             </CardContent>
           </Card>
@@ -379,7 +532,7 @@ export const Settings = () => {
                   </div>
                   <Switch
                     checked={isDarkMode}
-                    onCheckedChange={setIsDarkMode}
+                    onCheckedChange={handleToggleDarkMode}
                   />
                 </div>
 
@@ -394,7 +547,7 @@ export const Settings = () => {
                   </div>
                   <Switch
                     checked={autoAnalyze}
-                    onCheckedChange={setAutoAnalyze}
+                    onCheckedChange={handleToggleAutoAnalyze}
                   />
                 </div>
 
@@ -446,19 +599,50 @@ export const Settings = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
-                <Button variant="outline" className="justify-start">
+                <Button variant="outline" className="justify-start" onClick={() => {
+                  toast({
+                    title: "יצירת קשר",
+                    description: "אנו כאן לעזור! נציג יחזור אליך בהקדם",
+                  });
+                }}>
                   <MessageSquare className="ml-2 h-4 w-4" />
                   צור קשר עם התמיכה
                 </Button>
-                <Button variant="outline" className="justify-start">
+                <Button variant="outline" className="justify-start" onClick={() => {
+                  window.open('/help', '_blank');
+                  toast({
+                    title: "מרכז העזרה נפתח",
+                    description: "המדריכים זמינים בכרטיסייה חדשה",
+                  });
+                }}>
                   <ExternalLink className="ml-2 h-4 w-4" />
-                  מרכז עזרה
+                  מרכז עזרה ומדריכים
                 </Button>
-                <Button variant="outline" className="justify-start">
+                <Button variant="outline" className="justify-start" onClick={() => {
+                  toast({
+                    title: "תודה על הדירוג!",
+                    description: "המשוב שלך חשוב לנו מאוד",
+                  });
+                }}>
                   <Star className="ml-2 h-4 w-4" />
                   דרג את החסכונט
                 </Button>
-                <Button variant="outline" className="justify-start">
+                <Button variant="outline" className="justify-start" onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(`מדריך שימוש - חסכונט
+                  
+1. צור פרופיל אישי
+2. העלה חשבונות או הזן נתונים ידנית
+3. השווה בין ספקים
+4. חתום דיגיטלית על מעבר ספק
+5. חסוך כסף!`);
+                  link.download = 'מדריך-שימוש-חסכונט.txt';
+                  link.click();
+                  toast({
+                    title: "מדריך הורד בהצלחה!",
+                    description: "המדריך נשמר במחשב שלך",
+                  });
+                }}>
                   <Download className="ml-2 h-4 w-4" />
                   הורד מדריך שימוש
                 </Button>
@@ -483,9 +667,18 @@ export const Settings = () => {
                   <p className="text-sm text-blue-700 mb-3">
                     הורד את כל הנתונים שלך בפורמט JSON או CSV
                   </p>
-                  <Button variant="outline" onClick={handleExportData}>
-                    <Download className="ml-2 h-4 w-4" />
-                    ייצא נתונים
+                  <Button variant="outline" onClick={handleExportData} disabled={isLoading.export}>
+                    {isLoading.export ? (
+                      <>
+                        <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                        מייצא...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="ml-2 h-4 w-4" />
+                        ייצא נתונים
+                      </>
+                    )}
                   </Button>
                 </div>
 
@@ -494,7 +687,13 @@ export const Settings = () => {
                   <p className="text-sm text-yellow-700 mb-3">
                     הנתונים שלך מוצפנים ולא נמכרים לצדדים שלישיים
                   </p>
-                  <Button variant="outline">
+                  <Button variant="outline" onClick={() => {
+                    window.open('/privacy-policy', '_blank');
+                    toast({
+                      title: "מדיניות פרטיות נפתחת",
+                      description: "המדיניות נפתחת בכרטיסייה חדשה",
+                    });
+                  }}>
                     <ExternalLink className="ml-2 h-4 w-4" />
                     קרא מדיניות פרטיות
                   </Button>
@@ -508,13 +707,23 @@ export const Settings = () => {
                       <p className="text-sm text-red-700 mb-3">
                         מחיקת החשבון תמחק את כל הנתונים שלך לצמתיות. פעולה זו לא ניתנת לביטול.
                       </p>
-                      <Button 
-                        variant="destructive" 
-                        onClick={handleDeleteAccount}
-                      >
+                  <Button 
+                    variant="destructive" 
+                    onClick={handleDeleteAccount}
+                    disabled={isLoading.delete}
+                  >
+                    {isLoading.delete ? (
+                      <>
+                        <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                        מוחק...
+                      </>
+                    ) : (
+                      <>
                         <Trash2 className="ml-2 h-4 w-4" />
                         מחק חשבון
-                      </Button>
+                      </>
+                    )}
+                  </Button>
                     </div>
                   </div>
                 </div>

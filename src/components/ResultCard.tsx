@@ -5,6 +5,7 @@ import { formatCurrency } from '@/lib/utils';
 import { ComparisonView } from './ComparisonView';
 import { PlanSelector } from './PlanSelector';
 import { DigitalSignature } from './DigitalSignature';
+import { useToast } from '@/hooks/use-toast';
 
 interface AnalysisResult {
   category: 'electricity' | 'cellular' | 'internet';
@@ -43,6 +44,7 @@ const categoryColors = {
 export const ResultCard = ({ result, index }: ResultCardProps) => {
   const gradientClass = categoryColors[result.category];
   const savingsPercentage = ((result.monthlySavings / result.currentAmount) * 100);
+  const { toast } = useToast();
   
   return (
     <Card className="shadow-elegant hover:shadow-2xl transition-all duration-500 animate-fade-in overflow-hidden relative group border-0 ring-1 ring-border/50 hover:ring-primary/50">
@@ -130,7 +132,10 @@ export const ResultCard = ({ result, index }: ResultCardProps) => {
             category={result.category}
             currentAmount={result.currentAmount}
             onPlanSelect={(provider, plan) => {
-              console.log('Selected plan:', plan, 'from provider:', provider);
+              toast({
+                title: "תכנית נבחרה בהצלחה!",
+                description: `בחרת את ${plan.name} מ${provider.name}. מומלץ להמשיך עם החתימה הדיגיטלית.`,
+              });
             }}
           />
         </div>
