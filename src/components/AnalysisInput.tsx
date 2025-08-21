@@ -74,9 +74,9 @@ const categoryNames = {
 };
 
 const categoryColors = {
-  electricity: 'from-yellow-500 to-orange-500',
-  cellular: 'from-blue-500 to-purple-500',
-  internet: 'from-green-500 to-teal-500'
+  electricity: 'gradient-sunset',
+  cellular: 'gradient-electric', 
+  internet: 'gradient-vibrant'
 };
 
 const initialCategoryData: Record<string, CategoryData> = {
@@ -290,10 +290,10 @@ export const AnalysisInput = ({
                               </div>
                             )}
                             {file.status === 'completed' && (
-                              <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                                <CheckCircle2 className="h-3 w-3 text-success" />
-                                <span className="text-xs text-success">הושלם</span>
-                              </div>
+                           <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                                 <CheckCircle2 className="h-3 w-3 text-success" />
+                                 <span className="text-xs text-success">הושלם</span>
+                               </div>
                             )}
                             {file.status === 'error' && (
                               <div className="flex items-center space-x-2 rtl:space-x-reverse">
@@ -340,7 +340,7 @@ export const AnalysisInput = ({
                       <CardHeader>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                            <div className={`p-3 bg-gradient-to-br ${gradientClass} rounded-lg shadow-lg`}>
+                            <div className={`p-3 ${gradientClass} rounded-lg shadow-elegant`}>
                               <CategoryIcon className="h-6 w-6 text-white" />
                             </div>
                             <div>

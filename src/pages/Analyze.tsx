@@ -207,44 +207,44 @@ export const Analyze = () => {
               <div className="space-y-4">
                 <h4 className="font-semibold">איך לעבור לספק חדש:</h4>
                 <ol className="space-y-2 text-sm">
-                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
-                    <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
-                    <span>בחרו את הספק והחבילה המתאימים</span>
-                  </li>
-                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
-                    <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">2</div>
-                    <span>פנו לספק החדש והירשמו לשירות</span>
-                  </li>
-                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
-                    <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
-                    <span>הספק החדש יטפל בביטול השירות הקודם</span>
-                  </li>
-                  <li className="flex items-center space-x-2 rtl:space-x-reverse">
-                    <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">4</div>
-                    <span>תתחילו לחסוך כסף מיד!</span>
-                  </li>
+                   <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                     <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">1</div>
+                     <span>בחרו את הספק והחבילה המתאימים</span>
+                   </li>
+                   <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                     <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">2</div>
+                     <span>פנו לספק החדש והירשמו לשירות</span>
+                   </li>
+                   <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                     <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">3</div>
+                     <span>הספק החדש יטפל בביטול השירות הקודם</span>
+                   </li>
+                   <li className="flex items-center space-x-2 rtl:space-x-reverse">
+                     <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">4</div>
+                     <span>תתחילו לחסוך כסף מיד!</span>
+                   </li>
                 </ol>
               </div>
               
               <div className="space-y-4">
                 <h4 className="font-semibold">טיפים חשובים:</h4>
                 <ul className="space-y-2 text-sm">
-                  <li className="flex items-start space-x-2 rtl:space-x-reverse">
-                    <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
-                    <span>ודאו שאין דמי ביטול בחוזה הנוכחי</span>
-                  </li>
-                  <li className="flex items-start space-x-2 rtl:space-x-reverse">
-                    <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
-                    <span>שמרו על רציפות השירות במעבר</span>
-                  </li>
-                  <li className="flex items-start space-x-2 rtl:space-x-reverse">
-                    <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
-                    <span>קראו בעיון את תנאי החוזה החדש</span>
-                  </li>
-                  <li className="flex items-start space-x-2 rtl:space-x-reverse">
-                    <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
-                    <span>שמרו על מספרי הטלפון החשובים</span>
-                  </li>
+                   <li className="flex items-start space-x-2 rtl:space-x-reverse">
+                     <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
+                     <span>ודאו שאין דמי ביטול בחוזה הנוכחי</span>
+                   </li>
+                   <li className="flex items-start space-x-2 rtl:space-x-reverse">
+                     <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
+                     <span>שמרו על רציפות השירות במעבר</span>
+                   </li>
+                   <li className="flex items-start space-x-2 rtl:space-x-reverse">
+                     <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
+                     <span>קראו בעיון את תנאי החוזה החדש</span>
+                   </li>
+                   <li className="flex items-start space-x-2 rtl:space-x-reverse">
+                     <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
+                     <span>שמרו על מספרי הטלפון החשובים</span>
+                   </li>
                 </ul>
               </div>
             </div>
