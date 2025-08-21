@@ -87,6 +87,34 @@ export const electricityProviders: Provider[] = [
         targetAudience: 'משפחות עם צריכה בינונית',
         pros: ['חיסכון מיידי'],
         cons: ['לא מתאים לצריכה גבוהה']
+      },
+      {
+        id: 'electra-premium',
+        name: 'חבילת פרימיום',
+        price: 0.495,
+        originalPrice: 0.643,
+        currency: '₪',
+        period: 'month',
+        features: ['הנחה של 23%', 'שירות VIP', 'ללא דמי הפסקה'],
+        discount: { amount: 23, description: 'הנחה משופרת של 23%' },
+        detailedDescription: 'החבילה המשתלמת ביותר למשפחות גדולות',
+        targetAudience: 'משפחות גדולות ועסקים קטנים',
+        pros: ['חיסכון מרבי', 'שירות מעולה'],
+        cons: ['דורש התחייבות של 12 חודשים']
+      },
+      {
+        id: 'electra-green',
+        name: 'אנרגיה ירוקה',
+        price: 0.530,
+        originalPrice: 0.643,
+        currency: '₪',
+        period: 'month',
+        features: ['הנחה של 18%', 'אנרגיה מתחדשת 100%', 'פחמן ניטרלי'],
+        discount: { amount: 18, description: 'הנחה ירוקה של 18%' },
+        detailedDescription: 'לצרכנים המעוניינים באנרגיה נקייה',
+        targetAudience: 'צרכנים מודעים לסביבה',
+        pros: ['ידידותי לסביבה', 'חיסכון טוב'],
+        cons: ['מעט יותר יקר מהבסיסית']
       }
     ]
   },
@@ -114,6 +142,35 @@ export const electricityProviders: Provider[] = [
         targetAudience: 'לקוחות בזק',
         pros: ['הנחה גבוהה', 'שירות מעולה'],
         cons: ['מוגבל ללקוחות בזק']
+      },
+      {
+        id: 'bezeq-family',
+        name: 'חבילה משפחתית',
+        price: 0.485,
+        originalPrice: 0.643,
+        currency: '₪',
+        period: 'month',
+        features: ['הנחה של 25%', 'שירות 24/7', 'אחריות מלאה'],
+        discount: { amount: 25, description: 'הנחה משפחתית של 25%' },
+        recommended: true,
+        detailedDescription: 'החבילה הכי משתלמת ללקוחות בזק',
+        targetAudience: 'משפחות לקוחות בזק',
+        pros: ['הנחה גבוהה מאוד', 'שירות מעולה'],
+        cons: ['מוגבל ללקוחות בזק עם אינטרנט']
+      },
+      {
+        id: 'bezeq-business',
+        name: 'חבילה עסקית',
+        price: 0.495,
+        originalPrice: 0.643,
+        currency: '₪',
+        period: 'month',
+        features: ['הנחה של 23%', 'חשבונית פלוס', 'מנהל חשבון ייעודי'],
+        discount: { amount: 23, description: 'הנחה עסקית של 23%' },
+        detailedDescription: 'חבילה מותאמת לעסקים קטנים',
+        targetAudience: 'עסקים קטנים ובינוניים',
+        pros: ['שירות עסקי מתקדם', 'הנחה משמעותית'],
+        cons: ['דורש אישור עסק']
       }
     ]
   },
@@ -219,6 +276,34 @@ export const electricityProviders: Provider[] = [
         targetAudience: 'משפחות גדולות',
         pros: ['הנחה הגבוהה ביותר'],
         cons: ['מחייב התחייבות']
+      },
+      {
+        id: 'pazgas-smart',
+        name: 'חבילה חכמה',
+        price: 0.471,
+        originalPrice: 0.643,
+        currency: '₪',
+        period: 'month',
+        features: ['הנחה של 27%', 'מונה חכם', 'ניטור צריכה'],
+        discount: { amount: 27, description: 'הנחה חכמה של 27%' },
+        detailedDescription: 'הטכנולוגיה החדשה ביותר לחיסכון מקסימלי',
+        targetAudience: 'אוהבי טכנולוgia',
+        pros: ['הנחה הגבוהה ביותר', 'טכנולוגיה מתקדמת'],
+        cons: ['דורש התקנת מונה חכם']
+      },
+      {
+        id: 'pazgas-basic',
+        name: 'חבילה בסיסית',
+        price: 0.529,
+        originalPrice: 0.643,
+        currency: '₪',
+        period: 'month',
+        features: ['הנחה של 18%', 'ללא התחייבות'],
+        discount: { amount: 18, description: 'הנחה בסיסית של 18%' },
+        detailedDescription: 'חבילה פשוטה וישירה',
+        targetAudience: 'צרכנים המחפשים פשטות',
+        pros: ['ללא התחייבות', 'הנחה טובה'],
+        cons: ['הנחה נמוכה יחסית']
       }
     ]
   }
@@ -259,6 +344,33 @@ export const cellularProviders: Provider[] = [
         targetAudience: 'משפחות',
         pros: ['חיסכון למשפחות'],
         cons: ['מוגבל ל-100GB']
+      },
+      {
+        id: 'pelephone-student',
+        name: 'חבילת סטודנטים',
+        price: 39,
+        originalPrice: 65,
+        currency: '₪',
+        period: 'month',
+        features: ['50GB', 'שיחות ללא הגבלה', 'אפליקציות חינם'],
+        discount: { amount: 40, description: 'הנחת סטודנטים' },
+        recommended: true,
+        detailedDescription: 'החבילה הכי משתלמת לסטודנטים',
+        targetAudience: 'סטודנטים',
+        pros: ['מחיר נמוך מאוד', 'אפליקציות חינם'],
+        cons: ['דורש אישור סטודנט']
+      },
+      {
+        id: 'pelephone-business',
+        name: 'חבילה עסקית',
+        price: 75,
+        currency: '₪',
+        period: 'month',
+        features: ['200GB', 'שיחות ללא הגבלה', 'תמיכה עסקית'],
+        detailedDescription: 'מותאם לעסקים קטנים',
+        targetAudience: 'עסקים',
+        pros: ['נפח גבוה', 'תמיכה מקצועית'],
+        cons: ['יקר יחסית']
       }
     ]
   },
@@ -296,6 +408,34 @@ export const cellularProviders: Provider[] = [
         targetAudience: 'גולשים קלים',
         pros: ['מחיר סביר'],
         cons: ['מוגבל ל-50GB']
+      },
+      {
+        id: 'cellcom-smart',
+        name: 'חכם 150GB',
+        price: 69,
+        originalPrice: 85,
+        currency: '₪',
+        period: 'month',
+        features: ['150GB גלישה', 'שיחות ללא הגבלה', 'הודעות ללא הגבלה'],
+        discount: { amount: 19, description: 'מבצע חכם' },
+        detailedDescription: 'האיזון המושלם בין מחיר ונפח',
+        targetAudience: 'גולשים בינוניים',
+        pros: ['יחס מחיר-ביצועים מעולה'],
+        cons: ['מוגבל ל-150GB']
+      },
+      {
+        id: 'cellcom-young',
+        name: 'צעירים ללא הגבלה',
+        price: 55,
+        originalPrice: 89,
+        currency: '₪',
+        period: 'month',
+        features: ['אינטרנט ללא הגבלה', 'שיחות ללא הגבלה', 'אפליקציות חברתיות חינם'],
+        discount: { amount: 38, description: 'הנחת צעירים' },
+        detailedDescription: 'ללא הגבלה במחיר מיוחד לצעירים',
+        targetAudience: 'גילאי 18-30',
+        pros: ['ללא הגבלה במחיר נמוך', 'אפליקציות חינם'],
+        cons: ['מוגבל לגיל']
       }
     ]
   },
