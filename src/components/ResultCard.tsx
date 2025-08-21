@@ -49,9 +49,9 @@ export const ResultCard = ({ result, index }: ResultCardProps) => {
   return (
     <Card className="shadow-elegant hover:shadow-2xl transition-all duration-500 animate-fade-in overflow-hidden relative group border-0 ring-1 ring-border/50 hover:ring-primary/50">
       {/* Animated Background Pattern */}
-      <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl ${gradientClass} opacity-5 rounded-full -translate-y-32 translate-x-32 group-hover:scale-110 transition-transform duration-700`}></div>
+      <div className={`absolute top-0 right-0 pointer-events-none w-64 h-64 bg-gradient-to-bl ${gradientClass} opacity-5 rounded-full -translate-y-32 translate-x-32 group-hover:scale-110 transition-transform duration-700`}></div>
       
-      <CardHeader className="relative">
+      <CardHeader className="relative z-10">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center space-x-4 rtl:space-x-reverse text-2xl">
             <div className="relative">
@@ -82,7 +82,7 @@ export const ResultCard = ({ result, index }: ResultCardProps) => {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className="relative z-10 space-y-6">
         {/* Comparison View */}
         <ComparisonView
           currentProvider={result.currentProvider}
