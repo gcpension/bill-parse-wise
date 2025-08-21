@@ -3,8 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { getCheapestPlan, calculateAnnualSavings } from '@/data/providers';
 import { AnalysisInput } from '@/components/AnalysisInput';
-import { ResultsSummary } from '@/components/ResultsSummary';
-import { ResultCard } from '@/components/ResultCard';
+import { ResultsGrid } from '@/components/ResultsGrid';
 
 interface UploadedFile {
   file: File;
@@ -189,16 +188,8 @@ export const Analyze = () => {
             </Button>
           </div>
 
-          {/* Total Savings Summary */}
-          <ResultsSummary results={analysisResults} />
-
-          {/* Individual Results */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">פירוט לפי תחום</h2>
-            {analysisResults.map((result, index) => (
-              <ResultCard key={index} result={result} index={index} />
-            ))}
-          </div>
+          {/* Results Display with new organized layout */}
+          <ResultsGrid results={analysisResults} />
 
           {/* Next Steps */}
           <div className="bg-gradient-to-br from-primary/5 to-primary-glow/5 rounded-xl p-8">
