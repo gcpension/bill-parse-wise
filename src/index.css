@@ -189,4 +189,21 @@ body {
   .story-link {
     @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
   }
+
+  /* Additional animation classes */
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.6s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out;
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s ease-in-out infinite;
+  }
 }
