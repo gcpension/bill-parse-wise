@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, History, FileCheck, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { handleError } from '@/lib/errorHandler';
 import { formatCurrency } from '@/lib/utils';
 
 interface SavedForm {
@@ -43,7 +44,7 @@ export const SavedForms = ({ category }: SavedFormsProps) => {
           const data = JSON.parse(localStorage.getItem(key) || '{}');
           forms.push(data);
         } catch (error) {
-          console.error('Error loading form:', error);
+          handleError(error, 'Loading saved forms');
         }
       }
     }
@@ -89,11 +90,7 @@ export const SavedForms = ({ category }: SavedFormsProps) => {
         description: "הטופס נשמר במחשב שלך",
       });
     } catch (error) {
-      toast({
-        title: "שגיאה",
-        description: "לא ניתן להוריד את הטופס כרגע",
-        variant: "destructive"
-      });
+      handleError(error, 'Form download');
     }
   };
 

@@ -24,6 +24,7 @@ import {
   Minus
 } from 'lucide-react';
 import { validateImageFile, formatCurrency } from '@/lib/utils';
+import { handleError } from '@/lib/errorHandler';
 import { getProvidersByCategory } from '@/data/providers';
 
 interface UploadedFile {
@@ -176,7 +177,7 @@ export const AnalysisInput = ({
           const processedFile = await processFile(file);
           processedFiles.push(processedFile);
         } catch (error) {
-          console.error('Error processing file:', error);
+          handleError(error, 'File processing');
         }
       }
     }

@@ -2,6 +2,7 @@ import { pipeline, env } from '@huggingface/transformers';
 import { OCRResult, ParsedExpense, ExpenseCategory } from '@/types';
 import { getCategoryByKeywords } from './categories';
 import { generateId } from './utils';
+import { handleError } from './errorHandler';
 
 // Configure transformers.js
 env.allowLocalModels = false;
@@ -50,7 +51,7 @@ export const extractTextFromImage = async (imageFile: File): Promise<OCRResult> 
             lines
           });
         } catch (error) {
-          console.error('OCR processing error:', error);
+          handleError(error, 'OCR processing');
           URL.revokeObjectURL(imageUrl);
           reject(error);
         }
@@ -64,7 +65,7 @@ export const extractTextFromImage = async (imageFile: File): Promise<OCRResult> 
       img.src = imageUrl;
     });
   } catch (error) {
-    console.error('OCR initialization error:', error);
+    handleError(error, 'OCR initialization');
     throw error;
   }
 };

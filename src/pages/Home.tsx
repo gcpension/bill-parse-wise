@@ -26,25 +26,25 @@ const features = [
     icon: Calculator,
     title: 'השוואת מחירים חכמה',
     description: 'השווה בין כל הספקים בשוק הישראלי ומצא את החבילה הזולה ביותר',
-    color: 'text-blue-600'
+    color: 'text-primary'
   },
   {
     icon: Upload,
     title: 'סריקת חשבוניות אוטומטית',
     description: 'העלה תמונה של החשבונית והמערכת תזהה אוטומטית את הנתונים',
-    color: 'text-green-600'
+    color: 'text-success'
   },
   {
     icon: BarChart3,
     title: 'ניתוח והמלצות',
     description: 'קבל המלצות מותאמות אישית לחיסכון מקסימלי',
-    color: 'text-purple-600'
+    color: 'text-primary-glow'
   },
   {
     icon: Shield,
     title: 'בטוח ומהימן',
     description: 'המידע שלך מוגן ולא נשמר במערכת',
-    color: 'text-orange-600'
+    color: 'text-warning-foreground'
   }
 ];
 
@@ -61,7 +61,7 @@ const categories = [
     icon: Zap,
     description: 'רפורמת החשמל החדשה - חסוך עד 20%',
     savings: '₪500-1,200',
-    color: 'from-yellow-500 to-orange-500',
+    color: 'gradient-sunset',
     providers: 7
   },
   {
@@ -69,7 +69,7 @@ const categories = [
     icon: Smartphone,
     description: 'חבילות סלולר זולות עד 60% יותר',
     savings: '₪360-1,440',
-    color: 'from-blue-500 to-purple-500',
+    color: 'gradient-electric',
     providers: 8
   },
   {
@@ -77,7 +77,7 @@ const categories = [
     icon: Wifi,
     description: 'סיבים אופטיים במחירים מעולים',
     savings: '₪240-720',
-    color: 'from-green-500 to-teal-500',
+    color: 'gradient-vibrant',
     providers: 6
   }
 ];
@@ -108,7 +108,7 @@ export const Home = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link to="/analyze">
-            <Button size="lg" className="text-lg px-8 py-4 shadow-elegant animate-pulse-glow">
+            <Button size="lg" className="text-lg px-8 py-4 shadow-elegant animate-bounce-gentle">
               <Calculator className="ml-2 h-5 w-5" />
               התחל לחסוך עכשיו
             </Button>
@@ -167,7 +167,7 @@ export const Home = () => {
                 onClick={() => setSelectedCategory(isSelected ? null : category.name)}
               >
                 <CardContent className="p-6">
-                  <div className={`p-4 bg-gradient-to-br ${category.color} rounded-xl w-fit mb-4`}>
+                  <div className={`p-4 ${category.color} rounded-xl w-fit mb-4 shadow-elegant`}>
                     <Icon className="h-8 w-8 text-white" />
                   </div>
                   
@@ -217,8 +217,8 @@ export const Home = () => {
             return (
               <Card key={index} className="shadow-card hover:shadow-elegant transition-all duration-300">
                 <CardContent className="p-6 text-center">
-                  <div className="p-4 bg-accent/20 rounded-full w-fit mx-auto mb-4">
-                    <Icon className={`h-8 w-8 ${feature.color}`} />
+                  <div className="p-4 bg-accent/20 rounded-full w-fit mx-auto mb-4 hover-scale">
+                    <Icon className={`h-8 w-8 ${feature.color} transition-colors duration-200`} />
                   </div>
                   <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">
@@ -262,7 +262,7 @@ export const Home = () => {
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 text-yellow-500 fill-current" />
+                    <Star key={i} className="h-4 w-4 text-warning fill-current" />
                   ))}
                 </div>
                 <blockquote className="text-muted-foreground mb-4 italic">
