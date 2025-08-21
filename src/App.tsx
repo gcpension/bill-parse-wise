@@ -9,7 +9,7 @@ import { Analyze } from "./pages/Analyze";
 import { Compare } from "./pages/Compare";
 import { Settings } from "./pages/Settings";
 import { SavedComparisons } from "./pages/SavedComparisons";
-import { Help } from "./pages/Help";
+import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

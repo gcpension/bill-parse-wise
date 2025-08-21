@@ -137,7 +137,7 @@ const quickGuides = [
   }
 ];
 
-export const Help = () => {
+const Help = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [openItems, setOpenItems] = useState<string[]>([]);
@@ -438,3 +438,5 @@ export const Help = () => {
     </div>
   );
 };
+
+export default Help;
