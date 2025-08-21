@@ -1,4 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 import { formatCurrency } from '@/lib/utils';
 import { PiggyBank, Target, Award, TrendingUp } from 'lucide-react';
 
@@ -18,10 +19,18 @@ interface ResultsSummaryProps {
 }
 
 export const ResultsSummary = ({ results }: ResultsSummaryProps) => {
-  const totalSavings = {
-    monthly: results.reduce((sum, result) => sum + result.monthlySavings, 0),
-    annual: results.reduce((sum, result) => sum + result.annualSavings, 0),
-  };
+  const totalMonthlySavings = results.reduce((sum, result) => sum + result.monthlySavings, 0);
+  const totalAnnualSavings = results.reduce((sum, result) => sum + result.annualSavings, 0);
+  
+  const animatedMonthlySavings = useAnimatedCounter({ 
+    end: totalMonthlySavings, 
+    duration: 2000 
+  });
+  
+  const animatedAnnualSavings = useAnimatedCounter({ 
+    end: totalAnnualSavings, 
+    duration: 2500 
+  });
 
   const averageSavingsPercentage = results.length > 0 
     ? (results.reduce((sum, r) => sum + (r.monthlySavings / r.currentAmount * 100), 0) / results.length)
@@ -50,14 +59,14 @@ export const ResultsSummary = ({ results }: ResultsSummaryProps) => {
             <div className="flex justify-center items-baseline space-x-8 rtl:space-x-reverse">
               <div className="text-center p-6 bg-white/20 backdrop-blur rounded-2xl border border-success/20">
                 <p className="text-5xl font-bold text-success animate-pulse">
-                  {formatCurrency(totalSavings.monthly)}
+                  {formatCurrency(animatedMonthlySavings)}
                 </p>
                 <p className="text-lg text-success/80 font-medium">לחודש</p>
               </div>
               <div className="text-6xl text-success/30 animate-bounce">🚀</div>
               <div className="text-center p-6 bg-white/20 backdrop-blur rounded-2xl border border-success/20">
                 <p className="text-5xl font-bold text-success animate-pulse">
-                  {formatCurrency(totalSavings.annual)}
+                  {formatCurrency(animatedAnnualSavings)}
                 </p>
                 <p className="text-lg text-success/80 font-medium">לשנה</p>
               </div>
@@ -67,10 +76,10 @@ export const ResultsSummary = ({ results }: ResultsSummaryProps) => {
           {/* Celebration Message */}
           <div className="bg-gradient-to-r from-white/80 to-white/60 backdrop-blur rounded-2xl p-6 border border-success/20">
             <p className="text-xl text-success font-bold">
-              🎉 מזל טוב! תוכל לחסוך עד {formatCurrency(totalSavings.annual)} בשנה הקרובה
+              🎉 מזל טוב! תוכל לחסוך עד {formatCurrency(animatedAnnualSavings)} בשנה הקרובה
             </p>
             <p className="text-success/80 mt-2">
-              זה כמו לקבל {Math.round(totalSavings.annual / 1000)} משכורות נוספות בשנה!
+              זה כמו לקבל {Math.round(animatedAnnualSavings / 1000)} משכורות נוספות בשנה!
             </p>
           </div>
           
@@ -86,23 +95,23 @@ export const ResultsSummary = ({ results }: ResultsSummaryProps) => {
               </p>
             </div>
             
-            <div className="text-center p-4 bg-white/10 backdrop-blur rounded-xl border border-orange-200">
-              <div className="p-3 bg-orange-100 rounded-full w-fit mx-auto mb-2">
-                <Award className="h-6 w-6 text-orange-600" />
+            <div className="text-center p-4 bg-white/10 backdrop-blur rounded-xl border border-warning/20">
+              <div className="p-3 bg-warning/20 rounded-full w-fit mx-auto mb-2">
+                <Award className="h-6 w-6 text-warning-foreground" />
               </div>
               <h3 className="text-sm font-medium text-muted-foreground">% חיסכון ממוצע</h3>
-              <p className="text-2xl font-bold text-orange-600">
+              <p className="text-2xl font-bold text-warning-foreground">
                 {averageSavingsPercentage.toFixed(1)}%
               </p>
             </div>
             
-            <div className="text-center p-4 bg-white/10 backdrop-blur rounded-xl border border-purple-200">
-              <div className="p-3 bg-purple-100 rounded-full w-fit mx-auto mb-2">
-                <TrendingUp className="h-6 w-6 text-purple-600" />
+            <div className="text-center p-4 bg-white/10 backdrop-blur rounded-xl border border-primary/20">
+              <div className="p-3 bg-primary/20 rounded-full w-fit mx-auto mb-2">
+                <TrendingUp className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-sm font-medium text-muted-foreground">חיסכון בגיל פרישה</h3>
-              <p className="text-2xl font-bold text-purple-600">
-                {formatCurrency(totalSavings.annual * 20)}
+              <p className="text-2xl font-bold text-primary">
+                {formatCurrency(animatedAnnualSavings * 20)}
               </p>
             </div>
           </div>
