@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { TrendingDown, Zap, Smartphone, Wifi, Star, Phone, Globe } from 'lucide-react';
+import { TrendingDown, Zap, Smartphone, Wifi, Star } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { ComparisonView } from './ComparisonView';
 import { PlanSelector } from './PlanSelector';
@@ -113,70 +112,16 @@ export const ResultsGrid = ({ results }: ResultsGridProps) => {
               </CardHeader>
 
               <CardContent className="p-8 space-y-8">
-                {/* Current vs Recommended Comparison */}
-                <div className="bg-muted/30 rounded-xl p-6">
-                  <h4 className="text-lg font-semibold mb-6">השוואת הצעות</h4>
-                  
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {/* Current Provider */}
-                    <div className="bg-white rounded-lg p-6 border border-border/50">
-                      <div className="flex items-center justify-between mb-4">
-                        <h5 className="font-semibold text-muted-foreground">ספק נוכחי</h5>
-                        <Badge variant="outline">נוכחי</Badge>
-                      </div>
-                      <p className="text-xl font-bold mb-2">{result.currentProvider}</p>
-                      <p className="text-2xl font-bold text-destructive">
-                        {formatCurrency(result.currentAmount)}
-                        <span className="text-sm font-normal text-muted-foreground">/חודש</span>
-                      </p>
-                    </div>
+                {/* Use existing ComparisonView component */}
+                <ComparisonView
+                  currentProvider={result.currentProvider}
+                  currentAmount={result.currentAmount}
+                  recommendedPlan={result.recommendedPlan}
+                  monthlySavings={result.monthlySavings}
+                  annualSavings={result.annualSavings}
+                />
 
-                    {/* Recommended Provider */}
-                    <div className="bg-success/5 rounded-lg p-6 border border-success/20">
-                      <div className="flex items-center justify-between mb-4">
-                        <h5 className="font-semibold text-success">מומלץ</h5>
-                        <Badge className="bg-success text-success-foreground">
-                          <Star className="w-3 h-3 mr-1" />
-                          מומלץ
-                        </Badge>
-                      </div>
-                      <p className="text-xl font-bold mb-2">{result.recommendedPlan?.providerName}</p>
-                      <p className="text-lg font-medium mb-1">{result.recommendedPlan?.name}</p>
-                      <p className="text-2xl font-bold text-success">
-                        {formatCurrency(result.recommendedPlan?.price || 0)}
-                        <span className="text-sm font-normal text-muted-foreground">/חודש</span>
-                      </p>
-                      
-                      {result.recommendedPlan?.features && (
-                        <div className="mt-4">
-                          <p className="text-sm font-medium mb-2">תכולת החבילה:</p>
-                          <ul className="text-sm text-muted-foreground space-y-1">
-                            {result.recommendedPlan.features.slice(0, 3).map((feature: string, idx: number) => (
-                              <li key={idx} className="flex items-center">
-                                <div className="w-1.5 h-1.5 bg-success rounded-full mr-2 flex-shrink-0"></div>
-                                {feature}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {/* Savings Arrow */}
-                  {result.monthlySavings > 0 && (
-                    <div className="text-center mt-6">
-                      <div className="inline-flex items-center bg-success/10 rounded-full px-6 py-3">
-                        <TrendingDown className="h-5 w-5 text-success mr-2" />
-                        <span className="text-success font-semibold">
-                          חיסכון של {formatCurrency(result.monthlySavings)} בחודש
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Detailed Savings Breakdown */}
+                {/* Detailed Savings Breakdown - only if there are savings */}
                 {result.monthlySavings > 0 && (
                   <div className="bg-gradient-to-r from-success/10 to-success/5 rounded-xl p-6">
                     <h4 className="text-lg font-semibold mb-4 text-success flex items-center">
