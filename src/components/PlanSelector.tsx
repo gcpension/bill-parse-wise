@@ -45,7 +45,9 @@ const categoryNames = {
 export const PlanSelector: React.FC<PlanSelectorProps> = ({ 
   category, 
   onPlanSelect, 
-  currentAmount = 0 
+  currentAmount = 0,
+  dense = false,
+  showHeader = true
 }) => {
   const [providers, setProviders] = useState<Provider[]>([]);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
@@ -279,62 +281,68 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className={dense ? "space-y-3" : "space-y-6"}>
       {/* Header */}
-      <div className="text-center space-y-4">
-        <div className="flex items-center justify-center space-x-3 rtl:space-x-reverse">
-          <div className="p-3 bg-primary/10 rounded-xl">
-            <CategoryIcon className="h-8 w-8 text-primary" />
+      {showHeader && (
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center space-x-3 rtl:space-x-reverse">
+            <div className="p-3 bg-primary/10 rounded-xl">
+              <CategoryIcon className="h-8 w-8 text-primary" />
+            </div>
+            <h2 className="text-3xl font-bold">בחירת חבילת {categoryNames[category]}</h2>
           </div>
-          <h2 className="text-3xl font-bold">בחירת חבילת {categoryNames[category]}</h2>
+          <p className="text-muted-foreground text-lg">
+            השווה בין החבילות והספקים השונים ובחר את המתאים לך ביותר
+          </p>
         </div>
-        <p className="text-muted-foreground text-lg">
-          השווה בין החבילות והספקים השונים ובחר את המתאים לך ביותר
-        </p>
-      </div>
+      )}
 
       {/* Sort Options */}
-      <div className="flex items-center justify-center">
-        <Tabs value={sortBy} onValueChange={(value) => setSortBy(value as any)} className="w-full max-w-md">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="savings">לפי חיסכון</TabsTrigger>
-            <TabsTrigger value="price">לפי מחיר</TabsTrigger>
-            <TabsTrigger value="rating">לפי דירוג</TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
+      {showHeader && (
+        <div className="flex items-center justify-center">
+          <Tabs value={sortBy} onValueChange={(value) => setSortBy(value as any)} className="w-full max-w-md">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="savings">לפי חיסכון</TabsTrigger>
+              <TabsTrigger value="price">לפי מחיר</TabsTrigger>
+              <TabsTrigger value="rating">לפי דירוג</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+      )}
 
       {/* Providers Grid */}
-      <div className="grid gap-6">
+      <div className={`grid ${dense ? 'gap-3' : 'gap-6'}`}>
         {sortedProviders.map((provider) => (
-          <Card key={provider.id} className="shadow-elegant hover:shadow-2xl transition-all duration-300 overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-primary/5 to-primary-glow/5">
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center space-x-4 rtl:space-x-reverse">
-                  <div className="p-3 bg-primary/10 rounded-xl">
-                    <CategoryIcon className="h-6 w-6 text-primary" />
+          <Card key={provider.id} className={`${dense ? 'shadow-md hover:shadow-lg' : 'shadow-elegant hover:shadow-2xl'} transition-all duration-300 overflow-hidden`}>
+            {!dense && (
+              <CardHeader className="bg-gradient-to-r from-primary/5 to-primary-glow/5">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center space-x-4 rtl:space-x-reverse">
+                    <div className="p-3 bg-primary/10 rounded-xl">
+                      <CategoryIcon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">{provider.name}</h3>
+                      <p className="text-muted-foreground font-normal text-sm">
+                        {provider.description}
+                      </p>
+                    </div>
+                  </CardTitle>
+                  
+                  <div className="text-left">
+                    <div className="flex items-center space-x-1 rtl:space-x-reverse mb-1">
+                      <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                      <span className="font-semibold">{provider.rating}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">מאז {provider.established}</p>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold">{provider.name}</h3>
-                    <p className="text-muted-foreground font-normal text-sm">
-                      {provider.description}
-                    </p>
-                  </div>
-                </CardTitle>
-                
-                <div className="text-left">
-                  <div className="flex items-center space-x-1 rtl:space-x-reverse mb-1">
-                    <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                    <span className="font-semibold">{provider.rating}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">מאז {provider.established}</p>
                 </div>
-              </div>
-            </CardHeader>
+              </CardHeader>
+            )}
 
-            <CardContent className="p-6">
+            <CardContent className={dense ? "p-3" : "p-6"}>
               {/* Plans Grid */}
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className={`grid ${dense ? 'md:grid-cols-4 lg:grid-cols-5 gap-2' : 'md:grid-cols-2 lg:grid-cols-3 gap-4'}`}>
                 {provider.plans.map((plan) => {
                   const savings = calculateSavings(plan.price);
                   const savingsPercentage = currentAmount > 0 ? ((savings / currentAmount) * 100) : 0;
@@ -342,32 +350,44 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
                   return (
                     <div
                       key={plan.id}
-                      className={`relative p-4 border-2 rounded-xl transition-all duration-300 hover:shadow-lg cursor-pointer ${
+                      className={`relative ${dense ? 'p-2' : 'p-4'} border-2 rounded-xl transition-all duration-300 hover:shadow-lg cursor-pointer ${
                         plan.recommended 
                           ? 'border-primary bg-primary/5 ring-2 ring-primary/20' 
                           : 'border-border bg-background hover:border-primary/30'
                       }`}
                     >
-                      {plan.recommended && (
+                      {plan.recommended && !dense && (
                         <div className="absolute -top-2 -right-2">
                           <Badge className="bg-primary text-primary-foreground animate-pulse">
                             מומלץ ⭐
                           </Badge>
                         </div>
                       )}
+                      
+                      {dense && provider.name && (
+                        <div className="flex items-center space-x-1 rtl:space-x-reverse mb-2">
+                          <CategoryIcon className="h-3 w-3 text-primary" />
+                          <span className="text-xs font-semibold text-primary">{provider.name}</span>
+                          {plan.recommended && (
+                            <Badge className="bg-primary text-primary-foreground text-xs px-1 py-0">
+                              ⭐
+                            </Badge>
+                          )}
+                        </div>
+                      )}
 
-                      <div className="space-y-3">
+                      <div className={dense ? "space-y-2" : "space-y-3"}>
                         {/* Plan Name */}
-                        <h4 className="font-semibold text-lg">{plan.name}</h4>
+                        <h4 className={`font-semibold ${dense ? 'text-sm' : 'text-lg'}`}>{plan.name}</h4>
 
                         {/* Price */}
                         <div className="text-center">
-                          {plan.originalPrice && (
+                          {plan.originalPrice && !dense && (
                             <p className="text-sm text-muted-foreground line-through">
                               {formatCurrency(category === 'electricity' ? plan.originalPrice * 850 : plan.originalPrice)}
                             </p>
                           )}
-                          <p className="text-2xl font-bold text-primary">
+                          <p className={`${dense ? 'text-lg' : 'text-2xl'} font-bold text-primary`}>
                             {formatCurrency(category === 'electricity' ? plan.price * 850 : plan.price)}
                           </p>
                           <p className="text-xs text-muted-foreground">לחודש</p>
@@ -375,38 +395,43 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
 
                         {/* Savings Display */}
                         {savings > 0 && (
-                          <div className="text-center bg-success/10 rounded-lg p-2">
-                            <p className="text-sm font-semibold text-success">
-                              חיסכון: {formatCurrency(savings)}
+                          <div className={`text-center bg-success/10 rounded-lg ${dense ? 'p-1.5' : 'p-2'}`}>
+                            <p className={`${dense ? 'text-xs' : 'text-sm'} font-semibold text-success`}>
+                              {dense ? formatCurrency(savings) : `חיסכון: ${formatCurrency(savings)}`}
                             </p>
-                            <p className="text-xs text-success/80">
-                              {savingsPercentage.toFixed(1)}% פחות מהנוכחי
-                            </p>
+                            {!dense && (
+                              <p className="text-xs text-success/80">
+                                {savingsPercentage.toFixed(1)}% פחות מהנוכחי
+                              </p>
+                            )}
                           </div>
                         )}
 
-                        {/* Key Features (first 3) */}
-                        <div className="space-y-1">
-                          {plan.features.slice(0, 3).map((feature, index) => (
-                            <div key={index} className="flex items-center space-x-2 rtl:space-x-reverse">
-                              <Check className="h-3 w-3 text-success flex-shrink-0" />
-                              <span className="text-xs text-muted-foreground">{feature}</span>
-                            </div>
-                          ))}
-                          {plan.features.length > 3 && (
-                            <p className="text-xs text-primary">+{plan.features.length - 3} יתרונות נוספים</p>
-                          )}
-                        </div>
+                        {/* Key Features */}
+                        {!dense && (
+                          <div className="space-y-1">
+                            {plan.features.slice(0, 3).map((feature, index) => (
+                              <div key={index} className="flex items-center space-x-2 rtl:space-x-reverse">
+                                <Check className="h-3 w-3 text-success flex-shrink-0" />
+                                <span className="text-xs text-muted-foreground">{feature}</span>
+                              </div>
+                            ))}
+                            {plan.features.length > 3 && (
+                              <p className="text-xs text-primary">+{plan.features.length - 3} יתרונות נוספים</p>
+                            )}
+                          </div>
+                        )}
 
                         {/* Action Buttons */}
-                        <div className="space-y-2">
-                          <PlanDetailsModal provider={provider} plan={plan} />
+                        <div className={dense ? "space-y-1" : "space-y-2"}>
+                          {!dense && <PlanDetailsModal provider={provider} plan={plan} />}
                           <Button 
                             onClick={() => onPlanSelect(provider, plan)}
                             className="w-full"
+                            size={dense ? "sm" : "default"}
                             variant={plan.recommended ? "default" : "outline"}
                           >
-                            בחר חבילה זו
+                            {dense ? "בחר" : "בחר חבילה זו"}
                           </Button>
                         </div>
                       </div>
