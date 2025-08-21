@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { TrendingDown, Zap, Smartphone, Wifi, Star } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { ComparisonView } from './ComparisonView';
@@ -121,12 +122,32 @@ export const ResultsGrid = ({ results }: ResultsGridProps) => {
                   annualSavings={result.annualSavings}
                 />
 
+                {/* All Available Plans Section */}
+                <div className="bg-slate-50 rounded-xl p-6">
+                  <h4 className="text-xl font-semibold mb-6 text-center flex items-center justify-center">
+                    <Star className="h-5 w-5 mr-2 text-primary" />
+                    כל החבילות הזמינות עבורך ב{config.name}
+                  </h4>
+                  
+                  <PlanSelector
+                    category={result.category}
+                    currentAmount={result.currentAmount}
+                    onPlanSelect={(provider, plan) => {
+                      toast({
+                        title: "תכנית נבחרה בהצלחה!",
+                        description: `בחרת את ${plan.name} מ${provider.name}. המשך עם החתימה הדיגיטלית.`,
+                        duration: 4000,
+                      });
+                    }}
+                  />
+                </div>
+
                 {/* Detailed Savings Breakdown - only if there are savings */}
                 {result.monthlySavings > 0 && (
                   <div className="bg-gradient-to-r from-success/10 to-success/5 rounded-xl p-6">
                     <h4 className="text-lg font-semibold mb-4 text-success flex items-center">
                       <TrendingDown className="h-5 w-5 mr-2" />
-                      פירוט החיסכון
+                      פירוט החיסכון שלך
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                       <div className="bg-white/50 rounded-lg p-4">
@@ -151,25 +172,41 @@ export const ResultsGrid = ({ results }: ResultsGridProps) => {
                   </div>
                 )}
 
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <DigitalSignature
-                    category={result.category}
-                    currentProvider={result.currentProvider}
-                    newProvider={result.recommendedPlan?.providerName || ''}
-                    newPlan={result.recommendedPlan?.name || ''}
-                    monthlySavings={result.monthlySavings}
-                  />
-                  <PlanSelector
-                    category={result.category}
-                    currentAmount={result.currentAmount}
-                    onPlanSelect={(provider, plan) => {
-                      toast({
-                        title: "תכנית נבחרה בהצלחה!",
-                        description: `בחרת את ${plan.name} מ${provider.name}. מומלץ להמשיך עם החתימה הדיגיטלית.`,
-                      });
-                    }}
-                  />
+                {/* Main Action Buttons */}
+                <div className="bg-gradient-to-r from-primary/5 to-primary-glow/5 rounded-xl p-6 border border-primary/20">
+                  <h4 className="text-lg font-semibold mb-4 text-center">מוכן לעבור לחבילה החדשה?</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Switch Provider Button */}
+                    <Button 
+                      size="lg" 
+                      className="bg-gradient-to-r from-success to-success-foreground hover:from-success/90 hover:to-success-foreground/90 text-white font-bold py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                      onClick={() => {
+                        toast({
+                          title: "בקשה התקבלה! 🎉",
+                          description: `אנחנו נטפל בניתוק מ${result.currentProvider} ובחיבור ל${result.recommendedPlan?.providerName}. נחזור אליך תוך 24 שעות.`,
+                          duration: 6000,
+                        });
+                      }}
+                    >
+                      <TrendingDown className="h-5 w-5 ml-2" />
+                      נתק אותי מ{result.currentProvider} וחבר אותי ל{result.recommendedPlan?.providerName || 'ספק חדש'}
+                    </Button>
+
+                    {/* Digital Signature Button */}
+                    <DigitalSignature
+                      category={result.category}
+                      currentProvider={result.currentProvider}
+                      newProvider={result.recommendedPlan?.providerName || ''}
+                      newPlan={result.recommendedPlan?.name || ''}
+                      monthlySavings={result.monthlySavings}
+                    />
+                  </div>
+                  
+                  <div className="mt-4 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      💡 אנחנו נטפל בכל התהליך עבורך - ללא עלות וללא מחויבות!
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
