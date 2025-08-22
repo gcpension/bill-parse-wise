@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useDropzone } from "react-dropzone";
-import SignaturePad from "signature_pad";
+import { default as SignaturePad } from "signature_pad";
 import { 
   PenTool, 
   Type, 
