@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { getCheapestPlan, calculateAnnualSavings } from '@/data/providers';
 import { AnalysisInput } from '@/components/AnalysisInput';
 import { ResultsGrid } from '@/components/ResultsGrid';
+import { Layout } from '@/components/Layout';
 
 interface UploadedFile {
   file: File;
@@ -170,8 +171,8 @@ export const Analyze = () => {
 
   if (activeStep === 'results') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 p-6">
-        <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
+      <Layout>
+        <div className="space-y-8 animate-fade-in">
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="space-y-2">
@@ -241,24 +242,22 @@ export const Analyze = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 p-6">
-      <div className="max-w-6xl mx-auto">
-        <AnalysisInput
-          uploadedFiles={uploadedFiles}
-          categoryData={categoryData}
-          isProcessing={isProcessing}
-          onFilesUploaded={handleFilesUploaded}
-          onFileRemove={handleFileRemove}
-          onCategoryToggle={handleCategoryToggle}
-          onCategoryDataUpdate={handleCategoryDataUpdate}
-          onAnalyze={handleAnalyzeAll}
-        />
-      </div>
-    </div>
+    <Layout>
+      <AnalysisInput
+        uploadedFiles={uploadedFiles}
+        categoryData={categoryData}
+        isProcessing={isProcessing}
+        onFilesUploaded={handleFilesUploaded}
+        onFileRemove={handleFileRemove}
+        onCategoryToggle={handleCategoryToggle}
+        onCategoryDataUpdate={handleCategoryDataUpdate}
+        onAnalyze={handleAnalyzeAll}
+      />
+    </Layout>
   );
 };

@@ -9,6 +9,8 @@ import { Forms } from "./pages/Forms";
 import { Settings } from "./pages/Settings";
 import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
+import { Analyze } from "./pages/Analyze";
+import { Compare } from "./pages/Compare";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/forms/:category" element={<Forms />} />
+          <Route path="/analyze" element={<Analyze />} />
+          <Route path="/compare" element={<Compare />} />
           <Route path="/help" element={<Help />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />

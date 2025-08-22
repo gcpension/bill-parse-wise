@@ -26,6 +26,7 @@ import { useToast } from '@/hooks/use-toast';
 import { handleError } from '@/lib/errorHandler';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DigitalSignature } from '@/components/DigitalSignature';
+import { Layout } from '@/components/Layout';
 
 const categoryIcons = {
   electricity: Zap,
@@ -118,7 +119,8 @@ export const Compare = () => {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <Layout>
+      <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight gradient-primary bg-clip-text text-transparent">
@@ -518,5 +520,6 @@ export const Compare = () => {
         </CardContent>
       </Card>
     </div>
+    </Layout>
   );
 };
