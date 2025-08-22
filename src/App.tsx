@@ -7,8 +7,8 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Home from "./pages/Home";
 import { Forms } from "./pages/Forms";
 import { Settings } from "./pages/Settings";
-import { Help } from "./pages/Help";
-import { NotFound } from "./pages/NotFound";
+import Help from "./pages/Help";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
