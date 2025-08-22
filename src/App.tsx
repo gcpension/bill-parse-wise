@@ -11,6 +11,7 @@ import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
 import { Analyze } from "./pages/Analyze";
 import { Compare } from "./pages/Compare";
+import { ProviderSwitch } from "./pages/ProviderSwitch";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/forms/:category" element={<Forms />} />
           <Route path="/analyze" element={<Analyze />} />
           <Route path="/compare" element={<Compare />} />
+          <Route path="/switch/:category" element={<ProviderSwitch />} />
           <Route path="/help" element={<Help />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
