@@ -164,12 +164,35 @@ export const SignatureStep = ({ category, customerType, data, onUpdate }: Signat
       <div className="text-center mb-6">
         <div className="flex items-center justify-center gap-3 mb-2">
           <PenTool className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">חתימה דיגיטלית</h2>
+          <h2 className="text-2xl font-bold">חתימה דיגיטלית מאובטחת</h2>
         </div>
         <p className="text-muted-foreground">
-          בחרו את שיטת החתימה המועדפת עליכם
+          חתימה באמצעות פלטפורמה מוכרת ומאובטחת
         </p>
       </div>
+
+      {/* New SignTrust Integration Option */}
+      <Card className="p-4 bg-blue-50 border-blue-200">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="font-semibold text-blue-900">חתימה דיגיטלית מאובטחת (מומלץ)</h3>
+            <p className="text-sm text-blue-800">חתימה באמצעות פלטפורמה מוכרת ומאובטחת</p>
+          </div>
+          <Button 
+            onClick={() => {
+              // Switch to SignTrust mode
+              onUpdate({
+                ...data,
+                useSignTrust: true,
+                signatureComplete: false
+              });
+            }}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            השתמש בחתימה מאובטחת
+          </Button>
+        </div>
+      </Card>
 
       {/* Signature Status */}
       <Card className="p-4">

@@ -18,6 +18,7 @@ import { PersonalDetailsStep } from './form-steps/PersonalDetailsStep';
 import { DocumentsStep } from './form-steps/DocumentsStep';
 import { AuthorizationStep } from './form-steps/AuthorizationStep';
 import { SignatureStep } from './form-steps/SignatureStep';
+import { SignTrustSignatureStep } from './form-steps/SignTrustSignatureStep';
 import { SubmissionStep } from './form-steps/SubmissionStep';
 import { VerificationStep } from './form-steps/VerificationStep';
 import { ReviewStep } from './form-steps/ReviewStep';
@@ -163,7 +164,7 @@ export const ProviderSwitchingForm = ({
       case 3:
         return formData.authorization?.agreed === true;
       case 4:
-        return formData.signature !== null;
+        return formData.signature?.signTrustCompleted || formData.signature?.signatureComplete;;
       case 5:
         return formData.reviewApproved === true;
       case 6:
@@ -203,7 +204,14 @@ export const ProviderSwitchingForm = ({
           />
         );
       case 4:
-        return (
+        return formData.signature?.useSignTrust ? (
+          <SignTrustSignatureStep
+            category={category}
+            customerType={customerType}
+            data={formData}
+            onUpdate={updateFormData}
+          />
+        ) : (
           <SignatureStep
             category={category}
             customerType={customerType}
