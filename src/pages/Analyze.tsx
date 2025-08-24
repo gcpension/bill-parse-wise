@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import { getCheapestPlan, calculateAnnualSavings } from '@/data/providers';
+import { getCheapestPlan, calculateAnnualSavings, getProvidersByCategory } from '@/data/providers';
 import { AnalysisInput } from '@/components/AnalysisInput';
 import { ResultsGrid } from '@/components/ResultsGrid';
 import { Layout } from '@/components/Layout';
@@ -147,7 +147,7 @@ export const Analyze = () => {
       recommendedPlan: cheapestPlan,
       monthlySavings,
       annualSavings,
-      allProviders: []
+      allProviders: getProvidersByCategory(data.category)
     };
   };
 

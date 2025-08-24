@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Home from "./pages/Home";
 import { Forms } from "./pages/Forms";
@@ -32,7 +32,7 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/forms/:category" element={<Forms />} />
           <Route path="/analyze" element={<Analyze />} />
-          <Route path="/compare" element={<DetailedCompareProviders />} />
+          <Route path="/compare" element={<Navigate to="/analyze" replace />} />
           <Route path="/switch/:category" element={<ProviderSwitch />} />
           <Route path="/help" element={<Help />} />
           <Route path="/settings" element={<Settings />} />

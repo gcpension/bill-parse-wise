@@ -31,8 +31,8 @@ const categoryConfig = {
 
 // Mock data for detailed plans
 const generateDetailedPlans = (category: string, providers: any[]) => {
-  return providers.flatMap(provider => 
-    provider.plans.map((plan: any) => ({
+  return (providers || []).flatMap(provider => 
+    (provider.plans || []).map((plan: any) => ({
       ...plan,
       provider: provider.name,
       rating: provider.rating,
@@ -41,7 +41,19 @@ const generateDetailedPlans = (category: string, providers: any[]) => {
       data: category === 'cellular' ? (plan.data || 'ללא הגבלה') : undefined,
       minutes: category === 'cellular' ? (plan.minutes || 'ללא הגבלה') : undefined,
       sms: category === 'cellular' ? (plan.sms || 'ללא הגבלה') : undefined,
-      savings: Math.max(0, Math.random() * 200)
+      originalPrice: plan.originalPrice,
+      discount: plan.discount?.amount,
+      recommended: plan.recommended || false,
+      period: plan.period,
+      currency: plan.currency,
+      detailedDescription: plan.detailedDescription,
+      targetAudience: plan.targetAudience,
+      pros: plan.pros,
+      cons: plan.cons,
+      limitations: plan.limitations,
+      savings: typeof plan.originalPrice === 'number' && plan.originalPrice > plan.price
+        ? plan.originalPrice - plan.price
+        : Math.max(0, Math.round(Math.random() * 200))
     }))
   ).sort((a, b) => a.price - b.price);
 };
