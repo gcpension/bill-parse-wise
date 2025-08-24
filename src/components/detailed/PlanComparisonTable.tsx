@@ -22,6 +22,7 @@ interface Plan {
   provider: string;
   rating: number;
   description: string;
+  detailedDescription?: string;
   savings: number;
 }
 
