@@ -5,11 +5,16 @@ import { ExternalLink, FileCheck, Clock, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
-
+let supabaseClient: any = null;
+const getSupabase = () => {
+  const url = (import.meta as any).env?.VITE_SUPABASE_URL;
+  const anonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
+  if (!url || !anonKey) return null;
+  if (!supabaseClient) {
+    supabaseClient = createClient(url, anonKey);
+  }
+  return supabaseClient;
+};
 interface SignTrustIntegrationProps {
   customerDetails: {
     name: string;
@@ -41,14 +46,19 @@ export function SignTrustIntegration({
     try {
       setSigningState('creating');
 
+      const supabase = getSupabase();
+      if (!supabase) {
+        setSigningState('failed');
+        toast({
+          title: 'שגיאת תצורה',
+          description: 'חיבור Supabase לא מוגדר. אנא חבר את הפרויקט ל-Supabase.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
       const { data, error } = await supabase.functions.invoke('signtrust-integration', {
-        body: {
-          customerDetails,
-          currentProvider,
-          newProvider,
-          category,
-          documentData
-        }
+        body: { customerDetails, currentProvider, newProvider, category, documentData }
       });
 
       if (error) throw error;
@@ -85,6 +95,8 @@ export function SignTrustIntegration({
   const checkSigningStatus = async () => {
     try {
       // Poll the database to check if signing is completed
+      const supabase = getSupabase();
+      if (!supabase) return;
       const { data, error } = await supabase
         .from('signing_requests')
         .select('status, signed_document_url, signed_at')
