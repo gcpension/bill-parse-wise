@@ -55,12 +55,20 @@ export default {
 				},
 				success: {
 					DEFAULT: 'hsl(var(--success))',
-					foreground: 'hsl(var(--success-foreground))'
+					foreground: 'hsl(var(--success-foreground))',
+					glow: 'hsl(var(--success-glow))'
 				},
 				warning: {
 					DEFAULT: 'hsl(var(--warning))',
 					foreground: 'hsl(var(--warning-foreground))'
 				},
+				// Custom vibrant colors
+				'electric-blue': 'hsl(var(--electric-blue))',
+				'vibrant-green': 'hsl(var(--vibrant-green))',
+				'sunset-orange': 'hsl(var(--sunset-orange))',
+				'royal-purple': 'hsl(var(--royal-purple))',
+				'coral-pink': 'hsl(var(--coral-pink))',
+				'golden-yellow': 'hsl(var(--golden-yellow))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -71,6 +79,20 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-success': 'var(--gradient-success)',
+				'gradient-card': 'var(--gradient-card)',
+				'gradient-electric': 'var(--gradient-electric)',
+				'gradient-vibrant': 'var(--gradient-vibrant)',
+				'gradient-sunset': 'var(--gradient-sunset)',
+			},
+			boxShadow: {
+				'elegant': 'var(--shadow-elegant)',
+				'glow': 'var(--shadow-glow)',
+				'card': 'var(--shadow-card)',
+				'colorful': 'var(--shadow-colorful)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
