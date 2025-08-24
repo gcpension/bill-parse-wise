@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { formatCurrency } from '@/lib/utils';
+import { Layout } from '@/components/Layout';
 
 const features = [
   {
@@ -86,7 +87,8 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   return (
-    <div className="space-y-16">
+    <Layout>
+      <div className="space-y-16">
       {/* Hero Section */}
       <section className="text-center space-y-8 py-12 animate-fade-in">
         <div className="space-y-4">
@@ -322,7 +324,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </Layout>
   );
 };
 
