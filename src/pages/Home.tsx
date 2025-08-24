@@ -6,6 +6,7 @@ import {
   Zap, 
   Smartphone, 
   Wifi, 
+  Tv,
   TrendingDown, 
   Shield, 
   Clock, 
@@ -63,7 +64,8 @@ const categories = [
     description: 'רפורמת החשמל החדשה - חסוך עד 20%',
     savings: '₪500-1,200',
     color: 'gradient-sunset',
-    providers: 7
+    providers: 12,
+    trend: '+15%'
   },
   {
     name: 'סלולר',
@@ -71,7 +73,8 @@ const categories = [
     description: 'חבילות סלולר זולות עד 60% יותר',
     savings: '₪360-1,440',
     color: 'gradient-electric',
-    providers: 8
+    providers: 15,
+    trend: '+8%'
   },
   {
     name: 'אינטרנט',
@@ -79,7 +82,17 @@ const categories = [
     description: 'סיבים אופטיים במחירים מעולים',
     savings: '₪240-720',
     color: 'gradient-vibrant',
-    providers: 6
+    providers: 9,
+    trend: '+12%'
+  },
+  {
+    name: 'טלוויזיה וסטרימינג',
+    icon: Tv,
+    description: 'שירותי סטרימינג וטלוויזיה במחירים מעולים',
+    savings: '₪300-900',
+    color: 'bg-gradient-to-r from-royal-purple to-coral-pink',
+    providers: 8,
+    trend: '+25%'
   }
 ];
 
@@ -155,7 +168,7 @@ const Home = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category, index) => {
             const Icon = category.icon;
             const isSelected = selectedCategory === category.name;
@@ -173,7 +186,13 @@ const Home = () => {
                     <Icon className="h-8 w-8 text-white" />
                   </div>
                   
-                  <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-2xl font-bold">{category.name}</h3>
+                    <Badge variant="outline" className="text-success border-success">
+                      {category.trend}
+                    </Badge>
+                  </div>
+                  
                   <p className="text-muted-foreground mb-4">{category.description}</p>
                   
                   <div className="space-y-3">

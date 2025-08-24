@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import { Analyze } from "./pages/Analyze";
 import { DetailedCompareProviders } from "./pages/DetailedCompareProviders";
 import { ProviderSwitch } from "./pages/ProviderSwitch";
+import { Dashboard } from "./components/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <div className="min-h-screen bg-background">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/forms/:category" element={<Forms />} />
           <Route path="/analyze" element={<Analyze />} />
           <Route path="/compare" element={<Navigate to="/analyze" replace />} />
