@@ -45,6 +45,8 @@ export const PlanComparisonTable = ({
   // Get enhanced plans from our comprehensive data
   const enhancedPlans = useMemo(() => {
     const categoryPlans = getEnhancedPlansByCategory(category);
+    if (categoryPlans.length === 0) return originalPlans;
+    
     return categoryPlans.map(plan => {
       const provider = getProviderByPlan(plan.id);
       const savings = plan.originalPrice ? plan.originalPrice - plan.price : 0;
@@ -56,9 +58,9 @@ export const PlanComparisonTable = ({
         savings
       } as Plan;
     });
-  }, [category]);
+  }, [category, originalPlans]);
 
-  const plans = enhancedPlans.length > 0 ? enhancedPlans : originalPlans;
+  const plans = enhancedPlans;
 
   const categoryColors = {
     electricity: { primary: 'hsl(48, 96%, 53%)', accent: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-200' },
@@ -325,15 +327,17 @@ export const PlanComparisonTable = ({
                             </div>
                           </div>
 
-                          {/* Enhanced savings display with icon - NEW DESIGN */}
+                          {/* Enhanced savings display with modern design */}
                           {savings > 0 && (
                             <div className="relative">
-                              <div className="bg-gradient-to-r from-emerald-500 via-green-500 to-green-600 text-white rounded-xl p-3 text-center shadow-lg transform transition-transform group-hover:scale-105">
-                                <div className="flex items-center justify-center gap-2 mb-1">
-                                  <TrendingDown className="h-4 w-4 animate-pulse" />
-                                  <span className="text-sm font-semibold">חיסכון חודשי</span>
+                              <div className="bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 border border-emerald-200/50 rounded-xl p-4 text-center shadow-sm transform transition-all group-hover:shadow-md group-hover:-translate-y-1">
+                                <div className="flex items-center justify-center gap-2 mb-2">
+                                  <div className="p-1.5 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full">
+                                    <TrendingDown className="h-3.5 w-3.5 text-white" />
+                                  </div>
+                                  <span className="text-sm font-semibold text-emerald-700">חיסכון חודשי</span>
                                 </div>
-                                <div className="text-xl font-black">
+                                <div className="text-2xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 bg-clip-text text-transparent">
                                   {category === 'electricity' 
                                     ? `₪${(savings * 850).toLocaleString('he-IL')}` 
                                     : `₪${savings.toLocaleString('he-IL')}`

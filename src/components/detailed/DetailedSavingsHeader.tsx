@@ -24,8 +24,8 @@ export const DetailedSavingsHeader = ({
 }: DetailedSavingsHeaderProps) => {
   return (
     <div className="relative overflow-hidden rounded-3xl shadow-elegant mb-8">
-      {/* Purple gradient background like the reference */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-royal-purple to-primary-glow"></div>
+      {/* Modern green gradient background - replacing purple */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-green-600 to-teal-600"></div>
       
       {/* Animated background elements */}
       <div className="absolute inset-0">

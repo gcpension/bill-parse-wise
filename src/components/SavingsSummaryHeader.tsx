@@ -92,18 +92,18 @@ export const SavingsSummaryHeader = ({
             </CardContent>
           </Card>
 
-          {/* Bonus Equivalent */}
-          <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-purple-500/30 shadow-xl hover:shadow-2xl transition-all duration-500 group">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-purple-600/10"></div>
+          {/* Bonus Equivalent - Updated Design */}
+          <Card className="relative overflow-hidden bg-white/90 backdrop-blur-sm border-emerald-500/30 shadow-xl hover:shadow-2xl transition-all duration-500 group">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-green-500/10 to-teal-500/10"></div>
             <CardContent className="relative p-8 text-center">
-              <div className="p-4 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full w-fit mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+              <div className="p-4 bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 rounded-full w-fit mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 <DollarSign className="h-8 w-8 text-white" />
               </div>
               <p className="text-sm text-muted-foreground mb-2 font-medium">שווה ערך</p>
-              <p className="text-4xl font-black text-purple-600 mb-2">
+              <p className="text-4xl font-black bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent mb-2">
                 {bonusEquivalent}
               </p>
-              <p className="text-xs text-purple-600/80">משכורות נוספות</p>
+              <p className="text-xs text-emerald-600/80">משכורות נוספות</p>
             </CardContent>
           </Card>
         </div>
