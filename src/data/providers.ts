@@ -4,7 +4,7 @@ export interface Provider {
   id: string;
   name: string;
   logo?: string;
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   plans: Plan[];
   rating: number;
   customerService: string;

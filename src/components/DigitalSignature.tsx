@@ -22,7 +22,7 @@ import { useToast } from '@/hooks/use-toast';
 import { formatCurrency } from '@/lib/utils';
 
 interface DigitalSignatureProps {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentProvider: string;
   newProvider: string;
   newPlan: string;
@@ -30,20 +30,22 @@ interface DigitalSignatureProps {
   // Optional controlled dialog props
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  // Hide internal trigger button when controlling from outside
+  // Hide internal trigger button when controlling from outside  
   hideTrigger?: boolean;
 }
 
 const categoryNames = {
   electricity: 'חשמל',
-  cellular: 'סלולר',
-  internet: 'אינטרנט'
+  cellular: 'סלולר', 
+  internet: 'אינטרנט',
+  tv: 'טלוויזיה וסטרימינג'
 };
 
 const categoryIcons = {
   electricity: '⚡',
   cellular: '📱',
-  internet: '🌐'
+  internet: '🌐',
+  tv: '📺'
 };
 
 export const DigitalSignature = ({

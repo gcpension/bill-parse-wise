@@ -19,7 +19,7 @@ type Plan = EnhancedPlan & {
 };
 
 interface PlanComparisonTableProps {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   categoryName: string;
   currentProvider: string;
   currentAmount: number;

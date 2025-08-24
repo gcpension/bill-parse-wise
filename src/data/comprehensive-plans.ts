@@ -296,6 +296,278 @@ export const enhancedCellularProviders: EnhancedProvider[] = [
   }
 ];
 
+// TV and Streaming providers
+export const enhancedTvProviders: EnhancedProvider[] = [
+  {
+    id: 'yes',
+    name: 'יס',
+    category: 'tv',
+    rating: 4.3,
+    customerService: '1-700-937-937',
+    website: 'yes.co.il',
+    description: 'מובילה בשירותי טלוויזיה וסטרימינג עם תוכן יוקרתי',
+    established: '2000',
+    marketShare: 35,
+    customerSatisfaction: 4.3,
+    specialties: ['תוכן יוקרתי', 'ספורט בלעדי', 'קולנוע ביתי'],
+    plans: [
+      {
+        id: 'yes-max-premium',
+        name: 'יס מקס פרמיום',
+        price: 299,
+        originalPrice: 349,
+        currency: '₪',
+        period: 'month',
+        features: ['200+ ערוצים', 'יס פלנט ללא הגבלה', 'Netflix & Disney+', 'ספורט בלעדי', '4K Ultra HD'],
+        detailedDescription: 'החבילה הכי מלאה עם כל התוכן הטוב ביותר',
+        targetAudience: 'אוהבי איכות וספורט',
+        pros: ['תוכן איכותי', 'ספורט בלעדי', 'סטרימינג מובנה', '4K איכות'],
+        cons: ['מחיר גבוה', 'התחייבות ארוכה'],
+        discount: { amount: 14, description: 'מבצע פרמיום' },
+        contractLength: '24 חודשים',
+        setupFee: 99,
+        popularityScore: 91,
+        specialFeatures: ['יס פלנט ללא הגבלה', 'Netflix פרמיום', 'Disney+ Family', 'ערוצי ספורט בלעדיים'],
+        bestFor: ['אוהבי ספורט', 'משפחות גדולות', 'אוהבי קולנוע', 'איכות מקסימלית']
+      },
+      {
+        id: 'yes-smart-entertainment',
+        name: 'יס חכם בידור',
+        price: 199,
+        originalPrice: 249,
+        currency: '₪',
+        period: 'month',
+        features: ['150+ ערוצים', 'יס פלנט 100 שעות', 'Netflix בסיסי', 'הקלטות ללא הגבלה'],
+        detailedDescription: 'איזון מושלם בין תוכן איכותי למחיר סביר',
+        targetAudience: 'משפחות בינוניות',
+        pros: ['מחיר סביר', 'תוכן איכותי', 'הקלטות', 'נטפליקס כלול'],
+        cons: ['פחות ערוצי ספורט', 'יס פלנט מוגבל'],
+        discount: { amount: 20, description: 'מבצע חכם' },
+        recommended: true,
+        contractLength: '12 חודשים',
+        setupFee: 49,
+        popularityScore: 88,
+        specialFeatures: ['יס פלנט 100 שעות', 'Netflix כלול', 'הקלטות ללא הגבלה', 'אפליקציה בכל מכשיר'],
+        bestFor: ['משפחות', 'אוהבי דרמות', 'צפייה מגוונת']
+      },
+      {
+        id: 'yes-basic-digital',
+        name: 'יס בסיסי דיגיטלי',
+        price: 129,
+        currency: '₪',
+        period: 'month',
+        features: ['80+ ערוצים', 'יס פלנט 20 שעות', 'HD איכות', 'הקלטה בסיסית'],
+        detailedDescription: 'חבילה חסכונית עם התוכן החיוני',
+        targetAudience: 'גולשים חסכניים',
+        pros: ['מחיר נמוך', 'איכות HD', 'תוכן בסיסי'],
+        cons: ['פחות ערוצים', 'ללא נטפליקס', 'יס פלנט מוגבל'],
+        contractLength: '6 חודשים',
+        setupFee: 149,
+        popularityScore: 72,
+        bestFor: ['חסכנים', 'צפייה קלה', 'אנשים מבוגרים']
+      }
+    ]
+  },
+  {
+    id: 'hot-tv',
+    name: 'הוט טלוויזיה',
+    category: 'tv',
+    rating: 4.1,
+    customerService: '1-700-467-467',
+    website: 'hot.net.il',
+    description: 'שילוב מושלם של טלוויזיה ואינטרנט במחיר משתלם',
+    established: '2000',
+    marketShare: 30,
+    customerSatisfaction: 4.1,
+    specialties: ['חבילות משולבות', 'בידור משפחתי', 'VOD עשיר'],
+    plans: [
+      {
+        id: 'hot-total-plus',
+        name: 'הוט טוטאל פלוס',
+        price: 249,
+        originalPrice: 299,
+        currency: '₪',
+        period: 'month',
+        features: ['180+ ערוצים', 'הוט VOD ללא הגבלה', 'Netflix & Amazon Prime', 'ערוצי ילדים מיוחדים'],
+        detailedDescription: 'החבילה הכי עשירה בתוכן לכל המשפחה',
+        targetAudience: 'משפחות עם ילדים',
+        pros: ['תוכן עשיר לילדים', 'VOD ללא הגבלה', 'נטפליקס כלול', 'מחיר טוב'],
+        cons: ['פחות ספורט', 'איכות פחותה מיס'],
+        discount: { amount: 17, description: 'מבצע טוטאל' },
+        contractLength: '24 חודשים',
+        setupFee: 0,
+        popularityScore: 85,
+        specialFeatures: ['הוט VOD ללא הגבלה', 'Netflix פרמיום', 'Amazon Prime Video', 'ערוצי ילדים בלעדיים'],
+        bestFor: ['משפחות עם ילדים', 'אוהבי VOD', 'חסכנים', 'משפחות גדולות']
+      },
+      {
+        id: 'hot-smart-family',
+        name: 'הוט משפחתי חכם',
+        price: 169,
+        originalPrice: 199,
+        currency: '₪',
+        period: 'month',
+        features: ['120+ ערוצים', 'הוט VOD 50 שעות', 'ערוצי ילדים', 'בקרת הורים'],
+        detailedDescription: 'מושלם למשפחות עם ילדים עם בקרת הורים מתקדמת',
+        targetAudience: 'משפחות צעירות',
+        pros: ['בקרת הורים מתקדמת', 'ערוצי ילדים איכותיים', 'מחיר סביר'],
+        cons: ['VOD מוגבל', 'ללא נטפליקס'],
+        discount: { amount: 15, description: 'הנחה משפחתית' },
+        recommended: true,
+        contractLength: '12 חודשים',
+        setupFee: 99,
+        popularityScore: 82,
+        specialFeatures: ['בקרת הורים חכמה', 'פילטור תוכן', 'זמן מסך מוגבל', 'ערוצי חינוך'],
+        bestFor: ['משפחות עם ילדים קטנים', 'הורים דאגנים', 'תוכן חינוכי']
+      }
+    ]
+  },
+  {
+    id: 'netflix-israel',
+    name: 'נטפליקס ישראל',
+    category: 'tv',
+    rating: 4.5,
+    customerService: 'support@netflix.com',
+    website: 'netflix.com/il',
+    description: 'פלטפורמת הסטרימינג המובילה בעולם עם תוכן ישראלי ובינלאומי',
+    established: '2016',
+    marketShare: 15,
+    customerSatisfaction: 4.5,
+    specialties: ['סדרות מקוריות', 'תוכן בינלאומי', 'אלגוריתם אישי'],
+    plans: [
+      {
+        id: 'netflix-premium-4k',
+        name: 'נטפליקס פרמיום 4K',
+        price: 55,
+        currency: '₪',
+        period: 'month',
+        features: ['4K Ultra HD', '4 מסכים בו-זמנית', 'הורדות לצפייה', 'תוכן ללא פרסומות'],
+        detailedDescription: 'האיכות הגבוהה ביותר עם 4 מסכים במקביל',
+        targetAudience: 'משפחות גדולות ואוהבי איכות',
+        pros: ['איכות 4K מעולה', '4 מסכים', 'תוכן איכותי', 'ללא פרסומות'],
+        cons: ['מחיר גבוה יחסית', 'דורש אינטרנט מהיר'],
+        contractLength: 'ללא התחייבות',
+        popularityScore: 94,
+        specialFeatures: ['4K HDR', 'Dolby Atmos', 'הורדות ללא הגבלה', 'פרופילים אישיים'],
+        bestFor: ['משפחות גדולות', 'אוהבי 4K', 'צפייה במספר מכשירים']
+      },
+      {
+        id: 'netflix-standard-hd',
+        name: 'נטפליקס סטנדרט HD',
+        price: 40,
+        currency: '₪',
+        period: 'month',
+        features: ['HD איכות', '2 מסכים בו-זמנית', 'הורדות לצפייה', 'תוכן ללא פרסומות'],
+        detailedDescription: 'האיזון המושלם בין איכות למחיר',
+        targetAudience: 'משפחות קטנות וזוגות',
+        pros: ['מחיר סביר', 'איכות HD טובה', '2 מסכים', 'מגוון תוכן'],
+        cons: ['לא 4K', 'רק 2 מסכים'],
+        recommended: true,
+        contractLength: 'ללא התחייבות',
+        popularityScore: 91,
+        specialFeatures: ['HD 1080p', 'הורדות מוגבלות', 'המלצות אישיות', 'תוכן מקורי'],
+        bestFor: ['זוגות', 'משפחות קטנות', 'צפייה רגילה']
+      },
+      {
+        id: 'netflix-basic',
+        name: 'נטפליקס בסיסי',
+        price: 28,
+        currency: '₪',
+        period: 'month',
+        features: ['720p איכות', '1 מסך', 'הורדות מוגבלות', 'תוכן ללא פרסומות'],
+        detailedDescription: 'הכי חסכוני לצפייה אישית',
+        targetAudience: 'צפייה אישית',
+        pros: ['מחיר נמוך מאוד', 'תוכן מלא', 'ללא פרסומות'],
+        cons: ['איכות נמוכה', 'רק מסך אחד', 'הורדות מוגבלות'],
+        contractLength: 'ללא התחייבות',
+        popularityScore: 76,
+        bestFor: ['סטודנטים', 'צפייה אישית', 'חסכנים']
+      }
+    ]
+  },
+  {
+    id: 'disney-plus-israel',
+    name: 'דיסני פלוס ישראל',
+    category: 'tv',
+    rating: 4.4,
+    customerService: 'help@disneyplus.com',
+    website: 'disneyplus.com',
+    description: 'עולם הקסם של דיסני, מארוול וסטאר וורס במקום אחד',
+    established: '2021',
+    marketShare: 8,
+    customerSatisfaction: 4.4,
+    specialties: ['תוכן משפחתי', 'מארוול ודיסני', 'תוכן לילדים'],
+    plans: [
+      {
+        id: 'disney-plus-annual',
+        name: 'דיסני פלוס שנתי',
+        price: 25,
+        originalPrice: 30,
+        currency: '₪',
+        period: 'month',
+        features: ['4K Ultra HD', '4 מסכים בו-זמנית', 'הורדות ללא הגבלה', 'תוכן דיסני מלא'],
+        detailedDescription: 'כל עולם דיסני במחיר מעולה עם תשלום שנתי',
+        targetAudience: 'משפחות עם ילדים',
+        pros: ['תוכן משפחתי איכותי', 'מחיר מעולה', '4K כלול', 'מארוול וסטאר וורס'],
+        cons: ['פחות תוכן למבוגרים', 'מעט תוכן ישראלי'],
+        discount: { amount: 17, description: 'הנחה שנתית' },
+        recommended: true,
+        contractLength: '12 חודשים',
+        popularityScore: 89,
+        specialFeatures: ['כל סרטי דיסני', 'מארוול קומפלט', 'סטאר וורס מלא', 'תוכן לילדים בטוח'],
+        bestFor: ['משפחות עם ילדים', 'אוהבי מארוול', 'חובבי דיסני']
+      },
+      {
+        id: 'disney-plus-monthly',
+        name: 'דיסני פלוס חודשי',
+        price: 30,
+        currency: '₪',
+        period: 'month',
+        features: ['4K Ultra HD', '4 מסכים בו-זמנית', 'הורדות ללא הגבלה', 'תוכן דיסני מלא'],
+        detailedDescription: 'גמישות מלאה עם תשלום חודשי',
+        targetAudience: 'מי שרוצה גמישות',
+        pros: ['ללא התחייבות', 'תוכן איכותי', '4K כלול'],
+        cons: ['מחיר גבוה יותר', 'פחות תוכן למבוגרים'],
+        contractLength: 'ללא התחייבות',
+        popularityScore: 81,
+        specialFeatures: ['כל סרטי דיסני', 'מארוול קומפלט', 'תוכן חדש מיד', 'בטוח לילדים'],
+        bestFor: ['ללא התחייבות', 'ניסיון קצר', 'גמישות']
+      }
+    ]
+  },
+  {
+    id: 'amazon-prime-israel',
+    name: 'אמזון פריים ישראל',
+    category: 'tv',
+    rating: 4.2,
+    customerService: 'help@amazon.com',
+    website: 'primevideo.com',
+    description: 'שירות סטרימינג עם תוכן מקורי איכותי ומשלוחים חינם',
+    established: '2021',
+    marketShare: 7,
+    customerSatisfaction: 4.2,
+    specialties: ['תוכן מקורי', 'שילוב קניות', 'ספורט בלעדי'],
+    plans: [
+      {
+        id: 'amazon-prime-full',
+        name: 'אמזון פריים מלא',
+        price: 35,
+        currency: '₪',
+        period: 'month',
+        features: ['4K HDR', '3 מסכים בו-זמנית', 'משלוחים חינם מאמזון', 'Amazon Music כלול'],
+        detailedDescription: 'לא רק סטרימינג - כל השירותים של אמזון',
+        targetAudience: 'קונים באמזון ואוהבי תוכן איכותי',
+        pros: ['שירותים נוספים', 'תוכן מקורי מעולה', 'משלוחים חינם', 'מוזיקה כלולה'],
+        cons: ['פחות תוכן מנטפליקס', 'מעט תוכן ישראלי'],
+        contractLength: 'ללא התחייבות',
+        popularityScore: 78,
+        specialFeatures: ['Amazon Prime Video', 'Amazon Music', 'משלוחים חינם', 'תוכן בלעדי'],
+        bestFor: ['קונים באמזון', 'אוהבי סדרות מקוריות', 'שילוב שירותים']
+      }
+    ]
+  }
+];
+
 // Internet providers
 export const enhancedInternetProviders: EnhancedProvider[] = [
   {
@@ -599,6 +871,8 @@ export const getEnhancedPlansByCategory = (category: string): EnhancedPlan[] => 
       return enhancedInternetProviders.flatMap(provider => provider.plans);
     case 'electricity':
       return enhancedElectricityProviders.flatMap(provider => provider.plans);
+    case 'tv':
+      return enhancedTvProviders.flatMap(provider => provider.plans);
     default:
       return [];
   }
@@ -606,7 +880,7 @@ export const getEnhancedPlansByCategory = (category: string): EnhancedPlan[] => 
 
 // Helper function to get provider by plan
 export const getProviderByPlan = (planId: string): EnhancedProvider | null => {
-  const allProviders = [...enhancedCellularProviders, ...enhancedInternetProviders, ...enhancedElectricityProviders];
+  const allProviders = [...enhancedCellularProviders, ...enhancedInternetProviders, ...enhancedElectricityProviders, ...enhancedTvProviders];
   return allProviders.find(provider => 
     provider.plans.some(plan => plan.id === planId)
   ) || null;
