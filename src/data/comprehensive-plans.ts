@@ -565,6 +565,288 @@ export const enhancedTvProviders: EnhancedProvider[] = [
         bestFor: ['קונים באמזון', 'אוהבי סדרות מקוריות', 'שילוב שירותים']
       }
     ]
+  },
+  {
+    id: 'rami-levy',
+    name: 'רמי לוי תקשורת',
+    category: 'cellular',
+    rating: 3.8,
+    customerService: '1-700-753-753',
+    website: 'rami-levy.co.il',
+    description: 'מחירים נמוכים וחיסכון אמיתי לכל המשפחה',
+    established: '2017',
+    marketShare: 8,
+    customerSatisfaction: 3.9,
+    specialties: ['מחירים נמוכים', 'חיסכון משפחתי', 'פשטות'],
+    plans: [
+      {
+        id: 'rami-levy-mega-unlimited',
+        name: 'מגה ללא גבול',
+        price: 59,
+        originalPrice: 89,
+        currency: '₪',
+        period: 'month',
+        features: ['אינטרנט ללא הגבלה', 'שיחות ללא הגבלה', '4G מהיר', 'הודעות ללא הגבלה'],
+        detailedDescription: 'ללא הגבלה במחיר הכי נמוך בשוק',
+        targetAudience: 'חסכנים וגולשים כבדים',
+        pros: ['המחיר הנמוך ביותר', 'ללא הגבלה אמיתית', 'ללא התחייבות'],
+        cons: ['כיסוי פחות טוב באזורים מרוחקים', 'שירות לקוחות בסיסי'],
+        discount: { amount: 34, description: 'הנחת רמי לוי' },
+        recommended: true,
+        monthlyQuota: 'ללא הגבלה',
+        speed: '4G עד 150Mbps',
+        contractLength: 'ללא התחייבות',
+        popularityScore: 94,
+        specialFeatures: ['מחיר קבוע לתמיד', 'ללא עמלות נסתרות', 'שקיפות מלאה'],
+        bestFor: ['חסכנים', 'משפחות גדולות', 'צעירים', 'גולשים כבדים']
+      },
+      {
+        id: 'rami-levy-family-shared',
+        name: 'משפחתי חכם 300GB',
+        price: 79,
+        originalPrice: 149,
+        currency: '₪',
+        period: 'month',
+        features: ['300GB משותפים', '5 קווים', 'שיחות ללא הגבלה', 'אפליקציות חינם'],
+        detailedDescription: '5 קווים עם 300GB במחיר מדהים',
+        targetAudience: 'משפחות גדולות',
+        pros: ['5 קווים במחיר אחד', 'נפח עצום', 'חיסכון משמעותי'],
+        cons: ['נפח משותף', 'מוגבל ל-300GB'],
+        discount: { amount: 47, description: 'הנחה משפחתית ענקית' },
+        monthlyQuota: '300GB משותפים',
+        speed: '4G עד 150Mbps',
+        contractLength: '12 חודשים',
+        popularityScore: 89,
+        specialFeatures: ['ניהול נפח חכם', 'התראות צריכה', 'בקרת הורים בסיסית'],
+        bestFor: ['משפחות של 4-5 נפשות', 'חסכנים', 'משפחות צעירות']
+      }
+    ]
+  },
+  {
+    id: '012-mobile',
+    name: '012 מובייל',
+    category: 'cellular',
+    rating: 3.9,
+    customerService: '1-700-012-012',
+    website: '012.net.il',
+    description: 'פתרונות תקשורת חכמים עם שירות אישי',
+    established: '2010',
+    marketShare: 6,
+    customerSatisfaction: 4.0,
+    specialties: ['שירות אישי', 'גמישות', 'חבילות מותאמות'],
+    plans: [
+      {
+        id: '012-smart-unlimited',
+        name: 'חכם ללא הגבלה',
+        price: 69,
+        currency: '₪',
+        period: 'month',
+        features: ['אינטרנט ללא הגבלה', 'שיחות ללא הגבלה', '4G+', 'נתונים גלובליים'],
+        detailedDescription: 'חבילה חכמה עם תוספות בינלאומיות',
+        targetAudience: 'עסקים קטנים ונוסעים',
+        pros: ['נתונים בחו"ל', 'שירות אישי', 'גמישות'],
+        cons: ['מחיר בינוני', 'כיסוי מוגבל'],
+        monthlyQuota: 'ללא הגבלה',
+        speed: '4G+ עד 200Mbps',
+        contractLength: '6 חודשים',
+        popularityScore: 77,
+        specialFeatures: ['500MB בחו"ל חינם', 'שיחות ל-20 מדינות', 'Wi-Fi גלובלי'],
+        bestFor: ['נוסעים בחו"ל', 'עסקים קטנים', 'פרילנסרים']
+      }
+    ]
+  },
+  {
+    id: 'golan-telecom',
+    name: 'גולן טלקום',
+    category: 'cellular',
+    rating: 4.0,
+    customerService: '1-700-465-465',
+    website: 'golan-telecom.co.il',
+    description: 'חברת תקשורת אזורית עם שירות מעולה',
+    established: '2005',
+    marketShare: 4,
+    customerSatisfaction: 4.2,
+    specialties: ['שירות אזורי', 'תמיכה מקומית', 'מחירים הוגנים'],
+    plans: [
+      {
+        id: 'golan-regional-120',
+        name: 'אזורי 120GB',
+        price: 55,
+        currency: '₪',
+        period: 'month',
+        features: ['120GB גלישה', 'שיחות ללא הגבלה', 'שירות אישי', 'תמיכה מקומית'],
+        detailedDescription: 'חבילה מעולה עם שירות אישי מהצפון',
+        targetAudience: 'תושבי הצפון',
+        pros: ['שירות אישי מעולה', 'תמיכה מקומית', 'מחיר הוגן'],
+        cons: ['כיסוי מוגבל לצפון', 'פחות תכונות מתקדמות'],
+        monthlyQuota: '120GB',
+        speed: '4G עד 150Mbps',
+        contractLength: '12 חודשים',
+        popularityScore: 73,
+        specialFeatures: ['תמיכה בעברית ברוסית וערבית', 'שירות טכני מקומי', 'מחירים קבועים'],
+        bestFor: ['תושבי הצפון', 'קהילות מקומיות', 'מבוגרים']
+      }
+    ]
+  },
+  {
+    id: '018-xphone',
+    name: '018 Xphone',
+    category: 'cellular',
+    rating: 3.7,
+    customerService: '1-700-018-018',
+    website: '018xphone.co.il',
+    description: 'פתרונות סלולר חדשניים למגזר החרדי והמסורתי',
+    established: '2018',
+    marketShare: 3,
+    customerSatisfaction: 3.8,
+    specialties: ['מגזר חרדי', 'פילטור תוכן', 'שירות מותאם'],
+    plans: [
+      {
+        id: '018-kosher-unlimited',
+        name: 'כשר ללא הגבלה',
+        price: 65,
+        currency: '₪',
+        period: 'month',
+        features: ['אינטרנט מפוקח', 'שיחות ללא הגבלה', 'פילטור תוכן', 'תמיכה בידיש'],
+        detailedDescription: 'אינטרנט ללא הגבלה עם פילטור תוכן מתאים למגזר החרדי',
+        targetAudience: 'המגזר החרדי והמסורתי',
+        pros: ['פילטור תוכן מתקדם', 'תמיכה בשפות נוספות', 'הגנה על ילדים'],
+        cons: ['אינטרנט מוגבל', 'פחות אפליקציות זמינות'],
+        monthlyQuota: 'ללא הגבלה (מפוקח)',
+        speed: '4G עד 100Mbps',
+        contractLength: '12 חודשים',
+        popularityScore: 85,
+        specialFeatures: ['פילטור TAG', 'תמיכה בידיש ואנגלית', 'בקרת הורים מתקדמת'],
+        bestFor: ['המגזר החרדי', 'משפחות מסורתיות', 'הגנה על ילדים']
+      }
+    ]
+  },
+  {
+    id: 'apple-tv-plus',
+    name: 'Apple TV+',
+    category: 'tv',
+    rating: 4.3,
+    customerService: 'support@apple.com',
+    website: 'tv.apple.com',
+    description: 'תוכן מקורי איכותי מאפל עם איכות הפקה גבוהה',
+    established: '2019',
+    marketShare: 5,
+    customerSatisfaction: 4.3,
+    specialties: ['תוכן מקורי', 'איכות גבוהה', 'ללא פרסומות'],
+    plans: [
+      {
+        id: 'apple-tv-plus-monthly',
+        name: 'Apple TV+ חודשי',
+        price: 24,
+        currency: '₪',
+        period: 'month',
+        features: ['4K HDR', '6 מסכים בו-זמנית', 'הורדות ללא הגבלה', 'תוכן מקורי בלעדי'],
+        detailedDescription: 'תוכן מקורי איכותי במיוחד מאפל',
+        targetAudience: 'אוהבי תוכן איכותי ומקורי',
+        pros: ['איכות הפקה גבוהה מאוד', 'ללא פרסומות', 'תוכן בלעדי'],
+        cons: ['מעט תוכן יחסית', 'פחות סדרות'],
+        contractLength: 'ללא התחייבות',
+        popularityScore: 79,
+        specialFeatures: ['4K Dolby Vision', 'Dolby Atmos', 'תוכן בלעדי', 'שילוב עם אפל'],
+        bestFor: ['אוהבי אפל', 'מחפשי איכות', 'תוכן מקורי']
+      }
+    ]
+  },
+  {
+    id: 'hbo-max-israel',
+    name: 'HBO Max ישראל',
+    category: 'tv',
+    rating: 4.4,
+    customerService: 'help@hbomax.com',
+    website: 'hbomax.com',
+    description: 'תוכן איכותי מהחברות הטובות ביותר בעולם',
+    established: '2022',
+    marketShare: 6,
+    customerSatisfaction: 4.4,
+    specialties: ['תוכן איכותי', 'דרמות מקוריות', 'קולנוע'],
+    plans: [
+      {
+        id: 'hbo-max-premium',
+        name: 'HBO Max פרמיום',
+        price: 35,
+        currency: '₪',
+        period: 'month',
+        features: ['4K Ultra HD', '3 מסכים בו-זמנית', 'הורדות לצפייה', 'תוכן HBO מלא'],
+        detailedDescription: 'כל תוכן HBO הטוב ביותר בעולם',
+        targetAudience: 'אוהבי דרמות ותוכן איכותי',
+        pros: ['תוכן איכותי מהטובים ביותר', 'סדרות מקוריות מעולות', 'קולנוע איכותי'],
+        cons: ['מעט תוכן ישראלי', 'מחיר גבוה יחסית'],
+        contractLength: 'ללא התחייבות',
+        popularityScore: 86,
+        specialFeatures: ['תוכן HBO מלא', 'Warner Bros', 'סרטים חדשים', 'דרמות בלעדיות'],
+        bestFor: ['אוהבי דרמות', 'חובבי קולנוע', 'תוכן איכותי']
+      }
+    ]
+  },
+  {
+    id: 'cellcom-tv',
+    name: 'סלקום TV',
+    category: 'tv',
+    rating: 4.0,
+    customerService: '1-700-500-500',
+    website: 'cellcom.co.il',
+    description: 'שירותי טלוויזיה מסלקום עם שילוב תקשורת',
+    established: '2020',
+    marketShare: 12,
+    customerSatisfaction: 4.0,
+    specialties: ['חבילות משולבות', 'טכנולוגיה', 'שירות אישי'],
+    plans: [
+      {
+        id: 'cellcom-tv-complete',
+        name: 'סלקום TV קומפלט',
+        price: 189,
+        originalPrice: 229,
+        currency: '₪',
+        period: 'month',
+        features: ['140+ ערוצים', 'Netflix כלול', 'סלקום VOD', 'הקלטות ענן'],
+        detailedDescription: 'טלוויזיה חכמה עם שילוב מושלם לשירותי סלקום',
+        targetAudience: 'לקוחות סלקום',
+        pros: ['שילוב עם שירותי סלקום', 'הנחות למנויים', 'טכנולוגיה מתקדמת'],
+        cons: ['מותנה בחבילות סלקום', 'מעט ערוצי ספורט'],
+        discount: { amount: 17, description: 'הנחה למנויי סלקום' },
+        contractLength: '12 חודשים',
+        setupFee: 99,
+        popularityScore: 81,
+        specialFeatures: ['Netflix פרמיום', 'הקלטות ענן ללא הגבלה', 'אפליקציה חכמה'],
+        bestFor: ['לקוחות סלקום', 'אוהבי טכנולוגיה', 'משפחות מודרניות']
+      }
+    ]
+  },
+  {
+    id: 'sport5-live',
+    name: 'ספורט 5 LIVE',
+    category: 'tv', 
+    rating: 4.2,
+    customerService: '1-700-555-777',
+    website: 'sport5.co.il',
+    description: 'כל הספורט הישראלי והבינלאומי במקום אחד',
+    established: '2020',
+    marketShare: 4,
+    customerSatisfaction: 4.2,
+    specialties: ['ספורט בלעדי', 'משחקים חיים', 'תוכן ישראלי'],
+    plans: [
+      {
+        id: 'sport5-unlimited',
+        name: 'ספורט 5 ללא הגבלה',
+        price: 29,
+        currency: '₪',
+        period: 'month',
+        features: ['כל משחקי הליגה', 'ספורט בינלאומי', 'הקלטות', 'משחקים חיים'],
+        detailedDescription: 'כל הספורט הישראלי והבינלאומי',
+        targetAudience: 'אוהבי ספורט',
+        pros: ['כל הכדורגל הישראלי', 'מחיר נמוך', 'ספורט מגוון'],
+        cons: ['רק ספורט', 'ללא תוכן כללי'],
+        contractLength: 'ללא התחייבות',
+        popularityScore: 88,
+        specialFeatures: ['כל משחקי ליגת העל', 'ספורט בינלאומי', 'הקלטות ללא הגבלה'],
+        bestFor: ['אוהבי כדורגל', 'אוהבי ספורט', 'חובבי ספורט ישראלי']
+      }
+    ]
   }
 ];
 
@@ -727,6 +1009,110 @@ export const enhancedInternetProviders: EnhancedProvider[] = [
         popularityScore: 78,
         specialFeatures: ['תמיכה VIP', 'התקנה מקצועית', 'אחריות מורחבת'],
         bestFor: ['עסקים קטנים', 'מקצוענים', 'דורשי שירות מעולה']
+      }
+    ]
+  },
+  {
+    id: 'cellcom-internet',
+    name: 'סלקום אינטרנט',
+    category: 'internet',
+    rating: 4.1,
+    customerService: '1-700-500-500',
+    website: 'cellcom.co.il',
+    description: 'אינטרנט מהיר עם טכנולוגיות מתקדמות',
+    established: '2019',
+    marketShare: 10,
+    customerSatisfaction: 4.1,
+    specialties: ['טכנולוגיה מתקדמת', 'שירות אישי', 'חבילות משולבות'],
+    plans: [
+      {
+        id: 'cellcom-fiber-max',
+        name: 'סיב מקס 1000',
+        price: 139,
+        originalPrice: 169,
+        currency: '₪',
+        period: 'month',
+        features: ['1000Mbps הורדה', '200Mbps העלאה', 'סיב אופטי', 'נתב WiFi 6E', 'IP קבוע'],
+        detailedDescription: 'המהירות הגבוהה ביותר עם העלאה מהירה',
+        targetAudience: 'עסקים ומשתמשים מתקדמים',
+        pros: ['העלאה מהירה מאוד', 'טכנולוגיה מתקדמת', 'שירות מעולה'],
+        cons: ['מחיר גבוה', 'זמין באזורים מוגבלים'],
+        discount: { amount: 18, description: 'מבצע סיב מקס' },
+        speed: '1000Mbps הורדה / 200Mbps העלאה',
+        contractLength: '24 חודשים',
+        setupFee: 0,
+        popularityScore: 85,
+        specialFeatures: ['IP קבוע', 'נתב WiFi 6E', 'תמיכה VIP', 'הגנת סייבר'],
+        bestFor: ['עסקים', 'יוצרי תוכן', 'גיימרים מקצועיים']
+      }
+    ]
+  },
+  {
+    id: '012-smile',
+    name: '012 סמייל',
+    category: 'internet',
+    rating: 3.8,
+    customerService: '1-700-012-012',
+    website: '012.net.il',
+    description: 'אינטרנט במחירים תחרותיים עם שירות אישי',
+    established: '2015',
+    marketShare: 8,
+    customerSatisfaction: 3.9,
+    specialties: ['מחירים תחרותיים', 'שירות אישי', 'גמישות'],
+    plans: [
+      {
+        id: '012-smile-500',
+        name: 'סמייל 500',
+        price: 99,
+        originalPrice: 129,
+        currency: '₪',
+        period: 'month',
+        features: ['500Mbps הורדה', '50Mbps העלאה', 'כבלים', 'נתב WiFi 6', 'שירות 24/7'],
+        detailedDescription: 'מהירות גבוהה במחיר אטרקטיבי',
+        targetAudience: 'משפחות וצעירים',
+        pros: ['מחיר מעולה', 'שירות אישי', 'התקנה מהירה'],
+        cons: ['כיסוי מוגבל', 'מהירות העלאה בינונית'],
+        discount: { amount: 23, description: 'מבצע סמייל' },
+        recommended: true,
+        speed: '500Mbps הורדה / 50Mbps העלאה',
+        contractLength: '12 חודשים',
+        setupFee: 49,
+        popularityScore: 82,
+        specialFeatures: ['התקנה תוך 48 שעות', 'שירות לקוחות אישי', 'נתב מתקדם'],
+        bestFor: ['משפחות צעירות', 'חסכנים', 'מחפשי שירות אישי']
+      }
+    ]
+  },
+  {
+    id: 'netvision',
+    name: 'נטוויז\'ן',
+    category: 'internet',
+    rating: 3.9,
+    customerService: '1-700-638-638',
+    website: 'netvision.net.il',
+    description: 'ספק אינטרנט מנוסה עם פתרונות מגוונים',
+    established: '1995',
+    marketShare: 7,
+    customerSatisfaction: 3.8,
+    specialties: ['ניסיון רב', 'יציבות', 'פתרונות עסקיים'],
+    plans: [
+      {
+        id: 'netvision-business-fiber',
+        name: 'עסקי סיב 600',
+        price: 149,
+        currency: '₪',
+        period: 'month',
+        features: ['600Mbps הורדה', '100Mbps העלאה', 'סיב אופטי', 'IP קבוע', 'תמיכה עסקית'],
+        detailedDescription: 'פתרון מקצועי לעסקים עם תמיכה ייעודית',
+        targetAudience: 'עסקים קטנים ובינוניים',
+        pros: ['תמיכה עסקית מקצועית', 'יציבות גבוהה', 'ניסיון רב'],
+        cons: ['מחיר גבוה', 'מיועד בעיקר לעסקים'],
+        speed: '600Mbps הורדה / 100Mbps העלאה',
+        contractLength: '24 חודשים',
+        setupFee: 199,
+        popularityScore: 76,
+        specialFeatures: ['תמיכה עסקית 24/7', 'SLA מחוייב', 'מנהל חשבון ייעודי'],
+        bestFor: ['עסקים קטנים', 'משרדים', 'דורשי יציבות גבוהה']
       }
     ]
   }

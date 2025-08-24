@@ -8,7 +8,7 @@ import { PlanComparisonTable } from '@/components/detailed/PlanComparisonTable';
 import { useToast } from '@/hooks/use-toast';
 
 interface AnalysisResult {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentAmount: number;
   currentProvider: string;
   recommendedPlan: any;
@@ -23,10 +23,13 @@ interface DetailedAnalysisResultsProps {
   onBackToInput: () => void;
 }
 
+import { Tv } from 'lucide-react';
+
 const categoryConfig = {
   electricity: { icon: Zap, name: 'חשמל', color: 'golden' },
   cellular: { icon: Smartphone, name: 'סלולר', color: 'electric' },
-  internet: { icon: Wifi, name: 'אינטרנט', color: 'vibrant' }
+  internet: { icon: Wifi, name: 'אינטרנט', color: 'vibrant' },
+  tv: { icon: Tv, name: 'טלוויזיה וסטרימינג', color: 'purple' }
 };
 
 // Mock data for detailed plans

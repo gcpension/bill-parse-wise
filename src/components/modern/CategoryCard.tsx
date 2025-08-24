@@ -7,7 +7,7 @@ import { formatCurrency } from '@/lib/utils';
 import { DigitalSignature } from '@/components/DigitalSignature';
 
 interface CategoryCardProps {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentProvider: string;
   currentAmount: number;
   recommendedPlan: any;
@@ -37,6 +37,12 @@ const categoryColors = {
     bg: 'bg-green-50 dark:bg-green-900/20',
     border: 'border-green-200 dark:border-green-800',
     icon: 'text-green-600 dark:text-green-400'
+  },
+  tv: {
+    gradient: 'from-purple-500 to-pink-500',
+    bg: 'bg-purple-50 dark:bg-purple-900/20',
+    border: 'border-purple-200 dark:border-purple-800',
+    icon: 'text-purple-600 dark:text-purple-400'
   }
 };
 

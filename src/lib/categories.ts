@@ -39,8 +39,8 @@ export const EXPENSE_CATEGORIES: ExpenseCategory[] = [
   {
     id: 'tv',
     name: 'Television',
-    nameHebrew: 'טלוויזיה',
-    keywords: ['טלוויזיה', 'טלוויזיה בכבלים', 'yes', 'הוט', 'נטפליקס', 'tv', 'cable'],
+    nameHebrew: 'טלוויזיה וסטרימינג',
+    keywords: ['טלוויזיה', 'טלוויזיה בכבלים', 'yes', 'הוט', 'נטפליקס', 'tv', 'cable', 'netflix', 'disney', 'amazon prime', 'apple tv', 'hbo', 'streaming', 'סטרימינג'],
     color: 'hsl(271, 81%, 56%)', // Purple
   },
 ];

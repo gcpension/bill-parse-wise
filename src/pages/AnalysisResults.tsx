@@ -9,7 +9,7 @@ import { Zap, Smartphone, Wifi } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface AnalysisResult {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentAmount: number;
   currentProvider: string;
   recommendedPlan: any;
@@ -24,10 +24,13 @@ interface AnalysisResultsProps {
   onBackToInput: () => void;
 }
 
+import { Tv } from 'lucide-react';
+
 const categoryConfig = {
   electricity: { icon: Zap, name: 'חשמל', color: 'yellow' },
   cellular: { icon: Smartphone, name: 'סלולר', color: 'blue' },
-  internet: { icon: Wifi, name: 'אינטרנט', color: 'green' }
+  internet: { icon: Wifi, name: 'אינטרנט', color: 'green' },
+  tv: { icon: Tv, name: 'טלוויזיה וסטרימינג', color: 'purple' }
 };
 
 export const AnalysisResults = ({ results, onBackToInput }: AnalysisResultsProps) => {
