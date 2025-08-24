@@ -5,6 +5,7 @@ import { getCheapestPlan, calculateAnnualSavings } from '@/data/providers';
 import { AnalysisInput } from '@/components/AnalysisInput';
 import { ResultsGrid } from '@/components/ResultsGrid';
 import { Layout } from '@/components/Layout';
+import { AnalysisResults } from '@/pages/AnalysisResults';
 
 interface UploadedFile {
   file: File;
@@ -190,7 +191,9 @@ export const Analyze = () => {
           </div>
 
           {/* Results Display with new organized layout */}
-          <ResultsGrid results={analysisResults} />
+          <div className="space-y-8">
+            <AnalysisResults results={analysisResults} onBackToInput={() => setActiveStep('input')} />
+          </div>
 
           {/* Next Steps */}
           <div className="bg-gradient-to-br from-primary/5 to-primary-glow/5 rounded-xl p-8">
