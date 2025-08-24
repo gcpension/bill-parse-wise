@@ -2,12 +2,12 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Download, AlertTriangle, Scale, Shield, Phone, Zap, Wifi, Smartphone } from 'lucide-react';
+import { FileText, Download, AlertTriangle, Scale, Shield, Phone, Zap, Wifi, Smartphone, Tv } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
 
 interface DocumentTemplatesProps {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentProvider: string;
   newProvider: string;
 }
@@ -15,7 +15,8 @@ interface DocumentTemplatesProps {
 const categoryNames = {
   electricity: 'חשמל',
   cellular: 'סלולר',
-  internet: 'אינטרנט'
+  internet: 'אינטרנט',
+  tv: 'טלוויזיה'
 };
 
 export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
@@ -34,35 +35,35 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
       pdf.setFontSize(16);
       pdf.setFont('helvetica', 'bold');
       
-      // Add title
-      pdf.text(`Power of Attorney - ${categoryNames[category]} Switch`, 20, 30);
+      // Add title in Hebrew
+      pdf.text(`ייפוי כוח - מעבר ספק ${categoryNames[category]}`, 20, 30);
       
       pdf.setFontSize(12);
       pdf.setFont('helvetica', 'normal');
       
-      // Add content
+      // Add content with Hebrew support
       const content = [
         '',
-        'Full Name: _____________________ ',
-        'ID Number: _____________________',
-        'Address: _____________________',
+        'שם מלא: _____________________ ',
+        'מספר תעודת זהות: _____________________',
+        'כתובת: _____________________',
         '',
-        `I hereby authorize ${newProvider} to act on my behalf`,
-        `for switching from current provider: ${currentProvider}`,
+        `אני מסמיך בזאת את ${newProvider} לפעול בשמי`,
+        `לביצוע מעבר מספק ${currentProvider}`,
         '',
-        'This authorization includes:',
-        `• Canceling service with current provider: ${currentProvider}`,
-        `• Opening new service with new provider: ${newProvider}`,
-        '• Transferring all relevant details',
-        '• Performing all required actions for the switch',
+        'הסמכה זו כוללת:',
+        `• ביטול השירות עם הספק הנוכחי: ${currentProvider}`,
+        `• פתיחת שירות חדש עם הספק החדש: ${newProvider}`,
+        '• העברת כל הפרטים הרלוונטיים',
+        '• ביצוע כל הפעולות הנדרשות למעבר',
         '',
-        `Date: ${new Date().toLocaleDateString('he-IL')}`,
-        'Signature: ________________',
+        `תאריך: ${new Date().toLocaleDateString('he-IL')}`,
+        'חתימה: ________________',
         '',
-        'Notes:',
-        '- This document was generated automatically',
-        '- Please sign and send to the new provider',
-        '- Keep a copy for your records'
+        'הערות:',
+        '- מסמך זה נוצר אוטומטית',
+        '- יש לחתום ולשלוח לספק החדש',
+        '- שמור עותק למטרות תיעוד'
       ];
       
       let yPosition = 50;
@@ -91,43 +92,11 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
     }
   };
 
-  const generatePowerOfAttorneyPDF = (category: string, currentProvider: string, newProvider: string) => {
-    return `ייפוי כוח למעבר ספק ${categoryNames[category]}
-===========================================
-
-אני החתום מטה: _____________________ (שם מלא)
-תעודת זהות: _____________________
-כתובת: _____________________
-
-מסמיך בזאת את ${newProvider} לפעול בשמי לשם ביצוע מעבר מספק ${currentProvider}.
-
-הסמכה זו כוללת:
-• ביטול השירות עם הספק הנוכחי: ${currentProvider}
-• פתיחת שירות חדש עם הספק החדש: ${newProvider}
-• העברת כל הפרטים הרלוונטיים
-• ביצוע כל הפעולות הנדרשות למעבר
-
-תאריך: ${new Date().toLocaleDateString('he-IL')}
-חתימה: ________________
-
-הערות:
-- מסמך זה נוצר אוטומטית על ידי מערכת השוואת הספקים
-- יש לחתום על המסמך ולשלוח אותו לספק החדש
-- מומלץ לשמור עותק למטרות תיעוד
-
-לשאלות נוספות: support@example.com
-`;
-  };
   const categoryIcons = {
     electricity: Zap,
     cellular: Smartphone,
-    internet: Wifi
-  };
-
-  const categoryNames = {
-    electricity: 'חשמל',
-    cellular: 'סלולר',
-    internet: 'אינטרנט'
+    internet: Wifi,
+    tv: Tv
   };
 
   const Icon = categoryIcons[category];
