@@ -105,14 +105,24 @@ export const ProviderSwitchForm = ({
 תאריך: ${new Date().toLocaleDateString('he-IL')}
 חתימה: ________________`;
       
-      // Create PDF and download
-      const pdf = new jsPDF();
+      // Create PDF with Hebrew support
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        format: 'a4'
+      });
+      
+      const pageWidth = pdf.internal.pageSize.width;
+      const rightMargin = 20;
+      
+      pdf.setFont('arial', 'normal');
       pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text(`Power of Attorney - ${category}`, 20, 30);
+      pdf.setR2L(true);
+      
+      const title = `ייפוי כוח - ${categoryNames[category]}`;
+      const titleWidth = pdf.getTextWidth(title);
+      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
       
       pdf.setFontSize(12);
-      pdf.setFont('helvetica', 'normal');
       
       const contentLines = pdfContent.split('\n');
       let yPosition = 50;
@@ -120,7 +130,8 @@ export const ProviderSwitchForm = ({
         if (line.trim() === '') {
           yPosition += 5;
         } else {
-          pdf.text(line, 20, yPosition);
+          const lineWidth = pdf.getTextWidth(line);
+          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
           yPosition += 7;
         }
       });
@@ -234,14 +245,24 @@ ${formData.agreeToMarketing ? '✓' : '✗'} אני מסכים לקבל חומר
         submissionId
       }));
 
-      // Auto-download the confirmation as PDF
-      const pdf = new jsPDF();
+      // Auto-download the confirmation as PDF with Hebrew support
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        format: 'a4'
+      });
+      
+      const pageWidth = pdf.internal.pageSize.width;
+      const rightMargin = 20;
+      
+      pdf.setFont('arial', 'normal');
       pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text(`Switch Confirmation - ${categoryNames[category]}`, 20, 30);
+      pdf.setR2L(true);
+      
+      const title = `אישור מעבר - ${categoryNames[category]}`;
+      const titleWidth = pdf.getTextWidth(title);
+      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
       
       pdf.setFontSize(12);
-      pdf.setFont('helvetica', 'normal');
       
       const content = digitalDocument.split('\n');
       let yPosition = 50;
@@ -249,7 +270,8 @@ ${formData.agreeToMarketing ? '✓' : '✗'} אני מסכים לקבל חומר
         if (line.trim() === '') {
           yPosition += 5;
         } else {
-          pdf.text(line, 20, yPosition);
+          const lineWidth = pdf.getTextWidth(line);
+          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
           yPosition += 7;
         }
       });

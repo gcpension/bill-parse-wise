@@ -629,21 +629,31 @@ export const Settings = () => {
                   דרג את החסכונט
                 </Button>
                 <Button variant="outline" className="justify-start" onClick={() => {
-                  const pdf = new jsPDF();
+                  const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    format: 'a4'
+                  });
+                  
+                  const pageWidth = pdf.internal.pageSize.width;
+                  const rightMargin = 20;
+                  
+                  pdf.setFont('arial', 'normal');
                   pdf.setFontSize(16);
-                  pdf.setFont('helvetica', 'bold');
-                  pdf.text('User Guide - Chasconot', 20, 30);
+                  pdf.setR2L(true);
+                  
+                  const title = 'מדריך משתמש - חסכונט';
+                  const titleWidth = pdf.getTextWidth(title);
+                  pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
                   
                   pdf.setFontSize(12);
-                  pdf.setFont('helvetica', 'normal');
                   
                   const guideContent = [
                     '',
-                    '1. Create personal profile',
-                    '2. Upload bills or enter data manually',
-                    '3. Compare between providers',
-                    '4. Digitally sign provider switch',
-                    '5. Save money!'
+                    '1. צור פרופיל אישי',
+                    '2. העלה חשבונות או הזן נתונים ידנית',
+                    '3. השווה בין ספקים',
+                    '4. חתום דיגיטלית על מעבר ספק',
+                    '5. חסוך כסף!'
                   ];
                   
                   let yPosition = 50;
@@ -651,7 +661,8 @@ export const Settings = () => {
                     if (line === '') {
                       yPosition += 5;
                     } else {
-                      pdf.text(line, 20, yPosition);
+                      const lineWidth = pdf.getTextWidth(line);
+                      pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
                       yPosition += 7;
                     }
                   });

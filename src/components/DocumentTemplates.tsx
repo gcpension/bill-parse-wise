@@ -28,18 +28,26 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
   
   const handleDownloadForm = async (category: string) => {
     try {
-      // Create PDF document
-      const pdf = new jsPDF();
+      // Create PDF document with Hebrew support
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        format: 'a4'
+      });
       
-      // Set Hebrew font support (using default for now)
+      const pageWidth = pdf.internal.pageSize.width;
+      const rightMargin = 20;
+      
+      // Set Hebrew font support
+      pdf.setFont('arial', 'normal');
       pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
+      pdf.setR2L(true);
       
       // Add title in Hebrew
-      pdf.text(`ייפוי כוח - מעבר ספק ${categoryNames[category]}`, 20, 30);
+      const title = `ייפוי כוח - מעבר ספק ${categoryNames[category]}`;
+      const titleWidth = pdf.getTextWidth(title);
+      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
       
       pdf.setFontSize(12);
-      pdf.setFont('helvetica', 'normal');
       
       // Add content with Hebrew support
       const content = [
@@ -48,20 +56,21 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
         'מספר תעודת זהות: _____________________',
         'כתובת: _____________________',
         '',
-        `אני מסמיך בזאת את ${newProvider} לפעול בשמי`,
-        `לביצוע מעבר מספק ${currentProvider}`,
+        `אני החתום מטה מסמיך בזאת את ${newProvider}`,
+        `לפעול בשמי לשם ביצוע מעבר מספק ${currentProvider}`,
+        `לספק ${newProvider}.`,
         '',
-        'הסמכה זו כוללת:',
-        `• ביטול השירות עם הספק הנוכחי: ${currentProvider}`,
-        `• פתיחת שירות חדש עם הספק החדש: ${newProvider}`,
-        '• העברת כל הפרטים הרלוונטיים',
-        '• ביצוע כל הפעולות הנדרשות למעבר',
+        'פעולות מורשות:',
+        '• ביטול השירות הנוכחי',
+        '• פתיחת השירות החדש',  
+        '• העברת פרטי החשבון',
+        '• חתימה על מסמכי המעבר',
         '',
         `תאריך: ${new Date().toLocaleDateString('he-IL')}`,
         'חתימה: ________________',
         '',
-        'הערות:',
-        '- מסמך זה נוצר אוטומטית',
+        'הוראות:',
+        '- יש למלא את כל הפרטים בבירור',
         '- יש לחתום ולשלוח לספק החדש',
         '- שמור עותק למטרות תיעוד'
       ];
@@ -71,7 +80,8 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
         if (line === '') {
           yPosition += 5;
         } else {
-          pdf.text(line, 20, yPosition);
+          const lineWidth = pdf.getTextWidth(line);
+          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
           yPosition += 7;
         }
       });

@@ -76,17 +76,28 @@ export const SavedForms = ({ category }: SavedFormsProps) => {
 
   const downloadForm = (formData: SavedForm) => {
     try {
-      // Create PDF document
-      const pdf = new jsPDF();
+      // Create PDF document with Hebrew support
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        format: 'a4'
+      });
       const timestamp = new Date(formData.timestamp);
       
-      // Set up PDF
+      // Configure for Hebrew text (right to left)
+      const pageWidth = pdf.internal.pageSize.width;
+      const rightMargin = 20;
+      
+      // Set up PDF with Arial font for better Hebrew support
+      pdf.setFont('arial', 'normal');
       pdf.setFontSize(18);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text(`טופס מעבר ספק ${categoryNames[category]}`, 20, 30);
+      pdf.setR2L(true);
+      
+      // Title
+      const title = `טופס מעבר ספק ${categoryNames[category]}`;
+      const titleWidth = pdf.getTextWidth(title);
+      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
       
       pdf.setFontSize(12);
-      pdf.setFont('helvetica', 'normal');
       
       // Add content
       const content = generateFormContent(formData);
@@ -96,7 +107,8 @@ export const SavedForms = ({ category }: SavedFormsProps) => {
         if (line === '') {
           yPosition += 5;
         } else {
-          pdf.text(line, 20, yPosition);
+          const lineWidth = pdf.getTextWidth(line);
+          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
           yPosition += 7;
         }
       });

@@ -61,13 +61,23 @@ export const DocumentRequirements = ({ category }: DocumentRequirementsProps) =>
   const { toast } = useToast();
 
   const downloadPowerOfAttorney = () => {
-    const pdf = new jsPDF();
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      format: 'a4'
+    });
+    
+    const pageWidth = pdf.internal.pageSize.width;
+    const rightMargin = 20;
+    
+    pdf.setFont('arial', 'normal');
     pdf.setFontSize(16);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`ייפוי כוח - ${categoryNames[category]}`, 20, 30);
+    pdf.setR2L(true);
+    
+    const title = `ייפוי כוח - ${categoryNames[category]}`;
+    const titleWidth = pdf.getTextWidth(title);
+    pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
     
     pdf.setFontSize(12);
-    pdf.setFont('helvetica', 'normal');
     
     const pdfContent = [
       '',
@@ -102,7 +112,8 @@ export const DocumentRequirements = ({ category }: DocumentRequirementsProps) =>
       if (line === '') {
         yPosition += 5;
       } else {
-        pdf.text(line, 20, yPosition);
+        const lineWidth = pdf.getTextWidth(line);
+        pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
         yPosition += 7;
       }
     });

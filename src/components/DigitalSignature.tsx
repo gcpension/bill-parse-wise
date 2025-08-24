@@ -136,14 +136,24 @@ export const DigitalSignature = ({
         documentId
       }));
 
-      // Auto-download the signed document
-      const pdf = new jsPDF();
+      // Auto-download the signed document with Hebrew support
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        format: 'a4'
+      });
+      
+      const pageWidth = pdf.internal.pageSize.width;
+      const rightMargin = 20;
+      
+      pdf.setFont('arial', 'normal');
       pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text(`Signed Document - ${categoryNames[category]} Switch`, 20, 30);
+      pdf.setR2L(true);
+      
+      const title = `מסמך חתום - מעבר ספק ${categoryNames[category]}`;
+      const titleWidth = pdf.getTextWidth(title);
+      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
       
       pdf.setFontSize(12);
-      pdf.setFont('helvetica', 'normal');
       
       const content = digitalDocument.split('\n');
       let yPosition = 50;
@@ -151,7 +161,8 @@ export const DigitalSignature = ({
         if (line.trim() === '') {
           yPosition += 5;
         } else {
-          pdf.text(line, 20, yPosition);
+          const lineWidth = pdf.getTextWidth(line);
+          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
           yPosition += 7;
         }
       });
