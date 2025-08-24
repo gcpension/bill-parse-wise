@@ -226,85 +226,88 @@ export const PlanComparisonTable = ({
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {prov.plans.map((plan) => (
                   <div
                     key={plan.id}
-                    className={`relative p-5 rounded-xl border transition-all hover:shadow-md ${
+                    className={`relative p-4 rounded-lg border transition-all hover:shadow-md ${
                       plan.recommended ? `${colors.bg} border-primary shadow-colorful` : 'border-border hover:border-primary/50 bg-card'
                     }`}
                   >
                     {plan.recommended && (
-                      <div className={`absolute -top-3 right-4 bg-gradient-to-r ${colors.gradient} text-white px-3 py-1 text-xs font-bold rounded-full`}>
-                        <Crown className="inline h-4 w-4 mr-1" /> מומלץ
+                      <div className={`absolute -top-2 right-3 bg-gradient-to-r ${colors.gradient} text-white px-2 py-1 text-xs font-bold rounded-full`}>
+                        <Crown className="inline h-3 w-3 mr-1" /> מומלץ
                       </div>
                     )}
 
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       <div>
-                        <h4 className="font-bold text-lg">{plan.name}</h4>
+                        <h4 className="font-bold text-base">{plan.name}</h4>
                         {plan.detailedDescription && (
-                          <p className="text-sm text-muted-foreground">{plan.detailedDescription}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-2">{plan.detailedDescription}</p>
                         )}
                       </div>
 
                       {category === 'cellular' && (
-                        <div className="grid grid-cols-3 gap-3">
-                          <div className="text-center p-3 bg-accent/30 rounded-lg">
-                            <div className="font-semibold">{plan.data || 'ללא הגבלה'}</div>
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="text-center p-2 bg-accent/30 rounded">
+                            <div className="font-semibold text-sm">{plan.data || 'ללא הגבלה'}</div>
                             <div className="text-xs text-muted-foreground">נתונים</div>
                           </div>
-                          <div className="text-center p-3 bg-accent/30 rounded-lg">
-                            <div className="font-semibold">{plan.minutes || 'ללא הגבלה'}</div>
+                          <div className="text-center p-2 bg-accent/30 rounded">
+                            <div className="font-semibold text-sm">{plan.minutes || 'ללא הגבלה'}</div>
                             <div className="text-xs text-muted-foreground">דקות</div>
                           </div>
-                          <div className="text-center p-3 bg-accent/30 rounded-lg">
-                            <div className="font-semibold">{plan.sms || 'ללא הגבלה'}</div>
+                          <div className="text-center p-2 bg-accent/30 rounded">
+                            <div className="font-semibold text-sm">{plan.sms || 'ללא הגבלה'}</div>
                             <div className="text-xs text-muted-foreground">SMS</div>
                           </div>
                         </div>
                       )}
 
-                      <div className="space-y-2">
-                        {plan.features?.slice(0, 4).map((feature, index) => (
-                          <div key={index} className="flex items-center gap-2 text-sm">
-                            <Check className="h-4 w-4 text-success" />
-                            <span>{feature}</span>
+                      <div className="space-y-1">
+                        {plan.features?.slice(0, 3).map((feature, index) => (
+                          <div key={index} className="flex items-center gap-2 text-xs">
+                            <Check className="h-3 w-3 text-success" />
+                            <span className="line-clamp-1">{feature}</span>
                           </div>
                         ))}
                       </div>
 
-                      <div className="flex items-end justify-between">
-                        <div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
                           {plan.originalPrice && plan.originalPrice > plan.price && (
-                            <div className="text-muted-foreground line-through">
+                            <div className="text-xs text-muted-foreground line-through">
                               ₪{plan.originalPrice.toLocaleString()}
                             </div>
                           )}
-                          <div className={`text-3xl font-black ${plan.recommended ? 'text-success' : 'text-foreground'}`}>
-                            ₪{plan.price.toLocaleString()}
-                          </div>
-                          <div className="text-xs text-muted-foreground">לחודש</div>
                           {typeof plan.discount === 'number' && (
-                            <Badge className="mt-2 bg-destructive text-white">חיסכון {plan.discount}%</Badge>
+                            <div className={`flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r ${colors.gradient} text-white text-xs font-bold`}>
+                              <Star className="h-3 w-3" />
+                              -{plan.discount}%
+                            </div>
                           )}
                         </div>
-                        <div className="text-right">
-                          <div className="text-success font-bold">
-                            {formatCurrency(currentAmount - plan.price)} חודשי
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {formatCurrency((currentAmount - plan.price) * 12)} שנתי
-                          </div>
+                        
+                        <div className={`text-2xl font-black ${plan.recommended ? 'text-success' : 'text-foreground'}`}>
+                          ₪{plan.price.toLocaleString()}
+                          <span className="text-xs text-muted-foreground font-normal mr-1">לחודש</span>
                         </div>
+                        
+                        {currentAmount - plan.price > 0 && (
+                          <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-success to-success-glow text-white text-sm font-bold shadow-md`}>
+                            <ArrowRight className="h-3 w-3 rotate-180" />
+                            חיסכון {formatCurrency(currentAmount - plan.price)} לחודש
+                          </div>
+                        )}
                       </div>
 
                       <Button 
-                        className={`w-full bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-white shadow-lg`}
+                        className={`w-full bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-white shadow-lg text-sm h-9`}
                         onClick={() => handleSelectPlan(plan)}
                       >
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                        בחר מסלול זה
+                        <ArrowRight className="ml-2 h-3 w-3" />
+                        בחר מסלול
                       </Button>
                     </div>
                   </div>
