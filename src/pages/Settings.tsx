@@ -31,6 +31,7 @@ import {
 import { formatCurrency } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { handleError } from '@/lib/errorHandler';
+import jsPDF from 'jspdf';
 
 interface UserProfile {
   name: string;
@@ -628,19 +629,37 @@ export const Settings = () => {
                   דרג את החסכונט
                 </Button>
                 <Button variant="outline" className="justify-start" onClick={() => {
-                  const link = document.createElement('a');
-                  link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(`מדריך שימוש - חסכונט
+                  const pdf = new jsPDF();
+                  pdf.setFontSize(16);
+                  pdf.setFont('helvetica', 'bold');
+                  pdf.text('User Guide - Chasconot', 20, 30);
                   
-1. צור פרופיל אישי
-2. העלה חשבונות או הזן נתונים ידנית
-3. השווה בין ספקים
-4. חתום דיגיטלית על מעבר ספק
-5. חסוך כסף!`);
-                  link.download = 'מדריך-שימוש-חסכונט.txt';
-                  link.click();
+                  pdf.setFontSize(12);
+                  pdf.setFont('helvetica', 'normal');
+                  
+                  const guideContent = [
+                    '',
+                    '1. Create personal profile',
+                    '2. Upload bills or enter data manually',
+                    '3. Compare between providers',
+                    '4. Digitally sign provider switch',
+                    '5. Save money!'
+                  ];
+                  
+                  let yPosition = 50;
+                  guideContent.forEach(line => {
+                    if (line === '') {
+                      yPosition += 5;
+                    } else {
+                      pdf.text(line, 20, yPosition);
+                      yPosition += 7;
+                    }
+                  });
+                  
+                  pdf.save('user-guide-chasconot.pdf');
                   toast({
                     title: "מדריך הורד בהצלחה!",
-                    description: "המדריך נשמר במחשב שלך",
+                    description: "המדריך נשמר במחשב שלך כקובץ PDF",
                   });
                 }}>
                   <Download className="ml-2 h-4 w-4" />

@@ -24,6 +24,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import jsPDF from 'jspdf';
 
 interface ProviderSwitchFormProps {
   category: 'electricity' | 'cellular' | 'internet';
@@ -104,16 +105,27 @@ export const ProviderSwitchForm = ({
 תאריך: ${new Date().toLocaleDateString('he-IL')}
 חתימה: ________________`;
       
-      // Create blob and download
-      const blob = new Blob([pdfContent], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `power-of-attorney-${category}-${Date.now()}.txt`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // Create PDF and download
+      const pdf = new jsPDF();
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`Power of Attorney - ${category}`, 20, 30);
+      
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      
+      const contentLines = pdfContent.split('\n');
+      let yPosition = 50;
+      contentLines.forEach(line => {
+        if (line.trim() === '') {
+          yPosition += 5;
+        } else {
+          pdf.text(line, 20, yPosition);
+          yPosition += 7;
+        }
+      });
+      
+      pdf.save(`power-of-attorney-${category}-${Date.now()}.pdf`);
 
       toast({
         title: "טופס ייפוי הכוח נוצר!",
@@ -222,16 +234,27 @@ ${formData.agreeToMarketing ? '✓' : '✗'} אני מסכים לקבל חומר
         submissionId
       }));
 
-      // Auto-download the confirmation
-      const blob = new Blob([digitalDocument], { type: 'text/plain;charset=utf-8' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `אישור-מעבר-${categoryNames[category]}-${Date.now()}.txt`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // Auto-download the confirmation as PDF
+      const pdf = new jsPDF();
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`Switch Confirmation - ${categoryNames[category]}`, 20, 30);
+      
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      
+      const content = digitalDocument.split('\n');
+      let yPosition = 50;
+      content.forEach(line => {
+        if (line.trim() === '') {
+          yPosition += 5;
+        } else {
+          pdf.text(line, 20, yPosition);
+          yPosition += 7;
+        }
+      });
+      
+      pdf.save(`switch-confirmation-${categoryNames[category]}-${Date.now()}.pdf`);
 
       toast({
         title: "הבקשה נשלחה בהצלחה!",

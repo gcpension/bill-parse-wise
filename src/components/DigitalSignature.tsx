@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { formatCurrency } from '@/lib/utils';
+import jsPDF from 'jspdf';
 
 interface DigitalSignatureProps {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
@@ -136,15 +137,26 @@ export const DigitalSignature = ({
       }));
 
       // Auto-download the signed document
-      const blob = new Blob([digitalDocument], { type: 'text/plain;charset=utf-8' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `מסמך-מעבר-${categoryNames[category]}-${formData.fullName}-${Date.now()}.txt`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      const pdf = new jsPDF();
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`Signed Document - ${categoryNames[category]} Switch`, 20, 30);
+      
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      
+      const content = digitalDocument.split('\n');
+      let yPosition = 50;
+      content.forEach(line => {
+        if (line.trim() === '') {
+          yPosition += 5;
+        } else {
+          pdf.text(line, 20, yPosition);
+          yPosition += 7;
+        }
+      });
+      
+      pdf.save(`signed-document-${categoryNames[category]}-${formData.fullName}-${Date.now()}.pdf`);
 
       setIsCompleted(true);
       
