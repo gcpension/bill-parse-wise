@@ -1,33 +1,25 @@
-import { useState } from 'react';
-import { Check, X, Star, Crown, ArrowRight, Phone, Globe, Zap, Search, Filter } from 'lucide-react';
+// Import statements
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { formatCurrency } from '@/lib/utils';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Star, Search, Filter, SortAsc, Phone, Globe, Zap, Wifi, Smartphone, TrendingDown, Sparkles, Clock, Shield, Award, Lightbulb } from 'lucide-react';
 import { DigitalSignature } from '@/components/DigitalSignature';
+import { getEnhancedPlansByCategory, getProviderByPlan, type EnhancedPlan, type EnhancedProvider } from '@/data/comprehensive-plans';
 
-interface Plan {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  features: string[];
-  data?: string;
-  minutes?: string;
-  sms?: string;
-  recommended?: boolean;
-  discount?: number;
+// Using enhanced plan interface from comprehensive data
+type Plan = EnhancedPlan & {
   provider: string;
   rating: number;
   description: string;
-  detailedDescription?: string;
-  savings: number;
-}
+  savings?: number;
+};
 
 interface PlanComparisonTableProps {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: string;
   categoryName: string;
   currentProvider: string;
   currentAmount: number;
@@ -35,77 +27,97 @@ interface PlanComparisonTableProps {
   onPlanSelect?: (plan: Plan) => void;
 }
 
-const categoryIcons = {
-  electricity: Zap,
-  cellular: Phone,
-  internet: Globe
-};
-
-const categoryColors = {
-  electricity: {
-    gradient: 'from-golden-yellow to-sunset-orange',
-    accent: 'text-golden-yellow',
-    bg: 'bg-golden-yellow/10'
-  },
-  cellular: {
-    gradient: 'from-electric-blue to-royal-purple',
-    accent: 'text-electric-blue',
-    bg: 'bg-electric-blue/10'
-  },
-  internet: {
-    gradient: 'from-vibrant-green to-success-glow',
-    accent: 'text-vibrant-green',
-    bg: 'bg-vibrant-green/10'
-  }
-};
-
 export const PlanComparisonTable = ({
   category,
   categoryName,
   currentProvider,
   currentAmount,
-  plans,
+  plans: originalPlans,
   onPlanSelect
 }: PlanComparisonTableProps) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState<'price' | 'rating' | 'name' | 'savings' | 'popularity'>('savings');
+  const [filterBy, setFilterBy] = useState<'all' | 'recommended' | 'promotions' | 'popular'>('all');
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [showSignature, setShowSignature] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState<'price' | 'rating' | 'name' | 'savings'>('price');
-  const [filterBy, setFilterBy] = useState<'all' | 'recommended' | 'promotion' | 'premium'>('all');
+  const [selectedProvider, setSelectedProvider] = useState<string>('all');
 
-  const Icon = categoryIcons[category];
-  const colors = categoryColors[category];
-
-  // Filtering, sorting, and grouping by provider
-  const processedPlans = plans
-    .filter((p) =>
-      !searchTerm ||
-      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.provider.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.description?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter((p) =>
-      filterBy === 'all' ? true :
-      filterBy === 'recommended' ? !!p.recommended :
-      filterBy === 'promotion' ? typeof p.discount === 'number' :
-      filterBy === 'premium' ? p.rating >= 4.5 : true
-    )
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'price':
-          return a.price - b.price;
-        case 'rating':
-          return b.rating - a.rating;
-        case 'name':
-          return a.name.localeCompare(b.name, 'he');
-        case 'savings':
-          const savA = (a.originalPrice ? a.originalPrice - a.price : a.savings || 0);
-          const savB = (b.originalPrice ? b.originalPrice - b.price : b.savings || 0);
-          return savB - savA;
-        default:
-          return 0;
-      }
+  // Get enhanced plans from our comprehensive data
+  const enhancedPlans = useMemo(() => {
+    const categoryPlans = getEnhancedPlansByCategory(category);
+    return categoryPlans.map(plan => {
+      const provider = getProviderByPlan(plan.id);
+      const savings = plan.originalPrice ? plan.originalPrice - plan.price : 0;
+      return {
+        ...plan,
+        provider: provider?.name || 'Unknown',
+        rating: provider?.rating || 4.0,
+        description: provider?.description || '',
+        savings
+      } as Plan;
     });
+  }, [category]);
+
+  const plans = enhancedPlans.length > 0 ? enhancedPlans : originalPlans;
+
+  const categoryColors = {
+    electricity: { primary: 'hsl(48, 96%, 53%)', accent: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-200' },
+    cellular: { primary: 'hsl(142, 76%, 36%)', accent: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
+    internet: { primary: 'hsl(217, 91%, 60%)', accent: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' }
+  };
+
+  const colors = categoryColors[category as keyof typeof categoryColors] || categoryColors.electricity;
+
+  const categoryIcons = {
+    electricity: Zap,
+    cellular: Smartphone,
+    internet: Wifi
+  };
+
+  const Icon = categoryIcons[category as keyof typeof categoryIcons] || Zap;
+
+  // Get unique providers for filter
+  const providers = useMemo(() => {
+    const uniqueProviders = Array.from(new Set(plans.map(plan => plan.provider)));
+    return uniqueProviders.sort();
+  }, [plans]);
+
+  // Process and filter plans
+  const processedPlans = useMemo(() => {
+    return plans
+      .filter(plan => {
+        const matchesSearch = plan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            plan.provider.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            (plan.features || []).some(feature => feature.toLowerCase().includes(searchTerm.toLowerCase()));
+        
+        const matchesFilter = filterBy === 'all' || 
+                            (filterBy === 'recommended' && plan.recommended) ||
+                            (filterBy === 'promotions' && plan.isPromotion) ||
+                            (filterBy === 'popular' && (plan.popularityScore || 0) > 80);
+        
+        const matchesProvider = selectedProvider === 'all' || plan.provider === selectedProvider;
+        
+        return matchesSearch && matchesFilter && matchesProvider;
+      })
+      .sort((a, b) => {
+        switch (sortBy) {
+          case 'price':
+            return a.price - b.price;
+          case 'rating':
+            return b.rating - a.rating;
+          case 'name':
+            return a.name.localeCompare(b.name, 'he');
+          case 'savings':
+            const savA = (a.originalPrice ? a.originalPrice - a.price : a.savings || 0);
+            const savB = (b.originalPrice ? b.originalPrice - b.price : b.savings || 0);
+            return savB - savA;
+          case 'popularity':
+            return (b.popularityScore || 0) - (a.popularityScore || 0);
+          default:
+            return 0;
+        }
+      });
+  }, [plans, searchTerm, sortBy, filterBy, selectedProvider]);
 
   const groupedProviders = processedPlans.reduce((acc: Record<string, { provider: string; rating: number; description: string; plans: Plan[] }>, plan) => {
     if (!acc[plan.provider]) {
@@ -116,7 +128,6 @@ export const PlanComparisonTable = ({
   }, {});
 
   const providersList = Object.values(groupedProviders);
-
 
   const handleSelectPlan = (plan: Plan) => {
     setSelectedPlan(plan);
@@ -148,189 +159,256 @@ export const PlanComparisonTable = ({
               <CardTitle className="text-destructive">המסלול הנוכחי שלך</CardTitle>
               <p className="text-muted-foreground">{currentProvider}</p>
             </div>
-            <div className="text-right">
-              <div className="text-3xl font-black text-destructive">
-                ₪{currentAmount.toLocaleString()}
-              </div>
-              <div className="text-sm text-muted-foreground">לחודש</div>
+            <div className="text-left">
+              <p className="text-2xl font-bold text-destructive">
+                ₪{currentAmount.toLocaleString('he-IL')}
+              </p>
+              <p className="text-sm text-muted-foreground">לחודש</p>
             </div>
           </div>
         </CardHeader>
       </Card>
 
-      {/* Controls */}
-      <div className="grid lg:grid-cols-4 gap-4 p-4 bg-accent/20 rounded-xl border shadow-card animate-fade-in">
-        <div className="lg:col-span-2">
-          <div className="relative">
-            <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              placeholder={`חפש ספק או מסלול...`}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pr-12 h-12"
-            />
+      {/* Enhanced Search and Filter Controls */}
+      <Card className="mb-6">
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="relative">
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="חפש מסלולים, ספקים או תכונות..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pr-10"
+              />
+            </div>
+            
+            <Select value={selectedProvider} onValueChange={setSelectedProvider}>
+              <SelectTrigger>
+                <Globe className="h-4 w-4 ml-2" />
+                <SelectValue placeholder="בחר ספק" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">כל הספקים</SelectItem>
+                {providers.map((provider) => (
+                  <SelectItem key={provider} value={provider}>{provider}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+              <SelectTrigger>
+                <SortAsc className="h-4 w-4 ml-2" />
+                <SelectValue placeholder="מיין לפי" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="savings">חיסכון גבוה</SelectItem>
+                <SelectItem value="price">מחיר נמוך</SelectItem>
+                <SelectItem value="rating">דירוג גבוה</SelectItem>
+                <SelectItem value="popularity">פופולריות</SelectItem>
+                <SelectItem value="name">שם</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select value={filterBy} onValueChange={(value: any) => setFilterBy(value)}>
+              <SelectTrigger>
+                <Filter className="h-4 w-4 ml-2" />
+                <SelectValue placeholder="סנן לפי" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">הכל</SelectItem>
+                <SelectItem value="recommended">מומלצים</SelectItem>
+                <SelectItem value="promotions">מבצעים</SelectItem>
+                <SelectItem value="popular">פופולריים</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-        </div>
-        <Select value={sortBy} onValueChange={(v: any) => setSortBy(v)}>
-          <SelectTrigger className="h-12">
-            <SelectValue placeholder="מיון" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="price">מיין לפי מחיר</SelectItem>
-            <SelectItem value="rating">מיין לפי דירוג</SelectItem>
-            <SelectItem value="name">מיין לפי שם</SelectItem>
-            <SelectItem value="savings">מיין לפי חיסכון</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select value={filterBy} onValueChange={(v: any) => setFilterBy(v)}>
-          <SelectTrigger className="h-12">
-            <SelectValue placeholder="פילטר" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">כל המסלולים</SelectItem>
-            <SelectItem value="recommended">מומלץ</SelectItem>
-            <SelectItem value="promotion">מבצעים</SelectItem>
-            <SelectItem value="premium">ספקים מובילים</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+          
+          <div className="mt-4 text-sm text-muted-foreground text-center">
+            נמצאו {processedPlans.length} מסלולים מתוך {plans.length}
+          </div>
+        </CardContent>
+      </Card>
 
-      {/* Summary */}
-      <div className="flex items-center justify-between p-4 bg-accent/10 rounded-lg">
-        <Badge variant="secondary" className="text-base px-4 py-2 font-bold">
-          {providersList.length} חברות • {processedPlans.length} מסלולים
-        </Badge>
-        {filterBy !== 'all' && (
-          <Badge className="bg-success text-white">
-            מסננים פעילים
-          </Badge>
-        )}
-      </div>
-
-      {/* Providers and all plans */}
-      <div className="space-y-8">
-        {providersList.map((prov) => (
-          <Card key={prov.provider} className="group relative overflow-hidden shadow-elegant hover:shadow-glow transition-all">
-            <CardHeader className="pb-2">
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-2xl font-bold">{prov.provider}</CardTitle>
-                  <p className="text-muted-foreground">{prov.description}</p>
-                  <div className="flex items-center gap-1 mt-2">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className={`h-4 w-4 ${i < prov.rating ? 'text-golden-yellow fill-current' : 'text-muted-foreground'}`} />
+      {/* Enhanced Provider Groups */}
+      <div className="space-y-6">
+        {providersList.map((providerGroup) => (
+          <Card key={providerGroup.provider} className="mb-6 overflow-hidden">
+            <CardHeader className={`${colors.bg} ${colors.border} border-b`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <Globe className={`h-5 w-5 ${colors.accent}`} />
+                    <CardTitle className={`text-xl ${colors.accent}`}>
+                      {providerGroup.provider}
+                    </CardTitle>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-4 w-4 ${
+                          i < Math.floor(providerGroup.rating)
+                            ? 'text-yellow-400 fill-current'
+                            : 'text-gray-300'
+                        }`}
+                      />
                     ))}
-                    <span className="text-sm text-muted-foreground">({prov.rating})</span>
+                    <span className="text-sm text-muted-foreground mr-2">
+                      {providerGroup.rating}
+                    </span>
                   </div>
                 </div>
+                <Badge variant="outline" className={colors.accent}>
+                  {providerGroup.plans.length} מסלולים
+                </Badge>
               </div>
+              <p className="text-sm text-muted-foreground mt-2">{providerGroup.description}</p>
             </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {prov.plans.map((plan) => (
-                  <div
-                    key={plan.id}
-                    className={`relative p-4 rounded-lg border transition-all hover:shadow-md ${
-                      plan.recommended ? `${colors.bg} border-primary shadow-colorful` : 'border-border hover:border-primary/50 bg-card'
-                    }`}
-                  >
-                    {plan.recommended && (
-                      <div className={`absolute -top-2 right-3 bg-gradient-to-r ${colors.gradient} text-white px-2 py-1 text-xs font-bold rounded-full`}>
-                        <Crown className="inline h-3 w-3 mr-1" /> מומלץ
-                      </div>
-                    )}
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {providerGroup.plans.map((plan) => {
+                  const savings = plan.originalPrice ? plan.originalPrice - plan.price : plan.savings || 0;
+                  const savingsPercentage = plan.originalPrice 
+                    ? ((plan.originalPrice - plan.price) / plan.originalPrice) * 100 
+                    : 0;
 
-                    <div className="space-y-2">
-                      <div>
-                        <h4 className="font-bold text-base">{plan.name}</h4>
-                        {plan.detailedDescription && (
-                          <p className="text-xs text-muted-foreground line-clamp-2">{plan.detailedDescription}</p>
-                        )}
-                      </div>
-
-                      {category === 'cellular' && (
-                        <div className="grid grid-cols-3 gap-2">
-                          <div className="text-center p-2 bg-accent/30 rounded">
-                            <div className="font-semibold text-sm">{plan.data || 'ללא הגבלה'}</div>
-                            <div className="text-xs text-muted-foreground">נתונים</div>
-                          </div>
-                          <div className="text-center p-2 bg-accent/30 rounded">
-                            <div className="font-semibold text-sm">{plan.minutes || 'ללא הגבלה'}</div>
-                            <div className="text-xs text-muted-foreground">דקות</div>
-                          </div>
-                          <div className="text-center p-2 bg-accent/30 rounded">
-                            <div className="font-semibold text-sm">{plan.sms || 'ללא הגבלה'}</div>
-                            <div className="text-xs text-muted-foreground">SMS</div>
-                          </div>
+                  return (
+                    <Card 
+                      key={plan.id} 
+                      className={`relative transition-all hover:shadow-lg hover:scale-[1.02] cursor-pointer group ${
+                        plan.recommended ? 'ring-2 ring-primary shadow-lg bg-gradient-to-br from-primary/5 to-primary/10' : ''
+                      }`}
+                      onClick={() => handleSelectPlan(plan)}
+                    >
+                      {plan.recommended && (
+                        <div className="absolute -top-3 right-4 z-10">
+                          <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg">
+                            <Award className="h-3 w-3 ml-1" />
+                            מומלץ ביותר
+                          </Badge>
                         </div>
                       )}
-
-                      <div className="space-y-1">
-                        {plan.features?.slice(0, 3).map((feature, index) => (
-                          <div key={index} className="flex items-center gap-2 text-xs">
-                            <Check className="h-3 w-3 text-success" />
-                            <span className="line-clamp-1">{feature}</span>
+                      
+                      {plan.popularityScore && plan.popularityScore > 85 && (
+                        <div className="absolute -top-3 left-4 z-10">
+                          <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                            <Lightbulb className="h-3 w-3 ml-1" />
+                            פופולרי
+                          </Badge>
+                        </div>
+                      )}
+                      
+                      <CardContent className="p-4">
+                        <div className="space-y-3">
+                          {/* Plan header */}
+                          <div className="text-center border-b pb-3">
+                            <h4 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{plan.name}</h4>
+                            
+                            {/* Price section */}
+                            <div className="space-y-1">
+                              {plan.originalPrice && (
+                                <p className="text-sm text-muted-foreground line-through">
+                                  {category === 'electricity' 
+                                    ? `${(plan.originalPrice * 850).toLocaleString('he-IL')} ${plan.currency}` 
+                                    : `${plan.originalPrice.toLocaleString('he-IL')} ${plan.currency}`
+                                  }
+                                </p>
+                              )}
+                              <p className="text-2xl font-black text-primary">
+                                {category === 'electricity' 
+                                  ? `${(plan.price * 850).toLocaleString('he-IL')} ${plan.currency}` 
+                                  : `${plan.price.toLocaleString('he-IL')} ${plan.currency}`
+                                }
+                              </p>
+                              <p className="text-xs text-muted-foreground">לחודש</p>
+                            </div>
                           </div>
-                        ))}
-                      </div>
 
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          {plan.originalPrice && plan.originalPrice > plan.price && (
-                            <div className="text-xs text-muted-foreground line-through">
-                              ₪{plan.originalPrice.toLocaleString()}
+                          {/* Enhanced savings display with icon - NEW DESIGN */}
+                          {savings > 0 && (
+                            <div className="relative">
+                              <div className="bg-gradient-to-r from-emerald-500 via-green-500 to-green-600 text-white rounded-xl p-3 text-center shadow-lg transform transition-transform group-hover:scale-105">
+                                <div className="flex items-center justify-center gap-2 mb-1">
+                                  <TrendingDown className="h-4 w-4 animate-pulse" />
+                                  <span className="text-sm font-semibold">חיסכון חודשי</span>
+                                </div>
+                                <div className="text-xl font-black">
+                                  {category === 'electricity' 
+                                    ? `₪${(savings * 850).toLocaleString('he-IL')}` 
+                                    : `₪${savings.toLocaleString('he-IL')}`
+                                  }
+                                </div>
+                                <div className="text-xs opacity-90 font-medium">
+                                  {savingsPercentage.toFixed(1)}% פחות מהנוכחי
+                                </div>
+                              </div>
                             </div>
                           )}
-                          {typeof plan.discount === 'number' && (
-                            <div className={`flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r ${colors.gradient} text-white text-xs font-bold`}>
-                              <Star className="h-3 w-3" />
-                              -{plan.discount}%
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className={`text-2xl font-black ${plan.recommended ? 'text-success' : 'text-foreground'}`}>
-                          ₪{plan.price.toLocaleString()}
-                          <span className="text-xs text-muted-foreground font-normal mr-1">לחודש</span>
-                        </div>
-                        
-                        {currentAmount - plan.price > 0 && (
-                          <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-success to-success-glow text-white text-sm font-bold shadow-md`}>
-                            <ArrowRight className="h-3 w-3 rotate-180" />
-                            חיסכון {formatCurrency(currentAmount - plan.price)} לחודש
-                          </div>
-                        )}
-                      </div>
 
-                      <Button 
-                        className={`w-full bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-white shadow-lg text-sm h-9`}
-                        onClick={() => handleSelectPlan(plan)}
-                      >
-                        <ArrowRight className="ml-2 h-3 w-3" />
-                        בחר מסלול
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                          {/* Enhanced features with better spacing */}
+                          <div className="space-y-2">
+                            {/* Key features */}
+                            <div className="space-y-2">
+                              {plan.features.slice(0, 4).map((feature, idx) => (
+                                <div key={idx} className="flex items-center gap-2 text-sm">
+                                  <div className={`h-2 w-2 rounded-full ${colors.accent.replace('text-', 'bg-')}`} />
+                                  <span className="text-gray-700">{feature}</span>
+                                </div>
+                              ))}
+                            </div>
+                            
+                            {/* Additional info */}
+                            <div className="grid grid-cols-2 gap-2 pt-2 border-t text-xs text-muted-foreground">
+                              {plan.contractLength && (
+                                <div className="flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  <span>{plan.contractLength}</span>
+                                </div>
+                              )}
+                              {plan.popularityScore && (
+                                <div className="flex items-center gap-1">
+                                  <Star className="h-3 w-3" />
+                                  <span>{plan.popularityScore}% פופולרי</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Enhanced select button */}
+                          <Button 
+                            className={`w-full font-semibold transition-all ${
+                              plan.recommended 
+                                ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-lg' 
+                                : ''
+                            }`}
+                            variant={plan.recommended ? "default" : "outline"}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleSelectPlan(plan);
+                            }}
+                          >
+                            {plan.recommended ? '🚀 בחר את המומלץ' : 'בחר מסלול זה'}
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
 
-
       {/* Digital Signature Modal */}
-      {showSignature && selectedPlan && (
-        <DigitalSignature
-          category={category}
-          currentProvider={currentProvider}
-          newProvider={selectedPlan.provider}
-          newPlan={selectedPlan.name}
-          monthlySavings={currentAmount - selectedPlan.price}
-          open={showSignature}
-          onOpenChange={setShowSignature}
-        />
-      )}
+      <DigitalSignature
+        isOpen={showSignature}
+        onClose={() => setShowSignature(false)}
+        selectedPlan={selectedPlan}
+        category={category}
+        currentProvider={currentProvider}
+      />
     </div>
   );
 };
