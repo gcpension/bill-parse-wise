@@ -74,13 +74,13 @@ export const SavedForms = ({ category }: SavedFormsProps) => {
     ];
   };
 
-  const downloadForm = (formData: SavedForm) => {
+  const downloadForm = async (formData: SavedForm) => {
     try {
       const timestamp = new Date(formData.timestamp);
       const title = `טופס מעבר ספק ${categoryNames[category]}`;
       const content = generateFormContent(formData);
       
-      const pdf = createHebrewPDF(title, content);
+      const pdf = await createHebrewPDF(title, content);
       pdf.save(`provider-switch-${categoryNames[category]}-${timestamp.toLocaleDateString('he-IL').replace(/\//g, '-')}.pdf`);
 
       toast({

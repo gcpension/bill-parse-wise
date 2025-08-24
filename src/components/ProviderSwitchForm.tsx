@@ -106,7 +106,7 @@ export const ProviderSwitchForm = ({
       
       // Create PDF with Hebrew support
       const title = `ייפוי כוח - ${categoryNames[category]}`;
-      const pdf = createHebrewPDF(title, pdfContent);
+      const pdf = await createHebrewPDF(title, pdfContent);
       pdf.save(`power-of-attorney-${category}-${Date.now()}.pdf`);
 
       toast({
@@ -220,7 +220,7 @@ ${formData.agreeToMarketing ? '✓' : '✗'} אני מסכים לקבל חומר
       const title = `אישור מעבר - ${categoryNames[category]}`;
       const content = digitalDocument.split('\n');
       
-      const pdf = createHebrewPDF(title, content);
+      const pdf = await createHebrewPDF(title, content);
       pdf.save(`switch-confirmation-${categoryNames[category]}-${Date.now()}.pdf`);
 
       toast({

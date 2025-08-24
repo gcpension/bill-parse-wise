@@ -1,67 +1,53 @@
 import jsPDF from 'jspdf';
 
-// Function to reverse Hebrew text for proper display in jsPDF
-export const reverseHebrewText = (text: string): string => {
-  // Hebrew Unicode range: \u0590-\u05FF
-  const hebrewRegex = /[\u0590-\u05FF]/;
-  
-  if (!hebrewRegex.test(text)) {
-    return text; // Not Hebrew, return as is
-  }
-  
-  // Split text into words and handle mixed content
-  const words = text.split(' ');
-  const reversedWords = words.map(word => {
-    if (hebrewRegex.test(word)) {
-      // Hebrew word - reverse it
-      return word.split('').reverse().join('');
-    }
-    return word; // Non-Hebrew word, keep as is
+let fontRegistered = false;
+
+const toBase64 = (blob: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(String(reader.result));
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
   });
-  
-  // Reverse the word order for RTL
-  return reversedWords.reverse().join(' ');
+
+const ensureHebrewFont = async (pdf: jsPDF) => {
+  if (fontRegistered) return;
+  const res = await fetch('/fonts/NotoSansHebrew-Regular.ttf');
+  const blob = await res.blob();
+  const dataUrl = await toBase64(blob);
+  const base64 = dataUrl.split(',')[1] || dataUrl; // strip prefix
+  pdf.addFileToVFS('NotoSansHebrew-Regular.ttf', base64);
+  pdf.addFont('NotoSansHebrew-Regular.ttf', 'NotoSansHebrew', 'normal');
+  fontRegistered = true;
 };
 
-// Function to calculate proper positioning for RTL text
-export const calculateRTLPosition = (pdf: jsPDF, text: string, pageWidth: number, rightMargin: number = 20): number => {
-  const textWidth = pdf.getTextWidth(text);
-  return pageWidth - rightMargin - textWidth;
-};
+// Calculate X position for right-aligned text
+const rightAlignX = (pdf: jsPDF, pageWidth: number, rightMargin: number = 20) => pageWidth - rightMargin;
 
-// Enhanced PDF creation with Hebrew support
-export const createHebrewPDF = (title: string, content: string[]): jsPDF => {
-  const pdf = new jsPDF({
-    orientation: 'portrait',
-    format: 'a4'
-  });
-  
+export const createHebrewPDF = async (title: string, content: string[]): Promise<jsPDF> => {
+  const pdf = new jsPDF({ orientation: 'portrait', format: 'a4' });
+
+  await ensureHebrewFont(pdf);
+  pdf.setFont('NotoSansHebrew', 'normal');
+
   const pageWidth = pdf.internal.pageSize.width;
-  const rightMargin = 20;
-  
-  // Set font for Hebrew
-  pdf.setFont('helvetica', 'normal');
-  
-  // Add title
+  const rightX = rightAlignX(pdf, pageWidth);
+
+  // Title
   pdf.setFontSize(16);
-  const processedTitle = reverseHebrewText(title);
-  const titleX = calculateRTLPosition(pdf, processedTitle, pageWidth, rightMargin);
-  pdf.text(processedTitle, titleX, 30);
-  
-  // Add content
+  pdf.text(title, rightX, 30, { align: 'right' });
+
+  // Content
   pdf.setFontSize(12);
-  let yPosition = 50;
-  
-  content.forEach(line => {
+  let y = 50;
+  for (const line of content) {
     if (line.trim() === '') {
-      yPosition += 5;
+      y += 5;
     } else {
-      const processedLine = reverseHebrewText(line);
-      const lineX = calculateRTLPosition(pdf, processedLine, pageWidth, rightMargin);
-      pdf.text(processedLine, lineX, yPosition);
-      yPosition += 7;
+      pdf.text(line, rightX, y, { align: 'right' });
+      y += 7;
     }
-  });
-  
+  }
+
   return pdf;
 };

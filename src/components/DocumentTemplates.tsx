@@ -56,7 +56,7 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
       
       // Create PDF with Hebrew support
       const title = `ייפוי כוח - מעבר ספק ${categoryNames[category]}`;
-      const pdf = createHebrewPDF(title, content);
+      const pdf = await createHebrewPDF(title, content);
       pdf.save(`power-of-attorney-${category}-${Date.now()}.pdf`);
 
       toast({

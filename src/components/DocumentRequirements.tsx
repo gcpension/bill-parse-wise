@@ -60,7 +60,7 @@ const requiredDocuments: DocumentRequirement[] = [
 export const DocumentRequirements = ({ category }: DocumentRequirementsProps) => {
   const { toast } = useToast();
 
-  const downloadPowerOfAttorney = () => {
+  const downloadPowerOfAttorney = async () => {
     const pdfContent = [
       '',
       'שם מלא: _____________________',
@@ -90,7 +90,7 @@ export const DocumentRequirements = ({ category }: DocumentRequirementsProps) =>
     ];
 
     const title = `ייפוי כוח - ${categoryNames[category]}`;
-    const pdf = createHebrewPDF(title, pdfContent);
+    const pdf = await createHebrewPDF(title, pdfContent);
     pdf.save(`power-of-attorney-${categoryNames[category]}-${Date.now()}.pdf`);
 
     toast({

@@ -628,7 +628,7 @@ export const Settings = () => {
                   <Star className="ml-2 h-4 w-4" />
                   דרג את החסכונט
                 </Button>
-                <Button variant="outline" className="justify-start" onClick={() => {
+                <Button variant="outline" className="justify-start" onClick={async () => {
                   const guideContent = [
                     '',
                     '1. צור פרופיל אישי',
@@ -639,7 +639,7 @@ export const Settings = () => {
                   ];
                   
                   const title = 'מדריך משתמש - חסכונט';
-                  const pdf = createHebrewPDF(title, guideContent);
+                  const pdf = await createHebrewPDF(title, guideContent);
                   pdf.save('user-guide-chasconot.pdf');
                   toast({
                     title: "מדריך הורד בהצלחה!",

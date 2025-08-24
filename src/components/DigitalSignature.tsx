@@ -140,8 +140,7 @@ export const DigitalSignature = ({
       const title = `מסמך חתום - מעבר ספק ${categoryNames[category]}`;
       const content = digitalDocument.split('\n');
       
-      const pdf = createHebrewPDF(title, content);
-      // Remove duplicate save call
+      const pdf = await createHebrewPDF(title, content);
       pdf.save(`signed-document-${categoryNames[category]}-${formData.fullName}-${Date.now()}.pdf`);
 
       setIsCompleted(true);
