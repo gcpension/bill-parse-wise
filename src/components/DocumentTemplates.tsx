@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FileText, Download, AlertTriangle, Scale, Shield, Phone, Zap, Wifi, Smartphone, Tv } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import jsPDF from 'jspdf';
+import { createHebrewPDF } from '@/lib/pdfUtils';
 
 interface DocumentTemplatesProps {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
@@ -28,28 +28,7 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
   
   const handleDownloadForm = async (category: string) => {
     try {
-      // Create PDF document with Hebrew support
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        format: 'a4'
-      });
-      
-      const pageWidth = pdf.internal.pageSize.width;
-      const rightMargin = 20;
-      
-      // Set Hebrew font support
-      pdf.setFont('arial', 'normal');
-      pdf.setFontSize(16);
-      pdf.setR2L(true);
-      
-      // Add title in Hebrew
-      const title = `ייפוי כוח - מעבר ספק ${categoryNames[category]}`;
-      const titleWidth = pdf.getTextWidth(title);
-      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
-      
-      pdf.setFontSize(12);
-      
-      // Add content with Hebrew support
+      // Create content array
       const content = [
         '',
         'שם מלא: _____________________ ',
@@ -75,18 +54,9 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
         '- שמור עותק למטרות תיעוד'
       ];
       
-      let yPosition = 50;
-      content.forEach(line => {
-        if (line === '') {
-          yPosition += 5;
-        } else {
-          const lineWidth = pdf.getTextWidth(line);
-          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
-          yPosition += 7;
-        }
-      });
-      
-      // Save the PDF
+      // Create PDF with Hebrew support
+      const title = `ייפוי כוח - מעבר ספק ${categoryNames[category]}`;
+      const pdf = createHebrewPDF(title, content);
       pdf.save(`power-of-attorney-${category}-${Date.now()}.pdf`);
 
       toast({

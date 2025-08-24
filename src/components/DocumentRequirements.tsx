@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Download, FileCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import jsPDF from 'jspdf';
+import { createHebrewPDF } from '@/lib/pdfUtils';
 
 interface DocumentRequirement {
   title: string;
@@ -61,24 +61,6 @@ export const DocumentRequirements = ({ category }: DocumentRequirementsProps) =>
   const { toast } = useToast();
 
   const downloadPowerOfAttorney = () => {
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      format: 'a4'
-    });
-    
-    const pageWidth = pdf.internal.pageSize.width;
-    const rightMargin = 20;
-    
-    pdf.setFont('arial', 'normal');
-    pdf.setFontSize(16);
-    pdf.setR2L(true);
-    
-    const title = `ייפוי כוח - ${categoryNames[category]}`;
-    const titleWidth = pdf.getTextWidth(title);
-    pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
-    
-    pdf.setFontSize(12);
-    
     const pdfContent = [
       '',
       'שם מלא: _____________________',
@@ -106,18 +88,9 @@ export const DocumentRequirements = ({ category }: DocumentRequirementsProps) =>
       '---',
       'נוצר על ידי מערכת השוואת ספקים'
     ];
-    
-    let yPosition = 50;
-    pdfContent.forEach(line => {
-      if (line === '') {
-        yPosition += 5;
-      } else {
-        const lineWidth = pdf.getTextWidth(line);
-        pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
-        yPosition += 7;
-      }
-    });
 
+    const title = `ייפוי כוח - ${categoryNames[category]}`;
+    const pdf = createHebrewPDF(title, pdfContent);
     pdf.save(`power-of-attorney-${categoryNames[category]}-${Date.now()}.pdf`);
 
     toast({

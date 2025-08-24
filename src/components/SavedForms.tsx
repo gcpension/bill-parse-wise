@@ -5,7 +5,7 @@ import { Download, History, FileCheck, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { handleError } from '@/lib/errorHandler';
 import { formatCurrency } from '@/lib/utils';
-import jsPDF from 'jspdf';
+import { createHebrewPDF } from '@/lib/pdfUtils';
 
 interface SavedForm {
   fullName?: string;
@@ -76,44 +76,11 @@ export const SavedForms = ({ category }: SavedFormsProps) => {
 
   const downloadForm = (formData: SavedForm) => {
     try {
-      // Create PDF document with Hebrew support
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        format: 'a4'
-      });
       const timestamp = new Date(formData.timestamp);
-      
-      // Configure for Hebrew text (right to left)
-      const pageWidth = pdf.internal.pageSize.width;
-      const rightMargin = 20;
-      
-      // Set up PDF with Arial font for better Hebrew support
-      pdf.setFont('arial', 'normal');
-      pdf.setFontSize(18);
-      pdf.setR2L(true);
-      
-      // Title
       const title = `טופס מעבר ספק ${categoryNames[category]}`;
-      const titleWidth = pdf.getTextWidth(title);
-      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
-      
-      pdf.setFontSize(12);
-      
-      // Add content
       const content = generateFormContent(formData);
       
-      let yPosition = 50;
-      content.forEach(line => {
-        if (line === '') {
-          yPosition += 5;
-        } else {
-          const lineWidth = pdf.getTextWidth(line);
-          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
-          yPosition += 7;
-        }
-      });
-      
-      // Save the PDF
+      const pdf = createHebrewPDF(title, content);
       pdf.save(`provider-switch-${categoryNames[category]}-${timestamp.toLocaleDateString('he-IL').replace(/\//g, '-')}.pdf`);
 
       toast({

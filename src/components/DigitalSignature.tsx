@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { formatCurrency } from '@/lib/utils';
-import jsPDF from 'jspdf';
+import { createHebrewPDF } from '@/lib/pdfUtils';
 
 interface DigitalSignatureProps {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
@@ -137,36 +137,11 @@ export const DigitalSignature = ({
       }));
 
       // Auto-download the signed document with Hebrew support
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        format: 'a4'
-      });
-      
-      const pageWidth = pdf.internal.pageSize.width;
-      const rightMargin = 20;
-      
-      pdf.setFont('arial', 'normal');
-      pdf.setFontSize(16);
-      pdf.setR2L(true);
-      
       const title = `מסמך חתום - מעבר ספק ${categoryNames[category]}`;
-      const titleWidth = pdf.getTextWidth(title);
-      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
-      
-      pdf.setFontSize(12);
-      
       const content = digitalDocument.split('\n');
-      let yPosition = 50;
-      content.forEach(line => {
-        if (line.trim() === '') {
-          yPosition += 5;
-        } else {
-          const lineWidth = pdf.getTextWidth(line);
-          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
-          yPosition += 7;
-        }
-      });
       
+      const pdf = createHebrewPDF(title, content);
+      // Remove duplicate save call
       pdf.save(`signed-document-${categoryNames[category]}-${formData.fullName}-${Date.now()}.pdf`);
 
       setIsCompleted(true);

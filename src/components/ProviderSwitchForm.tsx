@@ -24,7 +24,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import jsPDF from 'jspdf';
+import { createHebrewPDF } from '@/lib/pdfUtils';
 
 interface ProviderSwitchFormProps {
   category: 'electricity' | 'cellular' | 'internet';
@@ -92,50 +92,21 @@ export const ProviderSwitchForm = ({
 
   const handleDownloadForm = async (category: string) => {
     try {
-      // Create power of attorney content
-      const pdfContent = `ייפוי כוח למעבר ספק ${categoryNames[category]}
-===========================================
-
-אני החתום מטה: _____________________ (שם מלא)
-תעודת זהות: _____________________
-כתובת: _____________________
-
-מסמיך בזאת את ${newProvider} לפעול בשמי לשם ביצוע מעבר מספק ${currentProvider}.
-
-תאריך: ${new Date().toLocaleDateString('he-IL')}
-חתימה: ________________`;
+      const pdfContent = [
+        '',
+        `אני החתום מטה: _____________________ (שם מלא)`,
+        'תעודת זהות: _____________________',
+        'כתובת: _____________________', 
+        '',
+        `מסמיך בזאת את ${newProvider} לפעול בשמי לשם ביצוע מעבר מספק ${currentProvider}.`,
+        '',
+        `תאריך: ${new Date().toLocaleDateString('he-IL')}`,
+        'חתימה: ________________'
+      ];
       
       // Create PDF with Hebrew support
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        format: 'a4'
-      });
-      
-      const pageWidth = pdf.internal.pageSize.width;
-      const rightMargin = 20;
-      
-      pdf.setFont('arial', 'normal');
-      pdf.setFontSize(16);
-      pdf.setR2L(true);
-      
       const title = `ייפוי כוח - ${categoryNames[category]}`;
-      const titleWidth = pdf.getTextWidth(title);
-      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
-      
-      pdf.setFontSize(12);
-      
-      const contentLines = pdfContent.split('\n');
-      let yPosition = 50;
-      contentLines.forEach(line => {
-        if (line.trim() === '') {
-          yPosition += 5;
-        } else {
-          const lineWidth = pdf.getTextWidth(line);
-          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
-          yPosition += 7;
-        }
-      });
-      
+      const pdf = createHebrewPDF(title, pdfContent);
       pdf.save(`power-of-attorney-${category}-${Date.now()}.pdf`);
 
       toast({
@@ -246,36 +217,10 @@ ${formData.agreeToMarketing ? '✓' : '✗'} אני מסכים לקבל חומר
       }));
 
       // Auto-download the confirmation as PDF with Hebrew support
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        format: 'a4'
-      });
-      
-      const pageWidth = pdf.internal.pageSize.width;
-      const rightMargin = 20;
-      
-      pdf.setFont('arial', 'normal');
-      pdf.setFontSize(16);
-      pdf.setR2L(true);
-      
       const title = `אישור מעבר - ${categoryNames[category]}`;
-      const titleWidth = pdf.getTextWidth(title);
-      pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
-      
-      pdf.setFontSize(12);
-      
       const content = digitalDocument.split('\n');
-      let yPosition = 50;
-      content.forEach(line => {
-        if (line.trim() === '') {
-          yPosition += 5;
-        } else {
-          const lineWidth = pdf.getTextWidth(line);
-          pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
-          yPosition += 7;
-        }
-      });
       
+      const pdf = createHebrewPDF(title, content);
       pdf.save(`switch-confirmation-${categoryNames[category]}-${Date.now()}.pdf`);
 
       toast({

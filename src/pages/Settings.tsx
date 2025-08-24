@@ -31,7 +31,7 @@ import {
 import { formatCurrency } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { handleError } from '@/lib/errorHandler';
-import jsPDF from 'jspdf';
+import { createHebrewPDF } from '@/lib/pdfUtils';
 
 interface UserProfile {
   name: string;
@@ -629,24 +629,6 @@ export const Settings = () => {
                   דרג את החסכונט
                 </Button>
                 <Button variant="outline" className="justify-start" onClick={() => {
-                  const pdf = new jsPDF({
-                    orientation: 'portrait',
-                    format: 'a4'
-                  });
-                  
-                  const pageWidth = pdf.internal.pageSize.width;
-                  const rightMargin = 20;
-                  
-                  pdf.setFont('arial', 'normal');
-                  pdf.setFontSize(16);
-                  pdf.setR2L(true);
-                  
-                  const title = 'מדריך משתמש - חסכונט';
-                  const titleWidth = pdf.getTextWidth(title);
-                  pdf.text(title, pageWidth - rightMargin - titleWidth, 30);
-                  
-                  pdf.setFontSize(12);
-                  
                   const guideContent = [
                     '',
                     '1. צור פרופיל אישי',
@@ -656,17 +638,8 @@ export const Settings = () => {
                     '5. חסוך כסף!'
                   ];
                   
-                  let yPosition = 50;
-                  guideContent.forEach(line => {
-                    if (line === '') {
-                      yPosition += 5;
-                    } else {
-                      const lineWidth = pdf.getTextWidth(line);
-                      pdf.text(line, pageWidth - rightMargin - lineWidth, yPosition);
-                      yPosition += 7;
-                    }
-                  });
-                  
+                  const title = 'מדריך משתמש - חסכונט';
+                  const pdf = createHebrewPDF(title, guideContent);
                   pdf.save('user-guide-chasconot.pdf');
                   toast({
                     title: "מדריך הורד בהצלחה!",
