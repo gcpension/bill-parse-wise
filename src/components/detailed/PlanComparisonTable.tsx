@@ -19,7 +19,7 @@ type Plan = EnhancedPlan & {
 };
 
 interface PlanComparisonTableProps {
-  category: string;
+  category: 'electricity' | 'cellular' | 'internet';
   categoryName: string;
   currentProvider: string;
   currentAmount: number;
@@ -402,13 +402,18 @@ export const PlanComparisonTable = ({
       </div>
 
       {/* Digital Signature Modal */}
-      <DigitalSignature
-        isOpen={showSignature}
-        onClose={() => setShowSignature(false)}
-        selectedPlan={selectedPlan}
-        category={category}
-        currentProvider={currentProvider}
-      />
+      {selectedPlan && (
+        <DigitalSignature
+          category={category}
+          currentProvider={currentProvider}
+          newProvider={selectedPlan.provider}
+          newPlan={selectedPlan.name}
+          monthlySavings={selectedPlan.originalPrice ? selectedPlan.originalPrice - selectedPlan.price : selectedPlan.savings || 0}
+          open={showSignature}
+          onOpenChange={setShowSignature}
+          hideTrigger={true}
+        />
+      )}
     </div>
   );
 };
