@@ -5,7 +5,7 @@ import { getCheapestPlan, calculateAnnualSavings } from '@/data/providers';
 import { AnalysisInput } from '@/components/AnalysisInput';
 import { ResultsGrid } from '@/components/ResultsGrid';
 import { Layout } from '@/components/Layout';
-import { AnalysisResults } from '@/pages/AnalysisResults';
+import { DetailedAnalysisResults } from './DetailedAnalysisResults';
 
 interface UploadedFile {
   file: File;
@@ -172,80 +172,7 @@ export const Analyze = () => {
 
   if (activeStep === 'results') {
     return (
-      <Layout>
-        <div className="space-y-8 animate-fade-in">
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <h1 className="text-4xl font-bold tracking-tight gradient-primary bg-clip-text text-transparent">
-                תוצאות הניתוח
-              </h1>
-              <p className="text-muted-foreground text-lg">
-                הנה כמה תוכל לחסוך על ההוצאות שלך
-              </p>
-            </div>
-            <Button variant="outline" onClick={() => setActiveStep('input')}>
-              <ArrowRight className="ml-2 h-4 w-4" />
-              נתח עוד
-            </Button>
-          </div>
-
-          {/* Results Display with new organized layout */}
-          <div className="space-y-8">
-            <AnalysisResults results={analysisResults} onBackToInput={() => setActiveStep('input')} />
-          </div>
-
-          {/* Next Steps */}
-          <div className="bg-gradient-to-br from-primary/5 to-primary-glow/5 rounded-xl p-8">
-            <h3 className="text-2xl font-bold mb-6">הצעדים הבאים</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <h4 className="font-semibold">איך לעבור לספק חדש:</h4>
-                <ol className="space-y-2 text-sm">
-                   <li className="flex items-center space-x-2 rtl:space-x-reverse">
-                     <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">1</div>
-                     <span>בחרו את הספק והחבילה המתאימים</span>
-                   </li>
-                   <li className="flex items-center space-x-2 rtl:space-x-reverse">
-                     <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">2</div>
-                     <span>פנו לספק החדש והירשמו לשירות</span>
-                   </li>
-                   <li className="flex items-center space-x-2 rtl:space-x-reverse">
-                     <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">3</div>
-                     <span>הספק החדש יטפל בביטול השירות הקודם</span>
-                   </li>
-                   <li className="flex items-center space-x-2 rtl:space-x-reverse">
-                     <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">4</div>
-                     <span>תתחילו לחסוך כסף מיד!</span>
-                   </li>
-                </ol>
-              </div>
-              
-              <div className="space-y-4">
-                <h4 className="font-semibold">טיפים חשובים:</h4>
-                <ul className="space-y-2 text-sm">
-                   <li className="flex items-start space-x-2 rtl:space-x-reverse">
-                     <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
-                     <span>ודאו שאין דמי ביטול בחוזה הנוכחי</span>
-                   </li>
-                   <li className="flex items-start space-x-2 rtl:space-x-reverse">
-                     <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
-                     <span>שמרו על רציפות השירות במעבר</span>
-                   </li>
-                   <li className="flex items-start space-x-2 rtl:space-x-reverse">
-                     <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
-                     <span>קראו בעיון את תנאי החוזה החדש</span>
-                   </li>
-                   <li className="flex items-start space-x-2 rtl:space-x-reverse">
-                     <div className="w-2 h-2 bg-success rounded-full mt-2 flex-shrink-0"></div>
-                     <span>שמרו על מספרי הטלפון החשובים</span>
-                   </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Layout>
+      <DetailedAnalysisResults results={analysisResults} onBackToInput={() => setActiveStep('input')} />
     );
   }
 
