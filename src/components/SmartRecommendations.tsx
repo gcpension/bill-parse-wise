@@ -1,19 +1,24 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   Lightbulb, 
   TrendingUp, 
-  Clock, 
-  Zap, 
-  Smartphone, 
-  Wifi, 
+  AlertTriangle, 
+  CheckCircle2, 
+  Clock,
+  Zap,
+  Smartphone,
+  Wifi,
   Tv,
-  ArrowRight,
-  Star
+  Star,
+  ArrowRight
 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { formatCurrency } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 interface Recommendation {
   id: string;
@@ -123,8 +128,21 @@ export const SmartRecommendations = () => {
   };
 
   const handleTakeAction = (recommendation: Recommendation) => {
+    const { toast } = useToast();
+    
+    // Navigate to comparison page with recommendation context
+    logger.info('User taking action on recommendation', 'SmartRecommendations', {
+      recommendationId: recommendation.id,
+      category: recommendation.category,
+      estimatedSavings: recommendation.potential_savings
+    });
+    
     // Here you would integrate with the comparison/switching flow
-    console.log('Taking action on recommendation:', recommendation);
+    // For now, we'll show a toast with the action
+    toast({
+      title: 'מעבר להשוואה',
+      description: `מתחיל תהליך השוואה עבור ${recommendation.title}`,
+    });
   };
 
   if (loading) {

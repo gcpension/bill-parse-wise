@@ -3,31 +3,38 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { ExternalLink, FileCheck, Clock, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { logger } from '@/lib/logger';
+import { config } from '@/lib/config';
+import { PersonalDetails, SigningData } from '@/types/forms';
 
-let supabaseClient: any = null;
-const getSupabase = () => {
-  const url = (import.meta as any).env?.VITE_SUPABASE_URL;
-  const anonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) return null;
-  if (!supabaseClient) {
-    supabaseClient = createClient(url, anonKey);
-  }
-  return supabaseClient;
-};
 interface SignTrustIntegrationProps {
-  customerDetails: {
-    name: string;
-    email: string;
-    phone: string;
-    idNumber: string;
-  };
+  customerDetails: PersonalDetails;
   currentProvider: string;
   newProvider: string;
   category: string;
-  documentData?: any;
-  onSigningComplete?: (signingData: any) => void;
+  documentData?: Record<string, any>;
+  onSigningComplete?: (signingData: SigningData) => void;
 }
+
+type SigningState = 'idle' | 'creating' | 'pending' | 'completed' | 'failed';
+
+let supabaseClient: SupabaseClient | null = null;
+
+const getSupabase = (): SupabaseClient | null => {
+  const supabaseConfig = config.supabase;
+  
+  if (!supabaseConfig.isConfigured) {
+    logger.warn('Supabase not configured', 'SignTrust');
+    return null;
+  }
+  
+  if (!supabaseClient) {
+    supabaseClient = createClient(supabaseConfig.url!, supabaseConfig.anonKey!);
+  }
+  
+  return supabaseClient;
+};
 
 export function SignTrustIntegration({
   customerDetails,
@@ -37,46 +44,64 @@ export function SignTrustIntegration({
   documentData,
   onSigningComplete
 }: SignTrustIntegrationProps) {
-  const [signingState, setSigningState] = useState<'idle' | 'creating' | 'pending' | 'completed' | 'failed'>('idle');
+  const [signingState, setSigningState] = useState<SigningState>('idle');
   const [signingUrl, setSigningUrl] = useState<string>('');
   const [requestId, setRequestId] = useState<string>('');
   const { toast } = useToast();
 
   const createSigningRequest = async () => {
+    const supabase = getSupabase();
+    if (!supabase) {
+      setSigningState('failed');
+      toast({
+        title: 'שגיאת תצורה',
+        description: 'שירות החתימה הדיגיטלית אינו מוגדר כרגע',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setSigningState('creating');
+    
     try {
-      setSigningState('creating');
-
-      const supabase = getSupabase();
-      if (!supabase) {
-        setSigningState('failed');
-        toast({
-          title: 'שגיאת תצורה',
-          description: 'חיבור Supabase לא מוגדר. אנא חבר את הפרויקט ל-Supabase.',
-          variant: 'destructive',
-        });
-        return;
-      }
-
-      const { data, error } = await supabase.functions.invoke('signtrust-integration', {
-        body: { customerDetails, currentProvider, newProvider, category, documentData }
+      logger.info('Creating signing request', 'SignTrust', { 
+        customerName: customerDetails.fullName,
+        category 
       });
 
-      if (error) throw error;
+      const { data, error } = await supabase.functions.invoke('signtrust-integration', {
+        body: {
+          customerDetails,
+          currentProvider,
+          newProvider,
+          category,
+          documentData
+        }
+      });
 
-      if (data.success) {
+      if (error) {
+        logger.error('Supabase function error', 'SignTrust', error);
+        throw error;
+      }
+
+      if (data?.success) {
         setSigningUrl(data.signing_url);
         setRequestId(data.request_id);
         setSigningState('pending');
+        
+        logger.info('Signing request created successfully', 'SignTrust', {
+          requestId: data.request_id
+        });
         
         toast({
           title: 'קישור חתימה נוצר בהצלחה',
           description: 'לחץ על הקישור להמשך תהליך החתימה',
         });
       } else {
-        throw new Error(data.error || 'Failed to create signing request');
+        throw new Error(data?.error || 'Failed to create signing request');
       }
     } catch (error) {
-      console.error('Error creating signing request:', error);
+      logger.error('Error creating signing request', 'SignTrust', error);
       setSigningState('failed');
       toast({
         title: 'שגיאה ביצירת בקשת חתימה',
@@ -88,33 +113,51 @@ export function SignTrustIntegration({
 
   const openSigningLink = () => {
     if (signingUrl) {
+      logger.info('Opening signing link', 'SignTrust', { requestId });
       window.open(signingUrl, '_blank');
     }
   };
 
   const checkSigningStatus = async () => {
+    const supabase = getSupabase();
+    if (!supabase || !requestId) return;
+
     try {
-      // Poll the database to check if signing is completed
-      const supabase = getSupabase();
-      if (!supabase) return;
       const { data, error } = await supabase
         .from('signing_requests')
         .select('status, signed_document_url, signed_at')
         .eq('id', requestId)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        logger.error('Error checking signing status', 'SignTrust', error);
+        throw error;
+      }
 
-      if (data.status === 'completed') {
+      if (data?.status === 'completed') {
         setSigningState('completed');
-        onSigningComplete?.(data);
+        
+        const signingData: SigningData = {
+          documentUrl: data.signed_document_url,
+          signingUrl,
+          status: 'signed',
+          timestamp: data.signed_at || new Date().toISOString(),
+        };
+
+        onSigningComplete?.(signingData);
+        
+        logger.info('Document signed successfully', 'SignTrust', {
+          requestId,
+          documentUrl: data.signed_document_url
+        });
+
         toast({
           title: 'החתימה הושלמה בהצלחה!',
           description: 'המסמך נחתם ונשמר במערכת',
         });
       }
     } catch (error) {
-      console.error('Error checking signing status:', error);
+      logger.error('Error checking signing status', 'SignTrust', error);
     }
   };
 
@@ -128,7 +171,7 @@ export function SignTrustIntegration({
         return <ExternalLink className="h-8 w-8 text-orange-500" />;
       case 'completed':
         return <CheckCircle2 className="h-8 w-8 text-green-500" />;
-      default:
+      case 'failed':
         return <FileCheck className="h-8 w-8 text-red-500" />;
     }
   };
@@ -145,8 +188,6 @@ export function SignTrustIntegration({
         return 'החתימה הושלמה בהצלחה!';
       case 'failed':
         return 'שגיאה ביצירת בקשת חתימה';
-      default:
-        return '';
     }
   };
 
@@ -220,9 +261,10 @@ export function SignTrustIntegration({
           <CardTitle className="text-lg">פרטי הבקשה</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
-          <div><strong>שם:</strong> {customerDetails.name}</div>
+          <div><strong>שם:</strong> {customerDetails.fullName}</div>
           <div><strong>אימייל:</strong> {customerDetails.email}</div>
           <div><strong>טלפון:</strong> {customerDetails.phone}</div>
+          <div><strong>ת.ז.:</strong> {customerDetails.idNumber}</div>
           <div><strong>ספק נוכחי:</strong> {currentProvider}</div>
           <div><strong>ספק חדש:</strong> {newProvider}</div>
           <div><strong>קטגוריה:</strong> {category}</div>

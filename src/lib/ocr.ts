@@ -8,18 +8,21 @@ import { handleError } from './errorHandler';
 env.allowLocalModels = false;
 env.useBrowserCache = true;
 
+import { logger } from '@/lib/logger';
+import { config } from '@/lib/config';
+
 let ocrPipeline: any = null;
 
 export const initializeOCR = async () => {
   if (!ocrPipeline) {
     try {
-      console.log('Initializing OCR pipeline...');
+      logger.info('Initializing OCR pipeline...', 'OCR');
       ocrPipeline = await pipeline('image-to-text', 'Xenova/trocr-base-handwritten', {
         device: 'webgpu',
       });
-      console.log('OCR pipeline initialized successfully');
+      logger.info('OCR pipeline initialized successfully', 'OCR');
     } catch (error) {
-      console.warn('WebGPU not available, falling back to CPU');
+      logger.warn('WebGPU not available, falling back to CPU', 'OCR');
       ocrPipeline = await pipeline('image-to-text', 'Xenova/trocr-base-handwritten');
     }
   }
@@ -37,7 +40,7 @@ export const extractTextFromImage = async (imageFile: File): Promise<OCRResult> 
     return new Promise((resolve, reject) => {
       img.onload = async () => {
         try {
-          console.log('Processing image with OCR...');
+          logger.debug('Processing image with OCR...', 'OCR');
           const result = await pipeline(img);
           
           URL.revokeObjectURL(imageUrl);
@@ -51,7 +54,7 @@ export const extractTextFromImage = async (imageFile: File): Promise<OCRResult> 
             lines
           });
         } catch (error) {
-          handleError(error, 'OCR processing');
+          logger.error('Error processing image with OCR', 'OCR', error);
           URL.revokeObjectURL(imageUrl);
           reject(error);
         }
@@ -108,16 +111,16 @@ export const parseExpenseFromText = (
   // Try to categorize the expense
   const category = getCategoryByKeywords(text);
   if (!category) {
-    console.log('No category found for text:', text);
+    logger.debug('No category found for text', 'OCR', { text: text.substring(0, 100) });
     return expenses;
   }
   
   // Extract amounts
   const amounts = parseHebrewAmount(text);
-  console.log('Found amounts:', amounts);
+  logger.debug('Found amounts in text', 'OCR', { amounts, text: text.substring(0, 100) });
   
   if (amounts.length === 0) {
-    console.log('No amounts found in text');
+    logger.debug('No amounts found in text', 'OCR');
     return expenses;
   }
   

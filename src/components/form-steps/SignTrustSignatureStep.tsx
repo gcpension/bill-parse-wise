@@ -1,32 +1,34 @@
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SignTrustIntegration } from '@/components/SignTrustIntegration';
+import { FormStepProps, SigningData } from '@/types/forms';
 
-interface SignTrustSignatureStepProps {
-  category: string;
-  customerType: string;
-  data: any;
-  onUpdate: (data: any) => void;
+interface SignTrustSignatureStepProps extends FormStepProps {
+  onSigningComplete?: (signingData: SigningData) => void;
 }
 
-export const SignTrustSignatureStep = ({ 
-  category, 
-  customerType, 
-  data, 
-  onUpdate 
-}: SignTrustSignatureStepProps) => {
-  
-  const handleSigningComplete = (signingData: any) => {
+export const SignTrustSignatureStep: React.FC<SignTrustSignatureStepProps> = ({
+  category,
+  customerType,
+  data,
+  onUpdate,
+  onSigningComplete
+}) => {
+  const handleSigningComplete = (signingData: SigningData) => {
+    // Update form data with signing information
     onUpdate({
       ...data,
-      signatureComplete: true,
-      signedDocumentUrl: signingData.signed_document_url,
-      signedAt: signingData.signed_at,
-      signTrustCompleted: true
+      signedDocumentUrl: signingData.documentUrl,
+      signedAt: signingData.timestamp,
+      signingStatus: signingData.status
     });
+    
+    // Notify parent component
+    onSigningComplete?.(signingData);
   };
 
-  // Extract customer details from form data
   const customerDetails = {
-    name: data.fullName || data.name || '',
+    fullName: data.fullName || data.name || '',
     email: data.email || '',
     phone: data.phone || '',
     idNumber: data.idNumber || data.personalId || ''
