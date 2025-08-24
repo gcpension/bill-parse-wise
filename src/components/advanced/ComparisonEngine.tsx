@@ -16,6 +16,7 @@ import {
   Wifi,
   Tv
 } from 'lucide-react';
+import { Plan, FilterOptions, SortOption } from '@/types';
 // Mock data for demo purposes
 const mockPlansData = {
   electricity: [],

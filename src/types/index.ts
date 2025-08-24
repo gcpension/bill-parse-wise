@@ -51,25 +51,34 @@ export interface FileUploadProgress {
 }
 
 export interface Plan {
-  id: string;
+  id?: string;
   name: string;
   provider: string;
-  category: string;
-  monthlyPrice: number;
-  features: string[];
-  rating: number;
+  category?: string;
+  price: number;
+  originalPrice?: number;
+  monthlyPrice?: number;
+  features?: string[];
+  rating?: number;
   savings?: number;
+  description?: string;
+  recommended?: boolean;
 }
 
 export interface FilterOptions {
-  priceRange: [number, number];
-  providers: string[];
+  category: string;
+  maxPrice: number;
+  minRating: number;
+  contractLength: number;
   features: string[];
-  rating: number;
+  includePromotions: boolean;
+  priceRange?: [number, number];
+  providers?: string[];
 }
 
 export interface SortOption {
-  key: keyof Plan;
+  field: string;
   direction: 'asc' | 'desc';
-  label: string;
+  key?: keyof Plan;
+  label?: string;
 }
