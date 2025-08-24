@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FileText, Download, AlertTriangle, Scale, Shield, Phone, Zap, Wifi, Smartphone } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import jsPDF from 'jspdf';
 
 interface DocumentTemplatesProps {
   category: 'electricity' | 'cellular' | 'internet';
@@ -26,23 +27,60 @@ export const DocumentTemplates: React.FC<DocumentTemplatesProps> = ({
   
   const handleDownloadForm = async (category: string) => {
     try {
-      // Create PDF content dynamically
-      const pdfContent = generatePowerOfAttorneyPDF(category, currentProvider, newProvider);
+      // Create PDF document
+      const pdf = new jsPDF();
       
-      // Create blob and download
-      const blob = new Blob([pdfContent], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `power-of-attorney-${category}-${Date.now()}.txt`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // Set Hebrew font support (using default for now)
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      
+      // Add title
+      pdf.text(`Power of Attorney - ${categoryNames[category]} Switch`, 20, 30);
+      
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      
+      // Add content
+      const content = [
+        '',
+        'Full Name: _____________________ ',
+        'ID Number: _____________________',
+        'Address: _____________________',
+        '',
+        `I hereby authorize ${newProvider} to act on my behalf`,
+        `for switching from current provider: ${currentProvider}`,
+        '',
+        'This authorization includes:',
+        `• Canceling service with current provider: ${currentProvider}`,
+        `• Opening new service with new provider: ${newProvider}`,
+        '• Transferring all relevant details',
+        '• Performing all required actions for the switch',
+        '',
+        `Date: ${new Date().toLocaleDateString('he-IL')}`,
+        'Signature: ________________',
+        '',
+        'Notes:',
+        '- This document was generated automatically',
+        '- Please sign and send to the new provider',
+        '- Keep a copy for your records'
+      ];
+      
+      let yPosition = 50;
+      content.forEach(line => {
+        if (line === '') {
+          yPosition += 5;
+        } else {
+          pdf.text(line, 20, yPosition);
+          yPosition += 7;
+        }
+      });
+      
+      // Save the PDF
+      pdf.save(`power-of-attorney-${category}-${Date.now()}.pdf`);
 
       toast({
         title: "טופס ייפוי הכוח נוצר!",
-        description: `הטופס עבור מעבר ${categoryNames[category]} נשמר במחשב שלך`,
+        description: `הטופס עבור מעבר ${categoryNames[category]} נשמר במחשב שלך כקובץ PDF`,
       });
     } catch (error) {
       toast({

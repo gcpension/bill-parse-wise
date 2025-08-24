@@ -49,3 +49,27 @@ export interface FileUploadProgress {
   status: 'uploading' | 'processing' | 'completed' | 'error';
   error?: string;
 }
+
+export interface Plan {
+  id: string;
+  name: string;
+  provider: string;
+  category: string;
+  monthlyPrice: number;
+  features: string[];
+  rating: number;
+  savings?: number;
+}
+
+export interface FilterOptions {
+  priceRange: [number, number];
+  providers: string[];
+  features: string[];
+  rating: number;
+}
+
+export interface SortOption {
+  key: keyof Plan;
+  direction: 'asc' | 'desc';
+  label: string;
+}
