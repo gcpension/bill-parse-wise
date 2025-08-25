@@ -37,7 +37,7 @@ export interface Plan {
   cons: string[];
 }
 
-// Transform JSON data to Provider format
+// Transform JSON data to Provider format  
 const transformJsonToProviders = (): Provider[] => {
   const providerMap = new Map<string, Provider>();
 
@@ -48,23 +48,28 @@ const transformJsonToProviders = (): Provider[] => {
     // Skip if company or service is missing
     if (!company || !service) return;
     
-    // Map service types to our categories
+    // Map service types to our categories - יותר מדויק
     let category: 'electricity' | 'cellular' | 'internet' | 'tv';
-    if (service === 'סלולר') category = 'cellular';
-    else if (service === 'אינטרנט ביתי (ספק + תשתית)' || service === 'אינטרנט סיבים (ספק + תשתית)') category = 'internet';
-    else if (service === 'טלוויזיה' || service === 'טריפל') category = 'tv';
-    else category = 'electricity';
+    if (service.includes('סלולר')) category = 'cellular';
+    else if (service.includes('אינטרנט') || service.includes('סיבים')) category = 'internet';
+    else if (service.includes('טלוויזיה') || service.includes('טריפל')) category = 'tv';
+    else if (service.includes('חשמל') || service.includes('כח')) category = 'electricity';
+    else {
+      console.warn(`סוג שירות לא מזוהה: ${service} - מוגדר כחשמל`);
+      category = 'electricity';
+    }
 
+    // יצירת מפתח ייחודי לכל חברה+קטגוריה (נכון!)
     const providerKey = `${company}-${category}`;
     
     if (!providerMap.has(providerKey)) {
       providerMap.set(providerKey, {
         id: providerKey.toLowerCase().replace(/\s+/g, '-'),
         name: company,
-        category,
-        rating: 4.0, // Default rating
+        category, // קטגוריה ספציפית לכל ספק
+        rating: 4.0,
         customerService: 'לא זמין',
-        website: 'לא זמין',
+        website: 'לא זמין', 
         description: `ספק ${category === 'cellular' ? 'סלולר' : category === 'internet' ? 'אינטרנט' : category === 'tv' ? 'טלוויזיה' : 'חשמל'}`,
         established: '2020',
         plans: []
