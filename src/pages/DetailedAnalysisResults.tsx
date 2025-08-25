@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowRight, Download, Share, RotateCcw, Zap, Smartphone, Wifi } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -87,41 +87,71 @@ export const DetailedAnalysisResults = ({ results, onBackToInput }: DetailedAnal
       description: "הדוח יישמר במחשב שלך בקרוב",
     });
   };
+  useEffect(() => {
+    document.title = `תוצאות ניתוח - חיסכון חודשי ₪${totalMonthlySavings.toLocaleString('he-IL')}`;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const canonical = (document.querySelector('link[rel="canonical"]') as HTMLLinkElement) || document.createElement('link');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', 'גלה חיסכון חודשי ושנתי לפי קטגוריה והחלפת ספק - ניתוח מותאם אישית.');
+    } else {
+      const m = document.createElement('meta');
+      m.name = 'description';
+      m.content = 'גלה חיסכון חודשי ושנתי לפי קטגוריה והחלפת ספק - ניתוח מותאם אישית.';
+      document.head.appendChild(m);
+    }
+    canonical.setAttribute('rel', 'canonical');
+    canonical.setAttribute('href', window.location.href);
+    if (!canonical.parentNode) document.head.appendChild(canonical);
+  }, [totalMonthlySavings]);
 
   return (
     <Layout>
       <div className="space-y-8 animate-fade-in">
         {/* Header Actions */}
-        <div className="flex items-center justify-between">
-          <div className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              תוצאות הניתוח המפורט
-            </h1>
-            <p className="text-muted-foreground text-lg">
-              ניתוח מקיף של כל האפשרויות הזמינות עבורך
-            </p>
+        <section aria-labelledby="results-title" className="relative overflow-hidden rounded-2xl bg-gradient-primary text-primary-foreground p-6 md:p-10 shadow-glow">
+          <div className="pointer-events-none absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary-glow/30 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-12 -right-12 h-48 w-48 rounded-full bg-success-glow/30 blur-3xl" />
+
+          <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 id="results-title" className="text-3xl md:text-4xl font-black tracking-tight">תוצאות הניתוח המפורט</h1>
+              <p className="text-primary-foreground/80 text-lg">ניתוח מקיף של כל האפשרויות הזמינות עבורך</p>
+            </div>
+
+            <div className="flex flex-col items-center md:items-end gap-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl md:text-3xl font-black">₪{totalMonthlySavings.toLocaleString('he-IL')}</div>
+                  <div className="text-primary-foreground/80 text-sm">חיסכון חודשי כולל</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl md:text-3xl font-black">₪{totalAnnualSavings.toLocaleString('he-IL')}</div>
+                  <div className="text-primary-foreground/80 text-sm">חיסכון שנתי כולל</div>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Button variant="secondary" onClick={handleShare}>
+                  <Share className="ml-2 h-4 w-4" />
+                  שתף
+                </Button>
+                <Button variant="secondary" onClick={handleDownload}>
+                  <Download className="ml-2 h-4 w-4" />
+                  הורד דוח
+                </Button>
+                <Button variant="outline" onClick={onBackToInput}>
+                  <RotateCcw className="ml-2 h-4 w-4" />
+                  נתח עוד
+                </Button>
+              </div>
+            </div>
           </div>
-          
-          <div className="flex gap-3">
-            <Button variant="outline" onClick={handleShare}>
-              <Share className="ml-2 h-4 w-4" />
-              שתף
-            </Button>
-            <Button variant="outline" onClick={handleDownload}>
-              <Download className="ml-2 h-4 w-4" />
-              הורד דוח
-            </Button>
-            <Button variant="outline" onClick={onBackToInput}>
-              <RotateCcw className="ml-2 h-4 w-4" />
-              נתח עוד
-            </Button>
-          </div>
-        </div>
+        </section>
 
         {/* Category Selection Tabs */}
         {results.length > 1 && (
           <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-auto p-1 bg-gradient-to-r from-accent/50 to-accent/30">
+            <TabsList className="grid w-full grid-cols-3 h-auto p-1 bg-gradient-card rounded-xl">
               {results.map((result) => {
                 const config = categoryConfig[result.category];
                 const Icon = config.icon;
@@ -129,7 +159,7 @@ export const DetailedAnalysisResults = ({ results, onBackToInput }: DetailedAnal
                   <TabsTrigger 
                     key={result.category} 
                     value={result.category}
-                    className="flex items-center space-x-2 rtl:space-x-reverse py-4 data-[state=active]:bg-primary data-[state=active]:text-white"
+                    className="flex items-center gap-2 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                   >
                     <Icon className="h-5 w-5" />
                     <span className="text-base font-semibold">{config.name}</span>
