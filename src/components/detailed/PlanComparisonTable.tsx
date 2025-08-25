@@ -304,17 +304,38 @@ export const PlanComparisonTable = ({
                                 </p>
                               )}
                               <p className="text-2xl font-black text-primary">
-                                {category === 'electricity' 
-                                  ? `${(plan.price * 850).toLocaleString('he-IL')} ${plan.currency}` 
-                                  : `${plan.price.toLocaleString('he-IL')} ${plan.currency}`
-                                }
+                                {plan.price > 0 ? (
+                                  category === 'electricity' 
+                                    ? `${(plan.price * 850).toLocaleString('he-IL')} ${plan.currency}` 
+                                    : `${plan.price.toLocaleString('he-IL')} ${plan.currency}`
+                                ) : (
+                                  <span className="text-lg text-muted-foreground">בהתאם לפנייה</span>
+                                )}
                               </p>
-                              <p className="text-xs text-muted-foreground">לחודש</p>
+                              <p className="text-xs text-muted-foreground">
+                                {plan.price > 0 ? 'לחודש' : 'יש לפנות לקבלת הצעת מחיר'}
+                              </p>
                             </div>
                           </div>
 
+                          {plan.price === 0 && (
+                            <div className="relative">
+                              <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200/50 rounded-xl p-4 text-center shadow-sm">
+                                <div className="flex items-center justify-center gap-2 mb-2">
+                                  <div className="p-1.5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full">
+                                    <Phone className="h-3.5 w-3.5 text-white" />
+                                  </div>
+                                  <span className="text-sm font-semibold text-blue-700">מחיר אטרקטיבי</span>
+                                </div>
+                                <div className="text-sm font-medium text-blue-800">
+                                  קבל הצעת מחיר מותאמת אישית
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
                           {/* Enhanced savings display with modern design */}
-                          {savings > 0 && (
+                          {plan.price > 0 && savings > 0 && (
                             <div className="relative">
                               <div className="bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 border border-emerald-200/50 rounded-xl p-4 text-center shadow-sm transform transition-all group-hover:shadow-md group-hover:-translate-y-1">
                                 <div className="flex items-center justify-center gap-2 mb-2">

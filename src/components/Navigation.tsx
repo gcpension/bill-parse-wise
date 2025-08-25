@@ -14,6 +14,7 @@ const navigation = [
   { name: 'דשבורד', href: '/dashboard', icon: LayoutDashboard },
   { name: 'ניתוח חיסכון', href: '/analyze', icon: Calculator },
   { name: 'השוואת ספקים', href: '/compare', icon: BarChart3 },
+  { name: 'כל המסלולים', href: '/all-plans', icon: TrendingDown },
   { name: 'הגדרות', href: '/settings', icon: Settings },
 ];
 

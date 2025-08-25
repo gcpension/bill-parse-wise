@@ -45,6 +45,9 @@ const transformJsonToProviders = (): Provider[] => {
     const company = planData["שם_החברה"];
     const service = planData["סוג_השירות"];
     
+    // Skip if company or service is missing
+    if (!company || !service) return;
+    
     // Map service types to our categories
     let category: 'electricity' | 'cellular' | 'internet' | 'tv';
     if (service === 'סלולר') category = 'cellular';
@@ -70,24 +73,29 @@ const transformJsonToProviders = (): Provider[] => {
 
     const provider = providerMap.get(providerKey)!;
     
-    // Convert plan data
+    // Convert plan data - handle null prices
+    const monthlyPrice = planData["מחיר_חודשי_(₪)"];
+    const planName = planData["שם_המסלול"];
+    
+    // Skip if plan name is missing
+    if (!planName) return;
+    
     const plan: Plan = {
-      id: `${providerKey}-${planData["שם_המסלול"]}`.toLowerCase().replace(/\s+/g, '-'),
-      name: planData["שם_המסלול"],
-      price: planData["מחיר_חודשי_(₪)"] || 0,
+      id: `${providerKey}-${planName}`.toLowerCase().replace(/\s+/g, '-'),
+      name: planName,
+      price: monthlyPrice !== null ? monthlyPrice : 0, // Use 0 for null prices
       currency: '₪',
       period: 'month',
-      features: planData["הטבות_מעבר"] ? [planData["הטבות_מעבר"]] : ['תיאור לא זמין'],
-      limitations: planData["זמן_התחייבות"] && planData["זמן_התחייבות"] !== 'ללא התחייבות' 
+      features: planData["הטבות_מעבר"] ? [planData["הטבות_מעבר"]] : ['מידע לא זמין'],
+      limitations: planData["זמן_התחייבות"] && planData["זמן_התחייבות"] !== 'ללא התחייבות' && planData["זמן_התחייבות"] !== 'ללא'
         ? [`התחייבות: ${planData["זמן_התחייבות"]}`] 
         : [],
-      detailedDescription: planData["הטבות_מעבר"] || 'לא זמין',
+      detailedDescription: planData["הטבות_מעבר"] || 'פרטים נוספים יתקבלו בפנייה לספק',
       targetAudience: 'כלל הצרכנים',
       pros: planData["הטבות_מעבר"] ? [planData["הטבות_מעבר"]] : ['מסלול בסיסי'],
-      cons: planData["זמן_התחייבות"] && planData["זמן_התחייבות"] !== 'ללא התחייבות' 
-        ? [`דרישת התחייבות: ${planData["זמן_התחייבות"]}`] 
-        : [],
-      recommended: Math.random() > 0.7 // Mark some plans as recommended randomly
+      cons: monthlyPrice === null ? ['המחיר יקבע בהתאם לפנייה'] : [],
+      recommended: Math.random() > 0.8, // Mark some plans as recommended
+      isPromotion: planData["הטבות_מעבר"] && planData["הטבות_מעבר"].includes('מבצע')
     };
 
     provider.plans.push(plan);
@@ -115,12 +123,19 @@ export const getCheapestPlan = (category: 'electricity' | 'cellular' | 'internet
   
   providers.forEach(provider => {
     provider.plans.forEach(plan => {
-      if (plan.price < cheapestPrice && plan.price > 0) {
+      // Only consider plans with actual prices > 0
+      if (plan.price > 0 && plan.price < cheapestPrice) {
         cheapestPrice = plan.price;
         cheapestPlan = { ...plan, providerName: provider.name, providerId: provider.id };
       }
     });
   });
+  
+  // If no plans with prices found, return the first plan available
+  if (!cheapestPlan && providers.length > 0 && providers[0].plans.length > 0) {
+    const firstPlan = providers[0].plans[0];
+    cheapestPlan = { ...firstPlan, providerName: providers[0].name, providerId: providers[0].id };
+  }
   
   return cheapestPlan;
 };
