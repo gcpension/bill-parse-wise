@@ -342,7 +342,7 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
 
             <CardContent className={dense ? "p-3" : "p-6"}>
               {/* Plans Grid */}
-              <div className={`grid ${dense ? 'md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-1.5' : 'md:grid-cols-2 lg:grid-cols-3 gap-4'}`}>
+              <div className={`grid ${dense ? 'md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-1' : 'md:grid-cols-2 lg:grid-cols-3 gap-4'}`}>
                 {provider.plans.map((plan) => {
                   const savings = calculateSavings(plan.price);
                   const savingsPercentage = currentAmount > 0 ? ((savings / currentAmount) * 100) : 0;
@@ -350,14 +350,23 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
                   return (
                     <div
                       key={plan.id}
-                      className={`relative ${dense ? 'p-1.5 min-h-[140px]' : 'p-4'} border-2 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer ${
+                      className={`relative ${dense ? 'p-1 min-h-[120px]' : 'p-4'} border-2 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer ${
                         plan.recommended 
                           ? 'border-primary bg-primary/5 ring-1 ring-primary/20' 
                           : 'border-border bg-background hover:border-primary/30'
                       }`}
                     >
+                      {/* Savings Badge */}
+                      {savings > 0 && (
+                        <div className="absolute -top-1 -left-1 z-10">
+                          <Badge className="bg-success text-success-foreground text-[9px] px-1.5 py-0.5 shadow-sm">
+                            {dense ? `${formatCurrency(savings)}` : `חיסכון ${formatCurrency(savings)}`}
+                          </Badge>
+                        </div>
+                      )}
+                      
                       {plan.recommended && !dense && (
-                        <div className="absolute -top-2 -right-2">
+                        <div className="absolute -top-2 -right-2 z-10">
                           <Badge className="bg-primary text-primary-foreground animate-pulse">
                             מומלץ ⭐
                           </Badge>
@@ -411,20 +420,6 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
                             <div className="text-[9px] text-center bg-muted/50 rounded px-1 py-0.5 mt-1 truncate" title={plan.targetAudience}>
                               {plan.targetAudience}
                             </div>
-                          </div>
-                        )}
-
-                        {/* Savings Display */}
-                        {savings > 0 && (
-                          <div className={`text-center bg-success/10 rounded-lg ${dense ? 'p-1 mt-auto' : 'p-2'}`}>
-                            <p className={`${dense ? 'text-[10px]' : 'text-sm'} font-semibold text-success`}>
-                              {dense ? `חיסכון ${formatCurrency(savings)}` : `חיסכון: ${formatCurrency(savings)}`}
-                            </p>
-                            {!dense && (
-                              <p className="text-xs text-success/80">
-                                {savingsPercentage.toFixed(1)}% פחות מהנוכחי
-                              </p>
-                            )}
                           </div>
                         )}
 
