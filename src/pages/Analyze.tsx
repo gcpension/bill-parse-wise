@@ -5,7 +5,7 @@ import { getCheapestPlan, calculateAnnualSavings, getProvidersByCategory } from 
 import { AnalysisInput } from '@/components/AnalysisInput';
 import { ResultsGrid } from '@/components/ResultsGrid';
 import { Layout } from '@/components/Layout';
-import { DetailedAnalysisResults } from './DetailedAnalysisResults';
+import { NewDetailedAnalysisResults } from './NewDetailedAnalysisResults';
 
 interface UploadedFile {
   file: File;
@@ -172,7 +172,7 @@ export const Analyze = () => {
 
   if (activeStep === 'results') {
     return (
-      <DetailedAnalysisResults results={analysisResults} onBackToInput={() => setActiveStep('input')} />
+      <NewDetailedAnalysisResults results={analysisResults} onBackToInput={() => setActiveStep('input')} />
     );
   }
 
