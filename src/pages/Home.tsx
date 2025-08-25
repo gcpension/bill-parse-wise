@@ -320,6 +320,12 @@ const Home = () => {
               העלה חשבונית עכשיו
             </Button>
           </Link>
+          <Link to="/results-preview">
+            <Button variant="outline" size="lg" className="text-lg px-8 py-4 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+              <BarChart3 className="ml-2 h-5 w-5" />
+              תצוגה מקדימה 2025 ✨
+            </Button>
+          </Link>
           <Link to="/compare">
             <Button variant="outline" size="lg" className="text-lg px-8 py-4">
               <Calculator className="ml-2 h-5 w-5" />
