@@ -16,6 +16,8 @@ import { Dashboard } from "./components/Dashboard";
 import ResultsPreview from "./pages/ResultsPreview";
 import SwitchWizard from "./pages/SwitchWizard";
 import RequestStatus from "./pages/RequestStatus";
+// Import the newly created AllPlans page
+import AllPlans from "./pages/AllPlans";
 
 const queryClient = new QueryClient();
 
@@ -25,27 +27,35 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter 
+        <BrowserRouter
           future={{
             v7_startTransition: true,
-            v7_relativeSplatPath: true
+            v7_relativeSplatPath: true,
           }}
         >
           <div className="min-h-screen bg-background">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/forms/:category" element={<Forms />} />
-          <Route path="/analyze" element={<Analyze />} />
-          <Route path="/results-preview" element={<ResultsPreview />} />
-          <Route path="/switch-wizard" element={<SwitchWizard />} />
-          <Route path="/request-status/:requestId?" element={<RequestStatus />} />
-          <Route path="/compare" element={<Navigate to="/analyze" replace />} />
-          <Route path="/switch/:category" element={<ProviderSwitch />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/forms/:category" element={<Forms />} />
+              <Route path="/analyze" element={<Analyze />} />
+              <Route path="/results-preview" element={<ResultsPreview />} />
+              <Route path="/switch-wizard" element={<SwitchWizard />} />
+              {/* New route to display the full list of plans */}
+              <Route path="/all-plans" element={<AllPlans />} />
+              <Route path="/request-status/:requestId?" element={<RequestStatus />} />
+              <Route
+                path="/compare"
+                element={<Navigate to="/analyze" replace />}
+              />
+              <Route
+                path="/switch/:category"
+                element={<ProviderSwitch />}
+              />
+              <Route path="/help" element={<Help />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </div>
         </BrowserRouter>
       </TooltipProvider>
