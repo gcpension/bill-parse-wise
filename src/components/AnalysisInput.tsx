@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -21,7 +20,8 @@ import {
   Smartphone,
   Calculator,
   Plus,
-  Minus
+  Minus,
+  Tv
 } from 'lucide-react';
 import { validateImageFile, formatCurrency } from '@/lib/utils';
 import { handleError } from '@/lib/errorHandler';
@@ -34,7 +34,7 @@ interface UploadedFile {
   progress: number;
   ocrText?: string;
   parsedData?: {
-    category: 'electricity' | 'cellular' | 'internet';
+    category: 'electricity' | 'cellular' | 'internet' | 'tv';
     amount: number;
     date: string;
     provider?: string;
@@ -44,7 +44,7 @@ interface UploadedFile {
 }
 
 interface CategoryData {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentProvider: string;
   monthlyAmount: string;
   accountDetails?: string;
@@ -65,19 +65,22 @@ interface AnalysisInputProps {
 const categoryIcons = {
   electricity: Zap,
   cellular: Smartphone,
-  internet: Wifi
+  internet: Wifi,
+  tv: Tv
 };
 
 const categoryNames = {
   electricity: 'חשמל',
   cellular: 'סלולר',
-  internet: 'אינטרנט'
+  internet: 'אינטרנט',
+  tv: 'טלוויזיה/סטרימינג'
 };
 
 const categoryColors = {
   electricity: 'gradient-sunset',
   cellular: 'gradient-electric', 
-  internet: 'gradient-vibrant'
+  internet: 'gradient-vibrant',
+  tv: 'gradient-purple'
 };
 
 const initialCategoryData: Record<string, CategoryData> = {
@@ -97,6 +100,13 @@ const initialCategoryData: Record<string, CategoryData> = {
   },
   internet: {
     category: 'internet',
+    currentProvider: '',
+    monthlyAmount: '',
+    accountDetails: '',
+    isActive: false
+  },
+  tv: {
+    category: 'tv',
     currentProvider: '',
     monthlyAmount: '',
     accountDetails: '',
@@ -203,7 +213,7 @@ export const AnalysisInput = ({
     const activeCategories = Object.values(categoryData).filter(cat => 
       cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0
     );
-    return activeCategories.length > 0 || uploadedFiles.some(f => f.status === 'completed');
+    return activeCategories.length > 0;
   };
 
   return (
@@ -214,204 +224,98 @@ export const AnalysisInput = ({
           בואו נחסוך כסף ביחד
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-          העלו חשבונות או הזינו פרטים ידנית כדי לקבל השוואת מחירים מדויקת ולגלות כמה תוכלו לחסוך
+          הזינו פרטים ידנית כדי לקבל השוואת מחירים מדויקת ולגלות כמה תוכלו לחסוך
         </p>
       </div>
 
-      <Tabs defaultValue="upload" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="upload" className="flex items-center space-x-2 rtl:space-x-reverse">
-            <UploadIcon className="h-4 w-4" />
-            <span>העלאת חשבונות</span>
-          </TabsTrigger>
-          <TabsTrigger value="manual" className="flex items-center space-x-2 rtl:space-x-reverse">
-            <Calculator className="h-4 w-4" />
-            <span>הזנה ידנית</span>
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="upload" className="space-y-6">
-          {/* File Upload Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>העלאת חשבונות</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div
-                {...getRootProps()}
-                className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${
-                  isDragActive 
-                    ? 'border-primary bg-primary/5' 
-                    : 'border-border hover:border-primary/50 hover:bg-accent/50'
-                }`}
-              >
-                <input {...getInputProps()} />
-                <div className="space-y-4">
-                  <div className="p-4 bg-primary/10 rounded-full w-fit mx-auto">
-                    <UploadIcon className="h-8 w-8 text-primary" />
-                  </div>
-                  {isDragActive ? (
-                    <p className="text-lg font-medium text-primary">שחררו הקבצים כאן...</p>
-                  ) : (
-                    <div className="space-y-2">
-                      <p className="text-lg font-medium">גררו קבצים לכאן או לחצו לבחירה</p>
-                      <p className="text-sm text-muted-foreground">
-                        תומך ב-PDF, JPG, PNG עד 10MB
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Uploaded Files List */}
-              {uploadedFiles.length > 0 && (
-                <div className="space-y-4 mt-6">
-                  <h4 className="font-medium">קבצים שהועלו</h4>
-                  {uploadedFiles.map((file) => (
-                    <div key={file.id} className="flex items-center space-x-4 rtl:space-x-reverse p-4 border rounded-lg">
-                      <div className="p-2 bg-primary/10 rounded">
-                        {file.file.type.startsWith('image/') ? (
-                          <Image className="h-4 w-4 text-primary" />
-                        ) : (
-                          <FileText className="h-4 w-4 text-primary" />
-                        )}
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{file.file.name}</p>
-                        <div className="flex items-center space-x-2 rtl:space-x-reverse mt-1">
-                          <div className="flex-1">
-                            {file.status === 'uploading' && (
-                              <Progress value={file.progress} className="h-2" />
-                            )}
-                            {file.status === 'processing' && (
-                              <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                                <Loader2 className="h-3 w-3 animate-spin" />
-                                <span className="text-xs text-muted-foreground">מעבד...</span>
-                              </div>
-                            )}
-                            {file.status === 'completed' && (
-                           <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                                 <CheckCircle2 className="h-3 w-3 text-success" />
-                                 <span className="text-xs text-success">הושלם</span>
-                               </div>
-                            )}
-                            {file.status === 'error' && (
-                              <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                                <AlertCircle className="h-3 w-3 text-destructive" />
-                                <span className="text-xs text-destructive">{file.error || 'שגיאה'}</span>
-                              </div>
-                            )}
-                          </div>
+      {/* Manual Input Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle>בחרו תחומים לניתוח</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-6">
+            {Object.entries(categoryData).map(([key, data]) => {
+              const CategoryIcon = categoryIcons[data.category];
+              const providers = getProvidersByCategory(data.category);
+              const gradientClass = categoryColors[data.category];
+              
+              return (
+                <Card key={key} className={`transition-all duration-300 ${
+                  data.isActive ? 'ring-2 ring-primary shadow-lg' : 'hover:shadow-md'
+                }`}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className={`p-3 ${gradientClass} rounded-lg shadow-elegant`}>
+                          <CategoryIcon className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-xl">{categoryNames[data.category]}</CardTitle>
+                          <p className="text-sm text-muted-foreground">
+                            {data.isActive ? 'נבחר לניתוח' : 'לחצו להוספה'}
+                          </p>
                         </div>
                       </div>
-
-                      <Button 
-                        variant="ghost" 
+                      <Button
+                        variant={data.isActive ? "default" : "outline"}
                         size="sm"
-                        onClick={() => onFileRemove(file.id)}
+                        onClick={() => onCategoryToggle(key)}
                       >
-                        <X className="h-4 w-4" />
+                        {data.isActive ? <Minus className="h-4 w-4 ml-2" /> : <Plus className="h-4 w-4 ml-2" />}
+                        {data.isActive ? 'הסר' : 'הוסף'}
                       </Button>
                     </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="manual" className="space-y-6">
-          {/* Manual Input Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>בחרו תחומים לניתוח</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-6">
-                {Object.entries(categoryData).map(([key, data]) => {
-                  const CategoryIcon = categoryIcons[data.category];
-                  const providers = getProvidersByCategory(data.category);
-                  const gradientClass = categoryColors[data.category];
+                  </CardHeader>
                   
-                  return (
-                    <Card key={key} className={`transition-all duration-300 ${
-                      data.isActive ? 'ring-2 ring-primary shadow-lg' : 'hover:shadow-md'
-                    }`}>
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                            <div className={`p-3 ${gradientClass} rounded-lg shadow-elegant`}>
-                              <CategoryIcon className="h-6 w-6 text-white" />
-                            </div>
-                            <div>
-                              <CardTitle className="text-xl">{categoryNames[data.category]}</CardTitle>
-                              <p className="text-sm text-muted-foreground">
-                                {data.isActive ? 'נבחר לניתוח' : 'לחצו להוספה'}
-                              </p>
-                            </div>
-                          </div>
-                          <Button
-                            variant={data.isActive ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => onCategoryToggle(key)}
+                  {data.isActive && (
+                    <CardContent className="space-y-4 animate-fade-in">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>ספק נוכחי</Label>
+                          <Select 
+                            value={data.currentProvider} 
+                            onValueChange={(value) => onCategoryDataUpdate(key, 'currentProvider', value)}
                           >
-                            {data.isActive ? <Minus className="h-4 w-4 ml-2" /> : <Plus className="h-4 w-4 ml-2" />}
-                            {data.isActive ? 'הסר' : 'הוסף'}
-                          </Button>
+                            <SelectTrigger>
+                              <SelectValue placeholder="בחרו ספק נוכחי" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {providers.map((provider) => (
+                                <SelectItem key={provider.name} value={provider.name}>
+                                  {provider.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </div>
-                      </CardHeader>
+                        
+                        <div className="space-y-2">
+                          <Label>סכום חודשי (₪)</Label>
+                          <Input
+                            type="number"
+                            placeholder="הזינו סכום"
+                            value={data.monthlyAmount}
+                            onChange={(e) => onCategoryDataUpdate(key, 'monthlyAmount', e.target.value)}
+                          />
+                        </div>
+                      </div>
                       
-                      {data.isActive && (
-                        <CardContent className="space-y-4 animate-fade-in">
-                          <div className="grid md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label>ספק נוכחי</Label>
-                              <Select 
-                                value={data.currentProvider} 
-                                onValueChange={(value) => onCategoryDataUpdate(key, 'currentProvider', value)}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="בחרו ספק נוכחי" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {providers.map((provider) => (
-                                    <SelectItem key={provider.name} value={provider.name}>
-                                      {provider.name}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            
-                            <div className="space-y-2">
-                              <Label>סכום חודשי (₪)</Label>
-                              <Input
-                                type="number"
-                                placeholder="הזינו סכום"
-                                value={data.monthlyAmount}
-                                onChange={(e) => onCategoryDataUpdate(key, 'monthlyAmount', e.target.value)}
-                              />
-                            </div>
-                          </div>
-                          
-                          {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
-                            <div className="p-4 bg-primary/5 rounded-lg">
-                              <p className="text-sm font-medium text-primary">
-                                💡 נבדוק עבורכם אפשרויות חיסכון לסכום של {formatCurrency(parseFloat(data.monthlyAmount))} בחודש
-                              </p>
-                            </div>
-                          )}
-                        </CardContent>
+                      {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
+                        <div className="p-4 bg-primary/5 rounded-lg">
+                          <p className="text-sm font-medium text-primary">
+                            💡 נבדוק עבורכם אפשרויות חיסכון לסכום של {formatCurrency(parseFloat(data.monthlyAmount))} בחודש
+                          </p>
+                        </div>
                       )}
-                    </Card>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                    </CardContent>
+                  )}
+                </Card>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Action Button */}
       <div className="text-center space-y-4">

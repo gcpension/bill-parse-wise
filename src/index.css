@@ -72,6 +72,7 @@ body {
     --gradient-electric: linear-gradient(135deg, hsl(var(--electric-blue)), hsl(215 100% 70%));
     --gradient-vibrant: linear-gradient(135deg, hsl(var(--vibrant-green)), hsl(120 100% 60%));
     --gradient-sunset: linear-gradient(135deg, hsl(var(--sunset-orange)), hsl(var(--golden-yellow)));
+    --gradient-purple: linear-gradient(135deg, hsl(var(--royal-purple)), hsl(271 81% 70%));
     
     /* Elegant shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
@@ -163,6 +164,10 @@ body {
   
   .gradient-sunset {
     background: var(--gradient-sunset);
+  }
+  
+  .gradient-purple {
+    background: var(--gradient-purple);
   }
   
   .shadow-elegant {

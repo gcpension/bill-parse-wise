@@ -14,7 +14,7 @@ interface UploadedFile {
   progress: number;
   ocrText?: string;
   parsedData?: {
-    category: 'electricity' | 'cellular' | 'internet';
+    category: 'electricity' | 'cellular' | 'internet' | 'tv';
     amount: number;
     date: string;
     provider?: string;
@@ -24,7 +24,7 @@ interface UploadedFile {
 }
 
 interface CategoryData {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentProvider: string;
   monthlyAmount: string;
   accountDetails?: string;
@@ -32,7 +32,7 @@ interface CategoryData {
 }
 
 interface AnalysisResult {
-  category: 'electricity' | 'cellular' | 'internet';
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentAmount: number;
   currentProvider: string;
   recommendedPlan: any;
@@ -59,6 +59,13 @@ const initialCategoryData: Record<string, CategoryData> = {
   },
   internet: {
     category: 'internet',
+    currentProvider: '',
+    monthlyAmount: '',
+    accountDetails: '',
+    isActive: false
+  },
+  tv: {
+    category: 'tv',
     currentProvider: '',
     monthlyAmount: '',
     accountDetails: '',
@@ -130,7 +137,7 @@ export const Analyze = () => {
     setActiveStep('results');
   };
 
-  const analyzeData = (data: { category: 'electricity' | 'cellular' | 'internet', amount: number, provider?: string }) => {
+  const analyzeData = (data: { category: 'electricity' | 'cellular' | 'internet' | 'tv', amount: number, provider?: string }) => {
     const cheapestPlan = getCheapestPlan(data.category);
     
     if (!cheapestPlan) return null;

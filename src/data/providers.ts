@@ -788,13 +788,212 @@ export const internetProviders: Provider[] = [
   }
 ];
 
-export const allProviders = [...electricityProviders, ...cellularProviders, ...internetProviders];
+// TV/Streaming Providers
+export const tvProviders: Provider[] = [
+  {
+    id: 'yes',
+    name: 'יס',
+    category: 'tv',
+    rating: 4.1,
+    customerService: '1-700-588-588',
+    website: 'yes.co.il',
+    description: 'טלוויזיה לוויינית ושירותי סטרימינג',
+    established: '2000',
+    plans: [
+      {
+        id: 'yes-premium',
+        name: 'חבילה מקסימום',
+        price: 199,
+        currency: '₪',
+        period: 'month',
+        features: ['כל הערוצים', 'Netflix כלול', 'סטינג TV', '4 מקלטים'],
+        recommended: true,
+        detailedDescription: 'החבילה המלאה עם כל השירותים',
+        targetAudience: 'משפחות גדולות',
+        pros: ['תוכן עשיר', 'איכות גבוהה'],
+        cons: ['מחיר גבוה']
+      },
+      {
+        id: 'yes-basic',
+        name: 'חבילה בסיסית',
+        price: 89,
+        currency: '₪',
+        period: 'month',
+        features: ['ערוצים בסיסיים', 'מקלט אחד'],
+        detailedDescription: 'חבילה בסיסית למשפחות קטנות',
+        targetAudience: 'משפחות קטנות',
+        pros: ['מחיר נמוך'],
+        cons: ['תוכן מוגבל']
+      }
+    ]
+  },
+  {
+    id: 'hot',
+    name: 'הוט',
+    category: 'tv',
+    rating: 3.9,
+    customerService: '1-700-467-467',
+    website: 'hot.net.il',
+    description: 'טלוויזיה כבלים ושירותי VOD',
+    established: '2000',
+    plans: [
+      {
+        id: 'hot-premium',
+        name: 'חבילת פרימיום',
+        price: 179,
+        currency: '₪',
+        period: 'month',
+        features: ['כל הערוצים', 'HOT VOD', 'Disney+ כלול', '3 מקלטים'],
+        recommended: true,
+        detailedDescription: 'חבילה עשירה עם תוכן VOD',
+        targetAudience: 'משפחות',
+        pros: ['VOD עשיר', 'Disney+ כלול'],
+        cons: ['תלוי בתשתית כבלים']
+      },
+      {
+        id: 'hot-basic',
+        name: 'חבילה בסיסית',
+        price: 99,
+        currency: '₪',
+        period: 'month',
+        features: ['ערוצים בסיסיים', 'HOT VOD בסיסי'],
+        detailedDescription: 'חבילה בסיסית עם VOD',
+        targetAudience: 'משפחות קטנות',
+        pros: ['מחיר סביר'],
+        cons: ['תוכן מוגבל']
+      }
+    ]
+  },
+  {
+    id: 'partner-tv',
+    name: 'פרטנר TV',
+    category: 'tv',
+    rating: 3.8,
+    customerService: '1-700-150-150',
+    website: 'partner.co.il',
+    description: 'שירותי טלוויזיה וסטרימינג דיגיטליים',
+    established: '2015',
+    plans: [
+      {
+        id: 'partner-all',
+        name: 'הכל כלול',
+        price: 159,
+        currency: '₪',
+        period: 'month',
+        features: ['כל הערוצים', '2 מקלטים', 'אפליקציית Partner TV'],
+        detailedDescription: 'חבילה משולבת טלוויזיה ואינטרנט',
+        targetAudience: 'משפחות',
+        pros: ['שילוב עם אינטרנט'],
+        cons: ['כיסוי מוגבל']
+      }
+    ]
+  },
+  {
+    id: 'netflix',
+    name: 'Netflix',
+    category: 'tv',
+    rating: 4.5,
+    customerService: 'support.netflix.com',
+    website: 'netflix.com',
+    description: 'שירות סטרימינג עולמי',
+    established: '2007',
+    plans: [
+      {
+        id: 'netflix-premium',
+        name: 'פרימיום',
+        price: 55,
+        currency: '₪',
+        period: 'month',
+        features: ['4K Ultra HD', '4 מכשירים בו זמנית', 'הורדות'],
+        recommended: true,
+        detailedDescription: 'איכות מקסימלית עם 4K',
+        targetAudience: 'משפחות גדולות',
+        pros: ['איכות מעולה', 'תוכן בלעדי'],
+        cons: ['דורש אינטרנט מהיר']
+      },
+      {
+        id: 'netflix-standard',
+        name: 'סטנדרט',
+        price: 40,
+        currency: '₪',
+        period: 'month',
+        features: ['HD', '2 מכשירים בו זמנית'],
+        detailedDescription: 'חבילה סטנדרטית לזוגות',
+        targetAudience: 'זוגות',
+        pros: ['מחיר סביר', 'איכות HD'],
+        cons: ['מוגבל ל-2 מכשירים']
+      },
+      {
+        id: 'netflix-basic',
+        name: 'בסיסי',
+        price: 25,
+        currency: '₪',
+        period: 'month',
+        features: ['SD', 'מכשיר אחד'],
+        detailedDescription: 'חבילה חסכונית',
+        targetAudience: 'משתמש יחיד',
+        pros: ['מחיר נמוך'],
+        cons: ['איכות SD', 'מכשיר אחד בלבד']
+      }
+    ]
+  },
+  {
+    id: 'disney-plus',
+    name: 'Disney+',
+    category: 'tv',
+    rating: 4.3,
+    customerService: 'help.disneyplus.com',
+    website: 'disneyplus.com',
+    description: 'שירות סטרימינג דיסני',
+    established: '2019',
+    plans: [
+      {
+        id: 'disney-monthly',
+        name: 'חודשי',
+        price: 29.90,
+        currency: '₪',
+        period: 'month',
+        features: ['תוכן דיסני בלעדי', '4K Ultra HD', '4 מכשירים בו זמנית'],
+        detailedDescription: 'כל תוכן דיסני, מארוול ו-Star Wars',
+        targetAudience: 'משפחות עם ילדים',
+        pros: ['תוכן איכותי לילדים', '4K'],
+        cons: ['ספרייה מוגבלת']
+      }
+    ]
+  },
+  {
+    id: 'amazon-prime',
+    name: 'Amazon Prime Video',
+    category: 'tv',
+    rating: 4.0,
+    customerService: 'amazon.com/support',
+    website: 'primevideo.com',
+    description: 'שירות סטרימינג אמזון',
+    established: '2016',
+    plans: [
+      {
+        id: 'prime-monthly',
+        name: 'חודשי',
+        price: 22.90,
+        currency: '₪',
+        period: 'month',
+        features: ['תוכן Prime Video', 'סדרות בלעדיות', 'הורדות'],
+        detailedDescription: 'שירות סטרימינג עם תוכן בלעדי',
+        targetAudience: 'מבוגרים',
+        pros: ['מחיר נמוך', 'תוכן בלעדי'],
+        cons: ['פחות תוכן ישראלי']
+      }
+    ]
+  }
+];
 
-export const getProvidersByCategory = (category: 'electricity' | 'cellular' | 'internet') => {
+export const allProviders = [...electricityProviders, ...cellularProviders, ...internetProviders, ...tvProviders];
+
+export const getProvidersByCategory = (category: 'electricity' | 'cellular' | 'internet' | 'tv') => {
   return allProviders.filter(provider => provider.category === category);
 };
 
-export const getCheapestPlan = (category: 'electricity' | 'cellular' | 'internet') => {
+export const getCheapestPlan = (category: 'electricity' | 'cellular' | 'internet' | 'tv') => {
   const providers = getProvidersByCategory(category);
   let cheapestPlan = null;
   let cheapestPrice = Infinity;
@@ -811,7 +1010,7 @@ export const getCheapestPlan = (category: 'electricity' | 'cellular' | 'internet
   return cheapestPlan;
 };
 
-export const calculateAnnualSavings = (currentPrice: number, newPrice: number, category: 'electricity' | 'cellular' | 'internet') => {
+export const calculateAnnualSavings = (currentPrice: number, newPrice: number, category: 'electricity' | 'cellular' | 'internet' | 'tv') => {
   const multiplier = category === 'electricity' ? 2000 : 12;
   return (currentPrice - newPrice) * multiplier;
 };
