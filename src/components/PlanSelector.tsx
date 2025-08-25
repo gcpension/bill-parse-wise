@@ -311,38 +311,51 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
       )}
 
       {/* Providers Grid */}
-      <div className={`grid ${dense ? 'gap-3' : 'gap-6'}`}>
+      <div className={`grid ${dense ? 'gap-4' : 'gap-8'} ${dense ? 'md:grid-cols-2 lg:grid-cols-3' : 'lg:grid-cols-2'}`}>
         {sortedProviders.map((provider) => (
-          <Card key={provider.id} className={`${dense ? 'shadow-md hover:shadow-lg' : 'shadow-elegant hover:shadow-2xl'} transition-all duration-300 overflow-hidden`}>
+          <Card key={provider.id} className={`group relative ${dense ? 'shadow-card hover:shadow-elegant' : 'shadow-elegant hover:shadow-2xl'} transition-all duration-500 overflow-hidden border-0 hover:scale-[1.02] bg-gradient-to-br from-background to-muted/30`}>
             {!dense && (
-              <CardHeader className="bg-gradient-to-r from-primary/5 to-primary-glow/5">
-                <div className="flex items-center justify-between">
+              <CardHeader className="relative bg-gradient-to-br from-primary/10 via-primary-glow/5 to-transparent border-b border-primary/10">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent"></div>
+                <div className="relative flex items-center justify-between">
                   <CardTitle className="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div className="p-3 bg-primary/10 rounded-xl">
-                      <CategoryIcon className="h-6 w-6 text-primary" />
+                    <div className="relative p-4 gradient-primary rounded-2xl shadow-colorful group-hover:scale-110 transition-transform duration-300">
+                      <CategoryIcon className="h-7 w-7 text-white" />
+                      <div className="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold">{provider.name}</h3>
-                      <p className="text-muted-foreground font-normal text-sm">
+                      <h3 className="text-2xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+                        {provider.name}
+                      </h3>
+                      <p className="text-muted-foreground font-medium text-base mt-1">
                         {provider.description}
                       </p>
                     </div>
                   </CardTitle>
                   
-                  <div className="text-left">
-                    <div className="flex items-center space-x-1 rtl:space-x-reverse mb-1">
-                      <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                      <span className="font-semibold">{provider.rating}</span>
+                  <div className="text-left space-y-2">
+                    <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <Star 
+                            key={i} 
+                            className={`h-4 w-4 ${i < Math.floor(provider.rating) ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} 
+                          />
+                        ))}
+                      </div>
+                      <span className="font-bold text-lg">{provider.rating}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground">מאז {provider.established}</p>
+                    <div className="bg-primary/10 px-3 py-1 rounded-full">
+                      <p className="text-xs font-semibold text-primary">מאז {provider.established}</p>
+                    </div>
                   </div>
                 </div>
               </CardHeader>
             )}
 
-            <CardContent className={dense ? "p-3" : "p-6"}>
+            <CardContent className={dense ? "p-4" : "p-8"}>
               {/* Plans Grid */}
-              <div className={`grid ${dense ? 'md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-1' : 'md:grid-cols-2 lg:grid-cols-3 gap-4'}`}>
+              <div className={`grid ${dense ? 'md:grid-cols-4 lg:grid-cols-6 gap-3' : 'md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
                 {provider.plans.map((plan) => {
                   const savings = calculateSavings(plan.price);
                   const savingsPercentage = currentAmount > 0 ? ((savings / currentAmount) * 100) : 0;
@@ -350,25 +363,28 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
                   return (
                     <div
                       key={plan.id}
-                      className={`relative ${dense ? 'p-1 min-h-[120px]' : 'p-4'} border-2 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer ${
+                      className={`group relative ${dense ? 'p-3 min-h-[140px]' : 'p-6'} border-2 rounded-2xl transition-all duration-500 hover:shadow-elegant cursor-pointer overflow-hidden ${
                         plan.recommended 
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary/20' 
-                          : 'border-border bg-background hover:border-primary/30'
+                          ? 'border-primary bg-gradient-to-br from-primary/10 to-primary-glow/5 ring-2 ring-primary/30 shadow-card' 
+                          : 'border-border bg-gradient-to-br from-background to-muted/20 hover:border-primary/50 hover:shadow-card hover:scale-[1.02]'
                       }`}
                     >
+                      {/* Enhanced Background Pattern */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      
                       {/* Savings Badge */}
                       {savings > 0 && (
-                        <div className="absolute -top-1 -left-1 z-10">
-                          <Badge className="bg-success text-success-foreground text-[9px] px-1.5 py-0.5 shadow-sm">
-                            {dense ? `${formatCurrency(savings)}` : `חיסכון ${formatCurrency(savings)}`}
+                        <div className="absolute -top-2 -left-2 z-10">
+                          <Badge className="bg-gradient-to-r from-success to-success-glow text-white text-xs px-3 py-1 shadow-glow animate-pulse">
+                            {dense ? `${formatCurrency(savings)}` : `💰 חיסכון ${formatCurrency(savings)}`}
                           </Badge>
                         </div>
                       )}
                       
-                      {plan.recommended && !dense && (
+                      {plan.recommended && (
                         <div className="absolute -top-2 -right-2 z-10">
-                          <Badge className="bg-primary text-primary-foreground animate-pulse">
-                            מומלץ ⭐
+                          <Badge className="gradient-primary text-white shadow-glow animate-bounce-gentle">
+                            {dense ? '⭐' : '🏆 מומלץ'}
                           </Badge>
                         </div>
                       )}
@@ -387,21 +403,37 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
                         </div>
                       )}
 
-                      <div className={dense ? "space-y-1 flex flex-col h-full" : "space-y-3"}>
+                      <div className={`relative z-10 ${dense ? "space-y-2 flex flex-col h-full" : "space-y-4"}`}>
                         {/* Plan Name */}
-                        <h4 className={`font-semibold ${dense ? 'text-xs leading-tight truncate' : 'text-lg'} ${dense ? 'mb-1' : ''}`}>{plan.name}</h4>
+                        <h4 className={`font-bold ${dense ? 'text-sm leading-tight' : 'text-xl'} ${plan.recommended ? 'text-primary' : 'text-foreground'} group-hover:text-primary transition-colors duration-300`}>
+                          {plan.name}
+                        </h4>
 
                         {/* Price */}
-                        <div className={`text-center ${dense ? 'flex-shrink-0' : ''}`}>
+                        <div className={`text-center ${dense ? 'flex-shrink-0' : ''} space-y-1`}>
                           {plan.originalPrice && !dense && (
-                            <p className="text-sm text-muted-foreground line-through">
+                            <p className="text-base text-muted-foreground line-through opacity-75">
                               {formatCurrency(category === 'electricity' ? plan.originalPrice * 850 : plan.originalPrice)}
                             </p>
                           )}
-                          <p className={`${dense ? 'text-sm' : 'text-2xl'} font-bold text-primary ${dense ? 'leading-tight' : ''}`}>
-                            {formatCurrency(category === 'electricity' ? plan.price * 850 : plan.price)}
-                          </p>
-                          <p className={`${dense ? 'text-[10px]' : 'text-xs'} text-muted-foreground`}>לחודש</p>
+                          <div className="relative">
+                            <p className={`${dense ? 'text-lg' : 'text-3xl'} font-black gradient-primary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300`}>
+                              {formatCurrency(category === 'electricity' ? plan.price * 850 : plan.price)}
+                            </p>
+                            <p className={`${dense ? 'text-xs' : 'text-sm'} text-muted-foreground font-medium`}>לחודש</p>
+                          </div>
+                          
+                          {/* Enhanced Savings Display */}
+                          {savings > 0 && (
+                            <div className={`${dense ? 'mt-1' : 'mt-2'} bg-success/10 border border-success/20 rounded-lg p-2`}>
+                              <p className={`${dense ? 'text-xs' : 'text-sm'} font-bold text-success`}>
+                                🎯 חיסכון: {formatCurrency(savings)}
+                              </p>
+                              <p className={`${dense ? 'text-[10px]' : 'text-xs'} text-success/80`}>
+                                {savingsPercentage.toFixed(1)}% פחות • {formatCurrency(savings * 12)} לשנה
+                              </p>
+                            </div>
+                          )}
                         </div>
 
                         {/* Key Info in dense mode */}

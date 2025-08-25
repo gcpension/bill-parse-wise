@@ -335,13 +335,16 @@ export const AnalysisInput = ({
                               value={data.currentProvider} 
                               onValueChange={(value) => onCategoryDataUpdate(key, 'currentProvider', value)}
                             >
-                              <SelectTrigger className="h-12 text-base">
+                              <SelectTrigger className="h-12 text-base border-2 hover:border-primary transition-colors">
                                 <SelectValue placeholder="בחרו ספק נוכחי" />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent className="bg-background border-2 shadow-elegant z-50 max-h-60">
                                 {providers.map((provider) => (
-                                  <SelectItem key={provider.name} value={provider.name}>
-                                    {provider.name}
+                                  <SelectItem key={provider.name} value={provider.name} className="hover:bg-primary/10">
+                                    <div className="flex items-center gap-3">
+                                      <div className="w-2 h-2 rounded-full bg-primary/60"></div>
+                                      <span className="font-medium">{provider.name}</span>
+                                    </div>
                                   </SelectItem>
                                 ))}
                               </SelectContent>

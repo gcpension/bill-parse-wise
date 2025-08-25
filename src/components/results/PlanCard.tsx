@@ -62,20 +62,23 @@ export const PlanCard = ({
 
   return (
     <Card className={cn(
-      "bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-200 relative overflow-hidden",
-      isSelected && "ring-2 ring-primary ring-offset-2",
-      plan.recommended && "border-2 border-success"
+      "group relative bg-gradient-to-br from-background to-muted/30 rounded-3xl shadow-card hover:shadow-elegant transition-all duration-500 overflow-hidden border-0 hover:scale-[1.02]",
+      isSelected && "ring-2 ring-primary ring-offset-2 shadow-glow",
+      plan.recommended && "ring-2 ring-success shadow-colorful bg-gradient-to-br from-success/5 to-success-glow/5"
     )}>
-      {/* Recommended/Popular badges */}
+      {/* Enhanced Background Pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      
+      {/* Enhanced Recommended/Popular badges */}
       <div className="absolute top-4 left-4 flex gap-2 z-10">
         {plan.recommended && (
-          <Badge className="bg-success text-success-foreground">
-            מומלץ
+          <Badge className="gradient-success text-white shadow-glow animate-pulse">
+            🏆 מומלץ
           </Badge>
         )}
         {plan.popular && (
-          <Badge className="bg-warning text-warning-foreground">
-            פופולרי
+          <Badge className="bg-gradient-to-r from-warning to-warning-glow text-white shadow-colorful">
+            🔥 פופולרי
           </Badge>
         )}
       </div>
@@ -89,45 +92,58 @@ export const PlanCard = ({
         />
       </div>
 
-      <CardHeader className="pt-12 pb-4">
-        <div className="flex items-center gap-3">
+      <CardHeader className="relative pt-12 pb-6">
+        <div className="flex items-center gap-4">
           {Icon && (
-            <div className={cn("p-2 rounded-lg", categoryInfo.bgColor)}>
-              <Icon className="h-5 w-5 text-white" />
+            <div className={cn("relative p-3 rounded-2xl shadow-colorful group-hover:scale-110 transition-transform duration-300", categoryInfo.bgColor)}>
+              <Icon className="h-6 w-6 text-white" />
+              <div className="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
           )}
           <div className="flex-1">
-            <h3 className="font-semibold text-lg leading-tight">{plan.name}</h3>
-            <p className="text-sm text-muted-foreground">{plan.provider}</p>
+            <h3 className="font-bold text-xl leading-tight gradient-primary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+              {plan.name}
+            </h3>
+            <p className="text-base text-muted-foreground font-medium mt-1">{plan.provider}</p>
           </div>
         </div>
 
-        {/* Rating */}
+        {/* Enhanced Rating */}
         {plan.rating && (
-          <div className="flex items-center gap-1 mt-2">
-            <Star className="h-4 w-4 fill-golden-yellow text-golden-yellow" />
-            <span className="text-sm font-medium">{plan.rating}</span>
+          <div className="flex items-center gap-2 mt-3 bg-primary/10 rounded-full px-3 py-1 w-fit">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <Star 
+                  key={i} 
+                  className={`h-4 w-4 ${i < Math.floor(plan.rating || 0) ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} 
+                />
+              ))}
+            </div>
+            <span className="text-sm font-bold">{plan.rating}</span>
           </div>
         )}
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {/* Price and Savings */}
-        <div className="text-center py-4 bg-gray-50 rounded-xl">
-          <div className="text-3xl font-bold text-primary">
-            ₪{plan.price}
-            <span className="text-lg font-normal text-muted-foreground">/חודש</span>
-          </div>
-          {plan.savings > 0 && (
-            <div className="mt-2">
-              <div className="text-success font-semibold">
-                חיסכון: ₪{plan.savings.toLocaleString()}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                ({savingsPercentage}% פחות מהמסלול הנוכחי)
-              </div>
+        {/* Enhanced Price and Savings */}
+        <div className="relative text-center py-6 bg-gradient-to-br from-primary/5 to-primary-glow/5 rounded-2xl border border-primary/10 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="relative z-10">
+            <div className="text-4xl font-black gradient-primary bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+              ₪{plan.price.toLocaleString()}
+              <span className="text-xl font-medium text-muted-foreground">/חודש</span>
             </div>
-          )}
+            {plan.savings > 0 && (
+              <div className="mt-4 bg-success/10 border border-success/20 rounded-xl p-3">
+                <div className="text-success font-bold text-lg">
+                  💰 חיסכון: ₪{plan.savings.toLocaleString()}
+                </div>
+                <div className="text-sm text-success/80 mt-1">
+                  {savingsPercentage}% פחות • ₪{(plan.savings * 12).toLocaleString()} לשנה
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Category-specific details */}
@@ -181,19 +197,22 @@ export const PlanCard = ({
         <Button 
           onClick={() => onConnect(plan.id)}
           disabled={isLoading}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+          className="w-full gradient-primary text-white shadow-glow hover:shadow-elegant transition-all duration-500 relative overflow-hidden group/btn"
           size="lg"
         >
-          {isLoading ? 'מתחבר...' : 'התחבר'}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></div>
+          <span className="relative z-10 font-bold">
+            {isLoading ? '⏳ מתחבר...' : '🚀 התחבר'}
+          </span>
         </Button>
         
         <Button
           variant="outline"
           size="sm"
-          className="w-full text-xs"
+          className="w-full text-sm border-2 hover:border-primary hover:bg-primary/5 transition-colors duration-300"
         >
-          <ExternalLink className="ml-2 h-3 w-3" />
-          עריכה
+          <ExternalLink className="ml-2 h-4 w-4" />
+          פרטים נוספים
         </Button>
       </CardFooter>
     </Card>
