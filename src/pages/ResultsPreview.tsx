@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { DetailedAnalysisResults } from './DetailedAnalysisResults';
+import { NewDetailedAnalysisResults } from './NewDetailedAnalysisResults';
 import { getCheapestPlan, calculateAnnualSavings, getProvidersByCategory } from '@/data/providers';
 
 // Preview page to showcase the 2025 results UI with realistic mock data
@@ -30,7 +30,7 @@ export const ResultsPreview = () => {
   }, []);
 
   return (
-    <DetailedAnalysisResults results={results} onBackToInput={() => history.back()} />
+    <NewDetailedAnalysisResults results={results} onBackToInput={() => history.back()} />
   );
 };
 
