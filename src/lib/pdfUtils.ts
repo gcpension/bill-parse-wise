@@ -30,12 +30,20 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
   await ensureHebrewFont(pdf);
   pdf.setFont('NotoSansHebrew', 'normal');
 
+  // Enable RTL rendering if supported by jsPDF, fallback to manual reverse
+  const setR2L = (pdf as any).setR2L as ((enable: boolean) => void) | undefined;
+  const supportsR2L = typeof setR2L === 'function';
+  if (supportsR2L) {
+    setR2L(true);
+  }
+
   const pageWidth = pdf.internal.pageSize.width;
   const rightX = rightAlignX(pdf, pageWidth);
 
   // Title
   pdf.setFontSize(16);
-  pdf.text(title, rightX, 30, { align: 'right' });
+  const titleText = supportsR2L ? title : title.split('').reverse().join('');
+  pdf.text(titleText, rightX, 30, { align: 'right' });
 
   // Content
   pdf.setFontSize(12);
@@ -44,7 +52,8 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
     if (line.trim() === '') {
       y += 5;
     } else {
-      pdf.text(line, rightX, y, { align: 'right' });
+      const lineText = supportsR2L ? line : line.split('').reverse().join('');
+      pdf.text(lineText, rightX, y, { align: 'right' });
       y += 7;
     }
   }
