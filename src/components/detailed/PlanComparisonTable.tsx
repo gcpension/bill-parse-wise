@@ -8,10 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Star, Search, Filter, SortAsc, Phone, Globe, Zap, Wifi, Smartphone, TrendingDown, Sparkles, Clock, Shield, Award, Lightbulb } from 'lucide-react';
 import { DigitalSignature } from '@/components/DigitalSignature';
-import { getEnhancedPlansByCategory, getProviderByPlan, type EnhancedPlan, type EnhancedProvider } from '@/data/comprehensive-plans';
+import { getProvidersByCategory, type Provider, type Plan } from '@/data/providers';
 
-// Using enhanced plan interface from comprehensive data
-type Plan = EnhancedPlan & {
+// Using plan interface from providers data
+type PlanWithProvider = Plan & {
   provider: string;
   rating: number;
   description: string;
@@ -23,8 +23,8 @@ interface PlanComparisonTableProps {
   categoryName: string;
   currentProvider: string;
   currentAmount: number;
-  plans: Plan[];
-  onPlanSelect?: (plan: Plan) => void;
+  plans: PlanWithProvider[];
+  onPlanSelect?: (plan: PlanWithProvider) => void;
 }
 
 export const PlanComparisonTable = ({
@@ -38,34 +38,33 @@ export const PlanComparisonTable = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'price' | 'rating' | 'name' | 'savings' | 'popularity'>('savings');
   const [filterBy, setFilterBy] = useState<'all' | 'recommended' | 'promotions' | 'popular'>('all');
-  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<PlanWithProvider | null>(null);
   const [showSignature, setShowSignature] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<string>('all');
 
-  // Get enhanced plans from our comprehensive data
+  // Get plans from our providers data
   const enhancedPlans = useMemo(() => {
-    const categoryPlans = getEnhancedPlansByCategory(category);
-    if (categoryPlans.length === 0) return originalPlans;
+    const providers = getProvidersByCategory(category);
+    if (providers.length === 0) return originalPlans;
     
-    return categoryPlans.map(plan => {
-      const provider = getProviderByPlan(plan.id);
-      const savings = plan.originalPrice ? plan.originalPrice - plan.price : 0;
-      return {
+    return providers.flatMap(provider => 
+      provider.plans.map(plan => ({
         ...plan,
-        provider: provider?.name || 'Unknown',
-        rating: provider?.rating || 4.0,
-        description: provider?.description || '',
-        savings
-      } as Plan;
-    });
-  }, [category, originalPlans]);
+        provider: provider.name,
+        rating: provider.rating,
+        description: plan.detailedDescription || provider.description,
+        savings: currentAmount > 0 ? Math.max(0, currentAmount - plan.price) : 0
+      }))
+    );
+  }, [category, originalPlans, currentAmount]);
 
   const plans = enhancedPlans;
 
   const categoryColors = {
     electricity: { primary: 'hsl(48, 96%, 53%)', accent: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-200' },
     cellular: { primary: 'hsl(142, 76%, 36%)', accent: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
-    internet: { primary: 'hsl(217, 91%, 60%)', accent: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' }
+    internet: { primary: 'hsl(217, 91%, 60%)', accent: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' },
+    tv: { primary: 'hsl(280, 91%, 60%)', accent: 'text-purple-600', bg: 'bg-purple-50', border: 'border-purple-200' }
   };
 
   const colors = categoryColors[category as keyof typeof categoryColors] || categoryColors.electricity;
@@ -73,7 +72,8 @@ export const PlanComparisonTable = ({
   const categoryIcons = {
     electricity: Zap,
     cellular: Smartphone,
-    internet: Wifi
+    internet: Wifi,
+    tv: Sparkles
   };
 
   const Icon = categoryIcons[category as keyof typeof categoryIcons] || Zap;
@@ -94,8 +94,7 @@ export const PlanComparisonTable = ({
         
         const matchesFilter = filterBy === 'all' || 
                             (filterBy === 'recommended' && plan.recommended) ||
-                            (filterBy === 'promotions' && plan.isPromotion) ||
-                            (filterBy === 'popular' && (plan.popularityScore || 0) > 80);
+                            (filterBy === 'promotions' && plan.isPromotion);
         
         const matchesProvider = selectedProvider === 'all' || plan.provider === selectedProvider;
         
@@ -113,15 +112,13 @@ export const PlanComparisonTable = ({
             const savA = (a.originalPrice ? a.originalPrice - a.price : a.savings || 0);
             const savB = (b.originalPrice ? b.originalPrice - b.price : b.savings || 0);
             return savB - savA;
-          case 'popularity':
-            return (b.popularityScore || 0) - (a.popularityScore || 0);
           default:
             return 0;
         }
       });
   }, [plans, searchTerm, sortBy, filterBy, selectedProvider]);
 
-  const groupedProviders = processedPlans.reduce((acc: Record<string, { provider: string; rating: number; description: string; plans: Plan[] }>, plan) => {
+  const groupedProviders = processedPlans.reduce((acc: Record<string, { provider: string; rating: number; description: string; plans: PlanWithProvider[] }>, plan) => {
     if (!acc[plan.provider]) {
       acc[plan.provider] = { provider: plan.provider, rating: plan.rating, description: plan.description, plans: [] };
     }
@@ -131,7 +128,7 @@ export const PlanComparisonTable = ({
 
   const providersList = Object.values(groupedProviders);
 
-  const handleSelectPlan = (plan: Plan) => {
+  const handleSelectPlan = (plan: PlanWithProvider) => {
     setSelectedPlan(plan);
     setShowSignature(true);
     onPlanSelect?.(plan);
@@ -207,7 +204,6 @@ export const PlanComparisonTable = ({
                 <SelectItem value="savings">חיסכון גבוה</SelectItem>
                 <SelectItem value="price">מחיר נמוך</SelectItem>
                 <SelectItem value="rating">דירוג גבוה</SelectItem>
-                <SelectItem value="popularity">פופולריות</SelectItem>
                 <SelectItem value="name">שם</SelectItem>
               </SelectContent>
             </Select>
@@ -221,7 +217,6 @@ export const PlanComparisonTable = ({
                 <SelectItem value="all">הכל</SelectItem>
                 <SelectItem value="recommended">מומלצים</SelectItem>
                 <SelectItem value="promotions">מבצעים</SelectItem>
-                <SelectItem value="popular">פופולריים</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -292,15 +287,6 @@ export const PlanComparisonTable = ({
                         </div>
                       )}
                       
-                      {plan.popularityScore && plan.popularityScore > 85 && (
-                        <div className="absolute -top-3 left-4 z-10">
-                          <Badge variant="secondary" className="bg-blue-100 text-blue-700">
-                            <Lightbulb className="h-3 w-3 ml-1" />
-                            פופולרי
-                          </Badge>
-                        </div>
-                      )}
-                      
                       <CardContent className="p-4">
                         <div className="space-y-3">
                           {/* Plan header */}
@@ -360,22 +346,6 @@ export const PlanComparisonTable = ({
                                   <span className="text-gray-700">{feature}</span>
                                 </div>
                               ))}
-                            </div>
-                            
-                            {/* Additional info */}
-                            <div className="grid grid-cols-2 gap-2 pt-2 border-t text-xs text-muted-foreground">
-                              {plan.contractLength && (
-                                <div className="flex items-center gap-1">
-                                  <Clock className="h-3 w-3" />
-                                  <span>{plan.contractLength}</span>
-                                </div>
-                              )}
-                              {plan.popularityScore && (
-                                <div className="flex items-center gap-1">
-                                  <Star className="h-3 w-3" />
-                                  <span>{plan.popularityScore}% פופולרי</span>
-                                </div>
-                              )}
                             </div>
                           </div>
 
