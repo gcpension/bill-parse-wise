@@ -13,6 +13,7 @@ import { Analyze } from "./pages/Analyze";
 import { DetailedCompareProviders } from "./pages/DetailedCompareProviders";
 import { ProviderSwitch } from "./pages/ProviderSwitch";
 import { Dashboard } from "./components/Dashboard";
+import ResultsPreview from "./pages/ResultsPreview";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/forms/:category" element={<Forms />} />
           <Route path="/analyze" element={<Analyze />} />
+          <Route path="/results-preview" element={<ResultsPreview />} />
           <Route path="/compare" element={<Navigate to="/analyze" replace />} />
           <Route path="/switch/:category" element={<ProviderSwitch />} />
           <Route path="/help" element={<Help />} />
