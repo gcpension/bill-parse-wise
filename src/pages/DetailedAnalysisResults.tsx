@@ -6,6 +6,7 @@ import { Layout } from '@/components/Layout';
 import { DetailedSavingsHeader } from '@/components/detailed/DetailedSavingsHeader';
 import { PlanComparisonTable } from '@/components/detailed/PlanComparisonTable';
 import { useToast } from '@/hooks/use-toast';
+import { ResultsHeader2025 } from '@/components/detailed/ResultsHeader2025';
 
 interface AnalysisResult {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
@@ -107,46 +108,7 @@ export const DetailedAnalysisResults = ({ results, onBackToInput }: DetailedAnal
   return (
     <Layout>
       <div className="space-y-8 animate-fade-in">
-        {/* Header Actions */}
-        <section aria-labelledby="results-title" className="relative overflow-hidden rounded-2xl bg-gradient-primary text-primary-foreground p-6 md:p-10 shadow-glow">
-          <div className="pointer-events-none absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary-glow/30 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-12 -right-12 h-48 w-48 rounded-full bg-success-glow/30 blur-3xl" />
-
-          <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h1 id="results-title" className="text-3xl md:text-4xl font-black tracking-tight">תוצאות הניתוח המפורט</h1>
-              <p className="text-primary-foreground/80 text-lg">ניתוח מקיף של כל האפשרויות הזמינות עבורך</p>
-            </div>
-
-            <div className="flex flex-col items-center md:items-end gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-black">₪{totalMonthlySavings.toLocaleString('he-IL')}</div>
-                  <div className="text-primary-foreground/80 text-sm">חיסכון חודשי כולל</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-black">₪{totalAnnualSavings.toLocaleString('he-IL')}</div>
-                  <div className="text-primary-foreground/80 text-sm">חיסכון שנתי כולל</div>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <Button variant="secondary" onClick={handleShare}>
-                  <Share className="ml-2 h-4 w-4" />
-                  שתף
-                </Button>
-                <Button variant="secondary" onClick={handleDownload}>
-                  <Download className="ml-2 h-4 w-4" />
-                  הורד דוח
-                </Button>
-                <Button variant="outline" onClick={onBackToInput}>
-                  <RotateCcw className="ml-2 h-4 w-4" />
-                  נתח עוד
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ResultsHeader2025 totalMonthlySavings={totalMonthlySavings} totalAnnualSavings={totalAnnualSavings} onShare={handleShare} onDownload={handleDownload} onBack={onBackToInput} />
 
         {/* Category Selection Tabs */}
         {results.length > 1 && (
