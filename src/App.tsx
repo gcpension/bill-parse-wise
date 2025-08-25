@@ -15,6 +15,7 @@ import { ProviderSwitch } from "./pages/ProviderSwitch";
 import { Dashboard } from "./components/Dashboard";
 import ResultsPreview from "./pages/ResultsPreview";
 import SwitchWizard from "./pages/SwitchWizard";
+import RequestStatus from "./pages/RequestStatus";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/analyze" element={<Analyze />} />
           <Route path="/results-preview" element={<ResultsPreview />} />
           <Route path="/switch-wizard" element={<SwitchWizard />} />
+          <Route path="/request-status/:requestId?" element={<RequestStatus />} />
           <Route path="/compare" element={<Navigate to="/analyze" replace />} />
           <Route path="/switch/:category" element={<ProviderSwitch />} />
           <Route path="/help" element={<Help />} />

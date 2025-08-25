@@ -19,7 +19,7 @@ export const ServiceSelectionStep = () => {
   const currentService = state.currentService;
 
   useEffect(() => {
-    if (currentService.serviceType && currentService.serviceType !== 'insurance') {
+    if (currentService.serviceType && ['electricity', 'internet', 'cellular'].includes(currentService.serviceType)) {
       const providers = getProvidersByCategory(currentService.serviceType as 'electricity' | 'internet' | 'cellular');
       setAvailableProviders(providers);
     }

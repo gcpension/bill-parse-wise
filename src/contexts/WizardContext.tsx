@@ -146,10 +146,11 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const submitRequest = async (): Promise<string> => {
     try {
       // Call Supabase Edge Function
-      const response = await fetch('/api/create-switch-request', {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-switch-request`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify({
           personalDetails: state.personalDetails,
@@ -162,7 +163,8 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit request');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit request');
       }
 
       const data = await response.json();

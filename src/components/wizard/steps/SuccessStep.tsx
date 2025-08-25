@@ -2,7 +2,7 @@ import { useWizard } from '@/contexts/WizardContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Download, Mail, Phone, Calendar, Home } from 'lucide-react';
+import { CheckCircle, Download, Mail, Phone, Calendar, Home, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const SuccessStep = () => {
@@ -162,6 +162,13 @@ export const SuccessStep = () => {
           <Download className="h-4 w-4" />
           הורד אישור PDF
         </Button>
+        
+        <Link to={`/request-status?id=${requestId}`}>
+          <Button variant="outline" className="flex items-center gap-2 w-full sm:w-auto">
+            <ExternalLink className="h-4 w-4" />
+            מעקב אחר הבקשה
+          </Button>
+        </Link>
         
         <Link to="/">
           <Button className="flex items-center gap-2 w-full sm:w-auto">
