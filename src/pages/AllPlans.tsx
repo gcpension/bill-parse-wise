@@ -1,7 +1,7 @@
-import useAllPlans from "@/hooks/useAllPlans";
+import { useAllPlans } from "@/hooks/useAllPlans";
 
 const AllPlans = () => {
-  const { plans } = useAllPlans();
+  const plans = useAllPlans();
 
   return (
     <div className="p-4">
