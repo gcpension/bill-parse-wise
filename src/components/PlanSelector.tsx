@@ -342,7 +342,7 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
 
             <CardContent className={dense ? "p-3" : "p-6"}>
               {/* Plans Grid */}
-              <div className={`grid ${dense ? 'md:grid-cols-4 lg:grid-cols-5 gap-2' : 'md:grid-cols-2 lg:grid-cols-3 gap-4'}`}>
+              <div className={`grid ${dense ? 'md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-1.5' : 'md:grid-cols-2 lg:grid-cols-3 gap-4'}`}>
                 {provider.plans.map((plan) => {
                   const savings = calculateSavings(plan.price);
                   const savingsPercentage = currentAmount > 0 ? ((savings / currentAmount) * 100) : 0;
@@ -350,9 +350,9 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
                   return (
                     <div
                       key={plan.id}
-                      className={`relative ${dense ? 'p-2' : 'p-4'} border-2 rounded-xl transition-all duration-300 hover:shadow-lg cursor-pointer ${
+                      className={`relative ${dense ? 'p-1.5 min-h-[140px]' : 'p-4'} border-2 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer ${
                         plan.recommended 
-                          ? 'border-primary bg-primary/5 ring-2 ring-primary/20' 
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary/20' 
                           : 'border-border bg-background hover:border-primary/30'
                       }`}
                     >
@@ -365,39 +365,60 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
                       )}
                       
                       {dense && provider.name && (
-                        <div className="flex items-center space-x-1 rtl:space-x-reverse mb-2">
-                          <CategoryIcon className="h-3 w-3 text-primary" />
-                          <span className="text-xs font-semibold text-primary">{provider.name}</span>
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="flex items-center space-x-1 rtl:space-x-reverse">
+                            <CategoryIcon className="h-2.5 w-2.5 text-primary" />
+                            <span className="text-xs font-semibold text-primary truncate max-w-[60px]">{provider.name}</span>
+                          </div>
                           {plan.recommended && (
-                            <Badge className="bg-primary text-primary-foreground text-xs px-1 py-0">
+                            <Badge className="bg-primary text-primary-foreground text-[10px] px-1 py-0 h-4">
                               ⭐
                             </Badge>
                           )}
                         </div>
                       )}
 
-                      <div className={dense ? "space-y-2" : "space-y-3"}>
+                      <div className={dense ? "space-y-1 flex flex-col h-full" : "space-y-3"}>
                         {/* Plan Name */}
-                        <h4 className={`font-semibold ${dense ? 'text-sm' : 'text-lg'}`}>{plan.name}</h4>
+                        <h4 className={`font-semibold ${dense ? 'text-xs leading-tight truncate' : 'text-lg'} ${dense ? 'mb-1' : ''}`}>{plan.name}</h4>
 
                         {/* Price */}
-                        <div className="text-center">
+                        <div className={`text-center ${dense ? 'flex-shrink-0' : ''}`}>
                           {plan.originalPrice && !dense && (
                             <p className="text-sm text-muted-foreground line-through">
                               {formatCurrency(category === 'electricity' ? plan.originalPrice * 850 : plan.originalPrice)}
                             </p>
                           )}
-                          <p className={`${dense ? 'text-lg' : 'text-2xl'} font-bold text-primary`}>
+                          <p className={`${dense ? 'text-sm' : 'text-2xl'} font-bold text-primary ${dense ? 'leading-tight' : ''}`}>
                             {formatCurrency(category === 'electricity' ? plan.price * 850 : plan.price)}
                           </p>
-                          <p className="text-xs text-muted-foreground">לחודש</p>
+                          <p className={`${dense ? 'text-[10px]' : 'text-xs'} text-muted-foreground`}>לחודש</p>
                         </div>
+
+                        {/* Key Info in dense mode */}
+                        {dense && (
+                          <div className="flex-1 flex flex-col justify-between">
+                            <div className="text-[10px] text-muted-foreground space-y-0.5">
+                              {plan.features.slice(0, 2).map((feature, idx) => (
+                                <div key={idx} className="truncate" title={feature}>• {feature}</div>
+                              ))}
+                              {plan.features.length > 2 && (
+                                <div className="text-primary font-medium">+{plan.features.length - 2} נוספים</div>
+                              )}
+                            </div>
+                            
+                            {/* Target audience */}
+                            <div className="text-[9px] text-center bg-muted/50 rounded px-1 py-0.5 mt-1 truncate" title={plan.targetAudience}>
+                              {plan.targetAudience}
+                            </div>
+                          </div>
+                        )}
 
                         {/* Savings Display */}
                         {savings > 0 && (
-                          <div className={`text-center bg-success/10 rounded-lg ${dense ? 'p-1.5' : 'p-2'}`}>
-                            <p className={`${dense ? 'text-xs' : 'text-sm'} font-semibold text-success`}>
-                              {dense ? formatCurrency(savings) : `חיסכון: ${formatCurrency(savings)}`}
+                          <div className={`text-center bg-success/10 rounded-lg ${dense ? 'p-1 mt-auto' : 'p-2'}`}>
+                            <p className={`${dense ? 'text-[10px]' : 'text-sm'} font-semibold text-success`}>
+                              {dense ? `חיסכון ${formatCurrency(savings)}` : `חיסכון: ${formatCurrency(savings)}`}
                             </p>
                             {!dense && (
                               <p className="text-xs text-success/80">
@@ -423,11 +444,11 @@ export const PlanSelector: React.FC<PlanSelectorProps> = ({
                         )}
 
                         {/* Action Buttons */}
-                        <div className={dense ? "space-y-1" : "space-y-2"}>
+                        <div className={dense ? "space-y-1 mt-auto" : "space-y-2"}>
                           {!dense && <PlanDetailsModal provider={provider} plan={plan} />}
                           <Button 
                             onClick={() => onPlanSelect(provider, plan)}
-                            className="w-full"
+                            className={`w-full ${dense ? 'text-[10px] h-6 px-1' : ''}`}
                             size={dense ? "sm" : "default"}
                             variant={plan.recommended ? "default" : "outline"}
                           >
