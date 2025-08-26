@@ -6,7 +6,6 @@ import { AnalysisInput } from '@/components/AnalysisInput';
 import { ResultsGrid } from '@/components/ResultsGrid';
 import { Layout } from '@/components/Layout';
 import { DetailedAnalysisResults } from './DetailedAnalysisResults';
-import { SupabaseConfigPrompt } from '@/components/SupabaseConfigPrompt';
 
 interface UploadedFile {
   file: File;
@@ -186,7 +185,6 @@ export const Analyze = () => {
 
   return (
     <Layout>
-      <SupabaseConfigPrompt />
       <AnalysisInput
         uploadedFiles={uploadedFiles}
         categoryData={categoryData}
