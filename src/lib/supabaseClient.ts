@@ -1,17 +1,52 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const getStoredSupabase = () => {
+  try {
+    return {
+      url: localStorage.getItem('SUPABASE_URL') || undefined,
+      anonKey: localStorage.getItem('SUPABASE_ANON_KEY') || undefined,
+    };
+  } catch {
+    return { url: undefined, anonKey: undefined };
+  }
+};
+
+const envUrl = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_URL) || undefined;
+const envAnonKey = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_ANON_KEY) || undefined;
+
+const resolvedUrl = envUrl || getStoredSupabase().url;
+const resolvedAnonKey = envAnonKey || getStoredSupabase().anonKey;
 
 // Do not crash the app when env vars are missing (e.g., in preview)
 let supabase: any = null;
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase disabled: missing environment variables. Some features will be unavailable.');
+if (!resolvedUrl || !resolvedAnonKey) {
+  console.warn('Supabase disabled: missing configuration. Set SUPABASE_URL and SUPABASE_ANON_KEY. Some features will be unavailable.');
 } else {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
+  supabase = createClient(resolvedUrl, resolvedAnonKey);
 }
 
 export { supabase };
+
+export function isSupabaseReady() {
+  return !!supabase;
+}
+
+export function configureSupabase(url: string, anonKey: string) {
+  try {
+    localStorage.setItem('SUPABASE_URL', url);
+    localStorage.setItem('SUPABASE_ANON_KEY', anonKey);
+  } catch {}
+  supabase = createClient(url, anonKey);
+  return supabase;
+}
+
+export function getSupabaseConfig() {
+  return {
+    url: resolvedUrl,
+    anonKey: resolvedAnonKey,
+    isConfigured: !!(resolvedUrl && resolvedAnonKey),
+  };
+}
 
 // Helper functions for switch requests
 export const switchRequestsAPI = {

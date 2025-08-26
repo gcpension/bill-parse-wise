@@ -162,8 +162,10 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       });
 
       // If Supabase isn't configured, complete locally (demo mode)
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-      const supabaseAnon = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+      const storedUrl = localStorage.getItem('SUPABASE_URL') || undefined;
+      const storedAnon = localStorage.getItem('SUPABASE_ANON_KEY') || undefined;
+      const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined) || storedUrl;
+      const supabaseAnon = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) || storedAnon;
       if (!supabaseUrl || !supabaseAnon) {
         const requestId = `demo-${Date.now()}`;
         dispatch({ type: 'SET_REQUEST_ID', payload: requestId });
