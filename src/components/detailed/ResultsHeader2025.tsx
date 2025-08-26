@@ -45,7 +45,7 @@ export const ResultsHeader2025 = ({
         <div className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse opacity-70 animation-delay-1000"></div>
       </div>
 
-      <div className="relative z-10 p-8 md:p-12">
+      <div className="relative z-10 p-4 md:p-6">
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-8">
           <div className="space-y-6">
