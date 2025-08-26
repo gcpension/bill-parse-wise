@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { PenTool, RotateCcw, CheckCircle, FileSignature } from 'lucide-react';
 import SignatureCanvas from 'react-signature-canvas';
+import { googleSheetsService } from '@/lib/googleSheets';
 
 export const DigitalSignatureStep = () => {
   const { state, updateSignature, submitRequest } = useWizard();
@@ -49,6 +50,29 @@ export const DigitalSignatureStep = () => {
     
     try {
       const requestId = await submitRequest();
+      
+      // Submit to Google Sheets
+      const googleSheetsData = {
+        name: `${personalDetails.firstName} ${personalDetails.lastName}`,
+        phone: personalDetails.phone || '',
+        email: personalDetails.email || '',
+        serviceType: currentService.serviceType || 'לא צוין',
+        plan: `מעבר מ-${currentService.providerName} (${currentService.currentPlan}) אל ${newService.newProvider} (${newService.newPlan})`,
+        idNumber: personalDetails.idNumber || '',
+        switchDate: newService.switchDate === 'immediate' ? 'מיידי' :
+          newService.switchDate === 'end_of_billing' ? 'סוף מחזור חיוב' :
+          newService.switchDate === 'end_of_commitment' ? 'סוף התחייבות' :
+          newService.customSwitchDate || 'לא צוין',
+        requestId: requestId,
+        timestamp: new Date().toISOString()
+      };
+
+      // Try to submit to Google Sheets (don't fail the main process if this fails)
+      try {
+        await googleSheetsService.submitToGoogleSheets(googleSheetsData);
+      } catch (sheetsError) {
+        console.warn('Failed to submit to Google Sheets:', sheetsError);
+      }
       
       toast({
         title: "הבקשה נשלחה בהצלחה! ✅",
