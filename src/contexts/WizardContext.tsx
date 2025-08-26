@@ -161,12 +161,24 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         console.warn('Google Sheets submission failed:', error);
       });
 
+      // If Supabase isn't configured, complete locally (demo mode)
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+      const supabaseAnon = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+      if (!supabaseUrl || !supabaseAnon) {
+        const requestId = `demo-${Date.now()}`;
+        dispatch({ type: 'SET_REQUEST_ID', payload: requestId });
+        dispatch({ type: 'SET_SUBMITTED', payload: true });
+        localStorage.removeItem('wizard_state');
+        console.warn('Supabase not configured. Completed flow in demo mode with local requestId:', requestId);
+        return requestId;
+      }
+
       // Call Supabase Edge Function
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-switch-request`, {
+      const response = await fetch(`${supabaseUrl}/functions/v1/create-switch-request`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${supabaseAnon}`,
         },
         body: JSON.stringify({
           personalDetails: state.personalDetails,
@@ -179,8 +191,12 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to submit request');
+        let message = 'Failed to submit request';
+        try {
+          const errorData = await response.json();
+          message = errorData.message || message;
+        } catch {}
+        throw new Error(message);
       }
 
       const data = await response.json();
