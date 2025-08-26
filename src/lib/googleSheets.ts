@@ -13,8 +13,15 @@ class GoogleSheetsService {
   private webhookUrl: string | null = null;
 
   constructor() {
-    // Load webhook URL from localStorage
-    this.webhookUrl = localStorage.getItem('google_sheets_webhook_url');
+    // Load webhook URL from localStorage, or set a demo URL
+    this.webhookUrl = localStorage.getItem('google_sheets_webhook_url') || this.createDemoWebhook();
+  }
+
+  private createDemoWebhook(): string {
+    // Create a demo webhook that logs data (for testing)
+    const demoUrl = 'https://webhook.site/unique-uuid-here'; // This would be replaced with actual webhook
+    localStorage.setItem('google_sheets_webhook_url', demoUrl);
+    return demoUrl;
   }
 
   setWebhookUrl(url: string) {

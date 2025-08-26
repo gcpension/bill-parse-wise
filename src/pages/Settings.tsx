@@ -33,6 +33,8 @@ import { useToast } from '@/hooks/use-toast';
 import { handleError } from '@/lib/errorHandler';
 import { createHebrewPDF } from '@/lib/pdfUtils';
 import GoogleSheetsConfig from '@/components/GoogleSheetsConfig';
+import DemoWebhookSetup from '@/components/DemoWebhookSetup';
+import TestDataSubmission from '@/components/TestDataSubmission';
 
 interface UserProfile {
   name: string;
@@ -520,6 +522,10 @@ export const Settings = () => {
 
         {/* Integrations Tab */}
         <TabsContent value="integrations" className="space-y-6">
+          <DemoWebhookSetup />
+          <Separator />
+          <TestDataSubmission />
+          <Separator />
           <GoogleSheetsConfig />
         </TabsContent>
 
