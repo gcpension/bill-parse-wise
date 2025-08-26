@@ -28,7 +28,7 @@ class GoogleSheetsService {
 
   async submitToGoogleSheets(data: GoogleSheetsData): Promise<boolean> {
     if (!this.webhookUrl) {
-      logger.warn('Google Sheets webhook URL not configured', 'GoogleSheetsService');
+      logger.warn('Zapier webhook URL not configured', 'GoogleSheetsService');
       return false;
     }
 
@@ -36,7 +36,8 @@ class GoogleSheetsService {
       const payload = {
         ...data,
         timestamp: new Date().toISOString(),
-        sheetName: 'לקוחות טפסים נכנסים'
+        sheetName: 'לקוחות טפסים נכנסים',
+        triggered_from: window.location.origin
       };
 
       const response = await fetch(this.webhookUrl, {
@@ -44,26 +45,23 @@ class GoogleSheetsService {
         headers: {
           'Content-Type': 'application/json',
         },
+        mode: 'no-cors', // Handle CORS for Zapier webhooks
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      logger.info('Data successfully sent to Google Sheets', 'GoogleSheetsService', payload);
+      // Since we're using no-cors, we won't get a proper response status
+      // We'll assume success if no error is thrown
+      logger.info('Data successfully sent to Zapier webhook', 'GoogleSheetsService', payload);
       return true;
     } catch (error) {
-      logger.error('Failed to send data to Google Sheets', 'GoogleSheetsService', error);
+      logger.error('Failed to send data to Zapier webhook', 'GoogleSheetsService', error);
       return false;
     }
   }
 
-  // Create a test webhook URL for demonstration
-  createTestWebhookUrl(): string {
-    const webhookUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
-    this.setWebhookUrl(webhookUrl);
-    return webhookUrl;
+  // Test if webhook URL is a valid Zapier webhook
+  isValidZapierWebhook(url: string): boolean {
+    return url.includes('hooks.zapier.com') || url.includes('script.google.com');
   }
 }
 

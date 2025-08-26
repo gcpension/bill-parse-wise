@@ -32,6 +32,7 @@ import { formatCurrency } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { handleError } from '@/lib/errorHandler';
 import { createHebrewPDF } from '@/lib/pdfUtils';
+import GoogleSheetsConfig from '@/components/GoogleSheetsConfig';
 
 interface UserProfile {
   name: string;
@@ -261,7 +262,7 @@ export const Settings = () => {
       </Card>
 
       <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="profile" className="flex items-center space-x-2 rtl:space-x-reverse">
             <User className="h-4 w-4" />
             <span>פרופיל</span>
@@ -269,6 +270,10 @@ export const Settings = () => {
           <TabsTrigger value="notifications" className="flex items-center space-x-2 rtl:space-x-reverse">
             <Bell className="h-4 w-4" />
             <span>התראות</span>
+          </TabsTrigger>
+          <TabsTrigger value="integrations" className="flex items-center space-x-2 rtl:space-x-reverse">
+            <ExternalLink className="h-4 w-4" />
+            <span>שילובים</span>
           </TabsTrigger>
           <TabsTrigger value="preferences" className="flex items-center space-x-2 rtl:space-x-reverse">
             <SettingsIcon className="h-4 w-4" />
@@ -511,6 +516,11 @@ export const Settings = () => {
               </Button>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Integrations Tab */}
+        <TabsContent value="integrations" className="space-y-6">
+          <GoogleSheetsConfig />
         </TabsContent>
 
         {/* Preferences Tab */}

@@ -45,7 +45,7 @@ const GoogleSheetsConfig: React.FC = () => {
       <CardContent className="space-y-4">
         <Alert>
           <AlertDescription>
-            כדי לשלוח נתונים לגוגל שיטס, צריך ליצור Webhook URL באמצעות Google Apps Script או Zapier.
+            כדי לשלוח נתונים לגוגל שיטס, צריך ליצור Zap ב-Zapier עם Webhook Trigger ואז להדביק כאן את ה-Webhook URL.
             הנתונים ישלחו לגיליון "לקוחות טפסים נכנסים".
           </AlertDescription>
         </Alert>
@@ -55,7 +55,7 @@ const GoogleSheetsConfig: React.FC = () => {
           <Input
             id="webhookUrl"
             type="url"
-            placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"
+            placeholder="https://hooks.zapier.com/hooks/catch/YOUR_WEBHOOK_ID/"
             value={webhookUrl}
             onChange={(e) => setWebhookUrl(e.target.value)}
             className="font-mono text-sm"
@@ -80,7 +80,7 @@ const GoogleSheetsConfig: React.FC = () => {
           <Alert>
             <Check className="w-4 h-4" />
             <AlertDescription>
-              Google Sheets מוגדר ופעיל. נתונים ישלחו אוטומטית עם כל שליחת טופס.
+              Zapier webhook מוגדר ופעיל. נתונים ישלחו אוטומטית עם כל שליחת טופס לגוגל שיטס.
             </AlertDescription>
           </Alert>
         )}

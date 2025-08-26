@@ -146,7 +146,7 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const submitRequest = async (): Promise<string> => {
     try {
       // First, submit to Google Sheets
-      const googleSheetsService = await import('@/lib/googleSheets').then(m => m.googleSheetsService);
+      const { googleSheetsService } = await import('@/lib/googleSheets');
       
       const googleSheetsData = {
         name: `${state.personalDetails.firstName || ''} ${state.personalDetails.lastName || ''}`.trim(),
