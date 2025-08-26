@@ -35,6 +35,7 @@ import { createHebrewPDF } from '@/lib/pdfUtils';
 import GoogleSheetsConfig from '@/components/GoogleSheetsConfig';
 import { GoogleSheetsSetup } from '@/components/GoogleSheetsSetup';
 import TestDataSubmission from '@/components/TestDataSubmission';
+import { SupabaseSetup } from '@/components/SupabaseSetup';
 
 interface UserProfile {
   name: string;
@@ -522,6 +523,8 @@ export const Settings = () => {
 
         {/* Integrations Tab */}
         <TabsContent value="integrations" className="space-y-6">
+          <SupabaseSetup />
+          <Separator />
           <GoogleSheetsSetup />
           <Separator />
           <TestDataSubmission />
