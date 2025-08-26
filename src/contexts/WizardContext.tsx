@@ -145,6 +145,22 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   const submitRequest = async (): Promise<string> => {
     try {
+      // First, submit to Google Sheets
+      const googleSheetsService = await import('@/lib/googleSheets').then(m => m.googleSheetsService);
+      
+      const googleSheetsData = {
+        name: `${state.personalDetails.firstName || ''} ${state.personalDetails.lastName || ''}`.trim(),
+        phone: state.personalDetails.phone || '',
+        email: state.personalDetails.email || '',
+        serviceType: state.currentService.serviceType || '',
+        plan: state.newService.newPlan || ''
+      };
+
+      // Submit to Google Sheets (non-blocking)
+      googleSheetsService.submitToGoogleSheets(googleSheetsData).catch(error => {
+        console.warn('Google Sheets submission failed:', error);
+      });
+
       // Call Supabase Edge Function
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-switch-request`, {
         method: 'POST',
