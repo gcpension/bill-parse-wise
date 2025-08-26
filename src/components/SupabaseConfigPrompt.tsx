@@ -7,8 +7,12 @@ import { configureSupabase, isSupabaseReady } from '@/lib/supabaseClient';
 
 export const SupabaseConfigPrompt = () => {
   const { toast } = useToast();
-  const [url, setUrl] = useState<string>(() => localStorage.getItem('SUPABASE_URL') || '');
-  const [anonKey, setAnonKey] = useState<string>(() => localStorage.getItem('SUPABASE_ANON_KEY') || '');
+  const [url, setUrl] = useState<string>(() => 
+    localStorage.getItem('SUPABASE_URL') || 'https://zupxnlqgyzikaoupdjvc.supabase.co'
+  );
+  const [anonKey, setAnonKey] = useState<string>(() => 
+    localStorage.getItem('SUPABASE_ANON_KEY') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cHhubHFneXppa2FvdXBkanZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyMTQyNzcsImV4cCI6MjA3MTc5MDI3N30.2K_mbSPyLICwNMjt87t2hpC6YYhO8tUwJsy8FTBRm30'
+  );
 
   if (isSupabaseReady()) return null;
 
