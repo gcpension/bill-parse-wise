@@ -353,7 +353,7 @@ export const SubmissionStep = ({ category, customerType, data, onSubmit }: Submi
                 ) : (
                   <Send className="ml-2 h-5 w-5" />
                 )}
-                שלח בקשה סופית
+                SUBMIT TO GOOGLE SHEETS
               </Button>
               
               {!canSubmit() && (

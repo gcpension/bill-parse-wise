@@ -51,29 +51,6 @@ export const DigitalSignatureStep = () => {
     try {
       const requestId = await submitRequest();
       
-      // Submit to Google Sheets
-      const googleSheetsData = {
-        name: `${personalDetails.firstName} ${personalDetails.lastName}`,
-        phone: personalDetails.phone || '',
-        email: personalDetails.email || '',
-        serviceType: currentService.serviceType || 'לא צוין',
-        plan: `מעבר מ-${currentService.providerName} (${currentService.currentPlan}) אל ${newService.newProvider} (${newService.newPlan})`,
-        idNumber: personalDetails.idNumber || '',
-        switchDate: newService.switchDate === 'immediate' ? 'מיידי' :
-          newService.switchDate === 'end_of_billing' ? 'סוף מחזור חיוב' :
-          newService.switchDate === 'end_of_commitment' ? 'סוף התחייבות' :
-          newService.customSwitchDate || 'לא צוין',
-        requestId: requestId,
-        timestamp: new Date().toISOString()
-      };
-
-      // Try to submit to Google Sheets (don't fail the main process if this fails)
-      try {
-        await googleSheetsService.submitToGoogleSheets(googleSheetsData);
-      } catch (sheetsError) {
-        console.warn('Failed to submit to Google Sheets:', sheetsError);
-      }
-      
       toast({
         title: "הבקשה נשלחה בהצלחה! ✅",
         description: `מספר בקשה: #${requestId}. נחזור אליך תוך 48 שעות.`,
@@ -217,12 +194,12 @@ export const DigitalSignatureStep = () => {
           {isSubmitting ? (
             <>
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-              שולח בקשה...
+              Submitting to Google Sheets...
             </>
           ) : (
             <>
               <CheckCircle className="ml-2 h-5 w-5" />
-              שלח בקשת מעבר
+              SUBMIT TO GOOGLE SHEETS
             </>
           )}
         </Button>
