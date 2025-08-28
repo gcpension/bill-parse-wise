@@ -156,10 +156,13 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         plan: state.newService.newPlan || ''
       };
 
-      // Submit to Google Sheets (non-blocking)
-      googleSheetsService.submitToGoogleSheets(googleSheetsData).catch(error => {
-        console.warn('Google Sheets submission failed:', error);
-      });
+      // Submit to Google Sheets (blocking - wait for response)
+      const googleSheetsSuccess = await googleSheetsService.submitToGoogleSheets(googleSheetsData);
+      if (!googleSheetsSuccess) {
+        throw new Error('Google Sheets submission failed');
+      }
+      
+      console.log('Google Sheets submission successful');
 
       // If Supabase isn't configured, complete locally (demo mode)
       const storedUrl = localStorage.getItem('SUPABASE_URL') || undefined;
