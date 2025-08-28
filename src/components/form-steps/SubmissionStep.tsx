@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { 
@@ -13,10 +11,10 @@ import {
   Copy,
   Loader2,
   FileText,
-  Globe,
   Clock
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { googleSheetsService } from "@/lib/googleSheets";
 
 interface SubmissionStepProps {
   category: string;
@@ -29,7 +27,6 @@ export const SubmissionStep = ({ category, customerType, data, onSubmit }: Submi
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState('');
-  const [webhookUrl, setWebhookUrl] = useState('');
   const [submissionProgress, setSubmissionProgress] = useState(0);
   const { toast } = useToast();
 
@@ -37,6 +34,31 @@ export const SubmissionStep = ({ category, customerType, data, onSubmit }: Submi
     const timestamp = Date.now().toString(36);
     const random = Math.random().toString(36).substr(2, 5);
     return `${category.toUpperCase()}-${customerType.toUpperCase()}-${timestamp}-${random}`.toUpperCase();
+  };
+
+  const formatDataForGoogleSheets = (refNum: string) => {
+    const name = customerType === 'private' 
+      ? `${data.firstName} ${data.lastName}`
+      : data.companyName;
+    
+    const phone = customerType === 'private' 
+      ? data.mobile 
+      : data.contactPhone;
+    
+    const email = customerType === 'private' 
+      ? data.email 
+      : data.contactEmail;
+
+    return {
+      name,
+      phone,
+      email,
+      serviceType: category,
+      plan: `${data.currentProvider || data.currentSupplier} → ${data.targetProvider || data.targetSupplier}`,
+      referenceNumber: refNum,
+      customerType,
+      timestamp: new Date().toISOString()
+    };
   };
 
   const handleSubmit = async () => {
@@ -59,20 +81,17 @@ export const SubmissionStep = ({ category, customerType, data, onSubmit }: Submi
       await new Promise(resolve => setTimeout(resolve, 500));
       setSubmissionProgress(70);
 
-      // Send webhook if URL provided
-      if (webhookUrl) {
-        try {
-          const jsonData = generateJsonData(refNum);
-          await fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            mode: 'no-cors',
-            body: JSON.stringify(jsonData)
-          });
+      // Submit to Google Sheets
+      try {
+        const sheetsData = formatDataForGoogleSheets(refNum);
+        const success = await googleSheetsService.submitToGoogleSheets(sheetsData);
+        if (success) {
           setSubmissionProgress(90);
-        } catch (error) {
-          console.warn('Webhook failed:', error);
+        } else {
+          console.warn('Google Sheets submission failed');
         }
+      } catch (error) {
+        console.warn('Google Sheets submission error:', error);
       }
 
       setSubmissionProgress(100);
@@ -196,7 +215,7 @@ export const SubmissionStep = ({ category, customerType, data, onSubmit }: Submi
         <Card className="p-6 bg-green-50 border-green-200">
           <div className="space-y-4">
             <div>
-              <Label className="text-sm font-medium text-green-800">מספר אסמכתה</Label>
+              <span className="text-sm font-medium text-green-800">מספר אסמכתה</span>
               <div className="flex items-center gap-2 mt-1">
                 <code className="text-lg font-mono bg-white px-3 py-2 rounded border text-green-700">
                   {referenceNumber}
@@ -253,7 +272,7 @@ export const SubmissionStep = ({ category, customerType, data, onSubmit }: Submi
               {submissionProgress < 30 && "יוצר מספר אסמכתה..."}
               {submissionProgress >= 30 && submissionProgress < 50 && "מייצר PDF..."}
               {submissionProgress >= 50 && submissionProgress < 70 && "שומר נתונים..."}
-              {submissionProgress >= 70 && submissionProgress < 90 && "שולח webhook..."}
+              {submissionProgress >= 70 && submissionProgress < 90 && "שולח ל-Google Sheets..."}
               {submissionProgress >= 90 && "משלים תהליך..."}
             </div>
           </div>
@@ -292,27 +311,6 @@ export const SubmissionStep = ({ category, customerType, data, onSubmit }: Submi
                 )}
                 <span className="text-sm">חתימה דיגיטלית</span>
               </div>
-            </div>
-          </Card>
-
-          {/* Webhook Configuration */}
-          <Card className="p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Globe className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold">הגדרות אינטגרציה (רשות)</h3>
-            </div>
-            <div className="space-y-3">
-              <Label htmlFor="webhookUrl">Webhook URL</Label>
-              <Input
-                id="webhookUrl"
-                type="url"
-                placeholder="https://example.com/webhook"
-                value={webhookUrl}
-                onChange={(e) => setWebhookUrl(e.target.value)}
-              />
-              <p className="text-xs text-muted-foreground">
-                אם יש לכם מערכת אוטומציה, הכניסו את כתובת ה-Webhook לקבלת הנתונים בזמן אמת
-              </p>
             </div>
           </Card>
 
