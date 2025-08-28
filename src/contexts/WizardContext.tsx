@@ -150,13 +150,9 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       
       console.log('🚀 Starting submission process with requestId:', requestId);
       
-      // Import Supabase client
+      // Import Google Sheets service
+      const { googleSheetsService } = await import('@/lib/googleSheets');
       const { supabase, isSupabaseReady } = await import('@/lib/supabaseClient');
-      
-      if (!isSupabaseReady()) {
-        console.error('❌ Supabase is not configured!');
-        throw new Error('Supabase לא מחובר. אנא חבר את הפרויקט ל-Supabase כדי לאפשר שליחת נתונים.');
-      }
       
       // Prepare data for Google Sheets
       const googleSheetsData = {
@@ -169,67 +165,72 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         customerType: 'private',
         timestamp: new Date().toISOString()
       };
-
-      // Submit to Google Sheets via Supabase Edge Function
-      console.log('📊 Submitting to Google Sheets...', googleSheetsData);
-      const { data: sheetsResult, error: sheetsError } = await supabase.functions.invoke(
-        'submit-to-google-sheets',
-        { body: googleSheetsData }
-      );
-
-      if (sheetsError) {
-        console.error('❌ Google Sheets submission failed:', sheetsError);
-        throw new Error(`שליחה לגוגל שיטס נכשלה: ${sheetsError.message}`);
+      
+      // Submit to Google Sheets directly using GoogleSheetsService
+      console.log('🔄 שולח נתונים ל-Google Sheets...');
+      console.log('📋 נתוני Google Sheets:', googleSheetsData);
+      
+      const googleSheetsSuccess = await googleSheetsService.submitToGoogleSheets(googleSheetsData);
+      
+      if (!googleSheetsSuccess) {
+        console.error('❌ שגיאה בשליחה ל-Google Sheets');
+        throw new Error('שגיאה בשליחה ל-Google Sheets. אנא נסה שוב.');
       }
+      
+      console.log('✅ הנתונים נשלחו בהצלחה ל-Google Sheets');
 
-      console.log('✅ Google Sheets submission successful:', sheetsResult);
-
-      // Send notification emails via Supabase Edge Function
-      console.log('📧 Sending notification emails...');
-      const { data: emailResult, error: emailError } = await supabase.functions.invoke(
-        'send-switch-notification',
-        {
+      // Send notification email only if Supabase is available
+      if (googleSheetsSuccess && isSupabaseReady()) {
+        console.log('📧 שולח מייל התראה...');
+        const emailResponse = await supabase.functions.invoke('send-switch-notification', {
           body: {
-            personalDetails: state.personalDetails,
-            currentService: state.currentService,
-            newService: state.newService,
-            requestId
+            ...googleSheetsData,
+            requestId,
+            submissionTime: new Date().toISOString()
           }
+        });
+        
+        console.log('📧 תגובת מייל:', emailResponse);
+        
+        if (emailResponse.error) {
+          console.error('❌ שגיאה בשליחת מייל:', emailResponse.error);
+          // Don't throw error here - Google Sheets submission was successful
+        } else {
+          console.log('✅ מייל ההתראה נשלח בהצלחה');
         }
-      );
-
-      if (emailError) {
-        console.error('⚠️ Email notification failed:', emailError);
-        console.warn('המשך התהליך למרות שליחת המייל נכשלה');
-      } else {
-        console.log('✅ Email notifications sent:', emailResult);
+      } else if (googleSheetsSuccess && !isSupabaseReady()) {
+        console.log('⚠️ Supabase לא מחובר - מייל התראה לא נשלח, אבל הנתונים נשמרו ב-Google Sheets');
       }
 
-      // Store request in Supabase database (optional - if you have a requests table)
-      try {
-        const { data: dbResult, error: dbError } = await supabase.functions.invoke(
-          'create-switch-request',
-          {
-            body: {
-              requestId,
-              personalDetails: state.personalDetails,
-              currentService: state.currentService,
-              newService: state.newService,
-              payment: state.payment,
-              consent: state.consent,
-              signature: state.signature,
+      // Store request in Supabase database (optional - only if Supabase is connected)
+      if (isSupabaseReady()) {
+        try {
+          const { data: dbResult, error: dbError } = await supabase.functions.invoke(
+            'create-switch-request',
+            {
+              body: {
+                requestId,
+                personalDetails: state.personalDetails,
+                currentService: state.currentService,
+                newService: state.newService,
+                payment: state.payment,
+                consent: state.consent,
+                signature: state.signature,
+              }
             }
-          }
-        );
+          );
 
-        if (dbError) {
-          console.warn('Database storage failed:', dbError);
-          // Don't fail the entire process if DB storage fails
-        } else {
-          console.log('Request stored in database:', dbResult);
+          if (dbError) {
+            console.warn('Database storage failed:', dbError);
+            // Don't fail the entire process if DB storage fails
+          } else {
+            console.log('Request stored in database:', dbResult);
+          }
+        } catch (dbErr) {
+          console.warn('Database storage error:', dbErr);
         }
-      } catch (dbErr) {
-        console.warn('Database storage error:', dbErr);
+      } else {
+        console.log('ℹ️ Supabase לא מחובר - נתונים לא נשמרים במסד הנתונים');
       }
       
       dispatch({ type: 'SET_REQUEST_ID', payload: requestId });

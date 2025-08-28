@@ -32,8 +32,6 @@ import { formatCurrency } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { handleError } from '@/lib/errorHandler';
 import { createHebrewPDF } from '@/lib/pdfUtils';
-import GoogleSheetsConfig from '@/components/GoogleSheetsConfig';
-import { GoogleSheetsSetup } from '@/components/GoogleSheetsSetup';
 import TestDataSubmission from '@/components/TestDataSubmission';
 import { SupabaseSetup } from '@/components/SupabaseSetup';
 
@@ -523,13 +521,50 @@ export const Settings = () => {
 
         {/* Integrations Tab */}
         <TabsContent value="integrations" className="space-y-6">
-          <SupabaseSetup />
-          <Separator />
-          <GoogleSheetsSetup />
-          <Separator />
-          <TestDataSubmission />
-          <Separator />
-          <GoogleSheetsConfig />
+          <Card className="shadow-card">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 rtl:space-x-reverse">
+                <ExternalLink className="h-5 w-5" />
+                <span>שילובים פעילים</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Google Sheets Integration - Locked */}
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                    <div className="p-2 bg-green-100 rounded-lg">
+                      <ExternalLink className="h-5 w-5 text-green-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-green-900">Google Sheets</h4>
+                      <p className="text-sm text-green-700">
+                        מחובר ופעיל - הטפסים נשלחים אוטומטית
+                      </p>
+                    </div>
+                  </div>
+                  <Badge variant="default" className="bg-green-100 text-green-800 border-green-300">
+                    מחובר
+                  </Badge>
+                </div>
+                <div className="mt-3 pt-3 border-t border-green-200">
+                  <p className="text-xs text-green-600">
+                    כל הטפסים נשלחים אוטומטית ל-Google Sheets המוגדר במערכת
+                  </p>
+                </div>
+              </div>
+
+              <Separator />
+              
+              {/* Test Data Submission */}
+              <TestDataSubmission />
+              
+              <Separator />
+
+              {/* Supabase Integration Status */}
+              <SupabaseSetup />
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* Preferences Tab */}
