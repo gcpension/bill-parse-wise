@@ -13,8 +13,9 @@ class GoogleSheetsService {
   private webhookUrl: string | null = null;
 
   constructor() {
-    // Load webhook URL from localStorage - no automatic demo webhook
-    this.webhookUrl = localStorage.getItem('google_sheets_webhook_url');
+    // Load webhook URL from localStorage, or use default Google Apps Script URL
+    this.webhookUrl = localStorage.getItem('google_sheets_webhook_url') || 
+      'https://script.google.com/macros/s/AKfycbz_H01BpsKvL0qsh6Uk6Q0BJF2RhMocA_q_2mSaxN4udq1EiX5vJX94x9iLVlR9MqR35g/exec';
   }
 
   setWebhookUrl(url: string) {
