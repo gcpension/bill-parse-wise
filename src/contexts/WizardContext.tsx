@@ -145,67 +145,85 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   const submitRequest = async (): Promise<string> => {
     try {
-      // First, submit to Google Sheets
-      const { googleSheetsService } = await import('@/lib/googleSheets');
+      // Generate request ID first
+      const requestId = `REQ-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`.toUpperCase();
       
+      // Import Supabase client
+      const { supabase } = await import('@/lib/supabaseClient');
+      
+      // Prepare data for Google Sheets
       const googleSheetsData = {
         name: `${state.personalDetails.firstName || ''} ${state.personalDetails.lastName || ''}`.trim(),
         phone: state.personalDetails.phone || '',
         email: state.personalDetails.email || '',
         serviceType: state.currentService.serviceType || '',
-        plan: state.newService.newPlan || ''
+        plan: `${state.currentService.providerName} → ${state.newService.newProvider}`,
+        referenceNumber: requestId,
+        customerType: 'private',
+        timestamp: new Date().toISOString()
       };
 
-      // Submit to Google Sheets (blocking - wait for response)
-      const googleSheetsSuccess = await googleSheetsService.submitToGoogleSheets(googleSheetsData);
-      if (!googleSheetsSuccess) {
-        throw new Error('Google Sheets submission failed');
-      }
-      
-      console.log('Google Sheets submission successful');
+      // Submit to Google Sheets via Supabase Edge Function
+      console.log('Submitting to Google Sheets...');
+      const { data: sheetsResult, error: sheetsError } = await supabase.functions.invoke(
+        'submit-to-google-sheets',
+        { body: googleSheetsData }
+      );
 
-      // If Supabase isn't configured, complete locally (demo mode)
-      const storedUrl = localStorage.getItem('SUPABASE_URL') || undefined;
-      const storedAnon = localStorage.getItem('SUPABASE_ANON_KEY') || undefined;
-      const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined) || storedUrl;
-      const supabaseAnon = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) || storedAnon;
-      if (!supabaseUrl || !supabaseAnon) {
-        const requestId = `demo-${Date.now()}`;
-        dispatch({ type: 'SET_REQUEST_ID', payload: requestId });
-        dispatch({ type: 'SET_SUBMITTED', payload: true });
-        localStorage.removeItem('wizard_state');
-        console.warn('Supabase not configured. Completed flow in demo mode with local requestId:', requestId);
-        return requestId;
+      if (sheetsError) {
+        console.error('Google Sheets submission failed:', sheetsError);
+        throw new Error(`Google Sheets submission failed: ${sheetsError.message}`);
       }
 
-      // Call Supabase Edge Function
-      const response = await fetch(`${supabaseUrl}/functions/v1/create-switch-request`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseAnon}`,
-        },
-        body: JSON.stringify({
-          personalDetails: state.personalDetails,
-          currentService: state.currentService,
-          newService: state.newService,
-          payment: state.payment,
-          consent: state.consent,
-          signature: state.signature,
-        }),
-      });
+      console.log('Google Sheets submission successful:', sheetsResult);
 
-      if (!response.ok) {
-        let message = 'Failed to submit request';
-        try {
-          const errorData = await response.json();
-          message = errorData.message || message;
-        } catch {}
-        throw new Error(message);
+      // Send notification emails via Supabase Edge Function
+      console.log('Sending notification emails...');
+      const { data: emailResult, error: emailError } = await supabase.functions.invoke(
+        'send-switch-notification',
+        {
+          body: {
+            personalDetails: state.personalDetails,
+            currentService: state.currentService,
+            newService: state.newService,
+            requestId
+          }
+        }
+      );
+
+      if (emailError) {
+        console.error('Email notification failed:', emailError);
+        // Don't throw error for email failure - sheets submission is more critical
+      } else {
+        console.log('Email notifications sent:', emailResult);
       }
 
-      const data = await response.json();
-      const requestId = data.requestId;
+      // Store request in Supabase database (optional - if you have a requests table)
+      try {
+        const { data: dbResult, error: dbError } = await supabase.functions.invoke(
+          'create-switch-request',
+          {
+            body: {
+              requestId,
+              personalDetails: state.personalDetails,
+              currentService: state.currentService,
+              newService: state.newService,
+              payment: state.payment,
+              consent: state.consent,
+              signature: state.signature,
+            }
+          }
+        );
+
+        if (dbError) {
+          console.warn('Database storage failed:', dbError);
+          // Don't fail the entire process if DB storage fails
+        } else {
+          console.log('Request stored in database:', dbResult);
+        }
+      } catch (dbErr) {
+        console.warn('Database storage error:', dbErr);
+      }
       
       dispatch({ type: 'SET_REQUEST_ID', payload: requestId });
       dispatch({ type: 'SET_SUBMITTED', payload: true });
