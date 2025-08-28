@@ -148,8 +148,15 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       // Generate request ID first
       const requestId = `REQ-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`.toUpperCase();
       
+      console.log('🚀 Starting submission process with requestId:', requestId);
+      
       // Import Supabase client
-      const { supabase } = await import('@/lib/supabaseClient');
+      const { supabase, isSupabaseReady } = await import('@/lib/supabaseClient');
+      
+      if (!isSupabaseReady()) {
+        console.error('❌ Supabase is not configured!');
+        throw new Error('Supabase לא מחובר. אנא חבר את הפרויקט ל-Supabase כדי לאפשר שליחת נתונים.');
+      }
       
       // Prepare data for Google Sheets
       const googleSheetsData = {
@@ -164,21 +171,21 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       };
 
       // Submit to Google Sheets via Supabase Edge Function
-      console.log('Submitting to Google Sheets...');
+      console.log('📊 Submitting to Google Sheets...', googleSheetsData);
       const { data: sheetsResult, error: sheetsError } = await supabase.functions.invoke(
         'submit-to-google-sheets',
         { body: googleSheetsData }
       );
 
       if (sheetsError) {
-        console.error('Google Sheets submission failed:', sheetsError);
-        throw new Error(`Google Sheets submission failed: ${sheetsError.message}`);
+        console.error('❌ Google Sheets submission failed:', sheetsError);
+        throw new Error(`שליחה לגוגל שיטס נכשלה: ${sheetsError.message}`);
       }
 
-      console.log('Google Sheets submission successful:', sheetsResult);
+      console.log('✅ Google Sheets submission successful:', sheetsResult);
 
       // Send notification emails via Supabase Edge Function
-      console.log('Sending notification emails...');
+      console.log('📧 Sending notification emails...');
       const { data: emailResult, error: emailError } = await supabase.functions.invoke(
         'send-switch-notification',
         {
@@ -192,10 +199,10 @@ export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       );
 
       if (emailError) {
-        console.error('Email notification failed:', emailError);
-        // Don't throw error for email failure - sheets submission is more critical
+        console.error('⚠️ Email notification failed:', emailError);
+        console.warn('המשך התהליך למרות שליחת המייל נכשלה');
       } else {
-        console.log('Email notifications sent:', emailResult);
+        console.log('✅ Email notifications sent:', emailResult);
       }
 
       // Store request in Supabase database (optional - if you have a requests table)
