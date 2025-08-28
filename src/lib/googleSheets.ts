@@ -9,7 +9,7 @@ export interface GoogleSheetsData {
   timestamp?: string;
 }
 
-const DEFAULT_WEBHOOK = 'https://script.google.com/macros/s/AKfycbzLJyLaVyG0t_nqWN0uM1qe5w8gufYJhXDZp3OFPEKEOeSjmT4EX5NhsqbokbltpV2Q/exec';
+const DEFAULT_WEBHOOK = 'https://script.google.com/macros/s/AKfycbzLJyLaVyG0t_nqWN0uM1qe5w8gufYJhXDZp3OFPEKEOeSjmT4E';
 
 class GoogleSheetsService {
   private webhookUrl: string = DEFAULT_WEBHOOK;
