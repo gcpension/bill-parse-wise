@@ -27,14 +27,13 @@ const rightAlignX = (pdf: jsPDF, pageWidth: number, rightMargin: number = 20) =>
 export const createHebrewPDF = async (title: string, content: string[]): Promise<jsPDF> => {
   const pdf = new jsPDF({ orientation: 'portrait', format: 'a4' });
 
-  await ensureHebrewFont(pdf);
-  pdf.setFont('NotoSansHebrew', 'normal');
-
-  // Enable RTL rendering if supported by jsPDF, fallback to manual reverse
-  const setR2L = (pdf as any).setR2L as ((enable: boolean) => void) | undefined;
-  const supportsR2L = typeof setR2L === 'function';
-  if (supportsR2L) {
-    setR2L(true);
+  try {
+    await ensureHebrewFont(pdf);
+    pdf.setFont('NotoSansHebrew', 'normal');
+  } catch (error) {
+    console.warn('Failed to load Hebrew font, using default font:', error);
+    // Fallback to default font if Hebrew font fails
+    pdf.setFont('helvetica', 'normal');
   }
 
   const pageWidth = pdf.internal.pageSize.width;
@@ -42,8 +41,7 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
 
   // Title
   pdf.setFontSize(16);
-  const titleText = supportsR2L ? title : title.split('').reverse().join('');
-  pdf.text(titleText, rightX, 30, { align: 'right' });
+  pdf.text(title, rightX, 30, { align: 'right' });
 
   // Content
   pdf.setFontSize(12);
@@ -52,8 +50,7 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
     if (line.trim() === '') {
       y += 5;
     } else {
-      const lineText = supportsR2L ? line : line.split('').reverse().join('');
-      pdf.text(lineText, rightX, y, { align: 'right' });
+      pdf.text(line, rightX, y, { align: 'right' });
       y += 7;
     }
   }

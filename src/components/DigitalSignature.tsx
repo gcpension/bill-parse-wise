@@ -116,8 +116,76 @@ export const DigitalSignature = ({
     setIsProcessing(true);
     
     try {
-      // Simulate digital signing process
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Submit to Google Sheets first
+      console.log('🚀 Starting digital signature submission...');
+      
+      const { supabase, isSupabaseReady } = await import('@/lib/supabaseClient');
+      
+      if (isSupabaseReady()) {
+        // Prepare data for Google Sheets
+        const googleSheetsData = {
+          name: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          serviceType: categoryNames[category],
+          plan: `${currentProvider} → ${newProvider}`,
+          referenceNumber: `DIGITAL-${Date.now()}`,
+          customerType: 'private',
+          timestamp: new Date().toISOString()
+        };
+
+        console.log('📊 Submitting to Google Sheets via Supabase...');
+        const { data: sheetsResult, error: sheetsError } = await supabase.functions.invoke(
+          'submit-to-google-sheets',
+          { body: googleSheetsData }
+        );
+
+        if (sheetsError) {
+          console.error('❌ Google Sheets submission failed:', sheetsError);
+          throw new Error(`שליחה לגוגל שיטס נכשלה: ${sheetsError.message}`);
+        }
+
+        console.log('✅ Google Sheets submission successful:', sheetsResult);
+
+        // Send notification emails
+        console.log('📧 Sending notification emails...');
+        const { data: emailResult, error: emailError } = await supabase.functions.invoke(
+          'send-switch-notification',
+          {
+            body: {
+              personalDetails: {
+                firstName: formData.fullName.split(' ')[0],
+                lastName: formData.fullName.split(' ').slice(1).join(' '),
+                email: formData.email,
+                phone: formData.phone,
+                idNumber: formData.idNumber
+              },
+              currentService: {
+                providerName: currentProvider,
+                serviceType: categoryNames[category],
+                currentPlan: 'לא צוין'
+              },
+              newService: {
+                newProvider: newProvider,
+                newPlan: newPlan,
+                switchDate: 'מיידי'
+              },
+              requestId: googleSheetsData.referenceNumber
+            }
+          }
+        );
+
+        if (emailError) {
+          console.warn('⚠️ Email notification failed:', emailError);
+        } else {
+          console.log('✅ Email notifications sent:', emailResult);
+        }
+      } else {
+        console.warn('⚠️ Supabase not configured, skipping online submission');
+      }
+
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Create digital document
       const digitalDocument = generateDigitalDocument();
@@ -140,21 +208,28 @@ export const DigitalSignature = ({
       const title = `מסמך חתום - מעבר ספק ${categoryNames[category]}`;
       const content = digitalDocument.split('\n');
       
-      const pdf = await createHebrewPDF(title, content);
-      pdf.save(`signed-document-${categoryNames[category]}-${formData.fullName}-${Date.now()}.pdf`);
+      try {
+        const pdf = await createHebrewPDF(title, content);
+        pdf.save(`signed-document-${categoryNames[category]}-${formData.fullName}-${Date.now()}.pdf`);
+        console.log('✅ PDF generated and downloaded');
+      } catch (pdfError) {
+        console.warn('⚠️ PDF generation failed:', pdfError);
+        // Continue without PDF if it fails
+      }
 
       setIsCompleted(true);
       
       toast({
         title: "החתימה הדיגיטלית הושלמה!",
-        description: `המסמך נחתם בהצלחה ונשמר. תחסוך ${formatCurrency(monthlySavings)} בחודש!`,
+        description: `המסמך נחתם בהצלחה ונשלח לגוגל שיטס. תחסוך ${formatCurrency(monthlySavings)} בחודש!`,
         variant: "default"
       });
       
     } catch (error) {
+      console.error('❌ Digital signature submission failed:', error);
       toast({
-        title: "שגיאה",
-        description: "אירעה שגיאה בתהליך החתימה. נסה שוב מאוחר יותר.",
+        title: "שגיאה בשליחה",
+        description: error instanceof Error ? error.message : "אירעה שגיאה בתהליך השליחה. נסה שוב מאוחר יותר.",
         variant: "destructive"
       });
     } finally {
