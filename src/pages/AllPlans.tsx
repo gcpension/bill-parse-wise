@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Phone, MessageSquare, Wifi, Filter, Info } from "lucide-react";
 import { Layout } from "@/components/Layout";
+import { PlanRow } from "@/components/plans/PlanRow";
 
 const SERVICE_TABS = [
   { key: "all", label: "הכל" },
@@ -163,14 +164,16 @@ const AllPlans = () => {
           </div>
         </section>
 
-        {/* Grid of plans */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* List of plans (horizontal rows) */}
+        <section className="space-y-4">
           {shown.map((plan, idx) => (
-            <PlanCard
+            <PlanRow
               key={`${plan.company}-${idx}`}
               company={plan.company}
               service={plan.service}
+              planName={plan.plan}
               price={plan.monthlyPrice}
+              yearlyPrice={plan.yearlyPrice}
               transferBenefits={plan.transferBenefits}
               commitment={plan.commitment}
             />
