@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Upload, Download, Wifi, Zap, Smartphone, Phone } from "lucide-react";
+import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 
-const PlanCard = ({ plan }: { plan: ManualPlan }) => {
+const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   const getCategoryIcon = () => {
     switch (plan.category) {
       case 'electricity':
-        return <Zap className="h-5 w-5" />;
+        return <Zap className="h-6 w-6" />;
       case 'mobile':
-        return <Smartphone className="h-5 w-5" />;
+        return <Smartphone className="h-6 w-6" />;
       case 'internet':
-        return <Wifi className="h-5 w-5" />;
+        return <Wifi className="h-6 w-6" />;
       default:
-        return <Wifi className="h-5 w-5" />;
+        return <Wifi className="h-6 w-6" />;
     }
   };
 
@@ -39,82 +39,99 @@ const PlanCard = ({ plan }: { plan: ManualPlan }) => {
     return `₪${plan.regularPrice}`;
   };
 
+  const getCompanyColor = (company: string) => {
+    const colors: { [key: string]: string } = {
+      'פרטנר': 'bg-orange-500',
+      'בזק': 'bg-blue-500',
+      'HOT': 'bg-red-500',
+      '019 מובייל': 'bg-pink-500',
+      'YES': 'bg-green-500',
+      'אלקטרה פאוור': 'bg-blue-600',
+      'אמישראגז חשמל': 'bg-green-600',
+      'פזגז': 'bg-yellow-600',
+      'הוט אנרגי': 'bg-purple-600',
+      'סלקום אנרגי': 'bg-orange-600',
+      'פרטנר פאוור': 'bg-red-600',
+    };
+    return colors[company] || 'bg-gray-500';
+  };
+
   return (
-    <article className="bg-card border border-border rounded-2xl shadow-card hover:shadow-elegant transition-all duration-300 overflow-hidden">
-      {/* Header with company name and main info */}
-      <header className={`${plan.color} text-white p-6 text-center relative overflow-hidden`}>
-        <div className="relative z-10">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            {getCategoryIcon()}
-            <Badge variant="secondary" className="text-xs bg-white/20 text-white border-white/20">
-              {getCategoryLabel()}
-            </Badge>
+    <article className="bg-card border border-border rounded-lg hover:shadow-lg transition-all duration-300 p-6">
+      <div className="flex items-center justify-between gap-6">
+        {/* Company Logo/Icon */}
+        <div className="flex items-center gap-4 flex-shrink-0">
+          <div className={`${getCompanyColor(plan.company)} text-white p-3 rounded-lg flex items-center justify-center`}>
+            <Building2 className="h-6 w-6" />
           </div>
-          <h3 className="text-lg font-semibold mb-1">{plan.company}</h3>
-          <div className="text-4xl font-bold">{formatPrice()}</div>
-          <p className="text-sm opacity-90 mt-1">{plan.planName}</p>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
-      </header>
-
-      {/* Pricing section - only for non-electricity plans */}
-      {plan.category !== 'electricity' && (
-        <div className="p-6 text-center border-b border-border/60">
-          <div className="text-2xl font-bold text-foreground mb-1">
-            ₪{plan.regularPrice}
-            <span className="text-sm font-normal text-muted-foreground mr-1">לחודש</span>
-          </div>
-          {plan.dataAmount && (
-            <div className="text-lg text-muted-foreground">
-              כולל {plan.dataAmount} גלישה
+          <div>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs">
+                {getCategoryLabel()}
+              </Badge>
             </div>
-          )}
+            <h3 className="font-semibold text-lg text-foreground mt-1">{plan.company}</h3>
+          </div>
         </div>
-      )}
 
-      {/* Speed details - only for internet plans */}
-      {plan.category === 'internet' && (plan.uploadSpeed || plan.downloadSpeed) && (
-        <div className="p-6 border-b border-border/60">
-          <div className="grid grid-cols-2 gap-4">
-            {plan.uploadSpeed && (
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Upload className="h-5 w-5 text-primary" />
-                  <span className="text-sm font-medium text-foreground">העלאה עד</span>
-                </div>
-                <div className="text-xl font-bold text-primary">{plan.uploadSpeed}</div>
+        {/* Plan Details */}
+        <div className="flex-1 min-w-0">
+          <h4 className="font-medium text-foreground mb-2 truncate">{plan.planName}</h4>
+          
+          {/* Speed/Data Info */}
+          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+            {plan.category === 'internet' && plan.downloadSpeed && (
+              <div className="flex items-center gap-1">
+                <Download className="h-4 w-4 text-primary" />
+                <span>{plan.downloadSpeed}</span>
               </div>
             )}
-            {plan.downloadSpeed && (
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Download className="h-5 w-5 text-primary" />
-                  <span className="text-sm font-medium text-foreground">הורדה עד</span>
-                </div>
-                <div className="text-xl font-bold text-primary">{plan.downloadSpeed}</div>
+            {plan.category === 'internet' && plan.uploadSpeed && (
+              <div className="flex items-center gap-1">
+                <Upload className="h-4 w-4 text-primary" />
+                <span>{plan.uploadSpeed}</span>
+              </div>
+            )}
+            {plan.dataAmount && (
+              <div className="flex items-center gap-1">
+                <Wifi className="h-4 w-4 text-primary" />
+                <span>{plan.dataAmount}</span>
+              </div>
+            )}
+            {plan.callMinutes && (
+              <div className="flex items-center gap-1">
+                <Phone className="h-4 w-4 text-primary" />
+                <span>{plan.callMinutes}</span>
               </div>
             )}
           </div>
-        </div>
-      )}
 
-      {/* Features */}
-      <div className="p-6">
-        <ul className="space-y-3 mb-6">
-          {plan.features.slice(0, 4).map((feature, index) => (
-            <li key={index} className="flex items-start gap-3 text-sm">
-              <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
+          {/* Features */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {plan.features.slice(0, 4).map((feature, index) => (
+              <div key={index} className="flex items-start gap-2 text-sm">
+                <Check className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
+                <span className="text-muted-foreground leading-relaxed truncate">{feature}</span>
               </div>
-              <span className="text-muted-foreground leading-relaxed">{feature}</span>
-            </li>
-          ))}
-        </ul>
+            ))}
+          </div>
+        </div>
 
-        <Button className="w-full" size="lg">
-          {getCategoryIcon()}
-          <span className="mr-2">בחר מסלול זה</span>
-        </Button>
+        {/* Price and Action */}
+        <div className="flex flex-col items-end gap-3 flex-shrink-0">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-foreground">
+              {formatPrice()}
+            </div>
+            {plan.category !== 'electricity' && (
+              <div className="text-sm text-muted-foreground">לחודש</div>
+            )}
+          </div>
+          
+          <Button className="px-6">
+            עבור עכשיו
+          </Button>
+        </div>
       </div>
     </article>
   );
@@ -200,10 +217,10 @@ const AllPlans = () => {
           </h2>
         </div>
 
-        {/* Plans Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Plans List */}
+        <section className="space-y-4">
           {filteredPlans.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} />
+            <PlanListItem key={plan.id} plan={plan} />
           ))}
         </section>
 
