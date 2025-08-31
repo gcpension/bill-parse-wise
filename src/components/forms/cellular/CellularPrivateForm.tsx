@@ -164,7 +164,7 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
       `חברה: ${selectedPlan.company}`,
       `מסלול: ${selectedPlan.planName}`,
       `מחיר: ${selectedPlan.regularPrice ? `₪${selectedPlan.regularPrice}/חודש` : 'לא צוין'}`,
-      formData.dataAmount ? `כמות גלישה: ${selectedPlan.dataAmount}` : "",
+      "",
       "",
       "פרטי הלקוח:",
       `שם מלא: ${formData.fullName}`,
@@ -492,7 +492,7 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             <Checkbox
               id="agreeToTerms"
               checked={agreeToTerms}
-              onCheckedChange={setAgreeToTerms}
+              onCheckedChange={(checked) => setAgreeToTerms(checked === true)}
             />
             <label htmlFor="agreeToTerms" className="text-sm">
               אני מסכים/ה לתנאי השימוש ולביצוע המעבר כמפורט
@@ -502,7 +502,7 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             <Checkbox
               id="agreeToPrivacy"
               checked={agreeToPrivacy}
-              onCheckedChange={setAgreeToPrivacy}
+              onCheckedChange={(checked) => setAgreeToPrivacy(checked === true)}
             />
             <label htmlFor="agreeToPrivacy" className="text-sm">
               אני מסכים/ה למדיניות הפרטיות ולעיבוד הנתונים לצורך המעבר

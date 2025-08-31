@@ -137,7 +137,7 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
         </div>
       </div>
       
-      <PlanSwitchForm 
+      <SwitchRequestForm 
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
         selectedPlan={plan}

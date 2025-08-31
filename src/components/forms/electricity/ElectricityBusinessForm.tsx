@@ -492,7 +492,7 @@ export const ElectricityBusinessForm = ({ selectedPlan, onClose }: ElectricityBu
             <Checkbox
               id="agreeToTerms"
               checked={agreeToTerms}
-              onCheckedChange={setAgreeToTerms}
+              onCheckedChange={(checked) => setAgreeToTerms(checked === true)}
             />
             <label htmlFor="agreeToTerms" className="text-sm">
               אנו מסכימים לתנאי השימוש ולביצוע המעבר כמפורט
@@ -502,7 +502,7 @@ export const ElectricityBusinessForm = ({ selectedPlan, onClose }: ElectricityBu
             <Checkbox
               id="agreeToPrivacy"
               checked={agreeToPrivacy}
-              onCheckedChange={setAgreeToPrivacy}
+              onCheckedChange={(checked) => setAgreeToPrivacy(checked === true)}
             />
             <label htmlFor="agreeToPrivacy" className="text-sm">
               אנו מסכימים למדיניות הפרטיות ולעיבוד הנתונים לצורך המעבר
