@@ -123,41 +123,56 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
     const today = new Date().toLocaleDateString('he-IL');
     
     const content = [
-      `תאריך: ${today}`,
+      `תאריך יצירת הבקשה: ${today}`,
+      `שעת יצירה: ${new Date().toLocaleTimeString('he-IL')}`,
       "",
-      "פרטי המסלול הנבחר:",
-      `חברה: ${selectedPlan.company}`,
-      `מסלול: ${selectedPlan.planName}`,
-      `מחיר: ${selectedPlan.regularPrice ? `₪${selectedPlan.regularPrice}/חודש` : 'לא צוין'}`,
+      "=== פרטי המסלול הנבחר ===",
+      `חברת היעד: ${selectedPlan.company}`,
+      `שם המסלול: ${selectedPlan.planName}`,
+      `קטגוריה: ${selectedPlan.category}`,
+      `מחיר חודשי: ${selectedPlan.regularPrice ? `₪${selectedPlan.regularPrice}` : 'לא צוין'}`,
+      selectedPlan.downloadSpeed ? `מהירות הורדה: ${selectedPlan.downloadSpeed}` : "",
+      selectedPlan.uploadSpeed ? `מהירות העלאה: ${selectedPlan.uploadSpeed}` : "",
+      selectedPlan.dataAmount ? `כמות נתונים: ${selectedPlan.dataAmount}` : "",
       "",
-      "פרטי הלקוח:",
+      "=== פרטי הלקוח ===",
       `שם מלא: ${formData.fullName}`,
-      `ת.ז.: ${formData.idNumber}`,
-      `טלפון: ${formData.phone}`,
-      `אימייל: ${formData.email}`,
+      `מספר תעודת זהות: ${formData.idNumber}`,
+      `מספר טלפון: ${formData.phone}`,
+      `כתובת אימייל: ${formData.email}`,
       "",
-      "פרטי השירות:",
-      `ספק נוכחי: ${formData.currentProvider}`,
-      `ספק יעד: ${formData.targetProvider}`,
+      "=== פרטי שירות החשמל ===",
+      `ספק חשמל נוכחי: ${formData.currentProvider}`,
+      `ספק חשמל יעד: ${formData.targetProvider}`,
       `מספר חוזה: ${formData.contractNumber || 'לא צוין'}`,
       `מספר מונה: ${formData.meterNumber || 'לא צוין'}`,
       `כתובת אתר הצריכה: ${formData.consumptionAddress}`,
-      `תוקף ייפוי כוח עד: ${formData.powerOfAttorneyExpiry}`,
+      `תאריך פקיעת ייפוי הכוח: ${formData.powerOfAttorneyExpiry}`,
+      formData.billingNotes ? `הערות לחשבונית: ${formData.billingNotes}` : "",
       "",
-      formData.billingNotes ? `הערות: ${formData.billingNotes}` : "",
-      "",
-      "ייפוי כוח:",
+      "=== ייפוי כוח מלא ===",
       powerOfAttorney.full
         .replace('[שם מלא]', formData.fullName)
         .replace('[מס׳]', formData.idNumber)
-        .replace('[מס׳ חוזה/מונה]', formData.contractNumber || formData.meterNumber)
+        .replace('[מס׳ חוזה/מונה]', formData.contractNumber || formData.meterNumber || 'לא צוין')
         .replace('[כתובת]', formData.consumptionAddress)
         .replace('[תאריך פקיעה]', formData.powerOfAttorneyExpiry),
       "",
-      "מסמכים מצורפים:",
-      "✓ צילום ת.ז. צרכן",
-      "✓ צילום ת.ז. מיופה הכוח"
-    ];
+      "=== מסמכים מצורפים ===",
+      formData.consumerIdCopy.uploaded ? "✓ צילום תעודת זהות של הצרכן" : "✗ צילום ת.ז. צרכן - לא הועלה",
+      formData.attorneyIdCopy.uploaded ? "✓ צילום תעודת זהות של מיופה הכוח" : "✗ צילום ת.ז. מיופה הכוח - לא הועלה",
+      "",
+      "=== פרטים נוספים ===",
+      `מספר אסמכתא: REF-ELE-${Date.now()}`,
+      `זמן שליחה מדויק: ${new Date().toISOString()}`,
+      `סטטוס בקשה: ממתין לעיבוד`,
+      "",
+      "=== הוראות המשך ===",
+      "• בקשה זו נשלחה אוטומטית למערכת",
+      "• תקבלו אישור בטלפון ו/או במייל תוך 24-48 שעות",
+      "• במקרה של שאלות ניתן לפנות לשירות הלקוחות",
+      "• שמרו מסמך זה לעיון עתידי"
+    ].filter(line => line !== ""); // Remove empty lines from conditions
 
     const pdf = await createHebrewPDF(
       "טופס בקשת מעבר ספק חשמל - לקוח פרטי",
