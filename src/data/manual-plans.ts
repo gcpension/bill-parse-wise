@@ -17,7 +17,7 @@ export const manualPlans: ManualPlan[] = [
   {
     id: "partner-fiber-5000",
     company: "Partner Fiber",
-    planName: "5000Mb במהירות עד",
+    planName: "במהירות עד",
     speed: "5000Mb",
     introPrice: 69,
     introMonths: 3,
@@ -25,14 +25,14 @@ export const manualPlans: ManualPlan[] = [
     uploadSpeed: "500 Mb",
     downloadSpeed: "5000 Mb",
     features: [
-      "ג.נ השקעות"
+      "כולל מתאם תקין ללא תוספת תשלום"
     ],
     color: "bg-gradient-to-br from-teal-400 to-teal-500"
   },
   {
     id: "partner-fiber-1000",
     company: "Partner Fiber", 
-    planName: "1000Mb במהירות עד",
+    planName: "במהירות עד",
     speed: "1000Mb",
     introPrice: 49,
     introMonths: 3,
@@ -40,14 +40,18 @@ export const manualPlans: ManualPlan[] = [
     uploadSpeed: "250 Mb",
     downloadSpeed: "1000 Mb",
     features: [
-      "ג.נ השקעות"
+      "כולל CyberGuard",
+      "כולל Easy Mesh מדיו סוויץ",
+      "נתב פייבר בהשכרה בתוספת תשלום מוטלת של 20 ₪ לחודש",
+      "החל מחודש ה-13 ב-149 ₪ לחודש",
+      "התקנה בתיים בדירות בבנייין"
     ],
     color: "bg-gradient-to-br from-teal-400 to-teal-500"
   },
   {
-    id: "partner-fiber-600",
+    id: "partner-fiber-600-new",
     company: "Partner Fiber",
-    planName: "600Mb במהירות עד", 
+    planName: "במהירות עד", 
     speed: "600Mb",
     introPrice: 69,
     introMonths: 1,
@@ -55,7 +59,23 @@ export const manualPlans: ManualPlan[] = [
     uploadSpeed: "100 Mb",
     downloadSpeed: "600 Mb",
     features: [
-      "ג.נ השקעות"
+      "נתב פייבר בהשכרה בתוספת 25 ₪ לחודש",
+      "התקנה בתיים בדירות בבנייין"
+    ],
+    color: "bg-gradient-to-br from-teal-400 to-teal-500"
+  },
+  {
+    id: "partner-fiber-300",
+    company: "Partner Fiber",
+    planName: "במהירות עד", 
+    speed: "300Mb",
+    introPrice: 69,
+    introMonths: 1,
+    regularPrice: 90,
+    uploadSpeed: "30 Mb",
+    downloadSpeed: "300 Mb",
+    features: [
+      "חבילת פרטנר פייבר עד 300 (טווח ומהירות טובים אופטימיים של פרטנר)"
     ],
     color: "bg-gradient-to-br from-teal-400 to-teal-500"
   }
