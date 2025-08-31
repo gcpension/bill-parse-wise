@@ -25,8 +25,7 @@ export const manualPlans: ManualPlan[] = [
     uploadSpeed: "500 Mb",
     downloadSpeed: "5000 Mb",
     features: [
-      "כולל מתאם תקין ללא תוספת תשלום",
-      "ללא תחבושת מחיב לחודשים הראשונים"
+      "ג.נ השקעות"
     ],
     color: "bg-gradient-to-br from-teal-400 to-teal-500"
   },
@@ -41,11 +40,7 @@ export const manualPlans: ManualPlan[] = [
     uploadSpeed: "250 Mb",
     downloadSpeed: "1000 Mb",
     features: [
-      "כולל CyberGuard",
-      "כולל Easy Mesh מדיו סוויץ",
-      "ללא מניע בסקירה בתוספת תשלום מוטלת של 20 ש״ח לחודש",
-      "תכלל מחודש ה-13 ב-149 ש״ח לחודש",
-      "התקנה בתיים בדירות בבנייין"
+      "ג.נ השקעות"
     ],
     color: "bg-gradient-to-br from-teal-400 to-teal-500"
   },
@@ -60,8 +55,7 @@ export const manualPlans: ManualPlan[] = [
     uploadSpeed: "100 Mb",
     downloadSpeed: "600 Mb",
     features: [
-      "ללא מניע בסקירה בתוספת 25 ש״ח לחודש",
-      "התקנה בתיים בדירות בבנייין"
+      "ג.נ השקעות"
     ],
     color: "bg-gradient-to-br from-teal-400 to-teal-500"
   }
