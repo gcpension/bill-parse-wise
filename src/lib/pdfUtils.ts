@@ -46,10 +46,9 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
 
   // Title
   pdf.setFontSize(18);
-  pdf.setFont('NotoSansHebrew', 'bold');
   pdf.text(title, rightX, 30, { align: 'right', maxWidth: maxWidth });
   
-  // Add line separator
+  // Separator
   pdf.setLineWidth(0.5);
   pdf.line(leftX, 40, pageWidth - margin, 40);
 
@@ -57,47 +56,45 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
   pdf.setFont('NotoSansHebrew', 'normal');
   pdf.setFontSize(12);
   let y = 55;
-  
+
   for (const line of content) {
-    // Check if we need a new page
+    // New page if needed
     if (y > pageHeight - 30) {
       pdf.addPage();
       y = 30;
     }
-    
+
     if (line.trim() === '') {
-      y += lineHeight * 0.7; // Smaller gap for empty lines
-    } else {
-      // Handle long lines by splitting them
-      const words = line.split(' ');
-      let currentLine = '';
-      let lines = [];
-      
-      for (const word of words) {
-        const testLine = currentLine + (currentLine ? ' ' : '') + word;
-        const textWidth = pdf.getTextWidth(testLine);
-        
-        if (textWidth > maxWidth && currentLine) {
-          lines.push(currentLine);
-          currentLine = word;
-        } else {
-          currentLine = testLine;
-        }
-      }
-      
-      if (currentLine) {
+      y += lineHeight * 0.7;
+      continue;
+    }
+
+    // Simple word-wrapping for RTL text
+    const words = line.split(' ');
+    let currentLine = '';
+    const lines: string[] = [];
+
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const textWidth = pdf.getTextWidth(testLine);
+
+      if (textWidth > maxWidth && currentLine) {
         lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
       }
-      
-      // Add all lines
-      for (const splitLine of lines) {
-        if (y > pageHeight - 30) {
-          pdf.addPage();
-          y = 30;
-        }
-        pdf.text(splitLine, rightX, y, { align: 'right', maxWidth: maxWidth });
-        y += lineHeight;
+    }
+
+    if (currentLine) lines.push(currentLine);
+
+    for (const splitLine of lines) {
+      if (y > pageHeight - 30) {
+        pdf.addPage();
+        y = 30;
       }
+      pdf.text(splitLine, rightX, y, { align: 'right', maxWidth });
+      y += lineHeight;
     }
   }
 
