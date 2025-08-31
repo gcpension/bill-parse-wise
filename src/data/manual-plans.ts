@@ -783,5 +783,286 @@ export const manualPlans: ManualPlan[] = [
     ],
     color: "bg-gradient-to-br from-indigo-400 to-indigo-600",
     category: "internet"
+  },
+
+  // מסלולי בזק נוספים
+  {
+    id: "bezeq-adsl-100mb-intro",
+    company: "בזק",
+    planName: "ספק+תשתית אינטרנט 100 מגה",
+    speed: "",
+    introPrice: 95,
+    introMonths: 3,
+    regularPrice: 95,
+    uploadSpeed: "",
+    downloadSpeed: "100 Mbps",
+    dataAmount: "100 MB",
+    features: [
+      "חבילת אינטרנט ספק ותשתית 100 מגה ג' של בזק",
+      "3 חודשיות ראשונים 45-1 ש\"ח לחודש",
+      "נתב נכלל המנת סירכו AI בתוספת 19.90 ש\"ח לחודש",
+      "אינטרנט ברג'ת 100 מגה"
+    ],
+    color: "bg-gradient-to-br from-indigo-400 to-indigo-600",
+    category: "internet"
+  },
+  {
+    id: "bezeq-adsl-100mb-10upload",
+    company: "בזק", 
+    planName: "ספק + תשתית בזק 100 מגה - ומהירות העלאה 10 מגה",
+    speed: "",
+    introPrice: 99,
+    introMonths: 0,
+    regularPrice: 99,
+    uploadSpeed: "10 Mbps",
+    downloadSpeed: "100 Mbps", 
+    dataAmount: "100 MB",
+    features: [
+      "חבילת אינטרנט ספק ותשתית 100 מגה ג' של ADSL ג' של בזק",
+      "מהיר קבוע לשנה",
+      "מהירות העלאה עד 10Mbps",
+      "נתב נכלל המנת סירכו AI בתוספת 19.90 ש\"ח לחודש"
+    ],
+    color: "bg-gradient-to-br from-indigo-400 to-indigo-600",
+    category: "internet"
+  },
+
+  // מסלולי HOT FIBER
+  {
+    id: "hot-fiber-1000mb-lifetime",
+    company: "HOT",
+    planName: "HOT FIBER - במהירות 1000 מגה לכל החיים",
+    speed: "",
+    introPrice: 79,
+    introMonths: 0,
+    regularPrice: 79,
+    uploadSpeed: "",
+    downloadSpeed: "1000 Mbps",
+    features: [
+      "חבילת אינטרנט סיבים HOT FIBER במהירות עד 1000 מגה במהירות הורדה עד 100Mb",
+      "(ספק ושתית סיבים אופטיים של HOT)",
+      "אינטרנט סיבים אופטיים",
+      "מהיר קבוע ללא הגבלת זמן",
+      "מצבא המקנה: ללא עלות בכפוף דירת בגדולל",
+      "נתב + מגדיל סוטח כלולים בתוספה לחודש",
+      "הצטרפות לסיבים אופטיים בהתאם לצירוף ובאגור פרסון השתרות"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-fiber-1000mb-250upload",
+    company: "HOT",
+    planName: "HOT FIBER - במהירות 1000 מגה כולל ספק ומהירות לכל החיים-250 העלאה מגה",
+    speed: "",
+    introPrice: 99,
+    introMonths: 0,
+    regularPrice: 99,
+    uploadSpeed: "250 Mbps",
+    downloadSpeed: "1000 Mbps",
+    features: [
+      "חבילת אינטרנט סיבים HOT FIBER במהירות עד 1000 מגה (ספק ושתית סיבים אופטיים של HOT) ומהירות העלאה 250 מגה",
+      "אינטרנט סיבים אספטיים",
+      "מהירות הורדה עד 1000Mbps",
+      "מהירות העלאה עד 250Mbps",
+      "נתב + מגדיל סוטח בלולים בתוספה לחודש",
+      "מהיר קבוע ללא הגבלת זמן",
+      "הצטרפות לסיבים אופטיים בהתאם לצירוף ובאגור פרסון השתרות"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-fiber-2000mb-lifetime",
+    company: "HOT",
+    planName: "HOT FIBER - במהירות 2000 מגה לכל החיים",
+    speed: "",
+    introPrice: 124,
+    introMonths: 0,
+    regularPrice: 124,
+    uploadSpeed: "",
+    downloadSpeed: "2000 Mbps",
+    features: [
+      "חבילת אינטרנט סיבים HOT FIBER במהירות עד 2000 מגה עם מהירות העלאה עד 200Mb",
+      "(ספק ושתית סיבים אופטיים של HOT)",
+      "אינטרנט סיבים אופטיים",
+      "מהירות הורדה עד 2000Mbps",
+      "מהיר קבוע ללא הגבלת זמן",
+      "מצבא המקנה: ללא עלות בכפוף דירת בגדולל",
+      "נקודת רעיש: ללא ספטות ללא עלות",
+      "נתב + מגדיל סוטח כלולים בתוספה לחודש",
+      "הצטרפות לסיבים אופטיים בהתאם לצירוף ובאגור פרסון השתרות"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-fiber-2000mb-250upload",
+    company: "HOT",
+    planName: "HOT FIBER - במהירות 2000 מגה כולל ספק ומהירות לכל החיים-250 העלאה מגה",
+    speed: "",
+    introPrice: 124,
+    introMonths: 0,
+    regularPrice: 124,
+    uploadSpeed: "250 Mbps",
+    downloadSpeed: "2000 Mbps",
+    features: [
+      "חבילת אינטרנט סיבים HOT FIBER במהירות עד 2000 מגה (ספק ושתית סיבים אופטיים של HOT) ומהירות העלאה 250 מגה",
+      "אינטרנט סיבים אופטיים",
+      "מהירות הורדה עד 2000Mbps",
+      "מהירות העלאה עד 250Mbps",
+      "מהיר קבוע ללא הגבלת זמן",
+      "נתב + מגדיל סוטח כלולים בתוספה לחודש",
+      "הצטרפות לסיבים אופטיים בהתאם לצירוף ובאגור פרסון השתרות"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-extranet-200mb",
+    company: "HOT",
+    planName: "EXTRANET - תשתית + ספק 200 מגה",
+    speed: "",
+    introPrice: 134.90,
+    introMonths: 0,
+    regularPrice: 134.90,
+    uploadSpeed: "",
+    downloadSpeed: "200 Mbps",
+    features: [
+      "חבילת אינטרנט ספג עד 200 מגה (ספק ושתית של HOT)",
+      "אינטרנט ברג'ת 200 מגה",
+      "נתב נכלל בתוספה לחודש"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-internet-500mb",
+    company: "HOT",
+    planName: "באודל תשתית אינטרנט + ספק 500 מגה",
+    speed: "",
+    introPrice: 154.90,
+    introMonths: 0,
+    regularPrice: 154.90,
+    uploadSpeed: "",
+    downloadSpeed: "500 Mbps",
+    features: [
+      "חבילת אינטרנט ספג עד 500 מגה (ספק ושתית של HOT)",
+      "אינטרנט ברג'ת 500 מגה",
+      "נתב נכלל בתוספה לחודש"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-fiber-3000mb",
+    company: "HOT",
+    planName: "HOT FIBER - במהירות 3000 מגה כולל ספק",
+    speed: "",
+    introPrice: 258.90,
+    introMonths: 0,
+    regularPrice: 258.90,
+    uploadSpeed: "500 Mbps",
+    downloadSpeed: "3000 Mbps",
+    features: [
+      "חבילת אינטרנט סיבים HOT FIBER במהירות עד 3000 מגה (ספק ושתית סיבים אופטיים של HOT)",
+      "אינטרנט סיבים אופטיים",
+      "מהירות הורדה עד 3000Mbps",
+      "מהירות העלאה עד 500Mbps",
+      "נתב + מגדיל סוטח כלולים בתוספה לחודש"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-fiber-5000mb",
+    company: "HOT",
+    planName: "HOT FIBER - במהירות 5000 מגה כולל ספק",
+    speed: "",
+    introPrice: 288.90,
+    introMonths: 0,
+    regularPrice: 288.90,
+    uploadSpeed: "1000 Mbps",
+    downloadSpeed: "5000 Mbps",
+    features: [
+      "חבילת אינטרנט סיבים HOT FIBER במהירות עד 5000 מגה (ספק ושתית סיבים אופטיים של HOT)",
+      "אינטרנט סיבים אופטיים",
+      "מהירות הורדה עד 5000Mbps",
+      "מהירות העלאה עד 1000Mbps",
+      "נתב + מגדיל סוטח כלולים בתוספה לחודש",
+      "הצטרפות לסיבים אופטיים בהתאם לצירוף ובאגור פרסון השתרות"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-kosher-600mb",
+    company: "HOT",
+    planName: "אינטרנט כשר - 600 מגה",
+    speed: "",
+    introPrice: 99.90,
+    introMonths: 0,
+    regularPrice: 99.90,
+    uploadSpeed: "100 Mbps",
+    downloadSpeed: "600 Mbps",
+    features: [
+      "חבילת אינטרנט כשר HOT FIBER במהירות עד 600 מגה עם מהירות העלאה עד 100Mb (ספק ושתית סיבים אופטיים של HOT)",
+      "אינטרנט סיבים אופטיים",
+      "מהירות הורדה עד 600Mbps",
+      "מהירות העלאה עד 100Mbps",
+      "הגבלה כשרה",
+      "נתב מקדם כליל בתוספה לחודש",
+      "אפשרות להצטרפות לחבילת 1000 מגה 109.90-ש\"ח לחודש",
+      "הצטרפות לסיבים אופטיים בהתאם לצירוף ובאגור פרסון השתרות"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-kosher-600mb-calls",
+    company: "HOT",
+    planName: "אינטרנט כשר - 600 מגה כולל דקות שיחה",
+    speed: "",
+    introPrice: 139.90,
+    introMonths: 0,
+    regularPrice: 159.90,
+    uploadSpeed: "100 Mbps",
+    downloadSpeed: "600 Mbps",
+    callMinutes: "כולל דקות שיחה",
+    features: [
+      "חבילת אינטרנט כשר HOT FIBER במהירות עד 600 מגה עם מהירות העלאה עד 100Mb (ספק ושתית סיבים אופטיים של HOT) + דקות שיחה",
+      "אינטרנט סיבים אופטיים",
+      "מהירות הורדה עד 600Mbeps",
+      "מהירות העלאה עד 100Mbps",
+      "כולל דקות שיחה (נתקנים לחבילה מתקופות)",
+      "הגבלה כשרה",
+      "נתב מקדם כליל בתוספה לחודש",
+      "הצטרפות לסיבים אופטיים בהתאם לצירוף ובאגור פרסון השתרות"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
+  },
+  {
+    id: "hot-kosher-1000mb-calls",
+    company: "HOT",
+    planName: "אינטרנט כשר - 1000 מגה כולל דקות שיחה",
+    speed: "",
+    introPrice: 149.90,
+    introMonths: 0,
+    regularPrice: 169.90,
+    uploadSpeed: "100 Mbps",
+    downloadSpeed: "1000 Mbps",
+    callMinutes: "כולל דקות שיחה",
+    features: [
+      "חבילת אינטרנט כשר HOT FIBER במהירות עד 1000 מגה עם מהירות העלאה עד 100Mb (ספק ושתית סיבים אופטיים של HOT) + דקות שיחה",
+      "אינטרנט סיבים אופטיים",
+      "מהירות הורדה עד 1000Mbps",
+      "מהירות העלאה עד 100Mbps",
+      "כולל דקות שיחה (נתקנים לחבילה מתקופות)",
+      "הגבלה כשרה",
+      "נתב מקדם כליל בתוספה לחודש"
+    ],
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    category: "internet"
   }
 ];
