@@ -37,21 +37,67 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
   }
 
   const pageWidth = pdf.internal.pageSize.width;
-  const rightX = rightAlignX(pdf, pageWidth);
+  const pageHeight = pdf.internal.pageSize.height;
+  const margin = 20;
+  const rightX = pageWidth - margin;
+  const leftX = margin;
+  const lineHeight = 7;
+  const maxWidth = pageWidth - (2 * margin);
 
   // Title
-  pdf.setFontSize(16);
-  pdf.text(title, rightX, 30, { align: 'right' });
+  pdf.setFontSize(18);
+  pdf.setFont('NotoSansHebrew', 'bold');
+  pdf.text(title, rightX, 30, { align: 'right', maxWidth: maxWidth });
+  
+  // Add line separator
+  pdf.setLineWidth(0.5);
+  pdf.line(leftX, 40, pageWidth - margin, 40);
 
   // Content
+  pdf.setFont('NotoSansHebrew', 'normal');
   pdf.setFontSize(12);
-  let y = 50;
+  let y = 55;
+  
   for (const line of content) {
+    // Check if we need a new page
+    if (y > pageHeight - 30) {
+      pdf.addPage();
+      y = 30;
+    }
+    
     if (line.trim() === '') {
-      y += 5;
+      y += lineHeight * 0.7; // Smaller gap for empty lines
     } else {
-      pdf.text(line, rightX, y, { align: 'right' });
-      y += 7;
+      // Handle long lines by splitting them
+      const words = line.split(' ');
+      let currentLine = '';
+      let lines = [];
+      
+      for (const word of words) {
+        const testLine = currentLine + (currentLine ? ' ' : '') + word;
+        const textWidth = pdf.getTextWidth(testLine);
+        
+        if (textWidth > maxWidth && currentLine) {
+          lines.push(currentLine);
+          currentLine = word;
+        } else {
+          currentLine = testLine;
+        }
+      }
+      
+      if (currentLine) {
+        lines.push(currentLine);
+      }
+      
+      // Add all lines
+      for (const splitLine of lines) {
+        if (y > pageHeight - 30) {
+          pdf.addPage();
+          y = 30;
+        }
+        pdf.text(splitLine, rightX, y, { align: 'right', maxWidth: maxWidth });
+        y += lineHeight;
+      }
     }
   }
 
