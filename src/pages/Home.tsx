@@ -101,254 +101,97 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="space-y-16">
-      {/* Hero Section */}
-      <section className="text-center space-y-8 py-12 animate-fade-in">
-        <div className="space-y-4">
-          <Badge variant="secondary" className="text-sm px-4 py-2">
-            💡 חדש! רפורמת החשמל 2024
-          </Badge>
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-            <span className="gradient-primary bg-clip-text text-transparent">
-              חסוך אלפי שקלים
-            </span>
-            <br />
-            על הוצאות הבית
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            השווה בין כל ספקי החשמל, הסלולר והאינטרנט בישראל. 
-            מצא את החבילות הזולות ביותר ותחסוך אלפי שקלים בשנה.
-          </p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        {/* Hero Section */}
+        <section className="container mx-auto px-4 py-16">
+          <div className="text-center space-y-12">
+            {/* Main Title */}
+            <div className="space-y-6">
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">
+                פלטפורמת חכמה שתוביא
+                <br />
+                עבור את המבצעים הטובים
+                <br />
+                ביותר ומכניסה מעבר חלק
+                <br />
+                ללא טרחה
+              </h1>
+            </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link to="/analyze">
-            <Button size="lg" className="text-lg px-8 py-4 shadow-elegant animate-bounce-gentle">
-              <Calculator className="ml-2 h-5 w-5" />
-              התחל לחסוך עכשיו
-            </Button>
-          </Link>
-          <Link to="/compare">
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4">
-              <BarChart3 className="ml-2 h-5 w-5" />
-              השווה מחירים
-            </Button>
-          </Link>
-        </div>
-      </section>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mb-12">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-orange-500 mb-2">50K+</div>
+                <div className="text-sm text-gray-600">לקוחות מרוצים</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-600 mb-2">₪180</div>
+                <div className="text-sm text-gray-600">חיסכון ממוצע לחודש</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-gray-800 mb-2">48</div>
+                <div className="text-sm text-gray-600">שעות לתהליך</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-gray-800 mb-2">4.9</div>
+                <div className="text-sm text-gray-600">דירוג לקוחות</div>
+              </div>
+            </div>
 
-      {/* Stats Section */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-slide-up">
-        {stats.map((stat, index) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={index} className="text-center shadow-card">
-              <CardContent className="p-6">
-                <div className="p-3 gradient-primary rounded-full w-fit mx-auto mb-4">
-                  <Icon className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <div className="text-3xl font-bold text-foreground mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  {stat.label}
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </section>
-
-      {/* Categories Section */}
-      <section className="space-y-8 animate-scale-in">
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold">מה נוכל לחסוך לך?</h2>
-          <p className="text-xl text-muted-foreground">
-            בחר את הקטגוריה שמעניינת אותך ותראה כמה תוכל לחסוך
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((category, index) => {
-            const Icon = category.icon;
-            const isSelected = selectedCategory === category.name;
-            
-            return (
-              <Card 
-                key={category.name}
-                className={`cursor-pointer transition-all duration-300 hover:shadow-elegant hover:scale-105 ${
-                  isSelected ? 'ring-2 ring-primary shadow-glow' : ''
-                }`}
-                onClick={() => setSelectedCategory(isSelected ? null : category.name)}
-              >
-                <CardContent className="p-6">
-                  <div className={`p-4 ${category.color} rounded-xl w-fit mb-4 shadow-elegant`}>
-                    <Icon className="h-8 w-8 text-white" />
-                  </div>
-                  
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-2xl font-bold">{category.name}</h3>
-                    <Badge variant="outline" className="text-success border-success">
-                      {category.trend}
-                    </Badge>
-                  </div>
-                  
-                  <p className="text-muted-foreground mb-4">{category.description}</p>
-                  
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">חיסכון בשנה:</span>
-                      <span className="font-bold text-success text-lg">{category.savings}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">ספקים זמינים:</span>
-                      <span className="font-medium">{category.providers}</span>
-                    </div>
-                  </div>
-
-                  {isSelected && (
-                    <div className="mt-4 pt-4 border-t border-border animate-fade-in">
-                      <Link to={`/compare?category=${category.name.toLowerCase()}`}>
-                        <Button className="w-full">
-                          השווה ספקים
-                          <ArrowRight className="mr-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="space-y-8 animate-fade-in">
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold">איך זה עובד?</h2>
-          <p className="text-xl text-muted-foreground">
-            4 צעדים פשוטים לחיסכון משמעותי
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <Card key={index} className="shadow-card hover:shadow-elegant transition-all duration-300">
-                <CardContent className="p-6 text-center">
-                  <div className="p-4 bg-accent/20 rounded-full w-fit mx-auto mb-4 hover-scale">
-                    <Icon className={`h-8 w-8 ${feature.color} transition-colors duration-200`} />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="bg-accent/30 rounded-2xl p-8 space-y-8 animate-scale-in">
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold">מה הלקוחות אומרים?</h2>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              name: 'אילנה כהן',
-              location: 'תל אביב',
-              savings: '₪2,100',
-              quote: 'התגלה שאני משלמת כפול על החשמל! עברתי לספק חדש וחוסכת ₪175 בחודש.'
-            },
-            {
-              name: 'משה לוי',
-              location: 'חיפה',
-              savings: '₪1,680',
-              quote: 'המערכת מצאה לי חבילת סלולר במחצית מהמחיר. פשוט מדהים!'
-            },
-            {
-              name: 'רות אברהם',
-              location: 'ירושלים',
-              savings: '₪2,800',
-              quote: 'בזכותכם החלפתי את כל הספקים וחוסכת אלפי שקלים בשנה.'
-            }
-          ].map((testimonial, index) => (
-            <Card key={index} className="shadow-card">
-              <CardContent className="p-6">
-                <div className="flex items-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 text-warning fill-current" />
-                  ))}
-                </div>
-                <blockquote className="text-muted-foreground mb-4 italic">
-                  "{testimonial.quote}"
-                </blockquote>
-                <div className="flex justify-between items-center">
+            {/* Process Steps */}
+            <div className="max-w-2xl mx-auto space-y-6">
+              <div className="bg-blue-500 text-white p-6 rounded-2xl text-right">
+                <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.location}</div>
+                    <h3 className="text-xl font-bold mb-2">בחר כספי</h3>
+                    <p className="text-blue-100">בחירה קמדיה קמרה מהירמטיה</p>
                   </div>
-                  <div className="text-success font-bold text-lg">
-                    {testimonial.savings}
-                  </div>
+                  <div className="bg-white text-blue-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">1</div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+              </div>
+              
+              <div className="bg-purple-500 text-white p-6 rounded-2xl text-right">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">השווה מחירים</h3>
+                    <p className="text-purple-100">מחירים מכל הספקים</p>
+                  </div>
+                  <div className="bg-white text-purple-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">2</div>
+                </div>
+              </div>
+              
+              <div className="bg-green-500 text-white p-6 rounded-2xl text-right">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">עבור וחסוך</h3>
+                    <p className="text-green-100">אתחנו נדאג לכל השאר</p>
+                  </div>
+                  <div className="bg-white text-green-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">3</div>
+                </div>
+              </div>
+            </div>
 
-      {/* CTA Section */}
-      <section className="text-center space-y-8 py-12 bg-gradient-to-br from-primary/5 to-primary-glow/5 rounded-2xl animate-fade-in">
-        <div className="space-y-4">
-          <h2 className="text-4xl font-bold">מוכן להתחיל לחסוך?</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            הצטרף לאלפי משפחות שכבר חוסכות אלפי שקלים בשנה
-          </p>
-        </div>
+            {/* Working with all providers */}
+            <div className="mt-12">
+              <p className="text-gray-600 mb-6">עובדים עם כל הספקים הגדולים:</p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Badge variant="outline" className="px-4 py-2">פלאפון</Badge>
+                <Badge variant="outline" className="px-4 py-2 bg-orange-100 text-orange-600">פארטנר</Badge>
+                <Badge variant="outline" className="px-4 py-2 bg-pink-100 text-pink-600">HOT</Badge>
+                <Badge variant="outline" className="px-4 py-2 bg-gray-100 text-gray-600">בזק</Badge>
+              </div>
+            </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/analyze">
-            <Button size="lg" className="text-lg px-8 py-4 shadow-elegant">
-              <Upload className="ml-2 h-5 w-5" />
-              העלה חשבונית עכשיו
-            </Button>
-          </Link>
-          <Link to="/switch-wizard">
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4 border-2 border-success text-success hover:bg-success hover:text-success-foreground">
-              <BarChart3 className="ml-2 h-5 w-5" />
-              מעבר ספק מלא 🚀
-            </Button>
-          </Link>
-          <Link to="/compare">
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4">
-              <Calculator className="ml-2 h-5 w-5" />
-              חשבון ידני מהיר
-            </Button>
-          </Link>
-        </div>
-
-        <div className="flex items-center justify-center space-x-6 rtl:space-x-reverse text-sm text-muted-foreground">
-          <div className="flex items-center space-x-2 rtl:space-x-reverse">
-            <CheckCircle2 className="h-4 w-4 text-success" />
-            <span>חינם לחלוטין</span>
+            {/* CTA Button */}
+            <div className="mt-12">
+              <Link to="/analyze">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-12 py-4 text-xl rounded-full shadow-lg hover:shadow-xl transition-all">
+                  בדוק כמה אתה יכול לחסוך
+                </Button>
+              </Link>
+            </div>
           </div>
-          <div className="flex items-center space-x-2 rtl:space-x-reverse">
-            <CheckCircle2 className="h-4 w-4 text-success" />
-            <span>ללא מחויבות</span>
-          </div>
-          <div className="flex items-center space-x-2 rtl:space-x-reverse">
-            <CheckCircle2 className="h-4 w-4 text-success" />
-            <span>תוצאות מיידיות</span>
-          </div>
-        </div>
-      </section>
+        </section>
       </div>
     </Layout>
   );
