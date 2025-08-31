@@ -4,8 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
+import { PlanSwitchForm } from "@/components/PlanSwitchForm";
 
 const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   const getCategoryIcon = () => {
     switch (plan.category) {
       case 'electricity':
@@ -128,11 +131,17 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
             )}
           </div>
           
-          <Button className="px-6">
+          <Button className="px-6" onClick={() => setIsFormOpen(true)}>
             עבור עכשיו
           </Button>
         </div>
       </div>
+      
+      <PlanSwitchForm 
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        selectedPlan={plan}
+      />
     </article>
   );
 };
