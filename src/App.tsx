@@ -41,8 +41,10 @@ const App = () => (
               <Route path="/analyze" element={<Analyze />} />
               <Route path="/results-preview" element={<ResultsPreview />} />
               <Route path="/switch-wizard" element={<SwitchWizard />} />
-              {/* New route to display the full list of plans */}
+              {/* Plans routes */}
               <Route path="/all-plans" element={<AllPlans />} />
+              <Route path="/plans" element={<AllPlans />} />
+              <Route path="/plans/all" element={<AllPlans />} />
               <Route path="/request-status/:requestId?" element={<RequestStatus />} />
               <Route
                 path="/compare"
