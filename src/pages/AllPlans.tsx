@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
-import { PlanSwitchForm } from "@/components/PlanSwitchForm";
+import { SwitchRequestForm } from "@/components/forms/SwitchRequestForm";
 
 const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
