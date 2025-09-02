@@ -1,215 +1,542 @@
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Zap, 
-  Smartphone, 
-  Wifi, 
-  Tv,
-  TrendingDown, 
-  Shield, 
-  Clock, 
-  CheckCircle2, 
-  ArrowRight,
-  Calculator,
-  Upload,
-  BarChart3,
+import {
+  Check,
+  X,
   Star,
-  Users,
-  DollarSign
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { formatCurrency } from '@/lib/utils';
-import { Layout } from '@/components/Layout';
+  Filter,
+  ArrowUpDown,
+  Smartphone,
+  Wifi,
+  Tv,
+  Zap,
+  ArrowLeft,
+  Sparkles,
+} from "lucide-react";
+import { useState } from "react";
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
+import { Badge } from "./ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "./ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
 
-const features = [
-  {
-    icon: Calculator,
-    title: 'השוואת מחירים חכמה',
-    description: 'השווה בין כל הספקים בשוק הישראלי ומצא את החבילה הזולה ביותר',
-    color: 'text-primary'
-  },
-  {
-    icon: Upload,
-    title: 'סריקת חשבוניות אוטומטית',
-    description: 'העלה תמונה של החשבונית והמערכת תזהה אוטומטית את הנתונים',
-    color: 'text-success'
-  },
-  {
-    icon: BarChart3,
-    title: 'ניתוח והמלצות',
-    description: 'קבל המלצות מותאמות אישית לחיסכון מקסימלי',
-    color: 'text-primary-glow'
-  },
-  {
-    icon: Shield,
-    title: 'בטוח ומהימן',
-    description: 'המידע שלך מוגן ולא נשמר במערכת',
-    color: 'text-warning-foreground'
-  }
-];
+interface Plan {
+  id: string;
+  provider: string;
+  logo: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  features: string[];
+  isPopular?: boolean;
+  discount?: string;
+  data?: string;
+  speed?: string;
+}
 
-const stats = [
-  { number: '₪2,400', label: 'חיסכון ממוצע בשנה', icon: DollarSign },
-  { number: '50,000+', label: 'משפחות חסכו כסף', icon: Users },
-  { number: '4.8/5', label: 'דירוג שביעות רצון', icon: Star },
-  { number: '15 דק׳', label: 'זמן ממוצע לחיסכון', icon: Clock }
-];
+interface ComparisonTableProps {
+  service: string;
+  onSwitchNow: (plan: Plan) => void;
+  onBack?: () => void;
+}
 
-const categories = [
-  {
-    name: 'חשמל',
-    icon: Zap,
-    description: 'רפורמת החשמל החדשה - חסוך עד 20%',
-    savings: '₪500-1,200',
-    color: 'gradient-sunset',
-    providers: 12,
-    trend: '+15%'
-  },
-  {
-    name: 'סלולר',
-    icon: Smartphone,
-    description: 'חבילות סלולר זולות עד 60% יותר',
-    savings: '₪360-1,440',
-    color: 'gradient-electric',
-    providers: 15,
-    trend: '+8%'
-  },
-  {
-    name: 'אינטרנט',
-    icon: Wifi,
-    description: 'סיבים אופטיים במחירים מעולים',
-    savings: '₪240-720',
-    color: 'gradient-vibrant',
-    providers: 9,
-    trend: '+12%'
-  },
-  {
-    name: 'טלוויזיה וסטרימינג',
-    icon: Tv,
-    description: 'שירותי סטרימינג וטלוויזיה במחירים מעולים',
-    savings: '₪300-900',
-    color: 'bg-gradient-to-r from-royal-purple to-coral-pink',
-    providers: 8,
-    trend: '+25%'
-  }
-];
-
-const Home = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-  return (
-    <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="container mx-auto px-4 py-16">
-          {/* Left Side Content */}
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-              {/* Quality Badges */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-blue-600" />
-                  <span className="text-sm text-gray-600">100% בטוח</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-green-600" />
-                  <span className="text-sm text-gray-600">5 דקות תהליך מהיר ופשוט</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-purple-600" />
-                  <span className="text-sm text-gray-600">50K+ לקוחות מרוצים</span>
-                </div>
-              </div>
-
-              {/* Main Title */}
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-800 leading-tight mb-6">
-                  פלטפורמת חכמה שתוביא<br />
-                  עבור את המבצעים הטובים<br />
-                  ביותר ומכניסה מעבר חלק<br />
-                  ללא טרחה
-                </h1>
-              </div>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-orange-500 mb-1">50K+</div>
-                  <div className="text-xs text-gray-600">לקוחות<br />מרוצים</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-1">₪180</div>
-                  <div className="text-xs text-gray-600">חיסכון<br />ממוצע לחודש</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-800 mb-1">48</div>
-                  <div className="text-xs text-gray-600">שעות לתהליך</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-800 mb-1">4.9</div>
-                  <div className="text-xs text-gray-600">דירוג<br />לקוחות</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Side - Process Steps */}
-            <div className="space-y-6">
-              <div className="bg-blue-500 text-white p-6 rounded-2xl">
-                <div className="flex items-center justify-between">
-                  <div className="text-right">
-                    <h3 className="text-xl font-bold mb-2">בחר כספי</h3>
-                    <p className="text-blue-100">בחירה קמדיה קמרה מהירמטיה</p>
-                  </div>
-                  <div className="bg-white text-blue-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">1</div>
-                </div>
-              </div>
-              
-              <div className="bg-purple-500 text-white p-6 rounded-2xl">
-                <div className="flex items-center justify-between">
-                  <div className="text-right">
-                    <h3 className="text-xl font-bold mb-2">השווה מחירים</h3>
-                    <p className="text-purple-100">מחירים מכל הספקים</p>
-                  </div>
-                  <div className="bg-white text-purple-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">2</div>
-                </div>
-              </div>
-              
-              <div className="bg-green-500 text-white p-6 rounded-2xl">
-                <div className="flex items-center justify-between">
-                  <div className="text-right">
-                    <h3 className="text-xl font-bold mb-2">עבור וחסוך</h3>
-                    <p className="text-green-100">אתחנו נדאג לכל השאר</p>
-                  </div>
-                  <div className="bg-white text-green-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">3</div>
-                </div>
-              </div>
-
-              {/* Working with all providers */}
-              <div className="mt-8">
-                <p className="text-gray-600 mb-4 text-center">עובדים עם כל הספקים הגדולים:</p>
-                <div className="flex flex-wrap justify-center gap-3">
-                  <Badge variant="outline" className="px-4 py-2">פלאפון</Badge>
-                  <Badge variant="outline" className="px-4 py-2 bg-orange-100 text-orange-600 border-orange-200">פרטנר</Badge>
-                  <Badge variant="outline" className="px-4 py-2 bg-pink-100 text-pink-600 border-pink-200">HOT</Badge>
-                  <Badge variant="outline" className="px-4 py-2 bg-gray-100 text-gray-600 border-gray-200">בזק</Badge>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA Button */}
-          <div className="text-center mt-16">
-            <Link to="/analyze">
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-12 py-4 text-xl rounded-full shadow-lg hover:shadow-xl transition-all">
-                בדוק כמה אתה יכול לחסוך
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </Layout>
-  );
+const mockPlans: Record<string, Plan[]> = {
+  אינטרנט: [
+    {
+      id: "1",
+      provider: "פרטנר",
+      logo: "https://via.placeholder.com/80x40/00b8a8/ffffff?text=פרטנר",
+      name: "פייבר עד 300 מגה",
+      price: 90,
+      speed: "עד 300Mbps",
+      features: [
+        "מהירות הורדה עד 300Mbps",
+        "מהירות פריצות עד 30Mbps",
+        'צרכי נתונים 25 ש"ח לחודש',
+        "נתב WiFi 6 חינם",
+        "שירות לקוחות 24/7",
+        "התקנה חינם",
+      ],
+      isPopular: true,
+    },
+    {
+      id: "2",
+      provider: "פרטנר",
+      logo: "https://via.placeholder.com/80x40/00b8a8/ffffff?text=פרטנר",
+      name: "פייבר עד 600 מגה",
+      price: 100,
+      speed: "עד 600Mbps",
+      features: [
+        "מהירות הורדה עד 600Mbps",
+        "מהירות פריצות עד 60Mbps",
+        'צרכי נתונים 25 ש"ח לחודש',
+        "נתב WiFi 6 מתקדם",
+        "שירות לקוחות VIP",
+        "התקנה מהירה",
+      ],
+    },
+  ],
 };
 
-export default Home;
+export function ComparisonTable({
+  service,
+  onSwitchNow,
+  onBack,
+}: ComparisonTableProps) {
+  const [activeCategory, setActiveCategory] = useState(
+    service || "אינטרנט",
+  ); // Default to internet category
+  const [sortBy, setSortBy] = useState("price");
+  const [priceRange, setPriceRange] = useState("all");
+
+  const allPlans = mockPlans[activeCategory] || [];
+
+  // Filter and sort plans
+  const filteredPlans = allPlans
+    .filter((plan) => {
+      if (priceRange === "low") return plan.price < 100;
+      if (priceRange === "medium")
+        return plan.price >= 100 && plan.price < 200;
+      if (priceRange === "high") return plan.price >= 200;
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortBy === "price") return a.price - b.price;
+      if (sortBy === "priceDesc") return b.price - a.price;
+      if (sortBy === "provider")
+        return a.provider.localeCompare(b.provider);
+      return 0;
+    });
+
+  const categories = [
+    {
+      id: "אינטרנט",
+      name: "אינטרנט",
+      count: mockPlans["אינטרנט"]?.length || 0,
+    },
+  ];
+
+  // Remove service selection - go directly to comparison
+
+  if (filteredPlans.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-600">
+          לא נמצאו תוכניות מתאימות לקריטריונים שנבחרו
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <section className="py-8 lg:py-12 bg-gradient-to-br from-slate-50 via-blue-50/30 to-white min-h-screen relative overflow-hidden">
+      {/* Subtle background elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-20 w-64 h-64 bg-blue-200/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-40 right-32 w-80 h-80 bg-purple-200/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Clean Back Button */}
+        {onBack && (
+          <div className="mb-8">
+            <Button
+              variant="ghost"
+              onClick={onBack}
+              className="group text-gray-600 hover:text-[var(--color-trust-blue)] px-4 py-2 transition-colors duration-300"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
+              <span>חזור</span>
+            </Button>
+          </div>
+        )}
+
+        {/* Enhanced Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-blue-200/30 rounded-full px-6 py-3 mb-6">
+            <div className="w-2 h-2 bg-[var(--color-trust-blue)] rounded-full animate-pulse"></div>
+            <span className="text-[var(--color-trust-blue)] text-sm">
+              השוואת מסלולים
+            </span>
+          </div>
+          <h2 className="text-4xl lg:text-5xl mb-4 text-gray-900">
+            <span className="bg-gradient-to-r from-[var(--color-trust-blue)] to-blue-600 bg-clip-text text-transparent">
+              מסלולי אינטרנט
+            </span>
+            <br />
+            <span className="text-gray-900">פרטנר פייבר</span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            בחר מתוך {filteredPlans.length} מסלולי פייבר מהירים
+            מפרטנר
+          </p>
+        </div>
+
+        {/* Enhanced Filters */}
+        <div className="mb-10">
+          <Card className="glass border border-white/30 backdrop-blur-xl p-6 shadow-lg">
+            <div className="flex flex-wrap gap-6 items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-trust-blue)] to-blue-600 rounded-xl flex items-center justify-center">
+                    <Filter className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg text-[var(--color-trust-blue)] mb-1">
+                      סינון וחיפוש
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      מצא את המסלול המתאים לך
+                    </p>
+                  </div>
+                </div>
+                <Select
+                  value={priceRange}
+                  onValueChange={setPriceRange}
+                >
+                  <SelectTrigger className="w-48 h-10 text-sm glass border border-white/30 backdrop-blur-sm">
+                    <SelectValue placeholder="טווח מחירים" />
+                  </SelectTrigger>
+                  <SelectContent className="glass backdrop-blur-xl border border-white/30">
+                    <SelectItem value="all">
+                      כל המחירים
+                    </SelectItem>
+                    <SelectItem value="low">עד ₪100</SelectItem>
+                    <SelectItem value="medium">
+                      ₪100-200
+                    </SelectItem>
+                    <SelectItem value="high">
+                      מעל ₪200
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <ArrowUpDown className="w-5 h-5 text-[var(--color-trust-blue)]" />
+                  <span className="text-gray-700">מיון:</span>
+                </div>
+                <Select
+                  value={sortBy}
+                  onValueChange={setSortBy}
+                >
+                  <SelectTrigger className="w-48 h-10 text-sm glass border border-white/30 backdrop-blur-sm">
+                    <SelectValue placeholder="מיון לפי" />
+                  </SelectTrigger>
+                  <SelectContent className="glass backdrop-blur-xl border border-white/30">
+                    <SelectItem value="price">
+                      מחיר נמוך לגבוה
+                    </SelectItem>
+                    <SelectItem value="priceDesc">
+                      מחיר גבוה לנמוך
+                    </SelectItem>
+                    <SelectItem value="provider">
+                      שם ספק
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Enhanced Desktop Table View */}
+        <div className="hidden lg:block">
+          <Card className="glass border border-white/30 backdrop-blur-xl overflow-hidden shadow-xl rounded-2xl">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gradient-to-r from-blue-50/60 to-purple-50/40 border-b border-white/30">
+                  <TableHead className="text-right py-5 px-6 text-[var(--color-trust-blue)]">
+                    ספק
+                  </TableHead>
+                  <TableHead className="text-right py-5 px-6 text-[var(--color-trust-blue)]">
+                    חבילה
+                  </TableHead>
+                  {activeCategory === "סלולר" && (
+                    <TableHead className="text-right py-5 px-6 text-[var(--color-trust-blue)]">
+                      נתונים
+                    </TableHead>
+                  )}
+                  {activeCategory === "אינטרנט" && (
+                    <TableHead className="text-right py-5 px-6 text-[var(--color-trust-blue)]">
+                      מהירות
+                    </TableHead>
+                  )}
+                  <TableHead className="text-right py-5 px-6 text-[var(--color-trust-blue)]">
+                    מחיר
+                  </TableHead>
+                  <TableHead className="text-right py-5 px-6 text-[var(--color-trust-blue)]">
+                    תכונות
+                  </TableHead>
+                  <TableHead className="text-right py-5 px-6 text-[var(--color-trust-blue)]">
+                    פעולה
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredPlans.map((plan, index) => (
+                  <TableRow
+                    key={plan.id}
+                    className={`group transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-purple-50/30 border-b border-white/20 ${
+                      plan.isPopular
+                        ? "bg-gradient-to-r from-blue-50/60 to-purple-50/30"
+                        : ""
+                    }`}
+                    style={{
+                      animationDelay: `${(index + 1) * 100}ms`,
+                    }}
+                  >
+                    <TableCell className="py-6 px-6">
+                      <div className="flex items-center gap-4">
+                        <div className="relative">
+                          <img
+                            src={plan.logo}
+                            alt={plan.provider}
+                            className="h-10 w-auto transition-transform duration-300 group-hover:scale-110"
+                          />
+                          {plan.isPopular && (
+                            <div className="absolute -top-2 -right-2 w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center animate-pulse">
+                              <Star className="w-2 h-2 text-white" />
+                            </div>
+                          )}
+                        </div>
+                        <div>
+                          <span className="text-lg text-gray-900">
+                            {plan.provider}
+                          </span>
+                          {plan.isPopular && (
+                            <Badge className="mr-2 bg-gradient-to-r from-[var(--color-trust-blue)] to-blue-600 text-white text-xs">
+                              <Star className="w-2 h-2 mr-1" />
+                              פופולרי
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-6 px-6">
+                      <div>
+                        <div className="text-lg text-gray-900 mb-2">
+                          {plan.name}
+                        </div>
+                        {plan.discount && (
+                          <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs">
+                            {plan.discount}
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-6 px-6">
+                      <div className="bg-gradient-to-r from-blue-100 to-cyan-100 rounded-xl px-4 py-2 inline-block">
+                        <span className="text-base text-blue-700">
+                          {plan.speed}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-6 px-6">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl text-[var(--color-trust-blue)] animate-pulse">
+                            ₪{plan.price}
+                          </span>
+                          {plan.originalPrice && (
+                            <span className="text-base text-gray-400 line-through">
+                              ₪{plan.originalPrice}
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-base text-gray-600">
+                          לחודש
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-6 px-6">
+                      <div className="space-y-2">
+                        {plan.features
+                          .slice(0, 3)
+                          .map((feature, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-3"
+                            >
+                              <div className="w-5 h-5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
+                                <Check className="w-3 h-3 text-white" />
+                              </div>
+                              <span className="text-sm text-gray-700">
+                                {feature}
+                              </span>
+                            </div>
+                          ))}
+                        {plan.features.length > 3 && (
+                          <div className="bg-blue-50 rounded-lg px-3 py-1 inline-block">
+                            <span className="text-xs text-blue-700">
+                              +{plan.features.length - 3} תכונות
+                              נוספות
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-6 px-6">
+                      <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-[var(--color-trust-blue)] to-purple-600 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                        <Button
+                          onClick={() => onSwitchNow(plan)}
+                          className="relative bg-gradient-to-r from-[var(--color-trust-blue)] to-blue-600 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-3 text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                        >
+                          עבור עכשיו
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+        </div>
+
+        {/* Enhanced Mobile Card View */}
+        <div className="lg:hidden space-y-6">
+          {filteredPlans.map((plan, index) => (
+            <Card
+              key={plan.id}
+              className={`group relative p-6 transition-all duration-500 overflow-hidden ${
+                plan.isPopular
+                  ? "border-2 border-[var(--color-trust-blue)] bg-gradient-to-br from-white via-white to-blue-50/50 shadow-xl"
+                  : "glass border border-white/30 backdrop-blur-xl hover:shadow-xl hover:scale-102"
+              }`}
+              style={{
+                animationDelay: `${(index + 1) * 150}ms`,
+              }}
+            >
+              {/* Gradient overlay for popular plans */}
+              {plan.isPopular && (
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none"></div>
+              )}
+
+              {plan.isPopular && (
+                <div className="relative mb-6">
+                  <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 text-sm animate-pulse">
+                    <Star className="w-3 h-3 mr-2" />
+                    הכי פופולרי
+                  </Badge>
+                </div>
+              )}
+
+              <div className="relative flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <img
+                      src={plan.logo}
+                      alt={plan.provider}
+                      className="h-10 w-auto transition-transform duration-300 group-hover:scale-110"
+                    />
+                    {plan.isPopular && (
+                      <div className="absolute -top-2 -right-2 w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                        <Star className="w-2 h-2 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-xl text-gray-900 mb-1">
+                      {plan.name}
+                    </h3>
+                    <p className="text-base text-gray-600">
+                      {plan.provider}
+                    </p>
+                    {plan.discount && (
+                      <Badge className="mt-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs">
+                        {plan.discount}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <div className="flex items-center gap-3 justify-end mb-2">
+                    <span className="text-3xl text-[var(--color-trust-blue)] animate-pulse">
+                      ₪{plan.price}
+                    </span>
+                    {plan.originalPrice && (
+                      <span className="text-lg text-gray-400 line-through">
+                        ₪{plan.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-base text-gray-600">
+                    לחודש
+                  </span>
+                </div>
+              </div>
+
+              {plan.speed && (
+                <div className="mb-6">
+                  <div className="p-3 rounded-xl inline-block bg-gradient-to-r from-blue-100 to-cyan-100">
+                    <span className="text-base text-blue-700">
+                      מהירות: {plan.speed}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-3 mb-6">
+                {plan.features
+                  .slice(0, 4)
+                  .map((feature, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-3"
+                    >
+                      <div className="w-5 h-5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="text-base text-gray-700">
+                        {feature}
+                      </span>
+                    </div>
+                  ))}
+                {plan.features.length > 4 && (
+                  <div className="bg-blue-50 rounded-xl px-3 py-2 inline-block">
+                    <span className="text-sm text-blue-700">
+                      +{plan.features.length - 4} תכונות נוספות
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-[var(--color-trust-blue)] to-purple-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-500"></div>
+                <Button
+                  onClick={() => onSwitchNow(plan)}
+                  className="relative w-full bg-gradient-to-r from-[var(--color-trust-blue)] to-blue-600 hover:from-blue-600 hover:to-purple-600 text-white py-4 text-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105"
+                >
+                  <span className="flex items-center justify-center gap-3">
+                    עבור עכשיו - ₪{plan.price}/חודש
+                    <Sparkles className="w-5 h-5 animate-pulse" />
+                  </span>
+                </Button>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
