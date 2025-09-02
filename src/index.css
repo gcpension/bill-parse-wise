@@ -62,6 +62,9 @@ body {
     --royal-purple: 255 65% 60%;
     --coral-pink: 350 80% 65%;
     --golden-yellow: 45 100% 55%;
+    
+    /* Trust and brand colors */
+    --color-trust-blue: 215 100% 60%;
 
     --radius: 0.75rem;
     
@@ -211,6 +214,36 @@ body {
   .animate-bounce-gentle {
     animation: bounce-gentle 2s ease-in-out infinite;
   }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-shimmer-text {
+    background-size: 300% 300%;
+    animation: shimmer-text 3s ease-in-out infinite;
+  }
+  
+  .animate-spin-slow {
+    animation: spin 3s linear infinite;
+  }
+  
+  .animate-gradient-x {
+    background-size: 300% 300%;
+    animation: gradient-x 3s ease infinite;
+  }
+  
+  .bg-300\% {
+    background-size: 300% 300%;
+  }
+  
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
 }
 
 /* Keyframes for animations */
@@ -253,5 +286,38 @@ body {
   }
   50% {
     transform: translateY(-10px);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(-3deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(3deg);
+  }
+}
+
+@keyframes shimmer-text {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
