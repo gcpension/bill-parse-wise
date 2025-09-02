@@ -12,22 +12,22 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
+import { Button } from "../components/ui/button";
+import { Card } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../components/ui/select";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "./ui/tabs";
+} from "../components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -35,7 +35,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "../components/ui/table";
 
 interface Plan {
   id: string;
@@ -95,7 +95,7 @@ const mockPlans: Record<string, Plan[]> = {
   ],
 };
 
-export function ComparisonTable({
+function ComparisonTable({
   service,
   onSwitchNow,
   onBack,
@@ -538,5 +538,18 @@ export function ComparisonTable({
         </div>
       </div>
     </section>
+  );
+}
+
+export default function Home() {
+  const handleSwitchNow = (plan: Plan) => {
+    console.log("Switch to plan:", plan);
+  };
+
+  return (
+    <ComparisonTable 
+      service="אינטרנט" 
+      onSwitchNow={handleSwitchNow}
+    />
   );
 }
