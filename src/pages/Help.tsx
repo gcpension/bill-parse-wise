@@ -178,128 +178,140 @@ const Help = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 space-y-8">
-      {/* Header */}
-      <div className="text-center space-y-4">
-        <div className="flex items-center justify-center space-x-3 rtl:space-x-reverse">
-          <div className="p-3 bg-primary/10 rounded-xl">
-            <HelpCircle className="h-8 w-8 text-primary" />
-          </div>
-          <h1 className="text-3xl font-bold">עזרה ותמיכה</h1>
-        </div>
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-          מצא תשובות לשאלות נפוצות, מדריכים מפורטים או פנה אלינו לעזרה אישית
-        </p>
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4 text-center">
-            <Clock className="h-8 w-8 text-primary mx-auto mb-2" />
-            <div className="text-lg font-bold">&lt; 5 דק׳</div>
-            <p className="text-sm text-muted-foreground">זמן תגובה ממוצע</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <CheckCircle2 className="h-8 w-8 text-success mx-auto mb-2" />
-            <div className="text-lg font-bold">98%</div>
-            <p className="text-sm text-muted-foreground">שביעות רצון</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <MessageCircle className="h-8 w-8 text-primary-glow mx-auto mb-2" />
-            <div className="text-lg font-bold">24/7</div>
-            <p className="text-sm text-muted-foreground">צ\'אט אונליין</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <Lightbulb className="h-8 w-8 text-warning-foreground mx-auto mb-2" />
-            <div className="text-lg font-bold">15+</div>
-            <p className="text-sm text-muted-foreground">מדריכים</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Quick Guides */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <BookOpen className="ml-2 h-5 w-5" />
-            מדריכים מהירים
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-3 gap-6">
-            {quickGuides.map((guide, index) => (
-              <div key={index} className="space-y-3">
-                <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <guide.icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{guide.title}</h3>
-                    <p className="text-sm text-muted-foreground">{guide.description}</p>
-                  </div>
-                </div>
-                <ol className="space-y-1 text-sm">
-                  {guide.steps.map((step, stepIndex) => (
-                    <li key={stepIndex} className="flex items-start space-x-2 rtl:space-x-reverse">
-                      <Badge variant="outline" className="text-xs w-5 h-5 rounded-full p-0 flex items-center justify-center">
-                        {stepIndex + 1}
-                      </Badge>
-                      <span>{step}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* FAQ Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <MessageCircle className="ml-2 h-5 w-5" />
-            שאלות נפוצות
-          </CardTitle>
-          
-          {/* Search and Filter */}
-          <div className="flex flex-col md:flex-row gap-4 mt-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="חפש בשאלות נפוצות..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
+      <div className="container mx-auto px-4 py-12 space-y-12">
+        {/* Header */}
+        <div className="text-center space-y-6">
+          <div className="flex items-center justify-center space-x-3 rtl:space-x-reverse mb-6">
+            <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center">
+              <HelpCircle className="h-10 w-10 text-primary" />
             </div>
-            <div className="flex gap-2">
-              {[
-                { key: 'all', label: 'הכל' },
-                { key: 'כללי', label: 'כללי' },
-                { key: 'ניתוח וחיסכון', label: 'ניתוח וחיסכון' },
-                { key: 'מעבר בין ספקים', label: 'מעבר בין ספקים' },
-                { key: 'בעיות נפוצות', label: 'בעיות נפוצות' }
-              ].map((item) => (
-                <Button
-                  key={item.key}
-                  variant={selectedCategory === item.key ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(item.key)}
-                >
-                  {item.label}
-                </Button>
+            <h1 className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              עזרה ותמיכה
+            </h1>
+          </div>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            מצא תשובות לשאלות נפוצות, מדריכים מפורטים או פנה אלינו לעזרה אישית
+          </p>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card className="bg-white/70 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
+            <CardContent className="p-6 text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Clock className="h-8 w-8 text-primary" />
+              </div>
+              <div className="text-2xl font-bold text-primary mb-2">&lt; 5 דק׳</div>
+              <p className="text-sm text-muted-foreground">זמן תגובה ממוצע</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white/70 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
+            <CardContent className="p-6 text-center">
+              <div className="w-16 h-16 bg-success/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <CheckCircle2 className="h-8 w-8 text-success" />
+              </div>
+              <div className="text-2xl font-bold text-success mb-2">98%</div>
+              <p className="text-sm text-muted-foreground">שביעות רצון</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white/70 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
+            <CardContent className="p-6 text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <MessageCircle className="h-8 w-8 text-primary" />
+              </div>
+              <div className="text-2xl font-bold text-primary mb-2">24/7</div>
+              <p className="text-sm text-muted-foreground">צ׳אט אונליין</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white/70 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
+            <CardContent className="p-6 text-center">
+              <div className="w-16 h-16 bg-warning/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Lightbulb className="h-8 w-8 text-warning-foreground" />
+              </div>
+              <div className="text-2xl font-bold text-warning-foreground mb-2">15+</div>
+              <p className="text-sm text-muted-foreground">מדריכים</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Guides */}
+        <Card className="bg-white/70 backdrop-blur-sm border-border/50">
+          <CardHeader>
+            <CardTitle className="flex items-center text-2xl">
+              <BookOpen className="ml-2 h-6 w-6 text-primary" />
+              מדריכים מהירים
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-8">
+              {quickGuides.map((guide, index) => (
+                <div key={index} className="space-y-4 p-6 bg-primary/5 rounded-2xl border border-primary/10">
+                  <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                    <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
+                      <guide.icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg">{guide.title}</h3>
+                      <p className="text-sm text-muted-foreground">{guide.description}</p>
+                    </div>
+                  </div>
+                  <ol className="space-y-2 text-sm">
+                    {guide.steps.map((step, stepIndex) => (
+                      <li key={stepIndex} className="flex items-start space-x-3 rtl:space-x-reverse">
+                        <Badge variant="outline" className="text-xs w-6 h-6 rounded-full p-0 flex items-center justify-center bg-primary text-white border-primary">
+                          {stepIndex + 1}
+                        </Badge>
+                        <span className="leading-relaxed">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
               ))}
             </div>
-          </div>
-        </CardHeader>
+          </CardContent>
+        </Card>
+
+        {/* FAQ Section */}
+        <Card className="bg-white/70 backdrop-blur-sm border-border/50">
+          <CardHeader>
+            <CardTitle className="flex items-center text-2xl">
+              <MessageCircle className="ml-2 h-6 w-6 text-primary" />
+              שאלות נפוצות
+            </CardTitle>
+            
+            {/* Search and Filter */}
+            <div className="flex flex-col md:flex-row gap-4 mt-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="חפש בשאלות נפוצות..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 bg-white/50 border-border/50"
+                />
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                {[
+                  { key: 'all', label: 'הכל' },
+                  { key: 'כללי', label: 'כללי' },
+                  { key: 'ניתוח וחיסכון', label: 'ניתוח וחיסכון' },
+                  { key: 'מעבר בין ספקים', label: 'מעבר בין ספקים' },
+                  { key: 'בעיות נפוצות', label: 'בעיות נפוצות' }
+                ].map((item) => (
+                  <Button
+                    key={item.key}
+                    variant={selectedCategory === item.key ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(item.key)}
+                    className="bg-white/50 border-border/50"
+                  >
+                    {item.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </CardHeader>
         <CardContent className="space-y-4">
           {filteredFAQ.map((category) => (
             <div key={category.category} className="space-y-2">
@@ -339,60 +351,60 @@ const Help = () => {
         </CardContent>
       </Card>
 
-      {/* Contact Section */}
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Contact Info */}
-        <Card>
-          <CardHeader>
-            <CardTitle>צרו קשר</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Phone className="h-5 w-5 text-primary" />
+        {/* Contact Section */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Contact Info */}
+          <Card className="bg-white/70 backdrop-blur-sm border-border/50">
+            <CardHeader>
+              <CardTitle className="text-2xl">צרו קשר</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-8">
+              <div className="space-y-6">
+                <div className="flex items-center space-x-4 rtl:space-x-reverse p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
+                    <Phone className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">טלפון</h4>
+                    <p className="text-muted-foreground">03-123-4567</p>
+                    <p className="text-xs text-muted-foreground">א׳-ה׳ 08:00-18:00</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium">טלפון</h4>
-                  <p className="text-muted-foreground">03-123-4567</p>
-                  <p className="text-xs text-muted-foreground">א׳-ה׳ 08:00-18:00</p>
+
+                <div className="flex items-center space-x-4 rtl:space-x-reverse p-4 bg-success/5 rounded-2xl border border-success/10">
+                  <div className="w-12 h-12 bg-success/10 rounded-2xl flex items-center justify-center">
+                    <Mail className="h-6 w-6 text-success" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">אימייל</h4>
+                    <p className="text-muted-foreground">support@savings.co.il</p>
+                    <p className="text-xs text-muted-foreground">מענה תוך 24 שעות</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-4 rtl:space-x-reverse p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
+                    <MessageCircle className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">צ'אט חי</h4>
+                    <p className="text-muted-foreground">זמין 24/7</p>
+                    <Button variant="outline" size="sm" className="mt-2 bg-white/50">
+                      התחל צ'אט
+                    </Button>
+                  </div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-success/10 rounded-lg">
-                  <Mail className="h-5 w-5 text-success" />
-                </div>
-                <div>
-                  <h4 className="font-medium">אימייל</h4>
-                  <p className="text-muted-foreground">support@savings.co.il</p>
-                  <p className="text-xs text-muted-foreground">מענה תוך 24 שעות</p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-primary-glow/10 rounded-lg">
-                  <MessageCircle className="h-5 w-5 text-primary-glow" />
-                </div>
-                <div>
-                  <h4 className="font-medium">צ'אט חי</h4>
-                  <p className="text-muted-foreground">זמין 24/7</p>
-                  <Button variant="outline" size="sm" className="mt-2">
-                    התחל צ'אט
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Contact Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle>שלח הודעה</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleContactSubmit} className="space-y-4">
+          {/* Contact Form */}
+          <Card className="bg-white/70 backdrop-blur-sm border-border/50">
+            <CardHeader>
+              <CardTitle className="text-2xl">שלח הודעה</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleContactSubmit} className="space-y-6">
               <div>
                 <Input
                   placeholder="שם מלא"
@@ -436,7 +448,8 @@ const Help = () => {
         </Card>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Help;
