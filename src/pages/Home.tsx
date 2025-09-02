@@ -1,5 +1,5 @@
 import { Shield, Phone, Sparkles, Crown, Zap, Star, Award, Users } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
 export function Header() {
@@ -171,4 +171,8 @@ export function Header() {
       </div>
     </header>
   );
+}
+
+export default function Home() {
+  return <Header />;
 }
