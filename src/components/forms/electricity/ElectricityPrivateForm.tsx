@@ -42,8 +42,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
     consumptionAddress: "",
     powerOfAttorneyExpiry: "",
     consumerIdCopy: { file: null, required: true, uploaded: false },
-    attorneyIdCopy: { file: null, required: false, uploaded: false },
-    billingNotes: ""
+    attorneyIdCopy: { file: null, required: false, uploaded: false }
   });
 
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
@@ -89,11 +88,11 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
     }
 
     if (!formData.contractNumber.trim() && !formData.meterNumber.trim()) {
-      errors.push("חובה למלא לפחות אחד: מספר חוזה או מספר מונה");
+      errors.push("יש להזין מספר חוזה או מספר מונה (לפחות אחד)");
     }
 
     if (!formData.consumptionAddress.trim()) {
-      errors.push("יש להזין כתובת אתר הצריכה");
+      errors.push("יש להזין כתובת אתר צריכה");
     }
 
     if (!formData.powerOfAttorneyExpiry || !validateFutureDate(formData.powerOfAttorneyExpiry)) {
@@ -381,15 +380,12 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
       {/* Optional Notes */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">הערות (אופציונלי)</CardTitle>
+          <CardTitle className="text-lg">הערת תאימות</CardTitle>
         </CardHeader>
         <CardContent>
-          <Textarea
-            placeholder="הערות נוספות (אופציונלי)"
-            value={formData.billingNotes || ""}
-            onChange={(e) => updateFormData("billingNotes", e.target.value)}
-            rows={3}
-          />
+          <p className="text-sm text-muted-foreground">
+            ייתכן אימות ישיר מהספק (SMS/קישור) לאישור סופי.
+          </p>
         </CardContent>
       </Card>
 

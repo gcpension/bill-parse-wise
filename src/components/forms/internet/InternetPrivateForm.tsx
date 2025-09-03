@@ -111,20 +111,42 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
         <CardHeader><CardTitle>פרטים אישיים</CardTitle></CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
           <div>
-            <Label>שם מלא *</Label>
-            <Input value={formData.fullName} onChange={(e) => updateFormData("fullName", e.target.value)} required />
+            <Label>שם מלא</Label>
+            <Input 
+              placeholder="שם פרטי ושם משפחה"
+              value={formData.fullName} 
+              onChange={(e) => updateFormData("fullName", e.target.value)} 
+              required 
+            />
           </div>
           <div>
-            <Label>ת.ז. *</Label>
-            <Input value={formData.idNumber} onChange={(e) => updateFormData("idNumber", e.target.value)} required />
+            <Label>מס׳ תעודת זהות</Label>
+            <Input 
+              placeholder="9 ספרות"
+              value={formData.idNumber} 
+              onChange={(e) => updateFormData("idNumber", e.target.value)} 
+              maxLength={9}
+              required 
+            />
           </div>
           <div>
-            <Label>טלפון *</Label>
-            <Input value={formData.phone} onChange={(e) => updateFormData("phone", e.target.value)} required />
+            <Label>טלפון נייד</Label>
+            <Input 
+              placeholder="05X-XXXXXXX"
+              value={formData.phone} 
+              onChange={(e) => updateFormData("phone", e.target.value)} 
+              required 
+            />
           </div>
           <div>
-            <Label>אימייל *</Label>
-            <Input type="email" value={formData.email} onChange={(e) => updateFormData("email", e.target.value)} required />
+            <Label>דוא״ל</Label>
+            <Input 
+              type="email" 
+              placeholder="name@example.com"
+              value={formData.email} 
+              onChange={(e) => updateFormData("email", e.target.value)} 
+              required 
+            />
           </div>
         </CardContent>
       </Card>
@@ -133,27 +155,65 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
         <CardHeader><CardTitle>פרטי השירות</CardTitle></CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
           <div>
-            <Label>ספק תשתית נוכחי *</Label>
+            <Label>ספק תשתית נוכחי</Label>
             <Select onValueChange={(value) => updateFormData("infrastructureProvider", value)}>
-              <SelectTrigger><SelectValue placeholder="בחר ספק תשתית" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder="בחר/י ספק תשתית" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="בזק">בזק</SelectItem>
                 <SelectItem value="HOT">HOT</SelectItem>
                 <SelectItem value="סיב אחר">סיב אחר</SelectItem>
+                <SelectItem value="אחר">אחר</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label>ספק אינטרנט נוכחי *</Label>
-            <Input value={formData.currentISP} onChange={(e) => updateFormData("currentISP", e.target.value)} required />
+            <Label>ספק אינטרנט (ISP) נוכחי</Label>
+            <Input 
+              placeholder="בחר/י או כתוב/י"
+              value={formData.currentISP} 
+              onChange={(e) => updateFormData("currentISP", e.target.value)} 
+              required 
+            />
           </div>
           <div>
-            <Label>מזהה קו/מנוי/ONT *</Label>
-            <Input value={formData.lineIdentifier} onChange={(e) => updateFormData("lineIdentifier", e.target.value)} required />
+            <Label>מזהה קו/מנוי/ONT</Label>
+            <Input 
+              placeholder="מספר או מזהה ציוד"
+              value={formData.lineIdentifier} 
+              onChange={(e) => updateFormData("lineIdentifier", e.target.value)} 
+              required 
+            />
           </div>
           <div>
-            <Label>תוקף ייפוי כוח *</Label>
-            <Input type="date" value={formData.powerOfAttorneyExpiry} onChange={(e) => updateFormData("powerOfAttorneyExpiry", e.target.value)} required />
+            <Label>ספק יעד + חבילה</Label>
+            <Input 
+              placeholder="בחר/י חבילה"
+              value={formData.requestedPackage} 
+              onChange={(e) => updateFormData("requestedPackage", e.target.value)} 
+              required 
+            />
+          </div>
+          <div>
+            <Label>תוקף ייפוי כוח</Label>
+            <Input 
+              type="date" 
+              value={formData.powerOfAttorneyExpiry} 
+              onChange={(e) => updateFormData("powerOfAttorneyExpiry", e.target.value)} 
+              required 
+            />
+            <p className="text-sm text-muted-foreground mt-1">בחר/י תאריך (מומלץ 12 חודשים)</p>
+          </div>
+          <div>
+            <div className="flex items-center space-x-2 rtl:space-x-reverse">
+              <Checkbox 
+                id="bundleService"
+                checked={formData.isBundleService}
+                onCheckedChange={(checked) => updateFormData("isBundleService", checked as boolean)}
+              />
+              <Label htmlFor="bundleService" className="text-sm">
+                התשתית וה-ISP באותה חבילה (דורש שתי בקשות)
+              </Label>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -161,8 +221,19 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
       <Card>
         <CardHeader><CardTitle>העלאת מסמכים</CardTitle></CardHeader>
         <CardContent>
-          <Label className="flex items-center gap-2"><Upload className="h-4 w-4" />צילום ת.ז. *</Label>
-          <Input type="file" accept=".jpg,.jpeg,.png,.pdf" onChange={(e) => handleFileUpload("subscriberIdCopy", e.target.files?.[0] || null)} />
+          <Label className="flex items-center gap-2">
+            <Upload className="h-4 w-4" />
+            צילום ת״ז (חובה)
+          </Label>
+          <Input 
+            type="file" 
+            accept=".jpg,.jpeg,.png,.pdf" 
+            onChange={(e) => handleFileUpload("subscriberIdCopy", e.target.files?.[0] || null)} 
+            className="mt-2"
+          />
+          {formData.subscriberIdCopy.uploaded && (
+            <p className="text-sm text-green-600 mt-1">✓ קובץ הועלה בהצלחה</p>
+          )}
         </CardContent>
       </Card>
 

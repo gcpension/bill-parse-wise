@@ -40,8 +40,7 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
     phoneNumbers: [""],
     powerOfAttorneyExpiry: "",
     acceptOtpConfirmation: false,
-    subscriberIdCopy: { file: null, required: true, uploaded: false },
-    lastBill: { file: null, required: false, uploaded: false }
+    subscriberIdCopy: { file: null, required: true, uploaded: false }
   });
 
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
@@ -134,11 +133,11 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
     }
 
     if (!formData.acceptOtpConfirmation) {
-      errors.push("חובה לאשר קבלת OTP ב-SIM הנוכחי");
+      errors.push("יש לאשר קבלת OTP ב-SIM הנוכחי");
     }
 
     if (!formData.subscriberIdCopy.uploaded) {
-      errors.push("חובה לצרף צילום ת.ז. בעל המנוי");
+      errors.push("יש להעלות את כל המסמכים המסומנים כחובה");
     }
 
     if (!agreeToTerms || !agreeToPrivacy) {

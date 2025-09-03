@@ -41,11 +41,6 @@ export const validateFutureDate = (date: string): boolean => {
   return selectedDate >= tomorrow;
 };
 
-// Hebrew name validation (letters and spaces only)
-export const validateHebrewName = (name: string): boolean => {
-  return /^[\u0590-\u05FF\s]+$/.test(name.trim()) && name.trim().length > 0;
-};
-
 // File validation
 export const validateFile = (file: File | null, maxSizeMB: number = 10): { valid: boolean; error?: string } => {
   if (!file) return { valid: false, error: 'חובה לצרף קובץ' };
@@ -63,22 +58,6 @@ export const validateFile = (file: File | null, maxSizeMB: number = 10): { valid
   return { valid: true };
 };
 
-// Validation messages - בלוק 4
-export const ValidationMessages = {
-  idNumber: 'מספר ת.ז. לא תקין (בדיקת ספרת ביקורת נכשלה)',
-  companyId: 'ח.פ./ח.צ. חייב להיות 8–9 ספרות',
-  phone: 'נא להזין מספר נייד ישראלי בפורמט 05X-XXXXXXX',
-  email: 'נא להזין כתובת דוא"ל תקינה',
-  contractMeter: 'יש להזין מספר חוזה או מספר מונה (לפחות אחד)',
-  address: 'יש להזין כתובת אתר הצריכה',
-  phoneNumbers: 'רשימת המספרים מכילה ערך שאינו בפורמט 05X-XXXXXXX',
-  requiredFiles: 'יש להעלות את כל המסמכים המסומנים כחובה',
-  futureDate: 'תוקף ייפוי הכוח חייב להיות עתידי',
-  otpConfirmation: 'יש לאשר קבלת OTP ב-SIM הנוכחי',
-  bundleService: 'באנדל מסומן — יש לפתוח שתי בקשות (תשתית + ISP)',
-  equipmentReturn: 'יש לבחור אופן החזרת ציוד'
-};
-
 // Common form validation function
 export const validateCommonFields = (
   fullName: string,
@@ -89,27 +68,25 @@ export const validateCommonFields = (
   const errors: string[] = [];
   
   if (!fullName.trim()) {
-    errors.push(ValidationMessages.fullName);
-  } else if (!validateHebrewName(fullName)) {
-    errors.push(ValidationMessages.fullName);
+    errors.push('נא להזין שם מלא');
   }
   
   if (!idNumber.trim()) {
-    errors.push(ValidationMessages.idNumber);
+    errors.push('מספר ת.ז. לא תקין (בדיקת ספרת ביקורת נכשלה)');
   } else if (!validateIsraeliId(idNumber)) {
-    errors.push(ValidationMessages.idNumber);
+    errors.push('מספר ת.ז. לא תקין (בדיקת ספרת ביקורת נכשלה)');
   }
   
   if (!phone.trim()) {
-    errors.push(ValidationMessages.phone);
+    errors.push('נא להזין מספר נייד ישראלי בפורמט 05X-XXXXXXX');
   } else if (!validateIsraeliMobile(phone)) {
-    errors.push(ValidationMessages.phone);
+    errors.push('נא להזין מספר נייד ישראלי בפורמט 05X-XXXXXXX');
   }
   
   if (!email.trim()) {
-    errors.push(ValidationMessages.email);
+    errors.push('נא להזין כתובת דוא"ל תקינה');
   } else if (!validateEmail(email)) {
-    errors.push(ValidationMessages.email);
+    errors.push('נא להזין כתובת דוא"ל תקינה');
   }
   
   return {

@@ -80,50 +80,20 @@ export const getChecklistItems = (category: ServiceCategory, customerType: Custo
     }
   ];
 
-  // Category-specific items
+  // Category-specific items - מזהי שירות מולאו
   const categoryItems: Record<ServiceCategory, Record<CustomerType, Array<{ id: string; text: string; required: boolean }>>> = {
     electricity: {
       private: [
         {
-          id: 'current-provider',
-          text: 'ספק החשמל הנוכחי נבחר',
+          id: 'service-identifiers',
+          text: '✅ מזהי שירות מולאו: חוזה/מונה + כתובת',
           required: true
-        },
-        {
-          id: 'target-provider', 
-          text: 'ספק החשמל החדש נבחר',
-          required: true
-        },
-        {
-          id: 'contract-meter',
-          text: 'מספר חוזה או מספר מונה מולא',
-          required: true
-        },
-        {
-          id: 'consumption-address',
-          text: 'כתובת הצריכה מולאה במלואה',
-          required: true
-        },
-        {
-          id: 'additional-id',
-          text: 'צילום תעודת זהות נוסף של מיופה הכוח הועלה (אם נדרש)',
-          required: false
         }
       ],
       business: [
         {
-          id: 'current-provider',
-          text: 'ספק החשמל הנוכחי נבחר',
-          required: true
-        },
-        {
-          id: 'target-provider',
-          text: 'ספק החשמל החדש נבחר', 
-          required: true
-        },
-        {
-          id: 'consumption-points',
-          text: 'נקודות צריכה (חוזה/מונה + כתובת) מולאו',
+          id: 'service-identifiers',
+          text: '✅ מזהי שירות מולאו: חוזה/מונה + כתובת',
           required: true
         }
       ]
@@ -131,50 +101,20 @@ export const getChecklistItems = (category: ServiceCategory, customerType: Custo
     cellular: {
       private: [
         {
-          id: 'current-provider',
-          text: 'ספק הסלולר הנוכחי נבחר',
-          required: true
-        },
-        {
-          id: 'target-provider',
-          text: 'ספק הסלולר החדש נבחר',
-          required: true
-        },
-        {
-          id: 'phone-numbers',
-          text: 'רשימת מספרי הטלפון מולאה',
+          id: 'service-identifiers',
+          text: '✅ מזהי שירות מולאו: מספרים בפורמט 05X-XXXXXXX',
           required: true
         },
         {
           id: 'otp-confirmation',
-          text: 'אישור קבלת OTP ב-SIM הנוכחי נבחר',
+          text: '✅ אימותים ייחודיים: סלולר — תיבת "אשר/י OTP" מסומנת',
           required: true
-        },
-        {
-          id: 'last-bill',
-          text: 'חשבון אחרון הועלה (אם נדרש)',
-          required: false
         }
       ],
       business: [
         {
-          id: 'current-provider',
-          text: 'ספק הסלולר הנוכחי נבחר',
-          required: true
-        },
-        {
-          id: 'target-provider',
-          text: 'ספק הסלולר החדש נבחר',
-          required: true
-        },
-        {
-          id: 'customer-number',
-          text: 'מספר לקוח מולא (אם קיים)',
-          required: false
-        },
-        {
-          id: 'phone-numbers',
-          text: 'רשימת מספרי הטלפון מולאה',
+          id: 'service-identifiers', 
+          text: '✅ מזהי שירות מולאו: מספרים בפורמט 05X-XXXXXXX',
           required: true
         }
       ]
@@ -182,65 +122,15 @@ export const getChecklistItems = (category: ServiceCategory, customerType: Custo
     internet: {
       private: [
         {
-          id: 'infrastructure-provider',
-          text: 'ספק התשתית נבחר',
-          required: true
-        },
-        {
-          id: 'current-isp',
-          text: 'ספק האינטרנט הנוכחי נבחר',
-          required: true
-        },
-        {
-          id: 'line-identifier',
-          text: 'מזהה קו/ONT מולא',
-          required: true
-        },
-        {
-          id: 'target-provider',
-          text: 'ספק האינטרנט החדש נבחר',
-          required: true
-        },
-        {
-          id: 'requested-package',
-          text: 'חבילת האינטרנט המבוקשת נבחרה',
-          required: true
-        },
-        {
-          id: 'bundle-service',
-          text: 'צוין אם זהו שירות באנדל (שתי בקשות נפרדות)',
+          id: 'service-identifiers',
+          text: '✅ מזהי שירות מולאו: תשתית + ISP + קו/ONT (ובאנדל — 2 בקשות)',
           required: true
         }
       ],
       business: [
         {
-          id: 'infrastructure-provider',
-          text: 'ספק התשתית נבחר',
-          required: true
-        },
-        {
-          id: 'current-isp',
-          text: 'ספק האינטרנט הנוכחי נבחר',
-          required: true
-        },
-        {
-          id: 'customer-account',
-          text: 'מספר חשבון לקוח מולא (אם קיים)',
-          required: false
-        },
-        {
-          id: 'sites',
-          text: 'אתרים (מזהה קו + כתובת) מולאו',
-          required: true
-        },
-        {
-          id: 'target-provider',
-          text: 'ספק האינטרנט החדש נבחר',
-          required: true
-        },
-        {
-          id: 'requested-package',
-          text: 'חבילת האינטרנט המבוקשת נבחרה',
+          id: 'service-identifiers',
+          text: '✅ מזהי שירות מולאו: תשתית + ISP + קו/ONT (ובאנדל — 2 בקשות)',
           required: true
         }
       ]
@@ -248,55 +138,15 @@ export const getChecklistItems = (category: ServiceCategory, customerType: Custo
     tv: {
       private: [
         {
-          id: 'current-provider',
-          text: 'ספק הטלוויזיה הנוכחי נבחר',
-          required: true
-        },
-        {
-          id: 'subscriber-number',
-          text: 'מספר מנוי מולא',
-          required: true
-        },
-        {
-          id: 'target-provider',
-          text: 'ספק הטלוויזיה החדש נבחר (אם רלוונטי)',
-          required: false
-        },
-        {
-          id: 'requested-package',
-          text: 'חבילת הטלוויזיה המבוקשת נבחרה (אם רלוונטי)',
-          required: false
-        },
-        {
-          id: 'equipment-return',
-          text: 'אופן החזרת הציוד נבחר (שליח או נקודת איסוף)',
+          id: 'service-identifiers',
+          text: '✅ מזהי שירות מולאו: מס׳ מנוי + אופן החזרת ציוד',
           required: true
         }
       ],
       business: [
         {
-          id: 'current-provider',
-          text: 'ספק הטלוויזיה הנוכחי נבחר',
-          required: true
-        },
-        {
-          id: 'subscriber-number',
-          text: 'מספר מנוי מולא',
-          required: true
-        },
-        {
-          id: 'target-provider',
-          text: 'ספק הטלוויזיה החדש נבחר (אם רלוונטי)',
-          required: false
-        },
-        {
-          id: 'requested-package',
-          text: 'חבילת הטלוויזיה המבוקשת נבחרה (אם רלוונטי)',
-          required: false
-        },
-        {
-          id: 'equipment-return',
-          text: 'אופן החזרת הציוד נבחר (שליח או נקודת איסוף)',
+          id: 'service-identifiers',
+          text: '✅ מזהי שירות מולאו: מס׳ מנוי + אופן החזרת ציוד',
           required: true
         }
       ]
@@ -306,18 +156,8 @@ export const getChecklistItems = (category: ServiceCategory, customerType: Custo
   // Final items for all forms
   const finalItems = [
     {
-      id: 'terms-agreement',
-      text: 'הסכמה לתנאי השירות נחתמה',
-      required: true
-    },
-    {
-      id: 'privacy-agreement',
-      text: 'הסכמה למדיניות הפרטיות נחתמה',
-      required: true
-    },
-    {
-      id: 'digital-signature',
-      text: 'חתימה דיגיטלית הושלמה',
+      id: 'final-review',
+      text: '✅ סקירה + חתימה דיגיטלית הושלמו',
       required: true
     }
   ];
