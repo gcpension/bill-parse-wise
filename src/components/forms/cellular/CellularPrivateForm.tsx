@@ -258,7 +258,7 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
     }
   };
 
-  const checklistItems = getChecklistItems();
+  const checklistItems = getChecklistItems('cellular', 'private');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">

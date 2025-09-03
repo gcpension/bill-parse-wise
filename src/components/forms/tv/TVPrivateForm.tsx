@@ -187,7 +187,7 @@ export const TVPrivateForm = ({ selectedPlan, onClose }: TVPrivateFormProps) => 
     }
   };
 
-  const checklistItems = getChecklistItems();
+  const checklistItems = getChecklistItems('tv', 'private');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">

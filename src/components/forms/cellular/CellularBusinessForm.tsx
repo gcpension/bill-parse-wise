@@ -236,7 +236,7 @@ export const CellularBusinessForm = ({ selectedPlan, onClose }: CellularBusiness
     }
   };
 
-  const checklistItems = getChecklistItems();
+  const checklistItems = getChecklistItems('cellular', 'business');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">

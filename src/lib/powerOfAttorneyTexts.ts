@@ -56,48 +56,278 @@ export const getPowerOfAttorneyText = (
   return texts[category][customerType];
 };
 
-export const getChecklistItems = (): Array<{ id: string; text: string; required: boolean }> => [
-  {
-    id: 'personal-details',
-    text: 'פרטי זהות מלאים מולאו (שם מלא, ת.ז./ח.פ., נייד, אימייל)',
-    required: true
-  },
-  {
-    id: 'documents',
-    text: 'מסמכים נדרשים הועלו (פרטי: צילום ת.ז.; עסקי: נסח חברה + ת.ז. מורשה; בחשמל פרטי: גם ת.ז. מיופה הכוח)',
-    required: true
-  },
-  {
-    id: 'power-of-attorney',
-    text: 'ייפוי כוח/הצהרה קיים/חתום + תאריך פקיעה עתידי',
-    required: true
-  },
-  {
-    id: 'service-identifiers',
-    text: 'מזהי שירות מולאו (חשמל: חוזה/מונה+כתובת; סלולר: רשימת MSISDN; אינטרנט: תשתית+ISP+מזהה קו/ONT; טלוויזיה: מס׳ מנוי)',
-    required: true
-  },
-  {
-    id: 'special-confirmations',
-    text: 'אימותים ייחודיים: סלולר — סומן "אשר קבלת OTP ב-SIM הנוכחי"; HOT mobile — הוצגה תזכורת "להתקשר לאחר הפעלת SIM"; אינטרנט "באנדל" — נוצרו 2 בקשות (תשתית+ISP); טלוויזיה — נבחר אופן החזרת ציוד',
-    required: true
-  },
-  {
-    id: 'summary-confirmation',
-    text: 'תצוגת סיכום אושרה והחתימה הדיגיטלית הושלמה',
-    required: true
-  },
-  {
-    id: 'data-retention',
-    text: 'אסמכתאות ישמרו (מסמכים, PDF, חותמת זמן/Hash)',
-    required: true
-  },
-  {
-    id: 'privacy-consent',
-    text: 'הסכמה לעיבוד נתונים סומנה',
-    required: true
-  }
-];
+export const getChecklistItems = (category: ServiceCategory, customerType: CustomerType): Array<{ id: string; text: string; required: boolean }> => {
+  // Common items for all forms
+  const commonItems = [
+    {
+      id: 'personal-details',
+      text: customerType === 'private' 
+        ? 'פרטי זהות מלאים: שם מלא, ת.ז., טלפון נייד ואימייל'
+        : 'פרטי החברה והמורשה בחתימה: שם החברה, ח.פ., שם המורשה, ת.ז. המורשה, תפקיד ואימייל',
+      required: true
+    },
+    {
+      id: 'documents',
+      text: customerType === 'private' 
+        ? 'צילום תעודת זהות הועלה'
+        : 'נסח חברה ותעודת זהות המורשה בחתימה הועלו',
+      required: true
+    },
+    {
+      id: 'power-of-attorney',
+      text: 'תאריך פקיעת ייפוי הכוח מולא (תאריך עתידי)',
+      required: true
+    }
+  ];
+
+  // Category-specific items
+  const categoryItems: Record<ServiceCategory, Record<CustomerType, Array<{ id: string; text: string; required: boolean }>>> = {
+    electricity: {
+      private: [
+        {
+          id: 'current-provider',
+          text: 'ספק החשמל הנוכחי נבחר',
+          required: true
+        },
+        {
+          id: 'target-provider', 
+          text: 'ספק החשמל החדש נבחר',
+          required: true
+        },
+        {
+          id: 'contract-meter',
+          text: 'מספר חוזה או מספר מונה מולא',
+          required: true
+        },
+        {
+          id: 'consumption-address',
+          text: 'כתובת הצריכה מולאה במלואה',
+          required: true
+        },
+        {
+          id: 'additional-id',
+          text: 'צילום תעודת זהות נוסף של מיופה הכוח הועלה (אם נדרש)',
+          required: false
+        }
+      ],
+      business: [
+        {
+          id: 'current-provider',
+          text: 'ספק החשמל הנוכחי נבחר',
+          required: true
+        },
+        {
+          id: 'target-provider',
+          text: 'ספק החשמל החדש נבחר', 
+          required: true
+        },
+        {
+          id: 'consumption-points',
+          text: 'נקודות צריכה (חוזה/מונה + כתובת) מולאו',
+          required: true
+        }
+      ]
+    },
+    cellular: {
+      private: [
+        {
+          id: 'current-provider',
+          text: 'ספק הסלולר הנוכחי נבחר',
+          required: true
+        },
+        {
+          id: 'target-provider',
+          text: 'ספק הסלולר החדש נבחר',
+          required: true
+        },
+        {
+          id: 'phone-numbers',
+          text: 'רשימת מספרי הטלפון מולאה',
+          required: true
+        },
+        {
+          id: 'otp-confirmation',
+          text: 'אישור קבלת OTP ב-SIM הנוכחי נבחר',
+          required: true
+        },
+        {
+          id: 'last-bill',
+          text: 'חשבון אחרון הועלה (אם נדרש)',
+          required: false
+        }
+      ],
+      business: [
+        {
+          id: 'current-provider',
+          text: 'ספק הסלולר הנוכחי נבחר',
+          required: true
+        },
+        {
+          id: 'target-provider',
+          text: 'ספק הסלולר החדש נבחר',
+          required: true
+        },
+        {
+          id: 'customer-number',
+          text: 'מספר לקוח מולא (אם קיים)',
+          required: false
+        },
+        {
+          id: 'phone-numbers',
+          text: 'רשימת מספרי הטלפון מולאה',
+          required: true
+        }
+      ]
+    },
+    internet: {
+      private: [
+        {
+          id: 'infrastructure-provider',
+          text: 'ספק התשתית נבחר',
+          required: true
+        },
+        {
+          id: 'current-isp',
+          text: 'ספק האינטרנט הנוכחי נבחר',
+          required: true
+        },
+        {
+          id: 'line-identifier',
+          text: 'מזהה קו/ONT מולא',
+          required: true
+        },
+        {
+          id: 'target-provider',
+          text: 'ספק האינטרנט החדש נבחר',
+          required: true
+        },
+        {
+          id: 'requested-package',
+          text: 'חבילת האינטרנט המבוקשת נבחרה',
+          required: true
+        },
+        {
+          id: 'bundle-service',
+          text: 'צוין אם זהו שירות באנדל (שתי בקשות נפרדות)',
+          required: true
+        }
+      ],
+      business: [
+        {
+          id: 'infrastructure-provider',
+          text: 'ספק התשתית נבחר',
+          required: true
+        },
+        {
+          id: 'current-isp',
+          text: 'ספק האינטרנט הנוכחי נבחר',
+          required: true
+        },
+        {
+          id: 'customer-account',
+          text: 'מספר חשבון לקוח מולא (אם קיים)',
+          required: false
+        },
+        {
+          id: 'sites',
+          text: 'אתרים (מזהה קו + כתובת) מולאו',
+          required: true
+        },
+        {
+          id: 'target-provider',
+          text: 'ספק האינטרנט החדש נבחר',
+          required: true
+        },
+        {
+          id: 'requested-package',
+          text: 'חבילת האינטרנט המבוקשת נבחרה',
+          required: true
+        }
+      ]
+    },
+    tv: {
+      private: [
+        {
+          id: 'current-provider',
+          text: 'ספק הטלוויזיה הנוכחי נבחר',
+          required: true
+        },
+        {
+          id: 'subscriber-number',
+          text: 'מספר מנוי מולא',
+          required: true
+        },
+        {
+          id: 'target-provider',
+          text: 'ספק הטלוויזיה החדש נבחר (אם רלוונטי)',
+          required: false
+        },
+        {
+          id: 'requested-package',
+          text: 'חבילת הטלוויזיה המבוקשת נבחרה (אם רלוונטי)',
+          required: false
+        },
+        {
+          id: 'equipment-return',
+          text: 'אופן החזרת הציוד נבחר (שליח או נקודת איסוף)',
+          required: true
+        }
+      ],
+      business: [
+        {
+          id: 'current-provider',
+          text: 'ספק הטלוויזיה הנוכחי נבחר',
+          required: true
+        },
+        {
+          id: 'subscriber-number',
+          text: 'מספר מנוי מולא',
+          required: true
+        },
+        {
+          id: 'target-provider',
+          text: 'ספק הטלוויזיה החדש נבחר (אם רלוונטי)',
+          required: false
+        },
+        {
+          id: 'requested-package',
+          text: 'חבילת הטלוויזיה המבוקשת נבחרה (אם רלוונטי)',
+          required: false
+        },
+        {
+          id: 'equipment-return',
+          text: 'אופן החזרת הציוד נבחר (שליח או נקודת איסוף)',
+          required: true
+        }
+      ]
+    }
+  };
+
+  // Final items for all forms
+  const finalItems = [
+    {
+      id: 'terms-agreement',
+      text: 'הסכמה לתנאי השירות נחתמה',
+      required: true
+    },
+    {
+      id: 'privacy-agreement',
+      text: 'הסכמה למדיניות הפרטיות נחתמה',
+      required: true
+    },
+    {
+      id: 'digital-signature',
+      text: 'חתימה דיגיטלית הושלמה',
+      required: true
+    }
+  ];
+
+  return [
+    ...commonItems,
+    ...categoryItems[category][customerType],
+    ...finalItems
+  ];
+};
 
 export const getSuccessMessage = (referenceNumber: string): string => `
 כותרת: "הבקשה נקלטה בהצלחה ✅"

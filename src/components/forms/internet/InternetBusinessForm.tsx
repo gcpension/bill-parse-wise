@@ -263,7 +263,7 @@ export const InternetBusinessForm = ({ selectedPlan, onClose }: InternetBusiness
     }
   };
 
-  const checklistItems = getChecklistItems();
+  const checklistItems = getChecklistItems('internet', 'business');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">

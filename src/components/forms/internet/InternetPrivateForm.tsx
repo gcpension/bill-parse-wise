@@ -10,7 +10,7 @@ import { ManualPlan } from "@/data/manual-plans";
 import { InternetPrivateForm as FormData } from "@/types/switchForms";
 import { useToast } from "@/hooks/use-toast";
 import { validateCommonFields, validateFutureDate, validateFile } from "@/lib/formValidations";
-import { getPowerOfAttorneyText } from "@/lib/powerOfAttorneyTexts";
+import { getPowerOfAttorneyText, getChecklistItems } from "@/lib/powerOfAttorneyTexts";
 import { createHebrewPDF } from "@/lib/pdfUtils";
 
 interface InternetPrivateFormProps {
@@ -37,6 +37,9 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
 
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [agreeToPrivacy, setAgreeToPrivacy] = useState(false);
+  
+  const checklistItems = getChecklistItems('internet', 'private');
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
   const updateFormData = <K extends keyof FormData>(field: K, value: FormData[K]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -160,6 +163,32 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
         <CardContent>
           <Label className="flex items-center gap-2"><Upload className="h-4 w-4" />צילום ת.ז. *</Label>
           <Input type="file" accept=".jpg,.jpeg,.png,.pdf" onChange={(e) => handleFileUpload("subscriberIdCopy", e.target.files?.[0] || null)} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <FileText className="h-5 w-5" />
+            צ׳קליסט לפני שליחה
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {checklistItems.map(item => (
+            <div key={item.id} className="flex items-start gap-2">
+              <Checkbox
+                id={item.id}
+                checked={checkedItems[item.id] || false}
+                onCheckedChange={(checked) => setCheckedItems(prev => ({
+                  ...prev,
+                  [item.id]: checked as boolean
+                }))}
+              />
+              <label htmlFor={item.id} className="text-sm leading-relaxed">
+                {item.text}
+              </label>
+            </div>
+          ))}
         </CardContent>
       </Card>
 

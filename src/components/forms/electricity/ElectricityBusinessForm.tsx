@@ -241,7 +241,7 @@ export const ElectricityBusinessForm = ({ selectedPlan, onClose }: ElectricityBu
     }
   };
 
-  const checklistItems = getChecklistItems();
+  const checklistItems = getChecklistItems('electricity', 'business');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">

@@ -219,7 +219,7 @@ export const TVBusinessForm = ({ selectedPlan, onClose }: TVBusinessFormProps) =
     }
   };
 
-  const checklistItems = getChecklistItems();
+  const checklistItems = getChecklistItems('tv', 'business');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">
