@@ -1,8 +1,11 @@
 import { Shield, Zap, TrendingUp, Users, CheckCircle, Star, Calculator, Clock, Award, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+  
   const services = [
     { name: "חשמל", icon: "⚡", savings: "עד 30%" },
     { name: "סלולר", icon: "📱", savings: "עד 40%" },
@@ -71,7 +74,11 @@ const Home = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-lg px-10 py-6 rounded-2xl font-medium font-heebo">
+              <Button 
+                size="lg" 
+                className="text-lg px-10 py-6 rounded-2xl font-medium font-heebo"
+                onClick={() => navigate('/analyze')}
+              >
                 התחל השוואה
               </Button>
               <Button variant="outline" size="lg" className="text-lg px-10 py-6 rounded-2xl font-medium font-heebo">
@@ -194,7 +201,12 @@ const Home = () => {
               עם הפלטפורמה המקצועית שלנו
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" className="text-lg px-10 py-6 rounded-2xl font-medium font-heebo">
+              <Button 
+                size="lg" 
+                variant="secondary" 
+                className="text-lg px-10 py-6 rounded-2xl font-medium font-heebo"
+                onClick={() => navigate('/analyze')}
+              >
                 התחל השוואה בחינם
               </Button>
               <Button size="lg" variant="outline" className="text-lg px-10 py-6 rounded-2xl font-medium border-white/20 text-white hover:bg-white/10 font-heebo">
