@@ -132,7 +132,7 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
           </div>
           
           <Button 
-            className="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-2xl font-semibold shadow-sm hover:shadow-md transform hover:scale-105 transition-all duration-300" 
+            className="btn-gradient" 
             onClick={() => setIsFormOpen(true)}
           >
             עבור עכשיו

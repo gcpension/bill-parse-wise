@@ -78,8 +78,12 @@ body {
     --gradient-purple: linear-gradient(135deg, hsl(var(--royal-purple)), hsl(271 81% 70%));
     
     /* Elegant shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
-    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
+  --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+  --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
+  
+  /* Button gradients */
+  --gradient-button: linear-gradient(135deg, #4C6EF5 0%, #9B59B6 100%);
+  --gradient-button-hover: linear-gradient(135deg, #3B5BDB 0%, #8E44AD 100%);
     --shadow-card: 0 4px 20px -2px hsl(var(--foreground) / 0.1);
     --shadow-colorful: 0 8px 25px -5px hsl(var(--electric-blue) / 0.25);
 
@@ -243,6 +247,31 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Gradient button */
+  .btn-gradient {
+    background: var(--gradient-button);
+    color: white;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(76, 110, 245, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-gradient:hover {
+    background: var(--gradient-button-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(76, 110, 245, 0.4);
+  }
+
+  .btn-gradient:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 20px rgba(76, 110, 245, 0.3);
   }
 }
 
