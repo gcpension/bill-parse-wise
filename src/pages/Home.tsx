@@ -174,5 +174,197 @@ function Header() {
 }
 
 export default function Home() {
-  return <Header />;
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <Header />
+      
+      {/* Hero Section */}
+      <main className="relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-full blur-3xl animate-float delay-700"></div>
+          <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-gradient-to-br from-green-400/20 to-blue-600/20 rounded-full blur-3xl animate-float delay-1000"></div>
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+          <div className="text-center space-y-8">
+            {/* Main Headline */}
+            <div className="space-y-4 animate-fade-in">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold">
+                <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent animate-shimmer-text bg-300%">
+                  חסוך עד 80%
+                </span>
+                <span className="block text-gray-800 mt-2">
+                  על שירותי הטלקום שלך
+                </span>
+              </h1>
+              <p className="text-xl sm:text-2xl lg:text-3xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                השוואת מחירים חכמה, מעבר אוטומטי, וחיסכון מובטח - כל זה במקום אחד
+              </p>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8 animate-fade-in delay-300">
+              <button className="group relative px-12 py-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white text-xl font-semibold rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 animate-pulse">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 rounded-3xl blur opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
+                <span className="relative flex items-center gap-3">
+                  <Zap className="w-6 h-6 group-hover:animate-pulse" />
+                  התחל לחסוך עכשיו
+                </span>
+              </button>
+              
+              <button className="group px-10 py-6 glass backdrop-blur-xl border-2 border-white/40 hover:border-blue-500/60 text-blue-600 text-xl font-semibold rounded-3xl hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                <span className="flex items-center gap-3">
+                  <Phone className="w-6 h-6 group-hover:animate-pulse" />
+                  צור קשר
+                </span>
+              </button>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-16 animate-fade-in delay-500">
+              <div className="group text-center space-y-3 p-6 glass backdrop-blur-xl rounded-3xl border border-white/30 hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Shield className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800">100% מאובטח</h3>
+                <p className="text-gray-600">הגנה מלאה על הנתונים האישיים שלך</p>
+              </div>
+
+              <div className="group text-center space-y-3 p-6 glass backdrop-blur-xl rounded-3xl border border-white/30 hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Users className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800">50K+ לקוחות מרוצים</h3>
+                <p className="text-gray-600">חסכו יחד מיליוני שקלים בשנה האחרונה</p>
+              </div>
+
+              <div className="group text-center space-y-3 p-6 glass backdrop-blur-xl rounded-3xl border border-white/30 hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Award className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800">תמיכה 24/7</h3>
+                <p className="text-gray-600">צוות מקצועי זמין עבורך בכל שעה</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-800 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
+              איך זה עובד?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              תהליך פשוט ומהיר שיחסוך לך אלפי שקלים בשנה
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="group relative p-8 glass backdrop-blur-xl rounded-3xl border border-white/30 hover:shadow-2xl transition-all duration-700 hover:scale-105">
+              <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                1
+              </div>
+              <div className="space-y-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Phone className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800">הזן פרטי צריכה</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  פשוט הזן את פרטי החבילה הנוכחית שלך או העלה חשבון אחרון - אנחנו נטפל בשאר
+                </p>
+              </div>
+            </div>
+
+            <div className="group relative p-8 glass backdrop-blur-xl rounded-3xl border border-white/30 hover:shadow-2xl transition-all duration-700 hover:scale-105">
+              <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                2
+              </div>
+              <div className="space-y-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Sparkles className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800">השוואה חכמה</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  האלגוריתם שלנו משווה מאות חבילות ומוצא את האפשרויות הטובות ביותר עבורך
+                </p>
+              </div>
+            </div>
+
+            <div className="group relative p-8 glass backdrop-blur-xl rounded-3xl border border-white/30 hover:shadow-2xl transition-all duration-700 hover:scale-105">
+              <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                3
+              </div>
+              <div className="space-y-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-3xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Star className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800">מעבר אוטומטי</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  אנחנו מטפלים בכל התהליך - מהזמנה ועד ביטול הספק הישן. פשוט וללא טרחה
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="glass backdrop-blur-xl rounded-3xl border border-white/30 p-12 shadow-2xl">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div className="space-y-2">
+                <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  50K+
+                </div>
+                <div className="text-gray-600 font-medium">לקוחות מרוצים</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
+                  ₪50M
+                </div>
+                <div className="text-gray-600 font-medium">נחסכו השנה</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-yellow-500 to-orange-600 bg-clip-text text-transparent">
+                  98%
+                </div>
+                <div className="text-gray-600 font-medium">שביעות רצון</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-500 to-pink-600 bg-clip-text text-transparent">
+                  24/7
+                </div>
+                <div className="text-gray-600 font-medium">תמיכה</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Final CTA Section */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+          <div className="space-y-8">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
+              מוכן להתחיל לחסוך?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              הצטרף ל-50,000+ לקוחות שכבר חוסכים אלפי שקלים מדי שנה
+            </p>
+            <div className="pt-6">
+              <button className="group relative px-16 py-8 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white text-2xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 rounded-full blur opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
+                <span className="relative flex items-center gap-4">
+                  <Crown className="w-8 h-8 group-hover:animate-pulse" />
+                  בואו נתחיל!
+                  <Sparkles className="w-8 h-8 group-hover:animate-pulse" />
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
 }
