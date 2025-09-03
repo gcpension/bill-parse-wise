@@ -42,7 +42,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
     consumptionAddress: "",
     powerOfAttorneyExpiry: "",
     consumerIdCopy: { file: null, required: true, uploaded: false },
-    attorneyIdCopy: { file: null, required: true, uploaded: false },
+    attorneyIdCopy: { file: null, required: false, uploaded: false },
     billingNotes: ""
   });
 
@@ -93,19 +93,15 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
     }
 
     if (!formData.consumptionAddress.trim()) {
-      errors.push("חובה למלא כתובת אתר הצריכה");
+      errors.push("יש להזין כתובת אתר הצריכה");
     }
 
     if (!formData.powerOfAttorneyExpiry || !validateFutureDate(formData.powerOfAttorneyExpiry)) {
-      errors.push("תאריך פקיעת ייפוי הכוח חייב להיות עתידי");
+      errors.push("תוקף ייפוי הכוח חייב להיות עתידי");
     }
 
     if (!formData.consumerIdCopy.uploaded) {
-      errors.push("חובה לצרף צילום ת.ז. צרכן");
-    }
-
-    if (!formData.attorneyIdCopy.uploaded) {
-      errors.push("חובה לצרף צילום ת.ז. מיופה הכוח");
+      errors.push("יש להעלות את כל המסמכים המסומנים כחובה");
     }
 
     if (!agreeToTerms || !agreeToPrivacy) {
@@ -228,17 +224,17 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="fullName">שם מלא *</Label>
+            <Label htmlFor="fullName">שם מלא</Label>
             <Input
               id="fullName"
-              placeholder="הקלד/י שם מלא"
+              placeholder="שם פרטי ושם משפחה"
               value={formData.fullName}
               onChange={(e) => updateFormData("fullName", e.target.value)}
               required
             />
           </div>
           <div>
-            <Label htmlFor="idNumber">מספר ת.ז. *</Label>
+            <Label htmlFor="idNumber">מס׳ תעודת זהות</Label>
             <Input
               id="idNumber"
               placeholder="9 ספרות"
@@ -249,7 +245,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div>
-            <Label htmlFor="phone">נייד *</Label>
+            <Label htmlFor="phone">טלפון נייד</Label>
             <Input
               id="phone"
               placeholder="05X-XXXXXXX"
@@ -259,11 +255,11 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div>
-            <Label htmlFor="email">אימייל *</Label>
+            <Label htmlFor="email">דוא״ל</Label>
             <Input
               id="email"
               type="email"
-              placeholder="name@email.com"
+              placeholder="name@example.com"
               value={formData.email}
               onChange={(e) => updateFormData("email", e.target.value)}
               required
@@ -302,35 +298,35 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div>
-            <Label htmlFor="contractNumber">מספר חוזה</Label>
+            <Label htmlFor="contractNumber">מס׳ חוזה (אם ידוע)</Label>
             <Input
               id="contractNumber"
-              placeholder="מס׳ חוזה / מונה"
+              placeholder="מספר"
               value={formData.contractNumber}
               onChange={(e) => updateFormData("contractNumber", e.target.value)}
             />
           </div>
           <div>
-            <Label htmlFor="meterNumber">מספר מונה</Label>
+            <Label htmlFor="meterNumber">מס׳ מונה (אם ידוע)</Label>
             <Input
               id="meterNumber"
-              placeholder="מס׳ מונה"
+              placeholder="מספר"
               value={formData.meterNumber}
               onChange={(e) => updateFormData("meterNumber", e.target.value)}
             />
           </div>
           <div className="md:col-span-2">
-            <Label htmlFor="consumptionAddress">כתובת אתר הצריכה *</Label>
+            <Label htmlFor="consumptionAddress">כתובת אתר צריכה</Label>
             <Input
               id="consumptionAddress"
-              placeholder="רחוב, מספר, יישוב"
+              placeholder="רחוב, מספר, עיר"
               value={formData.consumptionAddress}
               onChange={(e) => updateFormData("consumptionAddress", e.target.value)}
               required
             />
           </div>
           <div>
-            <Label htmlFor="powerOfAttorneyExpiry">תוקף ייפוי כוח *</Label>
+            <Label htmlFor="powerOfAttorneyExpiry">תוקף ייפוי כוח</Label>
             <Input
               id="powerOfAttorneyExpiry"
               type="date"
@@ -338,6 +334,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               onChange={(e) => updateFormData("powerOfAttorneyExpiry", e.target.value)}
               required
             />
+            <p className="text-sm text-muted-foreground mt-1">מומלץ 12 חודשים</p>
           </div>
         </CardContent>
       </Card>
@@ -351,7 +348,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
           <div>
             <Label className="flex items-center gap-2">
               <Upload className="h-4 w-4" />
-              צילום ת.ז. צרכן *
+              צילום ת״ז לקוח (חובה)
             </Label>
             <Input
               type="file"
@@ -366,7 +363,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
           <div>
             <Label className="flex items-center gap-2">
               <Upload className="h-4 w-4" />
-              צילום ת.ז. מיופה הכוח *
+              צילום ת״ז מיופה כוח (אם צד ג׳)
             </Label>
             <Input
               type="file"
@@ -388,7 +385,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
         </CardHeader>
         <CardContent>
           <Textarea
-            placeholder="הערות למשלוח חשבוניות / התראות"
+            placeholder="הערות נוספות (אופציונלי)"
             value={formData.billingNotes || ""}
             onChange={(e) => updateFormData("billingNotes", e.target.value)}
             rows={3}
@@ -436,7 +433,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               onCheckedChange={(checked) => setAgreeToTerms(checked === true)}
             />
             <label htmlFor="agreeToTerms" className="text-sm">
-              אני מסכים/ה לתנאי השימוש ולביצוע המעבר כמפורט
+              מאשר/ת עיבוד נתונים והעברתם לספקים לצורך המעבר
             </label>
           </div>
           <div className="flex items-start gap-2">
@@ -446,7 +443,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               onCheckedChange={(checked) => setAgreeToPrivacy(checked === true)}
             />
             <label htmlFor="agreeToPrivacy" className="text-sm">
-              אני מסכים/ה למדיניות הפרטיות ולעיבוד הנתונים לצורך המעבר
+              אני מסכים/ה למדיניות הפרטיות ולעיבוד הנתונים
             </label>
           </div>
         </CardContent>
