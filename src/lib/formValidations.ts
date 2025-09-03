@@ -58,7 +58,7 @@ export const validateFile = (file: File | null, maxSizeMB: number = 10): { valid
   return { valid: true };
 };
 
-// Common form validation function
+// Common form validation function for private forms
 export const validateCommonFields = (
   fullName: string,
   idNumber: string,
@@ -81,6 +81,36 @@ export const validateCommonFields = (
     errors.push('נא להזין מספר נייד ישראלי בפורמט 05X-XXXXXXX');
   } else if (!validateIsraeliMobile(phone)) {
     errors.push('נא להזין מספר נייד ישראלי בפורמט 05X-XXXXXXX');
+  }
+  
+  if (!email.trim()) {
+    errors.push('נא להזין כתובת דוא"ל תקינה');
+  } else if (!validateEmail(email)) {
+    errors.push('נא להזין כתובת דוא"ל תקינה');
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
+// Business form signatory validation
+export const validateSignatoryFields = (
+  signatoryName: string,
+  signatoryId: string,
+  email: string
+): FormValidation => {
+  const errors: string[] = [];
+  
+  if (!signatoryName.trim()) {
+    errors.push('נא להזין שם מורשה חתימה');
+  }
+  
+  if (!signatoryId.trim()) {
+    errors.push('מספר ת.ז. לא תקין (בדיקת ספרת ביקורת נכשלה)');
+  } else if (!validateIsraeliId(signatoryId)) {
+    errors.push('מספר ת.ז. לא תקין (בדיקת ספרת ביקורת נכשלה)');
   }
   
   if (!email.trim()) {

@@ -9,7 +9,7 @@ import { Upload, FileText } from "lucide-react";
 import { ManualPlan } from "@/data/manual-plans";
 import { TVBusinessForm as FormData } from "@/types/switchForms";
 import { useToast } from "@/hooks/use-toast";
-import { validateCommonFields, validateCompanyId, validateIsraeliId, validateEmail, validateFutureDate, validateFile } from "@/lib/formValidations";
+import { validateSignatoryFields, validateCompanyId, validateIsraeliId, validateEmail, validateFutureDate, validateFile } from "@/lib/formValidations";
 import { getPowerOfAttorneyText, getChecklistItems } from "@/lib/powerOfAttorneyTexts";
 import { createHebrewPDF } from "@/lib/pdfUtils";
 

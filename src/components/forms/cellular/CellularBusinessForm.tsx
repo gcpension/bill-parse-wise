@@ -10,7 +10,7 @@ import { Upload, FileText, AlertTriangle } from "lucide-react";
 import { ManualPlan } from "@/data/manual-plans";
 import { CellularBusinessForm as FormData } from "@/types/switchForms";
 import { useToast } from "@/hooks/use-toast";
-import { validateCommonFields, validateCompanyId, validateIsraeliMobile, validateFutureDate, validateFile } from "@/lib/formValidations";
+import { validateSignatoryFields, validateCompanyId, validateIsraeliMobile, validateFutureDate, validateFile } from "@/lib/formValidations";
 import { getPowerOfAttorneyText, getChecklistItems } from "@/lib/powerOfAttorneyTexts";
 import { createHebrewPDF } from "@/lib/pdfUtils";
 
@@ -100,13 +100,12 @@ export const CellularBusinessForm = ({ selectedPlan, onClose }: CellularBusiness
       errors.push("מספר תאגיד חייב לכלול 8–9 ספרות");
     }
 
-    const signatoryValidation = validateCommonFields(
+    const signatoryValidation = validateSignatoryFields(
       formData.authorizedSignatory,
       formData.signatoryId,
-      "", // phone not required for business
       formData.contactEmail
     );
-    errors.push(...signatoryValidation.errors.filter(error => !error.includes("טלפון")));
+    errors.push(...signatoryValidation.errors);
 
     if (!formData.signatoryRole.trim()) {
       errors.push("חובה למלא תפקיד מורשה החתימה");
