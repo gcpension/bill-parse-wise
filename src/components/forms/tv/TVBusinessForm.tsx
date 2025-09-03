@@ -87,24 +87,15 @@ export const TVBusinessForm = ({ selectedPlan, onClose }: TVBusinessFormProps) =
       errors.push("מספר תאגיד חייב לכלול 8–9 ספרות");
     }
 
-    if (!formData.authorizedSignatory.trim()) {
-      errors.push("חובה למלא שם מורשה חתימה");
-    }
-
-    if (!formData.signatoryId.trim()) {
-      errors.push("חובה למלא ת.ז. מורשה חתימה");
-    } else if (!validateIsraeliId(formData.signatoryId)) {
-      errors.push("ת.ז. מורשה חתימה אינה תקינה");
-    }
+    const signatoryValidation = validateSignatoryFields(
+      formData.authorizedSignatory,
+      formData.signatoryId,
+      formData.contactEmail
+    );
+    errors.push(...signatoryValidation.errors);
 
     if (!formData.signatoryRole.trim()) {
       errors.push("חובה למלא תפקיד מורשה חתימה");
-    }
-
-    if (!formData.contactEmail.trim()) {
-      errors.push("חובה למלא אימייל איש קשר");
-    } else if (!validateEmail(formData.contactEmail)) {
-      errors.push("כתובת אימייל אינה תקינה");
     }
 
     if (!formData.currentProvider.trim()) {

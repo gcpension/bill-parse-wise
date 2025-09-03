@@ -292,13 +292,13 @@ export const TVPrivateForm = ({ selectedPlan, onClose }: TVPrivateFormProps) => 
           </div>
           <div>
             <Label htmlFor="equipmentReturn">אופן החזרת ציוד *</Label>
-            <Select onValueChange={(value) => updateFormData("equipmentReturnMethod", value as any)} defaultValue="courier">
+            <Select onValueChange={(value) => updateFormData("equipmentReturnMethod", value as 'courier' | 'pickup-point')} defaultValue="courier">
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="שליח">שליח</SelectItem>
-                <SelectItem value="נק׳ מסירה">נק׳ מסירה</SelectItem>
+                <SelectItem value="courier">שליח</SelectItem>
+                <SelectItem value="pickup-point">נק׳ מסירה</SelectItem>
               </SelectContent>
             </Select>
           </div>
