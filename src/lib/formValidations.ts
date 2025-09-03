@@ -63,20 +63,20 @@ export const validateFile = (file: File | null, maxSizeMB: number = 10): { valid
   return { valid: true };
 };
 
-// Validation messages
+// Validation messages - בלוק 4
 export const ValidationMessages = {
-  fullName: 'נא להזין שם מלא בעברית',
-  idNumber: 'המספר שהוזן לא תקין (בדיקת ספרת ביקורת נכשלה)',
-  companyId: 'מספר תאגיד חייב לכלול 8–9 ספרות',
+  idNumber: 'מספר ת.ז. לא תקין (בדיקת ספרת ביקורת נכשלה)',
+  companyId: 'ח.פ./ח.צ. חייב להיות 8–9 ספרות',
   phone: 'נא להזין מספר נייד ישראלי בפורמט 05X-XXXXXXX',
-  email: 'נא להזין כתובת דוא״ל תקינה',
-  contractNumber: 'שדה חובה',
-  phoneNumber: 'הפורמט חייב להיות ‎05X-XXXXXXX',
-  requiredFile: 'חובה לצרף את כל הקבצים המסומנים',
-  futureDate: 'על התאריך להיות עתידי',
-  otpConfirmation: 'יש לאשר קבלת SMS ב-SIM הנוכחי',
-  bundleService: 'נדרשות שתי בקשות — תשתית ו-ISP',
-  equipmentReturn: 'נא לבחור אפשרות'
+  email: 'נא להזין כתובת דוא"ל תקינה',
+  contractMeter: 'יש להזין מספר חוזה או מספר מונה (לפחות אחד)',
+  address: 'יש להזין כתובת אתר הצריכה',
+  phoneNumbers: 'רשימת המספרים מכילה ערך שאינו בפורמט 05X-XXXXXXX',
+  requiredFiles: 'יש להעלות את כל המסמכים המסומנים כחובה',
+  futureDate: 'תוקף ייפוי הכוח חייב להיות עתידי',
+  otpConfirmation: 'יש לאשר קבלת OTP ב-SIM הנוכחי',
+  bundleService: 'באנדל מסומן — יש לפתוח שתי בקשות (תשתית + ISP)',
+  equipmentReturn: 'יש לבחור אופן החזרת ציוד'
 };
 
 // Common form validation function
