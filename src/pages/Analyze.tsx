@@ -120,50 +120,112 @@ export const Analyze = () => {
       cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0
     );
 
-    if (activeCategories.length === 0) return;
-
-    const results: AnalysisResult[] = [];
-
-    activeCategories.forEach(catData => {
-      const amount = parseFloat(catData.monthlyAmount);
-      const analysis = analyzeData({
-        category: catData.category,
-        amount,
-        provider: catData.currentProvider
-      });
-
-      if (analysis) {
-        results.push({
-          ...analysis,
-          currentProvider: catData.currentProvider || 'לא צוין'
-        });
-      }
-    });
-
-    // שליחה ל-Google Sheets
-    try {
-      const formData = {
-        name: 'משתמש מטופס ניתוח',
-        phone: 'לא צוין',
-        email: 'לא צוין',
-        serviceType: activeCategories.map(cat => categoryNames[cat.category] || cat.category).join(', '),
-        plan: activeCategories.map(cat => `${cat.currentProvider || 'לא צוין'}: ₪${cat.monthlyAmount}`).join(' | ')
-      };
-
-      const success = await googleSheetsService.submitToGoogleSheets(formData);
-      
-      if (success) {
-        toast.success('הנתונים נשלחו בהצלחה ל-Google Sheets');
-      } else {
-        toast.error('שליחת הנתונים נכשלה - בדקו את הגדרות Zapier');
-      }
-    } catch (error) {
-      console.error('Error submitting to Google Sheets:', error);
-      toast.error('שגיאה בשליחת הנתונים');
+    if (activeCategories.length === 0) {
+      toast.error('יש להזין נתונים לפחות בקטגוריה אחת');
+      return;
     }
 
-    setAnalysisResults(results);
-    setActiveStep('results');
+    setIsProcessing(true);
+
+    try {
+      const results: AnalysisResult[] = [];
+
+      // Analyze each active category
+      activeCategories.forEach(catData => {
+        const amount = parseFloat(catData.monthlyAmount);
+        const analysis = analyzeData({
+          category: catData.category,
+          amount,
+          provider: catData.currentProvider
+        });
+
+        if (analysis) {
+          results.push({
+            ...analysis,
+            currentProvider: catData.currentProvider || 'לא צוין'
+          });
+        }
+      });
+
+      setAnalysisResults(results);
+
+      // Submit comprehensive analysis data to Google Sheets and webhooks
+      if (results.length > 0) {
+        const activeCategoryNames = activeCategories.map(cat => categoryNames[cat.category]);
+
+        // Build comprehensive analysis payload
+        const analysisPayload = {
+          // Meta information
+          flow: 'analyze_start_comparison',
+          source_page: '/analyze',
+          triggered_from: window.location.origin,
+          timestamp: new Date().toISOString(),
+          active_categories: activeCategoryNames,
+          
+          // Calculate totals
+          total_monthly_amount: activeCategories.reduce((sum, cat) => sum + parseFloat(cat.monthlyAmount), 0),
+          total_monthly_savings: results.reduce((sum, r) => sum + r.monthlySavings, 0),
+          total_annual_savings: results.reduce((sum, r) => sum + r.annualSavings, 0),
+
+          // Per-category data
+          electricity_active: categoryData.electricity?.isActive || false,
+          electricity_current_provider: categoryData.electricity?.currentProvider || undefined,
+          electricity_monthly_amount: categoryData.electricity?.monthlyAmount ? parseFloat(categoryData.electricity.monthlyAmount) : undefined,
+          electricity_account_details: categoryData.electricity?.accountDetails || undefined,
+          electricity_recommended_plan_name: results.find(r => r.category === 'electricity')?.recommendedPlan.name || undefined,
+          electricity_recommended_price: results.find(r => r.category === 'electricity')?.recommendedPlan.price || undefined,
+          electricity_monthly_savings: results.find(r => r.category === 'electricity')?.monthlySavings || undefined,
+          electricity_annual_savings: results.find(r => r.category === 'electricity')?.annualSavings || undefined,
+
+          internet_active: categoryData.internet?.isActive || false,
+          internet_current_provider: categoryData.internet?.currentProvider || undefined,
+          internet_monthly_amount: categoryData.internet?.monthlyAmount ? parseFloat(categoryData.internet.monthlyAmount) : undefined,
+          internet_account_details: categoryData.internet?.accountDetails || undefined,
+          internet_recommended_plan_name: results.find(r => r.category === 'internet')?.recommendedPlan.name || undefined,
+          internet_recommended_price: results.find(r => r.category === 'internet')?.recommendedPlan.price || undefined,
+          internet_monthly_savings: results.find(r => r.category === 'internet')?.monthlySavings || undefined,
+          internet_annual_savings: results.find(r => r.category === 'internet')?.annualSavings || undefined,
+
+          cellular_active: categoryData.cellular?.isActive || false,
+          cellular_current_provider: categoryData.cellular?.currentProvider || undefined,
+          cellular_monthly_amount: categoryData.cellular?.monthlyAmount ? parseFloat(categoryData.cellular.monthlyAmount) : undefined,
+          cellular_account_details: categoryData.cellular?.accountDetails || undefined,
+          cellular_recommended_plan_name: results.find(r => r.category === 'cellular')?.recommendedPlan.name || undefined,
+          cellular_recommended_price: results.find(r => r.category === 'cellular')?.recommendedPlan.price || undefined,
+          cellular_monthly_savings: results.find(r => r.category === 'cellular')?.monthlySavings || undefined,
+          cellular_annual_savings: results.find(r => r.category === 'cellular')?.annualSavings || undefined,
+
+          tv_active: categoryData.tv?.isActive || false,
+          tv_current_provider: categoryData.tv?.currentProvider || undefined,
+          tv_monthly_amount: categoryData.tv?.monthlyAmount ? parseFloat(categoryData.tv.monthlyAmount) : undefined,
+          tv_account_details: categoryData.tv?.accountDetails || undefined,
+          tv_recommended_plan_name: results.find(r => r.category === 'tv')?.recommendedPlan.name || undefined,
+          tv_recommended_price: results.find(r => r.category === 'tv')?.recommendedPlan.price || undefined,
+          tv_monthly_savings: results.find(r => r.category === 'tv')?.monthlySavings || undefined,
+          tv_annual_savings: results.find(r => r.category === 'tv')?.annualSavings || undefined,
+        };
+
+        // Send comprehensive analysis data to both Google Sheets and additional webhook
+        const success = await googleSheetsService.submitAnalysisData(analysisPayload);
+        
+        if (success) {
+          toast.success('הנתונים נותחו ונשלחו בהצלחה! מעבר לתוצאות...');
+        } else {
+          toast.warning('הנתונים נותחו בהצלחה, אך לא נשלחו ל-webhooks - בדקו את הגדרות ה-webhook');
+        }
+      }
+
+      // Continue to results step after a brief delay
+      setTimeout(() => {
+        setActiveStep('results');
+      }, 1500);
+
+    } catch (error) {
+      console.error('Analysis failed:', error);
+      toast.error('שגיאה בניתוח הנתונים');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const categoryNames = {
