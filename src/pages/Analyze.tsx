@@ -6,6 +6,8 @@ import { AnalysisInput } from '@/components/AnalysisInput';
 import { ResultsGrid } from '@/components/ResultsGrid';
 import { Layout } from '@/components/Layout';
 import AllPlans from './AllPlans';
+import { googleSheetsService } from '@/lib/googleSheets';
+import { toast } from 'sonner';
 
 interface UploadedFile {
   file: File;
@@ -108,7 +110,7 @@ export const Analyze = () => {
     }));
   };
 
-  const handleAnalyzeAll = () => {
+  const handleAnalyzeAll = async () => {
     const activeCategories = Object.values(categoryData).filter(cat => 
       cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0
     );
@@ -133,8 +135,37 @@ export const Analyze = () => {
       }
     });
 
+    // שליחה ל-Google Sheets
+    try {
+      const formData = {
+        name: 'משתמש מטופס ניתוח',
+        phone: 'לא צוין',
+        email: 'לא צוין',
+        serviceType: activeCategories.map(cat => categoryNames[cat.category] || cat.category).join(', '),
+        plan: activeCategories.map(cat => `${cat.currentProvider || 'לא צוין'}: ₪${cat.monthlyAmount}`).join(' | ')
+      };
+
+      const success = await googleSheetsService.submitToGoogleSheets(formData);
+      
+      if (success) {
+        toast.success('הנתונים נשלחו בהצלחה ל-Google Sheets');
+      } else {
+        toast.error('שליחת הנתונים נכשלה - בדקו את הגדרות Zapier');
+      }
+    } catch (error) {
+      console.error('Error submitting to Google Sheets:', error);
+      toast.error('שגיאה בשליחת הנתונים');
+    }
+
     setAnalysisResults(results);
     setActiveStep('results');
+  };
+
+  const categoryNames = {
+    electricity: 'חשמל',
+    cellular: 'סלולר', 
+    internet: 'אינטרנט',
+    tv: 'טלוויזיה'
   };
 
   const analyzeData = (data: { category: 'electricity' | 'cellular' | 'internet' | 'tv', amount: number, provider?: string }) => {
