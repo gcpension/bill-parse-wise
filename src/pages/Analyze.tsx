@@ -8,6 +8,7 @@ import { Layout } from '@/components/Layout';
 import AllPlans from './AllPlans';
 import { googleSheetsService } from '@/lib/googleSheets';
 import { toast } from 'sonner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface UploadedFile {
   file: File;
@@ -81,6 +82,10 @@ export const Analyze = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisResults, setAnalysisResults] = useState<AnalysisResult[]>([]);
   const [activeStep, setActiveStep] = useState<'input' | 'results'>('input');
+  const [isWebhookConfigured, setIsWebhookConfigured] = useState<boolean>(() => {
+    const url = googleSheetsService.getWebhookUrl();
+    return !!(url && googleSheetsService.isValidZapierWebhook(url));
+  });
 
   const handleFilesUploaded = (newFiles: UploadedFile[]) => {
     setUploadedFiles(newFiles);
@@ -216,6 +221,23 @@ export const Analyze = () => {
 
   return (
     <Layout>
+      {!isWebhookConfigured && (
+        <div className="max-w-3xl mx-auto mb-4">
+          <Alert>
+            <AlertDescription>
+              כדי לשלוח נתונים ל-Google Sheets, יש להגדיר Zapier webhook. ניתן לבצע זאת בעמוד הבדיקה.
+              <Button
+                variant="outline"
+                size="sm"
+                className="ml-2"
+                onClick={() => window.open('/integration-test', '_blank')}
+              >
+                פתח הגדרות Zapier
+              </Button>
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
       <AnalysisInput
         uploadedFiles={uploadedFiles}
         categoryData={categoryData}
