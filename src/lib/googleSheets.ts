@@ -9,19 +9,39 @@ export interface GoogleSheetsData {
   timestamp?: string;
 }
 
-const DEFAULT_WEBHOOK = 'https://script.google.com/macros/s/AKfycbzLJyLaVyG0t_nqWN0uM1qe5w8gufYJhXDZp3OFPEKEOeSjmT4E';
+const STORAGE_KEY = 'zapier_webhook_url';
 
 class GoogleSheetsService {
-  private webhookUrl: string = DEFAULT_WEBHOOK;
+  private webhookUrl: string = '';
 
   constructor() {
-    // Always use the hardcoded webhook URL
-    this.webhookUrl = DEFAULT_WEBHOOK;
+    // Load webhook URL from localStorage
+    this.loadWebhookUrl();
+  }
+
+  private loadWebhookUrl() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        this.webhookUrl = saved;
+      }
+    } catch (error) {
+      logger.error('Failed to load webhook URL from localStorage', 'GoogleSheetsService', error);
+    }
   }
 
   setWebhookUrl(url: string) {
-    // No-op - webhook URL is locked to prevent changes
-    logger.info('Webhook URL is locked and cannot be changed', 'GoogleSheetsService');
+    this.webhookUrl = url;
+    try {
+      if (url) {
+        localStorage.setItem(STORAGE_KEY, url);
+      } else {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+      logger.info('Webhook URL updated successfully', 'GoogleSheetsService');
+    } catch (error) {
+      logger.error('Failed to save webhook URL to localStorage', 'GoogleSheetsService', error);
+    }
   }
 
   getWebhookUrl(): string {

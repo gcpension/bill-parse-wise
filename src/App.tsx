@@ -18,6 +18,7 @@ import SwitchWizard from "./pages/SwitchWizard";
 import RequestStatus from "./pages/RequestStatus";
 // Import the newly created AllPlans page
 import AllPlans from "./pages/AllPlans";
+import IntegrationTestPage from "./components/IntegrationTestPage";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
               />
               <Route path="/help" element={<Help />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/integration-test" element={<IntegrationTestPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
