@@ -276,8 +276,13 @@ export const Analyze = () => {
   }, [uploadedFiles, analysisResults]);
 
   if (activeStep === 'results') {
+    // Get the active categories to pass to AllPlans
+    const activeCategories = Object.values(categoryData)
+      .filter(cat => cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0)
+      .map(cat => cat.category);
+    
     return (
-      <AllPlans />
+      <AllPlans initialCategories={activeCategories} />
     );
   }
 

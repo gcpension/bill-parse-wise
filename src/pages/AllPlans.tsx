@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, Search } from "lucide-react";
+import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, Search, Star } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { SwitchRequestForm } from "@/components/forms/SwitchRequestForm";
@@ -60,83 +60,144 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   };
 
   return (
-    <article className="bg-white/90 backdrop-blur-sm border border-border/50 rounded-xl hover:shadow-lg hover:border-primary/30 transition-all duration-300 p-4 animate-slide-up group">
-      <div className="flex items-center justify-between gap-4">
+    <article className="bg-white/95 backdrop-blur-sm border-2 border-border/30 rounded-2xl hover:shadow-xl hover:border-primary/50 hover:scale-[1.02] transition-all duration-500 p-6 animate-slide-up group relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      <div className="relative z-10 flex items-center justify-between gap-6">
         {/* Company Logo/Icon */}
-        <div className="flex items-center gap-3 flex-shrink-0">
-          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
-            <Building2 className="h-6 w-6 text-primary group-hover:text-white transition-colors duration-300" />
+        <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="relative">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center group-hover:from-primary group-hover:to-primary/80 transition-all duration-500 shadow-lg group-hover:shadow-xl">
+              <Building2 className="h-8 w-8 text-primary group-hover:text-white transition-colors duration-300" />
+            </div>
+            {/* Rating badge */}
+            <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
+              ★
+            </div>
           </div>
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Badge variant="outline" className="text-xs bg-primary/5 text-primary border-primary/20">
+            <div className="flex items-center gap-2 mb-2">
+              <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30 font-semibold">
                 {getCategoryLabel()}
               </Badge>
+              <Badge variant="secondary" className="text-xs bg-green-100 text-green-800 border-green-200">
+                מומלץ
+              </Badge>
             </div>
-            <h3 className="font-bold text-lg text-foreground">{plan.company}</h3>
+            <h3 className="font-bold text-xl text-foreground group-hover:text-primary transition-colors duration-300">{plan.company}</h3>
+            <p className="text-sm text-muted-foreground mt-1">ספק מוביל בישראל</p>
           </div>
         </div>
 
         {/* Plan Details */}
         <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-foreground mb-2 text-base">{plan.planName}</h4>
+          <div className="flex items-center gap-3 mb-3">
+            <h4 className="font-bold text-foreground text-xl group-hover:text-primary transition-colors">{plan.planName}</h4>
+            {plan.regularPrice && (
+              <Badge className="bg-gradient-to-r from-orange-400 to-red-500 text-white font-bold text-xs px-2 py-1 animate-pulse">
+                🔥 מבצע חם
+              </Badge>
+            )}
+          </div>
           
           {/* Speed/Data Info */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3 flex-wrap">
+          <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4 flex-wrap">
             {plan.category === 'internet' && plan.downloadSpeed && (
-              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
-                <Download className="h-3 w-3 text-primary" />
-                <span className="text-xs">{plan.downloadSpeed}</span>
+              <div className="flex items-center gap-2 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 px-3 py-2 rounded-xl">
+                <Download className="h-4 w-4 text-blue-600" />
+                <span className="font-medium text-blue-800">{plan.downloadSpeed}</span>
               </div>
             )}
             {plan.category === 'internet' && plan.uploadSpeed && (
-              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
-                <Upload className="h-3 w-3 text-primary" />
-                <span className="text-xs">{plan.uploadSpeed}</span>
+              <div className="flex items-center gap-2 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 px-3 py-2 rounded-xl">
+                <Upload className="h-4 w-4 text-green-600" />
+                <span className="font-medium text-green-800">{plan.uploadSpeed}</span>
               </div>
             )}
             {plan.dataAmount && (
-              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
-                <Wifi className="h-3 w-3 text-primary" />
-                <span className="text-xs">{plan.dataAmount}</span>
+              <div className="flex items-center gap-2 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 px-3 py-2 rounded-xl">
+                <Wifi className="h-4 w-4 text-purple-600" />
+                <span className="font-medium text-purple-800">{plan.dataAmount}</span>
               </div>
             )}
             {plan.callMinutes && (
-              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
-                <Phone className="h-3 w-3 text-primary" />
-                <span className="text-xs">{plan.callMinutes}</span>
+              <div className="flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-emerald-100 border border-emerald-200 px-3 py-2 rounded-xl">
+                <Phone className="h-4 w-4 text-emerald-600" />
+                <span className="font-medium text-emerald-800">{plan.callMinutes}</span>
               </div>
             )}
           </div>
 
           {/* Features */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
-            {plan.features.slice(0, 4).map((feature, index) => (
-              <div key={index} className="flex items-start gap-2 text-xs">
-                <Check className="h-3 w-3 text-success flex-shrink-0 mt-0.5" />
-                <span className="text-muted-foreground leading-tight">{feature}</span>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 mb-2">
+              <Star className="h-4 w-4 text-yellow-500" />
+              <span className="font-semibold text-sm text-foreground">מה כלול במסלול:</span>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+              {plan.features.slice(0, 6).map((feature, index) => (
+                <div key={index} className="flex items-start gap-2 text-sm">
+                  <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-foreground leading-relaxed font-medium">{feature}</span>
+                </div>
+              ))}
+            </div>
+            {plan.features.length > 6 && (
+              <div className="text-xs text-muted-foreground mt-2">
+                ועוד {plan.features.length - 6} הטבות נוספות...
               </div>
-            ))}
+            )}
           </div>
         </div>
 
         {/* Price and Action */}
-        <div className="flex flex-col items-end gap-3 flex-shrink-0">
-          <div className="text-center">
-            <div className="text-2xl font-black text-primary">
-              {formatPrice()}
+        <div className="flex flex-col items-end gap-4 flex-shrink-0">
+          <div className="text-center relative">
+            {/* Price highlight */}
+            <div className="absolute -inset-3 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative">
+              <div className="text-4xl font-black bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                {formatPrice()}
+              </div>
+              {plan.category !== 'electricity' && (
+                <div className="text-sm text-muted-foreground font-medium">לחודש</div>
+              )}
+              {plan.regularPrice && plan.regularPrice > 0 && (
+                <div className="text-xs text-muted-foreground line-through mt-1">
+                  ₪{Math.round(plan.regularPrice * 1.2)}
+                </div>
+              )}
             </div>
-            {plan.category !== 'electricity' && (
-              <div className="text-xs text-muted-foreground">לחודש</div>
-            )}
           </div>
           
-          <Button 
-            className="btn-gradient text-sm px-4 py-2" 
-            onClick={() => setIsFormOpen(true)}
-          >
-            עבור עכשיו
-          </Button>
+          {/* Savings indicator */}
+          {plan.regularPrice && plan.regularPrice > 50 && (
+            <div className="text-center">
+              <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold text-xs">
+                חוסכים ₪{Math.round(plan.regularPrice * 0.2)}
+              </Badge>
+            </div>
+          )}
+          
+          <div className="flex flex-col gap-2">
+            <Button 
+              className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" 
+              onClick={() => setIsFormOpen(true)}
+            >
+              <span className="flex items-center gap-2">
+                🚀 עבור עכשיו
+              </span>
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="border-primary/30 text-primary hover:bg-primary/5 text-xs"
+            >
+              פרטים נוספים
+            </Button>
+          </div>
         </div>
       </div>
       
@@ -149,8 +210,22 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   );
 };
 
-const AllPlans = () => {
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile'>('all');
+interface AllPlansProps {
+  initialCategories?: ('electricity' | 'cellular' | 'internet' | 'tv')[];
+}
+
+const AllPlans = ({ initialCategories = [] }: AllPlansProps = {}) => {
+  // Determine initial category based on what was analyzed
+  const getInitialCategory = () => {
+    if (initialCategories.length === 1) {
+      const category = initialCategories[0];
+      if (category === 'cellular') return 'mobile';
+      return category as 'electricity' | 'internet' | 'mobile';
+    }
+    return 'all';
+  };
+  
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile'>(getInitialCategory());
   
   useEffect(() => {
     document.title = "כל המסלולים | חסכונט";
@@ -185,11 +260,21 @@ const AllPlans = () => {
           {/* Header */}
           <header className="text-center mb-8">
             <div className="mb-4">
+              {initialCategories.length > 0 && (
+                <div className="mb-4">
+                  <Badge className="bg-gradient-to-r from-primary to-primary/80 text-white px-4 py-2 text-base font-bold">
+                    🎯 מסלולים מומלצים בהתאם לניתוח שלכם
+                  </Badge>
+                </div>
+              )}
               <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-3">
-                כל המסלולים
+                המסלולים הטובים ביותר עבורכם
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                בחר את המסלול המתאים לך מבין {manualPlans.length} המסלולים הזמינים
+                {initialCategories.length > 0 
+                  ? `נמצאו ${filteredPlans.length} מסלולים מותאמים לתחומים שבחרתם`
+                  : `בחר את המסלול המתאים לך מבין ${manualPlans.length} המסלולים הזמינים`
+                }
               </p>
             </div>
           </header>

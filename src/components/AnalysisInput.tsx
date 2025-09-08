@@ -178,37 +178,37 @@ export const AnalysisInput = ({
   return (
     <div className="space-y-8">
       {/* Enhanced Header with Real-Time Savings */}
-      <div className="text-center space-y-6">
+      <div className="text-center space-y-4">
         <div className="relative">
-          <h1 className="text-5xl font-black gradient-primary bg-clip-text text-transparent animate-fade-in">
+          <h1 className="text-3xl font-black gradient-primary bg-clip-text text-transparent animate-fade-in">
             בואו נחסוך כסף ביחד
           </h1>
-          <div className="absolute -top-2 -right-4 animate-bounce-gentle">
-            <Sparkles className="h-6 w-6 text-primary/60" />
+          <div className="absolute -top-1 -right-2 animate-bounce-gentle">
+            <Sparkles className="h-4 w-4 text-primary/60" />
           </div>
-          <div className="absolute -bottom-2 -left-4 animate-bounce-gentle delay-1000">
-            <Star className="h-5 w-5 text-primary/40" />
+          <div className="absolute -bottom-1 -left-2 animate-bounce-gentle delay-1000">
+            <Star className="h-3 w-3 text-primary/40" />
           </div>
         </div>
         
-        <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
+        <p className="text-muted-foreground text-base max-w-2xl mx-auto leading-relaxed">
           הזינו פרטים ידנית כדי לקבל השוואת מחירים מדויקת ולגלות כמה תוכלו לחסוך
         </p>
 
         {/* Real-Time Savings Display */}
         {totalPotentialSavings > 0 && (
-          <div className="relative overflow-hidden rounded-3xl shadow-elegant animate-scale-in">
+          <div className="relative overflow-hidden rounded-2xl shadow-lg animate-scale-in max-w-md mx-auto">
             <div className="absolute inset-0 gradient-success opacity-90"></div>
             <div className="absolute inset-0">
-              <div className="absolute top-4 right-6 w-16 h-16 bg-white/10 rounded-full animate-pulse"></div>
-              <div className="absolute bottom-4 left-6 w-10 h-10 bg-white/10 rounded-full animate-pulse delay-500"></div>
+              <div className="absolute top-2 right-4 w-8 h-8 bg-white/10 rounded-full animate-pulse"></div>
+              <div className="absolute bottom-2 left-4 w-6 h-6 bg-white/10 rounded-full animate-pulse delay-500"></div>
             </div>
-            <div className="relative p-6 text-center text-white">
+            <div className="relative p-4 text-center text-white">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <PiggyBank className="h-6 w-6 animate-pulse" />
-                <h3 className="text-lg font-bold">חיסכון צפוי</h3>
+                <PiggyBank className="h-5 w-5 animate-pulse" />
+                <h3 className="text-base font-bold">חיסכון צפוי</h3>
               </div>
-              <div className="text-3xl font-black">
+              <div className="text-2xl font-black">
                 {formatCurrency(animatedSavings)} בחודש
               </div>
               <div className="text-sm text-white/80 mt-1">
@@ -220,23 +220,23 @@ export const AnalysisInput = ({
       </div>
 
       {/* Enhanced Interactive Input Section */}
-      <Card className="shadow-elegant border-0 overflow-hidden">
+      <Card className="shadow-lg border-0 overflow-hidden">
         <div className="absolute inset-0 gradient-card opacity-5"></div>
-        <CardHeader className="relative text-center pb-8">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <Target className="h-6 w-6 text-primary" />
-            <CardTitle className="text-2xl">בחרו תחומים לניתוח</CardTitle>
-            <Target className="h-6 w-6 text-primary" />
+        <CardHeader className="relative text-center pb-6">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Target className="h-5 w-5 text-primary" />
+            <CardTitle className="text-xl">בחרו תחומים לניתוח</CardTitle>
+            <Target className="h-5 w-5 text-primary" />
           </div>
-          <p className="text-muted-foreground">לחצו על הקטגוריות שתרצו לבדוק והזינו פרטים</p>
+          <p className="text-muted-foreground text-sm">לחצו על הקטגוריות שתרצו לבדוק והזינו פרטים</p>
           
           {/* Progress Indicator */}
-          <div className="mt-4 flex justify-center">
-            <div className="flex gap-2">
+          <div className="mt-3 flex justify-center">
+            <div className="flex gap-1">
               {Object.entries(categoryData).map(([key, data]) => (
                 <div 
                   key={key}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
                     data.isActive && data.monthlyAmount && parseFloat(data.monthlyAmount) > 0
                       ? 'bg-success shadow-glow' 
                       : data.isActive 
@@ -250,7 +250,7 @@ export const AnalysisInput = ({
         </CardHeader>
         
         <CardContent className="relative">
-          <div className="grid gap-8">
+          <div className="grid gap-6">
             {Object.entries(categoryData).map(([key, data], index) => {
               const CategoryIcon = categoryIcons[data.category];
               const providers = getProvidersByCategory(data.category);
@@ -263,34 +263,34 @@ export const AnalysisInput = ({
                   className={`group relative transition-all duration-500 animate-fade-in`}
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
-                  <Card className={`relative overflow-hidden transition-all duration-500 hover:shadow-elegant ${
+                  <Card className={`relative overflow-hidden transition-all duration-500 hover:shadow-lg ${
                     data.isActive 
-                      ? 'ring-2 ring-primary shadow-card scale-[1.02] bg-primary/5' 
-                      : 'hover:shadow-card hover:scale-[1.01] cursor-pointer'
+                      ? 'ring-2 ring-primary shadow-md scale-[1.01] bg-primary/5' 
+                      : 'hover:shadow-md hover:scale-[1.01] cursor-pointer'
                   }`}
                   onClick={() => !data.isActive && onCategoryToggle(key)}
                   >
                     {/* Background Pattern */}
                     <div className={`absolute inset-0 opacity-10 ${gradientClass}`}></div>
                     
-                    <CardHeader>
+                    <CardHeader className="pb-4">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                          <div className={`relative p-4 ${gradientClass} rounded-2xl shadow-colorful transition-transform duration-300 group-hover:scale-110`}>
-                            <CategoryIcon className="h-8 w-8 text-white" />
+                        <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                          <div className={`relative p-3 ${gradientClass} rounded-xl shadow-md transition-transform duration-300 group-hover:scale-110`}>
+                            <CategoryIcon className="h-6 w-6 text-white" />
                             {data.isActive && (
-                              <div className="absolute -top-1 -right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center">
-                                <Star className="h-3 w-3 text-white" />
+                              <div className="absolute -top-1 -right-1 w-5 h-5 bg-success rounded-full flex items-center justify-center">
+                                <Star className="h-2 w-2 text-white" />
                               </div>
                             )}
                           </div>
                           <div>
-                            <CardTitle className="text-2xl font-bold">{categoryNames[data.category]}</CardTitle>
+                            <CardTitle className="text-lg font-bold">{categoryNames[data.category]}</CardTitle>
                             <p className="text-muted-foreground text-sm">
                               {categoryDescriptions[data.category]}
                             </p>
                             {data.isActive && savings > 0 && (
-                              <Badge variant="secondary" className="mt-2 bg-success/20 text-success font-bold">
+                              <Badge variant="secondary" className="mt-2 bg-success/20 text-success font-bold text-xs">
                                 <TrendingUp className="h-3 w-3 ml-1" />
                                 חיסכון של {formatCurrency(savings)} לחודש
                               </Badge>
@@ -300,11 +300,11 @@ export const AnalysisInput = ({
                         
                         <Button
                           variant={data.isActive ? "default" : "outline"}
-                          size="lg"
+                          size="sm"
                           className={`transition-all duration-300 ${
                             data.isActive 
-                              ? 'gradient-primary text-white shadow-glow' 
-                              : 'hover:shadow-card'
+                              ? 'gradient-primary text-white shadow-md' 
+                              : 'hover:shadow-sm'
                           }`}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -313,12 +313,12 @@ export const AnalysisInput = ({
                         >
                           {data.isActive ? (
                             <>
-                              <Minus className="h-5 w-5 ml-2" />
+                              <Minus className="h-4 w-4 ml-1" />
                               הסר
                             </>
                           ) : (
                             <>
-                              <Plus className="h-5 w-5 ml-2" />
+                              <Plus className="h-4 w-4 ml-1" />
                               הוסף
                             </>
                           )}
@@ -327,47 +327,172 @@ export const AnalysisInput = ({
                     </CardHeader>
                     
                     {data.isActive && (
-                      <CardContent className="space-y-6 animate-fade-in">
-                        <div className="grid md:grid-cols-2 gap-6">
-                          <div className="space-y-3">
-                            <Label className="text-base font-semibold">ספק נוכחי</Label>
+                      <CardContent className="space-y-4 animate-fade-in pt-0">
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label className="text-sm font-semibold">ספק נוכחי</Label>
                             <Select 
                               value={data.currentProvider} 
                               onValueChange={(value) => onCategoryDataUpdate(key, 'currentProvider', value)}
                             >
-                            <SelectTrigger className="h-12 text-base border-2 hover:border-primary transition-colors bg-background">
-                              <SelectValue placeholder="בחרו ספק נוכחי" className="text-foreground" />
+                            <SelectTrigger className="h-12 text-base border-2 hover:border-primary transition-colors bg-background/95 backdrop-blur-sm shadow-sm">
+                              <SelectValue 
+                                placeholder="👇 לחצו כאן לבחירת ספק נוכחי" 
+                                className="text-foreground font-medium" 
+                              />
                             </SelectTrigger>
-                              <SelectContent className="bg-background/95 backdrop-blur-sm border-2 shadow-xl z-[100] max-h-60 min-w-[200px]">
-                                <div className="bg-background/90 backdrop-blur-sm">
-                                  {providers.map((provider) => (
+                              <SelectContent 
+                                className="bg-background/95 backdrop-blur-md border-2 border-primary/20 shadow-xl z-[200] max-h-80 min-w-[280px]"
+                                sideOffset={5}
+                              >
+                                {providers.length > 0 ? (
+                                  providers.map((provider) => (
                                     <SelectItem 
                                       key={provider.name} 
                                       value={provider.name} 
-                                      className="hover:bg-primary/10 focus:bg-primary/10 cursor-pointer bg-background/80"
+                                      className="hover:bg-primary/10 focus:bg-primary/10 cursor-pointer py-3 px-4 text-base font-medium transition-colors duration-200"
                                     >
-                                      <div className="flex items-center gap-3 py-1">
-                                        <div className="w-2 h-2 rounded-full bg-primary/60"></div>
-                                        <span className="font-medium text-foreground">{provider.name}</span>
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-gradient-to-r from-primary to-primary/60 shadow-sm"></div>
+                                        <span className="text-foreground">{provider.name}</span>
+                                        <div className="mr-auto text-xs text-muted-foreground bg-primary/5 px-2 py-1 rounded-full">
+                                          {provider.plans.length} מסלולים
+                                        </div>
                                       </div>
                                     </SelectItem>
-                                  ))}
-                                </div>
+                                  ))
+                                ) : (
+                                  <SelectItem 
+                                    value="no-providers" 
+                                    disabled 
+                                    className="text-muted-foreground py-3 px-4"
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <span>לא נמצאו ספקים זמינים</span>
+                                    </div>
+                                  </SelectItem>
+                                )}
+                                
+                                {/* Add manual options if needed */}
+                                {data.category === 'electricity' && (
+                                  <>
+                                    <SelectItem value="חברת החשמל" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                        <span>חברת החשמל</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="נקסט אנרגיה" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-blue-500"></div>  
+                                        <span>נקסט אנרגיה</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="פזגז" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                                        <span>פזגז</span>
+                                      </div>
+                                    </SelectItem>
+                                  </>
+                                )}
+                                
+                                {data.category === 'cellular' && (
+                                  <>
+                                    <SelectItem value="פלאפון" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-pink-500"></div>
+                                        <span>פלאפון</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="פרטנר" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                                        <span>פרטנר</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="סלקום" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                                        <span>סלקום</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="הוט מובייל" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                        <span>הוט מובייל</span>
+                                      </div>
+                                    </SelectItem>
+                                  </>
+                                )}
+                                
+                                {data.category === 'internet' && (
+                                  <>
+                                    <SelectItem value="בזק" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                                        <span>בזק</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="הוט" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                        <span>הוט</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="סלקום" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                                        <span>סלקום</span>
+                                      </div>
+                                    </SelectItem>
+                                  </>
+                                )}
+                                
+                                {data.category === 'tv' && (
+                                  <>
+                                    <SelectItem value="יס" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                                        <span>יס</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="הוט" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                        <span>הוט</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="פרטנר TV" className="hover:bg-primary/10 py-3 font-medium">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                                        <span>פרטנר TV</span>
+                                      </div>
+                                    </SelectItem>
+                                  </>
+                                )}
+                                
+                                <SelectItem value="אחר" className="hover:bg-primary/10 py-3 font-medium border-t mt-2">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-3 h-3 rounded-full bg-muted-foreground"></div>
+                                    <span>ספק אחר</span>
+                                  </div>
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
                           
-                          <div className="space-y-3">
-                            <Label className="text-base font-semibold">סכום חודשי (₪)</Label>
+                          <div className="space-y-2">
+                            <Label className="text-sm font-semibold">סכום חודשי (₪)</Label>
                             <div className="relative">
                               <Input
                                 type="number"
                                 placeholder="הזינו סכום"
                                 value={data.monthlyAmount}
                                 onChange={(e) => onCategoryDataUpdate(key, 'monthlyAmount', e.target.value)}
-                                className="h-12 text-base pr-10"
+                                className="h-10 text-sm pr-8"
                               />
-                              <DollarSign className="absolute right-3 top-3 h-6 w-6 text-muted-foreground" />
+                              <DollarSign className="absolute right-2 top-2 h-5 w-5 text-muted-foreground" />
                             </div>
                           </div>
                         </div>
@@ -462,9 +587,9 @@ export const AnalysisInput = ({
         <div className="relative">
           <Button 
             size="lg" 
-            className={`text-xl px-12 py-8 font-bold transition-all duration-300 ${
+            className={`text-lg px-8 py-6 font-bold transition-all duration-300 rounded-xl ${
               canAnalyze() && !isProcessing
-                ? 'gradient-primary text-white shadow-glow hover:shadow-elegant hover:scale-105' 
+                ? 'gradient-primary text-white shadow-lg hover:shadow-xl hover:scale-105' 
                 : 'opacity-50 cursor-not-allowed'
             }`}
             onClick={onAnalyze}
@@ -472,14 +597,14 @@ export const AnalysisInput = ({
           >
             {isProcessing ? (
               <>
-                <Loader2 className="ml-3 h-6 w-6 animate-spin" />
+                <Loader2 className="ml-2 h-5 w-5 animate-spin" />
                 מעבד את הנתונים...
               </>
             ) : (
               <>
-                <Rocket className="ml-3 h-6 w-6" />
+                <Rocket className="ml-2 h-5 w-5" />
                 בואו נמצא חיסכון גדול!
-                <Sparkles className="mr-3 h-6 w-6" />
+                <Sparkles className="mr-2 h-5 w-5" />
               </>
             )}
           </Button>
@@ -487,11 +612,11 @@ export const AnalysisInput = ({
           {/* Floating elements */}
           {canAnalyze() && !isProcessing && (
             <>
-              <div className="absolute -top-2 -right-4 animate-bounce-gentle">
-                <Star className="h-5 w-5 text-primary/60" />
+              <div className="absolute -top-1 -right-2 animate-bounce-gentle">
+                <Star className="h-4 w-4 text-primary/60" />
               </div>
-              <div className="absolute -bottom-2 -left-4 animate-bounce-gentle delay-500">
-                <Sparkles className="h-4 w-4 text-primary/40" />
+              <div className="absolute -bottom-1 -left-2 animate-bounce-gentle delay-500">
+                <Sparkles className="h-3 w-3 text-primary/40" />
               </div>
             </>
           )}
