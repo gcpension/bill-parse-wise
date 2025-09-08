@@ -224,5 +224,6 @@ class GoogleSheetsService {
   isValidZapierWebhook(url: string): boolean {
     return url.includes('hooks.zapier.com') || url.includes('script.google.com') || url.includes('webhook.site');
   }
+}
 
 export const googleSheetsService = new GoogleSheetsService();
