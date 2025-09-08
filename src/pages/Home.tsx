@@ -183,6 +183,110 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Process Banner - Floating Style */}
+      <section className="py-16 relative">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            {/* Floating Process Card */}
+            <div className="relative mx-auto max-w-3xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-blue-500/5 to-purple-500/10 rounded-3xl blur-xl" />
+              <div className="relative bg-white/95 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl shadow-primary/10 p-8 md:p-12">
+                {/* Header */}
+                <div className="text-center mb-10">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/10 to-blue-500/10 rounded-full border border-primary/20 mb-4">
+                    <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                    <span className="text-sm font-semibold text-primary">התהליך החכם שלנו</span>
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+                    3 שלבים לחיסכון מקסימלי
+                  </h2>
+                  <p className="text-muted-foreground text-base">
+                    פשוט, מהיר ובטוח - עובדים על כל הספקים הגדולים
+                  </p>
+                </div>
+
+                {/* Process Steps */}
+                <div className="space-y-6">
+                  {[
+                    {
+                      step: 1,
+                      title: "בחר מסלול",
+                      subtitle: "בחירה מהירה ממגוון רחב",
+                      color: "from-blue-500 to-blue-600",
+                      bgColor: "from-blue-50 to-blue-100/50",
+                      textColor: "text-blue-600",
+                      borderColor: "border-blue-200"
+                    },
+                    {
+                      step: 2,
+                      title: "השווה מחירים",
+                      subtitle: "מחירים טוב מכל הספקים",
+                      color: "from-purple-500 to-purple-600", 
+                      bgColor: "from-purple-50 to-purple-100/50",
+                      textColor: "text-purple-600",
+                      borderColor: "border-purple-200"
+                    },
+                    {
+                      step: 3,
+                      title: "עבור וחסוך",
+                      subtitle: "אנחנו נדאג לכל השאר",
+                      color: "from-emerald-500 to-emerald-600",
+                      bgColor: "from-emerald-50 to-emerald-100/50", 
+                      textColor: "text-emerald-600",
+                      borderColor: "border-emerald-200"
+                    }
+                  ].map((item, index) => (
+                    <div 
+                      key={index}
+                      className={`flex items-center gap-6 p-6 rounded-2xl bg-gradient-to-r ${item.bgColor} border ${item.borderColor} hover:shadow-lg transition-all duration-300`}
+                    >
+                      {/* Step Circle */}
+                      <div className="relative flex-shrink-0">
+                        <div className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-full flex items-center justify-center shadow-lg`}>
+                          <span className="text-2xl font-bold text-white">{item.step}</span>
+                        </div>
+                        <div className={`absolute -inset-1 bg-gradient-to-br ${item.color} rounded-full opacity-20 blur-sm`} />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1">
+                        <h3 className={`text-xl font-bold ${item.textColor} mb-1`}>
+                          {item.title}
+                        </h3>
+                        <p className="text-muted-foreground">
+                          {item.subtitle}
+                        </p>
+                      </div>
+
+                      {/* Arrow for non-last items */}
+                      {index < 2 && (
+                        <div className="hidden md:block">
+                          <ArrowRight className={`w-5 h-5 ${item.textColor} opacity-60`} />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bottom Section */}
+                <div className="text-center mt-10 pt-8 border-t border-border/50">
+                  <p className="text-sm text-muted-foreground mb-4">
+                    עובדים על כל הספקים הגדולים:
+                  </p>
+                  <div className="flex justify-center gap-4 flex-wrap">
+                    {["פלאפון", "סלקום", "HOT", "בזק"].map((provider, index) => (
+                      <div key={index} className="px-3 py-1 bg-gradient-to-r from-primary/5 to-blue-500/5 border border-primary/10 rounded-full text-xs font-medium text-primary">
+                        {provider}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Enhanced Features Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
