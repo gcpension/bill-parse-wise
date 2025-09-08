@@ -60,12 +60,12 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   };
 
   return (
-    <article className="bg-white/80 backdrop-blur-sm border border-border/50 rounded-2xl hover:shadow-md hover:border-primary/30 transition-all duration-300 p-6 animate-slide-up">
-      <div className="flex items-center justify-between gap-6">
+    <article className="bg-white/90 backdrop-blur-sm border border-border/50 rounded-xl hover:shadow-lg hover:border-primary/30 transition-all duration-300 p-4 animate-slide-up group">
+      <div className="flex items-center justify-between gap-4">
         {/* Company Logo/Icon */}
-        <div className="flex items-center gap-4 flex-shrink-0">
-          <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
-            <Building2 className="h-8 w-8 text-primary group-hover:text-white transition-colors duration-300" />
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
+            <Building2 className="h-6 w-6 text-primary group-hover:text-white transition-colors duration-300" />
           </div>
           <div>
             <div className="flex items-center gap-2 mb-1">
@@ -73,66 +73,66 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
                 {getCategoryLabel()}
               </Badge>
             </div>
-            <h3 className="font-bold text-xl text-foreground">{plan.company}</h3>
+            <h3 className="font-bold text-lg text-foreground">{plan.company}</h3>
           </div>
         </div>
 
         {/* Plan Details */}
         <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-foreground mb-3 text-lg">{plan.planName}</h4>
+          <h4 className="font-semibold text-foreground mb-2 text-base">{plan.planName}</h4>
           
           {/* Speed/Data Info */}
-          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3 flex-wrap">
             {plan.category === 'internet' && plan.downloadSpeed && (
-              <div className="flex items-center gap-1 bg-primary/5 px-3 py-1 rounded-full">
-                <Download className="h-4 w-4 text-primary" />
-                <span>{plan.downloadSpeed}</span>
+              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
+                <Download className="h-3 w-3 text-primary" />
+                <span className="text-xs">{plan.downloadSpeed}</span>
               </div>
             )}
             {plan.category === 'internet' && plan.uploadSpeed && (
-              <div className="flex items-center gap-1 bg-primary/5 px-3 py-1 rounded-full">
-                <Upload className="h-4 w-4 text-primary" />
-                <span>{plan.uploadSpeed}</span>
+              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
+                <Upload className="h-3 w-3 text-primary" />
+                <span className="text-xs">{plan.uploadSpeed}</span>
               </div>
             )}
             {plan.dataAmount && (
-              <div className="flex items-center gap-1 bg-primary/5 px-3 py-1 rounded-full">
-                <Wifi className="h-4 w-4 text-primary" />
-                <span>{plan.dataAmount}</span>
+              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
+                <Wifi className="h-3 w-3 text-primary" />
+                <span className="text-xs">{plan.dataAmount}</span>
               </div>
             )}
             {plan.callMinutes && (
-              <div className="flex items-center gap-1 bg-primary/5 px-3 py-1 rounded-full">
-                <Phone className="h-4 w-4 text-primary" />
-                <span>{plan.callMinutes}</span>
+              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
+                <Phone className="h-3 w-3 text-primary" />
+                <span className="text-xs">{plan.callMinutes}</span>
               </div>
             )}
           </div>
 
           {/* Features */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
             {plan.features.slice(0, 4).map((feature, index) => (
-              <div key={index} className="flex items-start gap-2 text-sm">
-                <Check className="h-4 w-4 text-success flex-shrink-0 mt-0.5" />
-                <span className="text-muted-foreground leading-relaxed">{feature}</span>
+              <div key={index} className="flex items-start gap-2 text-xs">
+                <Check className="h-3 w-3 text-success flex-shrink-0 mt-0.5" />
+                <span className="text-muted-foreground leading-tight">{feature}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Price and Action */}
-        <div className="flex flex-col items-end gap-4 flex-shrink-0">
+        <div className="flex flex-col items-end gap-3 flex-shrink-0">
           <div className="text-center">
-            <div className="text-3xl font-black text-primary">
+            <div className="text-2xl font-black text-primary">
               {formatPrice()}
             </div>
             {plan.category !== 'electricity' && (
-              <div className="text-sm text-muted-foreground">לחודש</div>
+              <div className="text-xs text-muted-foreground">לחודש</div>
             )}
           </div>
           
           <Button 
-            className="btn-gradient" 
+            className="btn-gradient text-sm px-4 py-2" 
             onClick={() => setIsFormOpen(true)}
           >
             עבור עכשיו
@@ -183,12 +183,12 @@ const AllPlans = () => {
       <div dir="rtl" className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
         <div className="container mx-auto px-4 py-12">
           {/* Header */}
-          <header className="text-center mb-12">
-            <div className="mb-6">
-              <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-4">
+          <header className="text-center mb-8">
+            <div className="mb-4">
+              <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-3">
                 כל המסלולים
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 בחר את המסלול המתאים לך מבין {manualPlans.length} המסלולים הזמינים
               </p>
             </div>
@@ -237,7 +237,7 @@ const AllPlans = () => {
           </div>
 
           {/* Plans List */}
-          <section className="space-y-6 max-w-5xl mx-auto">
+          <section className="space-y-4 max-w-4xl mx-auto">
             {filteredPlans.map((plan) => (
               <PlanListItem key={plan.id} plan={plan} />
             ))}
