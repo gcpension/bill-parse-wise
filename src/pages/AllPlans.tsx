@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, Search, Star } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { 
+  Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, 
+  Search, Star, Award, Gift, Clock, Shield, ExternalLink, Target, Sparkles 
+} from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { SwitchRequestForm } from "@/components/forms/SwitchRequestForm";
@@ -60,153 +64,99 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   };
 
   return (
-    <article className="bg-white/95 backdrop-blur-sm border-2 border-border/30 rounded-2xl hover:shadow-xl hover:border-primary/50 hover:scale-[1.02] transition-all duration-500 p-6 animate-slide-up group relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
-      <div className="relative z-10 flex items-center justify-between gap-6">
-        {/* Company Logo/Icon */}
-        <div className="flex items-center gap-4 flex-shrink-0">
-          <div className="relative">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center group-hover:from-primary group-hover:to-primary/80 transition-all duration-500 shadow-lg group-hover:shadow-xl">
-              <Building2 className="h-8 w-8 text-primary group-hover:text-white transition-colors duration-300" />
+                <Card key={plan.id} className="group hover:shadow-lg transition-all duration-300 border hover:border-primary/30 bg-gradient-to-br from-white to-gray-50/50 relative overflow-hidden">
+                  {/* Background gradient on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-success/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <CardContent className="p-4 relative z-10">
+                    <div className="space-y-4">
+                      {/* Header */}
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-glow rounded-lg flex items-center justify-center shadow group-hover:scale-110 transition-transform duration-300">
+              {getCategoryIcon()}
             </div>
-            {/* Rating badge */}
-            <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
-              ★
+                            <div>
+              <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                {plan.company}
+              </h3>
+              <p className="text-xs text-muted-foreground">{getCategoryLabel()}</p>
             </div>
           </div>
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30 font-semibold">
-                {getCategoryLabel()}
-              </Badge>
-              <Badge variant="secondary" className="text-xs bg-green-100 text-green-800 border-green-200">
-                מומלץ
-              </Badge>
-            </div>
-            <h3 className="font-bold text-xl text-foreground group-hover:text-primary transition-colors duration-300">{plan.company}</h3>
-            <p className="text-sm text-muted-foreground mt-1">ספק מוביל בישראל</p>
-          </div>
+          
+          <h4 className="text-sm font-semibold text-foreground leading-tight">
+            {plan.planName}
+          </h4>
         </div>
-
-        {/* Plan Details */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 mb-3">
-            <h4 className="font-bold text-foreground text-xl group-hover:text-primary transition-colors">{plan.planName}</h4>
-            {plan.regularPrice && (
-              <Badge className="bg-gradient-to-r from-orange-400 to-red-500 text-white font-bold text-xs px-2 py-1 animate-pulse">
-                🔥 מבצע חם
-              </Badge>
-            )}
-          </div>
-          
-          {/* Speed/Data Info */}
-          <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4 flex-wrap">
-            {plan.category === 'internet' && plan.downloadSpeed && (
-              <div className="flex items-center gap-2 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 px-3 py-2 rounded-xl">
-                <Download className="h-4 w-4 text-blue-600" />
-                <span className="font-medium text-blue-800">{plan.downloadSpeed}</span>
-              </div>
-            )}
-            {plan.category === 'internet' && plan.uploadSpeed && (
-              <div className="flex items-center gap-2 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 px-3 py-2 rounded-xl">
-                <Upload className="h-4 w-4 text-green-600" />
-                <span className="font-medium text-green-800">{plan.uploadSpeed}</span>
-              </div>
-            )}
-            {plan.dataAmount && (
-              <div className="flex items-center gap-2 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 px-3 py-2 rounded-xl">
-                <Wifi className="h-4 w-4 text-purple-600" />
-                <span className="font-medium text-purple-800">{plan.dataAmount}</span>
-              </div>
-            )}
-            {plan.callMinutes && (
-              <div className="flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-emerald-100 border border-emerald-200 px-3 py-2 rounded-xl">
-                <Phone className="h-4 w-4 text-emerald-600" />
-                <span className="font-medium text-emerald-800">{plan.callMinutes}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Features */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 mb-2">
-              <Star className="h-4 w-4 text-yellow-500" />
-              <span className="font-semibold text-sm text-foreground">מה כלול במסלול:</span>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-              {plan.features.slice(0, 6).map((feature, index) => (
-                <div key={index} className="flex items-start gap-2 text-sm">
-                  <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-foreground leading-relaxed font-medium">{feature}</span>
-                </div>
-              ))}
-            </div>
-            {plan.features.length > 6 && (
-              <div className="text-xs text-muted-foreground mt-2">
-                ועוד {plan.features.length - 6} הטבות נוספות...
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Price and Action */}
-        <div className="flex flex-col items-end gap-4 flex-shrink-0">
-          <div className="text-center relative">
-            {/* Price highlight */}
-            <div className="absolute -inset-3 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative">
-              <div className="text-4xl font-black bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-                {formatPrice()}
-              </div>
-              {plan.category !== 'electricity' && (
-                <div className="text-sm text-muted-foreground font-medium">לחודש</div>
-              )}
-              {plan.regularPrice && plan.regularPrice > 0 && (
-                <div className="text-xs text-muted-foreground line-through mt-1">
-                  ₪{Math.round(plan.regularPrice * 1.2)}
-                </div>
-              )}
-            </div>
-          </div>
-          
-          {/* Savings indicator */}
-          {plan.regularPrice && plan.regularPrice > 50 && (
-            <div className="text-center">
-              <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold text-xs">
-                חוסכים ₪{Math.round(plan.regularPrice * 0.2)}
-              </Badge>
-            </div>
-          )}
-          
-          <div className="flex flex-col gap-2">
-            <Button 
-              className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" 
-              onClick={() => setIsFormOpen(true)}
-            >
-              <span className="flex items-center gap-2">
-                🚀 עבור עכשיו
-              </span>
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="border-primary/30 text-primary hover:bg-primary/5 text-xs"
-            >
-              פרטים נוספים
-            </Button>
-          </div>
+        
+        <div className="flex flex-col items-end gap-1">
+          <Badge className="bg-gradient-to-r from-success to-success/80 text-white shadow text-xs">
+            <Star className="ml-1 h-2 w-2 fill-current" />
+            פופולרי
+          </Badge>
+          <Badge className="bg-gradient-to-r from-primary to-primary-glow text-white shadow text-xs">
+            <Award className="ml-1 h-2 w-2" />
+            מומלץ
+          </Badge>
         </div>
       </div>
-      
-      <SwitchRequestForm 
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        selectedPlan={plan}
-      />
-    </article>
+
+      {/* Price */}
+      <div className="text-center p-3 bg-gradient-to-br from-accent/30 to-accent/10 rounded-xl border border-accent/20">
+        <div className="space-y-1">
+          <p className="text-2xl font-black text-primary group-hover:scale-105 transition-transform duration-300">
+            {formatPrice()}
+          </p>
+          <p className="text-xs text-muted-foreground font-medium">לחודש</p>
+          {plan.regularPrice && plan.regularPrice > 0 && (
+            <p className="text-xs text-muted-foreground line-through mt-1">
+              ₪{Math.round(plan.regularPrice * 1.2)}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Features */}
+      <div className="space-y-2">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs">
+            <Clock className="h-3 w-3 text-muted-foreground" />
+            <span className="text-muted-foreground">מסלול מתקדם</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            <Shield className="h-3 w-3 text-muted-foreground" />
+            <span className="text-muted-foreground">שירות מקצועי</span>
+          </div>
+        </div>
+        
+        {/* Features list */}
+        <div className="space-y-1">
+          {plan.features.slice(0, 3).map((feature, index) => (
+            <div key={index} className="flex items-start gap-2 text-xs">
+              <Check className="h-3 w-3 text-success flex-shrink-0 mt-0.5" />
+              <span className="text-foreground leading-tight">{feature}</span>
+            </div>
+          ))}
+          {plan.features.length > 3 && (
+            <div className="text-xs text-muted-foreground">
+              ועוד {plan.features.length - 3} הטבות...
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Action Button */}
+      <Button 
+        className="w-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary text-white font-semibold py-2 rounded-lg shadow hover:shadow-lg transition-all duration-300 group-hover:scale-[1.01] text-sm"
+        onClick={() => setIsFormOpen(true)}
+      >
+        <ExternalLink className="ml-1 h-3 w-3" />
+        בחר מסלול זה
+      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
   );
 };
 
@@ -257,27 +207,41 @@ const AllPlans = ({ initialCategories = [] }: AllPlansProps = {}) => {
     <Layout>
       <div dir="rtl" className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
         <div className="container mx-auto px-4 py-12">
-          {/* Header */}
-          <header className="text-center mb-8">
-            <div className="mb-4">
-              {initialCategories.length > 0 && (
-                <div className="mb-4">
-                  <Badge className="bg-gradient-to-r from-primary to-primary/80 text-white px-4 py-2 text-base font-bold">
-                    🎯 מסלולים מומלצים בהתאם לניתוח שלכם
-                  </Badge>
-                </div>
-              )}
-              <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-3">
-                המסלולים הטובים ביותר עבורכם
+          {/* Hero Section */}
+          <div className="relative bg-gradient-to-br from-primary/10 via-primary-glow/5 to-success/10 rounded-2xl p-6 md:p-8 text-center space-y-4 overflow-hidden">
+            {/* Background decorations */}
+            <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-x-16 -translate-y-16 blur-2xl"></div>
+            <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-success/20 to-transparent rounded-full translate-x-16 translate-y-16 blur-2xl"></div>
+            
+            <div className="relative z-10 space-y-3">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-xl shadow-lg">
+                <Target className="h-6 w-6 text-white" />
+              </div>
+              
+              <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary via-primary-glow to-success bg-clip-text text-transparent leading-tight">
+                כל המסלולים הזמינים
               </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                {initialCategories.length > 0 
-                  ? `נמצאו ${filteredPlans.length} מסלולים מותאמים לתחומים שבחרתם`
-                  : `בחר את המסלול המתאים לך מבין ${manualPlans.length} המסלולים הזמינים`
-                }
+              
+              <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                גלה את כל האפשרויות הזמינות בשוק ומצא את המסלול המושלם עבורך
               </p>
+              
+              <div className="flex flex-wrap justify-center gap-2">
+                <Badge variant="outline" className="px-3 py-1 text-sm bg-white/50 backdrop-blur-sm">
+                  <Sparkles className="ml-1 h-3 w-3" />
+                  מסלולים מעודכנים
+                </Badge>
+                <Badge variant="outline" className="px-3 py-1 text-sm bg-white/50 backdrop-blur-sm">
+                  <Shield className="ml-1 h-3 w-3" />
+                  מחירים אמיתיים
+                </Badge>
+                <Badge variant="outline" className="px-3 py-1 text-sm bg-white/50 backdrop-blur-sm">
+                  <Zap className="ml-1 h-3 w-3" />
+                  השוואה מהירה
+                </Badge>
+              </div>
             </div>
-          </header>
+          </div>
 
           {/* Category Filter */}
           <div className="flex flex-wrap gap-3 justify-center mb-12">
