@@ -226,54 +226,25 @@ export const NewDetailedAnalysisResults = ({ results, onBackToInput }: NewDetail
             </div>
           </div>
 
-          {/* Enhanced Savings Header */}
-          <div className="relative bg-gradient-to-br from-success/20 via-success/10 to-primary/10 rounded-3xl p-8 overflow-hidden shadow-2xl">
-            {/* Background decorations */}
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-success/30 to-transparent rounded-full -translate-y-16 translate-x-16 blur-3xl animate-pulse"></div>
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-primary/20 to-transparent rounded-full translate-y-8 -translate-x-8 blur-2xl animate-pulse delay-1000"></div>
-            </div>
-            
-            <div className="relative z-10 text-center space-y-6">
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-success to-success/80 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                  <CheckCircle className="h-6 w-6 text-white" />
-                </div>
-                <h2 className="text-3xl font-black bg-gradient-to-r from-success via-success/80 to-primary bg-clip-text text-transparent">
-                  החיסכון שלך
-                </h2>
-                <div className="w-12 h-12 bg-gradient-to-br from-success to-success/80 rounded-full flex items-center justify-center shadow-lg animate-bounce delay-300">
-                  <CheckCircle className="h-6 w-6 text-white" />
-                </div>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-                <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-6 border border-success/30 shadow-xl">
-                  <ArrowLeft className="h-8 w-8 text-success mx-auto mb-3" />
-                  <p className="text-4xl font-black text-success mb-1">
-                    ₪{totalMonthlySavings.toLocaleString()}
-                  </p>
-                  <p className="text-lg font-semibold text-success/80">חיסכון חודשי</p>
-                </div>
-                
-                <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-6 border border-primary/30 shadow-xl">
-                  <Clock className="h-8 w-8 text-primary mx-auto mb-3" />
-                  <p className="text-4xl font-black text-primary mb-1">
-                    ₪{totalAnnualSavings.toLocaleString()}
-                  </p>
-                  <p className="text-lg font-semibold text-primary/80">חיסכון שנתי</p>
-                </div>
-              </div>
-              
-              <div className="bg-gradient-to-r from-white/30 to-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                <p className="text-xl font-bold text-success mb-2">
-                  🎉 מדהים! תחסוך {totalAnnualSavings.toLocaleString()}₪ השנה
-                </p>
-                <p className="text-muted-foreground">
-                  זמן מעבר משוער: {estimatedSwitchTime}
-                </p>
-              </div>
-            </div>
+          {/* KPI Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <KPICard
+              title="חיסכון חודשי משוער"
+              value={`₪${totalMonthlySavings.toLocaleString()}`}
+              icon={<ArrowLeft className="h-5 w-5 text-success" />}
+              trend="positive"
+            />
+            <KPICard
+              title="חיסכון שנתי משוער"
+              value={`₪${totalAnnualSavings.toLocaleString()}`}
+              icon={<CheckCircle className="h-5 w-5 text-success" />}
+              trend="positive"
+            />
+            <KPICard
+              title="זמן מעבר משוער"
+              value={estimatedSwitchTime}
+              icon={<Clock className="h-5 w-5 text-primary" />}
+            />
           </div>
 
           {/* Filter Bar */}
@@ -311,56 +282,18 @@ export const NewDetailedAnalysisResults = ({ results, onBackToInput }: NewDetail
             </Button>
           </div>
 
-          {/* Plans List */}
-          <div className="space-y-4">
+          {/* Plans Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPlans.map((plan) => (
-              <div key={plan.id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
-                      <span className="text-lg font-bold text-primary">{plan.provider.charAt(0)}</span>
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-lg">{plan.provider}</h3>
-                      <p className="text-gray-600">{plan.name}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-6">
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-primary">₪{plan.price}</div>
-                      <div className="text-sm text-gray-500">לחודש</div>
-                    </div>
-                    
-                    {plan.savings > 0 && (
-                      <div className="text-right">
-                        <div className="text-xl font-bold text-green-600">-₪{plan.savings}</div>
-                        <div className="text-sm text-green-500">חיסכון חודשי</div>
-                      </div>
-                    )}
-                    
-                    <Button 
-                      onClick={() => handleConnect(plan.id)}
-                      disabled={isLoading}
-                      className="bg-primary hover:bg-primary/90"
-                    >
-                      {isLoading ? 'מעבד...' : 'התחבר'}
-                    </Button>
-                  </div>
-                </div>
-                
-                {plan.features && plan.features.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <div className="flex flex-wrap gap-2">
-                      {plan.features.slice(0, 3).map((feature: string, index: number) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {feature}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+              <PlanCard
+                key={plan.id}
+                plan={plan}
+                categoryConfig={categoryConfig}
+                selectedPlans={selectedPlans}
+                setSelectedPlans={setSelectedPlans}
+                onConnect={handleConnect}
+                isLoading={isLoading}
+              />
             ))}
           </div>
 

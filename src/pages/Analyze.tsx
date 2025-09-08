@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Calculator, Shield, Zap, Award } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { getCheapestPlan, calculateAnnualSavings, getProvidersByCategory } from '@/data/providers';
 import { AnalysisInput } from '@/components/AnalysisInput';
 import { ResultsGrid } from '@/components/ResultsGrid';
@@ -276,85 +276,69 @@ export const Analyze = () => {
   }, [uploadedFiles, analysisResults]);
 
   if (activeStep === 'results') {
-    // Get the active categories to pass to AllPlans
-    const activeCategories = Object.values(categoryData)
-      .filter(cat => cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0)
-      .map(cat => cat.category);
-    
     return (
-      <AllPlans initialCategories={activeCategories} />
+      <AllPlans />
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/10 animate-fade-in">
-      {/* Enhanced Background */}
+      {/* Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-gradient-to-br from-primary/8 to-transparent rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-56 h-56 bg-gradient-to-tr from-success/8 to-transparent rounded-full blur-2xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-r from-primary-glow/5 to-accent/5 rounded-full blur-xl animate-pulse delay-500"></div>
+        <div className="absolute top-20 left-20 w-32 h-32 gradient-primary rounded-full blur-3xl opacity-20 animate-float" />
+        <div className="absolute top-40 right-32 w-24 h-24 gradient-electric rounded-full blur-2xl opacity-15 animate-bounce-gentle" />
+        <div className="absolute bottom-32 left-1/3 w-40 h-40 gradient-sunset rounded-full blur-3xl opacity-10 animate-pulse" />
       </div>
 
       <Layout>
-        <div className="max-w-3xl mx-auto space-y-8 relative z-10 animate-fade-in">
-          {/* Enhanced Hero Section */}
-          <div className="text-center space-y-5">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary to-success rounded-full blur-xl opacity-20 animate-pulse scale-125"></div>
-              <div className="relative bg-gradient-to-r from-primary via-primary-glow to-success p-4 rounded-full shadow-xl inline-block">
-                <Calculator className="h-8 w-8 text-white animate-bounce" />
-              </div>
-            </div>
-            
-            <div className="space-y-3">
-              <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary via-primary-glow to-success bg-clip-text text-transparent leading-tight">
-                נתח את החשבונות שלך
+        <div className="relative z-10 space-y-8">
+          {/* Hero Section */}
+          <div className="text-center space-y-4 py-8">
+            <div className="relative inline-block">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary-glow to-electric-blue bg-clip-text text-transparent animate-shimmer-text bg-300%">
+                מנתח חכם לחיסכון
               </h1>
-              <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                העלה חשבונות או הזן פרטים ונגלה לך כמה תוכל לחסוך עם מסלולים מתקדמים
-              </p>
+              <div className="absolute -inset-4 gradient-primary opacity-20 blur-xl rounded-full -z-10" />
             </div>
-            
-            <div className="flex flex-wrap justify-center gap-2">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                <Shield className="h-3 w-3 text-success animate-pulse" />
-                <span className="text-sm font-semibold">מאובטח ופרטי</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                <Zap className="h-3 w-3 text-primary animate-pulse delay-200" />
-                <span className="text-sm font-semibold">תוצאות מיידיות</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                <Award className="h-3 w-3 text-success animate-pulse delay-400" />
-                <span className="text-sm font-semibold">מסלולים מומלצים</span>
-              </div>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              בדקו את ההוצאות החודשיות שלכם וגלו כמה תוכלו לחסוך עם הספקים הטובים ביותר
+            </p>
+            <div className="flex items-center justify-center gap-3 text-sm text-muted-foreground bg-gradient-to-r from-accent/50 to-primary/10 p-3 rounded-lg border border-primary/20">
+              <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
+              <span>מעודכן בזמן אמת</span>
+              <div className="w-1 h-4 bg-border" />
+              <span>מאובטח ומוגן</span>
+              <div className="w-1 h-4 bg-border" />
+              <span>ללא עלות</span>
             </div>
           </div>
 
           {/* Webhook Configuration Alert */}
           {!isWebhookConfigured && (
-            <Alert className="border border-warning/50 bg-gradient-to-r from-warning/10 to-golden-yellow/10 shadow-md">
-              <AlertDescription className="text-center">
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <span className="text-warning-foreground text-sm">
-                    כדי לשלוח נתונים ל-Google Sheets, יש להגדיר Zapier webhook
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-warning/50 hover:bg-warning/10 hover:border-warning text-xs"
-                    onClick={() => window.open('/integration-test', '_blank')}
-                  >
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                    פתח הגדרות
-                  </Button>
-                </div>
-              </AlertDescription>
-            </Alert>
+            <div className="max-w-4xl mx-auto">
+              <Alert className="border-2 border-warning/50 bg-gradient-to-r from-warning/10 to-golden-yellow/10 shadow-colorful">
+                <AlertDescription className="text-center">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <span className="text-warning-foreground font-medium">
+                      כדי לשלוח נתונים ל-Google Sheets, יש להגדיר Zapier webhook
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-warning/50 hover:bg-warning/10 hover:border-warning"
+                      onClick={() => window.open('/integration-test', '_blank')}
+                    >
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                      פתח הגדרות Zapier
+                    </Button>
+                  </div>
+                </AlertDescription>
+              </Alert>
+            </div>
           )}
 
           {/* Main Analysis Interface */}
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <AnalysisInput
               uploadedFiles={uploadedFiles}
               categoryData={categoryData}
@@ -368,35 +352,35 @@ export const Analyze = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="max-w-2xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div className="text-center p-3 glass rounded-xl border border-white/20 hover-scale">
-                <div className="w-8 h-8 gradient-primary rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-white font-bold text-sm">AI</span>
+          <div className="max-w-3xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center p-4 glass rounded-xl border border-white/20 hover-scale">
+                <div className="w-10 h-10 gradient-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span className="text-white font-bold text-lg">AI</span>
                 </div>
-                <h3 className="font-semibold text-sm mb-1">ניתוח חכם</h3>
-                <p className="text-muted-foreground text-xs">
-                  אלגוריתמים מתקדמים לזיהוי החיסכון הטוב ביותר
+                <h3 className="font-semibold text-base mb-2">ניתוח חכם</h3>
+                <p className="text-muted-foreground text-sm">
+                  אלגוריתמים מתקדמים לזיהוי החיסכון הטוב ביותר עבורכם
                 </p>
               </div>
               
-              <div className="text-center p-3 glass rounded-xl border border-white/20 hover-scale">
-                <div className="w-8 h-8 gradient-success rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-white font-bold text-sm">🔒</span>
+              <div className="text-center p-4 glass rounded-xl border border-white/20 hover-scale">
+                <div className="w-10 h-10 gradient-success rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span className="text-white font-bold">🔒</span>
                 </div>
-                <h3 className="font-semibold text-sm mb-1">מאובטח לחלוטין</h3>
-                <p className="text-muted-foreground text-xs">
-                  הנתונים מוגנים ברמת אבטחה בנקאית
+                <h3 className="font-semibold text-base mb-2">מאובטח לחלוטין</h3>
+                <p className="text-muted-foreground text-sm">
+                  הנתונים שלכם מוגנים ברמת אבטחה בנקאית
                 </p>
               </div>
               
-              <div className="text-center p-3 glass rounded-xl border border-white/20 hover-scale">
-                <div className="w-8 h-8 gradient-electric rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-white font-bold text-sm">⚡</span>
+              <div className="text-center p-4 glass rounded-xl border border-white/20 hover-scale">
+                <div className="w-10 h-10 gradient-electric rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span className="text-white font-bold">⚡</span>
                 </div>
-                <h3 className="font-semibold text-sm mb-1">תוצאות מיידיות</h3>
-                <p className="text-muted-foreground text-xs">
-                  המלצות מותאמות אישית תוך שניות
+                <h3 className="font-semibold text-base mb-2">תוצאות מיידיות</h3>
+                <p className="text-muted-foreground text-sm">
+                  קבלו המלצות מותאמות אישית תוך שניות
                 </p>
               </div>
             </div>

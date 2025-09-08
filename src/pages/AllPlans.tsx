@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { 
-  Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, 
-  Search, Star, Award, Gift, Clock, Shield, ExternalLink, Target, Sparkles 
-} from "lucide-react";
+import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, Search } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { SwitchRequestForm } from "@/components/forms/SwitchRequestForm";
@@ -64,118 +60,97 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   };
 
   return (
-                <Card key={plan.id} className="group hover:shadow-lg transition-all duration-300 border hover:border-primary/30 bg-gradient-to-br from-white to-gray-50/50 relative overflow-hidden">
-                  {/* Background gradient on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-success/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
-                  <CardContent className="p-4 relative z-10">
-                    <div className="space-y-4">
-                      {/* Header */}
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-glow rounded-lg flex items-center justify-center shadow group-hover:scale-110 transition-transform duration-300">
-              {getCategoryIcon()}
+    <article className="bg-white/90 backdrop-blur-sm border border-border/50 rounded-xl hover:shadow-lg hover:border-primary/30 transition-all duration-300 p-4 animate-slide-up group">
+      <div className="flex items-center justify-between gap-4">
+        {/* Company Logo/Icon */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
+            <Building2 className="h-6 w-6 text-primary group-hover:text-white transition-colors duration-300" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Badge variant="outline" className="text-xs bg-primary/5 text-primary border-primary/20">
+                {getCategoryLabel()}
+              </Badge>
             </div>
-                            <div>
-              <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
-                {plan.company}
-              </h3>
-              <p className="text-xs text-muted-foreground">{getCategoryLabel()}</p>
+            <h3 className="font-bold text-lg text-foreground">{plan.company}</h3>
+          </div>
+        </div>
+
+        {/* Plan Details */}
+        <div className="flex-1 min-w-0">
+          <h4 className="font-semibold text-foreground mb-2 text-base">{plan.planName}</h4>
+          
+          {/* Speed/Data Info */}
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3 flex-wrap">
+            {plan.category === 'internet' && plan.downloadSpeed && (
+              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
+                <Download className="h-3 w-3 text-primary" />
+                <span className="text-xs">{plan.downloadSpeed}</span>
+              </div>
+            )}
+            {plan.category === 'internet' && plan.uploadSpeed && (
+              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
+                <Upload className="h-3 w-3 text-primary" />
+                <span className="text-xs">{plan.uploadSpeed}</span>
+              </div>
+            )}
+            {plan.dataAmount && (
+              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
+                <Wifi className="h-3 w-3 text-primary" />
+                <span className="text-xs">{plan.dataAmount}</span>
+              </div>
+            )}
+            {plan.callMinutes && (
+              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
+                <Phone className="h-3 w-3 text-primary" />
+                <span className="text-xs">{plan.callMinutes}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Features */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
+            {plan.features.slice(0, 4).map((feature, index) => (
+              <div key={index} className="flex items-start gap-2 text-xs">
+                <Check className="h-3 w-3 text-success flex-shrink-0 mt-0.5" />
+                <span className="text-muted-foreground leading-tight">{feature}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Price and Action */}
+        <div className="flex flex-col items-end gap-3 flex-shrink-0">
+          <div className="text-center">
+            <div className="text-2xl font-black text-primary">
+              {formatPrice()}
             </div>
+            {plan.category !== 'electricity' && (
+              <div className="text-xs text-muted-foreground">לחודש</div>
+            )}
           </div>
           
-          <h4 className="text-sm font-semibold text-foreground leading-tight">
-            {plan.planName}
-          </h4>
-        </div>
-        
-        <div className="flex flex-col items-end gap-1">
-          <Badge className="bg-gradient-to-r from-success to-success/80 text-white shadow text-xs">
-            <Star className="ml-1 h-2 w-2 fill-current" />
-            פופולרי
-          </Badge>
-          <Badge className="bg-gradient-to-r from-primary to-primary-glow text-white shadow text-xs">
-            <Award className="ml-1 h-2 w-2" />
-            מומלץ
-          </Badge>
+          <Button 
+            className="btn-gradient text-sm px-4 py-2" 
+            onClick={() => setIsFormOpen(true)}
+          >
+            עבור עכשיו
+          </Button>
         </div>
       </div>
-
-      {/* Price */}
-      <div className="text-center p-3 bg-gradient-to-br from-accent/30 to-accent/10 rounded-xl border border-accent/20">
-        <div className="space-y-1">
-          <p className="text-2xl font-black text-primary group-hover:scale-105 transition-transform duration-300">
-            {formatPrice()}
-          </p>
-          <p className="text-xs text-muted-foreground font-medium">לחודש</p>
-          {plan.regularPrice && plan.regularPrice > 0 && (
-            <p className="text-xs text-muted-foreground line-through mt-1">
-              ₪{Math.round(plan.regularPrice * 1.2)}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Features */}
-      <div className="space-y-2">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs">
-            <Clock className="h-3 w-3 text-muted-foreground" />
-            <span className="text-muted-foreground">מסלול מתקדם</span>
-          </div>
-          <div className="flex items-center gap-2 text-xs">
-            <Shield className="h-3 w-3 text-muted-foreground" />
-            <span className="text-muted-foreground">שירות מקצועי</span>
-          </div>
-        </div>
-        
-        {/* Features list */}
-        <div className="space-y-1">
-          {plan.features.slice(0, 3).map((feature, index) => (
-            <div key={index} className="flex items-start gap-2 text-xs">
-              <Check className="h-3 w-3 text-success flex-shrink-0 mt-0.5" />
-              <span className="text-foreground leading-tight">{feature}</span>
-            </div>
-          ))}
-          {plan.features.length > 3 && (
-            <div className="text-xs text-muted-foreground">
-              ועוד {plan.features.length - 3} הטבות...
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Action Button */}
-      <Button 
-        className="w-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary text-white font-semibold py-2 rounded-lg shadow hover:shadow-lg transition-all duration-300 group-hover:scale-[1.01] text-sm"
-        onClick={() => setIsFormOpen(true)}
-      >
-        <ExternalLink className="ml-1 h-3 w-3" />
-        בחר מסלול זה
-      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+      
+      <SwitchRequestForm 
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        selectedPlan={plan}
+      />
+    </article>
   );
 };
 
-interface AllPlansProps {
-  initialCategories?: ('electricity' | 'cellular' | 'internet' | 'tv')[];
-}
-
-const AllPlans = ({ initialCategories = [] }: AllPlansProps = {}) => {
-  // Determine initial category based on what was analyzed
-  const getInitialCategory = () => {
-    if (initialCategories.length === 1) {
-      const category = initialCategories[0];
-      if (category === 'cellular') return 'mobile';
-      return category as 'electricity' | 'internet' | 'mobile';
-    }
-    return 'all';
-  };
-  
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile'>(getInitialCategory());
+const AllPlans = () => {
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile'>('all');
   
   useEffect(() => {
     document.title = "כל המסלולים | חסכונט";
@@ -207,41 +182,17 @@ const AllPlans = ({ initialCategories = [] }: AllPlansProps = {}) => {
     <Layout>
       <div dir="rtl" className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
         <div className="container mx-auto px-4 py-12">
-          {/* Hero Section */}
-          <div className="relative bg-gradient-to-br from-primary/10 via-primary-glow/5 to-success/10 rounded-2xl p-6 md:p-8 text-center space-y-4 overflow-hidden">
-            {/* Background decorations */}
-            <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-x-16 -translate-y-16 blur-2xl"></div>
-            <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-success/20 to-transparent rounded-full translate-x-16 translate-y-16 blur-2xl"></div>
-            
-            <div className="relative z-10 space-y-3">
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-xl shadow-lg">
-                <Target className="h-6 w-6 text-white" />
-              </div>
-              
-              <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary via-primary-glow to-success bg-clip-text text-transparent leading-tight">
-                כל המסלולים הזמינים
+          {/* Header */}
+          <header className="text-center mb-8">
+            <div className="mb-4">
+              <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-3">
+                כל המסלולים
               </h1>
-              
-              <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                גלה את כל האפשרויות הזמינות בשוק ומצא את המסלול המושלם עבורך
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                בחר את המסלול המתאים לך מבין {manualPlans.length} המסלולים הזמינים
               </p>
-              
-              <div className="flex flex-wrap justify-center gap-2">
-                <Badge variant="outline" className="px-3 py-1 text-sm bg-white/50 backdrop-blur-sm">
-                  <Sparkles className="ml-1 h-3 w-3" />
-                  מסלולים מעודכנים
-                </Badge>
-                <Badge variant="outline" className="px-3 py-1 text-sm bg-white/50 backdrop-blur-sm">
-                  <Shield className="ml-1 h-3 w-3" />
-                  מחירים אמיתיים
-                </Badge>
-                <Badge variant="outline" className="px-3 py-1 text-sm bg-white/50 backdrop-blur-sm">
-                  <Zap className="ml-1 h-3 w-3" />
-                  השוואה מהירה
-                </Badge>
-              </div>
             </div>
-          </div>
+          </header>
 
           {/* Category Filter */}
           <div className="flex flex-wrap gap-3 justify-center mb-12">
