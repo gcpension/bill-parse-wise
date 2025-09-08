@@ -282,34 +282,111 @@ export const Analyze = () => {
   }
 
   return (
-    <Layout>
-      {!isWebhookConfigured && (
-        <div className="max-w-3xl mx-auto mb-4">
-          <Alert>
-            <AlertDescription>
-              כדי לשלוח נתונים ל-Google Sheets, יש להגדיר Zapier webhook. ניתן לבצע זאת בעמוד הבדיקה.
-              <Button
-                variant="outline"
-                size="sm"
-                className="ml-2"
-                onClick={() => window.open('/integration-test', '_blank')}
-              >
-                פתח הגדרות Zapier
-              </Button>
-            </AlertDescription>
-          </Alert>
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/10 animate-fade-in">
+      {/* Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-20 w-32 h-32 gradient-primary rounded-full blur-3xl opacity-20 animate-float" />
+        <div className="absolute top-40 right-32 w-24 h-24 gradient-electric rounded-full blur-2xl opacity-15 animate-bounce-gentle" />
+        <div className="absolute bottom-32 left-1/3 w-40 h-40 gradient-sunset rounded-full blur-3xl opacity-10 animate-pulse" />
+      </div>
+
+      <Layout>
+        <div className="relative z-10 space-y-8">
+          {/* Hero Section */}
+          <div className="text-center space-y-6 py-12">
+            <div className="relative inline-block">
+              <h1 className="text-6xl font-bold bg-gradient-to-r from-primary via-primary-glow to-electric-blue bg-clip-text text-transparent animate-shimmer-text bg-300%">
+                מנתח חכם לחיסכון
+              </h1>
+              <div className="absolute -inset-4 gradient-primary opacity-20 blur-xl rounded-full -z-10" />
+            </div>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              בדקו את ההוצאות החודשיות שלכם וגלו כמה תוכלו לחסוך עם הספקים הטובים ביותר במשק הישראלי
+            </p>
+            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground bg-gradient-to-r from-accent/50 to-primary/10 p-4 rounded-xl border border-primary/20">
+              <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
+              <span>מעודכן בזמן אמת</span>
+              <div className="w-1 h-4 bg-border" />
+              <span>מאובטח ומוגן</span>
+              <div className="w-1 h-4 bg-border" />
+              <span>ללא עלות</span>
+            </div>
+          </div>
+
+          {/* Webhook Configuration Alert */}
+          {!isWebhookConfigured && (
+            <div className="max-w-4xl mx-auto">
+              <Alert className="border-2 border-warning/50 bg-gradient-to-r from-warning/10 to-golden-yellow/10 shadow-colorful">
+                <AlertDescription className="text-center">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <span className="text-warning-foreground font-medium">
+                      כדי לשלוח נתונים ל-Google Sheets, יש להגדיר Zapier webhook
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-warning/50 hover:bg-warning/10 hover:border-warning"
+                      onClick={() => window.open('/integration-test', '_blank')}
+                    >
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                      פתח הגדרות Zapier
+                    </Button>
+                  </div>
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
+
+          {/* Main Analysis Interface */}
+          <div className="max-w-7xl mx-auto">
+            <AnalysisInput
+              uploadedFiles={uploadedFiles}
+              categoryData={categoryData}
+              isProcessing={isProcessing}
+              onFilesUploaded={handleFilesUploaded}
+              onFileRemove={handleFileRemove}
+              onCategoryToggle={handleCategoryToggle}
+              onCategoryDataUpdate={handleCategoryDataUpdate}
+              onAnalyze={handleAnalyzeAll}
+            />
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-6 glass rounded-2xl border border-white/20 hover-scale">
+                <div className="w-12 h-12 gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white font-bold text-xl">AI</span>
+                </div>
+                <h3 className="font-semibold text-lg mb-2">ניתוח חכם</h3>
+                <p className="text-muted-foreground text-sm">
+                  אלגוריתמים מתקדמים לזיהוי החיסכון הטוב ביותר עבורכם
+                </p>
+              </div>
+              
+              <div className="text-center p-6 glass rounded-2xl border border-white/20 hover-scale">
+                <div className="w-12 h-12 gradient-success rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white font-bold">🔒</span>
+                </div>
+                <h3 className="font-semibold text-lg mb-2">מאובטח לחלוטין</h3>
+                <p className="text-muted-foreground text-sm">
+                  הנתונים שלכם מוגנים ברמת אבטחה בנקאית
+                </p>
+              </div>
+              
+              <div className="text-center p-6 glass rounded-2xl border border-white/20 hover-scale">
+                <div className="w-12 h-12 gradient-electric rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white font-bold">⚡</span>
+                </div>
+                <h3 className="font-semibold text-lg mb-2">תוצאות מיידיות</h3>
+                <p className="text-muted-foreground text-sm">
+                  קבלו המלצות מותאמות אישית תוך שניות
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-      <AnalysisInput
-        uploadedFiles={uploadedFiles}
-        categoryData={categoryData}
-        isProcessing={isProcessing}
-        onFilesUploaded={handleFilesUploaded}
-        onFileRemove={handleFileRemove}
-        onCategoryToggle={handleCategoryToggle}
-        onCategoryDataUpdate={handleCategoryDataUpdate}
-        onAnalyze={handleAnalyzeAll}
-      />
-    </Layout>
+      </Layout>
+    </div>
   );
 };

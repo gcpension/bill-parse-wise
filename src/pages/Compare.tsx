@@ -53,7 +53,6 @@ export const Compare = () => {
   const providers = useMemo(() => {
     let filtered = getProvidersByCategory(selectedCategory);
     
-    // Search filter
     if (searchTerm) {
       filtered = filtered.filter(provider => 
         provider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -61,7 +60,6 @@ export const Compare = () => {
       );
     }
     
-    // Category filter
     if (filterBy === 'recommended') {
       filtered = filtered.filter(provider => 
         provider.plans.some(plan => plan.recommended)
@@ -72,7 +70,6 @@ export const Compare = () => {
       );
     }
     
-    // Sort
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'price':
@@ -119,407 +116,136 @@ export const Compare = () => {
   };
 
   return (
-    <Layout>
-      <div className="space-y-8 animate-fade-in">
-      {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight gradient-primary bg-clip-text text-transparent">
-          השוואת ספקים
-        </h1>
-        <p className="text-muted-foreground text-lg">
-          השווה בין כל הספקים בשוק הישראלי ומצא את החבילה המתאימה לך
-        </p>
+    <div className="min-h-screen bg-gradient-to-br from-primary/8 via-background to-accent/12 animate-fade-in">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-32 left-24 w-64 h-64 gradient-primary rounded-full blur-3xl opacity-15 animate-float" />
+        <div className="absolute top-96 right-32 w-40 h-40 gradient-electric rounded-full blur-2xl opacity-20 animate-bounce-gentle" />
       </div>
 
-      {/* Category Tabs */}
-      <Tabs value={selectedCategory} onValueChange={(value: any) => setSelectedCategory(value)}>
-        <TabsList className="grid w-full grid-cols-3 h-auto p-1">
-          {Object.entries(categoryNames).map(([key, name]) => {
-            const Icon = categoryIcons[key as keyof typeof categoryIcons];
-            return (
-              <TabsTrigger key={key} value={key} className="flex items-center space-x-2 rtl:space-x-reverse py-3">
-                <Icon className="h-5 w-5" />
-                <span className="text-base">{name}</span>
-              </TabsTrigger>
-            );
-          })}
-        </TabsList>
-
-        {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 bg-accent/30 p-4 rounded-lg">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="חפש ספק..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pr-10"
-              />
-            </div>
+      <Layout>
+        <div className="space-y-10 animate-fade-in relative z-10">
+          <div className="space-y-6 text-center py-12">
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-primary via-primary-glow to-electric-blue bg-clip-text text-transparent">
+              השוואת ספקים
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+              השווה בין כל הספקים בשוק הישראלי ומצא את החבילה המתאימה לך
+            </p>
           </div>
-          
-          <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
-            <SelectTrigger className="w-48">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="price">מיין לפי מחיר</SelectItem>
-              <SelectItem value="rating">מיין לפי דירוג</SelectItem>
-              <SelectItem value="name">מיין לפי שם</SelectItem>
-            </SelectContent>
-          </Select>
-          
-          <Select value={filterBy} onValueChange={(value: any) => setFilterBy(value)}>
-            <SelectTrigger className="w-48">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">כל הספקים</SelectItem>
-              <SelectItem value="recommended">מומלץ</SelectItem>
-              <SelectItem value="promotion">מבצעים</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
 
-        {/* Results Count */}
-        <div className="flex items-center justify-between">
-          <p className="text-muted-foreground">
-            נמצאו {providers.length} ספקי {categoryNames[selectedCategory]}
-          </p>
-          <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm text-muted-foreground">
-            <CheckCircle2 className="h-4 w-4" />
-            <span>עודכן לאחרונה: ינואר 2024</span>
-          </div>
-        </div>
+          <Tabs value={selectedCategory} onValueChange={(value: any) => setSelectedCategory(value)}>
+            <TabsList className="grid w-full grid-cols-3 h-auto p-2 max-w-4xl mx-auto">
+              {Object.entries(categoryNames).map(([key, name]) => {
+                const Icon = categoryIcons[key as keyof typeof categoryIcons];
+                return (
+                  <TabsTrigger key={key} value={key} className="flex items-center space-x-2 rtl:space-x-reverse py-4">
+                    <Icon className="h-6 w-6" />
+                    <span className="text-lg">{name}</span>
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
 
-        {/* Providers Grid */}
-        <TabsContent value={selectedCategory} className="space-y-6">
-          <div className="grid gap-6">
-            {providers.map((provider, index) => {
-              const bestPlan = getBestPlan(provider);
-              const lowestPrice = getLowestPrice(provider);
+            <div className="flex flex-col sm:flex-row gap-6 bg-accent/40 p-6 rounded-2xl max-w-6xl mx-auto">
+              <div className="flex-1">
+                <div className="relative">
+                  <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    placeholder="חפש ספק..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pr-12 h-12"
+                  />
+                </div>
+              </div>
               
-              return (
-                <Card 
-                  key={provider.id} 
-                  className="group relative overflow-hidden shadow-card hover:shadow-elegant transition-all duration-500 animate-slide-up border-l-4 border-l-primary/20 hover:border-l-primary"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-primary/5 via-transparent to-primary-glow/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+                <SelectTrigger className="w-60 h-12">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="price">מיין לפי מחיר</SelectItem>
+                  <SelectItem value="rating">מיין לפי דירוג</SelectItem>
+                  <SelectItem value="name">מיין לפי שם</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={filterBy} onValueChange={(value: any) => setFilterBy(value)}>
+                <SelectTrigger className="w-60 h-12">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">כל הספקים</SelectItem>
+                  <SelectItem value="recommended">מומלץ</SelectItem>
+                  <SelectItem value="promotion">מבצעים</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <TabsContent value={selectedCategory} className="space-y-8">
+              <div className="grid gap-8 max-w-6xl mx-auto">
+                {providers.map((provider, index) => {
+                  const bestPlan = getBestPlan(provider);
+                  const lowestPrice = getLowestPrice(provider);
                   
-                  <CardHeader className="relative z-10">
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-3">
-                        <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                          <div className="relative">
-                            <h3 className="text-2xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent group-hover:from-primary group-hover:to-primary-glow transition-all duration-300">
-                              {provider.name}
-                            </h3>
-                            <div className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-primary to-primary-glow group-hover:w-full transition-all duration-500" />
+                  return (
+                    <Card key={provider.id} className="group relative overflow-hidden shadow-elegant hover:shadow-glow transition-all duration-700">
+                      <CardHeader className="p-8">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-4 flex-1">
+                            <h3 className="text-3xl font-bold">{provider.name}</h3>
+                            <div className="flex gap-4 text-sm">
+                              <div className="flex items-center gap-2">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star key={i} className={`h-4 w-4 ${i < Math.floor(provider.rating) ? 'text-amber-500 fill-current' : 'text-gray-300'}`} />
+                                ))}
+                                <span>({provider.rating})</span>
+                              </div>
+                            </div>
+                            <p className="text-muted-foreground">{provider.description}</p>
                           </div>
-                          {bestPlan.recommended && (
-                            <Badge className="bg-gradient-to-r from-success to-green-500 text-white shadow-md animate-pulse border-0">
-                              <Award className="ml-1 h-3 w-3" />
-                              מומלץ ביותר
-                            </Badge>
-                          )}
-                          {bestPlan.discount && (
-                            <Badge className="bg-gradient-to-r from-destructive to-red-500 text-white shadow-md border-0">
-                              <TrendingDown className="ml-1 h-3 w-3" />
-                              מבצע חם
-                            </Badge>
-                          )}
-                        </div>
-                        
-                        <div className="flex flex-wrap items-center gap-4 text-sm">
-                          <div className="flex items-center space-x-1 rtl:space-x-reverse bg-amber-50 dark:bg-amber-900/20 px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800">
-                            {[...Array(5)].map((_, i) => (
-                              <Star 
-                                key={i} 
-                                className={`h-4 w-4 transition-colors duration-200 ${
-                                  i < Math.floor(provider.rating) 
-                                    ? 'text-amber-500 fill-current' 
-                                    : 'text-gray-300'
-                                }`} 
-                              />
-                            ))}
-                            <span className="font-semibold text-amber-700 dark:text-amber-300">({provider.rating})</span>
-                          </div>
-                          
-                          <div className="flex items-center space-x-1 rtl:space-x-reverse bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full border border-blue-200 dark:border-blue-800">
-                            <Phone className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                            <span className="text-blue-700 dark:text-blue-300 font-medium">{provider.customerService}</span>
-                          </div>
-                          
-                          <div className="flex items-center space-x-1 rtl:space-x-reverse bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-full border border-green-200 dark:border-green-800">
-                            <Globe className="h-4 w-4 text-green-600 dark:text-green-400" />
-                            <span className="text-green-700 dark:text-green-300 font-medium text-xs">{provider.website}</span>
+                          <div className="text-left ml-8">
+                            <div className="text-sm text-muted-foreground">החל מ-</div>
+                            <div className="text-4xl font-bold text-primary">{formatCurrency(lowestPrice)}</div>
                           </div>
                         </div>
-                        
-                        <p className="text-muted-foreground leading-relaxed">
-                          {provider.description}
-                        </p>
-                      </div>
+                      </CardHeader>
                       
-                      <div className="text-left relative">
-                        <div className="absolute -inset-2 bg-gradient-to-r from-primary/10 to-primary-glow/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <div className="relative z-10 p-2">
-                          <div className="text-sm text-muted-foreground font-medium">החל מ-</div>
-                          <div className="text-4xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent group-hover:from-green-600 group-hover:to-green-400 transition-all duration-300">
-                            {formatCurrency(lowestPrice)}
-                            <span className="text-base font-normal text-muted-foreground">
-                              /{selectedCategory === 'electricity' ? 'קוט"ש' : 'חודש'}
-                            </span>
-                          </div>
-                          {bestPlan.originalPrice && bestPlan.originalPrice > bestPlan.price && (
-                            <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                              <div className="text-sm text-muted-foreground line-through">
-                                {formatCurrency(bestPlan.originalPrice)}
-                              </div>
-                              <Badge variant="destructive" className="text-xs">
-                                חסכון {Math.round(((bestPlan.originalPrice - bestPlan.price) / bestPlan.originalPrice) * 100)}%
-                              </Badge>
-                            </div>
-                          )}
+                      <CardContent className="p-8">
+                        <div className="flex gap-3">
+                          <Button onClick={() => handleSwitchProvider(provider, bestPlan)} className="flex-1">
+                            עבור לספק זה
+                          </Button>
+                          <Button variant="outline" onClick={() => handleContact(provider)}>
+                            צור קשר
+                          </Button>
                         </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-6 relative z-10">
-                    {/* Plans */}
-                    <div className="space-y-4 relative z-10">
-                      <h4 className="font-semibold text-lg flex items-center space-x-2 rtl:space-x-reverse">
-                        <div className="w-1 h-6 bg-gradient-to-b from-primary to-primary-glow rounded-full" />
-                        <span>חבילות זמינות</span>
-                      </h4>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        {provider.plans.slice(0, 2).map((plan, planIndex) => (
-                          <div 
-                            key={plan.id} 
-                            className={`relative overflow-hidden p-5 rounded-xl border-2 transition-all duration-300 hover:scale-[1.02] ${
-                              plan.recommended 
-                                ? 'border-primary bg-gradient-to-br from-primary/10 via-primary/5 to-primary-glow/10 shadow-lg hover:shadow-primary/20' 
-                                : 'border-border bg-gradient-to-br from-accent/30 to-accent/10 hover:border-primary/50'
-                            }`}
-                            style={{ animationDelay: `${(index * 0.1) + (planIndex * 0.05)}s` }}
-                          >
-                            <div className="flex justify-between items-start mb-3">
-                              <div>
-                                <h5 className="font-semibold">{plan.name}</h5>
-                                {plan.discount && (
-                                  <Badge variant="outline" className="mt-1 text-xs">
-                                    הנחה {plan.discount.amount}%
-                                  </Badge>
-                                )}
-                              </div>
-                              <div className="text-right">
-                                <div className="text-xl font-bold text-primary">
-                                  {formatCurrency(plan.price)}
-                                </div>
-                                {plan.originalPrice && (
-                                  <div className="text-sm text-muted-foreground line-through">
-                                    {formatCurrency(plan.originalPrice)}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            
-                            <ul className="space-y-1 text-sm">
-                              {plan.features.slice(0, 3).map((feature, i) => (
-                                <li key={i} className="flex items-center space-x-2 rtl:space-x-reverse">
-                                  <CheckCircle2 className="h-3 w-3 text-success" />
-                                  <span>{feature}</span>
-                                </li>
-                              ))}
-                              {plan.features.length > 3 && (
-                                <li className="text-muted-foreground">
-                                  +{plan.features.length - 3} תכונות נוספות
-                                </li>
-                              )}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gradient-to-r from-transparent via-border to-transparent relative z-10">
-                      <Button 
-                        className="flex-1 bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-lg hover:shadow-primary/30 transform hover:scale-105 transition-all duration-300"
-                        onClick={() => handleSwitchProvider(provider, bestPlan)}
-                      >
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                        עבור לספק זה
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="flex-1 border-2 hover:border-primary hover:bg-primary/5 transform hover:scale-105 transition-all duration-300"
-                        onClick={() => handleShowDetails(provider)}
-                      >
-                        <Shield className="ml-2 h-4 w-4" />
-                        פרטים נוספים
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="border-2 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transform hover:scale-105 transition-all duration-300"
-                        onClick={() => handleContact(provider)}
-                      >
-                        <Phone className="ml-2 h-4 w-4" />
-                        צור קשר
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </TabsContent>
-      </Tabs>
-
-      {/* Contact Dialog */}
-      <Dialog open={!!showContactDialog} onOpenChange={() => setShowContactDialog(null)}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>יצירת קשר עם {showContactDialog?.name}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="text-center space-y-2">
-              <div className="text-2xl">📞</div>
-              <p className="font-semibold">טלפון: {showContactDialog?.customerService}</p>
-              <p className="text-sm text-muted-foreground">זמין בין השעות 8:00-20:00</p>
-            </div>
-            <div className="text-center space-y-2">
-              <div className="text-2xl">🌐</div>
-              <p className="font-semibold">אתר: {showContactDialog?.website}</p>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => {
-                  window.open(`https://${showContactDialog?.website}`, '_blank');
-                  toast({
-                    title: "נפתח באתר הספק",
-                    description: "האתר נפתח בכרטיסייה חדשה",
-                  });
-                }}
-              >
-                <Globe className="ml-2 h-4 w-4" />
-                עבור לאתר הספק
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Selected Plan Confirmation */}
-      {selectedPlan && (
-        <Dialog open={!!selectedPlan} onOpenChange={() => setSelectedPlan(null)}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>בחרת: {selectedPlan.plan.name}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="p-4 bg-success/10 rounded-lg">
-                <h4 className="font-semibold text-success mb-2">✨ בחירה מעולה!</h4>
-                <p className="text-sm">
-                  בחרת את {selectedPlan.plan.name} מ{selectedPlan.provider.name}
-                </p>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
-              <div className="space-y-2">
-                <h5 className="font-medium">הצעדים הבאים:</h5>
-                <ul className="text-sm space-y-1 text-muted-foreground">
-                  <li>1. צור קשר עם הספק החדש</li>
-                  <li>2. החתם על החוזה החדש</li>
-                  <li>3. הספק יטפל בביטול הספק הקודם</li>
-                </ul>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <Button 
-                  className="flex-1"
-                  onClick={() => handleContact(selectedPlan.provider)}
-                >
-                  צור קשר עכשיו
-                </Button>
-                <DigitalSignature
-                  category={selectedCategory}
-                  currentProvider={"לא צוין"}
-                  newProvider={selectedPlan.provider.name}
-                  newPlan={selectedPlan.plan.name}
-                  monthlySavings={0}
-                />
-                <Button variant="outline" onClick={() => setSelectedPlan(null)}>
+            </TabsContent>
+          </Tabs>
+
+          <Dialog open={!!showContactDialog} onOpenChange={() => setShowContactDialog(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>צור קשר עם {showContactDialog?.name}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  <span>{showContactDialog?.customerService}</span>
+                </div>
+                <Button onClick={() => setShowContactDialog(null)} className="w-full">
                   סגור
                 </Button>
               </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
-
-      {/* Tips Section */}
-      <Card className="shadow-card bg-gradient-to-br from-primary/5 to-primary-glow/5">
-        <CardHeader>
-          <CardTitle>טיפים להשוואה חכמה</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                </div>
-                <div>
-                  <h4 className="font-semibold">בדוק תנאים נסתרים</h4>
-                  <p className="text-sm text-muted-foreground">
-                    שים לב לעמלות חבויות, תקופות מחויבות ותנאי ביטול.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <TrendingDown className="h-5 w-5 text-green-600" />
-                </div>
-                <div>
-                  <h4 className="font-semibold">השווה מחירים שנתיים</h4>
-                  <p className="text-sm text-muted-foreground">
-                    מבצעים לתקופה מוגבלת עלולים להתייקר לאחר מכן.
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Star className="h-5 w-5 text-purple-600" />
-                </div>
-                <div>
-                  <h4 className="font-semibold">בדוק ביקורות לקוחות</h4>
-                  <p className="text-sm text-muted-foreground">
-                    דירוג גבוה בשירות הלקוחות חשוב לא פחות ממחיר זול.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Shield className="h-5 w-5 text-orange-600" />
-                </div>
-                <div>
-                  <h4 className="font-semibold">שמור על הגמישות</h4>
-                  <p className="text-sm text-muted-foreground">
-                    העדף חבילות ללא מחויבות לתקופה ארוכה.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </Layout>
     </div>
-    </Layout>
   );
 };
