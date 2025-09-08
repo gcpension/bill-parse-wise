@@ -311,18 +311,56 @@ export const NewDetailedAnalysisResults = ({ results, onBackToInput }: NewDetail
             </Button>
           </div>
 
-          {/* Plans Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Plans List */}
+          <div className="space-y-4">
             {filteredPlans.map((plan) => (
-              <PlanCard
-                key={plan.id}
-                plan={plan}
-                categoryConfig={categoryConfig}
-                selectedPlans={selectedPlans}
-                setSelectedPlans={setSelectedPlans}
-                onConnect={handleConnect}
-                isLoading={isLoading}
-              />
+              <div key={plan.id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
+                      <span className="text-lg font-bold text-primary">{plan.provider.charAt(0)}</span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg">{plan.provider}</h3>
+                      <p className="text-gray-600">{plan.name}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-6">
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-primary">₪{plan.price}</div>
+                      <div className="text-sm text-gray-500">לחודש</div>
+                    </div>
+                    
+                    {plan.savings > 0 && (
+                      <div className="text-right">
+                        <div className="text-xl font-bold text-green-600">-₪{plan.savings}</div>
+                        <div className="text-sm text-green-500">חיסכון חודשי</div>
+                      </div>
+                    )}
+                    
+                    <Button 
+                      onClick={() => handleConnect(plan.id)}
+                      disabled={isLoading}
+                      className="bg-primary hover:bg-primary/90"
+                    >
+                      {isLoading ? 'מעבד...' : 'התחבר'}
+                    </Button>
+                  </div>
+                </div>
+                
+                {plan.features && plan.features.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-gray-100">
+                    <div className="flex flex-wrap gap-2">
+                      {plan.features.slice(0, 3).map((feature: string, index: number) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {feature}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 

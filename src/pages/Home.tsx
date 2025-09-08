@@ -86,8 +86,38 @@ const Home = () => {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-emerald-400/20 to-cyan-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
+      {/* Process Banner */}
+      <section className="py-6">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-gradient-to-r from-primary/10 via-blue-600/10 to-purple-600/10 backdrop-blur-sm border border-primary/20 rounded-2xl p-6 shadow-lg">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-foreground">תהליך החיסכון שלך - 3 שלבים פשוטים</h2>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">1</div>
+                  <span className="text-muted-foreground">מלא פרטים (2 דקות)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">2</div>
+                  <span className="text-muted-foreground">קבל הצעות מותאמות</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">3</div>
+                  <span className="text-muted-foreground">החלף וחסוך מיד</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section */}
-      <section className="relative py-12 lg:py-16">
+      <section className="relative py-8 lg:py-12">
         <div className="container mx-auto px-4 lg:px-6">
           <div className="max-w-4xl mx-auto text-center">
             <div className={`transition-all duration-1000 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
