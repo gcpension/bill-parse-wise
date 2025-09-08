@@ -177,68 +177,35 @@ export const AnalysisInput = ({
 
   return (
     <div className="space-y-8">
-      {/* Enhanced Header with Real-Time Savings */}
-      <div className="text-center space-y-6">
+      {/* Compact Header */}
+      <div className="text-center space-y-4">
         <div className="relative">
-          <h1 className="text-5xl font-black gradient-primary bg-clip-text text-transparent animate-fade-in">
-            בואו נחסוך כסף ביחד
+          <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent animate-fade-in">
+            הזינו את הפרטים שלכם
           </h1>
-          <div className="absolute -top-2 -right-4 animate-bounce-gentle">
-            <Sparkles className="h-6 w-6 text-primary/60" />
-          </div>
-          <div className="absolute -bottom-2 -left-4 animate-bounce-gentle delay-1000">
-            <Star className="h-5 w-5 text-primary/40" />
-          </div>
         </div>
         
-        <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
-          הזינו פרטים ידנית כדי לקבל השוואת מחירים מדויקת ולגלות כמה תוכלו לחסוך
+        <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+          בחרו קטגוריות והזינו פרטים לקבלת השוואת מחירים מדויקת
         </p>
-
-        {/* Real-Time Savings Display */}
-        {totalPotentialSavings > 0 && (
-          <div className="relative overflow-hidden rounded-3xl shadow-elegant animate-scale-in">
-            <div className="absolute inset-0 gradient-success opacity-90"></div>
-            <div className="absolute inset-0">
-              <div className="absolute top-4 right-6 w-16 h-16 bg-white/10 rounded-full animate-pulse"></div>
-              <div className="absolute bottom-4 left-6 w-10 h-10 bg-white/10 rounded-full animate-pulse delay-500"></div>
-            </div>
-            <div className="relative p-6 text-center text-white">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <PiggyBank className="h-6 w-6 animate-pulse" />
-                <h3 className="text-lg font-bold">חיסכון צפוי</h3>
-              </div>
-              <div className="text-3xl font-black">
-                {formatCurrency(animatedSavings)} בחודש
-              </div>
-              <div className="text-sm text-white/80 mt-1">
-                {formatCurrency(animatedSavings * 12)} בשנה
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Enhanced Interactive Input Section */}
-      <Card className="shadow-elegant border-0 overflow-hidden">
-        <div className="absolute inset-0 gradient-card opacity-5"></div>
-        <CardHeader className="relative text-center pb-8">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <Target className="h-6 w-6 text-primary" />
-            <CardTitle className="text-2xl">בחרו תחומים לניתוח</CardTitle>
-            <Target className="h-6 w-6 text-primary" />
-          </div>
-          <p className="text-muted-foreground">לחצו על הקטגוריות שתרצו לבדוק והזינו פרטים</p>
+      {/* Compact Interactive Input Section */}
+      <Card className="shadow-lg border-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-primary-glow/3"></div>
+        <CardHeader className="relative text-center pb-4">
+          <CardTitle className="text-xl font-bold">בחרו קטגוריות לבדיקה</CardTitle>
+          <p className="text-muted-foreground text-sm">לחצו והזינו פרטים</p>
           
-          {/* Progress Indicator */}
-          <div className="mt-4 flex justify-center">
-            <div className="flex gap-2">
+          {/* Compact Progress Indicator */}
+          <div className="mt-3 flex justify-center">
+            <div className="flex gap-1">
               {Object.entries(categoryData).map(([key, data]) => (
                 <div 
                   key={key}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
                     data.isActive && data.monthlyAmount && parseFloat(data.monthlyAmount) > 0
-                      ? 'bg-success shadow-glow' 
+                      ? 'bg-success shadow-sm' 
                       : data.isActive 
                         ? 'bg-primary/50' 
                         : 'bg-muted-foreground/20'
@@ -250,7 +217,7 @@ export const AnalysisInput = ({
         </CardHeader>
         
         <CardContent className="relative">
-          <div className="grid gap-8">
+          <div className="grid gap-4">
             {Object.entries(categoryData).map(([key, data], index) => {
               const CategoryIcon = categoryIcons[data.category];
               const providers = getProvidersByCategory(data.category);
@@ -260,51 +227,45 @@ export const AnalysisInput = ({
               return (
                 <div 
                   key={key} 
-                  className={`group relative transition-all duration-500 animate-fade-in`}
-                  style={{ animationDelay: `${index * 150}ms` }}
+                  className={`group relative transition-all duration-300 animate-fade-in`}
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <Card className={`relative overflow-hidden transition-all duration-500 hover:shadow-elegant ${
+                  <Card className={`relative overflow-hidden transition-all duration-300 hover:shadow-md ${
                     data.isActive 
-                      ? 'ring-2 ring-primary shadow-card scale-[1.02] bg-primary/5' 
-                      : 'hover:shadow-card hover:scale-[1.01] cursor-pointer'
+                      ? 'ring-1 ring-primary shadow-sm bg-primary/3' 
+                      : 'hover:shadow-sm hover:scale-[1.005] cursor-pointer'
                   }`}
                   onClick={() => !data.isActive && onCategoryToggle(key)}
                   >
-                    {/* Background Pattern */}
-                    <div className={`absolute inset-0 opacity-10 ${gradientClass}`}></div>
+                    {/* Subtle Background Pattern */}
+                    <div className={`absolute inset-0 opacity-5 ${gradientClass}`}></div>
                     
-                    <CardHeader>
+                    <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                          <div className={`relative p-4 ${gradientClass} rounded-2xl shadow-colorful transition-transform duration-300 group-hover:scale-110`}>
-                            <CategoryIcon className="h-8 w-8 text-white" />
+                        <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                          <div className={`relative p-3 ${gradientClass} rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-105`}>
+                            <CategoryIcon className="h-6 w-6 text-white" />
                             {data.isActive && (
-                              <div className="absolute -top-1 -right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center">
-                                <Star className="h-3 w-3 text-white" />
+                              <div className="absolute -top-1 -right-1 w-5 h-5 bg-success rounded-full flex items-center justify-center">
+                                <Star className="h-2 w-2 text-white" />
                               </div>
                             )}
                           </div>
                           <div>
-                            <CardTitle className="text-2xl font-bold">{categoryNames[data.category]}</CardTitle>
-                            <p className="text-muted-foreground text-sm">
+                            <CardTitle className="text-lg font-bold">{categoryNames[data.category]}</CardTitle>
+                            <p className="text-muted-foreground text-xs">
                               {categoryDescriptions[data.category]}
                             </p>
-                            {data.isActive && savings > 0 && (
-                              <Badge variant="secondary" className="mt-2 bg-success/20 text-success font-bold">
-                                <TrendingUp className="h-3 w-3 ml-1" />
-                                חיסכון של {formatCurrency(savings)} לחודש
-                              </Badge>
-                            )}
                           </div>
                         </div>
                         
                         <Button
                           variant={data.isActive ? "default" : "outline"}
-                          size="lg"
+                          size="sm"
                           className={`transition-all duration-300 ${
                             data.isActive 
-                              ? 'gradient-primary text-white shadow-glow' 
-                              : 'hover:shadow-card'
+                              ? 'bg-gradient-to-r from-primary to-primary-glow text-white shadow-sm' 
+                              : 'hover:shadow-sm'
                           }`}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -313,12 +274,12 @@ export const AnalysisInput = ({
                         >
                           {data.isActive ? (
                             <>
-                              <Minus className="h-5 w-5 ml-2" />
+                              <Minus className="h-4 w-4 ml-1" />
                               הסר
                             </>
                           ) : (
                             <>
-                              <Plus className="h-5 w-5 ml-2" />
+                              <Plus className="h-4 w-4 ml-1" />
                               הוסף
                             </>
                           )}
@@ -327,38 +288,46 @@ export const AnalysisInput = ({
                     </CardHeader>
                     
                     {data.isActive && (
-                      <CardContent className="space-y-6 animate-fade-in">
-                        <div className="grid md:grid-cols-2 gap-6">
-                          <div className="space-y-3">
-                            <Label className="text-base font-semibold">ספק נוכחי</Label>
+                      <CardContent className="space-y-4 animate-fade-in pt-2">
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label className="text-sm font-semibold">ספק נוכחי</Label>
                             <Select 
                               value={data.currentProvider} 
                               onValueChange={(value) => onCategoryDataUpdate(key, 'currentProvider', value)}
                             >
-                            <SelectTrigger className="h-12 text-base border-2 hover:border-primary transition-colors bg-background">
-                              <SelectValue placeholder="בחרו ספק נוכחי" className="text-foreground" />
-                            </SelectTrigger>
-                              <SelectContent className="bg-background/95 backdrop-blur-sm border-2 shadow-xl z-[100] max-h-60 min-w-[200px]">
-                                <div className="bg-background/90 backdrop-blur-sm">
-                                  {providers.map((provider) => (
-                                    <SelectItem 
-                                      key={provider.name} 
-                                      value={provider.name} 
-                                      className="hover:bg-primary/10 focus:bg-primary/10 cursor-pointer bg-background/80"
-                                    >
-                                      <div className="flex items-center gap-3 py-1">
-                                        <div className="w-2 h-2 rounded-full bg-primary/60"></div>
-                                        <span className="font-medium text-foreground">{provider.name}</span>
-                                      </div>
-                                    </SelectItem>
-                                  ))}
-                                </div>
+                              <SelectTrigger className="h-14 text-base border-2 hover:border-primary/50 transition-all duration-300 bg-background shadow-sm">
+                                <SelectValue 
+                                  placeholder="👆 לחצו כאן לבחירת ספק נוכחי" 
+                                  className="text-foreground font-medium"
+                                />
+                              </SelectTrigger>
+                              <SelectContent className="bg-background backdrop-blur-lg border-2 border-primary/20 shadow-2xl z-[100] max-h-64 min-w-[250px]">
+                                {providers.length > 0 ? providers.map((provider) => (
+                                  <SelectItem 
+                                    key={provider.name} 
+                                    value={provider.name} 
+                                    className="hover:bg-primary/10 focus:bg-primary/15 cursor-pointer py-3 px-4 transition-colors duration-200"
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <div className="w-3 h-3 rounded-full bg-gradient-to-r from-primary to-primary-glow"></div>
+                                      <span className="font-medium text-foreground text-base">{provider.name}</span>
+                                    </div>
+                                  </SelectItem>
+                                )) : (
+                                  <SelectItem value="אחר" className="py-3 px-4 text-muted-foreground">
+                                    אחר - הזינו שם הספק ידנית
+                                  </SelectItem>
+                                )}
+                                <SelectItem value="אחר" className="py-3 px-4 border-t mt-2 text-primary font-semibold">
+                                  + אחר (ספק שלא ברשימה)
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
                           
-                          <div className="space-y-3">
-                            <Label className="text-base font-semibold">סכום חודשי (₪)</Label>
+                          <div className="space-y-2">
+                            <Label className="text-sm font-semibold">סכום חודשי (₪)</Label>
                             <div className="relative">
                               <Input
                                 type="number"
@@ -367,44 +336,21 @@ export const AnalysisInput = ({
                                 onChange={(e) => onCategoryDataUpdate(key, 'monthlyAmount', e.target.value)}
                                 className="h-12 text-base pr-10"
                               />
-                              <DollarSign className="absolute right-3 top-3 h-6 w-6 text-muted-foreground" />
+                              <DollarSign className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
                             </div>
                           </div>
                         </div>
 
-                        {/* Enhanced Slider for Amount */}
+                        {/* Compact Feedback */}
                         {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
-                          <div className="space-y-4">
-                            <Label className="text-sm text-muted-foreground">התאימו את הסכום:</Label>
-                            <Slider
-                              value={[parseFloat(data.monthlyAmount) || 0]}
-                              onValueChange={(values) => onCategoryDataUpdate(key, 'monthlyAmount', values[0].toString())}
-                              max={data.category === 'electricity' ? 1000 : 300}
-                              min={data.category === 'electricity' ? 100 : 20}
-                              step={data.category === 'electricity' ? 10 : 5}
-                              className="w-full"
-                            />
-                            <div className="flex justify-between text-xs text-muted-foreground">
-                              <span>{data.category === 'electricity' ? '₪100' : '₪20'}</span>
-                              <span>{data.category === 'electricity' ? '₪1000' : '₪300'}</span>
-                            </div>
-                          </div>
-                        )}
-                        
-                        {/* Enhanced Feedback Card */}
-                        {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
-                          <div className="relative overflow-hidden rounded-2xl p-6 border-0">
-                            <div className={`absolute inset-0 ${gradientClass} opacity-10`}></div>
-                            <div className="relative flex items-center gap-4">
-                              <div className={`p-3 ${gradientClass} rounded-xl shadow-colorful`}>
-                                <Award className="h-6 w-6 text-white" />
+                          <div className="relative overflow-hidden rounded-xl p-3 border border-primary/10 bg-primary/5">
+                            <div className="flex items-center gap-3">
+                              <div className={`p-2 ${gradientClass} rounded-lg`}>
+                                <Award className="h-4 w-4 text-white" />
                               </div>
                               <div className="flex-1">
-                                <p className="font-bold text-lg">
-                                  💡 נמצא חיסכון פוטנציאלי!
-                                </p>
-                                <p className="text-muted-foreground">
-                                  נבדוק עבורכם אפשרויות חיסכון לסכום של {formatCurrency(parseFloat(data.monthlyAmount))} בחודש
+                                <p className="font-semibold text-sm">
+                                  ✓ מוכן לבדיקה - {formatCurrency(parseFloat(data.monthlyAmount))} בחודש
                                 </p>
                                 {savings > 0 && (
                                   <div className="mt-2 flex items-center gap-2">

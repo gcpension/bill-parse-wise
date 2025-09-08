@@ -60,79 +60,79 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   };
 
   return (
-    <article className="bg-white/90 backdrop-blur-sm border border-border/50 rounded-xl hover:shadow-lg hover:border-primary/30 transition-all duration-300 p-4 animate-slide-up group">
+    <article className="bg-white/95 backdrop-blur-sm border border-border/50 rounded-2xl hover:shadow-xl hover:border-primary/30 transition-all duration-300 p-5 animate-slide-up group hover:scale-[1.01]">
       <div className="flex items-center justify-between gap-4">
         {/* Company Logo/Icon */}
-        <div className="flex items-center gap-3 flex-shrink-0">
-          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
-            <Building2 className="h-6 w-6 text-primary group-hover:text-white transition-colors duration-300" />
+        <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="w-14 h-14 bg-gradient-to-r from-primary/10 to-primary-glow/10 rounded-2xl flex items-center justify-center group-hover:from-primary group-hover:to-primary-glow transition-all duration-300 shadow-sm">
+            <Building2 className="h-7 w-7 text-primary group-hover:text-white transition-colors duration-300" />
           </div>
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Badge variant="outline" className="text-xs bg-primary/5 text-primary border-primary/20">
+            <div className="flex items-center gap-2 mb-2">
+              <Badge variant="outline" className="text-xs bg-primary/5 text-primary border-primary/20 font-semibold px-2 py-1">
                 {getCategoryLabel()}
               </Badge>
             </div>
-            <h3 className="font-bold text-lg text-foreground">{plan.company}</h3>
+            <h3 className="font-bold text-xl text-foreground">{plan.company}</h3>
           </div>
         </div>
 
         {/* Plan Details */}
         <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-foreground mb-2 text-base">{plan.planName}</h4>
+          <h4 className="font-semibold text-foreground mb-3 text-lg">{plan.planName}</h4>
           
           {/* Speed/Data Info */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3 flex-wrap">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 flex-wrap">
             {plan.category === 'internet' && plan.downloadSpeed && (
-              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
-                <Download className="h-3 w-3 text-primary" />
-                <span className="text-xs">{plan.downloadSpeed}</span>
+              <div className="flex items-center gap-2 bg-gradient-to-r from-primary/5 to-primary-glow/5 px-3 py-2 rounded-full border border-primary/10">
+                <Download className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium">{plan.downloadSpeed}</span>
               </div>
             )}
             {plan.category === 'internet' && plan.uploadSpeed && (
-              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
-                <Upload className="h-3 w-3 text-primary" />
-                <span className="text-xs">{plan.uploadSpeed}</span>
+              <div className="flex items-center gap-2 bg-gradient-to-r from-success/5 to-success/10 px-3 py-2 rounded-full border border-success/10">
+                <Upload className="h-4 w-4 text-success" />
+                <span className="text-sm font-medium">{plan.uploadSpeed}</span>
               </div>
             )}
             {plan.dataAmount && (
-              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
-                <Wifi className="h-3 w-3 text-primary" />
-                <span className="text-xs">{plan.dataAmount}</span>
+              <div className="flex items-center gap-2 bg-gradient-to-r from-electric-blue/5 to-electric-blue/10 px-3 py-2 rounded-full border border-electric-blue/10">
+                <Wifi className="h-4 w-4 text-electric-blue" />
+                <span className="text-sm font-medium">{plan.dataAmount}</span>
               </div>
             )}
             {plan.callMinutes && (
-              <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-full">
-                <Phone className="h-3 w-3 text-primary" />
-                <span className="text-xs">{plan.callMinutes}</span>
+              <div className="flex items-center gap-2 bg-gradient-to-r from-golden-yellow/5 to-golden-yellow/10 px-3 py-2 rounded-full border border-golden-yellow/10">
+                <Phone className="h-4 w-4 text-golden-yellow" />
+                <span className="text-sm font-medium">{plan.callMinutes}</span>
               </div>
             )}
           </div>
 
           {/* Features */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
             {plan.features.slice(0, 4).map((feature, index) => (
-              <div key={index} className="flex items-start gap-2 text-xs">
-                <Check className="h-3 w-3 text-success flex-shrink-0 mt-0.5" />
-                <span className="text-muted-foreground leading-tight">{feature}</span>
+              <div key={index} className="flex items-start gap-2 text-sm">
+                <Check className="h-4 w-4 text-success flex-shrink-0 mt-0.5" />
+                <span className="text-muted-foreground leading-relaxed">{feature}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Price and Action */}
-        <div className="flex flex-col items-end gap-3 flex-shrink-0">
-          <div className="text-center">
-            <div className="text-2xl font-black text-primary">
+        <div className="flex flex-col items-end gap-4 flex-shrink-0">
+          <div className="text-center bg-gradient-to-r from-primary/5 to-primary-glow/5 p-4 rounded-xl border border-primary/10">
+            <div className="text-3xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
               {formatPrice()}
             </div>
             {plan.category !== 'electricity' && (
-              <div className="text-xs text-muted-foreground">לחודש</div>
+              <div className="text-sm text-muted-foreground font-medium">לחודש</div>
             )}
           </div>
           
           <Button 
-            className="btn-gradient text-sm px-4 py-2" 
+            className="bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary text-white font-bold text-base px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" 
             onClick={() => setIsFormOpen(true)}
           >
             עבור עכשיו
@@ -149,8 +149,22 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   );
 };
 
-const AllPlans = () => {
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile'>('all');
+interface AllPlansProps {
+  initialSelectedCategories?: string[];
+}
+
+const AllPlans = ({ initialSelectedCategories = [] }: AllPlansProps) => {
+  // Set initial category based on analyzed categories
+  const getInitialCategory = () => {
+    if (initialSelectedCategories.length === 1) {
+      const cat = initialSelectedCategories[0];
+      if (cat === 'cellular') return 'mobile';
+      if (cat === 'electricity' || cat === 'internet') return cat as 'electricity' | 'internet';
+    }
+    return 'all' as const;
+  };
+  
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile'>(getInitialCategory());
   
   useEffect(() => {
     document.title = "כל המסלולים | חסכונט";
