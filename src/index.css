@@ -14,7 +14,7 @@ html {
 }
 
 body {
-  font-family: 'Heebo', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: 'Assistant', 'Rubik', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
 @layer base {
