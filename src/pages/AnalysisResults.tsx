@@ -7,9 +7,10 @@ import { Layout } from '@/components/Layout';
 import { SavingsHero } from '@/components/modern/SavingsHero';
 import { CategoryCard } from '@/components/modern/CategoryCard';
 import { Zap, Smartphone, Wifi } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
 import { formatCurrency } from '@/lib/utils';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
+import { enhancedToast, analysisToast } from '@/components/EnhancedToast';
+import { ErrorBoundary } from '@/components/ErrorBoundaryWrapper';
 
 interface AnalysisResult {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
@@ -44,14 +45,14 @@ export const AnalysisResults = ({ results, onBackToInput }: AnalysisResultsProps
   const totalAnnualSavings = results.reduce((sum, result) => sum + result.annualSavings, 0);
 
   const handleShare = () => {
-    toast({
+    enhancedToast.success({
       title: "שותף בהצלחה! 📤",
       description: "הקישור לתוצאות נשמר ללוח",
     });
   };
 
   const handleDownload = () => {
-    toast({
+    enhancedToast.info({
       title: "מוריד דוח... 📄",
       description: "הדוח יישמר במחשב שלך בקרוב",
     });
@@ -68,7 +69,8 @@ export const AnalysisResults = ({ results, onBackToInput }: AnalysisResultsProps
   });
 
   return (
-    <Layout>
+    <ErrorBoundary>
+      <Layout>
       <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-success/10 relative overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">

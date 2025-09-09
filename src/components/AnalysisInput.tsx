@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Slider } from '@/components/ui/slider';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   Loader2,
   Zap,
@@ -17,17 +17,17 @@ import {
   Minus,
   Tv,
   TrendingUp,
-  Sparkles,
   Target,
   DollarSign,
-  PiggyBank,
-  Award,
-  Rocket,
-  Star
+  AlertTriangle,
+  CheckCircle2
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { getProvidersByCategory, getCheapestPlan } from '@/data/providers';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
+import { useFormValidation } from '@/components/DataValidation';
+import { enhancedToast } from '@/components/EnhancedToast';
+import { ProgressIndicator, Step } from '@/components/ProgressIndicator';
 
 interface UploadedFile {
   file: File;
@@ -140,6 +140,46 @@ export const AnalysisInput = ({
     duration: 1500,
     decimals: 0 
   });
+
+  // Form validation
+  const { errors, isValid, validateField, hasError, getError } = useFormValidation(categoryData);
+  
+  const getActiveCategoriesCount = () => {
+    return Object.values(categoryData).filter(cat => cat.isActive).length;
+  };
+
+  const canAnalyze = () => {
+    const activeCategories = Object.values(categoryData).filter(cat => 
+      cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0
+    );
+    return activeCategories.length > 0;
+  };
+  
+  // Progress steps
+  const steps: Step[] = [
+    {
+      id: 'select',
+      title: 'בחירת קטגוריות',
+      description: 'בחר את השירותים לבדיקה',
+      status: getActiveCategoriesCount() > 0 ? 'completed' : 'current'
+    },
+    {
+      id: 'input',
+      title: 'הזנת נתונים',
+      description: 'הזן פרטי ספקים וסכומים',
+      status: getActiveCategoriesCount() === 0 ? 'pending' : 
+             canAnalyze() ? 'completed' : 'current'
+    },
+    {
+      id: 'analyze',
+      title: 'ניתוח',
+      description: 'קבלת תוצאות והמלצות',
+      status: !canAnalyze() ? 'pending' : isProcessing ? 'current' : 'pending'
+    }
+  ];
+
+  const currentStep = getActiveCategoriesCount() === 0 ? 'select' : 
+                    !canAnalyze() ? 'input' : 'analyze';
   
   // Calculate potential savings when data changes
   useEffect(() => {
@@ -164,19 +204,41 @@ export const AnalysisInput = ({
     setTotalPotentialSavings(total);
   }, [categoryData]);
 
-  const getActiveCategoriesCount = () => {
-    return Object.values(categoryData).filter(cat => cat.isActive).length;
-  };
+  const handleAnalyze = () => {
+    if (!canAnalyze()) {
+      enhancedToast.warning({
+        title: 'בדוק את הנתונים',
+        description: 'יש להזין נתונים תקינים לפחות בקטגוריה אחת',
+      });
+      return;
+    }
 
-  const canAnalyze = () => {
-    const activeCategories = Object.values(categoryData).filter(cat => 
-      cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0
-    );
-    return activeCategories.length > 0;
+    if (!isValid) {
+      enhancedToast.warning({
+        title: 'יש שגיאות בנתונים',
+        description: 'אנא תקן את השגיאות המסומנות ונסה שוב',
+      });
+      return;
+    }
+
+    enhancedToast.info({
+      title: 'מתחיל ניתוח...',
+      description: 'אנא המתן בזמן שאנחנו מנתחים את הנתונים שלך',
+    });
+
+    onAnalyze();
   };
 
   return (
     <div className="space-y-6">
+      {/* Progress Indicator */}
+      <ProgressIndicator 
+        steps={steps}
+        currentStep={currentStep}
+        variant="compact"
+        className="mb-6"
+      />
+
       {/* Compact Header */}
       <div className="text-center space-y-3">
         <h2 className="text-2xl font-bold text-foreground">
@@ -214,13 +276,16 @@ export const AnalysisInput = ({
             const CategoryIcon = categoryIcons[data.category];
             const providers = getProvidersByCategory(data.category);
             const savings = potentialSavings[key] || 0;
+            const fieldErrors = getError(key);
             
             return (
               <Card 
                 key={key} 
                 className={`transition-all duration-300 border ${
                   data.isActive 
-                    ? 'border-primary/30 bg-primary/5' 
+                    ? hasError(key) 
+                      ? 'border-destructive/50 bg-destructive/5'
+                      : 'border-primary/30 bg-primary/5'
                     : 'border-border/30 bg-background hover:border-primary/20 cursor-pointer'
                 }`}
                 onClick={() => !data.isActive && onCategoryToggle(key)}
@@ -228,11 +293,17 @@ export const AnalysisInput = ({
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-muted rounded-lg">
-                        <CategoryIcon className="h-5 w-5 text-muted-foreground" />
+                      <div className={`p-2 rounded-lg ${hasError(key) ? 'bg-destructive/10' : 'bg-muted'}`}>
+                        <CategoryIcon className={`h-5 w-5 ${hasError(key) ? 'text-destructive' : 'text-muted-foreground'}`} />
                       </div>
                       <div>
-                        <CardTitle className="text-base font-semibold">{categoryNames[data.category]}</CardTitle>
+                        <CardTitle className="text-base font-semibold flex items-center gap-2">
+                          {categoryNames[data.category]}
+                          {hasError(key) && <AlertTriangle className="h-4 w-4 text-destructive" />}
+                          {data.isActive && !hasError(key) && data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
+                            <CheckCircle2 className="h-4 w-4 text-success" />
+                          )}
+                        </CardTitle>
                         <p className="text-muted-foreground text-xs">
                           {categoryDescriptions[data.category]}
                         </p>
@@ -264,12 +335,24 @@ export const AnalysisInput = ({
                 
                 {data.isActive && (
                   <CardContent className="space-y-4 pt-0">
+                    {fieldErrors && (
+                      <Alert className="border-destructive/50 bg-destructive/5 text-destructive">
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertDescription className="text-sm">
+                          {fieldErrors}
+                        </AlertDescription>
+                      </Alert>
+                    )}
+
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label className="text-sm font-medium">ספק נוכחי</Label>
                         <Select 
                           value={data.currentProvider} 
-                          onValueChange={(value) => onCategoryDataUpdate(key, 'currentProvider', value)}
+                          onValueChange={(value) => {
+                            onCategoryDataUpdate(key, 'currentProvider', value);
+                            validateField(key, 'currentProvider', value);
+                          }}
                         >
                           <SelectTrigger className="h-10 bg-background border-border">
                             <SelectValue placeholder="בחרו ספק נוכחי" />
@@ -302,8 +385,14 @@ export const AnalysisInput = ({
                             type="number"
                             placeholder="הזינו סכום"
                             value={data.monthlyAmount}
-                            onChange={(e) => onCategoryDataUpdate(key, 'monthlyAmount', e.target.value)}
-                            className="h-10 pr-8 bg-background"
+                            onChange={(e) => {
+                              onCategoryDataUpdate(key, 'monthlyAmount', e.target.value);
+                              validateField(key, 'monthlyAmount', e.target.value);
+                            }}
+                            className={`h-10 pr-8 bg-background ${
+                              hasError(key) ? 'border-destructive focus:border-destructive' : ''
+                            }`}
+                            onBlur={(e) => validateField(key, 'monthlyAmount', e.target.value)}
                           />
                           <DollarSign className="absolute right-2 top-2 h-4 w-4 text-muted-foreground" />
                         </div>
@@ -311,7 +400,7 @@ export const AnalysisInput = ({
                     </div>
 
                     {/* Compact Feedback */}
-                    {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
+                    {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && !hasError(key) && (
                       <div className="p-3 bg-muted/50 rounded-lg border">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-success rounded-full"></div>
@@ -337,7 +426,7 @@ export const AnalysisInput = ({
         </CardContent>
       </Card>
 
-      {/* Compact Action Section */}
+      {/* Enhanced Action Section */}
       <div className="text-center space-y-4">
         {getActiveCategoriesCount() > 0 && (
           <div className="flex justify-center gap-2 flex-wrap">
@@ -354,7 +443,7 @@ export const AnalysisInput = ({
           </div>
         )}
 
-        {/* Compact Progress Bar */}
+        {/* Enhanced Progress Bar */}
         {getActiveCategoriesCount() > 0 && (
           <div className="max-w-xs mx-auto space-y-1">
             <div className="flex justify-between text-xs text-muted-foreground">
@@ -371,12 +460,12 @@ export const AnalysisInput = ({
         <Button 
           size="lg" 
           className={`px-8 py-3 font-semibold transition-all duration-300 ${
-            canAnalyze() && !isProcessing
+            canAnalyze() && !isProcessing && isValid
               ? 'bg-primary hover:bg-primary/90 text-primary-foreground' 
               : 'opacity-50 cursor-not-allowed'
           }`}
-          onClick={onAnalyze}
-          disabled={!canAnalyze() || isProcessing}
+          onClick={handleAnalyze}
+          disabled={!canAnalyze() || isProcessing || !isValid}
         >
           {isProcessing ? (
             <>
@@ -390,6 +479,16 @@ export const AnalysisInput = ({
             </>
           )}
         </Button>
+
+        {/* Validation Status */}
+        {getActiveCategoriesCount() > 0 && !isValid && (
+          <Alert className="max-w-md mx-auto">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription className="text-sm">
+              יש לתקן את השגיאות המסומנות כדי להמשיך
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
     </div>
   );
