@@ -368,29 +368,6 @@ export const Analyze = () => {
             </div>
           </div>
 
-          {/* Webhook Configuration Alert */}
-          {!isWebhookConfigured && (
-            <div className="max-w-4xl mx-auto">
-              <Alert className="border-2 border-warning/50 bg-gradient-to-r from-warning/10 to-golden-yellow/10 shadow-colorful">
-                <AlertDescription className="text-center">
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <span className="text-warning-foreground font-medium">
-                      כדי לשלוח נתונים ל-Google Sheets, יש להגדיר Zapier webhook
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-warning/50 hover:bg-warning/10 hover:border-warning"
-                      onClick={() => window.open('/integration-test', '_blank')}
-                    >
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                      פתח הגדרות Zapier
-                    </Button>
-                  </div>
-                </AlertDescription>
-              </Alert>
-            </div>
-          )}
 
           {/* Main Analysis Interface */}
           <div className="max-w-7xl mx-auto">

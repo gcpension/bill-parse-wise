@@ -176,278 +176,220 @@ export const AnalysisInput = ({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Compact Header */}
-      <div className="text-center space-y-4">
-        <div className="relative">
-          <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent animate-fade-in">
-            הזינו את הפרטים שלכם
-          </h1>
-        </div>
-        
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+      <div className="text-center space-y-3">
+        <h2 className="text-2xl font-bold text-foreground">
+          הזינו את הפרטים שלכם
+        </h2>
+        <p className="text-muted-foreground max-w-xl mx-auto">
           בחרו קטגוריות והזינו פרטים לקבלת השוואת מחירים מדויקת
         </p>
       </div>
 
-      {/* Compact Interactive Input Section */}
-      <Card className="shadow-lg border-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-primary-glow/3"></div>
-        <CardHeader className="relative text-center pb-4">
-          <CardTitle className="text-xl font-bold">בחרו קטגוריות לבדיקה</CardTitle>
-          <p className="text-muted-foreground text-sm">לחצו והזינו פרטים</p>
+      {/* Compact Input Section */}
+      <Card className="border border-border/50 bg-card/50 backdrop-blur-sm">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg font-semibold text-center">בחרו קטגוריות לבדיקה</CardTitle>
           
-          {/* Compact Progress Indicator */}
-          <div className="mt-3 flex justify-center">
-            <div className="flex gap-1">
-              {Object.entries(categoryData).map(([key, data]) => (
-                <div 
-                  key={key}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    data.isActive && data.monthlyAmount && parseFloat(data.monthlyAmount) > 0
-                      ? 'bg-success shadow-sm' 
-                      : data.isActive 
-                        ? 'bg-primary/50' 
-                        : 'bg-muted-foreground/20'
-                  }`}
-                />
-              ))}
-            </div>
+          {/* Minimal Progress Indicator */}
+          <div className="flex justify-center gap-2 mt-3">
+            {Object.entries(categoryData).map(([key, data]) => (
+              <div 
+                key={key}
+                className={`w-2 h-1 rounded-full transition-all duration-300 ${
+                  data.isActive && data.monthlyAmount && parseFloat(data.monthlyAmount) > 0
+                    ? 'bg-success' 
+                    : data.isActive 
+                      ? 'bg-primary/50' 
+                      : 'bg-muted-foreground/30'
+                }`}
+              />
+            ))}
           </div>
         </CardHeader>
         
-        <CardContent className="relative">
-          <div className="grid gap-4">
-            {Object.entries(categoryData).map(([key, data], index) => {
-              const CategoryIcon = categoryIcons[data.category];
-              const providers = getProvidersByCategory(data.category);
-              const gradientClass = categoryColors[data.category];
-              const savings = potentialSavings[key] || 0;
-              
-              return (
-                <div 
-                  key={key} 
-                  className={`group relative transition-all duration-300 animate-fade-in`}
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <Card className={`relative overflow-hidden transition-all duration-300 hover:shadow-md ${
-                    data.isActive 
-                      ? 'ring-1 ring-primary shadow-sm bg-primary/3' 
-                      : 'hover:shadow-sm hover:scale-[1.005] cursor-pointer'
-                  }`}
-                  onClick={() => !data.isActive && onCategoryToggle(key)}
-                  >
-                    {/* Subtle Background Pattern */}
-                    <div className={`absolute inset-0 opacity-5 ${gradientClass}`}></div>
-                    
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                          <div className={`relative p-3 ${gradientClass} rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-105`}>
-                            <CategoryIcon className="h-6 w-6 text-white" />
-                            {data.isActive && (
-                              <div className="absolute -top-1 -right-1 w-5 h-5 bg-success rounded-full flex items-center justify-center">
-                                <Star className="h-2 w-2 text-white" />
-                              </div>
-                            )}
-                          </div>
-                          <div>
-                            <CardTitle className="text-lg font-bold">{categoryNames[data.category]}</CardTitle>
-                            <p className="text-muted-foreground text-xs">
-                              {categoryDescriptions[data.category]}
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <Button
-                          variant={data.isActive ? "default" : "outline"}
-                          size="sm"
-                          className={`transition-all duration-300 ${
-                            data.isActive 
-                              ? 'bg-gradient-to-r from-primary to-primary-glow text-white shadow-sm' 
-                              : 'hover:shadow-sm'
-                          }`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onCategoryToggle(key);
-                          }}
-                        >
-                          {data.isActive ? (
-                            <>
-                              <Minus className="h-4 w-4 ml-1" />
-                              הסר
-                            </>
-                          ) : (
-                            <>
-                              <Plus className="h-4 w-4 ml-1" />
-                              הוסף
-                            </>
-                          )}
-                        </Button>
+        <CardContent className="space-y-4">
+          {Object.entries(categoryData).map(([key, data], index) => {
+            const CategoryIcon = categoryIcons[data.category];
+            const providers = getProvidersByCategory(data.category);
+            const savings = potentialSavings[key] || 0;
+            
+            return (
+              <Card 
+                key={key} 
+                className={`transition-all duration-300 border ${
+                  data.isActive 
+                    ? 'border-primary/30 bg-primary/5' 
+                    : 'border-border/30 bg-background hover:border-primary/20 cursor-pointer'
+                }`}
+                onClick={() => !data.isActive && onCategoryToggle(key)}
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-muted rounded-lg">
+                        <CategoryIcon className="h-5 w-5 text-muted-foreground" />
                       </div>
-                    </CardHeader>
+                      <div>
+                        <CardTitle className="text-base font-semibold">{categoryNames[data.category]}</CardTitle>
+                        <p className="text-muted-foreground text-xs">
+                          {categoryDescriptions[data.category]}
+                        </p>
+                      </div>
+                    </div>
                     
-                    {data.isActive && (
-                      <CardContent className="space-y-4 animate-fade-in pt-2">
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label className="text-sm font-semibold">ספק נוכחי</Label>
-                            <Select 
-                              value={data.currentProvider} 
-                              onValueChange={(value) => onCategoryDataUpdate(key, 'currentProvider', value)}
-                            >
-                              <SelectTrigger className="h-14 text-base border-2 hover:border-primary/50 transition-all duration-300 bg-background shadow-sm">
-                                <SelectValue 
-                                  placeholder="👆 לחצו כאן לבחירת ספק נוכחי" 
-                                  className="text-foreground font-medium"
-                                />
-                              </SelectTrigger>
-                              <SelectContent className="bg-background backdrop-blur-lg border-2 border-primary/20 shadow-2xl z-[100] max-h-64 min-w-[250px]">
-                                {providers.length > 0 ? providers.map((provider) => (
-                                  <SelectItem 
-                                    key={provider.name} 
-                                    value={provider.name} 
-                                    className="hover:bg-primary/10 focus:bg-primary/15 cursor-pointer py-3 px-4 transition-colors duration-200"
-                                  >
-                                    <div className="flex items-center gap-3">
-                                      <div className="w-3 h-3 rounded-full bg-gradient-to-r from-primary to-primary-glow"></div>
-                                      <span className="font-medium text-foreground text-base">{provider.name}</span>
-                                    </div>
-                                  </SelectItem>
-                                )) : (
-                                  <SelectItem value="אחר" className="py-3 px-4 text-muted-foreground">
-                                    אחר - הזינו שם הספק ידנית
-                                  </SelectItem>
-                                )}
-                                <SelectItem value="אחר" className="py-3 px-4 border-t mt-2 text-primary font-semibold">
-                                  + אחר (ספק שלא ברשימה)
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <Label className="text-sm font-semibold">סכום חודשי (₪)</Label>
-                            <div className="relative">
-                              <Input
-                                type="number"
-                                placeholder="הזינו סכום"
-                                value={data.monthlyAmount}
-                                onChange={(e) => onCategoryDataUpdate(key, 'monthlyAmount', e.target.value)}
-                                className="h-12 text-base pr-10"
-                              />
-                              <DollarSign className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
-                            </div>
-                          </div>
+                    <Button
+                      variant={data.isActive ? "default" : "outline"}
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onCategoryToggle(key);
+                      }}
+                    >
+                      {data.isActive ? (
+                        <>
+                          <Minus className="h-4 w-4 ml-1" />
+                          הסר
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="h-4 w-4 ml-1" />
+                          הוסף
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </CardHeader>
+                
+                {data.isActive && (
+                  <CardContent className="space-y-4 pt-0">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">ספק נוכחי</Label>
+                        <Select 
+                          value={data.currentProvider} 
+                          onValueChange={(value) => onCategoryDataUpdate(key, 'currentProvider', value)}
+                        >
+                          <SelectTrigger className="h-10 bg-background border-border">
+                            <SelectValue placeholder="בחרו ספק נוכחי" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background border border-border shadow-lg z-[100]">
+                            {providers.length > 0 ? providers.map((provider) => (
+                              <SelectItem 
+                                key={provider.name} 
+                                value={provider.name} 
+                                className="hover:bg-muted focus:bg-muted cursor-pointer"
+                              >
+                                {provider.name}
+                              </SelectItem>
+                            )) : (
+                              <SelectItem value="אחר">
+                                אחר - הזינו שם הספק ידנית
+                              </SelectItem>
+                            )}
+                            <SelectItem value="אחר" className="border-t mt-1 font-medium">
+                              + אחר (ספק שלא ברשימה)
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">סכום חודשי (₪)</Label>
+                        <div className="relative">
+                          <Input
+                            type="number"
+                            placeholder="הזינו סכום"
+                            value={data.monthlyAmount}
+                            onChange={(e) => onCategoryDataUpdate(key, 'monthlyAmount', e.target.value)}
+                            className="h-10 pr-8 bg-background"
+                          />
+                          <DollarSign className="absolute right-2 top-2 h-4 w-4 text-muted-foreground" />
                         </div>
+                      </div>
+                    </div>
 
-                        {/* Compact Feedback */}
-                        {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
-                          <div className="relative overflow-hidden rounded-xl p-3 border border-primary/10 bg-primary/5">
-                            <div className="flex items-center gap-3">
-                              <div className={`p-2 ${gradientClass} rounded-lg`}>
-                                <Award className="h-4 w-4 text-white" />
-                              </div>
-                              <div className="flex-1">
-                                <p className="font-semibold text-sm">
-                                  ✓ מוכן לבדיקה - {formatCurrency(parseFloat(data.monthlyAmount))} בחודש
-                                </p>
-                                {savings > 0 && (
-                                  <div className="mt-2 flex items-center gap-2">
-                                    <Sparkles className="h-4 w-4 text-success" />
-                                    <span className="text-success font-bold">
-                                      חיסכון אפשרי: {formatCurrency(savings)} לחודש
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
+                    {/* Compact Feedback */}
+                    {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
+                      <div className="p-3 bg-muted/50 rounded-lg border">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-success rounded-full"></div>
+                          <p className="text-sm font-medium">
+                            מוכן לבדיקה - {formatCurrency(parseFloat(data.monthlyAmount))} בחודש
+                          </p>
+                        </div>
+                        {savings > 0 && (
+                          <div className="mt-2 flex items-center gap-2">
+                            <TrendingUp className="h-4 w-4 text-success" />
+                            <span className="text-success font-medium text-sm">
+                              חיסכון אפשרי: {formatCurrency(savings)} לחודש
+                            </span>
                           </div>
                         )}
-                      </CardContent>
+                      </div>
                     )}
-                  </Card>
-                </div>
-              );
-            })}
-          </div>
+                  </CardContent>
+                )}
+              </Card>
+            );
+          })}
         </CardContent>
       </Card>
 
-      {/* Enhanced Action Section */}
-      <div className="text-center space-y-6">
+      {/* Compact Action Section */}
+      <div className="text-center space-y-4">
         {getActiveCategoriesCount() > 0 && (
-          <div className="flex justify-center gap-4">
-            <Badge variant="secondary" className="text-base px-6 py-3 shadow-card">
-              <Target className="h-4 w-4 ml-2" />
+          <div className="flex justify-center gap-2 flex-wrap">
+            <Badge variant="secondary" className="px-3 py-1">
+              <Target className="h-3 w-3 ml-1" />
               {getActiveCategoriesCount()} תחומים נבחרו
             </Badge>
             {totalPotentialSavings > 0 && (
-              <Badge className="bg-success text-white text-base px-6 py-3 shadow-glow">
-                <PiggyBank className="h-4 w-4 ml-2" />
+              <Badge className="bg-success text-white px-3 py-1">
+                <TrendingUp className="h-3 w-3 ml-1" />
                 חיסכון צפוי: {formatCurrency(totalPotentialSavings)}/חודש
               </Badge>
             )}
           </div>
         )}
 
-        {/* Progress Bar */}
+        {/* Compact Progress Bar */}
         {getActiveCategoriesCount() > 0 && (
-          <div className="max-w-md mx-auto space-y-2">
-            <div className="flex justify-between text-sm text-muted-foreground">
+          <div className="max-w-xs mx-auto space-y-1">
+            <div className="flex justify-between text-xs text-muted-foreground">
               <span>התקדמות</span>
               <span>{Math.round((Object.values(categoryData).filter(cat => cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0).length / 4) * 100)}%</span>
             </div>
             <Progress 
               value={(Object.values(categoryData).filter(cat => cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0).length / 4) * 100} 
-              className="h-3 shadow-card"
+              className="h-2"
             />
           </div>
         )}
         
-        <div className="relative">
-          <Button 
-            size="lg" 
-            className={`text-xl px-12 py-8 font-bold transition-all duration-300 ${
-              canAnalyze() && !isProcessing
-                ? 'gradient-primary text-white shadow-glow hover:shadow-elegant hover:scale-105' 
-                : 'opacity-50 cursor-not-allowed'
-            }`}
-            onClick={onAnalyze}
-            disabled={!canAnalyze() || isProcessing}
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="ml-3 h-6 w-6 animate-spin" />
-                מעבד את הנתונים...
-              </>
-            ) : (
-              <>
-                <Rocket className="ml-3 h-6 w-6" />
-                בואו נמצא חיסכון גדול!
-                <Sparkles className="mr-3 h-6 w-6" />
-              </>
-            )}
-          </Button>
-          
-          {/* Floating elements */}
-          {canAnalyze() && !isProcessing && (
+        <Button 
+          size="lg" 
+          className={`px-8 py-3 font-semibold transition-all duration-300 ${
+            canAnalyze() && !isProcessing
+              ? 'bg-primary hover:bg-primary/90 text-primary-foreground' 
+              : 'opacity-50 cursor-not-allowed'
+          }`}
+          onClick={onAnalyze}
+          disabled={!canAnalyze() || isProcessing}
+        >
+          {isProcessing ? (
             <>
-              <div className="absolute -top-2 -right-4 animate-bounce-gentle">
-                <Star className="h-5 w-5 text-primary/60" />
-              </div>
-              <div className="absolute -bottom-2 -left-4 animate-bounce-gentle delay-500">
-                <Sparkles className="h-4 w-4 text-primary/40" />
-              </div>
+              <Loader2 className="ml-2 h-5 w-5 animate-spin" />
+              מעבד את הנתונים...
+            </>
+          ) : (
+            <>
+              <Calculator className="ml-2 h-5 w-5" />
+              התחילו השוואה
             </>
           )}
-        </div>
-
-        {!canAnalyze() && getActiveCategoriesCount() > 0 && (
-          <p className="text-muted-foreground text-sm max-w-md mx-auto">
-            הזינו סכומים חודשיים עבור התחומים שבחרתם כדי להמשיך
-          </p>
-        )}
+        </Button>
       </div>
     </div>
   );
