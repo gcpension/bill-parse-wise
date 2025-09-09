@@ -158,70 +158,100 @@ const Home = () => {
       {/* Enhanced Stats Section */}
       
 
-      {/* Process Banner - Compact & Beautiful */}
-      <section className="py-8">
+      {/* How It Works Section */}
+      <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
-            {/* Compact Floating Process Card */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-blue-500/4 to-purple-500/8 rounded-2xl blur-lg" />
-              <div className="relative bg-white/90 dark:bg-card/90 backdrop-blur-xl border border-white/30 dark:border-border/30 rounded-2xl shadow-xl shadow-primary/5 p-6">
-                {/* Compact Header */}
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-primary/10 to-blue-500/10 rounded-full border border-primary/20 mb-3">
-                    <Sparkles className="w-3 h-3 text-primary animate-pulse" />
-                    <span className="text-xs font-semibold text-primary">התהליך החכם</span>
+          <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">
+                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  איך זה עובד?
+                </span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                התהליך פשוט, מהיר ובטוח שחוזר לך זמן טרחה. אנחנו דואגים לכל השלבים במקום 
+                ומבטיחים החלפה חלקה - זה לוקח רק 3 דקות
+              </p>
+            </div>
+
+            {/* Process Steps */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Step 1 */}
+              <div className="relative group">
+                <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/10 to-blue-600/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 text-center hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
+                  {/* Step Number */}
+                  <div className="absolute -top-4 right-6 w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm">1</span>
                   </div>
-                  <h2 className="text-xl font-bold bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                    3 שלבים לחיסכון מקסימלי
-                  </h2>
-                  <p className="text-muted-foreground text-sm">
-                    פשוט, מהיר ובטוח
+                  
+                  {/* Icon */}
+                  <div className="mb-6">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold mb-4 text-blue-600">מלא פרטים</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    מלא את הפרטים האישיים שלך 
+                    ובחר ספק חדש - זה לוקח רק 3 דקות
                   </p>
                 </div>
+              </div>
 
-                {/* Compact Process Steps */}
-                <div className="flex justify-center items-center gap-4">
-                  {[{
-                  step: 1,
-                  title: "בחר",
-                  color: "from-blue-500 to-blue-600"
-                }, {
-                  step: 2,
-                  title: "השווה",
-                  color: "from-purple-500 to-purple-600"
-                }, {
-                  step: 3,
-                  title: "חסוך",
-                  color: "from-emerald-500 to-emerald-600"
-                }].map((item, index) => <div key={index} className="flex items-center gap-3">
-                      {/* Compact Step Circle */}
-                      <div className="relative flex-shrink-0">
-                        <div className={`w-12 h-12 bg-gradient-to-br ${item.color} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300`}>
-                          <span className="text-lg font-bold text-white">{item.step}</span>
-                        </div>
-                        <div className={`absolute -inset-0.5 bg-gradient-to-br ${item.color} rounded-full opacity-20 blur-sm`} />
-                      </div>
-                      
-                      {/* Title */}
-                      <div className="hidden sm:block">
-                        <h3 className="text-sm font-bold text-foreground">
-                          {item.title}
-                        </h3>
-                      </div>
-
-                      {/* Arrow for non-last items */}
-                      {index < 2 && <ArrowRight className="w-4 h-4 text-muted-foreground opacity-60 flex-shrink-0" />}
-                    </div>)}
-                </div>
-
-                {/* Compact Bottom Section */}
-                <div className="text-center mt-6 pt-4 border-t border-border/50">
-                  <div className="flex justify-center gap-2 flex-wrap">
-                    {["פלאפון", "סלקום", "HOT", "בזק"].map((provider, index) => <div key={index} className="px-2 py-1 bg-gradient-to-r from-primary/5 to-blue-500/5 border border-primary/10 rounded-full text-xs font-medium text-primary">
-                        {provider}
-                      </div>)}
+              {/* Step 2 */}
+              <div className="relative group">
+                <div className="absolute -inset-4 bg-gradient-to-br from-orange-500/10 to-red-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 text-center hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-300">
+                  {/* Step Number */}
+                  <div className="absolute -top-4 right-6 w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm">2</span>
                   </div>
+                  
+                  {/* Icon */}
+                  <div className="mb-6">
+                    <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold mb-4 text-orange-600">אנחנו מנתקים</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    אנחנו דואגים לניתוק מהספק הקיים ללא 
+                    טרחה מצידך - זה חינם!
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="relative group">
+                <div className="absolute -inset-4 bg-gradient-to-br from-emerald-500/10 to-green-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 text-center hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300">
+                  {/* Step Number */}
+                  <div className="absolute -top-4 right-6 w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-500 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm">3</span>
+                  </div>
+                  
+                  {/* Icon */}
+                  <div className="mb-6">
+                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold mb-4 text-emerald-600">התחברות חלקה</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    אנחנו מקיימים אותך לספק החדש 
+                    ומוודאים שהכל עובד מושלם
+                  </p>
                 </div>
               </div>
             </div>
