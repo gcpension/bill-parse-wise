@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, Search } from "lucide-react";
+import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, Search, Tv } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { SwitchRequestForm } from "@/components/forms/SwitchRequestForm";
@@ -17,6 +17,8 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
         return <Smartphone className="h-6 w-6" />;
       case 'internet':
         return <Wifi className="h-6 w-6" />;
+      case 'tv':
+        return <Tv className="h-6 w-6" />;
       default:
         return <Wifi className="h-6 w-6" />;
     }
@@ -30,6 +32,8 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
         return 'סלולר';
       case 'internet':
         return 'אינטרנט';
+      case 'tv':
+        return 'טלוויזיה';
       default:
         return '';
     }
@@ -159,12 +163,12 @@ const AllPlans = ({ initialSelectedCategories = [] }: AllPlansProps) => {
     if (initialSelectedCategories.length === 1) {
       const cat = initialSelectedCategories[0];
       if (cat === 'cellular') return 'mobile';
-      if (cat === 'electricity' || cat === 'internet') return cat as 'electricity' | 'internet';
+      if (cat === 'electricity' || cat === 'internet' || cat === 'tv') return cat as 'electricity' | 'internet' | 'tv';
     }
     return 'all' as const;
   };
   
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile'>(getInitialCategory());
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile' | 'tv'>(getInitialCategory());
   
   useEffect(() => {
     document.title = "כל המסלולים | חסכונט";
@@ -178,7 +182,8 @@ const AllPlans = ({ initialSelectedCategories = [] }: AllPlansProps) => {
     all: 'כל הקטגוריות',
     electricity: 'חבילות חשמל',
     internet: 'חבילות אינטרנט',
-    mobile: 'חבילות סלולר'
+    mobile: 'חבילות סלולר',
+    tv: 'חבילות טלוויזיה וסטרימינג'
   };
 
   const getCategoryCounts = () => {
@@ -186,6 +191,7 @@ const AllPlans = ({ initialSelectedCategories = [] }: AllPlansProps) => {
       electricity: manualPlans.filter(p => p.category === 'electricity').length,
       internet: manualPlans.filter(p => p.category === 'internet').length,
       mobile: manualPlans.filter(p => p.category === 'mobile').length,
+      tv: manualPlans.filter(p => p.category === 'tv').length,
     };
     return counts;
   };
@@ -240,6 +246,14 @@ const AllPlans = ({ initialSelectedCategories = [] }: AllPlansProps) => {
             >
               <Smartphone className="h-4 w-4" />
               <span>סלולר ({counts.mobile})</span>
+            </Button>
+            <Button
+              variant={selectedCategory === 'tv' ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory('tv')}
+              className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 flex items-center gap-2"
+            >
+              <Tv className="h-4 w-4" />
+              <span>טלוויזיה ({counts.tv})</span>
             </Button>
           </div>
 

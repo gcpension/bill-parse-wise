@@ -11,7 +11,7 @@ export interface ManualPlan {
   downloadSpeed: string;
   features: string[];
   color: string;
-  category: 'electricity' | 'internet' | 'mobile';
+  category: 'electricity' | 'internet' | 'mobile' | 'tv';
   dataAmount?: string;
   smsAmount?: string;
   callMinutes?: string;
@@ -1064,5 +1064,137 @@ export const manualPlans: ManualPlan[] = [
     ],
     color: "bg-gradient-to-br from-red-400 to-red-600",
     category: "internet"
+  },
+
+  // === חבילות טלוויזיה וסטרימינג ===
+
+  // HOT
+  {
+    id: "hot-smart-tv",
+    company: "HOT",
+    planName: "HOT Smart TV",
+    speed: "",
+    introPrice: 49,
+    introMonths: 6,
+    regularPrice: 79,
+    uploadSpeed: "",
+    downloadSpeed: "",
+    features: [
+      "שירותי טלוויזיה חכמה עם עשרות ערוצים",
+      "ספרייה עשירה של תכנים לצפייה",
+      "אפליקציה לטלפון ולטאבלט", 
+      "ללא התקשרות לתקופה ארוכה",
+      "צפייה ב-HD באיכות גבוהה"
+    ],
+    color: "bg-gradient-to-br from-purple-400 to-purple-600",
+    category: "tv"
+  },
+  
+  // Cellcom TV
+  {
+    id: "cellcom-tv-app",
+    company: "סלקום",
+    planName: "Cellcom TV אפליקציה",
+    speed: "",
+    introPrice: 0,
+    introMonths: 1,
+    regularPrice: 49,
+    uploadSpeed: "",
+    downloadSpeed: "",
+    features: [
+      "אפליקציית טלוויזיה לטלפונים חכמים וטאבלטים",
+      "ערוצי ספורט וחדשות",
+      "צפייה בכל מקום עם אינטרנט",
+      "החודש הראשון בחינם",
+      "ללא צורך בציוד נוסף"
+    ],
+    color: "bg-gradient-to-br from-orange-400 to-orange-600", 
+    category: "tv"
+  },
+  
+  {
+    id: "cellcom-tv-package",
+    company: "סלקום",
+    planName: "Cellcom TV חבילה מלאה",
+    speed: "",
+    introPrice: 0,
+    introMonths: 1,
+    regularPrice: 79,
+    uploadSpeed: "",
+    downloadSpeed: "",
+    features: [
+      "חבילת טלוויזיה מלאה עם ממיר",
+      "מעל 100 ערוצים",
+      "ערוצי ספורט פרימיום", 
+      "VOD - וידאו לפי דרישה",
+      "החודש הראשון בחינם"
+    ],
+    color: "bg-gradient-to-br from-orange-400 to-orange-600",
+    category: "tv"
+  },
+  
+  // Partner TV
+  {
+    id: "partner-tv-app",
+    company: "פרטנר",
+    planName: "Partner TV אפליקציה",
+    speed: "",
+    introPrice: 39,
+    introMonths: 0,
+    regularPrice: 39,
+    uploadSpeed: "",
+    downloadSpeed: "",
+    features: [
+      "אפליקציית טלוויזיה נוחה ופשוטה",
+      "ערוצי ילדים ובידור",
+      "צפייה בסמארטפון ובטאבלט",
+      "ממשק ידידותי למשתמש",
+      "תכני VOD מתעדכנים"
+    ],
+    color: "bg-gradient-to-br from-blue-400 to-blue-600",
+    category: "tv"
+  },
+  
+  {
+    id: "partner-tv-converter-netflix",
+    company: "פרטנר", 
+    planName: "Partner TV + Netflix",
+    speed: "",
+    introPrice: 99,
+    introMonths: 0,
+    regularPrice: 99,
+    uploadSpeed: "",
+    downloadSpeed: "",
+    features: [
+      "חבילת טלוויזיה עם ממיר",
+      "כולל מנוי Netflix בסיסי",
+      "כ-50 ערוצים וVOD",
+      "התקנה ללא תשלום",
+      "שירות לקוחות 24/7"
+    ],
+    color: "bg-gradient-to-br from-blue-400 to-blue-600",
+    category: "tv"
+  },
+
+  // YES
+  {
+    id: "yes-basic-tv",
+    company: "YES",
+    planName: "YES חבילה בסיסית",
+    speed: "",
+    introPrice: 89,
+    introMonths: 0,  
+    regularPrice: 89,
+    uploadSpeed: "",
+    downloadSpeed: "",
+    features: [
+      "חבילת טלוויזיה בסיסית מקיפה",
+      "מעל 80 ערוצים איכותיים",
+      "ערוצי חדשות וספורט",
+      "שירות VOD עשיר",
+      "תמיכה טכנית מקצועית"
+    ],
+    color: "bg-gradient-to-br from-green-400 to-green-600",
+    category: "tv"
   }
 ];
