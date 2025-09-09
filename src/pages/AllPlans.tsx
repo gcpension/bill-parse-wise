@@ -5,6 +5,7 @@ import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, Searc
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { SwitchRequestForm } from "@/components/forms/SwitchRequestForm";
+import { SavingsComparisonHeader } from "@/components/SavingsComparisonHeader";
 
 const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -153,11 +154,21 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
   );
 };
 
-interface AllPlansProps {
-  initialSelectedCategories?: string[];
+interface CategorySavings {
+  category: 'electricity' | 'cellular' | 'internet' | 'tv';
+  currentAmount: number;
+  newAmount: number;
+  monthlySavings: number;
+  currentProvider: string;
+  newProvider: string;
 }
 
-const AllPlans = ({ initialSelectedCategories = [] }: AllPlansProps) => {
+interface AllPlansProps {
+  initialSelectedCategories?: string[];
+  savingsData?: CategorySavings[];
+}
+
+const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlansProps) => {
   // Set initial category based on analyzed categories
   const getInitialCategory = () => {
     if (initialSelectedCategories.length === 1) {
@@ -202,14 +213,22 @@ const AllPlans = ({ initialSelectedCategories = [] }: AllPlansProps) => {
     <Layout>
       <div dir="rtl" className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
         <div className="container mx-auto px-4 py-12">
+          {/* Savings Comparison Header - Only show if we have savings data */}
+          {savingsData.length > 0 && (
+            <SavingsComparisonHeader categorySavings={savingsData} />
+          )}
+
           {/* Header */}
           <header className="text-center mb-8">
             <div className="mb-4">
               <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-3">
-                כל המסלולים
+                {savingsData.length > 0 ? 'המסלולים המומלצים עבורך' : 'כל המסלולים'}
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                בחר את המסלול המתאים לך מבין {manualPlans.length} המסלולים הזמינים
+                {savingsData.length > 0 
+                  ? 'בחר את המסלולים שיחסכו לך הכי הרבה כסף מהרשימה המותאמת אישית'
+                  : `בחר את המסלול המתאים לך מבין ${manualPlans.length} המסלולים הזמינים`
+                }
               </p>
             </div>
           </header>
