@@ -21,10 +21,12 @@ export default {
 			fontFamily: {
 				'inter': ['Inter', 'sans-serif'],
 				'heebo': ['Heebo', 'sans-serif'],
-				'ibm-plex': ['IBM Plex Sans Hebrew', 'sans-serif'], 
-				'sans': ['Inter', 'Heebo', 'IBM Plex Sans Hebrew', 'ui-sans-serif', 'system-ui'],
-				'display': ['Heebo', 'Inter', 'sans-serif'],
-				'body': ['Inter', 'IBM Plex Sans Hebrew', 'sans-serif'],
+				'ibm-plex': ['IBM Plex Sans Hebrew', 'sans-serif'],
+				'assistant': ['Assistant', 'sans-serif'],
+				'rubik': ['Rubik', 'sans-serif'], 
+				'sans': ['Assistant', 'Heebo', 'Inter', 'IBM Plex Sans Hebrew', 'ui-sans-serif', 'system-ui'],
+				'display': ['Rubik', 'Heebo', 'Assistant', 'sans-serif'],
+				'body': ['Assistant', 'Inter', 'IBM Plex Sans Hebrew', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

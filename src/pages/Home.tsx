@@ -87,69 +87,100 @@ const Home = () => {
     rating: 5,
     savings: "₪2,100"
   }];
-  return <div className="min-h-screen bg-background font-sans overflow-hidden">
-      {/* Background Elements */}
+  return <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10 font-body overflow-hidden">
+      {/* Enhanced Background Elements */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-muted/20" />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-emerald-400/20 to-cyan-500/20 rounded-full blur-3xl animate-pulse" style={{
-        animationDelay: '1s'
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-background to-secondary/5" />
+        <div className="absolute top-10 left-1/3 w-[600px] h-[600px] bg-gradient-to-br from-primary/8 to-purple-500/8 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-10 right-1/3 w-[500px] h-[500px] bg-gradient-to-br from-emerald-400/8 to-blue-500/8 rounded-full blur-3xl animate-float" style={{
+        animationDelay: '2s'
+      }} />
+        <div className="absolute top-1/2 left-10 w-[400px] h-[400px] bg-gradient-to-br from-orange-400/6 to-pink-500/6 rounded-full blur-3xl animate-float" style={{
+        animationDelay: '4s'
       }} />
       </div>
 
-      {/* Hero Section */}
-      <section className="relative py-12 lg:py-16">
+      {/* Enhanced Hero Section */}
+      <section className="relative py-16 lg:py-20">
         <div className="container mx-auto px-4 lg:px-6">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-5xl mx-auto text-center">
             <div className={`transition-all duration-1000 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-full border border-primary/20 mb-6">
-                <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">פלטפורמת ההשוואה המתקדמת של 2025</span>
+              {/* Premium Badge */}
+              <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary/10 via-purple-500/10 to-blue-500/10 rounded-full border border-primary/20 mb-8 backdrop-blur-sm shadow-lg">
+                <div className="w-6 h-6 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-white" />
+                </div>
+                <span className="text-sm font-display font-semibold bg-gradient-to-l from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  הפלטפורמה המתקדמת ביותר בישראל • 2025
+                </span>
               </div>
               
-              <h1 className="text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+              {/* Enhanced Main Title */}
+              <h1 className="text-5xl lg:text-6xl font-display font-black mb-8 tracking-tight leading-tight">
                 השוואה והחלפה
                 <br />
-                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent animate-pulse">
-                  חכמה של ספקים
+                <span className="relative">
+                  <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
+                    חכמה של ספקים
+                  </span>
+                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-600 to-purple-600 rounded-full animate-gradient-x bg-300%"></div>
                 </span>
               </h1>
               
-              <p className="text-lg lg:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto font-light leading-relaxed">
-                פלטפורמה מקצועית מבוססת AI להשוואת תעריפים והחלפת ספקי שירות
-                <br className="hidden sm:block" />
-                <span className="font-semibold text-primary">חסכו עד 45% בחשבונות החודשיים</span> עם טכנולוגיה מתקדמת
-              </p>
+              {/* Enhanced Subtitle */}
+              <div className="space-y-4 mb-12">
+                <p className="text-xl lg:text-2xl text-muted-foreground font-body font-light leading-relaxed max-w-4xl mx-auto">
+                  הפלטפורמה המתקדמת ביותר להשוואת תעריפים והחלפת ספקי שירות
+                </p>
+                <p className="text-lg font-display font-semibold">
+                  <span className="bg-gradient-to-l from-success via-emerald-600 to-green-600 bg-clip-text text-transparent">
+                    חסכו עד 45% בחשבונות החודשיים
+                  </span>
+                  {" "}עם טכנולוגיית AI מתקדמת
+                </p>
+              </div>
             </div>
             
             {/* Enhanced Services Preview */}
-            <div className={`grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10 transition-all duration-1000 delay-300 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-              {services.map((service, index) => <div key={index} className="group relative bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-border/50 rounded-xl p-4 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1 cursor-pointer" style={{
-              animationDelay: `${index * 100}ms`
+            <div className={`grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12 transition-all duration-1000 delay-300 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+              {services.map((service, index) => <div key={index} className="group relative bg-gradient-to-br from-card/90 to-card/60 backdrop-blur-sm border border-border/30 rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-500 hover:-translate-y-2 cursor-pointer overflow-hidden" style={{
+              animationDelay: `${index * 150}ms`
             }}>
-                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 rounded-xl transition-opacity duration-300`} />
+                  {/* Gradient Background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
+                  
+                  {/* Shimmer Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  
                   <div className="relative z-10">
-                    <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
-                    <h3 className="font-bold text-base mb-2">{service.name}</h3>
-                    <div className={`inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r ${service.color} text-white text-xs font-bold rounded-full`}>
-                      <TrendingUp className="w-3 h-3" />
+                    <div className="text-3xl mb-4 group-hover:scale-125 transition-transform duration-500">{service.icon}</div>
+                    <h3 className="font-display font-bold text-lg mb-3">{service.name}</h3>
+                    <div className={`inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r ${service.color} text-white text-sm font-bold rounded-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
+                      <TrendingUp className="w-4 h-4" />
                       {service.savings}
                     </div>
                   </div>
                 </div>)}
             </div>
             
-            {/* Enhanced CTA Buttons */}
-            <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-1000 delay-500 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-              <Button size="lg" className="group relative text-base px-8 py-4 rounded-xl font-bold bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/25 hover:scale-105" onClick={() => navigate('/analyze')}>
-                <span className="relative z-10 flex items-center gap-2">
-                  <Calculator className="w-5 h-5" />
+            {/* Enhanced CTA Button */}
+            <div className={`flex flex-col sm:flex-row gap-6 justify-center transition-all duration-1000 delay-500 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+              <Button 
+                size="lg" 
+                className="group relative text-lg px-10 py-6 rounded-2xl font-display font-bold bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-purple-600 hover:via-primary hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-3xl hover:shadow-primary/30 hover:scale-110 transform-gpu"
+                onClick={() => navigate('/analyze')}
+              >
+                {/* Animated Background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/0 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500" />
+                
+                <span className="relative z-10 flex items-center gap-3">
+                  <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+                    <Calculator className="w-4 h-4" />
+                  </div>
                   התחל השוואה חכמה
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
                 </span>
               </Button>
-              
-              
             </div>
           </div>
         </div>

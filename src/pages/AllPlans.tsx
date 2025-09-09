@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Upload, Download, Wifi, Zap, Smartphone, Phone, Check, Building2, Search, Tv } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
-import { SwitchRequestForm } from "@/components/forms/SwitchRequestForm";
+import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
 import { SavingsComparisonHeader } from "@/components/SavingsComparisonHeader";
 
 const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
@@ -145,7 +145,7 @@ const PlanListItem = ({ plan }: { plan: ManualPlan }) => {
         </div>
       </div>
       
-      <SwitchRequestForm 
+      <EnhancedSwitchRequestForm 
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
         selectedPlan={plan}
