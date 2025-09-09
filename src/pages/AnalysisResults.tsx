@@ -39,7 +39,6 @@ const categoryConfig = {
 
 export const AnalysisResults = ({ results, onBackToInput }: AnalysisResultsProps) => {
   const [activeTab, setActiveTab] = useState('overview');
-  const { toast } = useToast();
 
   const totalMonthlySavings = results.reduce((sum, result) => sum + result.monthlySavings, 0);
   const totalAnnualSavings = results.reduce((sum, result) => sum + result.annualSavings, 0);
@@ -347,5 +346,6 @@ export const AnalysisResults = ({ results, onBackToInput }: AnalysisResultsProps
         </div>
       </div>
     </Layout>
+  </ErrorBoundary>
   );
 };
