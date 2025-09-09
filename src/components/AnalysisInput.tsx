@@ -18,7 +18,6 @@ import {
   Tv,
   TrendingUp,
   Target,
-  DollarSign,
   AlertTriangle,
   CheckCircle2
 } from 'lucide-react';
@@ -394,7 +393,9 @@ export const AnalysisInput = ({
                             }`}
                             onBlur={(e) => validateField(key, 'monthlyAmount', e.target.value)}
                           />
-                          <DollarSign className="absolute right-2 top-2 h-4 w-4 text-muted-foreground" />
+                          <div className="w-4 h-4 flex items-center justify-center text-muted-foreground absolute right-2 top-2">
+                            ₪
+                          </div>
                         </div>
                       </div>
                     </div>
