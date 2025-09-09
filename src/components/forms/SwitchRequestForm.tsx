@@ -29,26 +29,23 @@ export const SwitchRequestForm = ({ isOpen, onClose, selectedPlan }: SwitchReque
   const [customerType, setCustomerType] = useState<CustomerType>('private');
   
   // Map plan category to our form categories
-  const getServiceCategory = (planCategory: string): ServiceCategory => {
-    switch (planCategory.toLowerCase()) {
-      case 'חשמל':
-      case 'electricity':
-        return 'electricity';
-      case 'סלולר':
-      case 'cellular':
-        return 'cellular';
-      case 'אינטרנט':
-      case 'internet':
-        return 'internet';
-      case 'טלוויזיה':
-      case 'tv':
-        return 'tv';
-      default:
-        return 'electricity'; // fallback
-    }
+  const mapServiceCategory = (planCategory: string): ServiceCategory => {
+    const categoryMap: Record<string, ServiceCategory> = {
+      'חשמל': 'electricity',
+      'electricity': 'electricity', 
+      'סלולר': 'cellular',
+      'cellular': 'cellular',
+      'mobile': 'cellular',
+      'אינטרנט': 'internet',
+      'internet': 'internet',
+      'טלוויזיה': 'tv',
+      'tv': 'tv'
+    };
+    
+    return categoryMap[planCategory.toLowerCase()] || 'electricity';
   };
 
-  const serviceCategory = getServiceCategory(selectedPlan.category);
+  const serviceCategory = mapServiceCategory(selectedPlan.category);
 
   const renderFormComponent = () => {
     const formKey = `${serviceCategory}-${customerType}`;
