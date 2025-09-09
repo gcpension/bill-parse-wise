@@ -186,20 +186,99 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Enhanced Stats Section */}
-      <section className="py-12">
+      {/* Tips & Guides Section */}
+      <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className={`grid grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-1000 delay-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-              {stats.map((stat, index) => (
-                <div key={index} className="group text-center p-6 bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-border/30 rounded-2xl hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
-                  <div className="flex justify-center mb-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary-glow/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <stat.icon className="w-6 h-6 text-primary" />
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-display font-bold mb-4">
+                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  טיפים לחיסכון חכם
+                </span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body">
+                רוצים לחסוך עוד יותר? הנה כמה טיפים מהמומחים שלנו
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  icon: "💡",
+                  title: "בדקו חשבונות מידי חודש",
+                  description: "עקבו אחרי הצריכה שלכם - פעמים רבות תוכלו לזהות עליות מיותרות",
+                  color: "from-amber-400 to-orange-500"
+                },
+                {
+                  icon: "📊",
+                  title: "השוו מחירים בקביעות",
+                  description: "השוק משתנה כל הזמן - מה שהיה זול השנה עלול להיות יקר השנה הבאה",
+                  color: "from-blue-400 to-blue-600"
+                },
+                {
+                  icon: "⏰",
+                  title: "עקבו אחרי תוקף ההתקשרויות",
+                  description: "רוב הספקים נותנים הנחות לתקופה מוגבלת - חשוב לדעת מתי זה נגמר",
+                  color: "from-emerald-400 to-green-600"  
+                },
+                {
+                  icon: "🔄", 
+                  title: "אל תפחדו להחליף",
+                  description: "בעבר זה היה מסובך, היום זה פשוט - וזה יכול לחסוך לכם אלפי שקלים",
+                  color: "from-purple-400 to-purple-600"
+                }
+              ].map((tip, index) => (
+                <div key={index} className="group bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-border/30 rounded-2xl p-6 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
+                  <div className="flex items-start gap-4">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${tip.color} rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      {tip.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-display font-semibold text-lg mb-2">{tip.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed font-body text-sm">{tip.description}</p>
                     </div>
                   </div>
-                  <div className="text-2xl font-display font-black text-primary mb-1">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground font-body">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-display font-bold mb-4">
+                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  שאלות נפוצות
+                </span>
+              </h2>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                {
+                  q: "האם השירות באמת חינם?",
+                  a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
+                },
+                {
+                  q: "כמה זמן לוקח לקבל תוצאות?", 
+                  a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
+                },
+                {
+                  q: "מה אם אני כבר בהתקשרות?",
+                  a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
+                },
+                {
+                  q: "האם יש ביטול אוטומטי מהספק הישן?",
+                  a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
+                }
+              ].map((faq, index) => (
+                <div key={index} className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                  <h3 className="font-display font-semibold text-lg mb-3 text-primary">{faq.q}</h3>
+                  <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
                 </div>
               ))}
             </div>
@@ -208,189 +287,6 @@ const Home = () => {
       </section>
       
 
-      {/* How It Works Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Header */}
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">
-                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  איך זה עובד?
-                </span>
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                התהליך פשוט, מהיר ובטוח שחוזר לך זמן טרחה. אנחנו דואגים לכל השלבים במקום 
-                ומבטיחים החלפה חלקה - זה לוקח רק 3 דקות
-              </p>
-            </div>
-
-            {/* Process Steps */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Step 1 */}
-              <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/10 to-blue-600/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 text-center hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
-                  {/* Step Number */}
-                  <div className="absolute -top-4 right-6 w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-sm">1</span>
-                  </div>
-                  
-                  {/* Icon */}
-                  <div className="mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold mb-4 text-blue-600">מלא פרטים</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    מלא את הפרטים האישיים שלך 
-                    ובחר ספק חדש - זה לוקח רק 3 דקות
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-br from-orange-500/10 to-red-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 text-center hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-300">
-                  {/* Step Number */}
-                  <div className="absolute -top-4 right-6 w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-sm">2</span>
-                  </div>
-                  
-                  {/* Icon */}
-                  <div className="mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z" />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold mb-4 text-orange-600">אנחנו מנתקים</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    אנחנו דואגים לניתוק מהספק הקיים ללא 
-                    טרחה מצידך - זה חינם!
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-br from-emerald-500/10 to-green-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 text-center hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300">
-                  {/* Step Number */}
-                  <div className="absolute -top-4 right-6 w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-500 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-sm">3</span>
-                  </div>
-                  
-                  {/* Icon */}
-                  <div className="mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold mb-4 text-emerald-600">התחברות חלקה</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    אנחנו מקיימים אותך לספק החדש 
-                    ומוודאים שהכל עובד מושלם
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* Enhanced Features Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Header */}
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-display font-bold mb-4">
-                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  למה בוחרים בנו?
-                </span>
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-body">
-                טכנולוגיה מתקדמת, שירות אישי ותוצאות מוכחות - הכל במקום אחד
-              </p>
-            </div>
-
-            {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {features.map((feature, index) => (
-                <div key={index} className="group relative">
-                  <div className="absolute -inset-4 bg-gradient-to-br from-primary/5 to-primary-glow/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300">
-                    {/* Icon */}
-                    <div className="mb-6">
-                      <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                        <feature.icon className="w-8 h-8 text-white" />
-                      </div>
-                    </div>
-                    
-                    <h3 className="text-xl font-display font-bold mb-4">{feature.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed font-body">{feature.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Security & Trust Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="bg-gradient-to-br from-success/10 to-emerald-500/10 rounded-3xl p-8 border border-success/20">
-              <div className="flex justify-center mb-6">
-                <div className="w-20 h-20 bg-gradient-to-br from-success to-emerald-600 rounded-3xl flex items-center justify-center shadow-xl">
-                  <Shield className="w-10 h-10 text-white" />
-                </div>
-              </div>
-              
-              <h2 className="text-2xl font-display font-bold mb-4 text-success">
-                בטיחות ואמינות מלאה
-              </h2>
-              
-              <p className="text-lg text-muted-foreground mb-6 font-body leading-relaxed">
-                הנתונים שלכם מוגנים בהצפנה ברמה בנקאית. אנחנו לא שומרים פרטי כרטיסי אשראי 
-                ופועלים לפי תקני האבטחה הגבוהים ביותר.
-              </p>
-              
-              <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-success" />
-                  <span>הצפנה SSL 256-bit</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-success" />
-                  <span>תקן PCI DSS</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-success" />
-                  <span>אישור משרד הכלכלה</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-success" />
-                  <span>ביטוח אחריות מקצועית</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Process Steps */}
       
