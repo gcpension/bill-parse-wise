@@ -19,9 +19,12 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'assistant': ['Assistant', 'sans-serif'],
-				'rubik': ['Rubik', 'sans-serif'], 
-				'sans': ['Assistant', 'Rubik', 'ui-sans-serif', 'system-ui'],
+				'inter': ['Inter', 'sans-serif'],
+				'heebo': ['Heebo', 'sans-serif'],
+				'ibm-plex': ['IBM Plex Sans Hebrew', 'sans-serif'], 
+				'sans': ['Inter', 'Heebo', 'IBM Plex Sans Hebrew', 'ui-sans-serif', 'system-ui'],
+				'display': ['Heebo', 'Inter', 'sans-serif'],
+				'body': ['Inter', 'IBM Plex Sans Hebrew', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
