@@ -126,30 +126,30 @@ const Home = () => {
                     <div className="w-20 h-1 bg-gradient-to-r from-primary to-blue-600 rounded-full mb-6 mr-auto"></div>
                   </div>
                   
-                  <div className="space-y-4 text-right">
+                  <div className="space-y-5 text-right">
                     <p className="text-lg text-muted-foreground font-body leading-relaxed">
                       אנחנו מאמינים שכל משפחה ועסק בישראל ראויים לשקיפות ולהוגנות בעולם השירותים הבסיסיים. 
-                      <strong className="text-foreground"> השליחות שלנו פשוטה - לקזז עלויות מיותרות ולהחזיר לכם את הכסף שמגיע לכם.</strong>
+                      <strong className="text-foreground"> השליחות שלנו פשוטה אך חיונית - לקזז עלויות מיותרות ולהחזיר לכם את האלפי שקלים שמגיעים לכם מדי שנה.</strong>
                     </p>
                     
                     <p className="text-base text-muted-foreground font-body leading-relaxed">
-                      במקום להישאר תקועים בחוזים יקרים ותעריפים מנופחים, אנחנו נותנים לכם את הכוח להשוות, 
-                      לבחור ולחסוך - בקלות, במהירות ובביטחון מלא.
+                      במקום להישאר תקועים בחוזים יקרים, תעריפים מנופחים ושיחות שימור מייגעות, 
+                      אנחנו מביאים לכם מהפכה אמיתית - טכנולוגיה מתקדמת שמנתחת את השוק בזמן אמת, 
+                      מזהה הזדמנויות חיסכון ומבצעת עבורכם את כל התהליך הבירוקרטי.
                     </p>
                     
-                    <div className="flex flex-wrap gap-3 justify-end mt-6">
-                      <div className="flex items-center gap-2 bg-primary/10 px-3 py-2 rounded-full">
-                        <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        <span className="text-sm font-medium">שקיפות מלאה</span>
-                      </div>
-                      <div className="flex items-center gap-2 bg-success/10 px-3 py-2 rounded-full">
-                        <div className="w-2 h-2 bg-success rounded-full"></div>
-                        <span className="text-sm font-medium">חיסכון מבטיח</span>
-                      </div>
-                      <div className="flex items-center gap-2 bg-blue-500/10 px-3 py-2 rounded-full">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span className="text-sm font-medium">שירות אישי</span>
-                      </div>
+                    <p className="text-base text-muted-foreground font-body leading-relaxed">
+                      האמת הפשוטה היא שהספקים מרוויחים מחוסר המידע שלכם. הם סומכים על העצלות, הפחד מהביורוקרטיה 
+                      והקושי להשוות מחירים. <strong className="text-primary">אנחנו משברים את המעגל הזה</strong> - 
+                      נותנים לכם כוח, מידע ויכולת לקבל החלטות חכמות שיחסכו לכם כסף אמיתי.
+                    </p>
+                    
+                    <div className="bg-gradient-to-r from-primary/5 to-success/5 p-4 rounded-2xl border border-primary/20 mt-6">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        <strong className="text-primary">החזון שלנו:</strong> עולם שבו כל צרכן בישראל יודע בדיוק כמה הוא משלם, 
+                        למה הוא משלם, ויש לו את הכלים לשנות את המצב תוך דקות. עד היום חסכנו לאלפי משפחות ועסקים מעל 
+                        <strong className="text-success"> 15 מיליון שקל בשנה האחרונה בלבד</strong>.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -265,72 +265,149 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Simple Convincing Message Section */}
-      <section className="py-12 bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 text-gray-800 relative overflow-hidden">
+      {/* 2025 Revolution Section */}
+      <section className="py-16 bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 text-gray-800 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-5xl mx-auto">
             
-            {/* Main convincing message */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 mb-8">
-              <div className="mb-6">
-                <h2 className="text-3xl font-fredoka font-bold mb-4 text-gray-800">
-                  למה זה פתרון אמיתי לבעיה כואבת?
+            {/* Main revolutionary message */}
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-10 border border-gray-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 mb-8">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-100 to-orange-100 rounded-full border border-red-200 mb-6">
+                  <span className="text-red-600 font-bold text-sm">⚠️ המצב הנוכחי חייב להשתנות</span>
+                </div>
+                <h2 className="text-4xl font-fredoka font-black mb-4 text-gray-800 leading-tight">
+                  למה בשנת 2025 אנחנו עדיין 
+                  <span className="text-red-600 block">מבזבזים כסף בלי סיבה?</span>
                 </h2>
-                <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-green-400 rounded-full mx-auto"></div>
+                <div className="w-32 h-1 bg-gradient-to-r from-red-500 via-orange-500 to-amber-500 rounded-full mx-auto"></div>
               </div>
               
-              <div className="space-y-6 text-gray-700">
-                <p className="text-lg font-comfortaa leading-relaxed">
-                  <strong className="text-blue-600">זה לא רק עניין של כסף</strong> – זה עניין של זמן, עצבים ויחס הוגן. 
-                  במקום לבזבז שעות על טלפונים לספקים ולהיתקע בשיחות שימור מעצבנות, 
-                  <strong className="text-green-600"> אנחנו עושים הכל עבורכם תוך דקות ספורות.</strong>
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="p-4 bg-blue-50/70 rounded-2xl border border-blue-200/50">
-                    <div className="text-2xl mb-2">🚀</div>
-                    <h3 className="font-fredoka font-bold text-blue-700 mb-2">מהיר ופשוט</h3>
-                    <p className="text-sm text-gray-600 font-comfortaa">
-                      תוך 5 דקות תקבלו תוצאות מדויקות. 
-                      תוך שבוע המעבר יהיה מוכן.
-                    </p>
+              <div className="space-y-8">
+                {/* Current Problems */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-fredoka font-bold text-red-700 mb-4">
+                      🚫 החסרונות של היום
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      <div className="p-4 bg-red-50/80 rounded-2xl border border-red-200/50">
+                        <div className="flex items-start gap-3">
+                          <div className="text-2xl">😤</div>
+                          <div>
+                            <h4 className="font-fredoka font-bold text-red-800 mb-2">שיחות שימור אינסופיות</h4>
+                            <p className="text-sm text-red-700 leading-relaxed">
+                              שעות של טלפונים, השהיות, הבטחות ריקות והעברות בין מחלקות. 
+                              זמן יקר שאתם מבזבזים במקום לחיות.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-orange-50/80 rounded-2xl border border-orange-200/50">
+                        <div className="flex items-start gap-3">
+                          <div className="text-2xl">📋</div>
+                          <div>
+                            <h4 className="font-fredoka font-bold text-orange-800 mb-2">ביורוקרטיה מיותרת</h4>
+                            <p className="text-sm text-orange-700 leading-relaxed">
+                              טפסים, חתימות, אישורים, המתנות. תהליכים מסובכים בכוונה 
+                              כדי שתוותרו ותישארו בתעריף היקר.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-yellow-50/80 rounded-2xl border border-yellow-200/50">
+                        <div className="flex items-start gap-3">
+                          <div className="text-2xl">🕳️</div>
+                          <div>
+                            <h4 className="font-fredoka font-bold text-yellow-800 mb-2">חוסר שקיפות מוחלט</h4>
+                            <p className="text-sm text-yellow-700 leading-relaxed">
+                              תעריפים נסתרים, עמלות מסתירות, הנחות זמניות שנעלמות. 
+                              אף אחד לא מסביר לכם את האמת.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  
-                  <div className="p-4 bg-green-50/70 rounded-2xl border border-green-200/50">
-                    <div className="text-2xl mb-2">💰</div>
-                    <h3 className="font-fredoka font-bold text-green-700 mb-2">חיסכון אמיתי</h3>
-                    <p className="text-sm text-gray-600 font-comfortaa">
-                      בממוצע משפחות חוסכות 2,800₪ בשנה. 
-                      ללא עמלות נסתרות.
-                    </p>
-                  </div>
-                  
-                  <div className="p-4 bg-purple-50/70 rounded-2xl border border-purple-200/50">
-                    <div className="text-2xl mb-2">🛡️</div>
-                    <h3 className="font-fredoka font-bold text-purple-700 mb-2">בטוח ושקוף</h3>
-                    <p className="text-sm text-gray-600 font-comfortaa">
-                      ללא התחייבויות נסתרות. 
-                      מה שרואים זה מה שמקבלים.
-                    </p>
+
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-fredoka font-bold text-green-700 mb-4">
+                      ✨ איך זה צריך להיראות ב-2025
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      <div className="p-4 bg-green-50/80 rounded-2xl border border-green-200/50">
+                        <div className="flex items-start gap-3">
+                          <div className="text-2xl">⚡</div>
+                          <div>
+                            <h4 className="font-fredoka font-bold text-green-800 mb-2">טכנולוגיה חכמה</h4>
+                            <p className="text-sm text-green-700 leading-relaxed">
+                              AI מנתח עבורכם אלפי תעריפים תוך שניות, מוצא את הדיל הטוב ביותר 
+                              ומבצע את כל התהליך אוטומטית.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-blue-50/80 rounded-2xl border border-blue-200/50">
+                        <div className="flex items-start gap-3">
+                          <div className="text-2xl">🎯</div>
+                          <div>
+                            <h4 className="font-fredoka font-bold text-blue-800 mb-2">שקיפות מוחלטת</h4>
+                            <p className="text-sm text-blue-700 leading-relaxed">
+                              כל התעריפים, כל העמלות, כל ההנחות - הכל גלוי, ברור ומוסבר 
+                              בשפה פשוטה ומובנת.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-purple-50/80 rounded-2xl border border-purple-200/50">
+                        <div className="flex items-start gap-3">
+                          <div className="text-2xl">🚀</div>
+                          <div>
+                            <h4 className="font-fredoka font-bold text-purple-800 mb-2">מהירות וקלות</h4>
+                            <p className="text-sm text-purple-700 leading-relaxed">
+                              5 דקות להזין נתונים, 2 דקות לקבל תוצאות, 
+                              ושבוע אחד למעבר מלא. הכל דיגיטלי וחלק.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="mt-8 p-6 bg-gradient-to-r from-primary/5 to-blue-500/5 rounded-2xl border border-primary/20">
-                  <h3 className="text-xl font-display font-bold text-primary mb-4 text-center">
-                    השליחות שלנו - לחסוך לכם כסף אמיתי
-                  </h3>
-                  <p className="text-muted-foreground text-base leading-relaxed text-center">
-                    אנחנו מאמינים שכל משפחה ועסק בישראל ראויים לשקיפות ולהוגנות בעולם השירותים הבסיסיים. 
-                    השליחות שלנו פשוטה - לקזז עלויות מיותרות ולהחזיר לכם את הכסף שמגיע לכם.
-                  </p>
-                  <div className="flex items-center justify-center gap-4 mt-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-success rounded-full"></div>
-                      <span className="text-sm font-medium text-success">שקיפות מלאה</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-primary rounded-full"></div>
-                      <span className="text-sm font-medium text-primary">חיסכון מבטיח</span>
+
+                {/* The Reality Check */}
+                <div className="mt-10 p-8 bg-gradient-to-r from-primary/10 via-blue-500/10 to-purple-500/10 rounded-3xl border-2 border-primary/20 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-blue-500/5 to-purple-500/5 animate-pulse"></div>
+                  <div className="relative z-10 text-center">
+                    <div className="text-6xl mb-4">💡</div>
+                    <h3 className="text-2xl font-fredoka font-black text-primary mb-6">
+                      המציאות החדשה כבר כאן
+                    </h3>
+                    <p className="text-lg text-gray-700 leading-relaxed mb-6 max-w-3xl mx-auto">
+                      בעוד שרוב הישראלים עדיין תקועים בשיטות של שנות ה-90, 
+                      <strong className="text-primary"> אלפי משפחות חכמות כבר חוסכות איתנו מיליוני שקלים מדי שנה</strong>. 
+                      הן לא מחכות לספקים - הן מחליפות אותם בקליק.
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                      <div className="p-4 bg-white/70 rounded-2xl border border-gray-200/50 hover:shadow-lg transition-all">
+                        <div className="text-3xl font-black text-primary mb-2">15M₪</div>
+                        <div className="text-sm text-gray-600">נחסכו בשנה האחרונה</div>
+                      </div>
+                      <div className="p-4 bg-white/70 rounded-2xl border border-gray-200/50 hover:shadow-lg transition-all">
+                        <div className="text-3xl font-black text-success mb-2">4,500+</div>
+                        <div className="text-sm text-gray-600">משפחות חסכו כבר</div>
+                      </div>
+                      <div className="p-4 bg-white/70 rounded-2xl border border-gray-200/50 hover:shadow-lg transition-all">
+                        <div className="text-3xl font-black text-blue-600 mb-2">96%</div>
+                        <div className="text-sm text-gray-600">מוצאים חיסכון משמעותי</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -339,15 +416,17 @@ const Home = () => {
 
             {/* Call to action */}
             <div className="text-center">
-              <p className="text-lg font-comfortaa text-gray-600 mb-4">
-                <strong className="text-blue-600">מוכנים לחסוך אלפי שקלים השנה?</strong> 
-                זה לוקח רק 5 דקות לבדוק כמה תוכלו לחסוך.
-              </p>
-              
-              <div className="flex justify-center gap-2">
-                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-comfortaa">✓ חינם לחלוטין</span>
-                <span className="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-comfortaa">✓ ללא התחייבות</span>
-                <span className="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-comfortaa">✓ תוצאות מיידיות</span>
+              <div className="max-w-2xl mx-auto">
+                <p className="text-xl font-comfortaa text-gray-700 mb-6 leading-relaxed">
+                  <strong className="text-primary">השאלה היא לא אם תחסכו כסף</strong> - 
+                  השאלה היא כמה זמן אתם מוכנים לחכות עד שתתחילו?
+                </p>
+                
+                <div className="flex justify-center gap-3 flex-wrap">
+                  <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-bold border border-primary/20">✓ ללא סיכון</span>
+                  <span className="inline-block px-4 py-2 bg-success/10 text-success rounded-full text-sm font-bold border border-success/20">✓ ללא עלות</span>
+                  <span className="inline-block px-4 py-2 bg-blue-500/10 text-blue-600 rounded-full text-sm font-bold border border-blue-500/20">✓ תוצאות תוך דקות</span>
+                </div>
               </div>
             </div>
           </div>
