@@ -268,11 +268,7 @@ const Home = () => {
             
             {/* Enhanced CTA Button */}
             <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-1000 delay-500 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-              <Button 
-                size="lg" 
-                className="group relative text-lg px-8 py-4 rounded-2xl font-display font-bold bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-purple-600 hover:via-primary hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-3xl hover:shadow-primary/30 hover:scale-110 transform-gpu"
-                onClick={() => navigate('/analyze')}
-              >
+              <Button size="lg" className="group relative text-lg px-8 py-4 rounded-2xl font-display font-bold bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-purple-600 hover:via-primary hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-3xl hover:shadow-primary/30 hover:scale-110 transform-gpu" onClick={() => navigate('/analyze')}>
                 {/* Animated Background */}
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/0 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500" />
                 
@@ -305,33 +301,27 @@ const Home = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  icon: "💡",
-                  title: "בדקו חשבונות מידי חודש",
-                  description: "עקבו אחרי הצריכה שלכם - פעמים רבות תוכלו לזהות עליות מיותרות",
-                  color: "from-amber-400 to-orange-500"
-                },
-                {
-                  icon: "📊",
-                  title: "השוו מחירים בקביעות",
-                  description: "השוק משתנה כל הזמן - מה שהיה זול השנה עלול להיות יקר השנה הבאה",
-                  color: "from-blue-400 to-blue-600"
-                },
-                {
-                  icon: "⏰",
-                  title: "עקבו אחרי תוקף ההתקשרויות",
-                  description: "רוב הספקים נותנים הנחות לתקופה מוגבלת - חשוב לדעת מתי זה נגמר",
-                  color: "from-emerald-400 to-green-600"  
-                },
-                {
-                  icon: "🔄", 
-                  title: "אל תפחדו להחליף",
-                  description: "בעבר זה היה מסובך, היום זה פשוט - וזה יכול לחסוך לכם אלפי שקלים",
-                  color: "from-purple-400 to-purple-600"
-                }
-              ].map((tip, index) => (
-                <div key={index} className="group bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-border/30 rounded-2xl p-6 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
+              {[{
+              icon: "💡",
+              title: "בדקו חשבונות מידי חודש",
+              description: "עקבו אחרי הצריכה שלכם - פעמים רבות תוכלו לזהות עליות מיותרות",
+              color: "from-amber-400 to-orange-500"
+            }, {
+              icon: "📊",
+              title: "השוו מחירים בקביעות",
+              description: "השוק משתנה כל הזמן - מה שהיה זול השנה עלול להיות יקר השנה הבאה",
+              color: "from-blue-400 to-blue-600"
+            }, {
+              icon: "⏰",
+              title: "עקבו אחרי תוקף ההתקשרויות",
+              description: "רוב הספקים נותנים הנחות לתקופה מוגבלת - חשוב לדעת מתי זה נגמר",
+              color: "from-emerald-400 to-green-600"
+            }, {
+              icon: "🔄",
+              title: "אל תפחדו להחליף",
+              description: "בעבר זה היה מסובך, היום זה פשוט - וזה יכול לחסוך לכם אלפי שקלים",
+              color: "from-purple-400 to-purple-600"
+            }].map((tip, index) => <div key={index} className="group bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-border/30 rounded-2xl p-6 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
                   <div className="flex items-start gap-4">
                     <div className={`w-12 h-12 bg-gradient-to-br ${tip.color} rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                       {tip.icon}
@@ -341,8 +331,7 @@ const Home = () => {
                       <p className="text-muted-foreground leading-relaxed font-body text-sm">{tip.description}</p>
                     </div>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
@@ -361,29 +350,22 @@ const Home = () => {
             </div>
 
             <div className="space-y-4">
-              {[
-                {
-                  q: "האם השירות באמת חינם?",
-                  a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
-                },
-                {
-                  q: "כמה זמן לוקח לקבל תוצאות?", 
-                  a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
-                },
-                {
-                  q: "מה אם אני כבר בהתקשרות?",
-                  a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
-                },
-                {
-                  q: "האם יש ביטול אוטומטי מהספק הישן?",
-                  a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
-                }
-              ].map((faq, index) => (
-                <div key={index} className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+              {[{
+              q: "האם השירות באמת חינם?",
+              a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
+            }, {
+              q: "כמה זמן לוקח לקבל תוצאות?",
+              a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
+            }, {
+              q: "מה אם אני כבר בהתקשרות?",
+              a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
+            }, {
+              q: "האם יש ביטול אוטומטי מהספק הישן?",
+              a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
+            }].map((faq, index) => <div key={index} className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
                   <h3 className="font-display font-semibold text-lg mb-3 text-primary">{faq.q}</h3>
                   <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
@@ -395,54 +377,10 @@ const Home = () => {
       
 
       {/* Testimonials */}
-      <section className="py-16">
-        
-      </section>
+      
 
       {/* Final CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="bg-gradient-to-br from-primary/10 via-blue-500/10 to-purple-500/10 rounded-3xl p-12 border border-primary/20 backdrop-blur-sm">
-              <h2 className="text-3xl lg:text-4xl font-display font-black mb-6">
-                מוכנים לחסוך?
-                <br />
-                <span className="bg-gradient-to-l from-success via-emerald-600 to-green-600 bg-clip-text text-transparent">
-                  בואו נתחיל היום!
-                </span>
-              </h2>
-              
-              <p className="text-xl text-muted-foreground mb-8 font-body max-w-2xl mx-auto">
-                הצטרפו למעל 150,000 משפחות שכבר חוסכות אלפי שקלים בשנה
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg" 
-                  className="group text-lg px-8 py-4 rounded-2xl font-display font-bold bg-gradient-to-r from-success via-emerald-600 to-green-600 hover:from-green-600 hover:via-success hover:to-emerald-600 transition-all duration-500 shadow-2xl hover:shadow-3xl hover:shadow-success/30 hover:scale-110"
-                  onClick={() => navigate('/analyze')}
-                >
-                  <span className="flex items-center gap-3">
-                    <Calculator className="w-5 h-5" />
-                    התחל עכשיו - זה חינם!
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
-                  </span>
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  className="text-lg px-8 py-4 rounded-2xl font-display font-semibold border-2 border-primary/20 hover:border-primary hover:bg-primary/5 transition-all duration-300"
-                  onClick={() => navigate('/analyze')}
-                >
-                  <Phone className="w-5 h-5 ml-2" />
-                  דברו איתנו
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
       
     </div>;
 };
