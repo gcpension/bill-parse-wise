@@ -115,55 +115,37 @@ const Home = () => {
               </div>
 
               {/* Mission & Banner Section */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto mt-12">
-                {/* Mission Text */}
-                <div className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-5xl mx-auto mt-8">
+                {/* Mission Text - Compact */}
+                <div className="space-y-4">
                   <div className="text-right">
-                    <h2 className="text-2xl lg:text-3xl font-display font-bold mb-4 leading-tight">
+                    <h2 className="text-xl lg:text-2xl font-display font-bold mb-3 leading-tight">
                       <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
                         השליחות שלנו
                       </span>
                     </h2>
-                    <div className="w-20 h-1 bg-gradient-to-r from-primary to-blue-600 rounded-full mb-6 mr-auto"></div>
+                    <div className="w-16 h-0.5 bg-gradient-to-r from-primary to-blue-600 rounded-full mb-4 mr-auto"></div>
                   </div>
                   
-                  <div className="space-y-6 text-right">
-                    <p className="text-xl text-muted-foreground font-elegant leading-relaxed">
-                      אנחנו מאמינים שכל משפחה ועסק בישראל ראויים לשקיפות ולהוגנות בעולם השירותים הבסיסיים. 
-                      <strong className="text-foreground font-semibold"> השליחות שלנו פשוטה אך חיונית - לקזז עלויות מיותרות ולהחזיר לכם את האלפי שקלים שמגיעים לכם מדי שנה.</strong>
+                  <div className="space-y-3 text-right">
+                    <p className="text-lg text-muted-foreground leading-relaxed">
+                      <strong className="text-foreground font-semibold">לקזז עלויות מיותרות ולהחזיר לכם את האלפי שקלים שמגיעים לכם מדי שנה.</strong>
                     </p>
                     
-                    <p className="text-lg text-muted-foreground font-body leading-relaxed">
-                      במקום להישאר תקועים בחוזים יקרים, תעריפים מנופחים ושיחות שימור מייגעות, 
-                      אנחנו מביאים לכם מהפכה אמיתית - טכנולוגיה מתקדמת שמנתחת את השוק בזמן אמת, 
-                      מזהה הזדמנויות חיסכון ומבצעת עבורכם את כל התהליך הבירוקרטי.
-                    </p>
-                    
-                    <p className="text-lg text-muted-foreground font-body leading-relaxed">
-                      האמת הפשוטה היא שהספקים מרוויחים מחוסר המידע שלכם. הם סומכים על העצלות, הפחד מהביורוקרטיה 
-                      והקושי להשוות מחירים. <strong className="text-primary text-xl font-semibold">אנחנו משברים את המעגל הזה</strong> - 
-                      נותנים לכם כוח, מידע ויכולת לקבל החלטות חכמות שיחסכו לכם כסף אמיתי.
-                    </p>
-                    
-                    <div className="bg-gradient-to-r from-primary/10 to-success/10 p-6 rounded-3xl border border-primary/30 mt-8 shadow-lg">
-                      <p className="text-lg text-muted-foreground leading-relaxed font-body">
-                        <strong className="text-primary text-xl font-bold">החזון שלנו:</strong> עולם שבו כל צרכן בישראל יודע בדיוק כמה הוא משלם, 
-                        למה הוא משלם, ויש לו את הכלים לשנות את המצב תוך דקות. עד היום חסכנו לאלפי משפחות ועסקים מעל 
-                        <strong className="text-success text-2xl font-bold"> 15 מיליון שקל בשנה האחרונה בלבד</strong>.
+                    <div className="bg-gradient-to-r from-primary/8 to-success/8 p-4 rounded-2xl border border-primary/20 shadow-sm">
+                      <p className="text-base text-muted-foreground leading-relaxed">
+                        <strong className="text-primary font-bold">החזון:</strong> חסכנו לאלפי משפחות ועסקים מעל 
+                        <strong className="text-success text-lg font-bold"> 15 מיליון שקל בשנה האחרונה</strong>
                       </p>
                       
-                      <div className="flex flex-wrap gap-4 justify-end mt-6">
-                        <div className="flex items-center gap-2 bg-primary/20 px-4 py-2 rounded-full border border-primary/30">
-                          <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
-                          <span className="text-base font-semibold text-primary">שקיפות מלאה</span>
+                      <div className="flex flex-wrap gap-2 justify-end mt-3">
+                        <div className="flex items-center gap-1 bg-primary/15 px-3 py-1 rounded-full">
+                          <div className="w-2 h-2 bg-primary rounded-full"></div>
+                          <span className="text-sm font-medium text-primary">שקיפות מלאה</span>
                         </div>
-                        <div className="flex items-center gap-2 bg-success/20 px-4 py-2 rounded-full border border-success/30">
-                          <div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
-                          <span className="text-base font-semibold text-success">חיסכון מבטיח</span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-blue-500/20 px-4 py-2 rounded-full border border-blue-500/30">
-                          <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                          <span className="text-base font-semibold text-blue-600">שירות אישי</span>
+                        <div className="flex items-center gap-1 bg-success/15 px-3 py-1 rounded-full">
+                          <div className="w-2 h-2 bg-success rounded-full"></div>
+                          <span className="text-sm font-medium text-success">חיסכון מבטיח</span>
                         </div>
                       </div>
                     </div>
@@ -171,7 +153,7 @@ const Home = () => {
                 </div>
 
                 {/* Banner */}
-                <div className="flex flex-col items-center lg:items-start space-y-6">
+                <div className="flex flex-col items-center lg:items-start space-y-4">
                   <SimpleStepsBanner />
                   
                   {/* Primary CTA - Right under banner */}
@@ -179,12 +161,12 @@ const Home = () => {
                     <Link to="/analyze" className="group">
                       <Button 
                         size="lg" 
-                        className="px-16 py-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-3xl lg:text-4xl shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-500/30 hover:ring-emerald-500/50"
+                        className="px-12 py-6 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-2xl lg:text-3xl shadow-xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-2xl ring-3 ring-emerald-500/30 hover:ring-emerald-500/50"
                       >
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-                        <span className="relative flex items-center gap-6">
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+                        <span className="relative flex items-center gap-4">
                           <span className="drop-shadow-lg">בדקו כמה תחסכו עכשיו</span>
-                          <ArrowRight className="h-8 w-8 group-hover:translate-x-3 transition-transform duration-300 drop-shadow-lg" />
+                          <ArrowRight className="h-6 w-6 group-hover:translate-x-2 transition-transform duration-300 drop-shadow-lg" />
                         </span>
                       </Button>
                     </Link>
