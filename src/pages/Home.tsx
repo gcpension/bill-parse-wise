@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield
 import { Link } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
-import savingsIcon from '@/assets/savings-icon.png';
+import familySavingsHero from '@/assets/family-savings-hero.jpg';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -89,30 +89,17 @@ const Home = () => {
                 </span>
               </div>
               
-              {/* Enhanced Main Title with Icon */}
-              <div className="flex items-center justify-center gap-4 mb-6">
-                <img 
-                  src={savingsIcon} 
-                  alt="חיסכון כסף" 
-                  className="w-16 h-16 lg:w-20 lg:h-20 animate-pulse"
-                />
-                <h1 className="text-5xl lg:text-6xl font-display font-black tracking-tight leading-tight">
-                  תפסיקו לבזבז כסף
-                  <br />
-                  <span className="relative">
-                    <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
-                      על חשבונות מנופחים
-                    </span>
-                    <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-600 to-purple-600 rounded-full animate-gradient-x bg-300%"></div>
+              {/* Enhanced Main Title */}
+              <h1 className="text-5xl lg:text-6xl font-display font-black tracking-tight leading-tight mb-6">
+                תפסיקו לבזבז כסף
+                <br />
+                <span className="relative">
+                  <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
+                    על חשבונות מנופחים
                   </span>
-                </h1>
-                <img 
-                  src={savingsIcon} 
-                  alt="חיסכון כסף" 
-                  className="w-16 h-16 lg:w-20 lg:h-20 animate-pulse"
-                  style={{ animationDelay: '1s' }}
-                />
-              </div>
+                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-600 to-purple-600 rounded-full animate-gradient-x bg-300%"></div>
+                </span>
+              </h1>
               
               {/* Enhanced Subtitle */}
               <div className="space-y-3 mb-10">
@@ -496,6 +483,80 @@ const Home = () => {
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
                 <span>ללא התחייבות</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Hero Success Image Section */}
+      <section className="py-16 bg-gradient-to-br from-background via-primary/5 to-background relative">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Image */}
+              <div className="relative">
+                <div className="relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500">
+                  <img 
+                    src={familySavingsHero}
+                    alt="משפחה ישראלית שמחה חוסכת כסף עם השירות שלנו"
+                    className="w-full h-auto object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+                </div>
+                
+                {/* Floating Success Badge */}
+                <div className="absolute -bottom-6 -right-6 bg-gradient-to-br from-success via-emerald-500 to-green-600 text-white px-6 py-4 rounded-2xl shadow-xl backdrop-blur-sm border border-white/20">
+                  <div className="text-center">
+                    <div className="text-2xl font-black">₪15M+</div>
+                    <div className="text-sm font-medium opacity-90">נחסך השנה</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Content */}
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <h2 className="text-4xl lg:text-5xl font-display font-black leading-tight">
+                    <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      אלפי משפחות
+                    </span>
+                    <br />
+                    כבר חוסכות איתנו
+                  </h2>
+                  <p className="text-xl text-muted-foreground leading-relaxed font-body">
+                    הצטרפו לקהילה של מעל 50,000 משפחות ועסקים שכבר מקבלים את השירות הטוב ביותר במחיר הנמוך ביותר
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="text-center p-4 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/30">
+                    <div className="text-2xl font-black text-primary mb-1">50K+</div>
+                    <div className="text-sm text-muted-foreground">לקוחות מרוצים</div>
+                  </div>
+                  <div className="text-center p-4 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/30">
+                    <div className="text-2xl font-black text-success mb-1">₪2,400</div>
+                    <div className="text-sm text-muted-foreground">חיסכון ממוצע</div>
+                  </div>
+                  <div className="text-center p-4 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/30">
+                    <div className="text-2xl font-black text-blue-600 mb-1">98%</div>
+                    <div className="text-sm text-muted-foreground">שביעות רצון</div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-start">
+                  <Link to="/analyze" className="group">
+                    <Button 
+                      size="lg" 
+                      className="px-8 py-6 bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-purple-600/90 text-white font-bold text-lg shadow-xl hover:shadow-primary/25 transform hover:scale-105 transition-all duration-300 rounded-2xl"
+                    >
+                      <span className="flex items-center gap-3">
+                        <span>התחילו לחסוך עכשיו</span>
+                        <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                      </span>
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
