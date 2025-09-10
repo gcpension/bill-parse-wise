@@ -150,51 +150,68 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Smart Tips Section */}
+      {/* Main Content Section - Instead of tips */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-display font-bold mb-4">
                 <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  טיפים חכמים לחיסכון
+                  למה בוחרים בנו אלפי משפחות ועסקים?
                 </span>
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                מהניסיון שלנו - כך תוכלו להמשיך לחסוך גם בעתיד
+                כי אנחנו הפלטפורמה היחידה שמשלבת טכנולוגיה מתקדמת עם שירות אישי מקצועי
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[{
-                icon: "💡",
-                title: "בדקו חשבונות מידי חודש",
-                description: "עקבו אחרי הצריכה שלכם - פעמים רבות תוכלו לזהות עליות מיותרות",
-                color: "from-amber-400 to-orange-500"
+                icon: "🎯",
+                title: "דיוק מושלם",
+                description: "האלגוריתם שלנו לוקח בחשבון את הפרופיל הספציפי שלכם - גודל משפחה, צריכה, העדפות, ומוצא את הפתרון המושלם בדיוק עבורכם",
+                stats: "דיוק של 96.8%",
+                color: "from-blue-500 to-cyan-600"
               }, {
-                icon: "📊",
-                title: "השוו מחירים בקביעות",
-                description: "השוק משתנה כל הזמן - מה שהיה זול השנה עלול להיות יקר השנה הבאה",
-                color: "from-blue-400 to-blue-600"
+                icon: "⚡",
+                title: "מהירות שוברת שיאים",
+                description: "בזמן שאתם שותים קפה אחד, המערכת שלנו כבר סורקת כל הספקים, מחשבת, ומציגה לכם את האפשרויות הטובות ביותר עם כל הפרטים",
+                stats: "תוצאות תוך 90 שניות",
+                color: "from-emerald-500 to-green-600"
               }, {
-                icon: "⏰",
-                title: "עקבו אחרי תוקף ההתקשרויות",
-                description: "רוב הספקים נותנים הנחות לתקופה מוגבלת - חשוב לדעת מתי זה נגמר",
-                color: "from-emerald-400 to-green-600"
+                icon: "🛡️",
+                title: "בטיחות ללא פשרות",
+                description: "רמת הצפנה בנקאית, אבטחת נתונים ברמה הגבוהה ביותר, ושקיפות מלאה. כל המידע שלכם נשמר בבטחה ולא נמכר לגורמים שלישיים",
+                stats: "אבטחה ברמה בנקאית",
+                color: "from-purple-500 to-indigo-600"
+              }, {
+                icon: "💰",
+                title: "חיסכון מבטיח",
+                description: "לא רק משווים - גם מבטיחים חיסכון. אם לא חסכתם לפחות 15% מהחשבון החודשי, אנחנו מחזירים לכם את ההפרש במזומן",
+                stats: "גרנטי חיסכון 15%+",
+                color: "from-amber-500 to-orange-600"
+              }, {
+                icon: "🎪",
+                title: "שירות VIP לכולם",
+                description: "יש לנו נציג אישי לכל לקוח. לא בוטים, לא מוקד טלפוני - בן אדם אמיתי שמכיר את התיק שלכם ועונה תוך דקות בוואטסאפ",
+                stats: "מענה תוך 3 דקות בממוצע",
+                color: "from-pink-500 to-rose-600"
               }, {
                 icon: "🔄",
-                title: "אל תפחדו להחליף",
-                description: "בעבר זה היה מסובך, היום זה פשוט - וזה יכול לחסוך לכם אלפי שקלים",
-                color: "from-purple-400 to-purple-600"
-              }].map((tip, index) => (
-                <div key={index} className="group bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-border/30 rounded-2xl p-6 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
-                  <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 bg-gradient-to-br ${tip.color} rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                      {tip.icon}
+                title: "מעקב חי 24/7",
+                description: "אפליקציה נייחת שמתעדכנת בזמן אמת על כל שלב במעבר. תדעו בדיוק איפה אתם עומדים ומתי הכל יהיה מוכן - ללא הפתעות",
+                stats: "עדכונים בזמן אמת",
+                color: "from-teal-500 to-blue-600"
+              }].map((feature, index) => (
+                <div key={index} className="group bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-sm border border-border/40 rounded-3xl p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2">
+                  <div className="text-center">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-3xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300 shadow-xl mx-auto mb-4`}>
+                      {feature.icon}
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-display font-semibold text-lg mb-2">{tip.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed font-body text-sm">{tip.description}</p>
+                    <h3 className="font-display font-bold text-xl mb-3">{feature.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed font-body text-sm mb-4">{feature.description}</p>
+                    <div className={`inline-block px-3 py-1.5 bg-gradient-to-r ${feature.color} text-white rounded-full text-xs font-display font-bold shadow-lg`}>
+                      {feature.stats}
                     </div>
                   </div>
                 </div>
@@ -289,20 +306,23 @@ const Home = () => {
         </div>
       </section>
 
-      {/* FAQ Section - Moved to bottom */}
+      {/* Smart Tips - Moved to bottom in sidebar style */}
       <section className="py-16 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-display font-bold mb-4">
-                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  שאלות נפוצות
-                </span>
-              </h2>
-              <p className="text-muted-foreground">תשובות לשאלות הנפוצות ביותר שאנחנו מקבלים</p>
-            </div>
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
+            
+            {/* Main FAQ Content */}
+            <div>
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-display font-bold mb-4">
+                  <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    שאלות נפוצות
+                  </span>
+                </h2>
+                <p className="text-muted-foreground">תשובות לשאלות הנפוצות ביותר שאנחנו מקבלים</p>
+              </div>
 
-            <div className="space-y-4">
+              <div className="space-y-4">
               {[{
                 q: "האם השירות באמת חינם?",
                 a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
@@ -327,7 +347,78 @@ const Home = () => {
                   <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
                 </div>
               ))}
+              <div className="space-y-4">
+                {[{
+                  q: "האם השירות באמת חינם?",
+                  a: "כן! אנחנו לא גובים כলום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
+                }, {
+                  q: "כמה זמן לוקח לקבל תוצאות?",
+                  a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
+                }, {
+                  q: "מה אם אני כבר בהתקשרות?",
+                  a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
+                }, {
+                  q: "האם אתם עובדים עם כל הספקים?",
+                  a: "כן, אנחנו עובדים עם כל הספקים הגדולים בישראל ועם עשרות ספקים קטנים יותר."
+                }, {
+                  q: "מה קורה אם אני לא מרוצה מהמעבר?",
+                  a: "יש לנו אחריות מלאה על התהליך. אם משהו לא תקין, אנחנו מטפלים בזה ללא עלות."
+                }, {
+                  q: "האם המידע שלי בטוח?",
+                  a: "כן, אנחנו משתמשים בהצפנה ברמה בנקאית ולא שומרים מידע רגיש יותר מהנדרש."
+                }].map((faq, index) => (
+                  <div key={index} className="bg-card/80 backdrop-blur-sm border border-border/40 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                    <h3 className="font-display font-semibold text-lg mb-3 text-foreground">{faq.q}</h3>
+                    <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
+                  </div>
+                ))}
+              </div>
+              </div>
             </div>
+            
+            {/* Side Tips Panel */}
+            <div className="lg:sticky lg:top-8 h-fit">
+              <div className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur-sm border border-border/40 rounded-3xl p-6 shadow-xl">
+                <div className="text-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-purple-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3 shadow-lg">
+                    💡
+                  </div>
+                  <h3 className="font-display font-bold text-lg mb-2">
+                    <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      טיפים לחיסכון
+                    </span>
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    מהניסיון שלנו עם אלפי לקוחות
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  {[{
+                    icon: "📊",
+                    title: "בדקו חשבונות מידי חודש",
+                    description: "עקבו אחרי הצריכה - זיהוי מוקדם של עליות"
+                  }, {
+                    icon: "⏰",
+                    title: "תוקף ההתקשרויות",
+                    description: "הנחות זמניות נגמרות - חשוב לעקוב"
+                  }, {
+                    icon: "🔄",
+                    title: "אל תפחדו להחליף",
+                    description: "היום זה פשוט ויכול לחסוך אלפי שקלים"
+                  }].map((tip, index) => (
+                    <div key={index} className="flex items-start gap-3 p-3 bg-gradient-to-br from-background/80 to-muted/20 rounded-2xl border border-border/20">
+                      <div className="text-lg">{tip.icon}</div>
+                      <div className="flex-1">
+                        <h4 className="font-display font-semibold text-sm mb-1">{tip.title}</h4>
+                        <p className="text-muted-foreground text-xs leading-tight font-body">{tip.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
           </div>
         </div>
       </section>
