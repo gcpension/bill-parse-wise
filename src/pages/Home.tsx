@@ -189,17 +189,17 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Primary CTA - Single button */}
+              {/* Primary CTA - Enlarged button */}
               <div className="flex justify-center items-center mt-12">
                 <Link to="/analyze" className="group">
                   <Button 
                     size="lg" 
-                    className="px-8 py-4 bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 text-white font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden"
+                    className="px-12 py-6 bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 text-white font-bold text-2xl shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 border-0 relative overflow-hidden rounded-2xl"
                   >
                     <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-                    <span className="relative flex items-center gap-3">
+                    <span className="relative flex items-center gap-4">
                       בדקו כמה תחסכו עכשיו
-                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                      <ArrowRight className="h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
                     </span>
                   </Button>
                 </Link>
@@ -435,6 +435,53 @@ const Home = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Secondary CTA Section */}
+      <section className="py-16 bg-gradient-to-br from-primary/5 via-primary-glow/10 to-background relative">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="mb-8">
+              <h2 className="text-3xl lg:text-4xl font-display font-black mb-4 text-foreground">
+                מוכנים להתחיל לחסוך?
+              </h2>
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                תוך 3 דקות תדעו בדיוק כמה כסף אתם מבזבזים מיותר ואיך לתקן את זה
+              </p>
+            </div>
+            
+            <div className="flex justify-center">
+              <Link to="/analyze" className="group">
+                <Button 
+                  size="lg" 
+                  className="px-10 py-5 bg-gradient-to-r from-primary via-primary-glow to-blue-600 hover:from-primary-glow hover:via-blue-600 hover:to-purple-600 text-white font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-xl"
+                >
+                  <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+                  <span className="relative flex items-center gap-3">
+                    התחילו את הניתוח החינמי
+                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  </span>
+                </Button>
+              </Link>
+            </div>
+
+            {/* Trust elements */}
+            <div className="flex items-center justify-center gap-6 mt-8 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span>חינמי לחלוטין</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <span>תוצאות מיידיות</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                <span>ללא התחייבות</span>
+              </div>
             </div>
           </div>
         </div>
