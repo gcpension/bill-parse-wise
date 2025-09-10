@@ -78,10 +78,10 @@ const categoryNames = {
 };
 
 const categoryColors = {
-  electricity: 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200',
-  cellular: 'bg-gradient-to-br from-blue-50 to-sky-50 border-blue-200',
-  internet: 'bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200',
-  tv: 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200'
+  electricity: 'border-2 border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50',
+  cellular: 'border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-sky-50',
+  internet: 'border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-violet-50',
+  tv: 'border-2 border-green-300 bg-gradient-to-br from-green-50 to-emerald-50'
 };
 
 const categoryAccentColors = {
@@ -287,11 +287,11 @@ export const AnalysisInput = ({
             return (
               <Card 
                 key={key} 
-                className={`transition-all duration-300 border ${
+                className={`transition-all duration-300 ${
                   data.isActive 
                     ? hasError(key) 
                       ? 'border-destructive/50 bg-destructive/5'
-                      : `${categoryColors[data.category]} border-2`
+                      : `${categoryColors[data.category]}`
                     : 'border-border/50 bg-card hover:border-primary/30 cursor-pointer hover:shadow-md'
                 }`}
                 onClick={() => !data.isActive && onCategoryToggle(key)}
