@@ -329,112 +329,85 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Enhanced "About Us" Section with New Colors */}
-      <section className="py-8 bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900 text-white relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-25">
-          <div className="absolute top-10 left-1/4 w-32 h-32 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-10 right-1/4 w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-full blur-2xl animate-bounce"></div>
-        </div>
-
+      {/* Simple Convincing Message Section */}
+      <section className="py-12 bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 text-gray-800 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            {/* Header */}
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-fredoka font-bold mb-3">
-                <span className="bg-gradient-to-r from-emerald-300 via-teal-300 to-cyan-300 bg-clip-text text-transparent">
-                  המהפכה שאנחנו מובילים בישראל 🚀
-                </span>
-              </h2>
-            </div>
-
-            {/* Main content - side by side with larger boxes */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-              {/* Left: Story + Mission - Expanded */}
-              <div className="space-y-5">
-                <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 backdrop-blur-sm rounded-3xl p-6 border border-emerald-400/20 hover:border-emerald-400/40 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/10">
-                  <h3 className="text-base font-fredoka font-bold text-emerald-300 mb-4 flex items-center gap-2">
-                    💡 המשימה שלנו - לגמר עם העבדות הצרכנית
-                  </h3>
-                  <div className="space-y-3 text-white/95">
-                    <p className="text-sm leading-relaxed font-comfortaa">
-                      <strong className="text-emerald-200">מיליוני ישראלים משלמים יותר מדי</strong> כי השוק מניפולטיבי ולא שקוף. חברות ענק מסתירות עמלות, משנות תעריפים בלי הודעה, ויוצרות מבצעים מבלבלים כדי לבלבל אתכם.
-                    </p>
-                    <p className="text-sm leading-relaxed font-comfortaa">
-                      <strong className="text-teal-200">אנחנו שוברים את הכללים!</strong> במקום להיכנע למערכת המושחתת הזו, בנינו טכנולוgiה מתקדמת שחושפת את כל הטריקים שלהם ונותנת לכם כוח אמיתי להילחם בחזרה.
-                    </p>
-                    <p className="text-sm leading-relaxed font-comfortaa">
-                      זה לא רק עניין של כסף - זה <strong className="text-cyan-200">עניין של כבוד וצדק.</strong> כל משפחה בישראל זכאי לקבל שירות הוגן במחיר הוגן, ללא משחקי כוח ובלי לבזבז שעות על בירוקרטיה מיותרת.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="bg-gradient-to-br from-teal-500/10 to-cyan-500/10 backdrop-blur-sm rounded-3xl p-6 border border-teal-400/20 hover:border-teal-400/40 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/10">
-                  <h3 className="text-base font-fredoka font-bold text-teal-300 mb-4 flex items-center gap-2">
-                    ⚡ איך אנחנו שונים - מהפכה אמיתית
-                  </h3>
-                  <div className="space-y-3 text-white/95">
-                    <p className="text-sm leading-relaxed font-comfortaa">
-                      בעוד שאתרי השוואה אחרים רק <strong className="text-teal-200">"מציגים מחירים"</strong> ומשאירים אתכם לבד מול הבירוקרטיה - אנחנו עושים את כל העבודה השחורה עבורכם!
-                    </p>
-                    <p className="text-sm leading-relaxed font-comfortaa">
-                      <strong className="text-cyan-200">הסוד שלנו:</strong> אלגוריתמי AI מתקדמים שלא רק משווים מחירים, אלא גם מזהים בדיוק איפה אתם מפסידים כסף, מנהלים משא ומתן אגרסיבי עם הספקים בשמכם, ומבצעים מעבר מלא תוך ימים ספורים.
-                    </p>
-                    <p className="text-sm leading-relaxed font-comfortaa">
-                      <strong className="text-emerald-200">התוצאה?</strong> בממוצע אנחנו חוסכים למשפחות 2,800 ₪ בשנה, עם זמן השקעה של פחות מ-5 דקות. זה לא רק שירות - זה מהפכה!
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right: Stats + Proof */}
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gradient-to-br from-emerald-400/20 to-teal-400/20 backdrop-blur-sm rounded-2xl p-4 border border-emerald-400/30 text-center group hover:scale-105 transition-all duration-300">
-                    <div className="text-2xl font-fredoka font-bold text-emerald-300 mb-2">50K+</div>
-                    <div className="text-xs text-emerald-200 font-comfortaa">משפחות חסכו השנה</div>
-                  </div>
-                  <div className="bg-gradient-to-br from-teal-400/20 to-cyan-400/20 backdrop-blur-sm rounded-2xl p-4 border border-teal-400/30 text-center group hover:scale-105 transition-all duration-300">
-                    <div className="text-2xl font-fredoka font-bold text-teal-300 mb-2">₪24M</div>
-                    <div className="text-xs text-teal-200 font-comfortaa">נחסך השנה בסה"כ</div>
-                  </div>
-                  <div className="bg-gradient-to-br from-cyan-400/20 to-blue-400/20 backdrop-blur-sm rounded-2xl p-4 border border-cyan-400/30 text-center group hover:scale-105 transition-all duration-300">
-                    <div className="text-2xl font-fredoka font-bold text-cyan-300 mb-2">98%</div>
-                    <div className="text-xs text-cyan-200 font-comfortaa">שביעות רצון לקוחות</div>
-                  </div>
-                  <div className="bg-gradient-to-br from-blue-400/20 to-indigo-400/20 backdrop-blur-sm rounded-2xl p-4 border border-blue-400/30 text-center group hover:scale-105 transition-all duration-300">
-                    <div className="text-2xl font-fredoka font-bold text-blue-300 mb-2">3 דק'</div>
-                    <div className="text-xs text-blue-200 font-comfortaa">זמן ממוצע לתהליך</div>
-                  </div>
-                </div>
-                
-                {/* Enhanced Testimonial */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/20 group hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-300">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-yellow-400 text-lg">⭐⭐⭐⭐⭐</span>
-                    <span className="text-xs text-white/70 font-comfortaa bg-emerald-500/20 px-2 py-1 rounded-full border border-emerald-400/30">דירוג גוגל 4.9</span>
-                  </div>
-                  <p className="text-white/95 text-sm font-comfortaa leading-relaxed mb-4">
-                    "התחלתי בספק ובתוך <strong className="text-emerald-300">שבועיים עשיתם לי מעבר מלא לחשמל וסלולר</strong> עם חיסכון של 1,200₪ השנה! הכי מדהים זה שקיבלתי שירות פי 10 יותר טוב והכל בלי שאני אצטרך לדבר עם אף אחד. פשוט מגניב!"
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full flex items-center justify-center text-white font-bold text-sm">א</div>
-                    <div>
-                      <p className="text-white font-comfortaa text-sm font-semibold">איתי לוי</p>
-                      <p className="text-white/60 text-xs font-comfortaa">רמת גן • חסך 1,200₪</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="max-w-4xl mx-auto text-center">
             
-            {/* Bottom enhanced value prop */}
-            <div className="text-center mt-8">
-              <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 rounded-2xl border border-emerald-400/30 backdrop-blur-sm">
-                <span className="text-2xl">🎯</span>
-                <p className="text-emerald-200 text-sm font-fredoka font-bold">
-                  המטרה: לחסוך לכל משפחה בישראל אלפי שקלים בשנה • 100% חינם • 100% שקוף • 100% מהפכני
+            {/* Main convincing message */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 mb-8">
+              <div className="mb-6">
+                <h2 className="text-3xl font-fredoka font-bold mb-4 text-gray-800">
+                  למה אלפי משפחות בוחרות בנו?
+                </h2>
+                <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-green-400 rounded-full mx-auto"></div>
+              </div>
+              
+              <div className="space-y-6 text-gray-700">
+                <p className="text-lg font-comfortaa leading-relaxed">
+                  <strong className="text-blue-600">זה לא רק עניין של כסף</strong> – זה עניין של זמן, עצבים ויחס הוגן. 
+                  במקום לבזבז שעות על טלפונים לספקים ולהיתקע בשיחות שימור מעצבנות, 
+                  <strong className="text-green-600"> אנחנו עושים הכל עבורכם תוך דקות ספורות.</strong>
                 </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="p-4 bg-blue-50/70 rounded-2xl border border-blue-200/50">
+                    <div className="text-2xl mb-2">🚀</div>
+                    <h3 className="font-fredoka font-bold text-blue-700 mb-2">מהיר ופשוט</h3>
+                    <p className="text-sm text-gray-600 font-comfortaa">
+                      תוך 5 דקות תקבלו תוצאות מדויקות. 
+                      תוך שבוע המעבר יהיה מוכן.
+                    </p>
+                  </div>
+                  
+                  <div className="p-4 bg-green-50/70 rounded-2xl border border-green-200/50">
+                    <div className="text-2xl mb-2">💰</div>
+                    <h3 className="font-fredoka font-bold text-green-700 mb-2">חיסכון אמיתי</h3>
+                    <p className="text-sm text-gray-600 font-comfortaa">
+                      בממוצע משפחות חוסכות 2,800₪ בשנה. 
+                      ללא עמלות נסתרות.
+                    </p>
+                  </div>
+                  
+                  <div className="p-4 bg-purple-50/70 rounded-2xl border border-purple-200/50">
+                    <div className="text-2xl mb-2">🛡️</div>
+                    <h3 className="font-fredoka font-bold text-purple-700 mb-2">בטוח ושקוף</h3>
+                    <p className="text-sm text-gray-600 font-comfortaa">
+                      ללא התחייבויות נסתרות. 
+                      מה שרואים זה מה שמקבלים.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="mt-8 p-6 bg-gradient-to-r from-gray-50 to-blue-50/50 rounded-2xl border border-gray-200/50">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <span className="text-yellow-500 text-xl">⭐⭐⭐⭐⭐</span>
+                    <span className="text-gray-600 text-sm font-comfortaa">4.9/5 - מעל 1,200 ביקורות</span>
+                  </div>
+                  <p className="text-gray-800 font-comfortaa text-lg italic leading-relaxed">
+                    "התחלתי בספקת ובתוך שבועיים עשיתם לי מעבר מלא לחשמל וסלולר. 
+                    <strong className="text-blue-600">חסכתי 1,200₪ השנה</strong> והכי מדהים שקיבלתי שירות 
+                    פי 10 יותר טוב מבלי שאצטרך לדבר עם אף אחד!"
+                  </p>
+                  <div className="flex items-center justify-center gap-2 mt-4">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-green-400 rounded-full flex items-center justify-center text-white font-bold text-sm">ר</div>
+                    <span className="text-gray-700 font-comfortaa text-sm">רחל מ., תל אביב</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Call to action */}
+            <div className="text-center">
+              <p className="text-lg font-comfortaa text-gray-600 mb-4">
+                <strong className="text-blue-600">מוכנים לחסוך אלפי שקלים השנה?</strong> 
+                זה לוקח רק 5 דקות לבדוק כמה תוכלו לחסוך.
+              </p>
+              
+              <div className="flex justify-center gap-2">
+                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-comfortaa">✓ חינם לחלוטין</span>
+                <span className="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-comfortaa">✓ ללא התחייבות</span>
+                <span className="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-comfortaa">✓ תוצאות מיידיות</span>
               </div>
             </div>
           </div>
