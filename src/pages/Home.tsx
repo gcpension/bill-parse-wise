@@ -112,114 +112,32 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Process Steps Banner - Modern Card Design */}
+              {/* Problem–Solution Banner (new) */}
               <section className="mb-12">
                 <div className="max-w-5xl mx-auto">
-                  {/* Header */}
-                  <div className="text-center mb-8">
-                    <h3 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-3">
-                      איך זה עובד? פשוט כמו 1-2-3
-                    </h3>
-                    <p className="text-lg text-muted-foreground">המעבר הכי קל שיש - אנחנו עושים הכל</p>
-                  </div>
-
-                  {/* Modern Steps Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    {/* Step 1 */}
-                    <div className="group relative">
-                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200/60 rounded-3xl p-8 text-center h-full transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-3 group-hover:border-blue-300 relative overflow-hidden">
-                        {/* Background decoration */}
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-blue-200/30 rounded-full blur-2xl"></div>
-                        
-                        <div className="relative z-10">
-                          <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-all duration-500 group-hover:shadow-blue-300/50">
-                            <span className="text-white font-bold text-2xl">1</span>
-                          </div>
-                          <h4 className="font-bold text-blue-800 text-xl mb-4">השוואה חכמה</h4>
-                          <p className="text-blue-700 leading-relaxed">
-                            בחרו קטגוריה ואנחנו נבדוק עבורכם את <strong>כל הספקים</strong> והמחירים במקום אחד
-                          </p>
-                        </div>
-                      </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="rounded-3xl p-8 border bg-white/70 dark:bg-card/60 border-border/40 shadow-sm">
+                      <h3 className="text-2xl font-bold mb-4">הבעיה</h3>
+                      <ul className="space-y-3 text-muted-foreground">
+                        <li>• מחירים משתנים כל הזמן וחוסר שקיפות</li>
+                        <li>• מבצעים מורכבים וקנסות יציאה</li>
+                        <li>• שיחות שימור ארוכות ובירוקרטיה</li>
+                      </ul>
                     </div>
-
-                    {/* Step 2 */}
-                    <div className="group relative">
-                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200/60 rounded-3xl p-8 text-center h-full transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-3 group-hover:border-purple-300 relative overflow-hidden">
-                        {/* Background decoration */}
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-purple-200/30 rounded-full blur-2xl"></div>
-                        
-                        <div className="relative z-10">
-                          <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-all duration-500 group-hover:shadow-purple-300/50">
-                            <span className="text-white font-bold text-2xl">2</span>
-                          </div>
-                          <h4 className="font-bold text-purple-800 text-xl mb-4">חתימה דיגיטלית</h4>
-                          <p className="text-purple-700 leading-relaxed">
-                            מילוי פרטים מהיר + <strong>חתימה מאובטחת</strong> על ייפוי כוח - הכל דיגיטלי ומוצפן
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Step 3 */}
-                    <div className="group relative">
-                      <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200/60 rounded-3xl p-8 text-center h-full transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-3 group-hover:border-green-300 relative overflow-hidden">
-                        {/* Background decoration */}
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-green-200/30 rounded-full blur-2xl"></div>
-                        
-                        <div className="relative z-10">
-                          <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-all duration-500 group-hover:shadow-green-300/50">
-                            <span className="text-white font-bold text-2xl">3</span>
-                          </div>
-                          <h4 className="font-bold text-green-800 text-xl mb-4">מעבר אוטומטי</h4>
-                          <p className="text-green-700 leading-relaxed">
-                            <strong>ניתוק מלא</strong> מהספק הישן + <strong>התחברות</strong> לספק החדש - אתם לא עושים כלום!
-                          </p>
-                        </div>
-                      </div>
+                    <div className="rounded-3xl p-8 border bg-gradient-to-br from-primary/10 to-primary-glow/10 border-primary/20 shadow-md">
+                      <h3 className="text-2xl font-bold mb-4">הפתרון שלנו</h3>
+                      <ul className="space-y-3">
+                        <li className="flex items-center gap-2"><span className="w-2 h-2 bg-success rounded-full" /> אלגוריתם שמשווה אוטומטית בין כל הספקים</li>
+                        <li className="flex items-center gap-2"><span className="w-2 h-2 bg-success rounded-full" /> חתימה דיגיטלית וייפוי כוח מאובטח</li>
+                        <li className="flex items-center gap-2"><span className="w-2 h-2 bg-success rounded-full" /> מעבר מלא ללא שיחות וללא כאב ראש</li>
+                      </ul>
                     </div>
                   </div>
-
-                  {/* Enhanced Service Options */}
-                  <div className="bg-gradient-to-r from-amber-50/90 to-orange-50/90 border border-amber-200/60 rounded-3xl p-8 shadow-lg">
-                    <div className="text-center">
-                      <h4 className="font-bold text-amber-800 mb-6 text-2xl flex items-center justify-center gap-3">
-                        <span className="text-3xl">⚡</span>
-                        שני סוגי שירות לבחירתכם
-                        <span className="text-3xl">⚡</span>
-                      </h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                        <div className="bg-white/90 rounded-2xl p-6 border-2 border-green-200/60 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                          <div className="flex items-center justify-center gap-3 mb-4">
-                            <div className="w-6 h-6 bg-green-500 rounded-full shadow-md flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">✓</span>
-                            </div>
-                            <span className="font-bold text-green-800 text-xl">שירות מלא (מומלץ)</span>
-                          </div>
-                          <p className="text-amber-800 leading-relaxed">
-                            אנחנו מבצעים <strong>ניתוק מלא</strong> מהספק הנוכחי <strong>+ התחברות</strong> לספק החדש
-                          </p>
-                          <div className="mt-4 p-3 bg-green-50 rounded-xl">
-                            <p className="text-green-700 text-sm font-medium">💚 אתם לא צריכים לעשות כלום!</p>
-                          </div>
-                        </div>
-                        
-                        <div className="bg-white/90 rounded-2xl p-6 border-2 border-blue-200/60 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                          <div className="flex items-center justify-center gap-3 mb-4">
-                            <div className="w-6 h-6 bg-blue-500 rounded-full shadow-md flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">+</span>
-                            </div>
-                            <span className="font-bold text-blue-800 text-xl">התחברות בלבד</span>
-                          </div>
-                          <p className="text-amber-800 leading-relaxed">
-                            רק <strong>התחברות מהירה</strong> לספק החדש - תנתקו מהספק הישן בעצמכם
-                          </p>
-                          <div className="mt-4 p-3 bg-blue-50 rounded-xl">
-                            <p className="text-blue-700 text-sm font-medium">⏰ בזמן שנוח לכם</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="px-4 py-3 rounded-xl border bg-white/70 dark:bg-card/60 text-center text-sm">חשמל</div>
+                    <div className="px-4 py-3 rounded-xl border bg-white/70 dark:bg-card/60 text-center text-sm">סלולר</div>
+                    <div className="px-4 py-3 rounded-xl border bg-white/70 dark:bg-card/60 text-center text-sm">אינטרנט</div>
+                    <div className="px-4 py-3 rounded-xl border bg-white/70 dark:bg-card/60 text-center text-sm">טלוויזיה</div>
                   </div>
                 </div>
               </section>
@@ -361,17 +279,19 @@ const Home = () => {
       </section>
 
       {/* Compact About Us Section */}
-      <section className="py-12 bg-gradient-to-br from-purple-600 to-indigo-700 text-white relative overflow-hidden">
+      <section className="py-8 bg-gradient-to-br from-purple-700 to-indigo-700 text-white relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-display font-bold mb-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-2xl font-display font-bold mb-3">
               <span className="bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">
                 מי אנחנו?
               </span>
             </h2>
-            <p className="text-purple-100 mb-6 max-w-2xl mx-auto leading-relaxed">
-              אנחנו מאמינים שכל אדם בישראל זכאי לקבל את השירותים הטובים ביותר במחיר הוגן. 
-              בנינו פלטפורמה שחוסכת לכם את הכאב ראש של השוואת מחירים וטיפול בספקים.
+            <p className="text-purple-100/95 mb-3 leading-relaxed text-sm">
+              אנחנו מאמינים שכל אדם בישראל זכאי לקבל את השירותים הטובים ביותר במחיר הוגן. בנינו פלטפורמה שחוסכת לכם את הכאב ראש של השוואת מחירים וטיפול בספקים.
+            </p>
+            <p className="text-purple-100/95 leading-relaxed text-sm">
+              השוק מפוצל ולא שקוף, המבצעים משתנים כל הזמן וקנסות היציאה מרתיעים. אנחנו מרכזים הכל למקום אחד, משווים באופן הוגן ושקוף, ומבצעים את המעבר המלא עבורכם — במהירות, בביטחון, וללא שיחות שימור.
             </p>
 
             {/* Quick Stats */}
