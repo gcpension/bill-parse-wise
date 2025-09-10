@@ -1,45 +1,74 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { enhancedToast } from '@/components/EnhancedToast';
-import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
-import familySavingsHero from '@/assets/family-savings-hero.jpg';
-
+import { Shield, Zap, TrendingUp, Users, CheckCircle, Star, Calculator, Clock, Award, Phone, Sparkles, ArrowRight, BarChart3, Layers } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 const Home = () => {
+  const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
-  
   useEffect(() => {
     setMounted(true);
   }, []);
-
+  const services = [{
+    name: "חשמל",
+    icon: "⚡",
+    savings: "עד 30%",
+    color: "from-amber-400 to-orange-500"
+  }, {
+    name: "סלולר",
+    icon: "📱",
+    savings: "עד 40%",
+    color: "from-blue-400 to-purple-500"
+  }, {
+    name: "אינטרנט",
+    icon: "🌐",
+    savings: "עד 25%",
+    color: "from-green-400 to-teal-500"
+  }, {
+    name: "טלוויזיה",
+    icon: "📺",
+    savings: "עד 35%",
+    color: "from-pink-400 to-rose-500"
+  }];
   const features = [{
-    title: "השוואה מתקדמת",
-    description: "אלגוריתמי AI מנתחים אלפי תעריפים בזמן אמת",
-    icon: TrendingUp
+    icon: BarChart3,
+    title: "השוואת מחירים מדויקת",
+    description: "אלגוריתם מתקדם שמנתח את כל התעריפים בשוק בזמן אמת",
+    gradient: "from-blue-500 to-cyan-500"
   }, {
-    title: "מעבר אוטומטי",
-    description: "אנחנו מטפלים בכל התהליך - ניתוק והתחברות",
-    icon: Zap
+    icon: Sparkles,
+    title: "תהליך מהיר של 3 דקות",
+    description: "מילוי פרטים חכם עם זיהוי אוטומטי וקבלת הצעות מיידית",
+    gradient: "from-violet-500 to-purple-500"
   }, {
-    title: "ללא עמלות",
-    description: "השירות חינם לחלוטין - אנחנו מקבלים מהספקים",
-    icon: Star
+    icon: Shield,
+    title: "בטיחות ואמינות מלאה",
+    description: "הגנה מתקדמת על הפרטיות עם הצפנה ברמה בנקאית",
+    gradient: "from-emerald-500 to-teal-500"
   }, {
-    title: "תמיכה 24/7",
-    description: "צוות מקצועי זמין לכם בכל שעה",
+    icon: Layers,
+    title: "ליווי מקצועי 24/7",
+    description: "צוות מומחים וטכנולוגיה מתקדמת לליווי מלא",
+    gradient: "from-orange-500 to-red-500"
+  }];
+  const stats = [{
+    value: "150,000+",
+    label: "לקוחות פעילים",
     icon: Users
   }, {
-    title: "אבטחה מלאה",
-    description: "הצפנת נתונים ברמה בנקאית",
-    icon: Shield
+    value: "₪24.5M",
+    label: "נחסך השנה",
+    icon: TrendingUp
   }, {
-    title: "מעקב בזמן אמת",
-    description: "עדכונים על סטטוס המעבר בכל שלב",
+    value: "4.9/5",
+    label: "דירוג ממוצע",
+    icon: Star
+  }, {
+    value: "99.2%",
+    label: "שביעות רצון",
     icon: CheckCircle
   }];
-
   const testimonials = [{
     name: "שרה כהן",
     role: "לקוחה מרוצה",
@@ -59,19 +88,17 @@ const Home = () => {
     rating: 5,
     savings: "₪2,100"
   }];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10 font-body overflow-hidden">
+  return <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10 font-body overflow-hidden">
       {/* Enhanced Background Elements */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-background to-secondary/5" />
         <div className="absolute top-10 left-1/3 w-[600px] h-[600px] bg-gradient-to-br from-primary/8 to-purple-500/8 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-10 right-1/3 w-[500px] h-[500px] bg-gradient-to-br from-emerald-400/8 to-blue-500/8 rounded-full blur-3xl animate-float" style={{
-          animationDelay: '2s'
-        }} />
+        animationDelay: '2s'
+      }} />
         <div className="absolute top-1/2 left-10 w-[400px] h-[400px] bg-gradient-to-br from-orange-400/6 to-pink-500/6 rounded-full blur-3xl animate-float" style={{
-          animationDelay: '4s'
-        }} />
+        animationDelay: '4s'
+      }} />
       </div>
 
       {/* Enhanced Hero Section */}
@@ -90,12 +117,12 @@ const Home = () => {
               </div>
               
               {/* Enhanced Main Title */}
-              <h1 className="text-5xl lg:text-6xl font-display font-black tracking-tight leading-tight mb-6">
-                תפסיקו לבזבז כסף
+              <h1 className="text-5xl lg:text-6xl font-display font-black mb-6 tracking-tight leading-tight">
+                השוואה והחלפה
                 <br />
                 <span className="relative">
                   <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
-                    על חשבונות מנופחים
+                    חכמה של ספקים
                   </span>
                   <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-600 to-purple-600 rounded-full animate-gradient-x bg-300%"></div>
                 </span>
@@ -104,566 +131,226 @@ const Home = () => {
               {/* Enhanced Subtitle */}
               <div className="space-y-3 mb-10">
                 <p className="text-xl lg:text-2xl text-muted-foreground font-body font-light leading-relaxed max-w-4xl mx-auto">
-                  אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
+                  הפלטפורמה המתקדמת ביותר להשוואת תעריפים והחלפת ספקי שירות
                 </p>
                 <p className="text-lg font-display font-semibold">
                   <span className="bg-gradient-to-l from-success via-emerald-600 to-green-600 bg-clip-text text-transparent">
-                    המשפחה הממוצעת חוסכת ₪2,400 בשנה
+                    חסכו עד 45% בחשבונות החודשיים
                   </span>
-                  {" "}עם השירות שלנו
+                  {" "}עם טכנולוגיית AI מתקדמת
                 </p>
               </div>
 
-              {/* Mission & Banner Section */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto mt-12">
-                {/* Mission Text */}
-                <div className="space-y-6">
-                  <div className="text-right">
-                    <h2 className="text-2xl lg:text-3xl font-display font-bold mb-4 leading-tight">
-                      <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        השליחות שלנו
-                      </span>
-                    </h2>
-                    <div className="w-20 h-1 bg-gradient-to-r from-primary to-blue-600 rounded-full mb-6 mr-auto"></div>
-                  </div>
-                  
-                  <div className="space-y-6 text-right">
-                    <p className="text-xl text-muted-foreground font-elegant leading-relaxed">
-                      אנחנו מאמינים שכל משפחה ועסק בישראל ראויים לשקיפות ולהוגנות בעולם השירותים הבסיסיים. 
-                      <strong className="text-foreground font-semibold"> השליחות שלנו פשוטה אך חיונית - לקזז עלויות מיותרות ולהחזיר לכם את האלפי שקלים שמגיעים לכם מדי שנה.</strong>
-                    </p>
-                    
-                    <p className="text-lg text-muted-foreground font-body leading-relaxed">
-                      במקום להישאר תקועים בחוזים יקרים, תעריפים מנופחים ושיחות שימור מייגעות, 
-                      אנחנו מביאים לכם מהפכה אמיתית - טכנולוגיה מתקדמת שמנתחת את השוק בזמן אמת, 
-                      מזהה הזדמנויות חיסכון ומבצעת עבורכם את כל התהליך הבירוקרטי.
-                    </p>
-                    
-                    <p className="text-lg text-muted-foreground font-body leading-relaxed">
-                      האמת הפשוטה היא שהספקים מרוויחים מחוסר המידע שלכם. הם סומכים על העצלות, הפחד מהביורוקרטיה 
-                      והקושי להשוות מחירים. <strong className="text-primary text-xl font-semibold">אנחנו משברים את המעגל הזה</strong> - 
-                      נותנים לכם כוח, מידע ויכולת לקבל החלטות חכמות שיחסכו לכם כסף אמיתי.
-                    </p>
-                    
-                    <div className="bg-gradient-to-r from-primary/10 to-success/10 p-6 rounded-3xl border border-primary/30 mt-8 shadow-lg">
-                      <p className="text-lg text-muted-foreground leading-relaxed font-body">
-                        <strong className="text-primary text-xl font-bold">החזון שלנו:</strong> עולם שבו כל צרכן בישראל יודע בדיוק כמה הוא משלם, 
-                        למה הוא משלם, ויש לו את הכלים לשנות את המצב תוך דקות. עד היום חסכנו לאלפי משפחות ועסקים מעל 
-                        <strong className="text-success text-2xl font-bold"> 15 מיליון שקל בשנה האחרונה בלבד</strong>.
-                      </p>
-                      
-                      <div className="flex flex-wrap gap-4 justify-end mt-6">
-                        <div className="flex items-center gap-2 bg-primary/20 px-4 py-2 rounded-full border border-primary/30">
-                          <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
-                          <span className="text-base font-semibold text-primary">שקיפות מלאה</span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-success/20 px-4 py-2 rounded-full border border-success/30">
-                          <div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
-                          <span className="text-base font-semibold text-success">חיסכון מבטיח</span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-blue-500/20 px-4 py-2 rounded-full border border-blue-500/30">
-                          <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                          <span className="text-base font-semibold text-blue-600">שירות אישי</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Banner */}
-                <div className="flex flex-col items-center lg:items-start space-y-6">
-                  <SimpleStepsBanner />
-                  
-                  {/* Primary CTA - Right under banner */}
-                  <div className="flex justify-center">
-                    <Link to="/analyze" className="group">
-                      <Button 
-                        size="lg" 
-                        className="px-16 py-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-3xl lg:text-4xl shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-500/30 hover:ring-emerald-500/50"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-                        <span className="relative flex items-center gap-6">
-                          <span className="drop-shadow-lg">בדקו כמה תחסכו עכשיו</span>
-                          <ArrowRight className="h-8 w-8 group-hover:translate-x-3 transition-transform duration-300 drop-shadow-lg" />
-                        </span>
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              {/* Providers Badge - Enhanced */}
-              <div className="text-center mt-16">
-                <p className="text-sm text-muted-foreground mb-4 font-medium">עובדים עם כל הספקים המובילים בישראל</p>
-                <div className="flex justify-center gap-3 flex-wrap">
-                  <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">פלאפון</Badge>
-                  <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">סלקום</Badge>
-                  <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">HOT</Badge>
-                  <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">בזק</Badge>
-                  <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">פרטנר</Badge>
-                  <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">חח"י</Badge>
-                  <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">+עוד</Badge>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Modern Problems vs 2025 Solutions */}
-      <section className="py-20 bg-gradient-to-br from-background via-muted/20 to-background relative">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            
-            {/* Section Header */}
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-muted to-muted/50 rounded-full border border-border mb-6">
-                <span className="text-muted-foreground font-medium text-sm">הבעיות של היום vs הפתרונות של 2025</span>
-              </div>
-              <h2 className="text-4xl lg:text-5xl font-display font-black mb-6 text-foreground leading-tight">
-                למה עדיין מבזבזים כסף 
-                <span className="block text-destructive">בלי שום סיבה?</span>
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                בזמן שהעולם התקדם, הספקים בישראל עדיין משתמשים בשיטות מיושנות כדי לגרום לכם להישאר
-              </p>
+      {/* Process Steps Banner - Enhanced and positioned after hero */}
+      <section className="mb-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-gradient-to-r from-background/98 via-background/95 to-background/98 backdrop-blur-md border border-border/30 rounded-3xl px-8 py-10 shadow-2xl shadow-primary/5">
+            {/* Header */}
+            <div className="text-center mb-10">
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-4">
+                איך זה עובד? 3 שלבים פשוטים
+              </h3>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">מעבר ספק מעולם לא היה כל כך פשוט - אנחנו מטפלים בהכל עבורכם!</p>
             </div>
             
-            {/* Problems vs Solutions Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-              
-              {/* Current Problems */}
-              <div className="space-y-8">
-                <h3 className="text-2xl font-display font-bold text-destructive mb-8 text-center">
-                  💔 המצב הנוכחי
-                </h3>
-                
-                <div className="space-y-6">
-                  <div className="p-6 bg-gradient-to-br from-destructive/5 to-orange-500/5 rounded-2xl border border-destructive/20 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-destructive/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span className="text-2xl">📞</span>
-                      </div>
-                      <div>
-                        <h4 className="font-display font-bold text-lg text-foreground mb-2">שיחות שימור אינסופיות</h4>
-                        <p className="text-muted-foreground leading-relaxed">
-                          שעות של המתנה, העברות בין מחלקות, הבטחות ריקות ולחץ פסיכולוגי. 
-                          הזמן שלכם יקר מדי בשביל זה.
-                        </p>
-                      </div>
-                    </div>
+            {/* Steps Grid - Enhanced with animations */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+              {/* Step 1 */}
+              <div className="relative group">
+                <div className="bg-gradient-to-br from-blue-50 via-blue-50 to-blue-100 border border-blue-200/60 rounded-3xl p-8 text-center h-full transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 group-hover:border-blue-300">
+                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white font-bold text-2xl">1</span>
                   </div>
-
-                  <div className="p-6 bg-gradient-to-br from-orange-500/5 to-amber-500/5 rounded-2xl border border-orange-500/20 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span className="text-2xl">📋</span>
-                      </div>
-                      <div>
-                        <h4 className="font-display font-bold text-lg text-foreground mb-2">ביורוקרטיה מיותרת</h4>
-                        <p className="text-muted-foreground leading-relaxed">
-                          טפסים מסובכים, חתימות, אישורים ותהליכים שנועדו להרתיע אתכם מלעבור ספק.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-6 bg-gradient-to-br from-amber-500/5 to-yellow-500/5 rounded-2xl border border-amber-500/20 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span className="text-2xl">🫣</span>
-                      </div>
-                      <div>
-                        <h4 className="font-display font-bold text-lg text-foreground mb-2">חוסר שקיפות מוחלט</h4>
-                        <p className="text-muted-foreground leading-relaxed">
-                          תעריפים נסתרים, עמלות מפתיעות והנחות שנעלמות. אף אחד לא מסביר לכם מה בדיוק אתם משלמים.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <h4 className="font-bold text-blue-800 text-xl mb-4">השוואת מחירים חכמה</h4>
+                  <p className="text-blue-700 leading-relaxed">בחרו קטגוריה ובדקו מיד את כל הספקים, המחירים והחבילות במקום אחד - עם המלצות מותאמות אישית</p>
+                </div>
+                {/* Arrow for desktop */}
+                <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary/30 z-10">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
                 </div>
               </div>
 
-              {/* 2025 Solutions */}
-              <div className="space-y-8">
-                <h3 className="text-2xl font-display font-bold text-success mb-8 text-center">
-                  ✨ המציאות החדשה
-                </h3>
-                
-                <div className="space-y-6">
-                  <div className="p-6 bg-gradient-to-br from-primary/5 to-blue-500/5 rounded-2xl border border-primary/20 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span className="text-2xl">🤖</span>
-                      </div>
-                      <div>
-                        <h4 className="font-display font-bold text-lg text-foreground mb-2">AI עושה הכל בשבילכם</h4>
-                        <p className="text-muted-foreground leading-relaxed">
-                          בינה מלאכותית מנתחת אלפי תעריפים תוך שניות, מוצאת את הדיל הטוב ביותר ומבצעת את כל התהליך.
-                        </p>
-                      </div>
-                    </div>
+              {/* Step 2 */}
+              <div className="relative group">
+                <div className="bg-gradient-to-br from-purple-50 via-purple-50 to-purple-100 border border-purple-200/60 rounded-3xl p-8 text-center h-full transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 group-hover:border-purple-300">
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white font-bold text-2xl">2</span>
                   </div>
+                  <h4 className="font-bold text-purple-800 text-xl mb-4">מילוי פרטים מהיר</h4>
+                  <p className="text-purple-700 leading-relaxed">מלאו פרטים בסיסיים בטופס חכם וקבלו ייפוי כוח מוכן לחתימה דיגיטלית - הכול מאובטח ומוצפן</p>
+                </div>
+                {/* Arrow for desktop */}
+                <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary/30 z-10">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
 
-                  <div className="p-6 bg-gradient-to-br from-success/5 to-green-500/5 rounded-2xl border border-success/20 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span className="text-2xl">🎯</span>
-                      </div>
-                      <div>
-                        <h4 className="font-display font-bold text-lg text-foreground mb-2">שקיפות מוחלטת</h4>
-                        <p className="text-muted-foreground leading-relaxed">
-                          כל התעריפים, העמלות וההנחות - הכל גלוי, ברור ומוסבר בשפה פשוטה שכולם מבינים.
-                        </p>
-                      </div>
-                    </div>
+              {/* Step 3 */}
+              <div className="group">
+                <div className="bg-gradient-to-br from-green-50 via-green-50 to-green-100 border border-green-200/60 rounded-3xl p-8 text-center h-full transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 group-hover:border-green-300">
+                  <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white font-bold text-2xl">3</span>
                   </div>
+                  <h4 className="font-bold text-green-800 text-xl mb-4">המעבר מתבצע אוטומטית</h4>
+                  <p className="text-green-700 leading-relaxed">
+                    <strong>ניתוק אוטומטי</strong> מהספק הנוכחי + <strong>חיבור מלא</strong> לספק החדש - אתם לא צריכים לעשות כלום!
+                  </p>
+                </div>
+              </div>
+            </div>
 
-                  <div className="p-6 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-2xl border border-blue-500/20 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span className="text-2xl">⚡</span>
-                      </div>
-                      <div>
-                        <h4 className="font-display font-bold text-lg text-foreground mb-2">מהירות וקלות</h4>
-                        <p className="text-muted-foreground leading-relaxed">
-                          5 דקות להזין נתונים, תוצאות מיידיות, ושבוע למעבר מלא. הכל דיגיטלי, חלק ובלי מאמץ.
-                        </p>
-                      </div>
+            {/* Service Options - Enhanced */}
+            <div className="bg-gradient-to-r from-amber-50/90 to-orange-50/90 border border-amber-200/60 rounded-2xl p-8 mb-6">
+              <div className="text-center">
+                <h4 className="font-bold text-amber-800 mb-6 text-2xl">שני סוגי שירות לבחירתכם:</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-white/80 rounded-2xl p-6 border border-amber-200/40 shadow-md hover:shadow-lg transition-shadow">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <div className="w-4 h-4 bg-green-500 rounded-full shadow-md"></div>
+                      <span className="font-bold text-green-800 text-lg">שירות מלא (מומלץ)</span>
                     </div>
+                    <p className="text-amber-800 leading-relaxed">אנחנו מבצעים <strong>ניתוק מלא</strong> מהספק הנוכחי <strong>+ התחברות</strong> לספק החדש - אתם לא צריכים לעשות כלום!</p>
+                  </div>
+                  <div className="bg-white/80 rounded-2xl p-6 border border-amber-200/40 shadow-md hover:shadow-lg transition-shadow">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <div className="w-4 h-4 bg-blue-500 rounded-full shadow-md"></div>
+                      <span className="font-bold text-blue-800 text-lg">התחברות בלבד</span>
+                    </div>
+                    <p className="text-amber-800 leading-relaxed">רק <strong>התחברות מהירה</strong> לספק החדש - תנתקו מהספק הישן בעצמכם בזמן שנוח לכם</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Results Section */}
-            <div className="bg-gradient-to-r from-card to-card/80 backdrop-blur-sm rounded-3xl p-8 border border-border/50 shadow-xl">
-              <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-success to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                  <span className="text-white text-3xl">💡</span>
-                </div>
-                <h3 className="text-2xl font-display font-bold text-foreground mb-4">
-                  המהפכה כבר התחילה
-                </h3>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  בעוד שאלפי ישראלים עדיין תקועים בשיטות מיושנות, 
-                  <strong className="text-primary"> משפחות חכמות כבר חוסכות איתנו מיליונים</strong>
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center group">
-                  <div className="text-4xl font-black text-success mb-2 group-hover:scale-110 transition-transform">15M₪</div>
-                  <div className="text-muted-foreground">נחסכו השנה</div>
-                </div>
-                <div className="text-center group">
-                  <div className="text-4xl font-black text-primary mb-2 group-hover:scale-110 transition-transform">4,500+</div>
-                  <div className="text-muted-foreground">לקוחות מרוצים</div>
-                </div>
-                <div className="text-center group">
-                  <div className="text-4xl font-black text-blue-600 mb-2 group-hover:scale-110 transition-transform">96%</div>
-                  <div className="text-muted-foreground">מוצאים חיסכון</div>
-                </div>
+            {/* Providers Badge - Enhanced */}
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-4 font-medium">עובדים עם כל הספקים המובילים בישראל</p>
+              <div className="flex justify-center gap-3 flex-wrap">
+                <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">פלאפון</Badge>
+                <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">סלקום</Badge>
+                <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">HOT</Badge>
+                <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">בזק</Badge>
+                <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">פרטנר</Badge>
+                <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">חח"י</Badge>
+                <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">+עוד</Badge>
               </div>
             </div>
           </div>
         </div>
       </section>
+            </div>
+            
+            {/* Enhanced Services Preview */}
+            <div className={`grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10 transition-all duration-1000 delay-300 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+              {services.map((service, index) => <div key={index} className="group relative bg-gradient-to-br from-card/90 to-card/60 backdrop-blur-sm border border-border/30 rounded-2xl p-5 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-500 hover:-translate-y-2 cursor-pointer overflow-hidden" style={{
+              animationDelay: `${index * 150}ms`
+            }}>
+                  {/* Gradient Background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
+                  
+                  {/* Shimmer Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  
+                  <div className="relative z-10">
+                    <div className="text-2xl mb-3 group-hover:scale-125 transition-transform duration-500">{service.icon}</div>
+                    <h3 className="font-display font-bold text-base mb-2">{service.name}</h3>
+                    <div className={`inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r ${service.color} text-white text-sm font-bold rounded-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
+                      <TrendingUp className="w-3 h-3" />
+                      {service.savings}
+                    </div>
+                  </div>
+                </div>)}
+            </div>
+            
+            {/* Enhanced CTA Button */}
+            <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-1000 delay-500 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+              <Button size="lg" className="group relative text-lg px-8 py-4 rounded-2xl font-display font-bold bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-purple-600 hover:via-primary hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-3xl hover:shadow-primary/30 hover:scale-110 transform-gpu" onClick={() => navigate('/analyze')}>
+                {/* Animated Background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/0 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500" />
+                
+                <span className="relative z-10 flex items-center gap-3">
+                  <div className="w-5 h-5 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+                    <Calculator className="w-3 h-3" />
+                  </div>
+                  התחל השוואה חכמה
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
+                </span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Main Content Section - Why Choose Us */}
+      {/* Tips & Guides Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-display font-bold mb-4">
                 <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  למה בוחרים בנו אלפי משפחות ועסקים?
+                  טיפים לחיסכון חכם
                 </span>
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                כי אנחנו הפלטפורמה היחידה שמשלבת טכנולוגיה מתקדמת עם שירות אישי מקצועי
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body">
+                רוצים לחסוך עוד יותר? הנה כמה טיפים מהמומחים שלנו
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[{
-                icon: "🎯",
-                title: "דיוק מושלם",
-                description: "האלגוריתם שלנו לוקח בחשבון את הפרופיל הספציפי שלכם - גודל משפחה, צריכה, העדפות, ומוצא את הפתרון המושלם בדיוק עבורכם",
-                stats: "דיוק של 96.8%",
-                color: "from-blue-500 to-cyan-600"
-              }, {
-                icon: "⚡",
-                title: "מהירות שוברת שיאים",
-                description: "בזמן שאתם שותים קפה אחד, המערכת שלנו כבר סורקת כל הספקים, מחשבת, ומציגה לכם את האפשרויות הטובות ביותר עם כל הפרטים",
-                stats: "תוצאות תוך 90 שניות",
-                color: "from-emerald-500 to-green-600"
-              }, {
-                icon: "🛡️",
-                title: "בטיחות ללא פשרות",
-                description: "רמת הצפנה בנקאית, אבטחת נתונים ברמה הגבוהה ביותר, ושקיפות מלאה. כל המידע שלכם נשמר בבטחה ולא נמכר לגורמים שלישיים",
-                stats: "אבטחה ברמה בנקאית",
-                color: "from-purple-500 to-indigo-600"
-              }, {
-                icon: "💰",
-                title: "חיסכון מבטיח",
-                description: "לא רק משווים - גם מבטיחים חיסכון. אם לא חסכתם לפחות 15% מהחשבון החודשי, אנחנו מחזירים לכם את ההפרש במזומן",
-                stats: "גרנטי חיסכון 15%+",
-                color: "from-amber-500 to-orange-600"
-              }, {
-                icon: "🎪",
-                title: "שירות VIP לכולם",
-                description: "יש לנו נציג אישי לכל לקוח. לא בוטים, לא מוקד טלפוני - בן אדם אמיתי שמכיר את התיק שלכם ועונה תוך דקות בוואטסאפ",
-                stats: "מענה תוך 3 דקות בממוצע",
-                color: "from-pink-500 to-rose-600"
-              }, {
-                icon: "🔄",
-                title: "מעקב חי 24/7",
-                description: "אפליקציה נייחת שמתעדכנת בזמן אמת על כל שלב במעבר. תדעו בדיוק איפה אתם עומדים ומתי הכל יהיה מוכן - ללא הפתעות",
-                stats: "עדכונים בזמן אמת",
-                color: "from-teal-500 to-blue-600"
-              }].map((feature, index) => (
-                <div key={index} className="group bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-sm border border-border/40 rounded-3xl p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2">
-                  <div className="text-center">
-                    <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-3xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300 shadow-xl mx-auto mb-4`}>
-                      {feature.icon}
+              icon: "💡",
+              title: "בדקו חשבונות מידי חודש",
+              description: "עקבו אחרי הצריכה שלכם - פעמים רבות תוכלו לזהות עליות מיותרות",
+              color: "from-amber-400 to-orange-500"
+            }, {
+              icon: "📊",
+              title: "השוו מחירים בקביעות",
+              description: "השוק משתנה כל הזמן - מה שהיה זול השנה עלול להיות יקר השנה הבאה",
+              color: "from-blue-400 to-blue-600"
+            }, {
+              icon: "⏰",
+              title: "עקבו אחרי תוקף ההתקשרויות",
+              description: "רוב הספקים נותנים הנחות לתקופה מוגבלת - חשוב לדעת מתי זה נגמר",
+              color: "from-emerald-400 to-green-600"
+            }, {
+              icon: "🔄",
+              title: "אל תפחדו להחליף",
+              description: "בעבר זה היה מסובך, היום זה פשוט - וזה יכול לחסוך לכם אלפי שקלים",
+              color: "from-purple-400 to-purple-600"
+            }].map((tip, index) => <div key={index} className="group bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-border/30 rounded-2xl p-6 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
+                  <div className="flex items-start gap-4">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${tip.color} rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      {tip.icon}
                     </div>
-                    <h3 className="font-display font-bold text-xl mb-3">{feature.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed font-body text-sm mb-4">{feature.description}</p>
-                    <div className={`inline-block px-3 py-1.5 bg-gradient-to-r ${feature.color} text-white rounded-full text-xs font-display font-bold shadow-lg`}>
-                      {feature.stats}
+                    <div className="flex-1">
+                      <h3 className="font-display font-semibold text-lg mb-2">{tip.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed font-body text-sm">{tip.description}</p>
                     </div>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Secondary CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 via-primary-glow/10 to-background relative">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-8">
-              <h2 className="text-3xl lg:text-4xl font-display font-black mb-4 text-foreground">
-                מוכנים להתחיל לחסוך?
-              </h2>
-              <p className="text-xl text-muted-foreground leading-relaxed">
-                תוך 3 דקות תדעו בדיוק כמה כסף אתם מבזבזים מיותר ואיך לתקן את זה
-              </p>
-            </div>
-            
-            <div className="flex justify-center">
-              <Link to="/analyze" className="group">
-                <Button 
-                  size="lg" 
-                  className="px-10 py-5 bg-gradient-to-r from-primary via-primary-glow to-blue-600 hover:from-primary-glow hover:via-blue-600 hover:to-purple-600 text-white font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-xl"
-                >
-                  <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-                  <span className="relative flex items-center gap-3">
-                    התחילו את הניתוח החינמי
-                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-                  </span>
-                </Button>
-              </Link>
-            </div>
+      {/* FAQ Section */}
+      
+      
 
-            {/* Trust elements */}
-            <div className="flex items-center justify-center gap-6 mt-8 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span>חינמי לחלוטין</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <span>תוצאות מיידיות</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                <span>ללא התחייבות</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Hero Success Image Section */}
-      <section className="py-16 bg-gradient-to-br from-background via-primary/5 to-background relative">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Image */}
-              <div className="relative">
-                <div className="relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500">
-                  <img 
-                    src={familySavingsHero}
-                    alt="משפחה ישראלית שמחה חוסכת כסף עם השירות שלנו"
-                    className="w-full h-auto object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-                </div>
-                
-                {/* Floating Success Badge */}
-                <div className="absolute -bottom-6 -right-6 bg-gradient-to-br from-success via-emerald-500 to-green-600 text-white px-6 py-4 rounded-2xl shadow-xl backdrop-blur-sm border border-white/20">
-                  <div className="text-center">
-                    <div className="text-2xl font-black">₪15M+</div>
-                    <div className="text-sm font-medium opacity-90">נחסך השנה</div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Content */}
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <h2 className="text-4xl lg:text-5xl font-display font-black leading-tight">
-                    <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      אלפי משפחות
-                    </span>
-                    <br />
-                    כבר חוסכות איתנו
-                  </h2>
-                  <p className="text-xl text-muted-foreground leading-relaxed font-body">
-                    הצטרפו לקהילה של מעל 50,000 משפחות ועסקים שכבר מקבלים את השירות הטוב ביותר במחיר הנמוך ביותר
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="text-center p-4 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/30">
-                    <div className="text-2xl font-black text-primary mb-1">50K+</div>
-                    <div className="text-sm text-muted-foreground">לקוחות מרוצים</div>
-                  </div>
-                  <div className="text-center p-4 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/30">
-                    <div className="text-2xl font-black text-success mb-1">₪2,400</div>
-                    <div className="text-sm text-muted-foreground">חיסכון ממוצע</div>
-                  </div>
-                  <div className="text-center p-4 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/30">
-                    <div className="text-2xl font-black text-blue-600 mb-1">98%</div>
-                    <div className="text-sm text-muted-foreground">שביעות רצון</div>
-                  </div>
-                </div>
-                
-                <div className="flex justify-start">
-                  <Link to="/analyze" className="group">
-                    <Button 
-                      size="lg" 
-                      className="px-8 py-6 bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-purple-600/90 text-white font-bold text-lg shadow-xl hover:shadow-primary/25 transform hover:scale-105 transition-all duration-300 rounded-2xl"
-                    >
-                      <span className="flex items-center gap-3">
-                        <span>התחילו לחסוך עכשיו</span>
-                        <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-                      </span>
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Process Steps */}
+      
 
-      {/* Smart Tips - Moved to bottom in sidebar style */}
-      <section className="py-16 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
-            
-            {/* Main FAQ Content */}
-            <div>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-display font-bold mb-4">
-                  <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    שאלות נפוצות
-                  </span>
-                </h2>
-                <p className="text-muted-foreground">תשובות לשאלות הנפוצות ביותר שאנחנו מקבלים</p>
-              </div>
+      {/* Testimonials */}
+      
 
-              <div className="space-y-4">
-                {[{
-                  q: "האם השירות באמת חינם?",
-                  a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
-                }, {
-                  q: "כמה זמן לוקח לקבל תוצאות?",
-                  a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
-                }, {
-                  q: "מה אם אני כבר בהתקשרות?",
-                  a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
-                }, {
-                  q: "האם יש ביטול אוטומטי מהספק הישן?",
-                  a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
-                }, {
-                  q: "האם אני מחויב לעבור לספק שאתם ממליצים?",
-                  a: "בהחלט לא! אתם מקבלים את המלצותינו ויכולים לבחור בעצמכם. אם תחליטו לא לעבור - זה בסדר גמור."
-                }, {
-                  q: "איך אתם מרוויחים כסף?",
-                  a: "אנחנו מקבלים עמלה מהספק החדש רק אם אתם בוחרים לעבור אליו. לכן האינטרס שלנו הוא למצוא לכם באמת את הדיל הטוב ביותר."
-                }, {
-                  q: "האם אתם עובדים עם כל הספקים?",
-                  a: "כן, אנחנו עובדים עם כל הספקים הגדולים בישראל ועם עשרות ספקים קטנים יותר."
-                }, {
-                  q: "מה קורה אם אני לא מרוצה מהמעבר?",
-                  a: "יש לנו אחריות מלאה על התהליך. אם משהו לא תקין, אנחנו מטפלים בזה ללא עלות."
-                }, {
-                  q: "האם המידע שלי בטוח?",
-                  a: "כן, אנחנו משתמשים בהצפנה ברמה בנקאית ולא שומרים מידע רגיש יותר מהנדרש."
-                }].map((faq, index) => (
-                  <div key={index} className="bg-card/80 backdrop-blur-sm border border-border/40 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                    <h3 className="font-display font-semibold text-lg mb-3 text-foreground">{faq.q}</h3>
-                    <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Side Tips Panel */}
-            <div className="lg:sticky lg:top-8 h-fit">
-              <div className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur-sm border border-border/40 rounded-3xl p-6 shadow-xl">
-                <div className="text-center mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-purple-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3 shadow-lg">
-                    💡
-                  </div>
-                  <h3 className="font-display font-bold text-lg mb-2">
-                    <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      טיפים לחיסכון
-                    </span>
-                  </h3>
-                  <p className="text-muted-foreground text-sm">
-                    מהניסיון שלנו עם אלפי לקוחות
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  {[{
-                    icon: "📊",
-                    title: "בדקו חשבונות מידי חודש",
-                    description: "עקבו אחרי הצריכה - זיהוי מוקדם של עליות"
-                  }, {
-                    icon: "⏰",
-                    title: "תוקף ההתקשרויות",
-                    description: "הנחות זמניות נגמרות - חשוב לעקוב"
-                  }, {
-                    icon: "🔄",
-                    title: "אל תפחדו להחליף",
-                    description: "היום זה פשוט ויכול לחסוך אלפי שקלים"
-                  }].map((tip, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 bg-gradient-to-br from-background/80 to-muted/20 rounded-2xl border border-border/20">
-                      <div className="text-lg">{tip.icon}</div>
-                      <div className="flex-1">
-                        <h4 className="font-display font-semibold text-sm mb-1">{tip.title}</h4>
-                        <p className="text-muted-foreground text-xs leading-tight font-body">{tip.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+      {/* Final CTA Section */}
+      
+      
+    </div>;
 };
-
 export default Home;
