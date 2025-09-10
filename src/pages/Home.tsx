@@ -373,14 +373,113 @@ const Home = () => {
       
 
 
-      {/* Process Steps */}
-      
+      {/* About Us Section */}
+      <section className="py-20 bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 text-white relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 left-20 w-48 h-48 bg-purple-300/20 rounded-full blur-2xl animate-bounce-gentle"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl lg:text-5xl font-display font-black mb-6">
+                <span className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+                  מי אנחנו?
+                </span>
+              </h2>
+              <p className="text-xl text-purple-100 max-w-3xl mx-auto leading-relaxed font-body">
+                אנחנו צוות של מומחים בתחום הטלקום והאנרגיה שהחליט לעזור לכם לחסוך כסף
+              </p>
+            </div>
 
-      {/* Testimonials */}
-      
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left Content */}
+              <div className="space-y-8">
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <span className="text-2xl">🎯</span>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-display font-bold mb-3">המשימה שלנו</h3>
+                      <p className="text-purple-100 leading-relaxed">
+                        אנחנו מאמינים שכל אדם בישראל זכאי לקבל את השירותים הטובים ביותר במחיר הוגן. 
+                        בנינו פלטפורמה שחוסכת לכם את הכאב ראש של השוואת מחירים וטיפול בספקים.
+                      </p>
+                    </div>
+                  </div>
 
-      {/* Final CTA Section */}
-      
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <span className="text-2xl">💡</span>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-display font-bold mb-3">איך זה עובד?</h3>
+                      <p className="text-purple-100 leading-relaxed">
+                        אנחנו עובדים עם כל הספקים הגדולים בשוק, מנתחים את המבצעים העדכניים, 
+                        ומוצאים לכם את הדיל הכי טוב. הכנסה שלנו מגיעה מהספקים - לכם זה חינם לגמרי.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <span className="text-2xl">🛡️</span>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-display font-bold mb-3">הבטחת השקיפות</h3>
+                      <p className="text-purple-100 leading-relaxed">
+                        אנחנו פועלים בשקיפות מלאה - תמיד נסביר לכם מה השתנה, למה, וכמה זה עולה. 
+                        אין עמלות נסתרות, אין הפתעות, רק חיסכון אמיתי.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Stats */}
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center">
+                    <div className="text-3xl font-black text-white mb-2">50,000+</div>
+                    <div className="text-purple-200 font-medium">לקוחות מרוצים</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center">
+                    <div className="text-3xl font-black text-white mb-2">₪24M</div>
+                    <div className="text-purple-200 font-medium">סך החיסכון השנתי</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center">
+                    <div className="text-3xl font-black text-white mb-2">98%</div>
+                    <div className="text-purple-200 font-medium">שביעות רצון</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center">
+                    <div className="text-3xl font-black text-white mb-2">7</div>
+                    <div className="text-purple-200 font-medium">שנות ניסיון</div>
+                  </div>
+                </div>
+
+                <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+                  <h4 className="text-xl font-display font-bold mb-4 text-center">מה הלקוחות אומרים?</h4>
+                  <div className="space-y-4">
+                    <div className="text-center">
+                      <div className="flex justify-center mb-2">
+                        <span className="text-2xl">⭐⭐⭐⭐⭐</span>
+                      </div>
+                      <p className="text-purple-100 text-sm italic">
+                        "חסכתי 800 שקל בשנה על החשמל בלי להזיז אצבע. פשוט מדהים!"
+                      </p>
+                      <p className="text-purple-200 text-xs mt-2">- רחל כהן, תל אביב</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       
     </div>;
 };

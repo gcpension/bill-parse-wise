@@ -357,7 +357,92 @@ export const AnalysisInput = ({
                             <SelectValue placeholder="בחרו ספק נוכחי" />
                           </SelectTrigger>
                           <SelectContent className="bg-background border border-border shadow-lg z-[100]">
-                            {providers.length > 0 ? providers.map((provider) => (
+                            {/* Additional common providers for each category */}
+                            {data.category === 'electricity' && [
+                              'חברת חשמל',
+                              'פז אנרגיה',
+                              'אלקטרה פאוור',
+                              'דור אלון אנרגיה',
+                              'סלקום אנרגיה',
+                              'נקסט אנרגיה',
+                              'אורמת אנרגיה',
+                              'גין אנרגיה',
+                              'בזק אנרגיה'
+                            ].map((providerName) => (
+                              <SelectItem 
+                                key={providerName} 
+                                value={providerName} 
+                                className="hover:bg-muted focus:bg-muted cursor-pointer"
+                              >
+                                {providerName}
+                              </SelectItem>
+                            ))}
+                            
+                            {data.category === 'cellular' && [
+                              'פלאפון',
+                              'סלקום', 
+                              'פרטנר',
+                              'הוט מובייל',
+                              '019 מובייל',
+                              'רמי לוי תקשורת',
+                              'אלקטרה אפיקים',
+                              'יס',
+                              'גולן טלקום',
+                              'סמארט מובייל'
+                            ].map((providerName) => (
+                              <SelectItem 
+                                key={providerName} 
+                                value={providerName} 
+                                className="hover:bg-muted focus:bg-muted cursor-pointer"
+                              >
+                                {providerName}
+                              </SelectItem>
+                            ))}
+                            
+                            {data.category === 'internet' && [
+                              'בזק',
+                              'הוט',
+                              'פרטנר',
+                              'סלקום',
+                              'אורנג',
+                              'סלקום TV',
+                              'גולד ליינס',
+                              'נטוויזן',
+                              '013 נטליין',
+                              'יס'
+                            ].map((providerName) => (
+                              <SelectItem 
+                                key={providerName} 
+                                value={providerName} 
+                                className="hover:bg-muted focus:bg-muted cursor-pointer"
+                              >
+                                {providerName}
+                              </SelectItem>
+                            ))}
+                            
+                            {data.category === 'tv' && [
+                              'יס',
+                              'הוט',
+                              'סלקום TV',
+                              'פרטנר TV',
+                              'נטפליקס',
+                              'סטרימקס',
+                              'פרטנר',
+                              'בזק בינלאומי',
+                              'סלקום',
+                              'אמזון פריים'
+                            ].map((providerName) => (
+                              <SelectItem 
+                                key={providerName} 
+                                value={providerName} 
+                                className="hover:bg-muted focus:bg-muted cursor-pointer"
+                              >
+                                {providerName}
+                              </SelectItem>
+                            ))}
+                            
+                            {/* Show providers from data if available */}
+                            {providers.length > 0 && providers.map((provider) => (
                               <SelectItem 
                                 key={provider.name} 
                                 value={provider.name} 
@@ -365,11 +450,8 @@ export const AnalysisInput = ({
                               >
                                 {provider.name}
                               </SelectItem>
-                            )) : (
-                              <SelectItem value="אחר">
-                                אחר - הזינו שם הספק ידנית
-                              </SelectItem>
-                            )}
+                            ))}
+                            
                             <SelectItem value="אחר" className="border-t mt-1 font-medium">
                               + אחר (ספק שלא ברשימה)
                             </SelectItem>

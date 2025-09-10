@@ -230,33 +230,61 @@ export const EnhancedSwitchRequestForm = ({ isOpen, onClose, selectedPlan }: Enh
             </Card>
           </div>
 
-          {/* Main Form Area */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Process Explanation */}
-            <Card className="shadow-lg border border-primary/20 bg-gradient-to-r from-primary/5 to-blue-500/5 backdrop-blur-sm mb-6">
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center">
-                    <FileText className="w-5 h-5 text-white" />
+            {/* Main Form Area */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Legal Disclaimer */}
+              <Card className="shadow-lg border-2 border-amber-500/30 bg-gradient-to-r from-amber-50/80 to-amber-100/50 backdrop-blur-sm mb-6">
+                <CardContent className="pt-6">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Shield className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-display font-bold text-amber-700 mb-3">הצהרת אחריות ושקיפות</h3>
+                      <div className="text-sm text-amber-800 space-y-2 leading-relaxed">
+                        <p className="font-medium">
+                          ⚖️ <strong>מעמד משפטי:</strong> אנו פועלים כצד שלישי מתווך בלבד. איננו ספק השירות הסופי ואיננו נושאים באחריות מעבר לתיווך.
+                        </p>
+                        <p>
+                          🤝 <strong>תפקידנו:</strong> אנו מסייעים בתהליך ההשוואה והמעבר כשירות נוחות ללקוח בלבד.
+                        </p>
+                        <p>
+                          📋 <strong>אחריות הספק:</strong> כל התחייבות שירותית היא מול הספק הסופי אליו אתם עוברים, לא מולנו.
+                        </p>
+                        <p className="font-medium text-amber-900">
+                          📞 <strong>תמיכה:</strong> אנו נעמוד לרשותכם לכל שאלה או בעיה במהלך תהליך המעבר.
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-display font-bold text-primary">תהליך המעבר - פשוט וחכם</h3>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold">1</div>
-                    <span>מילוי פרטים בסיסיים</span>
+                </CardContent>
+              </Card>
+
+              {/* Process Explanation */}
+              <Card className="shadow-lg border border-primary/20 bg-gradient-to-r from-primary/5 to-blue-500/5 backdrop-blur-sm mb-6">
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center">
+                      <FileText className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-lg font-display font-bold text-primary">תהליך המעבר - פשוט וחכם</h3>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold">2</div>
-                    <span>קבלת אישור חתום</span>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold">1</div>
+                      <span>מילוי פרטים בסיסיים</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold">2</div>
+                      <span>קבלת אישור חתום</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xs font-bold">3</div>
+                      <span>ביצוע המעבר האוטומטי</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xs font-bold">3</div>
-                    <span>ביצוע המעבר האוטומטי</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
             {/* Customer Type Selection */}
             <Card className="shadow-lg border-0 bg-gradient-to-r from-card to-card/80 backdrop-blur-sm">
