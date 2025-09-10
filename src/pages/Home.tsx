@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
+import InteractiveStepsBanner from '@/components/marketing/InteractiveStepsBanner';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -112,86 +113,8 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Pastel Narrow System Explanation Banner */}
-              <div className="mb-8">
-                <div className="relative max-w-3xl mx-auto">
-                  {/* Narrow floating card with pastel background */}
-                  <div className="bg-gradient-to-br from-rose-50/90 via-sky-50/90 to-emerald-50/90 dark:from-slate-800/95 dark:via-slate-700/90 dark:to-slate-600/85 backdrop-blur-xl rounded-2xl shadow-lg border border-slate-200/50 dark:border-slate-600/30 p-5 hover:shadow-xl transition-all duration-500 animate-fade-in relative overflow-hidden">
-                    {/* Subtle background decorations */}
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-100/30 via-purple-100/20 to-transparent rounded-full blur-2xl" />
-                    <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-green-100/30 via-teal-100/20 to-transparent rounded-full blur-xl" />
-
-                    {/* Top badge */}
-                    <div className="flex justify-center mb-3 relative z-10">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/70 dark:bg-slate-700/80 rounded-full border border-slate-300/40 dark:border-slate-600/40 backdrop-blur-sm">
-                        <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-pulse" />
-                        <span className="text-slate-700 dark:text-slate-200 font-fredoka font-semibold text-xs">
-                          איך זה עובד בפועל – שלושה שלבים פשוטים
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Horizontal 3-step process with more details */}
-                    <div className="flex items-start justify-center gap-4 mb-3">
-                      {/* Step 1 */}
-                      <div className="flex-1 max-w-[140px] text-center">
-                        <div className="w-9 h-9 bg-gradient-to-br from-amber-200 to-orange-200 dark:from-amber-800 dark:to-orange-800 rounded-xl flex items-center justify-center text-amber-800 dark:text-amber-200 font-fredoka font-bold text-sm mx-auto mb-1 border border-amber-300/40 dark:border-amber-600/40">
-                          1
-                        </div>
-                        <h4 className="font-fredoka font-bold text-xs mb-1 text-amber-700 dark:text-amber-300">הזנת נתונים</h4>
-                        <ul className="text-[10px] text-slate-700 dark:text-slate-200 font-comfortaa leading-snug space-y-1 text-right">
-                          <li>• בחירת קטגוריות: חשמל/סלולר/אינטרנט/TV</li>
-                          <li>• סכום חודשי וספק נוכחי</li>
-                          <li>• אפשרות להעלאת חשבונית</li>
-                        </ul>
-                      </div>
-
-                      {/* Divider */}
-                      <div className="w-6 mt-5 h-0.5 bg-gradient-to-r from-amber-300 via-sky-300 to-emerald-300 rounded-full" />
-
-                      {/* Step 2 */}
-                      <div className="flex-1 max-w-[140px] text-center">
-                        <div className="w-9 h-9 bg-gradient-to-br from-sky-200 to-indigo-200 dark:from-sky-800 dark:to-indigo-800 rounded-xl flex items-center justify-center text-sky-800 dark:text-sky-200 font-fredoka font-bold text-sm mx-auto mb-1 border border-sky-300/40 dark:border-sky-600/40">
-                          2
-                        </div>
-                        <h4 className="font-fredoka font-bold text-xs mb-1 text-sky-700 dark:text-sky-300">ניתוח חכם</h4>
-                        <ul className="text-[10px] text-slate-700 dark:text-slate-200 font-comfortaa leading-snug space-y-1 text-right">
-                          <li>• השוואה מול אלפי תעריפים בזמן אמת</li>
-                          <li>• בדיקת עמלות, קנסות ותוקף מבצעים</li>
-                          <li>• חישוב חיסכון אמיתי נטו</li>
-                        </ul>
-                      </div>
-
-                      {/* Divider */}
-                      <div className="w-6 mt-5 h-0.5 bg-gradient-to-r from-sky-300 via-emerald-300 to-amber-300 rounded-full" />
-
-                      {/* Step 3 */}
-                      <div className="flex-1 max-w-[140px] text-center">
-                        <div className="w-9 h-9 bg-gradient-to-br from-emerald-200 to-teal-200 dark:from-emerald-800 dark:to-teal-800 rounded-xl flex items-center justify-center text-emerald-800 dark:text-emerald-200 font-fredoka font-bold text-sm mx-auto mb-1 border border-emerald-300/40 dark:border-emerald-600/40">
-                          3
-                        </div>
-                        <h4 className="font-fredoka font-bold text-xs mb-1 text-emerald-700 dark:text-emerald-300">מעבר מלא</h4>
-                        <ul className="text-[10px] text-slate-700 dark:text-slate-200 font-comfortaa leading-snug space-y-1 text-right">
-                          <li>• חתימה דיגיטלית מאובטחת</li>
-                          <li>• אנחנו מנתקים ומחברים בשבילכם</li>
-                          <li>• מעקב סטטוס בזמן אמת</li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Bottom stats */}
-                    <div className="p-2 bg-white/60 dark:bg-slate-700/60 rounded-xl border border-slate-200/40 dark:border-slate-600/40">
-                      <div className="flex justify-center gap-4 text-[10px] font-comfortaa font-semibold">
-                        <div className="text-emerald-700 dark:text-emerald-300"><span className="text-sm font-bold">35%</span> חיסכון</div>
-                        <div className="text-slate-400">•</div>
-                        <div className="text-sky-700 dark:text-sky-300"><span className="text-sm font-bold">0₪</span> עמלות</div>
-                        <div className="text-slate-400">•</div>
-                        <div className="text-amber-700 dark:text-amber-300"><span className="text-sm font-bold">7 ימים</span> מעבר</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Interactive Steps Banner */}
+              <InteractiveStepsBanner />
 
               {/* Providers Badge - Enhanced */}
               <div className="text-center">
@@ -338,7 +261,7 @@ const Home = () => {
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 mb-8">
               <div className="mb-6">
                 <h2 className="text-3xl font-fredoka font-bold mb-4 text-gray-800">
-                  למה אלפי משפחות בוחרות בנו?
+                  למה זה פתרון אמיתי לבעיה כואבת?
                 </h2>
                 <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-green-400 rounded-full mx-auto"></div>
               </div>
