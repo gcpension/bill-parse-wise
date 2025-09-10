@@ -176,8 +176,12 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
       if (cat === 'cellular') return 'mobile';
       if (cat === 'electricity' || cat === 'internet' || cat === 'tv') return cat as 'electricity' | 'internet' | 'tv';
     }
-    // Default to electricity instead of showing all plans
-    return 'electricity' as const;
+    if (initialSelectedCategories.length > 1) {
+      // If multiple categories selected, show all plans
+      return 'all' as const;
+    }
+    // Default to all plans if no specific category
+    return 'all' as const;
   };
   
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile' | 'tv'>(getInitialCategory());
@@ -186,8 +190,17 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
     document.title = "כל המסלולים | חסכונט";
   }, []);
 
+  // Filter plans based on selected category and initial categories
   const filteredPlans = selectedCategory === 'all' 
-    ? manualPlans 
+    ? (initialSelectedCategories.length > 0 
+        ? manualPlans.filter(plan => {
+            const categoryMapping = { 'cellular': 'mobile' };
+            const mappedCategories = initialSelectedCategories.map(cat => 
+              categoryMapping[cat as keyof typeof categoryMapping] || cat
+            );
+            return mappedCategories.includes(plan.category);
+          })
+        : manualPlans)
     : manualPlans.filter(plan => plan.category === selectedCategory);
 
   const categoryLabels = {

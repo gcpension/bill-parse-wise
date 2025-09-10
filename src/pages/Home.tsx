@@ -1,5 +1,6 @@
 import { Shield, Zap, TrendingUp, Users, CheckCircle, Star, Calculator, Clock, Award, Phone, Sparkles, ArrowRight, BarChart3, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -100,22 +101,49 @@ const Home = () => {
       }} />
       </div>
 
-      {/* System Explanation Banner */}
+      {/* Process Steps Banner */}
       <section className="relative py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-primary/10 via-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-primary/20 rounded-2xl p-6 shadow-lg">
-              <div className="flex items-center justify-center gap-4 text-center">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-xl flex items-center justify-center shadow-md">
-                  <Zap className="w-6 h-6 text-white" />
+            <div className="bg-gradient-to-r from-background/95 to-background/90 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-lg">
+              <h3 className="text-center text-lg font-bold text-foreground mb-6">תהליך החלפת ספק</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Step 1 */}
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-4 text-center">
+                  <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold text-lg">1</span>
+                  </div>
+                  <h4 className="font-bold text-blue-700 mb-1">בחר מסלול</h4>
+                  <p className="text-sm text-blue-600">בחירה מהירה מתרחיפות</p>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-display font-bold text-primary mb-2">
-                    איך זה עובד? פשוט ומהיר!
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    המערכת שלנו סורקת את כל הספקים בשוק, משווה מחירים בזמן אמת, ומוצאת לכם את החיסכון הטוב ביותר. תמלאו פרטים בסיסיים, נקבל הצעות מותאמות אישית ונטפל בכל המעבר עבורכם - ללא עמלות או דמי טיפול.
-                  </p>
+
+                {/* Step 2 */}
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-xl p-4 text-center">
+                  <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold text-lg">2</span>
+                  </div>
+                  <h4 className="font-bold text-purple-700 mb-1">השווה מחירים</h4>
+                  <p className="text-sm text-purple-600">מחירים מכל הספקים</p>
+                </div>
+
+                {/* Step 3 */}
+                <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl p-4 text-center">
+                  <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold text-lg">3</span>
+                  </div>
+                  <h4 className="font-bold text-green-700 mb-1">עבור וחסוך</h4>
+                  <p className="text-sm text-green-600">אנחנו נדאג לכל השאר</p>
+                </div>
+              </div>
+
+              <div className="mt-4 text-center">
+                <p className="text-xs text-muted-foreground">עובדים עם כל הספקים הגדולים</p>
+                <div className="flex justify-center gap-4 mt-2">
+                  <Badge variant="outline" className="text-xs">פלאפון</Badge>
+                  <Badge variant="outline" className="text-xs">סלקום</Badge>
+                  <Badge variant="outline" className="text-xs">HOT</Badge>
+                  <Badge variant="outline" className="text-xs">בזק</Badge>
                 </div>
               </div>
             </div>
