@@ -8,6 +8,8 @@ import { SavingsComparisonHeader } from "@/components/SavingsComparisonHeader";
 import AdvancedPlanFilters, { FilterOptions } from "@/components/plans/AdvancedPlanFilters";
 import PlanComparison from "@/components/plans/PlanComparison";
 import EnhancedPlanCard from "@/components/plans/EnhancedPlanCard";
+import PlanRecommendations from "@/components/plans/PlanRecommendations";
+import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
 
 interface CategorySavings {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
@@ -56,6 +58,8 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
   });
   
   const [comparedPlans, setComparedPlans] = useState<ManualPlan[]>([]);
+  const [selectedPlan, setSelectedPlan] = useState<ManualPlan | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   
   useEffect(() => {
     document.title = "כל המסלולים | חסכונט";
@@ -182,6 +186,24 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
     setComparedPlans([]);
   };
 
+  // Handle plan selection from recommendations
+  const handlePlanSelect = (plan: ManualPlan) => {
+    setSelectedPlan(plan);
+    setIsFormOpen(true);
+  };
+
+  // User profile for recommendations (could be enhanced with real user data)
+  const userProfile = useMemo(() => {
+    if (initialSelectedCategories.length === 1) {
+      return {
+        category: initialSelectedCategories[0] === 'cellular' ? 'mobile' : initialSelectedCategories[0],
+        budget: 200, // Could be derived from analysis
+        usage: 'medium' as const
+      };
+    }
+    return undefined;
+  }, [initialSelectedCategories]);
+
   // Use the filtered plans
   const filteredPlans = filteredAndSortedPlans;
 
@@ -228,6 +250,17 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
               </p>
             </div>
           </header>
+
+          {/* Smart Recommendations */}
+          {filteredPlans.length > 0 && (
+            <div className="mb-8">
+              <PlanRecommendations
+                plans={filteredPlans}
+                userProfile={userProfile}
+                onPlanSelect={handlePlanSelect}
+              />
+            </div>
+          )}
 
           {/* Advanced Filters */}
           <div className="mb-8">
@@ -324,6 +357,18 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
           onRemovePlan={handleRemoveFromComparison}
           onClearAll={handleClearComparison}
         />
+
+        {/* Enhanced Switch Request Form */}
+        {selectedPlan && (
+          <EnhancedSwitchRequestForm 
+            isOpen={isFormOpen}
+            onClose={() => {
+              setIsFormOpen(false);
+              setSelectedPlan(null);
+            }}
+            selectedPlan={selectedPlan}
+          />
+        )}
       </div>
     </Layout>
   );

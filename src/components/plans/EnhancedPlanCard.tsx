@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ManualPlan } from "@/data/manual-plans";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
+import TrustIndicators from "./TrustIndicators";
+import PlanInsights from "./PlanInsights";
 import { 
   Building2, 
   Check, 
@@ -20,7 +22,9 @@ import {
   Clock,
   Shield,
   HeartHandshake,
-  Zap
+  Zap,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -46,6 +50,7 @@ const EnhancedPlanCard = ({
   className
 }: EnhancedPlanCardProps) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   // Generate realistic ratings and popularity scores
   const rating = (Math.random() * 1.5 + 3.5).toFixed(1);
@@ -286,13 +291,42 @@ const EnhancedPlanCard = ({
           </div>
         </div>
 
-        {/* Action Button */}
-        <Button 
-          className="w-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary text-white font-bold text-lg py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" 
-          onClick={() => setIsFormOpen(true)}
-        >
-          {rank === 1 ? 'בחר במסלול המומלץ' : 'עבור למסלול זה'}
-        </Button>
+        {/* Action Buttons */}
+        <div className="space-y-3">
+          <Button 
+            className="w-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary text-white font-bold text-lg py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" 
+            onClick={() => setIsFormOpen(true)}
+          >
+            {rank === 1 ? 'בחר במסלול המומלץ' : 'עבור למסלול זה'}
+          </Button>
+          
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowDetails(!showDetails)}
+            className="w-full text-sm"
+          >
+            {showDetails ? (
+              <>
+                <EyeOff className="h-4 w-4 mr-1" />
+                הסתר פרטים מתקדמים
+              </>
+            ) : (
+              <>
+                <Eye className="h-4 w-4 mr-1" />
+                פרטים מתקדמים
+              </>
+            )}
+          </Button>
+        </div>
+
+        {/* Advanced Details - Collapsible */}
+        {showDetails && (
+          <div className="space-y-4 pt-4 border-t border-border/30">
+            <TrustIndicators plan={plan} />
+            <PlanInsights plan={plan} />
+          </div>
+        )}
       </CardContent>
       
       <EnhancedSwitchRequestForm 
