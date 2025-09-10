@@ -78,24 +78,31 @@ const categoryNames = {
 };
 
 const categoryColors = {
-  electricity: 'border-2 border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50',
-  cellular: 'border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-sky-50',
-  internet: 'border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-violet-50',
-  tv: 'border-2 border-green-300 bg-gradient-to-br from-green-50 to-emerald-50'
+  electricity: 'border-2 border-orange-400 bg-gradient-to-br from-orange-100 to-amber-100 hover:from-orange-200 hover:to-amber-200 shadow-orange-200/50',
+  cellular: 'border-2 border-blue-400 bg-gradient-to-br from-blue-100 to-sky-100 hover:from-blue-200 hover:to-sky-200 shadow-blue-200/50',
+  internet: 'border-2 border-purple-400 bg-gradient-to-br from-purple-100 to-violet-100 hover:from-purple-200 hover:to-violet-200 shadow-purple-200/50',
+  tv: 'border-2 border-green-400 bg-gradient-to-br from-green-100 to-emerald-100 hover:from-green-200 hover:to-emerald-200 shadow-green-200/50'
 };
 
 const categoryAccentColors = {
-  electricity: 'text-orange-700',
-  cellular: 'text-blue-700',
-  internet: 'text-purple-700',
-  tv: 'text-green-700'
+  electricity: 'text-orange-800',
+  cellular: 'text-blue-800',
+  internet: 'text-purple-800',
+  tv: 'text-green-800'
+};
+
+const categoryIconColors = {
+  electricity: 'text-orange-600 bg-orange-100',
+  cellular: 'text-blue-600 bg-blue-100',
+  internet: 'text-purple-600 bg-purple-100',
+  tv: 'text-green-600 bg-green-100'
 };
 
 const categoryDescriptions = {
-  electricity: 'בדקו כמה תוכלו לחסוך על חשבון החשמל',
-  cellular: 'השוו תעריפי סלולר ומצאו חבילה משתלמת',
-  internet: 'מצאו את החבילת האינטרנט הטובה ביותר',
-  tv: 'חסכו על שירותי הטלוויזיה והסטרימינג'
+  electricity: 'בדקו כמה תוכלו לחסוך על חשבון החשמל החודשי',
+  cellular: 'השוו תעריפי סלולר ומצאו חבילה משתלמת יותר',
+  internet: 'מצאו את חבילת האינטרנט הכי טובה ומשתלמת',
+  tv: 'חסכו על שירותי הטלוויזיה והסטרימינג שלכם'
 };
 
 const initialCategoryData: Record<string, CategoryData> = {
@@ -246,14 +253,46 @@ export const AnalysisInput = ({
         className="mb-6"
       />
 
-      {/* Compact Header */}
-      <div className="text-center space-y-3">
-        <h2 className="text-2xl font-bold text-foreground">
-          הזינו את הפרטים שלכם
+      {/* Enhanced Header */}
+      <div className="text-center space-y-6 mb-8">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+          <span className="text-sm font-bold text-primary uppercase tracking-wide">
+            חיסכון מיידי במספר קליקים
+          </span>
+          <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+        </div>
+        
+        <h2 className="text-2xl lg:text-3xl font-black text-foreground leading-tight">
+          כמה כסף אתם יכולים לחסוך 
+          <span className="block text-primary">החודש הזה?</span>
         </h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          בחרו קטגוריות והזינו פרטים לקבלת השוואת מחירים מדויקת
-        </p>
+        
+        <div className="max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base leading-relaxed mb-6">
+            בחרו קטגוריות, הזינו פרטים וגלו תוך דקות כמה תוכלו לחסוך בכל חשבון
+          </p>
+          
+          {/* Live statistics */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-lg mx-auto">
+            <div className="group p-3 bg-primary/10 rounded-xl text-center hover:bg-primary/20 transition-colors cursor-pointer">
+              <div className="text-lg font-bold text-primary group-hover:scale-110 transition-transform">90%</div>
+              <div className="text-xs text-muted-foreground">מוצאים חיסכון</div>
+            </div>
+            <div className="group p-3 bg-success/10 rounded-xl text-center hover:bg-success/20 transition-colors cursor-pointer">
+              <div className="text-lg font-bold text-success group-hover:scale-110 transition-transform">2,800₪</div>
+              <div className="text-xs text-muted-foreground">ממוצע חיסכון</div>
+            </div>
+            <div className="group p-3 bg-blue-500/10 rounded-xl text-center hover:bg-blue-500/20 transition-colors cursor-pointer">
+              <div className="text-lg font-bold text-blue-600 group-hover:scale-110 transition-transform">3</div>
+              <div className="text-xs text-muted-foreground">דקות בלבד</div>
+            </div>
+            <div className="group p-3 bg-orange-500/10 rounded-xl text-center hover:bg-orange-500/20 transition-colors cursor-pointer">
+              <div className="text-lg font-bold text-orange-600 group-hover:scale-110 transition-transform">חינם</div>
+              <div className="text-xs text-muted-foreground">לחלוטין</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Compact Input Section */}

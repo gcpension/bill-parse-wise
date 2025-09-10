@@ -311,59 +311,104 @@ export const Analyze = () => {
       <Layout>
         <div className="relative z-10 space-y-8">
           {/* Enhanced Hero Section */}
-          <div className="text-center space-y-6 py-12">
+          <div className="text-center space-y-8 py-16">
             <div className="relative inline-block">
-              <div className="absolute -inset-8 bg-gradient-to-r from-primary/10 via-primary-glow/5 to-success/10 rounded-full blur-3xl animate-pulse" />
-              <h1 className="relative text-4xl lg:text-5xl font-black bg-gradient-to-r from-primary via-primary-glow to-success bg-clip-text text-transparent leading-tight">
-                מנתח חכם לחיסכון
-                <br />
-                <span className="text-3xl lg:text-4xl">המתקדם בישראל</span>
-              </h1>
+              <div className="absolute -inset-12 bg-gradient-to-r from-primary/15 via-success/10 to-blue-500/15 rounded-full blur-3xl animate-pulse" />
+              <div className="relative space-y-4">
+                <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary/10 via-success/10 to-blue-500/10 rounded-full border border-primary/20 backdrop-blur-sm">
+                  <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
+                  <span className="text-sm font-bold bg-gradient-to-r from-primary via-success to-blue-600 bg-clip-text text-transparent">
+                    חיסכון מבטיח תוך 3 דקות
+                  </span>
+                </div>
+                <h1 className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-primary via-success to-blue-600 bg-clip-text text-transparent leading-tight">
+                  תגלו כמה כסף
+                  <br />
+                  <span className="relative">
+                    אתם מבזבזים מדי חודש
+                    <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-orange-500 via-red-500 to-red-600 rounded-full animate-pulse" />
+                  </span>
+                </h1>
+                <div className="text-2xl font-bold text-muted-foreground">
+                  והתחילו לחסוך 
+                  <span className="text-success font-black"> עכשיו!</span>
+                </div>
+              </div>
             </div>
             
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
-              הזינו את הפרטים שלכם וגלו בדיוק כמה תחסכו בכל קטגוריה
-              <br />
-              <span className="text-primary font-semibold">תוצאות מיידיות + המלצות מותאמות אישית</span>
-            </p>
-
-            {/* Enhanced Trust Indicators */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-              <div className="flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-success/10 to-success/5 rounded-xl border border-success/20">
-                <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
-                <span className="text-sm font-semibold text-success">מעודכן בזמן אמת</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border border-primary/20">
-                <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
-                <span className="text-sm font-semibold text-primary">מאובטח ומוגן</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-amber-500/10 to-amber-500/5 rounded-xl border border-amber-500/20">
-                <div className="w-3 h-3 bg-amber-500 rounded-full animate-pulse" />
-                <span className="text-sm font-semibold text-amber-600">ללא עלות</span>
+            <div className="max-w-4xl mx-auto space-y-6">
+              <p className="text-xl text-muted-foreground leading-relaxed font-medium">
+                הכניסו את הפרטים שלכם ותגלו איך לחסוך 
+                <span className="font-bold text-primary"> עד 45% </span>
+                מהחשבונות החודשיים
+              </p>
+              
+              {/* Interactive Statistics */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                <div className="group p-4 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/20 hover:border-primary/40 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="text-3xl font-black text-primary group-hover:scale-110 transition-transform">2,800₪</div>
+                  <div className="text-sm font-medium text-muted-foreground">חיסכון ממוצע בשנה</div>
+                </div>
+                <div className="group p-4 bg-gradient-to-br from-success/10 to-success/5 rounded-2xl border border-success/20 hover:border-success/40 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="text-3xl font-black text-success group-hover:scale-110 transition-transform">3</div>
+                  <div className="text-sm font-medium text-muted-foreground">דקות לתוצאות</div>
+                </div>
+                <div className="group p-4 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-2xl border border-blue-500/20 hover:border-blue-500/40 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="text-3xl font-black text-blue-600 group-hover:scale-110 transition-transform">50+</div>
+                  <div className="text-sm font-medium text-muted-foreground">ספקים במערכת</div>
+                </div>
+                <div className="group p-4 bg-gradient-to-br from-orange-500/10 to-orange-500/5 rounded-2xl border border-orange-500/20 hover:border-orange-500/40 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="text-3xl font-black text-orange-600 group-hover:scale-110 transition-transform">0₪</div>
+                  <div className="text-sm font-medium text-muted-foreground">עלות השירות</div>
+                </div>
               </div>
             </div>
 
-            {/* Process Steps Preview */}
-            <div className="flex justify-center items-center gap-6 mt-8">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center text-white font-bold text-lg mb-2 shadow-lg">
-                  1
+            {/* Enhanced Process Steps */}
+            <div className="flex justify-center items-center gap-8 mt-12">
+              <div className="group text-center cursor-pointer">
+                <div className="relative mb-3">
+                  <div className="absolute -inset-2 bg-gradient-to-br from-primary/30 to-primary/10 rounded-full blur-lg group-hover:blur-xl transition-all duration-300" />
+                  <div className="relative w-16 h-16 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center text-white font-bold text-xl shadow-xl group-hover:scale-110 transition-transform duration-300">
+                    1
+                  </div>
                 </div>
-                <p className="text-sm font-medium text-muted-foreground">הזן נתונים</p>
+                <p className="text-sm font-bold text-primary group-hover:text-primary-glow transition-colors">הכניסו נתונים</p>
+                <p className="text-xs text-muted-foreground">פרטי החשבונות</p>
               </div>
-              <div className="w-8 h-0.5 bg-gradient-to-r from-primary/50 to-primary-glow/50" />
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-glow to-success rounded-full flex items-center justify-center text-white font-bold text-lg mb-2 shadow-lg">
-                  2
-                </div>
-                <p className="text-sm font-medium text-muted-foreground">קבל תוצאות</p>
+              
+              <div className="flex items-center">
+                <div className="w-12 h-1 bg-gradient-to-r from-primary/50 to-primary-glow/50 rounded-full animate-pulse" />
+                <div className="text-primary mx-2">⚡</div>
+                <div className="w-12 h-1 bg-gradient-to-r from-primary-glow/50 to-success/50 rounded-full animate-pulse" />
               </div>
-              <div className="w-8 h-0.5 bg-gradient-to-r from-primary-glow/50 to-success/50" />
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-success to-success/80 rounded-full flex items-center justify-center text-white font-bold text-lg mb-2 shadow-lg">
-                  3
+              
+              <div className="group text-center cursor-pointer">
+                <div className="relative mb-3">
+                  <div className="absolute -inset-2 bg-gradient-to-br from-success/30 to-success/10 rounded-full blur-lg group-hover:blur-xl transition-all duration-300" />
+                  <div className="relative w-16 h-16 bg-gradient-to-br from-primary-glow to-success rounded-full flex items-center justify-center text-white font-bold text-xl shadow-xl group-hover:scale-110 transition-transform duration-300">
+                    2
+                  </div>
                 </div>
-                <p className="text-sm font-medium text-muted-foreground">בחר וחסוך</p>
+                <p className="text-sm font-bold text-success group-hover:text-success/80 transition-colors">קבלו תוצאות</p>
+                <p className="text-xs text-muted-foreground">השוואה מיידית</p>
+              </div>
+              
+              <div className="flex items-center">
+                <div className="w-12 h-1 bg-gradient-to-r from-success/50 to-blue-500/50 rounded-full animate-pulse" />
+                <div className="text-success mx-2">💰</div>
+                <div className="w-12 h-1 bg-gradient-to-r from-blue-500/50 to-green-500/50 rounded-full animate-pulse" />
+              </div>
+              
+              <div className="group text-center cursor-pointer">
+                <div className="relative mb-3">
+                  <div className="absolute -inset-2 bg-gradient-to-br from-green-500/30 to-green-500/10 rounded-full blur-lg group-hover:blur-xl transition-all duration-300" />
+                  <div className="relative w-16 h-16 bg-gradient-to-br from-success to-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-xl group-hover:scale-110 transition-transform duration-300">
+                    3
+                  </div>
+                </div>
+                <p className="text-sm font-bold text-green-600 group-hover:text-green-500 transition-colors">התחילו לחסוך</p>
+                <p className="text-xs text-muted-foreground">החלפה מיידית</p>
               </div>
             </div>
           </div>
