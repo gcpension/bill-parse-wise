@@ -26,9 +26,12 @@ export default {
 				'rubik': ['Rubik', 'sans-serif'], 
 				'fredoka': ['Fredoka', 'sans-serif'],
 				'comfortaa': ['Comfortaa', 'sans-serif'],
+				'playfair': ['Playfair Display', 'serif'],
+				'crimson': ['Crimson Text', 'serif'],
 				'sans': ['Assistant', 'Heebo', 'Inter', 'IBM Plex Sans Hebrew', 'ui-sans-serif', 'system-ui'],
 				'display': ['Fredoka', 'Comfortaa', 'Rubik', 'Heebo', 'Assistant', 'sans-serif'],
 				'body': ['Assistant', 'Inter', 'IBM Plex Sans Hebrew', 'sans-serif'],
+				'elegant': ['Playfair Display', 'Crimson Text', 'serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
