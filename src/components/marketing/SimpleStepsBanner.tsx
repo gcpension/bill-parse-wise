@@ -14,10 +14,10 @@ const SimpleStepsBanner = () => {
               המערכת החכמה שלנו
             </div>
             <h3 className="text-lg font-display font-bold bg-gradient-to-l from-slate-800 via-blue-700 to-indigo-700 dark:from-slate-100 dark:via-blue-300 dark:to-indigo-300 bg-clip-text text-transparent mb-2">
-              פלטפורמה מתקדמת שעושה הכל עבורכם
+              איך אנחנו עוזרים לכם לחסוך אלפי שקלים
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 max-w-lg mx-auto leading-relaxed font-body">
-              טכנולוגיית AI מתקדמת + מומחים אנושיים = חיסכון מקסימלי בזמן מינימלי
+              המערכת מנתחת את החשבונות שלכם, מוצאת ספקים זולים יותר ומבצעת עבורכם את המעבר המלא - כולל הסדרת הניתוק מהספק הישן
             </p>
           </div>
 
@@ -30,9 +30,9 @@ const SimpleStepsBanner = () => {
                 <span className="text-white font-bold text-sm">1</span>
               </div>
               <div className="flex-1">
-                <h4 className="font-display font-bold text-sm text-orange-700 dark:text-orange-300 mb-1">הזנה חכמה</h4>
+                <h4 className="font-display font-bold text-sm text-orange-700 dark:text-orange-300 mb-1">העלאת חשבונות</h4>
                 <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-body">
-                  זיהוי אוטומטי של חשבוניות
+                  צילום או העלאה של החשבון הנוכחי
                 </p>
               </div>
             </div>
@@ -43,9 +43,9 @@ const SimpleStepsBanner = () => {
                 <Brain className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <h4 className="font-display font-bold text-sm text-blue-700 dark:text-blue-300 mb-1">ניתוח AI</h4>
+                <h4 className="font-display font-bold text-sm text-blue-700 dark:text-blue-300 mb-1">ניתוח מתקדם</h4>
                 <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-body">
-                  השוואה של 50+ ספקים
+                  המערכת בודקת כל הספקים וחושבת את החיסכון
                 </p>
               </div>
             </div>
@@ -56,9 +56,9 @@ const SimpleStepsBanner = () => {
                 <FileCheck className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <h4 className="font-display font-bold text-sm text-green-700 dark:text-green-300 mb-1">מעבר אוטומטי</h4>
+                <h4 className="font-display font-bold text-sm text-green-700 dark:text-green-300 mb-1">מעבר מלא</h4>
                 <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-body">
-                  אנחנו עושים הכל עבורכם
+                  אנחנו מסדרים החלפת ספק + ביטול הישן
                 </p>
               </div>
             </div>
