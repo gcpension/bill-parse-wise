@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Separator } from "@/components/ui/separator";
 import { ManualPlan } from "@/data/manual-plans";
 import { 
-  GitCompare, 
+  Scale, 
   X, 
   Star, 
   Check, 
@@ -80,7 +80,7 @@ const PlanComparison = ({
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <div className="p-2 bg-gradient-to-r from-primary/10 to-primary-glow/10 rounded-lg">
-                <GitCompare className="h-5 w-5 text-primary" />
+                <Scale className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <p className="font-semibold text-sm">השוואת מסלולים</p>
