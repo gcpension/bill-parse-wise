@@ -186,22 +186,22 @@ const Home = () => {
                 {/* Banner */}
                 <div className="flex justify-center lg:justify-start">
                   <SimpleStepsBanner />
-                  
-                  {/* Primary CTA - Right under banner */}
-                  <div className="flex justify-center items-center mt-4">
-                    <Link to="/analyze" className="group">
-                      <Button 
-                        size="lg" 
-                        className="px-16 py-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-3xl lg:text-4xl shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-500/30 hover:ring-emerald-500/50"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-                        <span className="relative flex items-center gap-6">
-                          <span className="drop-shadow-lg">בדקו כמה תחסכו עכשיו</span>
-                          <ArrowRight className="h-8 w-8 group-hover:translate-x-3 transition-transform duration-300 drop-shadow-lg" />
-                        </span>
-                      </Button>
-                    </Link>
-                  </div>
+                </div>
+
+                {/* Primary CTA - Right under banner */}
+                <div className="flex justify-center items-center mt-8">
+                  <Link to="/analyze" className="group">
+                    <Button 
+                      size="lg" 
+                      className="px-16 py-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-3xl lg:text-4xl shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-500/30 hover:ring-emerald-500/50"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+                      <span className="relative flex items-center gap-6">
+                        <span className="drop-shadow-lg">בדקו כמה תחסכו עכשיו</span>
+                        <ArrowRight className="h-8 w-8 group-hover:translate-x-3 transition-transform duration-300 drop-shadow-lg" />
+                      </span>
+                    </Button>
+                  </Link>
                 </div>
               </div>
 
