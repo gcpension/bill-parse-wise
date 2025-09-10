@@ -113,11 +113,55 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Simple Steps Banner */}
-              <SimpleStepsBanner />
+              {/* Mission & Banner Section */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto mt-12">
+                {/* Mission Text */}
+                <div className="space-y-6">
+                  <div className="text-right">
+                    <h2 className="text-2xl lg:text-3xl font-display font-bold mb-4 leading-tight">
+                      <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        השליחות שלנו
+                      </span>
+                    </h2>
+                    <div className="w-20 h-1 bg-gradient-to-r from-primary to-blue-600 rounded-full mb-6 mr-auto"></div>
+                  </div>
+                  
+                  <div className="space-y-4 text-right">
+                    <p className="text-lg text-muted-foreground font-body leading-relaxed">
+                      אנחנו מאמינים שכל משפחה ועסק בישראל ראויים לשקיפות ולהוגנות בעולם השירותים הבסיסיים. 
+                      <strong className="text-foreground"> השליחות שלנו פשוטה - לקזז עלויות מיותרות ולהחזיר לכם את הכסף שמגיע לכם.</strong>
+                    </p>
+                    
+                    <p className="text-base text-muted-foreground font-body leading-relaxed">
+                      במקום להישאר תקועים בחוזים יקרים ותעריפים מנופחים, אנחנו נותנים לכם את הכוח להשוות, 
+                      לבחור ולחסוך - בקלות, במהירות ובביטחון מלא.
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-3 justify-end mt-6">
+                      <div className="flex items-center gap-2 bg-primary/10 px-3 py-2 rounded-full">
+                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                        <span className="text-sm font-medium">שקיפות מלאה</span>
+                      </div>
+                      <div className="flex items-center gap-2 bg-success/10 px-3 py-2 rounded-full">
+                        <div className="w-2 h-2 bg-success rounded-full"></div>
+                        <span className="text-sm font-medium">חיסכון מבטיח</span>
+                      </div>
+                      <div className="flex items-center gap-2 bg-blue-500/10 px-3 py-2 rounded-full">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <span className="text-sm font-medium">שירות אישי</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Banner */}
+                <div className="flex justify-center lg:justify-start">
+                  <SimpleStepsBanner />
+                </div>
+              </div>
 
               {/* Providers Badge - Enhanced */}
-              <div className="text-center">
+              <div className="text-center mt-16">
                 <p className="text-sm text-muted-foreground mb-4 font-medium">עובדים עם כל הספקים המובילים בישראל</p>
                 <div className="flex justify-center gap-3 flex-wrap">
                   <Badge variant="outline" className="text-sm px-4 py-2 bg-white/70 hover:bg-white/90 transition-colors font-medium shadow-sm">פלאפון</Badge>
@@ -271,19 +315,23 @@ const Home = () => {
                   </div>
                 </div>
                 
-                <div className="mt-8 p-6 bg-gradient-to-r from-gray-50 to-blue-50/50 rounded-2xl border border-gray-200/50">
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="text-yellow-500 text-xl">⭐⭐⭐⭐⭐</span>
-                    <span className="text-gray-600 text-sm font-comfortaa">4.9/5 - מעל 1,200 ביקורות</span>
-                  </div>
-                  <p className="text-gray-800 font-comfortaa text-lg italic leading-relaxed">
-                    "התחלתי בספקת ובתוך שבועיים עשיתם לי מעבר מלא לחשמל וסלולר. 
-                    <strong className="text-blue-600">חסכתי 1,200₪ השנה</strong> והכי מדהים שקיבלתי שירות 
-                    פי 10 יותר טוב מבלי שאצטרך לדבר עם אף אחד!"
+                <div className="mt-8 p-6 bg-gradient-to-r from-primary/5 to-blue-500/5 rounded-2xl border border-primary/20">
+                  <h3 className="text-xl font-display font-bold text-primary mb-4 text-center">
+                    השליחות שלנו - לחסוך לכם כסף אמיתי
+                  </h3>
+                  <p className="text-muted-foreground text-base leading-relaxed text-center">
+                    אנחנו מאמינים שכל משפחה ועסק בישראל ראויים לשקיפות ולהוגנות בעולם השירותים הבסיסיים. 
+                    השליחות שלנו פשוטה - לקזז עלויות מיותרות ולהחזיר לכם את הכסף שמגיע לכם.
                   </p>
-                  <div className="flex items-center justify-center gap-2 mt-4">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-green-400 rounded-full flex items-center justify-center text-white font-bold text-sm">ר</div>
-                    <span className="text-gray-700 font-comfortaa text-sm">רחל מ., תל אביב</span>
+                  <div className="flex items-center justify-center gap-4 mt-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-success rounded-full"></div>
+                      <span className="text-sm font-medium text-success">שקיפות מלאה</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-primary rounded-full"></div>
+                      <span className="text-sm font-medium text-primary">חיסכון מבטיח</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -323,40 +371,24 @@ const Home = () => {
               </div>
 
               <div className="space-y-4">
-              {[{
-                q: "האם השירות באמת חינם?",
-                a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
-              }, {
-                q: "כמה זמן לוקח לקבל תוצאות?",
-                a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
-              }, {
-                q: "מה אם אני כבר בהתקשרות?",
-                a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
-              }, {
-                q: "האם יש ביטול אוטומטי מהספק הישן?",
-                a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
-              }, {
-                q: "האם אני מחויב לעבור לספק שאתם ממליצים?",
-                a: "בהחלט לא! אתם מקבלים את המלצותינו ויכולים לבחור בעצמכם. אם תחליטו לא לעבור - זה בסדר גמור."
-              }, {
-                q: "איך אתם מרוויחים כסף?",
-                a: "אנחנו מקבלים עמלה מהספק החדש רק אם אתם בוחרים לעבור אליו. לכן האינטרס שלנו הוא למצוא לכם באמת את הדיל הטוב ביותר."
-              }].map((faq, index) => (
-                <div key={index} className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-slate-600/50 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                  <h3 className="font-display font-semibold text-lg mb-3 text-primary">{faq.q}</h3>
-                  <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
-                </div>
-              ))}
-              <div className="space-y-4">
                 {[{
                   q: "האם השירות באמת חינם?",
-                  a: "כן! אנחנו לא גובים כলום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
+                  a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
                 }, {
                   q: "כמה זמן לוקח לקבל תוצאות?",
                   a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
                 }, {
                   q: "מה אם אני כבר בהתקשרות?",
                   a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
+                }, {
+                  q: "האם יש ביטול אוטומטי מהספק הישן?",
+                  a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
+                }, {
+                  q: "האם אני מחויב לעבור לספק שאתם ממליצים?",
+                  a: "בהחלט לא! אתם מקבלים את המלצותינו ויכולים לבחור בעצמכם. אם תחליטו לא לעבור - זה בסדר גמור."
+                }, {
+                  q: "איך אתם מרוויחים כסף?",
+                  a: "אנחנו מקבלים עמלה מהספק החדש רק אם אתם בוחרים לעבור אליו. לכן האינטרס שלנו הוא למצוא לכם באמת את הדיל הטוב ביותר."
                 }, {
                   q: "האם אתם עובדים עם כל הספקים?",
                   a: "כן, אנחנו עובדים עם כל הספקים הגדולים בישראל ועם עשרות ספקים קטנים יותר."
@@ -372,7 +404,6 @@ const Home = () => {
                     <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
                   </div>
                 ))}
-              </div>
               </div>
             </div>
             
