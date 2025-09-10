@@ -176,7 +176,8 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
       if (cat === 'cellular') return 'mobile';
       if (cat === 'electricity' || cat === 'internet' || cat === 'tv') return cat as 'electricity' | 'internet' | 'tv';
     }
-    return 'all' as const;
+    // Default to electricity instead of showing all plans
+    return 'electricity' as const;
   };
   
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile' | 'tv'>(getInitialCategory());

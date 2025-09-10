@@ -100,6 +100,29 @@ const Home = () => {
       }} />
       </div>
 
+      {/* System Explanation Banner */}
+      <section className="relative py-8">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-r from-primary/10 via-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-primary/20 rounded-2xl p-6 shadow-lg">
+              <div className="flex items-center justify-center gap-4 text-center">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-xl flex items-center justify-center shadow-md">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-display font-bold text-primary mb-2">
+                    איך זה עובד? פשוט ומהיר!
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    המערכת שלנו סורקת את כל הספקים בשוק, משווה מחירים בזמן אמת, ומוצאת לכם את החיסכון הטוב ביותר. תמלאו פרטים בסיסיים, נקבל הצעות מותאמות אישית ונטפל בכל המעבר עבורכם - ללא עמלות או דמי טיפול.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Enhanced Hero Section */}
       <section className="relative py-16 lg:py-20">
         <div className="container mx-auto px-4 lg:px-6">

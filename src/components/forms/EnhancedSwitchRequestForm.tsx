@@ -231,6 +231,32 @@ export const EnhancedSwitchRequestForm = ({ isOpen, onClose, selectedPlan }: Enh
 
           {/* Main Form Area */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Process Explanation */}
+            <Card className="shadow-lg border border-primary/20 bg-gradient-to-r from-primary/5 to-blue-500/5 backdrop-blur-sm mb-6">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center">
+                    <FileText className="w-5 h-5 text-white" />
+                  </div>
+                  <h3 className="text-lg font-display font-bold text-primary">תהליך המעבר - פשוט וחכם</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold">1</div>
+                    <span>מילוי פרטים בסיסיים</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold">2</div>
+                    <span>קבלת אישור חתום</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xs font-bold">3</div>
+                    <span>ביצוע המעבר האוטומטי</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Customer Type Selection */}
             <Card className="shadow-lg border-0 bg-gradient-to-r from-card to-card/80 backdrop-blur-sm">
               <CardHeader className="pb-4">
