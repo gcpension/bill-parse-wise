@@ -112,35 +112,72 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Problem–Solution Banner (new) */}
-              <section className="mb-12">
-                <div className="max-w-5xl mx-auto">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="rounded-3xl p-8 border bg-white/70 dark:bg-card/60 border-border/40 shadow-sm">
-                      <h3 className="text-2xl font-bold mb-4">הבעיה</h3>
-                      <ul className="space-y-3 text-muted-foreground">
-                        <li>• מחירים משתנים כל הזמן וחוסר שקיפות</li>
-                        <li>• מבצעים מורכבים וקנסות יציאה</li>
-                        <li>• שיחות שימור ארוכות ובירוקרטיה</li>
-                      </ul>
+              {/* Floating Info Banner - Revolutionary System Explanation */}
+              <div className="mb-10">
+                <div className="relative max-w-4xl mx-auto">
+                  {/* Main floating card */}
+                  <div className="bg-gradient-to-r from-white/95 to-white/85 dark:from-card/95 dark:to-card/85 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 dark:border-border/50 p-8 hover:shadow-3xl transition-all duration-500 animate-fade-in">
+                    {/* Top badge */}
+                    <div className="flex justify-center mb-4">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-success/20 to-emerald-500/20 rounded-full border border-success/30">
+                        <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                        <span className="text-success font-bold text-sm">מערכת חכמה ואוטומטית</span>
+                      </div>
                     </div>
-                    <div className="rounded-3xl p-8 border bg-gradient-to-br from-primary/10 to-primary-glow/10 border-primary/20 shadow-md">
-                      <h3 className="text-2xl font-bold mb-4">הפתרון שלנו</h3>
-                      <ul className="space-y-3">
-                        <li className="flex items-center gap-2"><span className="w-2 h-2 bg-success rounded-full" /> אלגוריתם שמשווה אוטומטית בין כל הספקים</li>
-                        <li className="flex items-center gap-2"><span className="w-2 h-2 bg-success rounded-full" /> חתימה דיגיטלית וייפוי כוח מאובטח</li>
-                        <li className="flex items-center gap-2"><span className="w-2 h-2 bg-success rounded-full" /> מעבר מלא ללא שיחות וללא כאב ראש</li>
-                      </ul>
+                    
+                    {/* Main content */}
+                    <div className="text-center">
+                      <h3 className="text-2xl font-bold mb-4 bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        איך זה עובד? פשוט מאוד!
+                      </h3>
+                      
+                      {/* 3 step process */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                        <div className="group hover:scale-105 transition-all duration-300">
+                          <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-glow rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg group-hover:shadow-xl">
+                            1
+                          </div>
+                          <h4 className="font-bold text-lg mb-2">הזינו נתונים</h4>
+                          <p className="text-muted-foreground text-sm">
+                            פשוט בחרו קטגוריות והזינו את הסכומים הנוכחיים שלכם
+                          </p>
+                        </div>
+                        
+                        <div className="group hover:scale-105 transition-all duration-300">
+                          <div className="w-16 h-16 bg-gradient-to-br from-success to-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg group-hover:shadow-xl">
+                            2
+                          </div>
+                          <h4 className="font-bold text-lg mb-2">AI מנתח</h4>
+                          <p className="text-muted-foreground text-sm">
+                            האלגוריתם שלנו משווה אלפי תעריפים ומוצא לכם את הכי משתלם
+                          </p>
+                        </div>
+                        
+                        <div className="group hover:scale-105 transition-all duration-300">
+                          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg group-hover:shadow-xl">
+                            3
+                          </div>
+                          <h4 className="font-bold text-lg mb-2">אנחנו מעבירים</h4>
+                          <p className="text-muted-foreground text-sm">
+                            חתימה דיגיטלית ואנחנו מטפלים בכל השאר - ללא כאב ראש!
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {/* Bottom highlight */}
+                      <div className="mt-6 p-4 bg-gradient-to-r from-success/10 to-emerald-500/10 rounded-xl border border-success/20">
+                        <p className="text-success font-bold text-sm">
+                          ✨ ממוצע חיסכון של 35% • ללא עמלות • תמיכה מלאה
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="px-4 py-3 rounded-xl border bg-white/70 dark:bg-card/60 text-center text-sm">חשמל</div>
-                    <div className="px-4 py-3 rounded-xl border bg-white/70 dark:bg-card/60 text-center text-sm">סלולר</div>
-                    <div className="px-4 py-3 rounded-xl border bg-white/70 dark:bg-card/60 text-center text-sm">אינטרנט</div>
-                    <div className="px-4 py-3 rounded-xl border bg-white/70 dark:bg-card/60 text-center text-sm">טלוויזיה</div>
-                  </div>
+                  
+                  {/* Floating decorative elements */}
+                  <div className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-primary to-primary-glow rounded-full opacity-70 animate-bounce"></div>
+                  <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-br from-success to-emerald-600 rounded-full opacity-70 animate-bounce" style={{animationDelay: '1s'}}></div>
                 </div>
-              </section>
+              </div>
 
               {/* Providers Badge - Enhanced */}
               <div className="text-center">

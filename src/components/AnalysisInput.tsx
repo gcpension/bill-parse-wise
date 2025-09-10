@@ -292,7 +292,7 @@ export const AnalysisInput = ({
                     ? hasError(key) 
                       ? 'border-destructive/50 bg-destructive/5'
                       : `${categoryColors[data.category]} border-2`
-                    : 'border-border/30 bg-background hover:border-primary/20 cursor-pointer'
+                    : 'border-border/50 bg-card hover:border-primary/30 cursor-pointer hover:shadow-md'
                 }`}
                 onClick={() => !data.isActive && onCategoryToggle(key)}
               >
