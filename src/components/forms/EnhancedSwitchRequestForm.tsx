@@ -31,6 +31,7 @@ export const EnhancedSwitchRequestForm = ({ isOpen, onClose, selectedPlan }: Enh
   const { toast } = useToast();
   const [customerType, setCustomerType] = useState<CustomerType>('private');
   const [formStep, setFormStep] = useState(1);
+  const [serviceType, setServiceType] = useState<'full' | 'connection-only'>('full');
   
   // Map plan category to our form categories
   const mapServiceCategory = (planCategory: string): ServiceCategory => {
@@ -301,6 +302,76 @@ export const EnhancedSwitchRequestForm = ({ isOpen, onClose, selectedPlan }: Enh
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>
+              </CardContent>
+            </Card>
+
+            {/* Service Type Selection */}
+            <Card className="shadow-lg border-0 bg-gradient-to-r from-card to-card/80 backdrop-blur-sm">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-display flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  בחר סוג השירות
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <button
+                    onClick={() => setServiceType('full')}
+                    className={`p-4 rounded-xl border-2 transition-all duration-300 text-right ${
+                      serviceType === 'full'
+                        ? 'border-primary bg-primary/5 shadow-lg'
+                        : 'border-border hover:border-primary/50'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`w-5 h-5 rounded-full border-2 mt-1 ${
+                        serviceType === 'full'
+                          ? 'border-primary bg-primary'
+                          : 'border-border'
+                      }`}>
+                        {serviceType === 'full' && (
+                          <CheckCircle className="w-3 h-3 text-white m-0.5" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground mb-1">מעבר מלא</h4>
+                        <p className="text-sm text-muted-foreground">
+                          ניתוק מהספק הנוכחי + התחברות לספק החדש
+                        </p>
+                        <div className="mt-2">
+                          <Badge variant="secondary" className="text-xs">מומלץ</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => setServiceType('connection-only')}
+                    className={`p-4 rounded-xl border-2 transition-all duration-300 text-right ${
+                      serviceType === 'connection-only'
+                        ? 'border-primary bg-primary/5 shadow-lg'
+                        : 'border-border hover:border-primary/50'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`w-5 h-5 rounded-full border-2 mt-1 ${
+                        serviceType === 'connection-only'
+                          ? 'border-primary bg-primary'
+                          : 'border-border'
+                      }`}>
+                        {serviceType === 'connection-only' && (
+                          <CheckCircle className="w-3 h-3 text-white m-0.5" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground mb-1">התחברות בלבד</h4>
+                        <p className="text-sm text-muted-foreground">
+                          רק התחברות לספק החדש (תנתק בעצמך)
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
               </CardContent>
             </Card>
 

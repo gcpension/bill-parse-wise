@@ -132,9 +132,17 @@ const Home = () => {
                   <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <span className="text-white font-bold text-lg">3</span>
                   </div>
-                  <h4 className="font-bold text-green-700 mb-1">עבור וחסוך</h4>
-                  <p className="text-sm text-green-600">אנחנו נדאג לכל השאר</p>
+                  <h4 className="font-bold text-green-700 mb-1">מעבר מלא</h4>
+                  <p className="text-sm text-green-600">ניתוק + התחברות אוטומטי</p>
                 </div>
+              </div>
+
+              <div className="mt-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-3">
+                <p className="text-sm text-amber-700 text-center">
+                  <strong>שירות מלא:</strong> אנחנו מבצעים ניתוק מהספק הנוכחי והתחברות לספק החדש
+                  <br />
+                  <strong>או בחר:</strong> התחברות בלבד (אתה מנתק בעצמך)
+                </p>
               </div>
 
               <div className="mt-4 text-center">
