@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield
 import { Link } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
+import savingsIcon from '@/assets/savings-icon.png';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -88,17 +89,30 @@ const Home = () => {
                 </span>
               </div>
               
-              {/* Enhanced Main Title */}
-              <h1 className="text-5xl lg:text-6xl font-display font-black mb-6 tracking-tight leading-tight">
-                תפסיקו לבזבז כסף
-                <br />
-                <span className="relative">
-                  <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
-                    על חשבונות מנופחים
+              {/* Enhanced Main Title with Icon */}
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <img 
+                  src={savingsIcon} 
+                  alt="חיסכון כסף" 
+                  className="w-16 h-16 lg:w-20 lg:h-20 animate-pulse"
+                />
+                <h1 className="text-5xl lg:text-6xl font-display font-black tracking-tight leading-tight">
+                  תפסיקו לבזבז כסף
+                  <br />
+                  <span className="relative">
+                    <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
+                      על חשבונות מנופחים
+                    </span>
+                    <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-600 to-purple-600 rounded-full animate-gradient-x bg-300%"></div>
                   </span>
-                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-600 to-purple-600 rounded-full animate-gradient-x bg-300%"></div>
-                </span>
-              </h1>
+                </h1>
+                <img 
+                  src={savingsIcon} 
+                  alt="חיסכון כסף" 
+                  className="w-16 h-16 lg:w-20 lg:h-20 animate-pulse"
+                  style={{ animationDelay: '1s' }}
+                />
+              </div>
               
               {/* Enhanced Subtitle */}
               <div className="space-y-3 mb-10">
