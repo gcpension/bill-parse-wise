@@ -90,11 +90,11 @@ const Home = () => {
               
               {/* Enhanced Main Title */}
               <h1 className="text-5xl lg:text-6xl font-display font-black mb-6 tracking-tight leading-tight">
-                השוואה והחלפה
+                תפסיקו לבזבז כסף
                 <br />
                 <span className="relative">
                   <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
-                    חכמה של ספקים
+                    על חשבונות מנופחים
                   </span>
                   <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-600 to-purple-600 rounded-full animate-gradient-x bg-300%"></div>
                 </span>
@@ -103,13 +103,13 @@ const Home = () => {
               {/* Enhanced Subtitle */}
               <div className="space-y-3 mb-10">
                 <p className="text-xl lg:text-2xl text-muted-foreground font-body font-light leading-relaxed max-w-4xl mx-auto">
-                  הפלטפורמה המתקדמת ביותר להשוואת תעריפים והחלפת ספקי שירות
+                  אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
                 </p>
                 <p className="text-lg font-display font-semibold">
                   <span className="bg-gradient-to-l from-success via-emerald-600 to-green-600 bg-clip-text text-transparent">
-                    חסכו עד 45% בחשבונות החודשיים
+                    המשפחה הממוצעת חוסכת ₪2,400 בשנה
                   </span>
-                  {" "}עם טכנולוגיית AI מתקדמת
+                  {" "}עם השירות שלנו
                 </p>
               </div>
 
