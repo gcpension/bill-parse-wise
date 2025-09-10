@@ -169,10 +169,26 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Banner */}
+              {/* Banner */}
                 <div className="flex justify-center lg:justify-start">
                   <SimpleStepsBanner />
                 </div>
+              </div>
+
+              {/* Primary CTA - Directly under banner - Super enlarged */}
+              <div className="flex justify-center items-center mt-12">
+                <Link to="/analyze" className="group">
+                  <Button 
+                    size="lg" 
+                    className="px-16 py-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-3xl lg:text-4xl shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-500/30 hover:ring-emerald-500/50"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+                    <span className="relative flex items-center gap-6">
+                      <span className="drop-shadow-lg">בדקו כמה תחסכו עכשיו</span>
+                      <ArrowRight className="h-8 w-8 group-hover:translate-x-3 transition-transform duration-300 drop-shadow-lg" />
+                    </span>
+                  </Button>
+                </Link>
               </div>
 
               {/* Providers Badge - Enhanced */}
@@ -189,21 +205,6 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Primary CTA - Enlarged button */}
-              <div className="flex justify-center items-center mt-12">
-                <Link to="/analyze" className="group">
-                  <Button 
-                    size="lg" 
-                    className="px-12 py-6 bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 text-white font-bold text-2xl shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 border-0 relative overflow-hidden rounded-2xl"
-                  >
-                    <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-                    <span className="relative flex items-center gap-4">
-                      בדקו כמה תחסכו עכשיו
-                      <ArrowRight className="h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
-                    </span>
-                  </Button>
-                </Link>
-              </div>
             </div>
           </div>
         </div>
