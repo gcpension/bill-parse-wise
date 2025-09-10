@@ -40,32 +40,32 @@ export const ComparisonView = ({
 
       <CardContent className="p-8 relative z-10">
         {/* Enhanced Card Layout */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* Current Provider Card */}
           <div className="group relative">
             <div className="absolute inset-0 bg-gradient-to-br from-destructive/10 to-destructive/5 rounded-3xl transform rotate-1 group-hover:rotate-2 transition-transform duration-500 blur-sm"></div>
             <Card className="relative bg-gradient-to-br from-background/90 to-background/70 backdrop-blur-sm rounded-3xl border-destructive/30 shadow-xl group-hover:shadow-2xl transition-all duration-500">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="p-4 bg-gradient-to-br from-destructive/20 to-destructive/10 rounded-2xl shadow-lg">
-                    <TrendingDown className="h-8 w-8 text-destructive" />
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-gradient-to-br from-destructive/20 to-destructive/10 rounded-2xl shadow-lg">
+                    <TrendingDown className="h-6 w-6 text-destructive" />
                   </div>
                   <div>
-                    <h4 className="text-xl font-black text-destructive">המצב הנוכחי</h4>
-                    <p className="text-sm text-muted-foreground font-medium">{currentProvider}</p>
+                    <h4 className="text-lg font-black text-destructive">המצב הנוכחי</h4>
+                    <p className="text-xs text-muted-foreground font-medium">{currentProvider}</p>
                   </div>
                 </div>
                 
-                <div className="text-center p-6 bg-gradient-to-br from-destructive/10 to-destructive/5 rounded-2xl border border-destructive/20">
-                  <p className="text-sm text-destructive/70 mb-2 font-medium">תשלום חודשי נוכחי</p>
-                  <div className="text-4xl font-black text-destructive mb-1">
+                <div className="text-center p-4 bg-gradient-to-br from-destructive/10 to-destructive/5 rounded-2xl border border-destructive/20">
+                  <p className="text-xs text-destructive/70 mb-1 font-medium">מחיר נוכחי</p>
+                  <div className="text-5xl font-black text-destructive mb-0">
                     ₪{currentAmount.toLocaleString()}
                   </div>
                   <p className="text-xs text-destructive/60">לחודש</p>
                 </div>
                 
-                <div className="mt-4 text-center p-3 bg-destructive/5 rounded-xl">
-                  <p className="text-sm text-destructive/80 font-medium">💸 יקר מהנדרש</p>
+                <div className="mt-3 text-center p-2 bg-destructive/5 rounded-xl">
+                  <p className="text-xs text-destructive/80 font-medium">💸 יקר מהנדרש</p>
                 </div>
               </CardContent>
             </Card>
@@ -76,27 +76,27 @@ export const ComparisonView = ({
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-success/10 to-success/5 rounded-3xl transform -rotate-1 group-hover:-rotate-2 transition-transform duration-500 blur-sm"></div>
               <Card className="relative bg-gradient-to-br from-background/90 to-background/70 backdrop-blur-sm rounded-3xl border-success/30 shadow-xl group-hover:shadow-2xl transition-all duration-500">
-                <CardContent className="p-8">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="p-4 bg-gradient-to-br from-success/20 to-success/10 rounded-2xl shadow-lg">
-                      <TrendingUp className="h-8 w-8 text-success" />
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 bg-gradient-to-br from-success/20 to-success/10 rounded-2xl shadow-lg">
+                      <TrendingUp className="h-6 w-6 text-success" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-black text-success">הפתרון החכם</h4>
-                      <p className="text-sm text-muted-foreground font-medium">{recommendedPlan.providerName}</p>
+                      <h4 className="text-lg font-black text-success">הפתרון החכם</h4>
+                      <p className="text-xs text-muted-foreground font-medium">{recommendedPlan.providerName}</p>
                     </div>
                   </div>
                   
-                  <div className="text-center p-6 bg-gradient-to-br from-success/10 to-success/5 rounded-2xl border border-success/20">
-                    <p className="text-sm text-success/70 mb-2 font-medium">תשלום חודשי חדש</p>
-                    <div className="text-4xl font-black text-success mb-1">
+                  <div className="text-center p-4 bg-gradient-to-br from-success/10 to-success/5 rounded-2xl border border-success/20">
+                    <p className="text-xs text-success/70 mb-1 font-medium">מחיר חדש</p>
+                    <div className="text-5xl font-black text-success mb-0">
                       ₪{recommendedPlan.price.toLocaleString()}
                     </div>
                     <p className="text-xs text-success/60">לחודש</p>
                   </div>
                   
-                  <div className="mt-4 text-center">
-                    <div className="inline-block px-4 py-2 bg-gradient-to-r from-success/20 to-success/10 text-success text-sm font-bold rounded-2xl border border-success/20">
+                  <div className="mt-3 text-center">
+                    <div className="inline-block px-3 py-1 bg-gradient-to-r from-success/20 to-success/10 text-success text-xs font-bold rounded-2xl border border-success/20">
                       {recommendedPlan.name}
                     </div>
                   </div>
