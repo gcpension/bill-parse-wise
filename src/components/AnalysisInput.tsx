@@ -78,16 +78,16 @@ const categoryNames = {
 };
 
 const categoryColors = {
-  electricity: 'from-amber-100 to-orange-100 border-amber-200',
-  cellular: 'from-blue-100 to-cyan-100 border-blue-200', 
-  internet: 'from-purple-100 to-indigo-100 border-purple-200',
-  tv: 'from-green-100 to-emerald-100 border-green-200'
+  electricity: 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200',
+  cellular: 'bg-gradient-to-br from-blue-50 to-sky-50 border-blue-200',
+  internet: 'bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200',
+  tv: 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200'
 };
 
 const categoryAccentColors = {
-  electricity: 'text-amber-700',
+  electricity: 'text-orange-700',
   cellular: 'text-blue-700',
-  internet: 'text-purple-700', 
+  internet: 'text-purple-700',
   tv: 'text-green-700'
 };
 
@@ -291,7 +291,7 @@ export const AnalysisInput = ({
                   data.isActive 
                     ? hasError(key) 
                       ? 'border-destructive/50 bg-destructive/5'
-                      : `bg-gradient-to-br ${categoryColors[data.category]} border-2`
+                      : `${categoryColors[data.category]} border-2`
                     : 'border-border/30 bg-background hover:border-primary/20 cursor-pointer'
                 }`}
                 onClick={() => !data.isActive && onCategoryToggle(key)}
