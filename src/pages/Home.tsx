@@ -112,124 +112,107 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Enhanced Floating System Explanation Banner */}
-              <div className="mb-10">
-                <div className="relative max-w-5xl mx-auto">
-                  {/* Main floating card */}
-                  <div className="bg-gradient-to-br from-white/95 via-white/90 to-white/85 dark:from-card/95 dark:via-card/90 dark:to-card/85 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 dark:border-border/50 p-10 hover:shadow-3xl transition-all duration-500 animate-fade-in relative overflow-hidden">
-                    {/* Background decorative elements */}
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-full blur-xl"></div>
-                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-success/10 to-transparent rounded-full blur-xl"></div>
+              {/* Compact Colorful System Explanation Banner */}
+              <div className="mb-8">
+                <div className="relative max-w-4xl mx-auto">
+                  {/* Compact floating card */}
+                  <div className="bg-gradient-to-br from-white/95 via-pink-50/90 to-purple-50/85 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-gradient-to-r from-pink-200 via-purple-200 to-blue-200 dark:border-purple-500/30 p-6 hover:shadow-3xl transition-all duration-500 animate-fade-in relative overflow-hidden">
+                    {/* Colorful background decorations */}
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-pink-400/20 via-purple-400/20 to-blue-400/20 rounded-full blur-xl animate-pulse"></div>
+                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-green-400/20 via-teal-400/20 to-cyan-400/20 rounded-full blur-xl animate-pulse" style={{animationDelay: '1s'}}></div>
                     
-                    {/* Top badge */}
-                    <div className="flex justify-center mb-6 relative z-10">
-                      <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-success/20 via-emerald-500/20 to-success/20 rounded-full border border-success/30 backdrop-blur-sm">
-                        <div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
-                        <span className="text-success font-bold text-base">המערכת החכמה שתשנה לכם את החיים</span>
-                        <div className="w-3 h-3 bg-success rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
+                    {/* Colorful top badge */}
+                    <div className="flex justify-center mb-4 relative z-10">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-blue-500/20 rounded-full border-2 border-purple-300/50 backdrop-blur-sm animate-pulse-glow">
+                        <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full animate-ping"></div>
+                        <span className="text-purple-700 dark:text-purple-300 font-fredoka font-bold text-sm bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+                          המערכת החכמה שתשנה לכם את החיים ✨
+                        </span>
                       </div>
                     </div>
                     
-                    {/* Main content - vertical layout */}
+                    {/* Compact content */}
                     <div className="text-center relative z-10">
-                      <h3 className="text-3xl font-bold mb-6 bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
-                        מה בדיוק המערכת שלנו עושה עבורכם?
+                      <h3 className="text-xl font-fredoka font-bold mb-3 bg-gradient-to-r from-pink-600 via-purple-600 via-blue-600 to-teal-600 bg-clip-text text-transparent bg-300% animate-gradient-x">
+                        מה המערכת שלנו עושה? הכל פשוט!
                       </h3>
                       
-                      <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-                        במקום לבזבז שעות על השוואת מחירים ולהיתקע בשיחות שימור מעצבנות, האלגוריתם החכם שלנו עושה הכל עבורכם
+                      <p className="text-sm text-muted-foreground mb-5 max-w-2xl mx-auto font-comfortaa">
+                        במקום לבזבז זמן על השוואות מתישות - האלגוריתם החכם שלנו עושה הכל ומעביר אתכם אוטומטית
                       </p>
                       
-                      {/* Detailed step process - vertical */}
-                      <div className="space-y-8">
+                      {/* Compact colorful 3-step process */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         
                         {/* Step 1 */}
-                        <div className="flex flex-col items-center group">
-                          <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary-glow rounded-3xl flex items-center justify-center text-white font-bold text-2xl mb-4 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110 relative">
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary-glow rounded-3xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+                        <div className="group hover:scale-105 transition-all duration-300">
+                          <div className="w-12 h-12 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 rounded-2xl flex items-center justify-center text-white font-fredoka font-bold text-lg mx-auto mb-2 shadow-lg group-hover:shadow-xl relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-pink-400 to-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <span className="relative">1</span>
                           </div>
-                          <div className="max-w-2xl mx-auto">
-                            <h4 className="font-bold text-xl mb-3 text-primary">הזנת נתונים פשוטה וחכמה</h4>
-                            <p className="text-muted-foreground leading-relaxed">
-                              פשוט תבחרו את השירותים שמעניינים אתכם (חשמל, סלולר, אינטרנט, טלוויזיה) ותזינו את הסכומים החודשיים הנוכחיים שאתם משלמים. 
-                              <strong> המערכת תזהה אוטומטית אם יש לכם מקום לשיפור.</strong>
-                            </p>
-                          </div>
+                          <h4 className="font-fredoka font-bold text-sm mb-1 text-pink-700 dark:text-pink-300">הזינו נתונים</h4>
+                          <p className="text-muted-foreground text-xs font-comfortaa leading-relaxed">
+                            בחרו קטגוריות והזינו סכומים - <strong className="text-pink-600">המערכת תזהה הזדמנויות לחיסכון</strong>
+                          </p>
                         </div>
                         
-                        {/* Arrow down */}
-                        <div className="flex justify-center">
-                          <div className="w-1 h-12 bg-gradient-to-b from-primary/50 to-success/50 rounded-full relative">
-                            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-success rounded-full animate-bounce"></div>
-                          </div>
+                        {/* Colorful arrow */}
+                        <div className="hidden md:flex justify-center items-center">
+                          <div className="w-8 h-1 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 rounded-full animate-pulse"></div>
                         </div>
                         
                         {/* Step 2 */}
-                        <div className="flex flex-col items-center group">
-                          <div className="w-20 h-20 bg-gradient-to-br from-success to-emerald-600 rounded-3xl flex items-center justify-center text-white font-bold text-2xl mb-4 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110 relative">
-                            <div className="absolute inset-0 bg-gradient-to-br from-success to-emerald-600 rounded-3xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+                        <div className="group hover:scale-105 transition-all duration-300">
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center text-white font-fredoka font-bold text-lg mx-auto mb-2 shadow-lg group-hover:shadow-xl relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <span className="relative">2</span>
                           </div>
-                          <div className="max-w-2xl mx-auto">
-                            <h4 className="font-bold text-xl mb-3 text-success">ניתוח חכם של כל השוק</h4>
-                            <p className="text-muted-foreground leading-relaxed">
-                              האלגוריתם שלנו סורק <strong>אלפי תעריפים מכל הספקים בישראל</strong> בזמן אמת, משווה מבצעים נסתרים, בודק קנסות יציאה, 
-                              ומחשב את החיסכון האמיתי שלכם. <strong>כולל ההוצאות הנסתרות שהספקים לא מספרים לכם עליהן!</strong>
-                            </p>
-                          </div>
+                          <h4 className="font-fredoka font-bold text-sm mb-1 text-blue-700 dark:text-blue-300">AI סורק ומנתח</h4>
+                          <p className="text-muted-foreground text-xs font-comfortaa leading-relaxed">
+                            <strong className="text-blue-600">אלפי תעריפים נסרקים</strong> ומושווים בזמן אמת כולל עמלות נסתרות
+                          </p>
                         </div>
                         
-                        {/* Arrow down */}
-                        <div className="flex justify-center">
-                          <div className="w-1 h-12 bg-gradient-to-b from-success/50 to-purple-500/50 rounded-full relative">
-                            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-purple-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                          </div>
+                        {/* Colorful arrow */}
+                        <div className="hidden md:flex justify-center items-center">
+                          <div className="w-8 h-1 bg-gradient-to-r from-blue-400 via-teal-400 to-green-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
                         </div>
                         
                         {/* Step 3 */}
-                        <div className="flex flex-col items-center group">
-                          <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-3xl flex items-center justify-center text-white font-bold text-2xl mb-4 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110 relative">
-                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-3xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+                        <div className="group hover:scale-105 transition-all duration-300">
+                          <div className="w-12 h-12 bg-gradient-to-br from-green-500 via-teal-500 to-emerald-500 rounded-2xl flex items-center justify-center text-white font-fredoka font-bold text-lg mx-auto mb-2 shadow-lg group-hover:shadow-xl relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <span className="relative">3</span>
                           </div>
-                          <div className="max-w-2xl mx-auto">
-                            <h4 className="font-bold text-xl mb-3 text-purple-600">מעבר מלא ללא כאב ראש</h4>
-                            <p className="text-muted-foreground leading-relaxed">
-                              רק חתימה דיגיטלית אחת ו<strong>אנחנו עושים הכל עבורכם:</strong> מתקשרים לספק החדש, סוגרים את הישן, מטפלים בכל הניירת והבירוקרטיה.
-                              <strong> אתם פשוט יושבים בבית ונהנים מהחיסכון!</strong>
-                            </p>
-                          </div>
+                          <h4 className="font-fredoka font-bold text-sm mb-1 text-green-700 dark:text-green-300">מעבר אוטומטי</h4>
+                          <p className="text-muted-foreground text-xs font-comfortaa leading-relaxed">
+                            <strong className="text-green-600">חתימה דיגיטלית אחת</strong> ואנחנו מטפלים בכל הביטולים והחיבורים
+                          </p>
                         </div>
                       </div>
                       
-                      {/* Bottom highlight with stats */}
-                      <div className="mt-8 p-6 bg-gradient-to-r from-success/15 via-emerald-500/10 to-success/15 rounded-2xl border-2 border-success/30 backdrop-blur-sm">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                          <div>
-                            <div className="text-2xl font-bold text-success mb-1">35%</div>
-                            <div className="text-success/80 text-sm">ממוצע חיסכון</div>
+                      {/* Colorful bottom stats */}
+                      <div className="mt-4 p-3 bg-gradient-to-r from-green-100/80 via-teal-100/80 to-blue-100/80 dark:from-green-900/20 dark:via-teal-900/20 dark:to-blue-900/20 rounded-xl border border-green-200/50 dark:border-green-700/30">
+                        <div className="flex justify-center gap-6 text-xs font-comfortaa font-bold">
+                          <div className="text-green-600 dark:text-green-400">
+                            <span className="text-lg">35%</span><br/>חיסכון ממוצע
                           </div>
-                          <div>
-                            <div className="text-2xl font-bold text-success mb-1">0₪</div>
-                            <div className="text-success/80 text-sm">עמלות ודמי טיפול</div>
+                          <div className="text-teal-600 dark:text-teal-400">
+                            <span className="text-lg">0₪</span><br/>עמלות
                           </div>
-                          <div>
-                            <div className="text-2xl font-bold text-success mb-1">7 ימים</div>
-                            <div className="text-success/80 text-sm">זמן מעבר ממוצע</div>
+                          <div className="text-blue-600 dark:text-blue-400">
+                            <span className="text-lg">7 ימים</span><br/>מעבר מהיר
                           </div>
                         </div>
-                        <p className="text-success font-bold text-center mt-4">
-                          ✨ מעבר חלק, שקוף ומהיר עם מעקב בזמן אמת
-                        </p>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Enhanced floating decorative elements */}
-                  <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-full opacity-70 animate-bounce"></div>
-                  <div className="absolute -bottom-6 -left-6 w-8 h-8 bg-gradient-to-br from-success to-emerald-600 rounded-full opacity-70 animate-bounce" style={{animationDelay: '1s'}}></div>
-                  <div className="absolute top-1/2 -right-4 w-6 h-6 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full opacity-60 animate-bounce" style={{animationDelay: '1.5s'}}></div>
+                  {/* Colorful floating decorations */}
+                  <div className="absolute -top-3 -right-3 w-6 h-6 bg-gradient-to-br from-pink-400 to-rose-400 rounded-full opacity-80 animate-bounce"></div>
+                  <div className="absolute -bottom-3 -left-3 w-5 h-5 bg-gradient-to-br from-green-400 to-teal-400 rounded-full opacity-80 animate-bounce" style={{animationDelay: '0.5s'}}></div>
+                  <div className="absolute top-1/3 -right-2 w-4 h-4 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full opacity-70 animate-bounce" style={{animationDelay: '1s'}}></div>
+                  <div className="absolute bottom-1/3 -left-2 w-3 h-3 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full opacity-70 animate-bounce" style={{animationDelay: '1.5s'}}></div>
                 </div>
               </div>
 

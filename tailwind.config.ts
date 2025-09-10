@@ -24,8 +24,10 @@ export default {
 				'ibm-plex': ['IBM Plex Sans Hebrew', 'sans-serif'],
 				'assistant': ['Assistant', 'sans-serif'],
 				'rubik': ['Rubik', 'sans-serif'], 
+				'fredoka': ['Fredoka', 'sans-serif'],
+				'comfortaa': ['Comfortaa', 'sans-serif'],
 				'sans': ['Assistant', 'Heebo', 'Inter', 'IBM Plex Sans Hebrew', 'ui-sans-serif', 'system-ui'],
-				'display': ['Rubik', 'Heebo', 'Assistant', 'sans-serif'],
+				'display': ['Fredoka', 'Comfortaa', 'Rubik', 'Heebo', 'Assistant', 'sans-serif'],
 				'body': ['Assistant', 'Inter', 'IBM Plex Sans Hebrew', 'sans-serif'],
 			},
 			colors: {
