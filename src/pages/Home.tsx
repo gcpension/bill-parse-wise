@@ -112,70 +112,124 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Floating Info Banner - Revolutionary System Explanation */}
+              {/* Enhanced Floating System Explanation Banner */}
               <div className="mb-10">
-                <div className="relative max-w-4xl mx-auto">
+                <div className="relative max-w-5xl mx-auto">
                   {/* Main floating card */}
-                  <div className="bg-gradient-to-r from-white/95 to-white/85 dark:from-card/95 dark:to-card/85 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 dark:border-border/50 p-8 hover:shadow-3xl transition-all duration-500 animate-fade-in">
+                  <div className="bg-gradient-to-br from-white/95 via-white/90 to-white/85 dark:from-card/95 dark:via-card/90 dark:to-card/85 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 dark:border-border/50 p-10 hover:shadow-3xl transition-all duration-500 animate-fade-in relative overflow-hidden">
+                    {/* Background decorative elements */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-full blur-xl"></div>
+                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-success/10 to-transparent rounded-full blur-xl"></div>
+                    
                     {/* Top badge */}
-                    <div className="flex justify-center mb-4">
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-success/20 to-emerald-500/20 rounded-full border border-success/30">
-                        <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-                        <span className="text-success font-bold text-sm">מערכת חכמה ואוטומטית</span>
+                    <div className="flex justify-center mb-6 relative z-10">
+                      <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-success/20 via-emerald-500/20 to-success/20 rounded-full border border-success/30 backdrop-blur-sm">
+                        <div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
+                        <span className="text-success font-bold text-base">המערכת החכמה שתשנה לכם את החיים</span>
+                        <div className="w-3 h-3 bg-success rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
                       </div>
                     </div>
                     
-                    {/* Main content */}
-                    <div className="text-center">
-                      <h3 className="text-2xl font-bold mb-4 bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        איך זה עובד? פשוט מאוד!
+                    {/* Main content - vertical layout */}
+                    <div className="text-center relative z-10">
+                      <h3 className="text-3xl font-bold mb-6 bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
+                        מה בדיוק המערכת שלנו עושה עבורכם?
                       </h3>
                       
-                      {/* 3 step process */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                        <div className="group hover:scale-105 transition-all duration-300">
-                          <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-glow rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg group-hover:shadow-xl">
-                            1
+                      <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+                        במקום לבזבז שעות על השוואת מחירים ולהיתקע בשיחות שימור מעצבנות, האלגוריתם החכם שלנו עושה הכל עבורכם
+                      </p>
+                      
+                      {/* Detailed step process - vertical */}
+                      <div className="space-y-8">
+                        
+                        {/* Step 1 */}
+                        <div className="flex flex-col items-center group">
+                          <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary-glow rounded-3xl flex items-center justify-center text-white font-bold text-2xl mb-4 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110 relative">
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary-glow rounded-3xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+                            <span className="relative">1</span>
                           </div>
-                          <h4 className="font-bold text-lg mb-2">הזינו נתונים</h4>
-                          <p className="text-muted-foreground text-sm">
-                            פשוט בחרו קטגוריות והזינו את הסכומים הנוכחיים שלכם
-                          </p>
+                          <div className="max-w-2xl mx-auto">
+                            <h4 className="font-bold text-xl mb-3 text-primary">הזנת נתונים פשוטה וחכמה</h4>
+                            <p className="text-muted-foreground leading-relaxed">
+                              פשוט תבחרו את השירותים שמעניינים אתכם (חשמל, סלולר, אינטרנט, טלוויזיה) ותזינו את הסכומים החודשיים הנוכחיים שאתם משלמים. 
+                              <strong> המערכת תזהה אוטומטית אם יש לכם מקום לשיפור.</strong>
+                            </p>
+                          </div>
                         </div>
                         
-                        <div className="group hover:scale-105 transition-all duration-300">
-                          <div className="w-16 h-16 bg-gradient-to-br from-success to-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg group-hover:shadow-xl">
-                            2
+                        {/* Arrow down */}
+                        <div className="flex justify-center">
+                          <div className="w-1 h-12 bg-gradient-to-b from-primary/50 to-success/50 rounded-full relative">
+                            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-success rounded-full animate-bounce"></div>
                           </div>
-                          <h4 className="font-bold text-lg mb-2">AI מנתח</h4>
-                          <p className="text-muted-foreground text-sm">
-                            האלגוריתם שלנו משווה אלפי תעריפים ומוצא לכם את הכי משתלם
-                          </p>
                         </div>
                         
-                        <div className="group hover:scale-105 transition-all duration-300">
-                          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg group-hover:shadow-xl">
-                            3
+                        {/* Step 2 */}
+                        <div className="flex flex-col items-center group">
+                          <div className="w-20 h-20 bg-gradient-to-br from-success to-emerald-600 rounded-3xl flex items-center justify-center text-white font-bold text-2xl mb-4 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110 relative">
+                            <div className="absolute inset-0 bg-gradient-to-br from-success to-emerald-600 rounded-3xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+                            <span className="relative">2</span>
                           </div>
-                          <h4 className="font-bold text-lg mb-2">אנחנו מעבירים</h4>
-                          <p className="text-muted-foreground text-sm">
-                            חתימה דיגיטלית ואנחנו מטפלים בכל השאר - ללא כאב ראש!
-                          </p>
+                          <div className="max-w-2xl mx-auto">
+                            <h4 className="font-bold text-xl mb-3 text-success">ניתוח חכם של כל השוק</h4>
+                            <p className="text-muted-foreground leading-relaxed">
+                              האלגוריתם שלנו סורק <strong>אלפי תעריפים מכל הספקים בישראל</strong> בזמן אמת, משווה מבצעים נסתרים, בודק קנסות יציאה, 
+                              ומחשב את החיסכון האמיתי שלכם. <strong>כולל ההוצאות הנסתרות שהספקים לא מספרים לכם עליהן!</strong>
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* Arrow down */}
+                        <div className="flex justify-center">
+                          <div className="w-1 h-12 bg-gradient-to-b from-success/50 to-purple-500/50 rounded-full relative">
+                            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-purple-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                          </div>
+                        </div>
+                        
+                        {/* Step 3 */}
+                        <div className="flex flex-col items-center group">
+                          <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-3xl flex items-center justify-center text-white font-bold text-2xl mb-4 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110 relative">
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-3xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+                            <span className="relative">3</span>
+                          </div>
+                          <div className="max-w-2xl mx-auto">
+                            <h4 className="font-bold text-xl mb-3 text-purple-600">מעבר מלא ללא כאב ראש</h4>
+                            <p className="text-muted-foreground leading-relaxed">
+                              רק חתימה דיגיטלית אחת ו<strong>אנחנו עושים הכל עבורכם:</strong> מתקשרים לספק החדש, סוגרים את הישן, מטפלים בכל הניירת והבירוקרטיה.
+                              <strong> אתם פשוט יושבים בבית ונהנים מהחיסכון!</strong>
+                            </p>
+                          </div>
                         </div>
                       </div>
                       
-                      {/* Bottom highlight */}
-                      <div className="mt-6 p-4 bg-gradient-to-r from-success/10 to-emerald-500/10 rounded-xl border border-success/20">
-                        <p className="text-success font-bold text-sm">
-                          ✨ ממוצע חיסכון של 35% • ללא עמלות • תמיכה מלאה
+                      {/* Bottom highlight with stats */}
+                      <div className="mt-8 p-6 bg-gradient-to-r from-success/15 via-emerald-500/10 to-success/15 rounded-2xl border-2 border-success/30 backdrop-blur-sm">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                          <div>
+                            <div className="text-2xl font-bold text-success mb-1">35%</div>
+                            <div className="text-success/80 text-sm">ממוצע חיסכון</div>
+                          </div>
+                          <div>
+                            <div className="text-2xl font-bold text-success mb-1">0₪</div>
+                            <div className="text-success/80 text-sm">עמלות ודמי טיפול</div>
+                          </div>
+                          <div>
+                            <div className="text-2xl font-bold text-success mb-1">7 ימים</div>
+                            <div className="text-success/80 text-sm">זמן מעבר ממוצע</div>
+                          </div>
+                        </div>
+                        <p className="text-success font-bold text-center mt-4">
+                          ✨ מעבר חלק, שקוף ומהיר עם מעקב בזמן אמת
                         </p>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Floating decorative elements */}
-                  <div className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-primary to-primary-glow rounded-full opacity-70 animate-bounce"></div>
-                  <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-br from-success to-emerald-600 rounded-full opacity-70 animate-bounce" style={{animationDelay: '1s'}}></div>
+                  {/* Enhanced floating decorative elements */}
+                  <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-full opacity-70 animate-bounce"></div>
+                  <div className="absolute -bottom-6 -left-6 w-8 h-8 bg-gradient-to-br from-success to-emerald-600 rounded-full opacity-70 animate-bounce" style={{animationDelay: '1s'}}></div>
+                  <div className="absolute top-1/2 -right-4 w-6 h-6 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full opacity-60 animate-bounce" style={{animationDelay: '1.5s'}}></div>
                 </div>
               </div>
 
