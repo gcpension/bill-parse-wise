@@ -130,29 +130,17 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Primary CTAs - Enhanced */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
+              {/* Primary CTA - Single button */}
+              <div className="flex justify-center items-center mt-12">
                 <Link to="/analyze" className="group">
                   <Button 
                     size="lg" 
-                    className="px-8 py-4 bg-gradient-to-r from-primary via-primary-glow to-success hover:from-primary-glow hover:via-success hover:to-primary text-white font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden"
+                    className="px-8 py-4 bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 text-white font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden"
                   >
                     <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
                     <span className="relative flex items-center gap-3">
                       בדקו כמה תחסכו עכשיו
                       <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-                    </span>
-                  </Button>
-                </Link>
-                <Link to="/forms" className="group">
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="px-8 py-4 bg-white/80 backdrop-blur-sm border-2 border-primary/30 text-primary hover:bg-primary hover:text-white font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-                  >
-                    <span className="relative flex items-center gap-3">
-                      בצעו מעבר מהיר
-                      <Zap className="h-5 w-5 group-hover:rotate-12 transition-transform duration-300" />
                     </span>
                   </Button>
                 </Link>
@@ -209,42 +197,6 @@ const Home = () => {
                       <p className="text-muted-foreground leading-relaxed font-body text-sm">{tip.description}</p>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-display font-bold mb-4">
-                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  שאלות נפוצות
-                </span>
-              </h2>
-            </div>
-
-            <div className="space-y-4">
-              {[{
-                q: "האם השירות באמת חינם?",
-                a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
-              }, {
-                q: "כמה זמן לוקח לקבל תוצאות?",
-                a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
-              }, {
-                q: "מה אם אני כבר בהתקשרות?",
-                a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
-              }, {
-                q: "האם יש ביטול אוטומטי מהספק הישן?",
-                a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
-              }].map((faq, index) => (
-                <div key={index} className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                  <h3 className="font-display font-semibold text-lg mb-3 text-primary">{faq.q}</h3>
-                  <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
                 </div>
               ))}
             </div>
@@ -332,6 +284,49 @@ const Home = () => {
                 <span className="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-comfortaa">✓ ללא התחייבות</span>
                 <span className="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-comfortaa">✓ תוצאות מיידיות</span>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section - Moved to bottom */}
+      <section className="py-16 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-display font-bold mb-4">
+                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  שאלות נפוצות
+                </span>
+              </h2>
+              <p className="text-muted-foreground">תשובות לשאלות הנפוצות ביותר שאנחנו מקבלים</p>
+            </div>
+
+            <div className="space-y-4">
+              {[{
+                q: "האם השירות באמת חינם?",
+                a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
+              }, {
+                q: "כמה זמן לוקח לקבל תוצאות?",
+                a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
+              }, {
+                q: "מה אם אני כבר בהתקשרות?",
+                a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
+              }, {
+                q: "האם יש ביטול אוטומטי מהספק הישן?",
+                a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
+              }, {
+                q: "האם אני מחויב לעבור לספק שאתם ממליצים?",
+                a: "בהחלט לא! אתם מקבלים את המלצותינו ויכולים לבחור בעצמכם. אם תחליטו לא לעבור - זה בסדר גמור."
+              }, {
+                q: "איך אתם מרוויחים כסף?",
+                a: "אנחנו מקבלים עמלה מהספק החדש רק אם אתם בוחרים לעבור אליו. לכן האינטרס שלנו הוא למצוא לכם באמת את הדיל הטוב ביותר."
+              }].map((faq, index) => (
+                <div key={index} className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-slate-600/50 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                  <h3 className="font-display font-semibold text-lg mb-3 text-primary">{faq.q}</h3>
+                  <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
