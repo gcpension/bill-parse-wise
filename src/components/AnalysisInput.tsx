@@ -147,8 +147,8 @@ export const AnalysisInput = ({
     decimals: 0 
   });
 
-  // Form validation
-  const { errors, isValid, validateField, hasError, getError } = useFormValidation(categoryData);
+  // Form validation with better logic
+  const { errors, isValid, validateField, validateAll, hasError, getError } = useFormValidation(categoryData);
   
   const getActiveCategoriesCount = () => {
     return Object.values(categoryData).filter(cat => cat.isActive).length;
@@ -219,7 +219,8 @@ export const AnalysisInput = ({
       return;
     }
 
-    if (!isValid) {
+    const isFormValid = validateAll();
+    if (!isFormValid) {
       enhancedToast.warning({
         title: 'יש שגיאות בנתונים',
         description: 'אנא תקן את השגיאות המסומנות ונסה שוב',
@@ -554,31 +555,11 @@ export const AnalysisInput = ({
       {/* Enhanced Action Section */}
       <div className="text-center space-y-4">
         {getActiveCategoriesCount() > 0 && (
-          <div className="flex flex-col items-center gap-3">
-            <div className="flex justify-center gap-2 flex-wrap">
-              <Badge variant="secondary" className="px-3 py-1">
-                <Target className="h-3 w-3 ml-1" />
-                {getActiveCategoriesCount()} תחומים נבחרו
-              </Badge>
-            </div>
-            {totalPotentialSavings > 0 && (
-              <div className="bg-gradient-to-r from-success/20 to-success/10 border-2 border-success/30 rounded-xl p-4 max-w-sm">
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <div className="p-2 bg-success/20 rounded-full">
-                      <TrendingUp className="h-5 w-5 text-success" />
-                    </div>
-                    <span className="text-success font-bold text-lg">
-                      חיסכון כולל צפוי
-                    </span>
-                  </div>
-                  <div className="text-success font-bold text-3xl mb-1">
-                    {formatCurrency(animatedSavings)}
-                  </div>
-                  <div className="text-success/70 text-sm">לחודש</div>
-                </div>
-              </div>
-            )}
+          <div className="flex justify-center gap-2 flex-wrap">
+            <Badge variant="secondary" className="px-3 py-1">
+              <Target className="h-3 w-3 ml-1" />
+              {getActiveCategoriesCount()} תחומים נבחרו
+            </Badge>
           </div>
         )}
 

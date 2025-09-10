@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
-import InteractiveStepsBanner from '@/components/marketing/InteractiveStepsBanner';
+import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -113,8 +113,8 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Interactive Steps Banner */}
-              <InteractiveStepsBanner />
+              {/* Simple Steps Banner */}
+              <SimpleStepsBanner />
 
               {/* Providers Badge - Enhanced */}
               <div className="text-center">

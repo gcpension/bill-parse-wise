@@ -131,15 +131,13 @@ import { useState, useEffect } from 'react';
 
 export const useFormValidation = (categoryData: Record<string, any>) => {
   const [errors, setErrors] = useState<Record<string, string[]>>({});
-  const [isValid, setIsValid] = useState(false);
-
-  useEffect(() => {
-    const validation = validateForm(categoryData);
-    setErrors(validation.errors);
-    setIsValid(validation.isValid);
-  }, [categoryData]);
+  const [isValid, setIsValid] = useState(true); // Start as valid
+  const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
 
   const validateField = (category: string, field: string, value: string) => {
+    const fieldKey = `${category}-${field}`;
+    setTouchedFields(prev => new Set(prev).add(fieldKey));
+    
     let fieldError: string | null = null;
 
     if (field === 'monthlyAmount') {
@@ -156,11 +154,41 @@ export const useFormValidation = (categoryData: Record<string, any>) => {
     return fieldError === null;
   };
 
+  const validateAll = () => {
+    const validation = validateForm(categoryData);
+    setErrors(validation.errors);
+    setIsValid(validation.isValid);
+    return validation.isValid;
+  };
+
+  // Only validate touched fields or active categories with data
+  useEffect(() => {
+    const activeCategories = Object.values(categoryData).filter((cat: any) => cat.isActive);
+    const hasData = activeCategories.some((cat: any) => cat.monthlyAmount || cat.currentProvider);
+    
+    if (hasData || touchedFields.size > 0) {
+      const validation = validateForm(categoryData);
+      setErrors(validation.errors);
+      setIsValid(validation.isValid);
+    }
+  }, [categoryData, touchedFields]);
+
   return {
     errors,
     isValid,
     validateField,
-    hasError: (category: string) => errors[category] && errors[category].length > 0,
-    getError: (category: string) => errors[category]?.[0] || null,
+    validateAll,
+    hasError: (category: string) => {
+      const categoryData_ = categoryData[category];
+      const hasTouchedField = touchedFields.has(`${category}-monthlyAmount`) || touchedFields.has(`${category}-currentProvider`);
+      const hasData = categoryData_?.monthlyAmount || categoryData_?.currentProvider;
+      return (hasTouchedField || hasData) && errors[category] && errors[category].length > 0;
+    },
+    getError: (category: string) => {
+      const categoryData_ = categoryData[category];
+      const hasTouchedField = touchedFields.has(`${category}-monthlyAmount`) || touchedFields.has(`${category}-currentProvider`);
+      const hasData = categoryData_?.monthlyAmount || categoryData_?.currentProvider;
+      return (hasTouchedField || hasData) && errors[category]?.[0] || null;
+    },
   };
 };
