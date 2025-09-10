@@ -62,38 +62,63 @@ export const getChecklistItems = (category: ServiceCategory, customerType: Custo
     {
       id: 'personal-details',
       text: customerType === 'private' 
-        ? 'פרטי זהות מלאים: שם מלא, ת.ז., טלפון נייד ואימייל'
-        : 'פרטי החברה והמורשה בחתימה: שם החברה, ח.פ., שם המורשה, ת.ז. המורשה, תפקיד ואימייל',
+        ? 'פרטי זהות מלאים ותקינים: שם מלא כמו בת"ז, מספר ת"ז 9 ספרות, טלפון נייד פעיל ואימייל תקין'
+        : 'פרטי התאגיד: שם החברה מדויק, ח.פ./ח.צ., פרטי המורשה בחתימה (שם מלא, ת"ז, תפקיד), אימייל תקין',
       required: true
     },
     {
       id: 'documents',
       text: customerType === 'private' 
-        ? 'צילום תעודת זהות הועלה'
-        : 'נסח חברה ותעודת זהות המורשה בחתימה הועלו',
+        ? 'מסמכים הועלו: צילום ברור של ת"ז (שני צדדים), תמונה או PDF איכותי'
+        : 'מסמכים הועלו: נסח חברה עדכני (עד 3 חודשים), צילום ת"ז המורשה בחתימה (שני צדדים)',
       required: true
     },
     {
       id: 'power-of-attorney',
-      text: 'תאריך פקיעת ייפוי הכוח מולא (תאריך עתידי)',
+      text: 'תוקף ייפוי כוח: תאריך עתידי (מומלץ לפחות 6-12 חודשים מהיום)',
       required: true
     }
   ];
 
-  // Category-specific items - מזהי שירות מולאו
+  // Category-specific items - כל מה שצריך באמת לכל סקטור
   const categoryItems: Record<ServiceCategory, Record<CustomerType, Array<{ id: string; text: string; required: boolean }>>> = {
     electricity: {
       private: [
         {
+          id: 'current-provider',
+          text: 'ספק חשמל נוכחי נבחר מהרשימה (או צוין כ"אחר")',
+          required: true
+        },
+        {
           id: 'service-identifiers',
-          text: '✅ מזהי שירות מולאו: חוזה/מונה + כתובת',
+          text: 'מזהה השירות: מספר חוזה או מספר מונה (לפחות אחד מהם חובה)',
+          required: true
+        },
+        {
+          id: 'consumption-address',
+          text: 'כתובת אתר הצריכה המדויקת (רחוב, מספר בית, עיר)',
+          required: true
+        },
+        {
+          id: 'target-plan',
+          text: 'מסלול חשמל נבחר: ספק יעד וסוג תעריף מוגדרים',
           required: true
         }
       ],
       business: [
         {
+          id: 'current-provider',
+          text: 'ספק חשמל נוכחי נבחר מהרשימה',
+          required: true
+        },
+        {
           id: 'service-identifiers',
-          text: '✅ מזהי שירות מולאו: חוזה/מונה + כתובת',
+          text: 'מזהי השירותים: מספרי חוזה/מונה לכל נקודת צריכה',
+          required: true
+        },
+        {
+          id: 'consumption-addresses',
+          text: 'כתובות אתרי הצריכה המדויקות לכל נקודה',
           required: true
         }
       ]
@@ -101,20 +126,45 @@ export const getChecklistItems = (category: ServiceCategory, customerType: Custo
     cellular: {
       private: [
         {
-          id: 'service-identifiers',
-          text: '✅ מזהי שירות מולאו: מספרים בפורמט 05X-XXXXXXX',
+          id: 'current-provider',
+          text: 'ספק סלולרי נוכחי נבחר מהרשימה',
+          required: true
+        },
+        {
+          id: 'phone-numbers',
+          text: 'מספרי הקווים להעברה: כל מספר בפורמט 05X-XXXXXXX (תקין ופעיל)',
           required: true
         },
         {
           id: 'otp-confirmation',
-          text: '✅ אימותים ייחודיים: סלולר — תיבת "אשר/י OTP" מסומנת',
+          text: 'אימות OTP: אישרת שיש לך גישה לכרטיסי ה-SIM הנוכחיים לקבלת קודי אימות',
           required: true
+        },
+        {
+          id: 'last-bill-optional',
+          text: 'חשבונית אחרונה (רצוי): עוזרת לזיהוי המנוי ומזרזת את התהליך',
+          required: false
+        },
+        {
+          id: 'hot-mobile-note',
+          text: 'הערה חשובה: אם אתה לקוח HOT Mobile - תזדקק להתקשר למוקד לאחר קבלת SIM חדש',
+          required: false
         }
       ],
       business: [
         {
-          id: 'service-identifiers', 
-          text: '✅ מזהי שירות מולאו: מספרים בפורמט 05X-XXXXXXX',
+          id: 'current-provider',
+          text: 'ספק סלולרי נוכחי נבחר מהרשימה',
+          required: true
+        },
+        {
+          id: 'phone-numbers',
+          text: 'מספרי הקווים להעברה: רשימה מלאה עם מספרי הקווים העסקיים',
+          required: true
+        },
+        {
+          id: 'account-manager',
+          text: 'איש קשר מטעם החברה המוסמך לאשר את המעבר',
           required: true
         }
       ]
@@ -122,15 +172,50 @@ export const getChecklistItems = (category: ServiceCategory, customerType: Custo
     internet: {
       private: [
         {
-          id: 'service-identifiers',
-          text: '✅ מזהי שירות מולאו: תשתית + ISP + קו/ONT (ובאנדל — 2 בקשות)',
+          id: 'infrastructure-provider',
+          text: 'ספק תשתית נוכחי: בזק, HOT, סיב פרטי או אחר - חובה לדעת מי הספק',
+          required: true
+        },
+        {
+          id: 'current-isp',
+          text: 'ספק אינטרנט (ISP) נוכחי: החברה שמספקת את שירות האינטרנט',
+          required: true
+        },
+        {
+          id: 'line-identifier',
+          text: 'מזהה הקו: מספר מנוי/קו/ONT/מודם - הדרך לזהות את החיבור שלך',
+          required: true
+        },
+        {
+          id: 'bundle-service-note',
+          text: 'הערת חבילה: אם התשתית וה-ISP באותה חברה - יידרשו 2 בקשות נפרדות',
+          required: false
+        },
+        {
+          id: 'installation-access',
+          text: 'גישה לטכנאי: וידוא שיש גישה פיזית לציוד ולנקודות החיבור',
           required: true
         }
       ],
       business: [
         {
-          id: 'service-identifiers',
-          text: '✅ מזהי שירות מולאו: תשתית + ISP + קו/ONT (ובאנדל — 2 בקשות)',
+          id: 'infrastructure-provider',
+          text: 'ספק תשתית נוכחי לכל אתר',
+          required: true
+        },
+        {
+          id: 'current-isp',
+          text: 'ספק אינטרנט נוכחי לכל אתר',
+          required: true
+        },
+        {
+          id: 'line-identifiers',
+          text: 'מזהי קווים: רשימה מלאה של מספרי מנוי/ONT לכל אתר',
+          required: true
+        },
+        {
+          id: 'technical-contact',
+          text: 'איש קשר טכני: מי שיתאם עם הטכנאים ויאשר את ההתקנות',
           required: true
         }
       ]
@@ -138,26 +223,61 @@ export const getChecklistItems = (category: ServiceCategory, customerType: Custo
     tv: {
       private: [
         {
-          id: 'service-identifiers',
-          text: '✅ מזהי שירות מולאו: מס׳ מנוי + אופן החזרת ציוד',
+          id: 'current-provider',
+          text: 'ספק טלוויזיה נוכחי: YES, HOT, סלקום TV, פרטנר TV או אחר',
+          required: true
+        },
+        {
+          id: 'subscription-number',
+          text: 'מספר מנוי טלוויזיה: מופיע בחשבונית או באפליקציית הספק',
+          required: true
+        },
+        {
+          id: 'equipment-return',
+          text: 'החזרת ציוד: תיאום מראש איך ומתי תחזיר את הממירים/הרסיברים',
+          required: true
+        },
+        {
+          id: 'installation-scheduling',
+          text: 'תיאום התקנה: זמינות לקבלת טכנאי להתקנת הציוד החדש',
           required: true
         }
       ],
       business: [
         {
-          id: 'service-identifiers',
-          text: '✅ מזהי שירות מולאו: מס׳ מנוי + אופן החזרת ציוד',
+          id: 'current-provider',
+          text: 'ספק טלוויזיה נוכחי לכל אתר',
+          required: true
+        },
+        {
+          id: 'subscription-numbers',
+          text: 'מספרי מנוי: רשימה מלאה לכל אתר/חדר ישיבות',
+          required: true
+        },
+        {
+          id: 'equipment-logistics',
+          text: 'לוגיסטיקת ציוד: תיאום החזרה ואיסוף ציוד ישן והתקנת חדש',
           required: true
         }
       ]
     }
   };
 
-  // Final items for all forms
+  // Final verification items
   const finalItems = [
     {
+      id: 'terms-privacy',
+      text: 'הסכמות: אישרת הסכמה לתנאי השימוש ולמדיניות הפרטיות',
+      required: true
+    },
+    {
+      id: 'information-accuracy',
+      text: 'דיוק המידע: בדקת שכל הפרטים שמילאת נכונים ומעודכנים',
+      required: true
+    },
+    {
       id: 'final-review',
-      text: '✅ סקירה + חתימה דיגיטלית הושלמו',
+      text: 'סקירה אחרונה: עברת על כל הפרטים וודאת שהכול מושלם לפני השליחה',
       required: true
     }
   ];
