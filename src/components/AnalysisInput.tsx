@@ -503,21 +503,42 @@ export const AnalysisInput = ({
                       </div>
                     </div>
 
-                    {/* Compact Feedback */}
+                    {/* Enhanced Compact Feedback */}
                     {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && !hasError(key) && (
-                      <div className="p-3 bg-muted/50 rounded-lg border">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-success rounded-full"></div>
-                          <p className="text-sm font-medium">
-                            מוכן לבדיקה - {formatCurrency(parseFloat(data.monthlyAmount))} בחודש
-                          </p>
+                      <div className="p-4 bg-gradient-to-r from-muted/40 to-muted/20 rounded-xl border-2 border-success/20">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                            <p className="text-sm font-semibold text-foreground">
+                              מוכן לבדיקה
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xs text-muted-foreground mb-1">תשלום נוכחי</div>
+                            <div className="text-lg font-bold text-foreground">
+                              {formatCurrency(parseFloat(data.monthlyAmount))}
+                            </div>
+                          </div>
                         </div>
+                        
                         {savings > 0 && (
-                          <div className="mt-2 flex items-center gap-2">
-                            <TrendingUp className="h-4 w-4 text-success" />
-                            <span className="text-success font-medium text-sm">
-                              חיסכון אפשרי: {formatCurrency(savings)} לחודש
-                            </span>
+                          <div className="mt-3 p-3 bg-success/10 rounded-lg border border-success/20">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <div className="p-1 bg-success/20 rounded-full">
+                                  <TrendingUp className="h-4 w-4 text-success" />
+                                </div>
+                                <span className="text-success font-bold text-sm">
+                                  חיסכון אפשרי
+                                </span>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-success font-bold text-xl">
+                                  {formatCurrency(savings)}
+                                </div>
+                                <div className="text-success/70 text-xs">לחודש</div>
+                              </div>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -533,16 +554,30 @@ export const AnalysisInput = ({
       {/* Enhanced Action Section */}
       <div className="text-center space-y-4">
         {getActiveCategoriesCount() > 0 && (
-          <div className="flex justify-center gap-2 flex-wrap">
-            <Badge variant="secondary" className="px-3 py-1">
-              <Target className="h-3 w-3 ml-1" />
-              {getActiveCategoriesCount()} תחומים נבחרו
-            </Badge>
-            {totalPotentialSavings > 0 && (
-              <Badge className="bg-success text-white px-3 py-1">
-                <TrendingUp className="h-3 w-3 ml-1" />
-                חיסכון צפוי: {formatCurrency(totalPotentialSavings)}/חודש
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex justify-center gap-2 flex-wrap">
+              <Badge variant="secondary" className="px-3 py-1">
+                <Target className="h-3 w-3 ml-1" />
+                {getActiveCategoriesCount()} תחומים נבחרו
               </Badge>
+            </div>
+            {totalPotentialSavings > 0 && (
+              <div className="bg-gradient-to-r from-success/20 to-success/10 border-2 border-success/30 rounded-xl p-4 max-w-sm">
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <div className="p-2 bg-success/20 rounded-full">
+                      <TrendingUp className="h-5 w-5 text-success" />
+                    </div>
+                    <span className="text-success font-bold text-lg">
+                      חיסכון כולל צפוי
+                    </span>
+                  </div>
+                  <div className="text-success font-bold text-3xl mb-1">
+                    {formatCurrency(animatedSavings)}
+                  </div>
+                  <div className="text-success/70 text-sm">לחודש</div>
+                </div>
+              </div>
             )}
           </div>
         )}
