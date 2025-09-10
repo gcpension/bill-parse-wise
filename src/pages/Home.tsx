@@ -112,100 +112,84 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Compact Narrow Colorful System Explanation Banner */}
+              {/* Pastel Narrow System Explanation Banner */}
               <div className="mb-8">
                 <div className="relative max-w-3xl mx-auto">
-                  {/* Narrow floating card */}
-                  <div className="bg-gradient-to-br from-white/98 via-slate-50/95 to-gray-50/90 dark:from-slate-800/95 dark:via-slate-700/90 dark:to-slate-600/85 backdrop-blur-xl rounded-2xl shadow-lg border border-slate-200/50 dark:border-slate-600/30 p-5 hover:shadow-xl transition-all duration-500 animate-fade-in relative overflow-hidden">
+                  {/* Narrow floating card with pastel background */}
+                  <div className="bg-gradient-to-br from-rose-50/90 via-sky-50/90 to-emerald-50/90 dark:from-slate-800/95 dark:via-slate-700/90 dark:to-slate-600/85 backdrop-blur-xl rounded-2xl shadow-lg border border-slate-200/50 dark:border-slate-600/30 p-5 hover:shadow-xl transition-all duration-500 animate-fade-in relative overflow-hidden">
                     {/* Subtle background decorations */}
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-100/30 via-purple-100/20 to-transparent rounded-full blur-2xl"></div>
-                    <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-green-100/30 via-teal-100/20 to-transparent rounded-full blur-xl"></div>
-                    
-                    {/* Subtle top badge */}
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-100/30 via-purple-100/20 to-transparent rounded-full blur-2xl" />
+                    <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-green-100/30 via-teal-100/20 to-transparent rounded-full blur-xl" />
+
+                    {/* Top badge */}
                     <div className="flex justify-center mb-3 relative z-10">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-slate-100/80 via-gray-100/70 to-slate-100/80 dark:from-slate-700/80 dark:via-slate-600/70 dark:to-slate-700/80 rounded-full border border-slate-300/30 dark:border-slate-500/30 backdrop-blur-sm">
-                        <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-pulse"></div>
-                        <span className="text-slate-700 dark:text-slate-300 font-fredoka font-semibold text-xs">
-                          המערכת החכמה שתשנה לכם את החיים ✨
+                      <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/70 dark:bg-slate-700/80 rounded-full border border-slate-300/40 dark:border-slate-600/40 backdrop-blur-sm">
+                        <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-pulse" />
+                        <span className="text-slate-700 dark:text-slate-200 font-fredoka font-semibold text-xs">
+                          איך זה עובד בפועל – שלושה שלבים פשוטים
                         </span>
                       </div>
                     </div>
-                    
-                    {/* Compact content in narrow layout */}
-                    <div className="text-center relative z-10">
-                      <h3 className="text-lg font-fredoka font-bold mb-2 bg-gradient-to-r from-slate-700 via-gray-600 to-slate-700 dark:from-slate-200 dark:via-gray-300 dark:to-slate-200 bg-clip-text text-transparent">
-                        מה המערכת שלנו עושה? הכל פשוט!
-                      </h3>
-                      
-                      <p className="text-xs text-muted-foreground mb-4 max-w-xl mx-auto font-comfortaa leading-relaxed">
-                        במקום לבזבז זמן על השוואות מתישות - האלגוריתם החכם שלנו עושה הכל ומעביר אתכם אוטומטית
-                      </p>
-                      
-                      {/* Horizontal 3-step process */}
-                      <div className="flex items-center justify-center gap-3 mb-4">
-                        
-                        {/* Step 1 */}
-                        <div className="flex-1 max-w-[120px] group">
-                          <div className="w-8 h-8 bg-gradient-to-br from-orange-200 to-amber-200 dark:from-orange-800 dark:to-amber-800 rounded-xl flex items-center justify-center text-orange-700 dark:text-orange-300 font-fredoka font-bold text-sm mx-auto mb-1 border border-orange-300/30 dark:border-orange-600/30">
-                            1
-                          </div>
-                          <h4 className="font-fredoka font-bold text-xs mb-1 text-orange-600 dark:text-orange-400">הזנה</h4>
-                          <p className="text-muted-foreground text-[10px] font-comfortaa leading-tight">
-                            בחרו קטגוריות והזינו סכומים
-                          </p>
+
+                    {/* Horizontal 3-step process with more details */}
+                    <div className="flex items-start justify-center gap-4 mb-3">
+                      {/* Step 1 */}
+                      <div className="flex-1 max-w-[140px] text-center">
+                        <div className="w-9 h-9 bg-gradient-to-br from-amber-200 to-orange-200 dark:from-amber-800 dark:to-orange-800 rounded-xl flex items-center justify-center text-amber-800 dark:text-amber-200 font-fredoka font-bold text-sm mx-auto mb-1 border border-amber-300/40 dark:border-amber-600/40">
+                          1
                         </div>
-                        
-                        {/* Arrow */}
-                        <div className="w-4 h-0.5 bg-gradient-to-r from-orange-300 to-blue-300 rounded-full mx-1"></div>
-                        
-                        {/* Step 2 */}
-                        <div className="flex-1 max-w-[120px] group">
-                          <div className="w-8 h-8 bg-gradient-to-br from-blue-200 to-indigo-200 dark:from-blue-800 dark:to-indigo-800 rounded-xl flex items-center justify-center text-blue-700 dark:text-blue-300 font-fredoka font-bold text-sm mx-auto mb-1 border border-blue-300/30 dark:border-blue-600/30">
-                            2
-                          </div>
-                          <h4 className="font-fredoka font-bold text-xs mb-1 text-blue-600 dark:text-blue-400">ניתוח</h4>
-                          <p className="text-muted-foreground text-[10px] font-comfortaa leading-tight">
-                            AI משווה אלפי תעריפים
-                          </p>
-                        </div>
-                        
-                        {/* Arrow */}
-                        <div className="w-4 h-0.5 bg-gradient-to-r from-blue-300 to-green-300 rounded-full mx-1"></div>
-                        
-                        {/* Step 3 */}
-                        <div className="flex-1 max-w-[120px] group">
-                          <div className="w-8 h-8 bg-gradient-to-br from-green-200 to-emerald-200 dark:from-green-800 dark:to-emerald-800 rounded-xl flex items-center justify-center text-green-700 dark:text-green-300 font-fredoka font-bold text-sm mx-auto mb-1 border border-green-300/30 dark:border-green-600/30">
-                            3
-                          </div>
-                          <h4 className="font-fredoka font-bold text-xs mb-1 text-green-600 dark:text-green-400">מעבר</h4>
-                          <p className="text-muted-foreground text-[10px] font-comfortaa leading-tight">
-                            חתימה ואנחנו מטפלים בהכל
-                          </p>
-                        </div>
+                        <h4 className="font-fredoka font-bold text-xs mb-1 text-amber-700 dark:text-amber-300">הזנת נתונים</h4>
+                        <ul className="text-[10px] text-slate-700 dark:text-slate-200 font-comfortaa leading-snug space-y-1 text-right">
+                          <li>• בחירת קטגוריות: חשמל/סלולר/אינטרנט/TV</li>
+                          <li>• סכום חודשי וספק נוכחי</li>
+                          <li>• אפשרות להעלאת חשבונית</li>
+                        </ul>
                       </div>
-                      
-                      {/* Subtle bottom stats */}
-                      <div className="p-2 bg-gradient-to-r from-slate-100/60 via-gray-100/50 to-slate-100/60 dark:from-slate-700/60 dark:via-slate-600/50 dark:to-slate-700/60 rounded-xl border border-slate-200/40 dark:border-slate-600/40">
-                        <div className="flex justify-center gap-4 text-[10px] font-comfortaa font-semibold">
-                          <div className="text-green-600 dark:text-green-400">
-                            <span className="text-sm font-bold">35%</span> חיסכון
-                          </div>
-                          <div className="text-slate-500 dark:text-slate-400">•</div>
-                          <div className="text-blue-600 dark:text-blue-400">
-                            <span className="text-sm font-bold">0₪</span> עמלות
-                          </div>
-                          <div className="text-slate-500 dark:text-slate-400">•</div>
-                          <div className="text-purple-600 dark:text-purple-400">
-                            <span className="text-sm font-bold">7 ימים</span> מעבר
-                          </div>
+
+                      {/* Divider */}
+                      <div className="w-6 mt-5 h-0.5 bg-gradient-to-r from-amber-300 via-sky-300 to-emerald-300 rounded-full" />
+
+                      {/* Step 2 */}
+                      <div className="flex-1 max-w-[140px] text-center">
+                        <div className="w-9 h-9 bg-gradient-to-br from-sky-200 to-indigo-200 dark:from-sky-800 dark:to-indigo-800 rounded-xl flex items-center justify-center text-sky-800 dark:text-sky-200 font-fredoka font-bold text-sm mx-auto mb-1 border border-sky-300/40 dark:border-sky-600/40">
+                          2
                         </div>
+                        <h4 className="font-fredoka font-bold text-xs mb-1 text-sky-700 dark:text-sky-300">ניתוח חכם</h4>
+                        <ul className="text-[10px] text-slate-700 dark:text-slate-200 font-comfortaa leading-snug space-y-1 text-right">
+                          <li>• השוואה מול אלפי תעריפים בזמן אמת</li>
+                          <li>• בדיקת עמלות, קנסות ותוקף מבצעים</li>
+                          <li>• חישוב חיסכון אמיתי נטו</li>
+                        </ul>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="w-6 mt-5 h-0.5 bg-gradient-to-r from-sky-300 via-emerald-300 to-amber-300 rounded-full" />
+
+                      {/* Step 3 */}
+                      <div className="flex-1 max-w-[140px] text-center">
+                        <div className="w-9 h-9 bg-gradient-to-br from-emerald-200 to-teal-200 dark:from-emerald-800 dark:to-teal-800 rounded-xl flex items-center justify-center text-emerald-800 dark:text-emerald-200 font-fredoka font-bold text-sm mx-auto mb-1 border border-emerald-300/40 dark:border-emerald-600/40">
+                          3
+                        </div>
+                        <h4 className="font-fredoka font-bold text-xs mb-1 text-emerald-700 dark:text-emerald-300">מעבר מלא</h4>
+                        <ul className="text-[10px] text-slate-700 dark:text-slate-200 font-comfortaa leading-snug space-y-1 text-right">
+                          <li>• חתימה דיגיטלית מאובטחת</li>
+                          <li>• אנחנו מנתקים ומחברים בשבילכם</li>
+                          <li>• מעקב סטטוס בזמן אמת</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Bottom stats */}
+                    <div className="p-2 bg-white/60 dark:bg-slate-700/60 rounded-xl border border-slate-200/40 dark:border-slate-600/40">
+                      <div className="flex justify-center gap-4 text-[10px] font-comfortaa font-semibold">
+                        <div className="text-emerald-700 dark:text-emerald-300"><span className="text-sm font-bold">35%</span> חיסכון</div>
+                        <div className="text-slate-400">•</div>
+                        <div className="text-sky-700 dark:text-sky-300"><span className="text-sm font-bold">0₪</span> עמלות</div>
+                        <div className="text-slate-400">•</div>
+                        <div className="text-amber-700 dark:text-amber-300"><span className="text-sm font-bold">7 ימים</span> מעבר</div>
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Minimal floating decorations */}
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-blue-300 to-purple-300 dark:from-blue-600 dark:to-purple-600 rounded-full opacity-60 animate-pulse"></div>
-                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-br from-green-300 to-teal-300 dark:from-green-600 dark:to-teal-600 rounded-full opacity-60 animate-pulse" style={{animationDelay: '1s'}}></div>
                 </div>
               </div>
 
