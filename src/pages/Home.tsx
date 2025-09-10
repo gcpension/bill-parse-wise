@@ -112,114 +112,117 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Process Steps Banner - Compact and Beautiful */}
+              {/* Process Steps Banner - Modern Card Design */}
               <section className="mb-12">
-                <div className="max-w-4xl mx-auto">
-                  <div className="bg-gradient-to-r from-white/90 via-white/95 to-white/90 backdrop-blur-lg border border-border/20 rounded-2xl p-6 shadow-lg">
-                    {/* Compact Header */}
-                    <div className="text-center mb-6">
-                      <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-2">
-                        3 שלבים פשוטים לחיסכון
-                      </h3>
-                      <p className="text-sm text-muted-foreground">מעבר ספק מעולם לא היה כל כך קל</p>
-                    </div>
-                    
-                    {/* Compact Steps - Horizontal Layout */}
-                    <div className="flex items-center justify-between">
-                      {/* Step 1 */}
-                      <div className="flex-1 text-center group">
-                        <div className="relative inline-block">
-                          <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform duration-300">
-                            <span className="text-white font-bold text-lg">1</span>
+                <div className="max-w-5xl mx-auto">
+                  {/* Header */}
+                  <div className="text-center mb-8">
+                    <h3 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-3">
+                      איך זה עובד? פשוט כמו 1-2-3
+                    </h3>
+                    <p className="text-lg text-muted-foreground">המעבר הכי קל שיש - אנחנו עושים הכל</p>
+                  </div>
+
+                  {/* Modern Steps Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    {/* Step 1 */}
+                    <div className="group relative">
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200/60 rounded-3xl p-8 text-center h-full transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-3 group-hover:border-blue-300 relative overflow-hidden">
+                        {/* Background decoration */}
+                        <div className="absolute top-0 right-0 w-20 h-20 bg-blue-200/30 rounded-full blur-2xl"></div>
+                        
+                        <div className="relative z-10">
+                          <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-all duration-500 group-hover:shadow-blue-300/50">
+                            <span className="text-white font-bold text-2xl">1</span>
                           </div>
-                          <div className="absolute -top-2 -right-2 w-4 h-4 bg-blue-100 rounded-full animate-pulse"></div>
+                          <h4 className="font-bold text-blue-800 text-xl mb-4">השוואה חכמה</h4>
+                          <p className="text-blue-700 leading-relaxed">
+                            בחרו קטגוריה ואנחנו נבדוק עבורכם את <strong>כל הספקים</strong> והמחירים במקום אחד
+                          </p>
                         </div>
-                        <h4 className="font-semibold text-blue-800 text-sm mb-1">השוואה חכמה</h4>
-                        <p className="text-xs text-blue-600 leading-tight">בחירת קטגוריה<br />ובדיקת מחירים</p>
-                      </div>
-
-                      {/* Arrow 1 */}
-                      <div className="flex-shrink-0 mx-3">
-                        <svg className="w-5 h-5 text-primary/40" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-
-                      {/* Step 2 */}
-                      <div className="flex-1 text-center group">
-                        <div className="relative inline-block">
-                          <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform duration-300">
-                            <span className="text-white font-bold text-lg">2</span>
-                          </div>
-                          <div className="absolute -top-2 -right-2 w-4 h-4 bg-purple-100 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-                        </div>
-                        <h4 className="font-semibold text-purple-800 text-sm mb-1">מילוי מהיר</h4>
-                        <p className="text-xs text-purple-600 leading-tight">פרטים בסיסיים<br />וחתימה דיגיטלית</p>
-                      </div>
-
-                      {/* Arrow 2 */}
-                      <div className="flex-shrink-0 mx-3">
-                        <svg className="w-5 h-5 text-primary/40" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-
-                      {/* Step 3 */}
-                      <div className="flex-1 text-center group">
-                        <div className="relative inline-block">
-                          <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform duration-300">
-                            <span className="text-white font-bold text-lg">3</span>
-                          </div>
-                          <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-100 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
-                        </div>
-                        <h4 className="font-semibold text-green-800 text-sm mb-1">מעבר אוטומטי</h4>
-                        <p className="text-xs text-green-600 leading-tight">ניתוק + חיבור<br />ללא טרחה</p>
                       </div>
                     </div>
 
-                    {/* Bottom Enhancement */}
-                    <div className="mt-6 pt-4 border-t border-border/10">
-                      <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span>מאובטח SSL</span>
+                    {/* Step 2 */}
+                    <div className="group relative">
+                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200/60 rounded-3xl p-8 text-center h-full transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-3 group-hover:border-purple-300 relative overflow-hidden">
+                        {/* Background decoration */}
+                        <div className="absolute top-0 right-0 w-20 h-20 bg-purple-200/30 rounded-full blur-2xl"></div>
+                        
+                        <div className="relative z-10">
+                          <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-all duration-500 group-hover:shadow-purple-300/50">
+                            <span className="text-white font-bold text-2xl">2</span>
+                          </div>
+                          <h4 className="font-bold text-purple-800 text-xl mb-4">חתימה דיגיטלית</h4>
+                          <p className="text-purple-700 leading-relaxed">
+                            מילוי פרטים מהיר + <strong>חתימה מאובטחת</strong> על ייפוי כוח - הכל דיגיטלי ומוצפן
+                          </p>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span>תהליך ממוחשב</span>
+                      </div>
+                    </div>
+
+                    {/* Step 3 */}
+                    <div className="group relative">
+                      <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200/60 rounded-3xl p-8 text-center h-full transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-3 group-hover:border-green-300 relative overflow-hidden">
+                        {/* Background decoration */}
+                        <div className="absolute top-0 right-0 w-20 h-20 bg-green-200/30 rounded-full blur-2xl"></div>
+                        
+                        <div className="relative z-10">
+                          <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-all duration-500 group-hover:shadow-green-300/50">
+                            <span className="text-white font-bold text-2xl">3</span>
+                          </div>
+                          <h4 className="font-bold text-green-800 text-xl mb-4">מעבר אוטומטי</h4>
+                          <p className="text-green-700 leading-relaxed">
+                            <strong>ניתוק מלא</strong> מהספק הישן + <strong>התחברות</strong> לספק החדש - אתם לא עושים כלום!
+                          </p>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                          <span>ללא עלות</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Enhanced Service Options */}
+                  <div className="bg-gradient-to-r from-amber-50/90 to-orange-50/90 border border-amber-200/60 rounded-3xl p-8 shadow-lg">
+                    <div className="text-center">
+                      <h4 className="font-bold text-amber-800 mb-6 text-2xl flex items-center justify-center gap-3">
+                        <span className="text-3xl">⚡</span>
+                        שני סוגי שירות לבחירתכם
+                        <span className="text-3xl">⚡</span>
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                        <div className="bg-white/90 rounded-2xl p-6 border-2 border-green-200/60 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                          <div className="flex items-center justify-center gap-3 mb-4">
+                            <div className="w-6 h-6 bg-green-500 rounded-full shadow-md flex items-center justify-center">
+                              <span className="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <span className="font-bold text-green-800 text-xl">שירות מלא (מומלץ)</span>
+                          </div>
+                          <p className="text-amber-800 leading-relaxed">
+                            אנחנו מבצעים <strong>ניתוק מלא</strong> מהספק הנוכחי <strong>+ התחברות</strong> לספק החדש
+                          </p>
+                          <div className="mt-4 p-3 bg-green-50 rounded-xl">
+                            <p className="text-green-700 text-sm font-medium">💚 אתם לא צריכים לעשות כלום!</p>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-white/90 rounded-2xl p-6 border-2 border-blue-200/60 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                          <div className="flex items-center justify-center gap-3 mb-4">
+                            <div className="w-6 h-6 bg-blue-500 rounded-full shadow-md flex items-center justify-center">
+                              <span className="text-white text-sm font-bold">+</span>
+                            </div>
+                            <span className="font-bold text-blue-800 text-xl">התחברות בלבד</span>
+                          </div>
+                          <p className="text-amber-800 leading-relaxed">
+                            רק <strong>התחברות מהירה</strong> לספק החדש - תנתקו מהספק הישן בעצמכם
+                          </p>
+                          <div className="mt-4 p-3 bg-blue-50 rounded-xl">
+                            <p className="text-blue-700 text-sm font-medium">⏰ בזמן שנוח לכם</p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </section>
-
-              {/* Service Options - Enhanced */}
-              <div className="bg-gradient-to-r from-amber-50/90 to-orange-50/90 border border-amber-200/60 rounded-2xl p-8 mb-6">
-                <div className="text-center">
-                  <h4 className="font-bold text-amber-800 mb-6 text-2xl">שני סוגי שירות לבחירתכם:</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-white/80 rounded-2xl p-6 border border-amber-200/40 shadow-md hover:shadow-lg transition-shadow">
-                      <div className="flex items-center justify-center gap-3 mb-4">
-                        <div className="w-4 h-4 bg-green-500 rounded-full shadow-md"></div>
-                        <span className="font-bold text-green-800 text-lg">שירות מלא (מומלץ)</span>
-                      </div>
-                      <p className="text-amber-800 leading-relaxed">אנחנו מבצעים <strong>ניתוק מלא</strong> מהספק הנוכחי <strong>+ התחברות</strong> לספק החדש - אתם לא צריכים לעשות כלום!</p>
-                    </div>
-                    <div className="bg-white/80 rounded-2xl p-6 border border-amber-200/40 shadow-md hover:shadow-lg transition-shadow">
-                      <div className="flex items-center justify-center gap-3 mb-4">
-                        <div className="w-4 h-4 bg-blue-500 rounded-full shadow-md"></div>
-                        <span className="font-bold text-blue-800 text-lg">התחברות בלבד</span>
-                      </div>
-                      <p className="text-amber-800 leading-relaxed">רק <strong>התחברות מהירה</strong> לספק החדש - תנתקו מהספק הישן בעצמכם בזמן שנוח לכם</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               {/* Providers Badge - Enhanced */}
               <div className="text-center">
@@ -366,8 +369,9 @@ const Home = () => {
                 מי אנחנו?
               </span>
             </h2>
-            <p className="text-purple-100 mb-8 max-w-2xl mx-auto">
-              מומחי הטלקום והאנרגיה שעוזרים לכם לחסוך כסף בקלות
+            <p className="text-purple-100 mb-6 max-w-2xl mx-auto leading-relaxed">
+              אנחנו מאמינים שכל אדם בישראל זכאי לקבל את השירותים הטובים ביותר במחיר הוגן. 
+              בנינו פלטפורמה שחוסכת לכם את הכאב ראש של השוואת מחירים וטיפול בספקים.
             </p>
 
             {/* Quick Stats */}

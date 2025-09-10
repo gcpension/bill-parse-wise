@@ -78,10 +78,17 @@ const categoryNames = {
 };
 
 const categoryColors = {
-  electricity: 'gradient-sunset',
-  cellular: 'gradient-electric', 
-  internet: 'gradient-vibrant',
-  tv: 'gradient-purple'
+  electricity: 'from-amber-100 to-orange-100 border-amber-200',
+  cellular: 'from-blue-100 to-cyan-100 border-blue-200', 
+  internet: 'from-purple-100 to-indigo-100 border-purple-200',
+  tv: 'from-green-100 to-emerald-100 border-green-200'
+};
+
+const categoryAccentColors = {
+  electricity: 'text-amber-700',
+  cellular: 'text-blue-700',
+  internet: 'text-purple-700', 
+  tv: 'text-green-700'
 };
 
 const categoryDescriptions = {
@@ -284,7 +291,7 @@ export const AnalysisInput = ({
                   data.isActive 
                     ? hasError(key) 
                       ? 'border-destructive/50 bg-destructive/5'
-                      : 'border-primary/30 bg-primary/5'
+                      : `bg-gradient-to-br ${categoryColors[data.category]} border-2`
                     : 'border-border/30 bg-background hover:border-primary/20 cursor-pointer'
                 }`}
                 onClick={() => !data.isActive && onCategoryToggle(key)}
@@ -292,11 +299,25 @@ export const AnalysisInput = ({
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${hasError(key) ? 'bg-destructive/10' : 'bg-muted'}`}>
-                        <CategoryIcon className={`h-5 w-5 ${hasError(key) ? 'text-destructive' : 'text-muted-foreground'}`} />
+                      <div className={`p-3 rounded-2xl ${
+                        hasError(key) 
+                          ? 'bg-destructive/10' 
+                          : data.isActive
+                            ? `bg-white/70 shadow-sm`
+                            : 'bg-muted'
+                      }`}>
+                        <CategoryIcon className={`h-6 w-6 ${
+                          hasError(key) 
+                            ? 'text-destructive' 
+                            : data.isActive
+                              ? categoryAccentColors[data.category]
+                              : 'text-muted-foreground'
+                        }`} />
                       </div>
                       <div>
-                        <CardTitle className="text-base font-semibold flex items-center gap-2">
+                        <CardTitle className={`text-base font-semibold flex items-center gap-2 ${
+                          data.isActive ? categoryAccentColors[data.category] : ''
+                        }`}>
                           {categoryNames[data.category]}
                           {hasError(key) && <AlertTriangle className="h-4 w-4 text-destructive" />}
                           {data.isActive && !hasError(key) && data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
