@@ -1,8 +1,6 @@
 import { CheckCircle, Users, Shield, Zap, Brain, FileCheck } from 'lucide-react';
-
 const SimpleStepsBanner = () => {
-  return (
-    <div className="mb-6">
+  return <div className="mb-6">
       <div className="relative max-w-3xl mx-auto">
         {/* Compact elegant banner */}
         <div className="bg-gradient-to-br from-white/95 via-slate-50/90 to-white/95 dark:from-slate-800/95 dark:via-slate-700/90 dark:to-slate-800/95 backdrop-blur-md rounded-3xl border border-slate-200/60 dark:border-slate-600/50 shadow-2xl p-6 hover:shadow-3xl transition-all duration-500">
@@ -30,10 +28,8 @@ const SimpleStepsBanner = () => {
                 <span className="text-white font-bold text-sm">1</span>
               </div>
               <div className="flex-1">
-                <h4 className="font-display font-bold text-sm text-orange-700 dark:text-orange-300 mb-1">העלאת חשבונות</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-body">
-                  צילום או העלאה של החשבון הנוכחי
-                </p>
+                <h4 className="font-display font-bold text-sm text-orange-700 dark:text-orange-300 mb-1">הזנת נתונים</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-body">הזנה של סכום החשבון הנוכחי</p>
               </div>
             </div>
             
@@ -81,8 +77,6 @@ const SimpleStepsBanner = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default SimpleStepsBanner;
