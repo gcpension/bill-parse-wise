@@ -161,72 +161,63 @@ const PlanRecommendations = ({
           </div>
       </CardHeader>
 
-        <CardContent className="p-3">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <CardContent className="p-2">
+          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2">
             {recommendations.map(({ plan, reason, badge, badgeColor, icon: IconComponent }, index) => (
               <div 
                 key={plan.id}
-                className={`group relative overflow-hidden rounded-lg border transition-all duration-200 hover:shadow-md ${
+                className={`group relative overflow-hidden rounded-md border transition-all duration-200 hover:shadow-md ${
                   index === 0 
                     ? 'bg-primary/5 border-primary/20 shadow-sm' 
                     : 'bg-card border'
                 }`}
               >
 
-                <div className="relative p-3">
+                <div className="relative p-2">
                   {/* Top Badge */}
-                  <div className="absolute -top-2 -right-2 z-10">
-                    <Badge className={cn(`text-white border-0 px-2 py-1 text-xs ${
+                  <div className="absolute -top-1 -right-1 z-10">
+                    <Badge className={cn(`text-white border-0 px-1 py-0.5 text-xs ${
                       index === 0 
                         ? 'bg-primary' 
                         : 'bg-muted-foreground'
                     }`)}
                     >
-                      <IconComponent className="h-3 w-3 mr-1" />
+                      <IconComponent className="h-2 w-2 mr-0.5" />
                       {badge}
                     </Badge>
                   </div>
 
                   {/* Plan Info */}
-                  <div className="space-y-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h4 className={`font-semibold text-base ${index === 0 ? 'text-primary' : 'text-foreground'}`}>
-                          {plan.company}
-                        </h4>
-                        <p className={`text-sm ${index === 0 ? 'text-primary/80' : 'text-muted-foreground'}`}>
-                          {plan.planName}
-                        </p>
-                        <div className={`mt-1 flex items-center gap-1 text-xs ${index === 0 ? 'text-primary/70' : 'text-muted-foreground'}`}>
-                          <Heart className="h-3 w-3" />
-                          {reason}
-                        </div>
-                      </div>
+                  <div className="space-y-2">
+                    <div className="text-center">
+                      <h4 className={`font-semibold text-xs truncate ${index === 0 ? 'text-primary' : 'text-foreground'}`}>
+                        {plan.company}
+                      </h4>
+                      <p className={`text-xs truncate ${index === 0 ? 'text-primary/80' : 'text-muted-foreground'}`}>
+                        {plan.planName}
+                      </p>
                       
-                      <div className={`text-center p-2 rounded-lg ${
+                      <div className={`text-center p-1 rounded mt-1 ${
                         index === 0 
                           ? 'bg-primary/10 border border-primary/20' 
                           : 'bg-muted/50'
                       }`}>
-                        <div className={`text-lg font-bold ${index === 0 ? 'text-primary' : 'text-foreground'}`}>
+                        <div className={`text-sm font-bold ${index === 0 ? 'text-primary' : 'text-foreground'}`}>
                           {plan.category === 'electricity' ? plan.speed : `₪${plan.regularPrice}`}
                         </div>
                         {plan.category !== 'electricity' && (
                           <div className="text-xs text-muted-foreground">
-                            לחודש
+                            /חודש
                           </div>
                         )}
                       </div>
                     </div>
 
-                    {/* Top Features */}
-                    <div className="space-y-1">
-                      {plan.features.slice(0, 2).map((feature, featureIndex) => (
-                        <div key={featureIndex} className="text-xs flex items-center gap-1 text-muted-foreground">
-                          <div className={`w-1.5 h-1.5 rounded-full ${index === 0 ? 'bg-primary' : 'bg-muted-foreground'}`}></div>
-                          {feature.length > 25 ? `${feature.substring(0, 25)}...` : feature}
-                        </div>
-                      ))}
+                    {/* Top Feature */}
+                    <div className="text-center">
+                      <div className="text-xs text-muted-foreground truncate">
+                        {plan.features[0]?.length > 15 ? `${plan.features[0].substring(0, 15)}...` : plan.features[0]}
+                      </div>
                     </div>
 
                     {/* Action Button */}
@@ -234,10 +225,9 @@ const PlanRecommendations = ({
                       onClick={() => onPlanSelect(plan)}
                       variant={index === 0 ? "default" : "outline"}
                       size="sm"
-                      className="w-full h-8 text-sm"
+                      className="w-full h-6 text-xs px-1"
                     >
-                      <ArrowRight className="h-3 w-3 ml-1" />
-                      בחר מסלול זה
+                      בחר
                     </Button>
                   </div>
                 </div>
