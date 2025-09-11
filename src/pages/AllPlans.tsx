@@ -42,6 +42,7 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
   };
   
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile' | 'tv'>(getInitialCategory());
+  const [showAllCategories, setShowAllCategories] = useState(false); // Track if user explicitly chose to see all categories
   
   // Enhanced state for new features
   const [filters, setFilters] = useState<FilterOptions>({
@@ -68,7 +69,7 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
   // Update filters when category changes
   useEffect(() => {
     setFilters(prev => ({ ...prev, category: selectedCategory }));
-  }, [selectedCategory]);
+  }, [selectedCategory, showAllCategories]);
 
   // Get available providers and features for filters
   const availableProviders = useMemo(() => 
@@ -84,9 +85,14 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
   const filteredAndSortedPlans = useMemo(() => {
     let filtered = manualPlans;
 
-    // Base category filtering (preserve existing logic)
+    // Base category filtering with improved logic
     if (selectedCategory === 'all') {
-      if (initialSelectedCategories.length > 0) {
+      // If user explicitly chose "all" or no categories were initially selected, show everything
+      if (showAllCategories || initialSelectedCategories.length === 0) {
+        // Show all plans from all categories
+        filtered = manualPlans;
+      } else {
+        // Show only plans from initially selected categories (default behavior)
         const categoryMapping = { 'cellular': 'mobile' };
         const mappedCategories = initialSelectedCategories.map(cat => 
           categoryMapping[cat as keyof typeof categoryMapping] || cat
@@ -276,14 +282,32 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
           <div className="flex flex-wrap gap-3 justify-center mb-8">
             <Button
               variant={selectedCategory === 'all' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('all')}
+              onClick={() => {
+                setSelectedCategory('all');
+                setShowAllCategories(true); // User explicitly wants to see all categories
+              }}
               className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300"
             >
-              <span>הכל ({manualPlans.length})</span>
+              <span>כל המסלולים ({manualPlans.length})</span>
             </Button>
+            {initialSelectedCategories.length > 0 && (
+              <Button
+                variant={selectedCategory === 'all' && !showAllCategories ? 'default' : 'outline'}
+                onClick={() => {
+                  setSelectedCategory('all');
+                  setShowAllCategories(false); // Show only initially selected categories
+                }}
+                className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300"
+              >
+                <span>הקטגוריות שנבחרו ({initialSelectedCategories.length})</span>
+              </Button>
+            )}
             <Button
               variant={selectedCategory === 'electricity' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('electricity')}
+              onClick={() => {
+                setSelectedCategory('electricity');
+                setShowAllCategories(false);
+              }}
               className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
                 selectedCategory === 'electricity' 
                   ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-400 hover:from-yellow-500 hover:to-yellow-600' 
@@ -295,7 +319,10 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
             </Button>
             <Button
               variant={selectedCategory === 'internet' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('internet')}
+              onClick={() => {
+                setSelectedCategory('internet');
+                setShowAllCategories(false);
+              }}
               className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
                 selectedCategory === 'internet' 
                   ? 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-white border-cyan-400 hover:from-cyan-500 hover:to-cyan-600' 
@@ -307,7 +334,10 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
             </Button>
             <Button
               variant={selectedCategory === 'mobile' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('mobile')}
+              onClick={() => {
+                setSelectedCategory('mobile');
+                setShowAllCategories(false);
+              }}
               className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
                 selectedCategory === 'mobile' 
                   ? 'bg-gradient-to-r from-purple-400 to-purple-500 text-white border-purple-400 hover:from-purple-500 hover:to-purple-600' 
@@ -319,7 +349,10 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
             </Button>
             <Button
               variant={selectedCategory === 'tv' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('tv')}
+              onClick={() => {
+                setSelectedCategory('tv');
+                setShowAllCategories(false);
+              }}
               className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
                 selectedCategory === 'tv' 
                   ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white border-orange-400 hover:from-orange-500 hover:to-orange-600' 
@@ -339,7 +372,7 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
           </div>
 
           {/* Plans Grid - Group by category when showing multiple categories */}
-          {selectedCategory === 'all' && initialSelectedCategories.length > 1 ? (
+          {(selectedCategory === 'all' && showAllCategories) || (selectedCategory === 'all' && initialSelectedCategories.length > 1) ? (
             <div className="space-y-8 max-w-7xl mx-auto">
               {/* Group plans by category */}
               {['electricity', 'internet', 'mobile', 'tv'].map(category => {
