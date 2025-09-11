@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield, Wifi, Smartphone, Tv } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
-import heroModernBg from '@/assets/hero-modern-bg.jpg';
+import heroWoman from '@/assets/hero-woman.jpg';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
@@ -128,27 +128,29 @@ const Home = () => {
   }];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white font-body overflow-hidden">
-      {/* Modern Hero Background inspired by reference */}
+    <div className="min-h-screen bg-gradient-to-r from-emerald-500 via-white to-emerald-500 font-body overflow-hidden relative">
+      {/* Stronger background with vivid green sides */}
       <div className="fixed inset-0 -z-10">
-        {/* Main gradient background - bright center with green sides */}
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-white to-emerald-400" />
-        <div className="absolute inset-0 bg-gradient-to-b from-emerald-300/30 via-white/90 to-gray-50" />
+        {/* Strong green gradient on sides, white in center */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-gray-50 to-emerald-400" />
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/80 via-transparent to-emerald-500/80" />
         
-        {/* Geometric circular shapes */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-white/60 rounded-full blur-sm" />
-        <div className="absolute top-32 right-16 w-80 h-80 bg-emerald-200/40 rounded-full blur-md" />
-        <div className="absolute bottom-40 left-20 w-64 h-64 bg-white/50 rounded-full blur-sm" />
-        <div className="absolute bottom-20 right-32 w-72 h-72 bg-emerald-100/60 rounded-full blur-md" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/30 rounded-full blur-3xl" />
+        {/* Left side intense green area */}
+        <div className="absolute left-0 top-0 w-1/4 h-full bg-gradient-to-r from-emerald-500 to-transparent" />
+        {/* Right side intense green area */} 
+        <div className="absolute right-0 top-0 w-1/4 h-full bg-gradient-to-l from-emerald-500 to-transparent" />
         
-        {/* Additional decorative elements */}
-        <div className="absolute top-16 left-1/3 w-48 h-48 bg-emerald-300/25 rounded-full animate-float" />
-        <div className="absolute bottom-24 right-1/4 w-56 h-56 bg-white/40 rounded-full animate-float" style={{
+        {/* Geometric circular shapes - more prominent */}
+        <div className="absolute top-16 left-12 w-80 h-80 bg-white/40 rounded-full" />
+        <div className="absolute top-32 right-20 w-72 h-72 bg-emerald-200/50 rounded-full" />
+        <div className="absolute bottom-32 left-16 w-64 h-64 bg-white/50 rounded-full" />
+        <div className="absolute bottom-16 right-24 w-96 h-96 bg-emerald-100/60 rounded-full" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/20 rounded-full" />
+        
+        {/* Additional decorative circles */}
+        <div className="absolute top-20 left-1/3 w-48 h-48 bg-emerald-300/30 rounded-full animate-float" />
+        <div className="absolute bottom-28 right-1/3 w-56 h-56 bg-white/30 rounded-full animate-float" style={{
           animationDelay: '2s'
-        }} />
-        <div className="absolute top-1/3 right-12 w-40 h-40 bg-emerald-200/30 rounded-full animate-float" style={{
-          animationDelay: '4s'
         }} />
       </div>
 
@@ -193,7 +195,7 @@ const Home = () => {
               </div>
 
               {/* Category Selection Section - Moved to top */}
-              <div className="space-y-8 max-w-6xl mx-auto mb-16">
+              <div className="space-y-8 max-w-6xl mx-auto mb-16 relative">
                 <div className="text-center">
                   <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4 text-gray-800">
                     <span className="bg-gradient-to-l from-emerald-600 via-emerald-700 to-emerald-800 bg-clip-text text-transparent">
@@ -201,6 +203,15 @@ const Home = () => {
                     </span>
                   </h2>
                   <p className="text-lg text-gray-700">בחרו קטגוריות והזינו פרטים לקבלת ניתוח מיידי</p>
+                </div>
+
+                {/* Hero Woman Image - positioned to the side */}
+                <div className="absolute left-8 top-16 hidden lg:block z-10">
+                  <img 
+                    src={heroWoman} 
+                    alt="אישה מחויכת עם אוזניות" 
+                    className="w-64 h-80 object-cover rounded-2xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500"
+                  />
                 </div>
 
                 {/* Category Cards Grid */}
