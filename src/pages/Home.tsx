@@ -349,51 +349,51 @@ const Home = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {[{
               icon: "🎯",
               title: "דיוק מושלם",
-              description: "האלגוריתם שלנו לוקח בחשבון את הפרופיל הספציפי שלכם - גודל משפחה, צריכה, העדפות, ומוצא את הפתרון המושלם בדיוק עבורכם",
+              description: "האלגוריתם שלנו מוצא את הפתרון המושלם עבורכם",
               stats: "דיוק של 96.8%",
               color: "from-blue-500 to-cyan-600"
             }, {
               icon: "⚡",
               title: "מהירות שוברת שיאים",
-              description: "בזמן שאתם שותים קפה אחד, המערכת שלנו כבר סורקת כל הספקים, מחשבת, ומציגה לכם את האפשרויות הטובות ביותר עם כל הפרטים",
-              stats: "תוצאות תוך 90 שניות",
+              description: "תוצאות מיידיות עם כל הפרטים הדרושים",
+              stats: "תוך 90 שניות",
               color: "from-emerald-500 to-green-600"
             }, {
               icon: "🛡️",
-              title: "בטיחות ללא פשרות",
-              description: "רמת הצפנה בנקאית, אבטחת נתונים ברמה הגבוהה ביותר, ושקיפות מלאה. כל המידע שלכם נשמר בבטחה ולא נמכר לגורמים שלישיים",
-              stats: "אבטחה ברמה בנקאית",
+              title: "בטיחות מלאה",
+              description: "הצפנה ברמה בנקאית ושקיפות מלאה",
+              stats: "אבטחה בנקאית",
               color: "from-purple-500 to-indigo-600"
             }, {
               icon: "💰",
               title: "חיסכון מבטיח",
-              description: "לא רק משווים - גם מבטיחים חיסכון. אם לא חסכתם לפחות 15% מהחשבון החודשי, אנחנו מחזירים לכם את ההפרש במזומן",
-              stats: "גרנטי חיסכון 15%+",
+              description: "גרנטי לחיסכון של לפחות 15% מהחשבון",
+              stats: "חיסכון 15%+",
               color: "from-amber-500 to-orange-600"
             }, {
               icon: "🎪",
-              title: "שירות VIP לכולם",
-              description: "יש לנו נציג אישי לכל לקוח. לא בוטים, לא מוקד טלפוני - בן אדם אמיתי שמכיר את התיק שלכם ועונה תוך דקות בוואטסאפ",
-              stats: "מענה תוך 3 דקות בממוצע",
+              title: "שירות VIP",
+              description: "נציג אישי זמין בוואטסאפ תוך דקות",
+              stats: "מענה תוך 3 דק׳",
               color: "from-pink-500 to-rose-600"
             }, {
               icon: "🔄",
-              title: "מעקב חי 24/7",
-              description: "אפליקציה נייחת שמתעדכנת בזמן אמת על כל שלב במעבר. תדעו בדיוק איפה אתם עומדים ומתי הכל יהיה מוכן - ללא הפתעות",
-              stats: "עדכונים בזמן אמת",
+              title: "מעקב חי",
+              description: "עדכונים בזמן אמת על סטטוס המעבר",
+              stats: "עדכונים חיים",
               color: "from-teal-500 to-blue-600"
-            }].map((feature, index) => <div key={index} className="group bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-sm border border-border/40 rounded-3xl p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2">
+            }].map((feature, index) => <div key={index} className="group bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-sm border border-border/40 rounded-2xl p-4 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-1">
                   <div className="text-center">
-                    <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-3xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300 shadow-xl mx-auto mb-4`}>
+                    <div className={`w-10 h-10 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center text-lg group-hover:scale-110 transition-transform duration-300 shadow-lg mx-auto mb-3`}>
                       {feature.icon}
                     </div>
-                    <h3 className="font-display font-bold text-xl mb-3">{feature.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed font-body text-sm mb-4">{feature.description}</p>
-                    <div className={`inline-block px-3 py-1.5 bg-gradient-to-r ${feature.color} text-white rounded-full text-xs font-display font-bold shadow-lg`}>
+                    <h3 className="font-display font-bold text-base mb-2">{feature.title}</h3>
+                    <p className="text-muted-foreground leading-snug font-body text-xs mb-3">{feature.description}</p>
+                    <div className={`inline-block px-2 py-1 bg-gradient-to-r ${feature.color} text-white rounded-full text-xs font-display font-bold shadow-md`}>
                       {feature.stats}
                     </div>
                   </div>
