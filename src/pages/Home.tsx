@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield, Wifi, Smartphone, Tv } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
-import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
@@ -290,62 +289,83 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Enhanced Banner Section */}
+              {/* Enhanced How It Works Section */}
               <div className="max-w-6xl mx-auto mt-16">
                 <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-background to-blue-50/30 shadow-xl">
                   <CardContent className="p-12">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                      {/* Explanation Text */}
-                      <div className="space-y-6">
-                        <div className="text-center lg:text-right">
-                          <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6 leading-tight">
-                            <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                              איך זה עובד?
-                            </span>
-                          </h2>
+                    {/* Main Title */}
+                    <div className="text-center mb-12">
+                      <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6 leading-tight">
+                        <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                          איך המערכת עובדת?
+                        </span>
+                      </h2>
+                      <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                        תהליך פשוט ומהיר שחוסך לכם זמן, כסף והטרדות מיותרות
+                      </p>
+                    </div>
+
+                    {/* Steps Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                      <div className="text-center space-y-4">
+                        <div className="w-20 h-20 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg mx-auto">
+                          1
                         </div>
-                        
-                        <div className="space-y-6 text-right">
-                          <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">1</div>
-                            <div>
-                              <h3 className="text-xl font-bold mb-2 text-gray-800">בחירת שירותים</h3>
-                              <p className="text-gray-600 leading-relaxed">בחרו את השירותים שאתם רוצים לבדוק - חשמל, סלולר, אינטרנט או טלוויזיה. הזינו את הספק הנוכחי והסכום החודשי.</p>
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">2</div>
-                            <div>
-                              <h3 className="text-xl font-bold mb-2 text-gray-800">ניתוח מתקדם</h3>
-                              <p className="text-gray-600 leading-relaxed">המערכת שלנו סורקת אלפי תעריפים בזמן אמת, משווה מחירים ומוצאת את האפשרויות הזולות והמשתלמות ביותר עבורכם.</p>
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">3</div>
-                            <div>
-                              <h3 className="text-xl font-bold mb-2 text-gray-800">מעבר אוטומטי</h3>
-                              <p className="text-gray-600 leading-relaxed">אנחנו מטפלים בכל התהליך - ניתוק מהספק הישן, התחברות לחדש, וליווי מלא עד שהמעבר מושלם.</p>
-                            </div>
-                          </div>
+                        <h3 className="text-2xl font-bold text-gray-800">בחירת שירותים</h3>
+                        <p className="text-gray-600 leading-relaxed text-lg">
+                          בחרו את השירותים שאתם רוצים לבדוק - חשמל, סלולר, אינטרנט או טלוויזיה. 
+                          הזינו את הספק הנוכחי והסכום החודשי שאתם משלמים.
+                        </p>
+                      </div>
+                      
+                      <div className="text-center space-y-4">
+                        <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg mx-auto">
+                          2
+                        </div>
+                        <h3 className="text-2xl font-bold text-gray-800">ניתוח מתקדם</h3>
+                        <p className="text-gray-600 leading-relaxed text-lg">
+                          המערכת שלנו סורקת אלפי תעריפים בזמן אמת, משווה מחירים ומוצאת 
+                          את האפשרויות הזולות והמשתלמות ביותר עבורכם.
+                        </p>
+                      </div>
+                      
+                      <div className="text-center space-y-4">
+                        <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg mx-auto">
+                          3
+                        </div>
+                        <h3 className="text-2xl font-bold text-gray-800">מעבר אוטומטי</h3>
+                        <p className="text-gray-600 leading-relaxed text-lg">
+                          אנחנו מטפלים בכל התהליך - ניתוק מהספק הישן, התחברות לחדש, 
+                          וליווי מלא עד שהמעבר מושלם.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Key Benefits */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                      <div className="bg-gradient-to-r from-success/10 to-emerald-500/10 p-8 rounded-2xl border border-success/20">
+                        <div className="text-center">
+                          <div className="text-6xl font-black text-success mb-4">₪2,400</div>
+                          <p className="text-xl font-bold text-success mb-2">החיסכון הממוצע</p>
+                          <p className="text-gray-600">לשנה למשפחה ממוצעת</p>
                         </div>
                       </div>
 
-                      {/* Enhanced Banner */}
-                      <div className="flex flex-col items-center space-y-8">
-                        <div className="transform scale-125">
-                          <SimpleStepsBanner />
-                        </div>
-                        
-                        <div className="text-center space-y-4">
-                          <div className="bg-gradient-to-r from-success/20 to-emerald-500/20 p-6 rounded-2xl border border-success/30">
-                            <p className="text-2xl font-bold text-success mb-2">החיסכון הממוצע</p>
-                            <p className="text-4xl font-black text-success">₪2,400</p>
-                            <p className="text-sm text-gray-600 mt-2">לשנה למשפחה ממוצעת</p>
-                          </div>
+                      <div className="bg-gradient-to-r from-primary/10 to-blue-500/10 p-8 rounded-2xl border border-primary/20">
+                        <div className="text-center">
+                          <div className="text-6xl font-black text-primary mb-4">100%</div>
+                          <p className="text-xl font-bold text-primary mb-2">ללא עלות</p>
+                          <p className="text-gray-600">השירות חינם לחלוטין עבורכם</p>
                         </div>
                       </div>
+                    </div>
+
+                    {/* Additional Info */}
+                    <div className="text-center mt-12 p-6 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-200">
+                      <p className="text-lg text-gray-700 font-medium">
+                        <span className="text-primary font-bold">למה זה עובד?</span> אנחנו עובדים עם כל הספקים הגדולים בישראל 
+                        ומקבלים עמלה מהספק החדש רק אם החיסכון שלכם משמעותי. אין לנו אינטרס להעביר אתכם לספק יקר יותר.
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
