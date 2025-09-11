@@ -103,44 +103,43 @@ export const SavingsComparisonHeader = ({ categorySavings }: SavingsComparisonHe
         </CardContent>
       </Card>
 
-      {/* Enhanced Category Cards with More Obvious Differences */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Category Cards with Subtle Differences */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
         {enhancedCategorySavings.map((category, index) => {
           const categoryPercentSaved = Math.round((category.monthlySavings / category.currentAmount) * 100);
           return (
-            <Card key={category.category} className={`relative overflow-hidden border-0 shadow-lg transition-all duration-300 hover:scale-105`}>
-              <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[category.category]} opacity-90`}></div>
-              <CardContent className="relative p-4 text-white">
-                <div className="text-center space-y-3">
+            <Card key={category.category} className="border hover:shadow-sm transition-shadow">
+              <CardContent className="p-3">
+                <div className="text-center space-y-2">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    {category.category === 'electricity' && <Calculator className="h-5 w-5" />}
-                    {category.category === 'cellular' && <Sparkles className="h-5 w-5" />}
-                    {category.category === 'internet' && <TrendingUp className="h-5 w-5" />}
-                    {category.category === 'tv' && <Target className="h-5 w-5" />}
+                    {category.category === 'electricity' && <Calculator className="h-4 w-4 text-muted-foreground" />}
+                    {category.category === 'cellular' && <Sparkles className="h-4 w-4 text-muted-foreground" />}
+                    {category.category === 'internet' && <TrendingUp className="h-4 w-4 text-muted-foreground" />}
+                    {category.category === 'tv' && <Target className="h-4 w-4 text-muted-foreground" />}
                     <Badge 
-                      variant="secondary" 
-                      className="bg-white/20 text-white border-white/30 font-bold"
+                      variant="outline"
+                      className="text-xs"
                     >
                       {categoryLabels[category.category]}
                     </Badge>
                   </div>
                   
-                  <div className="bg-white/20 backdrop-blur-md rounded-lg p-3 space-y-2">
+                  <div className="bg-muted/30 rounded-lg p-2 space-y-1">
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div>
-                        <span className="text-white/70 block">נוכחי</span>
-                        <span className="font-bold text-sm">₪{category.currentAmount}</span>
+                        <span className="text-muted-foreground block">נוכחי</span>
+                        <span className="font-semibold">₪{category.currentAmount}</span>
                       </div>
                       <div>
-                        <span className="text-white/70 block">חדש</span>
-                        <span className="font-bold text-sm">₪{category.newAmount}</span>
+                        <span className="text-muted-foreground block">חדש</span>
+                        <span className="font-semibold">₪{category.newAmount}</span>
                       </div>
                     </div>
                     
-                    <div className="border-t border-white/30 pt-2">
+                    <div className="border-t border-muted pt-1">
                       <div className="text-center">
-                        <div className="text-lg font-black">₪{category.monthlySavings}</div>
-                        <div className="text-xs font-medium text-white/80">
+                        <div className="text-sm font-bold text-success">₪{category.monthlySavings}</div>
+                        <div className="text-xs text-muted-foreground">
                           חיסכון {categoryPercentSaved}% • ₪{category.monthlySavings * 12}/שנה
                         </div>
                       </div>
@@ -148,11 +147,11 @@ export const SavingsComparisonHeader = ({ categorySavings }: SavingsComparisonHe
                   </div>
 
                   {/* Provider Change Info */}
-                  <div className="text-xs text-white/80 bg-white/10 rounded-lg p-2">
+                  <div className="text-xs text-muted-foreground bg-muted/20 rounded p-1">
                     <div className="flex items-center justify-between">
-                      <span className="truncate">{category.currentProvider}</span>
+                      <span className="truncate text-xs">{category.currentProvider}</span>
                       <ArrowUp className="h-3 w-3 rotate-45" />
-                      <span className="truncate font-bold">{category.newProvider}</span>
+                      <span className="truncate font-medium text-xs">{category.newProvider}</span>
                     </div>
                   </div>
                 </div>

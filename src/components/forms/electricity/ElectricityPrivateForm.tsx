@@ -380,39 +380,65 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
       {/* Optional Notes */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">הערת תאימות</CardTitle>
+          <CardTitle className="text-lg">פרטי תשלום מאובטחים (אופציונלי)</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            ייתכן אימות ישיר מהספק (SMS/קישור) לאישור סופי.
-          </p>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="creditCardLast4">4 ספרות אחרונות של כרטיס אשראי</Label>
+              <Input
+                id="creditCardLast4"
+                placeholder="XXXX"
+                maxLength={4}
+                pattern="[0-9]*"
+                onChange={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                }}
+              />
+              <p className="text-xs text-muted-foreground mt-1">לצורך זיהוי בלבד - לא נשמרים פרטים מלאים</p>
+            </div>
+            <div>
+              <Label htmlFor="bankName">שם הבנק (לחיוב עתידי)</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="בחר בנק" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="leumi">בנק לאומי</SelectItem>
+                  <SelectItem value="hapoalim">בנק הפועלים</SelectItem>
+                  <SelectItem value="mizrahi">בנק מזרחי</SelectItem>
+                  <SelectItem value="discount">בנק דיסקונט</SelectItem>
+                  <SelectItem value="other">אחר</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="h-4 w-4 text-blue-600 mt-0.5" />
+              <div className="text-sm text-blue-800">
+                <strong>אבטחת מידע:</strong> אנו משתמשים בהצפנה ברמת בנקים. פרטי תשלום מלאים יתווספו רק בשלב האישור הסופי בצורה מאובטחת.
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
-      {/* Checklist */}
+      {/* Contact Notes */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <FileText className="h-5 w-5" />
-            צ׳קליסט לפני שליחה
-          </CardTitle>
+          <CardTitle className="text-lg">הערות נוספות</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {checklistItems.map(item => (
-            <div key={item.id} className="flex items-start gap-2">
-              <Checkbox
-                id={item.id}
-                checked={checkedItems[item.id] || false}
-                onCheckedChange={(checked) => setCheckedItems(prev => ({
-                  ...prev,
-                  [item.id]: checked as boolean
-                }))}
-              />
-              <label htmlFor={item.id} className="text-sm leading-relaxed">
-                {item.text}
-              </label>
-            </div>
-          ))}
+        <CardContent>
+          <Textarea
+            placeholder="הערות מיוחדות לגבי המעבר (אופציונלי)"
+            value={formData.billingNotes || ""}
+            onChange={(e) => updateFormData("billingNotes" as any, e.target.value)}
+            rows={3}
+          />
+          <p className="text-sm text-muted-foreground mt-2">
+            ייתכן אימות ישיר מהספק (SMS/קישור) לאישור סופי.
+          </p>
         </CardContent>
       </Card>
 

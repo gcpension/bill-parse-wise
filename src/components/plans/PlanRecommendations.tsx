@@ -114,132 +114,105 @@ const PlanRecommendations = ({
   if (recommendations.length === 0) return null;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl shadow-2xl mb-8">
-      {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700"></div>
-      <div className="absolute inset-0">
-        <div className="absolute top-4 right-6 w-20 h-20 bg-white/10 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-4 left-6 w-12 h-12 bg-white/10 rounded-full animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full"></div>
-      </div>
-      
-      <Card className="relative bg-transparent border-0 shadow-none">
-        <CardHeader className="pb-4 text-white">
+    <div className="rounded-lg border shadow-sm mb-6">
+      <Card className="border-0 shadow-none">
+        <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl shadow-lg">
-                <Sparkles className="h-8 w-8 text-white animate-pulse" />
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Sparkles className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <CardTitle className="text-2xl font-black text-white mb-1">המסלולים המומלצים עבורך</CardTitle>
-                <p className="text-white/90 font-medium">מסלולים שנבחרו במיוחד עבורך עם החיסכון הטוב ביותר</p>
+                <CardTitle className="text-xl font-semibold text-foreground">המסלולים המומלצים עבורך</CardTitle>
+                <p className="text-muted-foreground text-sm">מסלולים מותאמים לפרופיל שלך</p>
               </div>
             </div>
           </div>
         
           {/* Recommendation Type Selector */}
-          <div className="flex gap-3 mt-6">
+          <div className="flex gap-2 mt-4">
             <Button
               variant={selectedRecommendationType === 'smart' ? 'default' : 'outline'}
-              size="lg"
+              size="sm"
               onClick={() => setSelectedRecommendationType('smart')}
-              className={`h-12 px-6 font-bold transition-all duration-300 ${
-                selectedRecommendationType === 'smart' 
-                  ? 'bg-white text-purple-600 border-white hover:bg-white/90 shadow-lg' 
-                  : 'bg-white/20 text-white border-white/30 hover:bg-white/30'
-              }`}
+              className="h-9 px-4"
             >
-              <Sparkles className="h-4 w-4 mr-2" />
+              <Sparkles className="h-3 w-3 mr-1" />
               המלצה חכמה
             </Button>
             <Button
               variant={selectedRecommendationType === 'popular' ? 'default' : 'outline'}
-              size="lg"
+              size="sm"
               onClick={() => setSelectedRecommendationType('popular')}
-              className={`h-12 px-6 font-bold transition-all duration-300 ${
-                selectedRecommendationType === 'popular' 
-                  ? 'bg-white text-purple-600 border-white hover:bg-white/90 shadow-lg' 
-                  : 'bg-white/20 text-white border-white/30 hover:bg-white/30'
-              }`}
+              className="h-9 px-4"
             >
-              <Users className="h-4 w-4 mr-2" />
+              <Users className="h-3 w-3 mr-1" />
               הפופולרים
             </Button>
             <Button
               variant={selectedRecommendationType === 'savings' ? 'default' : 'outline'}
-              size="lg"
+              size="sm"
               onClick={() => setSelectedRecommendationType('savings')}
-              className={`h-12 px-6 font-bold transition-all duration-300 ${
-                selectedRecommendationType === 'savings' 
-                  ? 'bg-white text-purple-600 border-white hover:bg-white/90 shadow-lg' 
-                  : 'bg-white/20 text-white border-white/30 hover:bg-white/30'
-              }`}
+              className="h-9 px-4"
             >
-              <TrendingUp className="h-4 w-4 mr-2" />
+              <TrendingUp className="h-3 w-3 mr-1" />
               חיסכון מקסימלי
             </Button>
           </div>
       </CardHeader>
 
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <CardContent className="p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {recommendations.map(({ plan, reason, badge, badgeColor, icon: IconComponent }, index) => (
               <div 
                 key={plan.id}
-                className={`group relative overflow-hidden rounded-2xl transition-all duration-500 hover:scale-105 hover:rotate-1 ${
+                className={`group relative overflow-hidden rounded-lg border transition-all duration-200 hover:shadow-md ${
                   index === 0 
-                    ? 'bg-gradient-to-br from-yellow-400 via-orange-400 to-pink-500 shadow-2xl shadow-orange-500/30' 
-                    : 'bg-gradient-to-br from-white to-gray-50 border-2 border-white/50 shadow-xl'
+                    ? 'bg-primary/5 border-primary/20 shadow-sm' 
+                    : 'bg-card border'
                 }`}
               >
-                {/* Animated Background Effect for Top Recommendation */}
-                {index === 0 && (
-                  <div className="absolute inset-0">
-                    <div className="absolute top-2 right-4 w-12 h-12 bg-white/20 rounded-full animate-pulse"></div>
-                    <div className="absolute bottom-2 left-4 w-8 h-8 bg-white/20 rounded-full animate-pulse delay-500"></div>
-                  </div>
-                )}
 
-                <div className="relative p-6">
+                <div className="relative p-4">
                   {/* Top Badge */}
-                  <div className="absolute -top-3 -right-3 z-10">
-                    <Badge className={cn(`text-white shadow-xl border-0 px-4 py-2 text-sm font-bold ${
+                  <div className="absolute -top-2 -right-2 z-10">
+                    <Badge className={cn(`text-white border-0 px-2 py-1 text-xs ${
                       index === 0 
-                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 animate-pulse' 
-                        : `bg-gradient-to-r ${badgeColor}`
+                        ? 'bg-primary' 
+                        : 'bg-muted-foreground'
                     }`)}
                     >
-                      <IconComponent className="h-4 w-4 mr-1" />
+                      <IconComponent className="h-3 w-3 mr-1" />
                       {badge}
                     </Badge>
                   </div>
 
                   {/* Plan Info */}
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h4 className={`font-black text-xl ${index === 0 ? 'text-white' : 'text-foreground'}`}>
+                        <h4 className={`font-semibold text-base ${index === 0 ? 'text-primary' : 'text-foreground'}`}>
                           {plan.company}
                         </h4>
-                        <p className={`text-base font-bold ${index === 0 ? 'text-white/90' : 'text-muted-foreground'}`}>
+                        <p className={`text-sm ${index === 0 ? 'text-primary/80' : 'text-muted-foreground'}`}>
                           {plan.planName}
                         </p>
-                        <div className={`mt-2 flex items-center gap-2 text-sm font-medium ${index === 0 ? 'text-white/95' : 'text-blue-600'}`}>
-                          <Heart className="h-4 w-4" />
+                        <div className={`mt-1 flex items-center gap-1 text-xs ${index === 0 ? 'text-primary/70' : 'text-muted-foreground'}`}>
+                          <Heart className="h-3 w-3" />
                           {reason}
                         </div>
                       </div>
                       
-                      <div className={`text-center p-3 rounded-xl shadow-lg ${
+                      <div className={`text-center p-2 rounded-lg ${
                         index === 0 
-                          ? 'bg-white/20 backdrop-blur-md border border-white/30' 
-                          : 'bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200'
+                          ? 'bg-primary/10 border border-primary/20' 
+                          : 'bg-muted/50'
                       }`}>
-                        <div className={`text-2xl font-black ${index === 0 ? 'text-white' : 'text-purple-600'}`}>
+                        <div className={`text-lg font-bold ${index === 0 ? 'text-primary' : 'text-foreground'}`}>
                           {plan.category === 'electricity' ? plan.speed : `₪${plan.regularPrice}`}
                         </div>
                         {plan.category !== 'electricity' && (
-                          <div className={`text-xs font-medium ${index === 0 ? 'text-white/80' : 'text-muted-foreground'}`}>
+                          <div className="text-xs text-muted-foreground">
                             לחודש
                           </div>
                         )}
@@ -247,11 +220,11 @@ const PlanRecommendations = ({
                     </div>
 
                     {/* Top Features */}
-                    <div className="space-y-2">
+                    <div className="space-y-1">
                       {plan.features.slice(0, 2).map((feature, featureIndex) => (
-                        <div key={featureIndex} className={`text-sm flex items-center gap-2 ${index === 0 ? 'text-white/90' : 'text-muted-foreground'}`}>
-                          <div className={`w-2 h-2 rounded-full ${index === 0 ? 'bg-white' : 'bg-green-500'}`}></div>
-                          {feature.length > 35 ? `${feature.substring(0, 35)}...` : feature}
+                        <div key={featureIndex} className="text-xs flex items-center gap-1 text-muted-foreground">
+                          <div className={`w-1.5 h-1.5 rounded-full ${index === 0 ? 'bg-primary' : 'bg-muted-foreground'}`}></div>
+                          {feature.length > 25 ? `${feature.substring(0, 25)}...` : feature}
                         </div>
                       ))}
                     </div>
@@ -259,15 +232,12 @@ const PlanRecommendations = ({
                     {/* Action Button */}
                     <Button
                       onClick={() => onPlanSelect(plan)}
-                      className={`w-full h-14 text-lg font-bold transition-all duration-300 ${
-                        index === 0
-                          ? 'bg-white text-purple-600 hover:bg-white/90 shadow-2xl hover:shadow-white/50'
-                          : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-purple-500/30'
-                      }`}
+                      variant={index === 0 ? "default" : "outline"}
+                      size="sm"
+                      className="w-full h-8 text-sm"
                     >
-                      <Sparkles className="h-5 w-5 mr-2" />
+                      <ArrowRight className="h-3 w-3 ml-1" />
                       בחר מסלול זה
-                      <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </div>
                 </div>
@@ -276,14 +246,13 @@ const PlanRecommendations = ({
           </div>
 
           {/* Show More Button */}
-          <div className="text-center mt-8">
+          <div className="text-center mt-4">
             <Button 
               variant="outline" 
-              size="lg" 
-              className="bg-white/20 text-white border-white/30 hover:bg-white/30 h-12 px-8 font-bold"
+              size="sm"
             >
-              עוד המלצות מותאמות אישית
-              <ArrowRight className="h-4 w-4 mr-2" />
+              עוד המלצות
+              <ArrowRight className="h-3 w-3 mr-1" />
             </Button>
           </div>
         </CardContent>
