@@ -9,7 +9,6 @@ import AllPlans from './AllPlans';
 import { googleSheetsService } from '@/lib/googleSheets';
 import { toast } from 'sonner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-
 interface UploadedFile {
   file: File;
   id: string;
@@ -25,7 +24,6 @@ interface UploadedFile {
   };
   error?: string;
 }
-
 interface CategoryData {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentProvider: string;
@@ -33,7 +31,6 @@ interface CategoryData {
   accountDetails?: string;
   isActive: boolean;
 }
-
 interface AnalysisResult {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentAmount: number;
@@ -44,7 +41,6 @@ interface AnalysisResult {
   allProviders: any[];
   fileId?: string;
 }
-
 const initialCategoryData: Record<string, CategoryData> = {
   electricity: {
     category: 'electricity',
@@ -75,7 +71,6 @@ const initialCategoryData: Record<string, CategoryData> = {
     isActive: false
   }
 };
-
 export const Analyze = () => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [categoryData, setCategoryData] = useState<Record<string, CategoryData>>(initialCategoryData);
@@ -86,15 +81,12 @@ export const Analyze = () => {
     const url = googleSheetsService.getWebhookUrl();
     return !!(url && googleSheetsService.isValidZapierWebhook(url));
   });
-
   const handleFilesUploaded = (newFiles: UploadedFile[]) => {
     setUploadedFiles(newFiles);
   };
-
   const handleFileRemove = (id: string) => {
     setUploadedFiles(prev => prev.filter(f => f.id !== id));
   };
-
   const handleCategoryToggle = (category: string) => {
     setCategoryData(prev => ({
       ...prev,
@@ -104,7 +96,6 @@ export const Analyze = () => {
       }
     }));
   };
-
   const handleCategoryDataUpdate = (category: string, field: string, value: string) => {
     setCategoryData(prev => ({
       ...prev,
@@ -114,19 +105,13 @@ export const Analyze = () => {
       }
     }));
   };
-
   const handleAnalyzeAll = async () => {
-    const activeCategories = Object.values(categoryData).filter(cat => 
-      cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0
-    );
-
+    const activeCategories = Object.values(categoryData).filter(cat => cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0);
     if (activeCategories.length === 0) {
       toast.error('יש להזין נתונים לפחות בקטגוריה אחת');
       return;
     }
-
     setIsProcessing(true);
-
     try {
       const results: AnalysisResult[] = [];
 
@@ -138,7 +123,6 @@ export const Analyze = () => {
           amount,
           provider: catData.currentProvider
         });
-
         if (analysis) {
           results.push({
             ...analysis,
@@ -146,7 +130,6 @@ export const Analyze = () => {
           });
         }
       });
-
       setAnalysisResults(results);
 
       // Submit comprehensive analysis data to Google Sheets and webhooks
@@ -161,12 +144,10 @@ export const Analyze = () => {
           triggered_from: window.location.origin,
           timestamp: new Date().toISOString(),
           active_categories: activeCategoryNames,
-          
           // Calculate totals
           total_monthly_amount: activeCategories.reduce((sum, cat) => sum + parseFloat(cat.monthlyAmount), 0),
           total_monthly_savings: results.reduce((sum, r) => sum + r.monthlySavings, 0),
           total_annual_savings: results.reduce((sum, r) => sum + r.annualSavings, 0),
-
           // Per-category data
           electricity_active: categoryData.electricity?.isActive || false,
           electricity_current_provider: categoryData.electricity?.currentProvider || undefined,
@@ -176,7 +157,6 @@ export const Analyze = () => {
           electricity_recommended_price: results.find(r => r.category === 'electricity')?.recommendedPlan.price || undefined,
           electricity_monthly_savings: results.find(r => r.category === 'electricity')?.monthlySavings || undefined,
           electricity_annual_savings: results.find(r => r.category === 'electricity')?.annualSavings || undefined,
-
           internet_active: categoryData.internet?.isActive || false,
           internet_current_provider: categoryData.internet?.currentProvider || undefined,
           internet_monthly_amount: categoryData.internet?.monthlyAmount ? parseFloat(categoryData.internet.monthlyAmount) : undefined,
@@ -185,7 +165,6 @@ export const Analyze = () => {
           internet_recommended_price: results.find(r => r.category === 'internet')?.recommendedPlan.price || undefined,
           internet_monthly_savings: results.find(r => r.category === 'internet')?.monthlySavings || undefined,
           internet_annual_savings: results.find(r => r.category === 'internet')?.annualSavings || undefined,
-
           cellular_active: categoryData.cellular?.isActive || false,
           cellular_current_provider: categoryData.cellular?.currentProvider || undefined,
           cellular_monthly_amount: categoryData.cellular?.monthlyAmount ? parseFloat(categoryData.cellular.monthlyAmount) : undefined,
@@ -194,7 +173,6 @@ export const Analyze = () => {
           cellular_recommended_price: results.find(r => r.category === 'cellular')?.recommendedPlan.price || undefined,
           cellular_monthly_savings: results.find(r => r.category === 'cellular')?.monthlySavings || undefined,
           cellular_annual_savings: results.find(r => r.category === 'cellular')?.annualSavings || undefined,
-
           tv_active: categoryData.tv?.isActive || false,
           tv_current_provider: categoryData.tv?.currentProvider || undefined,
           tv_monthly_amount: categoryData.tv?.monthlyAmount ? parseFloat(categoryData.tv.monthlyAmount) : undefined,
@@ -202,12 +180,11 @@ export const Analyze = () => {
           tv_recommended_plan_name: results.find(r => r.category === 'tv')?.recommendedPlan.name || undefined,
           tv_recommended_price: results.find(r => r.category === 'tv')?.recommendedPlan.price || undefined,
           tv_monthly_savings: results.find(r => r.category === 'tv')?.monthlySavings || undefined,
-          tv_annual_savings: results.find(r => r.category === 'tv')?.annualSavings || undefined,
+          tv_annual_savings: results.find(r => r.category === 'tv')?.annualSavings || undefined
         };
 
         // Send comprehensive analysis data to both Google Sheets and additional webhook
         const success = await googleSheetsService.submitAnalysisData(analysisPayload);
-        
         if (success) {
           toast.success('הנתונים נותחו ונשלחו בהצלחה! מעבר לתוצאות...');
         } else {
@@ -219,7 +196,6 @@ export const Analyze = () => {
       setTimeout(() => {
         setActiveStep('results');
       }, 1500);
-
     } catch (error) {
       console.error('Analysis failed:', error);
       toast.error('שגיאה בניתוח הנתונים');
@@ -227,24 +203,23 @@ export const Analyze = () => {
       setIsProcessing(false);
     }
   };
-
   const categoryNames = {
     electricity: 'חשמל',
-    cellular: 'סלולר', 
+    cellular: 'סלולר',
     internet: 'אינטרנט',
     tv: 'טלוויזיה'
   };
-
-  const analyzeData = (data: { category: 'electricity' | 'cellular' | 'internet' | 'tv', amount: number, provider?: string }) => {
+  const analyzeData = (data: {
+    category: 'electricity' | 'cellular' | 'internet' | 'tv';
+    amount: number;
+    provider?: string;
+  }) => {
     const cheapestPlan = getCheapestPlan(data.category);
-    
     if (!cheapestPlan) return null;
-
     const currentPrice = data.category === 'electricity' ? data.amount / 850 : data.amount;
     const newPrice = cheapestPlan.price;
     const monthlySavings = Math.max(0, currentPrice - newPrice);
     const annualSavings = calculateAnnualSavings(currentPrice, newPrice, data.category);
-
     return {
       category: data.category,
       currentAmount: data.amount,
@@ -266,21 +241,20 @@ export const Analyze = () => {
           amount: file.parsedData.amount,
           provider: file.parsedData.provider
         });
-        
         if (analysis) {
-          setAnalysisResults(prev => [...prev, { ...analysis, fileId: file.id }]);
+          setAnalysisResults(prev => [...prev, {
+            ...analysis,
+            fileId: file.id
+          }]);
           setActiveStep('results');
         }
       }
     });
   }, [uploadedFiles, analysisResults]);
-
   if (activeStep === 'results') {
     // Get active categories to filter plans
-    const activeCategories = Object.values(categoryData)
-      .filter(cat => cat.isActive)
-      .map(cat => cat.category);
-    
+    const activeCategories = Object.values(categoryData).filter(cat => cat.isActive).map(cat => cat.category);
+
     // Prepare savings data for the AllPlans component
     const savingsData = analysisResults.map(result => ({
       category: result.category,
@@ -290,17 +264,9 @@ export const Analyze = () => {
       currentProvider: result.currentProvider,
       newProvider: result.recommendedPlan.company
     }));
-    
-    return (
-      <AllPlans 
-        initialSelectedCategories={activeCategories} 
-        savingsData={savingsData}
-      />
-    );
+    return <AllPlans initialSelectedCategories={activeCategories} savingsData={savingsData} />;
   }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/10 animate-fade-in">
+  return <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/10 animate-fade-in">
       {/* Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-20 w-32 h-32 gradient-primary rounded-full blur-3xl opacity-20 animate-float" />
@@ -336,33 +302,7 @@ export const Analyze = () => {
               </div>
             </div>
             
-            <div className="max-w-4xl mx-auto space-y-6">
-              <p className="text-xl text-muted-foreground leading-relaxed font-medium">
-                הכניסו את הפרטים שלכם ותגלו איך לחסוך 
-                <span className="font-bold text-primary"> עד 45% </span>
-                מהחשבונות החודשיים
-              </p>
-              
-              {/* Interactive Statistics */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-                <div className="group p-4 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/20 hover:border-primary/40 hover:shadow-lg transition-all duration-300 cursor-pointer">
-                  <div className="text-3xl font-black text-primary group-hover:scale-110 transition-transform">2,800₪</div>
-                  <div className="text-sm font-medium text-muted-foreground">חיסכון ממוצע בשנה</div>
-                </div>
-                <div className="group p-4 bg-gradient-to-br from-success/10 to-success/5 rounded-2xl border border-success/20 hover:border-success/40 hover:shadow-lg transition-all duration-300 cursor-pointer">
-                  <div className="text-3xl font-black text-success group-hover:scale-110 transition-transform">3</div>
-                  <div className="text-sm font-medium text-muted-foreground">דקות לתוצאות</div>
-                </div>
-                <div className="group p-4 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-2xl border border-blue-500/20 hover:border-blue-500/40 hover:shadow-lg transition-all duration-300 cursor-pointer">
-                  <div className="text-3xl font-black text-blue-600 group-hover:scale-110 transition-transform">50+</div>
-                  <div className="text-sm font-medium text-muted-foreground">ספקים במערכת</div>
-                </div>
-                <div className="group p-4 bg-gradient-to-br from-orange-500/10 to-orange-500/5 rounded-2xl border border-orange-500/20 hover:border-orange-500/40 hover:shadow-lg transition-all duration-300 cursor-pointer">
-                  <div className="text-3xl font-black text-orange-600 group-hover:scale-110 transition-transform">0₪</div>
-                  <div className="text-sm font-medium text-muted-foreground">עלות השירות</div>
-                </div>
-              </div>
-            </div>
+            
 
             {/* Enhanced Process Steps */}
             <div className="flex justify-center items-center gap-8 mt-12">
@@ -416,16 +356,7 @@ export const Analyze = () => {
 
           {/* Main Analysis Interface */}
           <div className="max-w-7xl mx-auto">
-            <AnalysisInput
-              uploadedFiles={uploadedFiles}
-              categoryData={categoryData}
-              isProcessing={isProcessing}
-              onFilesUploaded={handleFilesUploaded}
-              onFileRemove={handleFileRemove}
-              onCategoryToggle={handleCategoryToggle}
-              onCategoryDataUpdate={handleCategoryDataUpdate}
-              onAnalyze={handleAnalyzeAll}
-            />
+            <AnalysisInput uploadedFiles={uploadedFiles} categoryData={categoryData} isProcessing={isProcessing} onFilesUploaded={handleFilesUploaded} onFileRemove={handleFileRemove} onCategoryToggle={handleCategoryToggle} onCategoryDataUpdate={handleCategoryDataUpdate} onAnalyze={handleAnalyzeAll} />
           </div>
 
           {/* Enhanced Value Proposition */}
@@ -473,6 +404,5 @@ export const Analyze = () => {
           </div>
         </div>
       </Layout>
-    </div>
-  );
+    </div>;
 };
