@@ -96,9 +96,9 @@ const Home = () => {
       return;
     }
 
-    // Store the data and navigate to analyze page
+    // Store the data and navigate directly to plans page
     localStorage.setItem('analysisData', JSON.stringify(selectedData));
-    navigate('/analyze');
+    navigate('/all-plans');
   };
 
   const features = [{
