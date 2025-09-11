@@ -59,22 +59,22 @@ const categoryNames = {
   tv: 'טלוויזיה/סטרימינג'
 };
 const categoryColors = {
-  electricity: 'border-2 border-orange-400 bg-gradient-to-br from-orange-100 to-amber-100 hover:from-orange-200 hover:to-amber-200 shadow-orange-200/50',
-  cellular: 'border-2 border-blue-400 bg-gradient-to-br from-blue-100 to-sky-100 hover:from-blue-200 hover:to-sky-200 shadow-blue-200/50',
-  internet: 'border-2 border-purple-400 bg-gradient-to-br from-purple-100 to-violet-100 hover:from-purple-200 hover:to-violet-200 shadow-purple-200/50',
-  tv: 'border-2 border-green-400 bg-gradient-to-br from-green-100 to-emerald-100 hover:from-green-200 hover:to-emerald-200 shadow-green-200/50'
+  electricity: 'border-2 border-yellow-400/50 bg-gradient-to-br from-yellow-50 to-yellow-100/70 hover:from-yellow-100 hover:to-yellow-200/70 shadow-yellow-200/30',
+  cellular: 'border-2 border-purple-400/50 bg-gradient-to-br from-purple-50 to-purple-100/70 hover:from-purple-100 hover:to-purple-200/70 shadow-purple-200/30',
+  internet: 'border-2 border-cyan-400/50 bg-gradient-to-br from-cyan-50 to-cyan-100/70 hover:from-cyan-100 hover:to-cyan-200/70 shadow-cyan-200/30',
+  tv: 'border-2 border-orange-400/50 bg-gradient-to-br from-orange-50 to-orange-100/70 hover:from-orange-100 hover:to-orange-200/70 shadow-orange-200/30'
 };
 const categoryAccentColors = {
-  electricity: 'text-orange-800',
-  cellular: 'text-blue-800',
-  internet: 'text-purple-800',
-  tv: 'text-green-800'
+  electricity: 'text-yellow-800',
+  cellular: 'text-purple-800',
+  internet: 'text-cyan-800',
+  tv: 'text-orange-800'
 };
 const categoryIconColors = {
-  electricity: 'text-orange-600 bg-orange-100',
-  cellular: 'text-blue-600 bg-blue-100',
-  internet: 'text-purple-600 bg-purple-100',
-  tv: 'text-green-600 bg-green-100'
+  electricity: 'text-yellow-700 bg-yellow-100/70',
+  cellular: 'text-purple-700 bg-purple-100/70',
+  internet: 'text-cyan-700 bg-cyan-100/70',
+  tv: 'text-orange-700 bg-orange-100/70'
 };
 const categoryDescriptions = {
   electricity: 'בדקו כמה תוכלו לחסוך על חשבון החשמל החודשי',

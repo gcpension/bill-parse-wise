@@ -338,24 +338,88 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
             </h2>
           </div>
 
-          {/* Plans Grid */}
-          <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {filteredPlans.map((plan, index) => (
-              <EnhancedPlanCard
-                key={plan.id}
-                plan={plan}
-                rank={index + 1}
-                isCompared={comparedPlans.some(p => p.id === plan.id)}
-                onCompareToggle={handleCompareToggle}
-                canCompare={comparedPlans.length < 3}
-                showSavings={savingsData.length > 0}
-                estimatedSavings={savingsData.find(s => 
-                  (s.category === 'cellular' && plan.category === 'mobile') ||
-                  s.category === plan.category
-                )?.monthlySavings}
-              />
-            ))}
-          </section>
+          {/* Plans Grid - Group by category when showing multiple categories */}
+          {selectedCategory === 'all' && initialSelectedCategories.length > 1 ? (
+            <div className="space-y-8 max-w-7xl mx-auto">
+              {/* Group plans by category */}
+              {['electricity', 'internet', 'mobile', 'tv'].map(category => {
+                const categoryPlans = filteredPlans.filter(plan => 
+                  category === 'mobile' ? plan.category === 'mobile' : plan.category === category
+                );
+                
+                if (categoryPlans.length === 0) return null;
+                
+                const getCategoryInfo = (cat: string) => {
+                  switch(cat) {
+                    case 'electricity': return { name: 'חשמל', color: 'border-yellow-400/30 bg-yellow-50/30', gradient: 'from-yellow-400 to-yellow-500' };
+                    case 'mobile': return { name: 'סלולר', color: 'border-purple-400/30 bg-purple-50/30', gradient: 'from-purple-400 to-purple-500' };
+                    case 'internet': return { name: 'אינטרנט', color: 'border-cyan-400/30 bg-cyan-50/30', gradient: 'from-cyan-400 to-cyan-500' };
+                    case 'tv': return { name: 'טלוויזיה', color: 'border-orange-400/30 bg-orange-50/30', gradient: 'from-orange-400 to-orange-500' };
+                    default: return { name: cat, color: 'border-gray-400/30 bg-gray-50/30', gradient: 'from-gray-400 to-gray-500' };
+                  }
+                };
+                
+                const categoryInfo = getCategoryInfo(category);
+                
+                return (
+                  <div key={category} className={`p-6 rounded-xl border-2 ${categoryInfo.color} backdrop-blur-sm`}>
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className={`p-3 rounded-xl bg-gradient-to-r ${categoryInfo.gradient} text-white shadow-lg`}>
+                        {category === 'electricity' && <Zap className="h-6 w-6" />}
+                        {category === 'mobile' && <Smartphone className="h-6 w-6" />}
+                        {category === 'internet' && <Wifi className="h-6 w-6" />}
+                        {category === 'tv' && <Tv className="h-6 w-6" />}
+                      </div>
+                      <div>
+                        <h3 className={`text-xl font-bold bg-gradient-to-r ${categoryInfo.gradient} bg-clip-text text-transparent`}>
+                          {categoryInfo.name}
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          {categoryPlans.length} מסלולים זמינים
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {categoryPlans.map((plan, index) => (
+                        <EnhancedPlanCard
+                          key={plan.id}
+                          plan={plan}
+                          rank={index + 1}
+                          isCompared={comparedPlans.some(p => p.id === plan.id)}
+                          onCompareToggle={handleCompareToggle}
+                          canCompare={comparedPlans.length < 3}
+                          showSavings={savingsData.length > 0}
+                          estimatedSavings={savingsData.find(s => 
+                            (s.category === 'cellular' && plan.category === 'mobile') ||
+                            s.category === plan.category
+                          )?.monthlySavings}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
+              {filteredPlans.map((plan, index) => (
+                <EnhancedPlanCard
+                  key={plan.id}
+                  plan={plan}
+                  rank={index + 1}
+                  isCompared={comparedPlans.some(p => p.id === plan.id)}
+                  onCompareToggle={handleCompareToggle}
+                  canCompare={comparedPlans.length < 3}
+                  showSavings={savingsData.length > 0}
+                  estimatedSavings={savingsData.find(s => 
+                    (s.category === 'cellular' && plan.category === 'mobile') ||
+                    s.category === plan.category
+                  )?.monthlySavings}
+                />
+              ))}
+            </section>
+          )}
 
           {filteredPlans.length === 0 && (
             <div className="text-center py-16">
