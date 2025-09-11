@@ -61,23 +61,32 @@ export const ResultsGrid = ({ results }: ResultsGridProps) => {
 
   return (
     <div className="space-y-6">
-      {/* Beautiful Summary */}
-      <div className="relative overflow-hidden rounded-3xl shadow-elegant">
-        <div className="absolute inset-0 gradient-primary opacity-90"></div>
+      {/* Beautiful Summary - Redesigned with tighter spacing */}
+      <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+        <div className="absolute inset-0 gradient-primary opacity-95"></div>
         <div className="absolute inset-0">
-          <div className="absolute top-4 right-6 w-20 h-20 bg-white/10 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-4 left-6 w-12 h-12 bg-white/10 rounded-full animate-pulse delay-1000"></div>
+          <div className="absolute top-3 right-4 w-16 h-16 bg-white/10 rounded-full animate-pulse"></div>
+          <div className="absolute bottom-2 left-4 w-8 h-8 bg-white/10 rounded-full animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/5 rounded-full"></div>
         </div>
-        <div className="relative p-8 text-center text-white">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Sparkles className="h-6 w-6 animate-pulse" />
-            <h2 className="text-2xl font-black">סה&quot;כ חיסכון</h2>
-            <Sparkles className="h-6 w-6 animate-pulse delay-500" />
+        <div className="relative p-6 text-center text-white">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Sparkles className="h-5 w-5 animate-pulse" />
+            <h2 className="text-xl font-black">סה&quot;כ החיסכון שלך</h2>
+            <Sparkles className="h-5 w-5 animate-pulse delay-500" />
           </div>
-          <div className="text-4xl font-black mb-2">{formatCurrency(totalMonthlySavings)}</div>
-          <p className="text-white/90 text-lg">בכל חודש</p>
-          <div className="mt-4 p-3 bg-white/10 rounded-2xl backdrop-blur-sm inline-block">
-            <p className="text-white/90 text-sm">חיסכון שנתי: <span className="font-bold text-xl">{formatCurrency(totalAnnualSavings)}</span></p>
+          
+          {/* Compact savings display */}
+          <div className="flex items-center justify-center gap-6 bg-white/15 backdrop-blur-md rounded-2xl p-4 mx-auto max-w-md">
+            <div className="text-center">
+              <div className="text-3xl font-black mb-1">{formatCurrency(totalMonthlySavings)}</div>
+              <p className="text-white/90 text-sm font-medium">חודשי</p>
+            </div>
+            <div className="w-px h-12 bg-white/30"></div>
+            <div className="text-center">
+              <div className="text-3xl font-black mb-1">{formatCurrency(totalAnnualSavings)}</div>
+              <p className="text-white/90 text-sm font-medium">שנתי</p>
+            </div>
           </div>
         </div>
       </div>
@@ -122,32 +131,59 @@ export const ResultsGrid = ({ results }: ResultsGridProps) => {
                   )}
                 </div>
 
-                {/* Modern Comparison Cards */}
-                <div className="grid md:grid-cols-2 gap-4 mb-6">
-                  <div className="relative group">
-                    <div className="absolute inset-0 bg-destructive/5 rounded-2xl transform rotate-1 group-hover:rotate-2 transition-transform"></div>
-                    <div className="relative bg-background/80 backdrop-blur-sm rounded-2xl p-4 border border-destructive/20">
-                      <div className="flex items-center gap-2 mb-2">
+                {/* Compact Modern Comparison Cards */}
+                <div className="flex items-stretch gap-3 mb-6">
+                  {/* Current Payment Card */}
+                  <div className="flex-1 relative group">
+                    <div className="absolute inset-0 bg-destructive/8 rounded-xl transform rotate-1 group-hover:rotate-2 transition-transform"></div>
+                    <div className="relative bg-background/90 backdrop-blur-sm rounded-xl p-4 border-2 border-destructive/30 h-full">
+                      <div className="flex items-center gap-2 mb-1">
                         <TrendingDown className="h-4 w-4 text-destructive" />
-                        <span className="text-sm font-medium text-destructive">תשלום נוכחי</span>
+                        <span className="text-xs font-medium text-destructive">נוכחי</span>
                       </div>
-                      <div className="text-2xl font-black text-destructive">₪{result.currentAmount.toLocaleString()}</div>
+                      <div className="text-2xl font-black text-destructive mb-1">₪{result.currentAmount.toLocaleString()}</div>
                       <p className="text-xs text-muted-foreground">לחודש</p>
                     </div>
                   </div>
+
+                  {/* Savings Indicator */}
+                  <div className="flex flex-col items-center justify-center px-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-success to-emerald-500 flex items-center justify-center shadow-lg mb-1">
+                      <span className="text-white font-bold text-lg">-{savingsPercentage.toFixed(0)}%</span>
+                    </div>
+                    <span className="text-xs font-medium text-success">חיסכון</span>
+                  </div>
                   
-                  <div className="relative group">
-                    <div className="absolute inset-0 bg-success/5 rounded-2xl transform -rotate-1 group-hover:-rotate-2 transition-transform"></div>
-                    <div className="relative bg-background/80 backdrop-blur-sm rounded-2xl p-4 border border-success/20">
-                      <div className="flex items-center gap-2 mb-2">
+                  {/* New Payment Card */}
+                  <div className="flex-1 relative group">
+                    <div className="absolute inset-0 bg-success/8 rounded-xl transform -rotate-1 group-hover:-rotate-2 transition-transform"></div>
+                    <div className="relative bg-background/90 backdrop-blur-sm rounded-xl p-4 border-2 border-success/30 h-full">
+                      <div className="flex items-center gap-2 mb-1">
                         <CheckCircle2 className="h-4 w-4 text-success" />
-                        <span className="text-sm font-medium text-success">מומלץ - {result.recommendedPlan?.providerName}</span>
+                        <span className="text-xs font-medium text-success">מומלץ</span>
                       </div>
-                      <div className="text-2xl font-black text-success">₪{result.recommendedPlan?.price.toLocaleString()}</div>
-                      <p className="text-xs text-muted-foreground">לחודש</p>
-                      <span className="inline-block mt-2 px-2 py-1 bg-success/10 text-success text-xs rounded-full">
-                        {result.recommendedPlan?.name}
-                      </span>
+                      <div className="text-2xl font-black text-success mb-1">₪{result.recommendedPlan?.price.toLocaleString()}</div>
+                      <p className="text-xs text-muted-foreground">{result.recommendedPlan?.providerName}</p>
+                      <div className="mt-2">
+                        <span className="inline-block px-2 py-0.5 bg-success/10 text-success text-xs rounded-full font-medium">
+                          {result.recommendedPlan?.name}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Compact Savings Summary */}
+                <div className="bg-gradient-to-r from-success/10 via-emerald-50/80 to-success/10 rounded-xl p-4 mb-6 border border-success/20">
+                  <div className="flex items-center justify-between">
+                    <div className="text-center">
+                      <div className="text-xl font-black text-success">{formatCurrency(result.monthlySavings)}</div>
+                      <p className="text-xs text-success/70 font-medium">חיסכון חודשי</p>
+                    </div>
+                    <div className="w-px h-10 bg-success/30"></div>
+                    <div className="text-center">
+                      <div className="text-xl font-black text-success">{formatCurrency(result.annualSavings)}</div>
+                      <p className="text-xs text-success/70 font-medium">חיסכון שנתי</p>
                     </div>
                   </div>
                 </div>
