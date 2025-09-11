@@ -62,6 +62,53 @@ export const EnhancedSwitchRequestForm = ({ isOpen, onClose, selectedPlan }: Enh
     }
   };
 
+  const getCategoryColors = () => {
+    switch (serviceCategory) {
+      case 'electricity': 
+        return {
+          primary: 'from-yellow-400 to-yellow-500',
+          light: 'from-yellow-50 to-yellow-100',
+          text: 'text-yellow-700',
+          border: 'border-yellow-400/30',
+          bg: 'bg-yellow-50'
+        };
+      case 'cellular':
+        return {
+          primary: 'from-purple-400 to-purple-500',
+          light: 'from-purple-50 to-purple-100',
+          text: 'text-purple-700',
+          border: 'border-purple-400/30',
+          bg: 'bg-purple-50'
+        };
+      case 'internet':
+        return {
+          primary: 'from-cyan-400 to-cyan-500',
+          light: 'from-cyan-50 to-cyan-100',
+          text: 'text-cyan-700',
+          border: 'border-cyan-400/30',
+          bg: 'bg-cyan-50'
+        };
+      case 'tv':
+        return {
+          primary: 'from-orange-400 to-orange-500',
+          light: 'from-orange-50 to-orange-100',
+          text: 'text-orange-700',
+          border: 'border-orange-400/30',
+          bg: 'bg-orange-50'
+        };
+      default:
+        return {
+          primary: 'from-gray-400 to-gray-500',
+          light: 'from-gray-50 to-gray-100',
+          text: 'text-gray-700',
+          border: 'border-gray-400/30',
+          bg: 'bg-gray-50'
+        };
+    }
+  };
+
+  const categoryColors = getCategoryColors();
+
   const getCategoryLabel = () => {
     switch (serviceCategory) {
       case 'electricity': return 'חשמל';
@@ -104,11 +151,11 @@ export const EnhancedSwitchRequestForm = ({ isOpen, onClose, selectedPlan }: Enh
         <DialogHeader className="pb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-2xl flex items-center justify-center text-2xl shadow-lg">
+              <div className={`w-12 h-12 bg-gradient-to-br ${categoryColors.primary} rounded-2xl flex items-center justify-center text-2xl shadow-lg`}>
                 {getCategoryIcon()}
               </div>
               <div>
-                <DialogTitle className="text-2xl font-display font-bold bg-gradient-to-l from-primary to-primary-glow bg-clip-text text-transparent">
+                <DialogTitle className={`text-2xl font-display font-bold bg-gradient-to-l ${categoryColors.primary} bg-clip-text text-transparent`}>
                   טופס מעבר ספק {getCategoryLabel()}
                 </DialogTitle>
                 <p className="text-sm text-muted-foreground mt-1 font-body">
@@ -121,7 +168,7 @@ export const EnhancedSwitchRequestForm = ({ isOpen, onClose, selectedPlan }: Enh
                 <Shield className="w-3 h-3 ml-1" />
                 מאובטח SSL
               </Badge>
-              <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200">
+              <Badge variant="secondary" className={`${categoryColors.bg} ${categoryColors.text} ${categoryColors.border} border`}>
                 <Clock className="w-3 h-3 ml-1" />
                 3 דקות
               </Badge>
@@ -147,29 +194,29 @@ export const EnhancedSwitchRequestForm = ({ isOpen, onClose, selectedPlan }: Enh
           {/* Left Sidebar - Plan Details */}
           <div className="lg:col-span-1 space-y-4">
             {/* Enhanced Plan Details Card */}
-            <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary-glow/10 shadow-lg">
+            <Card className={`border-2 ${categoryColors.border} bg-gradient-to-br ${categoryColors.light} shadow-lg`}>
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-glow rounded-lg flex items-center justify-center shadow-md">
+                  <div className={`w-8 h-8 bg-gradient-to-br ${categoryColors.primary} rounded-lg flex items-center justify-center shadow-md`}>
                     <Star className="w-4 h-4 text-white" />
                   </div>
                   <CardTitle className="text-lg font-display">המסלול שנבחר</CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-white/50 rounded-lg border border-primary/10">
+                <div className={`flex items-center justify-between p-3 bg-white/50 rounded-lg border ${categoryColors.border}`}>
                   <span className="text-sm text-muted-foreground">חברה:</span>
-                  <span className="font-bold text-primary">{selectedPlan.company}</span>
+                  <span className={`font-bold ${categoryColors.text}`}>{selectedPlan.company}</span>
                 </div>
                 
-                <div className="flex items-center justify-between p-3 bg-white/50 rounded-lg border border-primary/10">
+                <div className={`flex items-center justify-between p-3 bg-white/50 rounded-lg border ${categoryColors.border}`}>
                   <span className="text-sm text-muted-foreground">מסלול:</span>
                   <span className="font-semibold">{selectedPlan.planName}</span>
                 </div>
                 
-                <div className="flex items-center justify-between p-3 bg-white/50 rounded-lg border border-primary/10">
+                <div className={`flex items-center justify-between p-3 bg-white/50 rounded-lg border ${categoryColors.border}`}>
                   <span className="text-sm text-muted-foreground">קטגוריה:</span>
-                  <Badge className="bg-gradient-to-r from-primary to-primary-glow">
+                  <Badge className={`bg-gradient-to-r ${categoryColors.primary} text-white`}>
                     {getCategoryLabel()}
                   </Badge>
                 </div>
@@ -260,15 +307,15 @@ export const EnhancedSwitchRequestForm = ({ isOpen, onClose, selectedPlan }: Enh
                 </CardContent>
               </Card>
 
-              {/* Process Explanation */}
-              <Card className="shadow-lg border border-primary/20 bg-gradient-to-r from-primary/5 to-blue-500/5 backdrop-blur-sm mb-6">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center">
-                      <FileText className="w-5 h-5 text-white" />
-                    </div>
-                    <h3 className="text-lg font-display font-bold text-primary">תהליך המעבר - פשוט וחכם</h3>
+            {/* Process Explanation */}
+            <Card className={`shadow-lg border ${categoryColors.border} bg-gradient-to-r ${categoryColors.light} backdrop-blur-sm mb-6`}>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className={`w-10 h-10 bg-gradient-to-br ${categoryColors.primary} rounded-full flex items-center justify-center`}>
+                    <FileText className="w-5 h-5 text-white" />
                   </div>
+                  <h3 className={`text-lg font-display font-bold ${categoryColors.text}`}>תהליך המעבר - פשוט וחכם</h3>
+                </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold">1</div>

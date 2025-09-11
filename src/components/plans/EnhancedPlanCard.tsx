@@ -144,33 +144,33 @@ const EnhancedPlanCard = ({
       `bg-gradient-to-br ${categoryColors.gradient}`,
       `border-2 ${categoryColors.border}`,
       isCompared && "ring-2 ring-primary/50 shadow-lg",
-      rank === 1 && "border-success/30 shadow-lg shadow-success/10",
+      rank === 1 && "border-4 border-success/60 shadow-2xl shadow-success/30 bg-gradient-to-br from-success/10 via-success/5 to-success/15 ring-4 ring-success/20 ring-offset-2 scale-105 z-10",
       className
     )}>
       {/* Top Badges */}
       <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
         {rank === 1 && (
-          <Badge className="bg-gradient-to-r from-success to-green-600 text-white shadow-lg">
-            <Award className="h-3 w-3 mr-1" />
-            המומלץ ביותר
+          <Badge className="bg-gradient-to-r from-success via-green-500 to-emerald-500 text-white shadow-2xl animate-pulse border-2 border-white/50 text-lg py-2 px-4 font-bold">
+            <Award className="h-5 w-5 mr-2" />
+            ⭐ המומלץ ביותר! ⭐
           </Badge>
         )}
-        {isPopular && (
+        {isPopular && rank !== 1 && (
           <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg">
             <Flame className="h-3 w-3 mr-1" />
             פופולרי
           </Badge>
         )}
-        {isNewPlan && (
+        {isNewPlan && rank !== 1 && (
           <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg">
             <Sparkles className="h-3 w-3 mr-1" />
             חדש
           </Badge>
         )}
         {showSavings && (
-          <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg">
+          <Badge className={`text-white shadow-lg ${rank === 1 ? 'bg-gradient-to-r from-yellow-500 to-amber-500 border-2 border-white/30' : 'bg-gradient-to-r from-green-600 to-emerald-600'}`}>
             <TrendingUp className="h-3 w-3 mr-1" />
-            חסכת ₪{savingsAmount}
+            {rank === 1 ? '🔥 חסכת' : 'חסכת'} ₪{savingsAmount}
           </Badge>
         )}
       </div>
@@ -358,12 +358,14 @@ const EnhancedPlanCard = ({
           <Button 
             className={cn(
               "w-full text-white font-bold text-lg py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0",
-              categoryColors.bgGradient,
-              "hover:opacity-90"
+              rank === 1 
+                ? "bg-gradient-to-r from-success via-green-500 to-emerald-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 shadow-2xl shadow-success/50 animate-pulse border-2 border-white/30"
+                : categoryColors.bgGradient,
+              rank === 1 ? "" : "hover:opacity-90"
             )}
             onClick={() => setIsFormOpen(true)}
           >
-            {rank === 1 ? 'בחר במסלול המומלץ ⭐' : 'בחר מסלול זה 🚀'}
+            {rank === 1 ? '🚀 בחר במסלול המומלץ ביותר! 🚀' : 'בחר מסלול זה 🚀'}
           </Button>
           
           <Button
