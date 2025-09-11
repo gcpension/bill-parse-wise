@@ -161,8 +161,8 @@ const PlanRecommendations = ({
           </div>
       </CardHeader>
 
-        <CardContent className="p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <CardContent className="p-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {recommendations.map(({ plan, reason, badge, badgeColor, icon: IconComponent }, index) => (
               <div 
                 key={plan.id}
@@ -173,7 +173,7 @@ const PlanRecommendations = ({
                 }`}
               >
 
-                <div className="relative p-4">
+                <div className="relative p-3">
                   {/* Top Badge */}
                   <div className="absolute -top-2 -right-2 z-10">
                     <Badge className={cn(`text-white border-0 px-2 py-1 text-xs ${
