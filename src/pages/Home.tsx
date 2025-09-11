@@ -135,7 +135,7 @@ const Home = () => {
                     
                     <p className="text-lg text-muted-foreground font-ibm-plex leading-relaxed">
                       האמת הפשוטה היא שהספקים מרוויחים מחוסר המידע שלכם. הם סומכים על העצלות, הפחד מהביורוקרטיה 
-                      והקושי להשוות מחירים. <strong className="text-primary text-xl font-semibold">אנחנו משברים את המעגל הזה</strong> - 
+                      והקושי להשוות מחירים. <strong className="text-primary text-xl font-semibold">אנחנו שוברים את המעגל הזה</strong> - 
                       נותנים לכם כוח, מידע ויכולת לקבל החלטות חכמות שיחסכו לכם כסף אמיתי.
                     </p>
                     
