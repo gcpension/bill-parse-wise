@@ -1,16 +1,97 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield, Wifi, Smartphone, Tv } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
 import familySavingsHero from '@/assets/family-savings-hero.jpg';
 const Home = () => {
   const [mounted, setMounted] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<Record<string, { provider: string; amount: string; selected: boolean }>>({
+    electricity: { provider: '', amount: '', selected: false },
+    cellular: { provider: '', amount: '', selected: false },
+    internet: { provider: '', amount: '', selected: false },
+    tv: { provider: '', amount: '', selected: false }
+  });
+  const navigate = useNavigate();
+
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const categoryData = {
+    electricity: {
+      name: 'חשמל',
+      icon: Zap,
+      color: 'from-yellow-400 to-orange-500',
+      bgColor: 'bg-gradient-to-br from-yellow-50 to-orange-50',
+      providers: ['חברת חשמל', 'פז אנרגיה', 'אלקטרה פאוור', 'דור אלון אנרגיה', 'סלקום אנרגיה']
+    },
+    cellular: {
+      name: 'סלולר',
+      icon: Smartphone,
+      color: 'from-purple-400 to-pink-500',
+      bgColor: 'bg-gradient-to-br from-purple-50 to-pink-50',
+      providers: ['פלאפון', 'סלקום', 'פרטנר', 'הוט מובייל', '019 מובייל']
+    },
+    internet: {
+      name: 'אינטרנט',
+      icon: Wifi,
+      color: 'from-blue-400 to-cyan-500',
+      bgColor: 'bg-gradient-to-br from-blue-50 to-cyan-50',
+      providers: ['בזק', 'הוט', 'פרטנר', 'סלקום', 'אורנג']
+    },
+    tv: {
+      name: 'טלוויזיה',
+      icon: Tv,
+      color: 'from-green-400 to-emerald-500',
+      bgColor: 'bg-gradient-to-br from-green-50 to-emerald-50',
+      providers: ['יס', 'הוט', 'סלקום TV', 'פרטנר TV', 'נטפליקס']
+    }
+  };
+
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategories(prev => ({
+      ...prev,
+      [category]: { ...prev[category], selected: !prev[category].selected }
+    }));
+  };
+
+  const handleProviderChange = (category: string, provider: string) => {
+    setSelectedCategories(prev => ({
+      ...prev,
+      [category]: { ...prev[category], provider }
+    }));
+  };
+
+  const handleAmountChange = (category: string, amount: string) => {
+    setSelectedCategories(prev => ({
+      ...prev,
+      [category]: { ...prev[category], amount }
+    }));
+  };
+
+  const handleStartAnalysis = () => {
+    const selectedData = Object.entries(selectedCategories)
+      .filter(([_, data]) => data.selected && data.provider && data.amount)
+      .map(([category, data]) => ({ category, ...data }));
+
+    if (selectedData.length === 0) {
+      enhancedToast.warning({
+        title: 'בחרו קטגוריה',
+        description: 'יש לבחור לפחות קטגוריה אחת עם פרטי ספק וסכום'
+      });
+      return;
+    }
+
+    // Store the data and navigate to results
+    localStorage.setItem('analysisData', JSON.stringify(selectedData));
+    navigate('/detailed-analysis-results');
+  };
   const features = [{
     title: "השוואה מתקדמת",
     description: "אלגוריתמי AI מנתחים אלפי תעריפים בזמן אמת",
@@ -168,17 +249,97 @@ const Home = () => {
                 <div className="flex flex-col items-center lg:items-start space-y-6">
                   <SimpleStepsBanner />
                   
-                  {/* Primary CTA - Right under banner */}
-                  <div className="flex justify-center">
-                    <Link to="/analyze" className="group">
-                      <Button size="lg" className="px-16 py-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-3xl lg:text-4xl shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-500/30 hover:ring-emerald-500/50">
+                  {/* Category Selection Section */}
+                  <div className="space-y-8 max-w-6xl mx-auto">
+                    <div className="text-center">
+                      <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
+                        <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                          באיזה שירות תרצו להתחיל לחסוך היום?
+                        </span>
+                      </h2>
+                      <p className="text-lg text-muted-foreground">בחרו קטגוריות והזינו פרטים לקבלת ניתוח מיידי</p>
+                    </div>
+
+                    {/* Category Cards Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {Object.entries(categoryData).map(([category, data]) => {
+                        const Icon = data.icon;
+                        const isSelected = selectedCategories[category].selected;
+                        return (
+                          <Card 
+                            key={category} 
+                            className={`relative overflow-hidden transition-all duration-300 cursor-pointer group ${
+                              isSelected 
+                                ? 'ring-2 ring-primary shadow-lg scale-105' 
+                                : 'hover:shadow-md hover:scale-102'
+                            } ${data.bgColor}`}
+                            onClick={() => handleCategorySelect(category)}
+                          >
+                            <CardContent className="p-6 text-center">
+                              <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${data.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                                <Icon className="w-8 h-8 text-white" />
+                              </div>
+                              <h3 className="font-display font-bold text-lg mb-2">{data.name}</h3>
+                              
+                              {isSelected && (
+                                <div className="space-y-3 mt-4" onClick={(e) => e.stopPropagation()}>
+                                  <Select 
+                                    value={selectedCategories[category].provider} 
+                                    onValueChange={(value) => handleProviderChange(category, value)}
+                                  >
+                                    <SelectTrigger className="h-9 text-sm bg-white/70">
+                                      <SelectValue placeholder="בחרו ספק" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {data.providers.map(provider => (
+                                        <SelectItem key={provider} value={provider}>{provider}</SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  
+                                  <Input
+                                    type="number"
+                                    placeholder="סכום חודשי (₪)"
+                                    value={selectedCategories[category].amount}
+                                    onChange={(e) => handleAmountChange(category, e.target.value)}
+                                    className="h-9 text-sm bg-white/70"
+                                  />
+                                </div>
+                              )}
+                              
+                              <Button 
+                                className={`w-full mt-4 ${
+                                  isSelected 
+                                    ? 'bg-gradient-to-r from-primary to-blue-600 text-white' 
+                                    : 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700'
+                                }`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleCategorySelect(category);
+                                }}
+                              >
+                                {isSelected ? 'נבחר ✓' : `בחר ${data.name}`}
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+
+                    {/* Start Analysis Button */}
+                    <div className="flex justify-center mt-8">
+                      <Button 
+                        size="lg" 
+                        onClick={handleStartAnalysis}
+                        className="px-16 py-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-3xl lg:text-4xl shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-500/30 hover:ring-emerald-500/50 group"
+                      >
                         <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
                         <span className="relative flex items-center gap-6">
-                          <span className="drop-shadow-lg">בדקו כמה תחסכו עכשיו</span>
+                          <span className="drop-shadow-lg">התחל ניתוח חיסכון</span>
                           <ArrowRight className="h-8 w-8 group-hover:translate-x-3 transition-transform duration-300 drop-shadow-lg" />
                         </span>
                       </Button>
-                    </Link>
+                    </div>
                   </div>
                 </div>
               </div>
