@@ -121,26 +121,26 @@ const Home = () => {
                     <div className="w-20 h-1 bg-gradient-to-r from-primary to-blue-600 rounded-full mb-6 mr-auto"></div>
                   </div>
                   
-                  <div className="space-y-6 text-right">
-                    <p className="text-xl text-muted-foreground font-elegant leading-relaxed">
+                   <div className="space-y-6 text-right">
+                    <p className="text-xl text-muted-foreground font-ibm-plex leading-relaxed">
                       אנחנו מאמינים שכל משפחה ועסק בישראל ראויים לשקיפות ולהוגנות בעולם השירותים הבסיסיים. 
                       <strong className="text-foreground font-semibold"> השליחות שלנו פשוטה אך חיונית - לקזז עלויות מיותרות ולהחזיר לכם את האלפי שקלים שמגיעים לכם מדי שנה.</strong>
                     </p>
                     
-                    <p className="text-lg text-muted-foreground font-body leading-relaxed">
+                    <p className="text-lg text-muted-foreground font-ibm-plex leading-relaxed">
                       במקום להישאר תקועים בחוזים יקרים, תעריפים מנופחים ושיחות שימור מייגעות, 
                       אנחנו מביאים לכם מהפכה אמיתית - טכנולוגיה מתקדמת שמנתחת את השוק בזמן אמת, 
                       מזהה הזדמנויות חיסכון ומבצעת עבורכם את כל התהליך הבירוקרטי.
                     </p>
                     
-                    <p className="text-lg text-muted-foreground font-body leading-relaxed">
+                    <p className="text-lg text-muted-foreground font-ibm-plex leading-relaxed">
                       האמת הפשוטה היא שהספקים מרוויחים מחוסר המידע שלכם. הם סומכים על העצלות, הפחד מהביורוקרטיה 
                       והקושי להשוות מחירים. <strong className="text-primary text-xl font-semibold">אנחנו משברים את המעגל הזה</strong> - 
                       נותנים לכם כוח, מידע ויכולת לקבל החלטות חכמות שיחסכו לכם כסף אמיתי.
                     </p>
                     
                     <div className="bg-gradient-to-r from-primary/10 to-success/10 p-6 rounded-3xl border border-primary/30 mt-8 shadow-lg">
-                      <p className="text-lg text-muted-foreground leading-relaxed font-body">
+                      <p className="text-lg text-muted-foreground leading-relaxed font-ibm-plex">
                         <strong className="text-primary text-xl font-bold">החזון שלנו:</strong> עולם שבו כל צרכן בישראל יודע בדיוק כמה הוא משלם, 
                         למה הוא משלם, ויש לו את הכלים לשנות את המצב תוך דקות. עד היום חסכנו לאלפי משפחות ועסקים מעל 
                         <strong className="text-success text-2xl font-bold"> 15 מיליון שקל בשנה האחרונה בלבד</strong>.
