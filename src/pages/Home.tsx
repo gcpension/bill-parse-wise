@@ -128,22 +128,26 @@ const Home = () => {
   }];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 font-body overflow-hidden">
-      {/* Modern Hero Background */}
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white font-body overflow-hidden">
+      {/* Modern Hero Background inspired by reference */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-teal-300/15 to-cyan-400/20" />
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80" 
-          style={{ backgroundImage: `url(${heroModernBg})` }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/30 via-transparent to-teal-500/20" />
+        {/* Main gradient background - bright center with green sides */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-white to-emerald-400" />
+        <div className="absolute inset-0 bg-gradient-to-b from-emerald-300/30 via-white/90 to-gray-50" />
         
-        {/* Geometric Shapes */}
-        <div className="absolute top-20 right-1/4 w-64 h-64 bg-white/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-emerald-300/30 rounded-full blur-3xl animate-float" style={{
+        {/* Geometric circular shapes */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-white/60 rounded-full blur-sm" />
+        <div className="absolute top-32 right-16 w-80 h-80 bg-emerald-200/40 rounded-full blur-md" />
+        <div className="absolute bottom-40 left-20 w-64 h-64 bg-white/50 rounded-full blur-sm" />
+        <div className="absolute bottom-20 right-32 w-72 h-72 bg-emerald-100/60 rounded-full blur-md" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/30 rounded-full blur-3xl" />
+        
+        {/* Additional decorative elements */}
+        <div className="absolute top-16 left-1/3 w-48 h-48 bg-emerald-300/25 rounded-full animate-float" />
+        <div className="absolute bottom-24 right-1/4 w-56 h-56 bg-white/40 rounded-full animate-float" style={{
           animationDelay: '2s'
         }} />
-        <div className="absolute top-1/2 right-10 w-48 h-48 bg-teal-400/25 rounded-full blur-2xl animate-float" style={{
+        <div className="absolute top-1/3 right-12 w-40 h-40 bg-emerald-200/30 rounded-full animate-float" style={{
           animationDelay: '4s'
         }} />
       </div>
@@ -154,11 +158,11 @@ const Home = () => {
           <div className="max-w-5xl mx-auto text-center">
             <div className={`transition-all duration-1000 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
               {/* Compact Premium Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md rounded-full border border-white/30 mb-6 shadow-lg">
-                <div className="w-4 h-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 backdrop-blur-md rounded-full border border-emerald-400/30 mb-6 shadow-lg">
+                <div className="w-4 h-4 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center">
                   <Sparkles className="w-2 h-2 text-white" />
                 </div>
-                <span className="text-xs font-display font-semibold bg-gradient-to-l from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                <span className="text-xs font-display font-semibold text-emerald-700">
                   הפלטפורמה המתקדמת ביותר • 2025
                 </span>
               </div>
@@ -168,10 +172,10 @@ const Home = () => {
                 תפסיקו לבזבז כסף
                 <br />
                 <span className="relative">
-                  <span className="bg-gradient-to-l from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
+                  <span className="bg-gradient-to-l from-emerald-600 via-emerald-700 to-emerald-800 bg-clip-text text-transparent">
                     על חשבונות מנופחים
                   </span>
-                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-full animate-gradient-x bg-300%"></div>
+                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 rounded-full"></div>
                 </span>
               </h1>
               
@@ -191,8 +195,8 @@ const Home = () => {
               {/* Category Selection Section - Moved to top */}
               <div className="space-y-8 max-w-6xl mx-auto mb-16">
                 <div className="text-center">
-                  <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-                    <span className="bg-gradient-to-l from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                  <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4 text-gray-800">
+                    <span className="bg-gradient-to-l from-emerald-600 via-emerald-700 to-emerald-800 bg-clip-text text-transparent">
                       באיזה שירות תרצו להתחיל לחסוך היום?
                     </span>
                   </h2>
