@@ -6,14 +6,11 @@ import { Link } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
 import familySavingsHero from '@/assets/family-savings-hero.jpg';
-
 const Home = () => {
   const [mounted, setMounted] = useState(false);
-  
   useEffect(() => {
     setMounted(true);
   }, []);
-
   const features = [{
     title: "השוואה מתקדמת",
     description: "אלגוריתמי AI מנתחים אלפי תעריפים בזמן אמת",
@@ -39,7 +36,6 @@ const Home = () => {
     description: "עדכונים על סטטוס המעבר בכל שלב",
     icon: CheckCircle
   }];
-
   const testimonials = [{
     name: "שרה כהן",
     role: "לקוחה מרוצה",
@@ -59,19 +55,17 @@ const Home = () => {
     rating: 5,
     savings: "₪2,100"
   }];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10 font-body overflow-hidden">
+  return <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10 font-body overflow-hidden">
       {/* Enhanced Background Elements */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-background to-secondary/5" />
         <div className="absolute top-10 left-1/3 w-[600px] h-[600px] bg-gradient-to-br from-primary/8 to-purple-500/8 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-10 right-1/3 w-[500px] h-[500px] bg-gradient-to-br from-emerald-400/8 to-blue-500/8 rounded-full blur-3xl animate-float" style={{
-          animationDelay: '2s'
-        }} />
+        animationDelay: '2s'
+      }} />
         <div className="absolute top-1/2 left-10 w-[400px] h-[400px] bg-gradient-to-br from-orange-400/6 to-pink-500/6 rounded-full blur-3xl animate-float" style={{
-          animationDelay: '4s'
-        }} />
+        animationDelay: '4s'
+      }} />
       </div>
 
       {/* Enhanced Hero Section */}
@@ -177,10 +171,7 @@ const Home = () => {
                   {/* Primary CTA - Right under banner */}
                   <div className="flex justify-center">
                     <Link to="/analyze" className="group">
-                      <Button 
-                        size="lg" 
-                        className="px-16 py-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-3xl lg:text-4xl shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-500/30 hover:ring-emerald-500/50"
-                      >
+                      <Button size="lg" className="px-16 py-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-black text-3xl lg:text-4xl shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-500/30 hover:ring-emerald-500/50">
                         <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
                         <span className="relative flex items-center gap-6">
                           <span className="drop-shadow-lg">בדקו כמה תחסכו עכשיו</span>
@@ -338,35 +329,7 @@ const Home = () => {
             </div>
 
             {/* Results Section */}
-            <div className="bg-gradient-to-r from-card to-card/80 backdrop-blur-sm rounded-3xl p-8 border border-border/50 shadow-xl">
-              <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-success to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                  <span className="text-white text-3xl">💡</span>
-                </div>
-                <h3 className="text-2xl font-display font-bold text-foreground mb-4">
-                  המהפכה כבר התחילה
-                </h3>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  בעוד שאלפי ישראלים עדיין תקועים בשיטות מיושנות, 
-                  <strong className="text-primary"> משפחות חכמות כבר חוסכות איתנו מיליונים</strong>
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center group">
-                  <div className="text-4xl font-black text-success mb-2 group-hover:scale-110 transition-transform">15M₪</div>
-                  <div className="text-muted-foreground">נחסכו השנה</div>
-                </div>
-                <div className="text-center group">
-                  <div className="text-4xl font-black text-primary mb-2 group-hover:scale-110 transition-transform">4,500+</div>
-                  <div className="text-muted-foreground">לקוחות מרוצים</div>
-                </div>
-                <div className="text-center group">
-                  <div className="text-4xl font-black text-blue-600 mb-2 group-hover:scale-110 transition-transform">96%</div>
-                  <div className="text-muted-foreground">מוצאים חיסכון</div>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </section>
@@ -388,43 +351,42 @@ const Home = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[{
-                icon: "🎯",
-                title: "דיוק מושלם",
-                description: "האלגוריתם שלנו לוקח בחשבון את הפרופיל הספציפי שלכם - גודל משפחה, צריכה, העדפות, ומוצא את הפתרון המושלם בדיוק עבורכם",
-                stats: "דיוק של 96.8%",
-                color: "from-blue-500 to-cyan-600"
-              }, {
-                icon: "⚡",
-                title: "מהירות שוברת שיאים",
-                description: "בזמן שאתם שותים קפה אחד, המערכת שלנו כבר סורקת כל הספקים, מחשבת, ומציגה לכם את האפשרויות הטובות ביותר עם כל הפרטים",
-                stats: "תוצאות תוך 90 שניות",
-                color: "from-emerald-500 to-green-600"
-              }, {
-                icon: "🛡️",
-                title: "בטיחות ללא פשרות",
-                description: "רמת הצפנה בנקאית, אבטחת נתונים ברמה הגבוהה ביותר, ושקיפות מלאה. כל המידע שלכם נשמר בבטחה ולא נמכר לגורמים שלישיים",
-                stats: "אבטחה ברמה בנקאית",
-                color: "from-purple-500 to-indigo-600"
-              }, {
-                icon: "💰",
-                title: "חיסכון מבטיח",
-                description: "לא רק משווים - גם מבטיחים חיסכון. אם לא חסכתם לפחות 15% מהחשבון החודשי, אנחנו מחזירים לכם את ההפרש במזומן",
-                stats: "גרנטי חיסכון 15%+",
-                color: "from-amber-500 to-orange-600"
-              }, {
-                icon: "🎪",
-                title: "שירות VIP לכולם",
-                description: "יש לנו נציג אישי לכל לקוח. לא בוטים, לא מוקד טלפוני - בן אדם אמיתי שמכיר את התיק שלכם ועונה תוך דקות בוואטסאפ",
-                stats: "מענה תוך 3 דקות בממוצע",
-                color: "from-pink-500 to-rose-600"
-              }, {
-                icon: "🔄",
-                title: "מעקב חי 24/7",
-                description: "אפליקציה נייחת שמתעדכנת בזמן אמת על כל שלב במעבר. תדעו בדיוק איפה אתם עומדים ומתי הכל יהיה מוכן - ללא הפתעות",
-                stats: "עדכונים בזמן אמת",
-                color: "from-teal-500 to-blue-600"
-              }].map((feature, index) => (
-                <div key={index} className="group bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-sm border border-border/40 rounded-3xl p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2">
+              icon: "🎯",
+              title: "דיוק מושלם",
+              description: "האלגוריתם שלנו לוקח בחשבון את הפרופיל הספציפי שלכם - גודל משפחה, צריכה, העדפות, ומוצא את הפתרון המושלם בדיוק עבורכם",
+              stats: "דיוק של 96.8%",
+              color: "from-blue-500 to-cyan-600"
+            }, {
+              icon: "⚡",
+              title: "מהירות שוברת שיאים",
+              description: "בזמן שאתם שותים קפה אחד, המערכת שלנו כבר סורקת כל הספקים, מחשבת, ומציגה לכם את האפשרויות הטובות ביותר עם כל הפרטים",
+              stats: "תוצאות תוך 90 שניות",
+              color: "from-emerald-500 to-green-600"
+            }, {
+              icon: "🛡️",
+              title: "בטיחות ללא פשרות",
+              description: "רמת הצפנה בנקאית, אבטחת נתונים ברמה הגבוהה ביותר, ושקיפות מלאה. כל המידע שלכם נשמר בבטחה ולא נמכר לגורמים שלישיים",
+              stats: "אבטחה ברמה בנקאית",
+              color: "from-purple-500 to-indigo-600"
+            }, {
+              icon: "💰",
+              title: "חיסכון מבטיח",
+              description: "לא רק משווים - גם מבטיחים חיסכון. אם לא חסכתם לפחות 15% מהחשבון החודשי, אנחנו מחזירים לכם את ההפרש במזומן",
+              stats: "גרנטי חיסכון 15%+",
+              color: "from-amber-500 to-orange-600"
+            }, {
+              icon: "🎪",
+              title: "שירות VIP לכולם",
+              description: "יש לנו נציג אישי לכל לקוח. לא בוטים, לא מוקד טלפוני - בן אדם אמיתי שמכיר את התיק שלכם ועונה תוך דקות בוואטסאפ",
+              stats: "מענה תוך 3 דקות בממוצע",
+              color: "from-pink-500 to-rose-600"
+            }, {
+              icon: "🔄",
+              title: "מעקב חי 24/7",
+              description: "אפליקציה נייחת שמתעדכנת בזמן אמת על כל שלב במעבר. תדעו בדיוק איפה אתם עומדים ומתי הכל יהיה מוכן - ללא הפתעות",
+              stats: "עדכונים בזמן אמת",
+              color: "from-teal-500 to-blue-600"
+            }].map((feature, index) => <div key={index} className="group bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-sm border border-border/40 rounded-3xl p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2">
                   <div className="text-center">
                     <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-3xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300 shadow-xl mx-auto mb-4`}>
                       {feature.icon}
@@ -435,8 +397,7 @@ const Home = () => {
                       {feature.stats}
                     </div>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
@@ -457,10 +418,7 @@ const Home = () => {
             
             <div className="flex justify-center">
               <Link to="/analyze" className="group">
-                <Button 
-                  size="lg" 
-                  className="px-10 py-5 bg-gradient-to-r from-primary via-primary-glow to-blue-600 hover:from-primary-glow hover:via-blue-600 hover:to-purple-600 text-white font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-xl"
-                >
+                <Button size="lg" className="px-10 py-5 bg-gradient-to-r from-primary via-primary-glow to-blue-600 hover:from-primary-glow hover:via-blue-600 hover:to-purple-600 text-white font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-xl">
                   <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
                   <span className="relative flex items-center gap-3">
                     התחילו את הניתוח החינמי
@@ -497,21 +455,12 @@ const Home = () => {
               {/* Image */}
               <div className="relative">
                 <div className="relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500">
-                  <img 
-                    src={familySavingsHero}
-                    alt="משפחה ישראלית שמחה חוסכת כסף עם השירות שלנו"
-                    className="w-full h-auto object-cover"
-                  />
+                  <img src={familySavingsHero} alt="משפחה ישראלית שמחה חוסכת כסף עם השירות שלנו" className="w-full h-auto object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
                 </div>
                 
                 {/* Floating Success Badge */}
-                <div className="absolute -bottom-6 -right-6 bg-gradient-to-br from-success via-emerald-500 to-green-600 text-white px-6 py-4 rounded-2xl shadow-xl backdrop-blur-sm border border-white/20">
-                  <div className="text-center">
-                    <div className="text-2xl font-black">₪15M+</div>
-                    <div className="text-sm font-medium opacity-90">נחסך השנה</div>
-                  </div>
-                </div>
+                
               </div>
               
               {/* Content */}
@@ -546,10 +495,7 @@ const Home = () => {
                 
                 <div className="flex justify-start">
                   <Link to="/analyze" className="group">
-                    <Button 
-                      size="lg" 
-                      className="px-8 py-6 bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-purple-600/90 text-white font-bold text-lg shadow-xl hover:shadow-primary/25 transform hover:scale-105 transition-all duration-300 rounded-2xl"
-                    >
+                    <Button size="lg" className="px-8 py-6 bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-purple-600/90 text-white font-bold text-lg shadow-xl hover:shadow-primary/25 transform hover:scale-105 transition-all duration-300 rounded-2xl">
                       <span className="flex items-center gap-3">
                         <span>התחילו לחסוך עכשיו</span>
                         <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -581,38 +527,36 @@ const Home = () => {
 
               <div className="space-y-4">
                 {[{
-                  q: "האם השירות באמת חינם?",
-                  a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
-                }, {
-                  q: "כמה זמן לוקח לקבל תוצאות?",
-                  a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
-                }, {
-                  q: "מה אם אני כבר בהתקשרות?",
-                  a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
-                }, {
-                  q: "האם יש ביטול אוטומטי מהספק הישן?",
-                  a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
-                }, {
-                  q: "האם אני מחויב לעבור לספק שאתם ממליצים?",
-                  a: "בהחלט לא! אתם מקבלים את המלצותינו ויכולים לבחור בעצמכם. אם תחליטו לא לעבור - זה בסדר גמור."
-                }, {
-                  q: "איך אתם מרוויחים כסף?",
-                  a: "אנחנו מקבלים עמלה מהספק החדש רק אם אתם בוחרים לעבור אליו. לכן האינטרס שלנו הוא למצוא לכם באמת את הדיל הטוב ביותר."
-                }, {
-                  q: "האם אתם עובדים עם כל הספקים?",
-                  a: "כן, אנחנו עובדים עם כל הספקים הגדולים בישראל ועם עשרות ספקים קטנים יותר."
-                }, {
-                  q: "מה קורה אם אני לא מרוצה מהמעבר?",
-                  a: "יש לנו אחריות מלאה על התהליך. אם משהו לא תקין, אנחנו מטפלים בזה ללא עלות."
-                }, {
-                  q: "האם המידע שלי בטוח?",
-                  a: "כן, אנחנו משתמשים בהצפנה ברמה בנקאית ולא שומרים מידע רגיש יותר מהנדרש."
-                }].map((faq, index) => (
-                  <div key={index} className="bg-card/80 backdrop-blur-sm border border-border/40 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                q: "האם השירות באמת חינם?",
+                a: "כן! אנחנו לא גובים כלום מהלקוחות. הכנסה שלנו מגיעה מהספקים החדשים כשאתם עוברים אליהם."
+              }, {
+                q: "כמה זמן לוקח לקבל תוצאות?",
+                a: "הניתוח מוכן תוך דקות ספורות. המעבר הפיזי לוקח 3-7 ימי עסקים בהתאם לסוג השירות."
+              }, {
+                q: "מה אם אני כבר בהתקשרות?",
+                a: "אנחנו בודקים את תנאי ההתקשרות ויכולים לייעץ מתי כדאי לעבור ומתי לחכות."
+              }, {
+                q: "האם יש ביטול אוטומטי מהספק הישן?",
+                a: "כן! חלק מהתהליך שלנו כולל טיפול בביטול מהספק הישן כך שלא תשלמו כפול."
+              }, {
+                q: "האם אני מחויב לעבור לספק שאתם ממליצים?",
+                a: "בהחלט לא! אתם מקבלים את המלצותינו ויכולים לבחור בעצמכם. אם תחליטו לא לעבור - זה בסדר גמור."
+              }, {
+                q: "איך אתם מרוויחים כסף?",
+                a: "אנחנו מקבלים עמלה מהספק החדש רק אם אתם בוחרים לעבור אליו. לכן האינטרס שלנו הוא למצוא לכם באמת את הדיל הטוב ביותר."
+              }, {
+                q: "האם אתם עובדים עם כל הספקים?",
+                a: "כן, אנחנו עובדים עם כל הספקים הגדולים בישראל ועם עשרות ספקים קטנים יותר."
+              }, {
+                q: "מה קורה אם אני לא מרוצה מהמעבר?",
+                a: "יש לנו אחריות מלאה על התהליך. אם משהו לא תקין, אנחנו מטפלים בזה ללא עלות."
+              }, {
+                q: "האם המידע שלי בטוח?",
+                a: "כן, אנחנו משתמשים בהצפנה ברמה בנקאית ולא שומרים מידע רגיש יותר מהנדרש."
+              }].map((faq, index) => <div key={index} className="bg-card/80 backdrop-blur-sm border border-border/40 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
                     <h3 className="font-display font-semibold text-lg mb-3 text-foreground">{faq.q}</h3>
                     <p className="text-muted-foreground leading-relaxed font-body">{faq.a}</p>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
             
@@ -635,26 +579,24 @@ const Home = () => {
 
                 <div className="space-y-4">
                   {[{
-                    icon: "📊",
-                    title: "בדקו חשבונות מידי חודש",
-                    description: "עקבו אחרי הצריכה - זיהוי מוקדם של עליות"
-                  }, {
-                    icon: "⏰",
-                    title: "תוקף ההתקשרויות",
-                    description: "הנחות זמניות נגמרות - חשוב לעקוב"
-                  }, {
-                    icon: "🔄",
-                    title: "אל תפחדו להחליף",
-                    description: "היום זה פשוט ויכול לחסוך אלפי שקלים"
-                  }].map((tip, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 bg-gradient-to-br from-background/80 to-muted/20 rounded-2xl border border-border/20">
+                  icon: "📊",
+                  title: "בדקו חשבונות מידי חודש",
+                  description: "עקבו אחרי הצריכה - זיהוי מוקדם של עליות"
+                }, {
+                  icon: "⏰",
+                  title: "תוקף ההתקשרויות",
+                  description: "הנחות זמניות נגמרות - חשוב לעקוב"
+                }, {
+                  icon: "🔄",
+                  title: "אל תפחדו להחליף",
+                  description: "היום זה פשוט ויכול לחסוך אלפי שקלים"
+                }].map((tip, index) => <div key={index} className="flex items-start gap-3 p-3 bg-gradient-to-br from-background/80 to-muted/20 rounded-2xl border border-border/20">
                       <div className="text-lg">{tip.icon}</div>
                       <div className="flex-1">
                         <h4 className="font-display font-semibold text-sm mb-1">{tip.title}</h4>
                         <p className="text-muted-foreground text-xs leading-tight font-body">{tip.description}</p>
                       </div>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
               </div>
             </div>
@@ -662,8 +604,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Home;
