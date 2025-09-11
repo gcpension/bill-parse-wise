@@ -8,7 +8,10 @@ import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
-import familySavingsHero from '@/assets/family-savings-hero.jpg';
+import electricityFamily from '@/assets/electricity-family.jpg';
+import cellularFamily from '@/assets/cellular-family.jpg';
+import internetFamily from '@/assets/internet-family.jpg';
+import tvFamily from '@/assets/tv-family.jpg';
 const Home = () => {
   const [mounted, setMounted] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<Record<string, { provider: string; amount: string; selected: boolean }>>({
@@ -27,29 +30,33 @@ const Home = () => {
     electricity: {
       name: 'חשמל',
       icon: Zap,
-      color: 'from-yellow-400 to-orange-500',
-      bgColor: 'bg-gradient-to-br from-yellow-50 to-orange-50',
+      color: 'from-yellow-300 to-amber-400',
+      bgColor: 'bg-gradient-to-br from-yellow-50/80 to-amber-50/80',
+      borderColor: 'border-yellow-200/60',
       providers: ['חברת חשמל', 'פז אנרגיה', 'אלקטרה פאוור', 'דור אלון אנרגיה', 'סלקום אנרגיה']
     },
     cellular: {
-      name: 'סלולר',
+      name: 'סלולר', 
       icon: Smartphone,
-      color: 'from-purple-400 to-pink-500',
-      bgColor: 'bg-gradient-to-br from-purple-50 to-pink-50',
+      color: 'from-purple-300 to-indigo-400',
+      bgColor: 'bg-gradient-to-br from-purple-50/80 to-indigo-50/80',
+      borderColor: 'border-purple-200/60',
       providers: ['פלאפון', 'סלקום', 'פרטנר', 'הוט מובייל', '019 מובייל']
     },
     internet: {
       name: 'אינטרנט',
       icon: Wifi,
-      color: 'from-blue-400 to-cyan-500',
-      bgColor: 'bg-gradient-to-br from-blue-50 to-cyan-50',
+      color: 'from-blue-300 to-cyan-400',
+      bgColor: 'bg-gradient-to-br from-blue-50/80 to-cyan-50/80',
+      borderColor: 'border-blue-200/60',
       providers: ['בזק', 'הוט', 'פרטנר', 'סלקום', 'אורנג']
     },
     tv: {
       name: 'טלוויזיה',
       icon: Tv,
-      color: 'from-green-400 to-emerald-500',
-      bgColor: 'bg-gradient-to-br from-green-50 to-emerald-50',
+      color: 'from-green-300 to-emerald-400',
+      bgColor: 'bg-gradient-to-br from-green-50/80 to-emerald-50/80',
+      borderColor: 'border-green-200/60',
       providers: ['יס', 'הוט', 'סלקום TV', 'פרטנר TV', 'נטפליקס']
     }
   };
@@ -201,67 +208,83 @@ const Home = () => {
                 </div>
 
                 {/* Category Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                   {Object.entries(categoryData).map(([category, data]) => {
                     const Icon = data.icon;
                     const isSelected = selectedCategories[category].selected;
+                    const categoryImages = {
+                      electricity: electricityFamily,
+                      cellular: cellularFamily,
+                      internet: internetFamily,
+                      tv: tvFamily
+                    };
                     return (
-                      <Card 
-                        key={category} 
-                        className={`relative overflow-hidden transition-all duration-300 cursor-pointer group ${
-                          isSelected 
-                            ? 'ring-2 ring-primary shadow-lg scale-105' 
-                            : 'hover:shadow-md hover:scale-102'
-                        } ${data.bgColor}`}
-                        onClick={() => handleCategorySelect(category)}
-                      >
-                        <CardContent className="p-6 text-center">
-                          <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${data.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                            <Icon className="w-8 h-8 text-white" />
-                          </div>
-                          <h3 className="font-display font-bold text-lg mb-2">{data.name}</h3>
-                          
-                          {isSelected && (
-                            <div className="space-y-3 mt-4" onClick={(e) => e.stopPropagation()}>
-                              <Select 
-                                value={selectedCategories[category].provider} 
-                                onValueChange={(value) => handleProviderChange(category, value)}
-                              >
-                                <SelectTrigger className="h-9 text-sm bg-white/70">
-                                  <SelectValue placeholder="בחרו ספק" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {data.providers.map(provider => (
-                                    <SelectItem key={provider} value={provider}>{provider}</SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              
-                              <Input
-                                type="number"
-                                placeholder="סכום חודשי (₪)"
-                                value={selectedCategories[category].amount}
-                                onChange={(e) => handleAmountChange(category, e.target.value)}
-                                className="h-9 text-sm bg-white/70"
-                              />
+                      <div key={category} className="space-y-4">
+                        <Card 
+                          className={`relative overflow-hidden transition-all duration-300 cursor-pointer group ${
+                            isSelected 
+                              ? `ring-2 ring-primary/40 shadow-xl scale-105 ${data.borderColor}` 
+                              : `hover:shadow-lg hover:scale-102 border ${data.borderColor}`
+                          } ${data.bgColor} border-2`}
+                          onClick={() => handleCategorySelect(category)}
+                        >
+                          <CardContent className="p-6 text-center">
+                            <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${data.color} flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                              <Icon className="w-8 h-8 text-white" />
                             </div>
-                          )}
-                          
-                          <Button 
-                            className={`w-full mt-4 ${
-                              isSelected 
-                                ? 'bg-gradient-to-r from-primary to-blue-600 text-white' 
-                                : 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700'
-                            }`}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleCategorySelect(category);
-                            }}
-                          >
-                            {isSelected ? 'נבחר ✓' : `בחר ${data.name}`}
-                          </Button>
-                        </CardContent>
-                      </Card>
+                            <h3 className="font-display font-bold text-lg mb-2 text-gray-700">{data.name}</h3>
+                            
+                            {isSelected && (
+                              <div className="space-y-3 mt-4" onClick={(e) => e.stopPropagation()}>
+                                <Select 
+                                  value={selectedCategories[category].provider} 
+                                  onValueChange={(value) => handleProviderChange(category, value)}
+                                >
+                                  <SelectTrigger className="h-9 text-sm bg-white/90 border-gray-200">
+                                    <SelectValue placeholder="בחרו ספק" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {data.providers.map(provider => (
+                                      <SelectItem key={provider} value={provider}>{provider}</SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                                
+                                <Input
+                                  type="number"
+                                  placeholder="סכום חודשי (₪)"
+                                  value={selectedCategories[category].amount}
+                                  onChange={(e) => handleAmountChange(category, e.target.value)}
+                                  className="h-9 text-sm bg-white/90 border-gray-200"
+                                />
+                              </div>
+                            )}
+                            
+                            <Button 
+                              className={`w-full mt-4 transition-all duration-300 ${
+                                isSelected 
+                                  ? 'bg-gradient-to-r from-primary/80 to-blue-500/80 text-white hover:from-primary hover:to-blue-600' 
+                                  : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-700 hover:to-gray-800'
+                              }`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCategorySelect(category);
+                              }}
+                            >
+                              {isSelected ? 'נבחר ✓' : `בחר ${data.name}`}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                        
+                        {/* Category Illustration */}
+                        <div className="flex justify-center">
+                          <img 
+                            src={categoryImages[category]} 
+                            alt={`איור ${data.name}`}
+                            className="w-48 h-36 object-cover rounded-xl shadow-md opacity-80 hover:opacity-100 transition-opacity duration-300"
+                          />
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -432,21 +455,57 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Smart Tips - Moved to bottom in sidebar style */}
-      <section className="py-16 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900">
+      {/* Mission Section - Moved to bottom */}
+      <section className="py-16 bg-gradient-to-br from-slate-50/50 to-gray-50/50 dark:from-slate-900/50 dark:to-gray-900/50 mt-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl lg:text-4xl font-display font-bold mb-6 leading-tight">
+                <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  השליחות שלנו
+                </span>
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-blue-600 rounded-full mx-auto mb-8"></div>
+            </div>
             
-            {/* Main FAQ Content */}
-            <div>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-display font-bold mb-4">
-                  <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    שאלות נפוצות
-                  </span>
-                </h2>
-                <p className="text-muted-foreground">תשובות לשאלות הנפוצות ביותר שאנחנו מקבלים</p>
+            <div className="space-y-8 text-center max-w-4xl mx-auto">
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                אנחנו מאמינים שכל משפחה ועסק בישראל ראויים לשקיפות ולהוגנות בעולם השירותים הבסיסיים. 
+                <strong className="text-foreground font-semibold"> השליחות שלנו פשוטה אך חיונית - לקזז עלויות מיותרות ולהחזיר לכם את האלפי שקלים שמגיעים לכם מדי שנה.</strong>
+              </p>
+              
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                במקום להישאר תקועים בחוזים יקרים, תעריפים מנופחים ושיחות שימור מייגעות, 
+                אנחנו מביאים לכם מהפכה אמיתית - טכנולוגיה מתקדמת שמנתחת את השוק בזמן אמת, 
+                מזהה הזדמנויות חיסכון ומבצעת עבורכם את כל התהליך הבירוקרטי.
+              </p>
+              
+              <div className="bg-gradient-to-r from-primary/10 to-success/10 p-8 rounded-3xl border border-primary/20 shadow-lg">
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  <strong className="text-primary text-2xl font-bold">החזון שלנו:</strong> עולם שבו כל צרכן בישראל יודע בדיוק כמה הוא משלם, 
+                  למה הוא משלם, ויש לו את הכלים לשנות את המצב תוך דקות. עד היום חסכנו לאלפי משפחות ועסקים מעל 
+                  <strong className="text-success text-3xl font-bold"> 15 מיליון שקל בשנה האחרונה בלבד</strong>.
+                </p>
+                
+                <div className="flex flex-wrap gap-4 justify-center mt-8">
+                  <div className="flex items-center gap-2 bg-primary/20 px-6 py-3 rounded-full border border-primary/30">
+                    <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+                    <span className="text-lg font-semibold text-primary">שקיפות מלאה</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-success/20 px-6 py-3 rounded-full border border-success/30">
+                    <div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
+                    <span className="text-lg font-semibold text-success">חיסכון מבטיח</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-blue-500/20 px-6 py-3 rounded-full border border-blue-500/30">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                    <span className="text-lg font-semibold text-blue-600">שירות אישי</span>
+                  </div>
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
               <div className="space-y-4">
                 {[{
@@ -513,20 +572,21 @@ const Home = () => {
                   icon: "🔄",
                   title: "אל תפחדו להחליף",
                   description: "היום זה פשוט ויכול לחסוך אלפי שקלים"
-                }].map((tip, index) => <div key={index} className="flex items-start gap-3 p-3 bg-gradient-to-br from-background/80 to-muted/20 rounded-2xl border border-border/20">
-                      <div className="text-lg">{tip.icon}</div>
-                      <div className="flex-1">
-                        <h4 className="font-display font-semibold text-sm mb-1">{tip.title}</h4>
-                        <p className="text-muted-foreground text-xs leading-tight font-body">{tip.description}</p>
-                      </div>
-                    </div>)}
-                </div>
+                }].map((tip, index) => (
+                  <div key={index} className="flex items-start gap-3 p-3 bg-gradient-to-br from-background/80 to-muted/20 rounded-2xl border border-border/20">
+                    <div className="text-lg">{tip.icon}</div>
+                    <div className="flex-1">
+                      <h4 className="font-display font-semibold text-sm mb-1">{tip.title}</h4>
+                      <p className="text-muted-foreground text-xs leading-tight font-body">{tip.description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-            
           </div>
         </div>
       </section>
-    </div>;
+    </div>
+  );
 };
 export default Home;
