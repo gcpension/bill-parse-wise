@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield, Wifi, Smartphone, Tv } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
+import heroModernBg from '@/assets/hero-modern-bg.jpg';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
@@ -127,15 +128,22 @@ const Home = () => {
   }];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10 font-body overflow-hidden">
-      {/* Enhanced Background Elements */}
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 font-body overflow-hidden">
+      {/* Modern Hero Background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-background to-secondary/5" />
-        <div className="absolute top-10 left-1/3 w-[600px] h-[600px] bg-gradient-to-br from-primary/8 to-purple-500/8 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-10 right-1/3 w-[500px] h-[500px] bg-gradient-to-br from-emerald-400/8 to-blue-500/8 rounded-full blur-3xl animate-float" style={{
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-teal-300/15 to-cyan-400/20" />
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80" 
+          style={{ backgroundImage: `url(${heroModernBg})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/30 via-transparent to-teal-500/20" />
+        
+        {/* Geometric Shapes */}
+        <div className="absolute top-20 right-1/4 w-64 h-64 bg-white/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-emerald-300/30 rounded-full blur-3xl animate-float" style={{
           animationDelay: '2s'
         }} />
-        <div className="absolute top-1/2 left-10 w-[400px] h-[400px] bg-gradient-to-br from-orange-400/6 to-pink-500/6 rounded-full blur-3xl animate-float" style={{
+        <div className="absolute top-1/2 right-10 w-48 h-48 bg-teal-400/25 rounded-full blur-2xl animate-float" style={{
           animationDelay: '4s'
         }} />
       </div>
@@ -146,11 +154,11 @@ const Home = () => {
           <div className="max-w-5xl mx-auto text-center">
             <div className={`transition-all duration-1000 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
               {/* Compact Premium Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/10 via-purple-500/10 to-blue-500/10 rounded-full border border-primary/20 mb-6 backdrop-blur-sm shadow-sm">
-                <div className="w-4 h-4 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md rounded-full border border-white/30 mb-6 shadow-lg">
+                <div className="w-4 h-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
                   <Sparkles className="w-2 h-2 text-white" />
                 </div>
-                <span className="text-xs font-display font-semibold bg-gradient-to-l from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="text-xs font-display font-semibold bg-gradient-to-l from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
                   הפלטפורמה המתקדמת ביותר • 2025
                 </span>
               </div>
@@ -160,10 +168,10 @@ const Home = () => {
                 תפסיקו לבזבז כסף
                 <br />
                 <span className="relative">
-                  <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
+                  <span className="bg-gradient-to-l from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
                     על חשבונות מנופחים
                   </span>
-                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-600 to-purple-600 rounded-full animate-gradient-x bg-300%"></div>
+                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-full animate-gradient-x bg-300%"></div>
                 </span>
               </h1>
               
@@ -184,11 +192,11 @@ const Home = () => {
               <div className="space-y-8 max-w-6xl mx-auto mb-16">
                 <div className="text-center">
                   <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-                    <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-l from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
                       באיזה שירות תרצו להתחיל לחסוך היום?
                     </span>
                   </h2>
-                  <p className="text-lg text-muted-foreground">בחרו קטגוריות והזינו פרטים לקבלת ניתוח מיידי</p>
+                  <p className="text-lg text-gray-700">בחרו קטגוריות והזינו פרטים לקבלת ניתוח מיידי</p>
                 </div>
 
                 {/* Category Cards Grid */}
