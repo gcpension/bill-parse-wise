@@ -37,6 +37,7 @@ interface EnhancedPlanCardProps {
   estimatedSavings?: number;
   rank?: number;
   className?: string;
+  compact?: boolean;
 }
 
 const EnhancedPlanCard = ({
@@ -47,7 +48,8 @@ const EnhancedPlanCard = ({
   showSavings = false,
   estimatedSavings,
   rank,
-  className
+  className,
+  compact = false
 }: EnhancedPlanCardProps) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -197,11 +199,11 @@ const EnhancedPlanCard = ({
       )}
 
       <CardHeader className="pb-4">
-        <div className="flex items-start justify-between gap-4 mt-8">
+        <div className={cn("flex items-start justify-between gap-4", compact ? "mt-6" : "mt-8")}>
           {/* Company Info */}
           <div className="flex items-center gap-4 flex-1">
             <div className={cn(
-              "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg text-white",
+              `${compact ? 'w-12 h-12' : 'w-16 h-16'} rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg text-white`,
               `bg-gradient-to-r ${categoryColors.iconBg}`
             )}>
               {getCategoryIcon()}
@@ -237,31 +239,33 @@ const EnhancedPlanCard = ({
               </div>
               
               {/* Company and Plan Names */}
-              <h3 className="font-bold text-xl text-foreground mb-1">{plan.company}</h3>
+              <h3 className={cn("font-bold text-foreground mb-1", compact ? "text-lg" : "text-xl")}>{plan.company}</h3>
               <p className="text-muted-foreground font-medium">{plan.planName}</p>
             </div>
           </div>
 
           {/* Price */}
           <div className={cn(
-            "text-center p-4 rounded-xl border shadow-sm",
+            "text-center rounded-xl border shadow-sm",
+            compact ? "p-3" : "p-4",
             categoryColors.gradient,
             categoryColors.border
           )}>
             <div className={cn(
-              "text-3xl font-black bg-clip-text text-transparent",
+              "font-black bg-clip-text text-transparent",
+              compact ? "text-xl" : "text-3xl",
               categoryColors.bgGradient
             )}>
               {formatPrice()}
             </div>
             {plan.category !== 'electricity' && (
-              <div className="text-sm text-muted-foreground font-medium">לחודש</div>
+              <div className={cn("text-muted-foreground font-medium", compact ? "text-xs" : "text-sm")}>לחודש</div>
             )}
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className={cn(compact ? "space-y-4" : "space-y-6")}>
         {/* Plan Specifications */}
         <div className="grid grid-cols-2 gap-3">
           {plan.category === 'internet' && plan.downloadSpeed && (
@@ -357,11 +361,13 @@ const EnhancedPlanCard = ({
         <div className="space-y-3">
           <Button 
             className={cn(
-              "w-full text-white font-bold text-lg py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0",
+              "w-full text-white font-bold rounded-xl shadow-lg transition-all duration-300 border-0",
+              compact ? "text-sm py-3" : "text-lg py-6",
               rank === 1 
                 ? "bg-gradient-to-r from-success via-green-500 to-emerald-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 shadow-2xl shadow-success/50 animate-pulse border-2 border-white/30"
                 : categoryColors.bgGradient,
-              rank === 1 ? "" : "hover:opacity-90"
+              rank === 1 ? "" : "hover:opacity-90",
+              compact ? "" : "hover:shadow-xl hover:scale-105"
             )}
             onClick={() => setIsFormOpen(true)}
           >

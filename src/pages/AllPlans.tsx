@@ -413,7 +413,7 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3">
                       {categoryPlans.map((plan, index) => (
                         <EnhancedPlanCard
                           key={plan.id}
@@ -427,6 +427,7 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
                             (s.category === 'cellular' && plan.category === 'mobile') ||
                             s.category === plan.category
                           )?.monthlySavings}
+                          compact
                         />
                       ))}
                     </div>
@@ -435,21 +436,22 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
               })}
             </div>
           ) : (
-            <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 max-w-7xl mx-auto">
               {filteredPlans.map((plan, index) => (
-                <EnhancedPlanCard
-                  key={plan.id}
-                  plan={plan}
-                  rank={index + 1}
-                  isCompared={comparedPlans.some(p => p.id === plan.id)}
-                  onCompareToggle={handleCompareToggle}
-                  canCompare={comparedPlans.length < 3}
-                  showSavings={savingsData.length > 0}
-                  estimatedSavings={savingsData.find(s => 
-                    (s.category === 'cellular' && plan.category === 'mobile') ||
-                    s.category === plan.category
-                  )?.monthlySavings}
-                />
+              <EnhancedPlanCard
+                key={plan.id}
+                plan={plan}
+                rank={index + 1}
+                isCompared={comparedPlans.some(p => p.id === plan.id)}
+                onCompareToggle={handleCompareToggle}
+                canCompare={comparedPlans.length < 3}
+                showSavings={savingsData.length > 0}
+                estimatedSavings={savingsData.find(s => 
+                  (s.category === 'cellular' && plan.category === 'mobile') ||
+                  s.category === plan.category
+                )?.monthlySavings}
+                compact
+              />
               ))}
             </section>
           )}
