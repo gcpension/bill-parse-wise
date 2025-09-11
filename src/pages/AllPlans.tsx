@@ -284,7 +284,11 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
             <Button
               variant={selectedCategory === 'electricity' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('electricity')}
-              className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 flex items-center gap-2"
+              className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
+                selectedCategory === 'electricity' 
+                  ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-400 hover:from-yellow-500 hover:to-yellow-600' 
+                  : 'bg-yellow-50/70 border-yellow-200 hover:border-yellow-400 text-yellow-700 hover:bg-yellow-100/70'
+              }`}
             >
               <Zap className="h-4 w-4" />
               <span>חשמל ({counts.electricity})</span>
@@ -292,7 +296,11 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
             <Button
               variant={selectedCategory === 'internet' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('internet')}
-              className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 flex items-center gap-2"
+              className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
+                selectedCategory === 'internet' 
+                  ? 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-white border-cyan-400 hover:from-cyan-500 hover:to-cyan-600' 
+                  : 'bg-cyan-50/70 border-cyan-200 hover:border-cyan-400 text-cyan-700 hover:bg-cyan-100/70'
+              }`}
             >
               <Wifi className="h-4 w-4" />
               <span>אינטרנט ({counts.internet})</span>
@@ -300,7 +308,11 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
             <Button
               variant={selectedCategory === 'mobile' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('mobile')}
-              className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 flex items-center gap-2"
+              className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
+                selectedCategory === 'mobile' 
+                  ? 'bg-gradient-to-r from-purple-400 to-purple-500 text-white border-purple-400 hover:from-purple-500 hover:to-purple-600' 
+                  : 'bg-purple-50/70 border-purple-200 hover:border-purple-400 text-purple-700 hover:bg-purple-100/70'
+              }`}
             >
               <Smartphone className="h-4 w-4" />
               <span>סלולר ({counts.mobile})</span>
@@ -308,7 +320,11 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
             <Button
               variant={selectedCategory === 'tv' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('tv')}
-              className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 flex items-center gap-2"
+              className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
+                selectedCategory === 'tv' 
+                  ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white border-orange-400 hover:from-orange-500 hover:to-orange-600' 
+                  : 'bg-orange-50/70 border-orange-200 hover:border-orange-400 text-orange-700 hover:bg-orange-100/70'
+              }`}
             >
               <Tv className="h-4 w-4" />
               <span>טלוויזיה ({counts.tv})</span>

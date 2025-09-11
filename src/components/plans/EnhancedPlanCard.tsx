@@ -73,6 +73,51 @@ const EnhancedPlanCard = ({
     }
   };
 
+  const getCategoryColors = () => {
+    switch (plan.category) {
+      case 'electricity': 
+        return {
+          gradient: 'from-yellow-400/20 to-yellow-500/20',
+          border: 'border-yellow-400/30',
+          text: 'text-yellow-700',
+          bgGradient: 'bg-gradient-to-r from-yellow-400 to-yellow-500',
+          iconBg: 'from-yellow-400/10 to-yellow-500/10 group-hover:from-yellow-400 group-hover:to-yellow-500'
+        };
+      case 'mobile':
+        return {
+          gradient: 'from-purple-400/20 to-purple-500/20',
+          border: 'border-purple-400/30',
+          text: 'text-purple-700',
+          bgGradient: 'bg-gradient-to-r from-purple-400 to-purple-500',
+          iconBg: 'from-purple-400/10 to-purple-500/10 group-hover:from-purple-400 group-hover:to-purple-500'
+        };
+      case 'internet':
+        return {
+          gradient: 'from-cyan-400/20 to-cyan-500/20',
+          border: 'border-cyan-400/30',
+          text: 'text-cyan-700',
+          bgGradient: 'bg-gradient-to-r from-cyan-400 to-cyan-500',
+          iconBg: 'from-cyan-400/10 to-cyan-500/10 group-hover:from-cyan-400 group-hover:to-cyan-500'
+        };
+      case 'tv':
+        return {
+          gradient: 'from-orange-400/20 to-orange-500/20',
+          border: 'border-orange-400/30',
+          text: 'text-orange-700',
+          bgGradient: 'bg-gradient-to-r from-orange-400 to-orange-500',
+          iconBg: 'from-orange-400/10 to-orange-500/10 group-hover:from-orange-400 group-hover:to-orange-500'
+        };
+      default:
+        return {
+          gradient: 'from-gray-400/20 to-gray-500/20',
+          border: 'border-gray-400/30',
+          text: 'text-gray-700',
+          bgGradient: 'bg-gradient-to-r from-gray-400 to-gray-500',
+          iconBg: 'from-gray-400/10 to-gray-500/10 group-hover:from-gray-400 group-hover:to-gray-500'
+        };
+    }
+  };
+
   const getCategoryLabel = () => {
     switch (plan.category) {
       case 'electricity': return 'חשמל';
@@ -90,10 +135,14 @@ const EnhancedPlanCard = ({
     return `₪${plan.regularPrice}`;
   };
 
+  const categoryColors = getCategoryColors();
+
   return (
     <Card className={cn(
       "relative overflow-hidden transition-all duration-300 hover:shadow-2xl group border-border/50",
       "bg-gradient-to-br from-white/95 via-white/90 to-white/85 backdrop-blur-sm",
+      `bg-gradient-to-br ${categoryColors.gradient}`,
+      `border-2 ${categoryColors.border}`,
       isCompared && "ring-2 ring-primary/50 shadow-lg",
       rank === 1 && "border-success/30 shadow-lg shadow-success/10",
       className
@@ -151,14 +200,20 @@ const EnhancedPlanCard = ({
         <div className="flex items-start justify-between gap-4 mt-8">
           {/* Company Info */}
           <div className="flex items-center gap-4 flex-1">
-            <div className="w-16 h-16 bg-gradient-to-r from-primary/10 to-primary-glow/10 rounded-2xl flex items-center justify-center group-hover:from-primary group-hover:to-primary-glow transition-all duration-300 shadow-lg">
+            <div className={cn(
+              "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg text-white",
+              `bg-gradient-to-r ${categoryColors.iconBg}`
+            )}>
               {getCategoryIcon()}
             </div>
             
             <div className="flex-1">
               {/* Category and Rating */}
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant="outline" className="text-xs bg-primary/5 text-primary border-primary/20">
+                <Badge className={cn(
+                  "text-xs text-white border-0 shadow-sm",
+                  categoryColors.bgGradient
+                )}>
                   {getCategoryLabel()}
                 </Badge>
                 <div className="flex items-center gap-1">
@@ -188,8 +243,15 @@ const EnhancedPlanCard = ({
           </div>
 
           {/* Price */}
-          <div className="text-center bg-gradient-to-r from-primary/5 to-primary-glow/5 p-4 rounded-xl border border-primary/10 shadow-sm">
-            <div className="text-3xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+          <div className={cn(
+            "text-center p-4 rounded-xl border shadow-sm",
+            categoryColors.gradient,
+            categoryColors.border
+          )}>
+            <div className={cn(
+              "text-3xl font-black bg-clip-text text-transparent",
+              categoryColors.bgGradient
+            )}>
               {formatPrice()}
             </div>
             {plan.category !== 'electricity' && (
@@ -294,10 +356,14 @@ const EnhancedPlanCard = ({
         {/* Action Buttons */}
         <div className="space-y-3">
           <Button 
-            className="w-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary text-white font-bold text-lg py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" 
+            className={cn(
+              "w-full text-white font-bold text-lg py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0",
+              categoryColors.bgGradient,
+              "hover:opacity-90"
+            )}
             onClick={() => setIsFormOpen(true)}
           >
-            {rank === 1 ? 'בחר במסלול המומלץ' : 'עבור למסלול זה'}
+            {rank === 1 ? 'בחר במסלול המומלץ ⭐' : 'בחר מסלול זה 🚀'}
           </Button>
           
           <Button

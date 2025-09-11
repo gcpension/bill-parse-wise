@@ -71,6 +71,23 @@ body {
     /* Trust and brand colors */
     --color-trust-blue: 215 100% 60%;
 
+    /* Category colors */
+    --electricity-primary: 45 100% 50%;
+    --electricity-secondary: 45 100% 60%;
+    --electricity-bg: 45 100% 95%;
+    
+    --mobile-primary: 280 100% 55%;
+    --mobile-secondary: 280 100% 65%;
+    --mobile-bg: 280 100% 95%;
+    
+    --internet-primary: 195 100% 50%;
+    --internet-secondary: 195 100% 60%;
+    --internet-bg: 195 100% 95%;
+    
+    --tv-primary: 15 85% 55%;
+    --tv-secondary: 15 85% 65%;
+    --tv-bg: 15 85% 95%;
+
     --radius: 0.75rem;
     
     /* Beautiful gradients */
@@ -81,6 +98,12 @@ body {
     --gradient-vibrant: linear-gradient(135deg, hsl(var(--vibrant-green)), hsl(120 100% 60%));
     --gradient-sunset: linear-gradient(135deg, hsl(var(--sunset-orange)), hsl(var(--golden-yellow)));
     --gradient-purple: linear-gradient(135deg, hsl(var(--royal-purple)), hsl(271 81% 70%));
+    
+    /* Category gradients */
+    --gradient-electricity: linear-gradient(135deg, hsl(var(--electricity-primary)), hsl(var(--electricity-secondary)));
+    --gradient-mobile: linear-gradient(135deg, hsl(var(--mobile-primary)), hsl(var(--mobile-secondary)));
+    --gradient-internet: linear-gradient(135deg, hsl(var(--internet-primary)), hsl(var(--internet-secondary)));
+    --gradient-tv: linear-gradient(135deg, hsl(var(--tv-primary)), hsl(var(--tv-secondary)));
     
     /* Elegant shadows */
   --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
