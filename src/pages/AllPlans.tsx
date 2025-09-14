@@ -26,22 +26,41 @@ interface AllPlansProps {
 }
 
 const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlansProps) => {
+  // Get selected categories from localStorage if not provided as props
+  const [selectedCategories, setSelectedCategoriesFromStorage] = useState<string[]>([]);
+  
+  useEffect(() => {
+    const storedData = localStorage.getItem('analysisData');
+    if (storedData) {
+      try {
+        const analysisData = JSON.parse(storedData);
+        const categories = analysisData.map((item: any) => item.category);
+        setSelectedCategoriesFromStorage(categories);
+      } catch (error) {
+        console.error('Error parsing analysis data:', error);
+      }
+    }
+  }, []);
+
+  // Use provided categories or fallback to stored categories
+  const effectiveCategories = initialSelectedCategories.length > 0 ? initialSelectedCategories : selectedCategories;
+  
   // Set initial category based on analyzed categories
   const getInitialCategory = () => {
-    if (initialSelectedCategories.length === 1) {
-      const cat = initialSelectedCategories[0];
+    if (effectiveCategories.length === 1) {
+      const cat = effectiveCategories[0];
       if (cat === 'cellular') return 'mobile';
       if (cat === 'electricity' || cat === 'internet' || cat === 'tv') return cat as 'electricity' | 'internet' | 'tv';
     }
-    if (initialSelectedCategories.length > 1) {
-      // If multiple categories selected, show all plans
-      return 'all' as const;
+    if (effectiveCategories.length > 1) {
+      // If multiple categories selected, show selected categories only
+      return 'selected' as const;
     }
     // Default to all plans if no specific category
     return 'all' as const;
   };
   
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'electricity' | 'internet' | 'mobile' | 'tv'>(getInitialCategory());
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'selected' | 'electricity' | 'internet' | 'mobile' | 'tv'>(getInitialCategory());
   const [showAllCategories, setShowAllCategories] = useState(false); // Track if user explicitly chose to see all categories
   
   // Enhanced state for new features
@@ -87,18 +106,15 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
 
     // Base category filtering with improved logic
     if (selectedCategory === 'all') {
-      // If user explicitly chose "all" or no categories were initially selected, show everything
-      if (showAllCategories || initialSelectedCategories.length === 0) {
-        // Show all plans from all categories
-        filtered = manualPlans;
-      } else {
-        // Show only plans from initially selected categories (default behavior)
-        const categoryMapping = { 'cellular': 'mobile' };
-        const mappedCategories = initialSelectedCategories.map(cat => 
-          categoryMapping[cat as keyof typeof categoryMapping] || cat
-        );
-        filtered = filtered.filter(plan => mappedCategories.includes(plan.category));
-      }
+      // Show all plans from all categories
+      filtered = manualPlans;
+    } else if (selectedCategory === 'selected') {
+      // Show only plans from selected categories (priority display)
+      const categoryMapping = { 'cellular': 'mobile' };
+      const mappedCategories = effectiveCategories.map(cat => 
+        categoryMapping[cat as keyof typeof categoryMapping] || cat
+      );
+      filtered = filtered.filter(plan => mappedCategories.includes(plan.category));
     } else {
       filtered = filtered.filter(plan => plan.category === selectedCategory);
     }
@@ -173,7 +189,7 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
     });
 
     return filtered;
-  }, [selectedCategory, initialSelectedCategories, filters]);
+  }, [selectedCategory, effectiveCategories, filters]);
 
   // Comparison handlers
   const handleCompareToggle = (plan: ManualPlan) => {
@@ -200,21 +216,22 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
 
   // User profile for recommendations (could be enhanced with real user data)
   const userProfile = useMemo(() => {
-    if (initialSelectedCategories.length === 1) {
+    if (effectiveCategories.length === 1) {
       return {
-        category: initialSelectedCategories[0] === 'cellular' ? 'mobile' : initialSelectedCategories[0],
+        category: effectiveCategories[0] === 'cellular' ? 'mobile' : effectiveCategories[0],
         budget: 200, // Could be derived from analysis
         usage: 'medium' as const
       };
     }
     return undefined;
-  }, [initialSelectedCategories]);
+  }, [effectiveCategories]);
 
   // Use the filtered plans
   const filteredPlans = filteredAndSortedPlans;
 
   const categoryLabels = {
     all: 'כל הקטגוריות',
+    selected: 'הקטגוריות שנבחרו',
     electricity: 'חבילות חשמל',
     internet: 'חבילות אינטרנט',
     mobile: 'חבילות סלולר',
@@ -280,28 +297,28 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
 
           {/* Quick Category Filter */}
           <div className="flex flex-wrap gap-3 justify-center mb-8">
+            {effectiveCategories.length > 0 && (
+              <Button
+                variant={selectedCategory === 'selected' ? 'default' : 'outline'}
+                onClick={() => {
+                  setSelectedCategory('selected');
+                  setShowAllCategories(false);
+                }}
+                className="bg-gradient-to-r from-primary to-primary-glow text-white border-primary hover:from-primary-glow hover:to-primary transition-all duration-300 font-semibold"
+              >
+                <span>המסלולים שלכם ({effectiveCategories.length} קטגוריות)</span>
+              </Button>
+            )}
             <Button
               variant={selectedCategory === 'all' ? 'default' : 'outline'}
               onClick={() => {
                 setSelectedCategory('all');
-                setShowAllCategories(true); // User explicitly wants to see all categories
+                setShowAllCategories(true);
               }}
               className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300"
             >
               <span>כל המסלולים ({manualPlans.length})</span>
             </Button>
-            {initialSelectedCategories.length > 0 && (
-              <Button
-                variant={selectedCategory === 'all' && !showAllCategories ? 'default' : 'outline'}
-                onClick={() => {
-                  setSelectedCategory('all');
-                  setShowAllCategories(false); // Show only initially selected categories
-                }}
-                className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300"
-              >
-                <span>הקטגוריות שנבחרו ({initialSelectedCategories.length})</span>
-              </Button>
-            )}
             <Button
               variant={selectedCategory === 'electricity' ? 'default' : 'outline'}
               onClick={() => {
@@ -372,7 +389,7 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
           </div>
 
           {/* Plans Grid - Group by category when showing multiple categories */}
-          {(selectedCategory === 'all' && showAllCategories) || (selectedCategory === 'all' && initialSelectedCategories.length > 1) ? (
+          {(selectedCategory === 'all' && showAllCategories) || selectedCategory === 'selected' ? (
             <div className="space-y-8 max-w-7xl mx-auto">
               {/* Group plans by category */}
               {['electricity', 'internet', 'mobile', 'tv'].map(category => {

@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 
 export interface FilterOptions {
   searchQuery: string;
-  category: 'all' | 'electricity' | 'internet' | 'mobile' | 'tv';
+  category: 'all' | 'selected' | 'electricity' | 'internet' | 'mobile' | 'tv';
   priceRange: [number, number];
   minRating: number;
   sortBy: 'price' | 'rating' | 'popularity' | 'savings';
