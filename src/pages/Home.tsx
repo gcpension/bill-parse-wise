@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowRight, CheckCircle, Sparkles, Star, TrendingUp, Zap, Users, Shield, Wifi, Smartphone, Tv } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
-import heroWomanRealistic from '@/assets/hero-woman-realistic.jpg';
+import heroModernBg from '@/assets/hero-modern-bg.jpg';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
@@ -96,9 +96,9 @@ const Home = () => {
       return;
     }
 
-    // Store the data and navigate directly to plans page
+    // Store the data and navigate to results
     localStorage.setItem('analysisData', JSON.stringify(selectedData));
-    navigate('/all-plans');
+    navigate('/detailed-analysis-results');
   };
 
   const features = [{
@@ -128,29 +128,27 @@ const Home = () => {
   }];
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-emerald-500 via-white to-emerald-500 font-body overflow-hidden relative">
-      {/* Stronger background with vivid green sides */}
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white font-body overflow-hidden">
+      {/* Modern Hero Background inspired by reference */}
       <div className="fixed inset-0 -z-10">
-        {/* Strong green gradient on sides, white in center */}
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-gray-50 to-emerald-400" />
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/80 via-transparent to-emerald-500/80" />
+        {/* Main gradient background - bright center with green sides */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-white to-emerald-400" />
+        <div className="absolute inset-0 bg-gradient-to-b from-emerald-300/30 via-white/90 to-gray-50" />
         
-        {/* Left side intense green area */}
-        <div className="absolute left-0 top-0 w-1/4 h-full bg-gradient-to-r from-emerald-500 to-transparent" />
-        {/* Right side intense green area */} 
-        <div className="absolute right-0 top-0 w-1/4 h-full bg-gradient-to-l from-emerald-500 to-transparent" />
+        {/* Geometric circular shapes */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-white/60 rounded-full blur-sm" />
+        <div className="absolute top-32 right-16 w-80 h-80 bg-emerald-200/40 rounded-full blur-md" />
+        <div className="absolute bottom-40 left-20 w-64 h-64 bg-white/50 rounded-full blur-sm" />
+        <div className="absolute bottom-20 right-32 w-72 h-72 bg-emerald-100/60 rounded-full blur-md" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/30 rounded-full blur-3xl" />
         
-        {/* Geometric circular shapes - more prominent */}
-        <div className="absolute top-16 left-12 w-80 h-80 bg-white/40 rounded-full" />
-        <div className="absolute top-32 right-20 w-72 h-72 bg-emerald-200/50 rounded-full" />
-        <div className="absolute bottom-32 left-16 w-64 h-64 bg-white/50 rounded-full" />
-        <div className="absolute bottom-16 right-24 w-96 h-96 bg-emerald-100/60 rounded-full" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/20 rounded-full" />
-        
-        {/* Additional decorative circles */}
-        <div className="absolute top-20 left-1/3 w-48 h-48 bg-emerald-300/30 rounded-full animate-float" />
-        <div className="absolute bottom-28 right-1/3 w-56 h-56 bg-white/30 rounded-full animate-float" style={{
+        {/* Additional decorative elements */}
+        <div className="absolute top-16 left-1/3 w-48 h-48 bg-emerald-300/25 rounded-full animate-float" />
+        <div className="absolute bottom-24 right-1/4 w-56 h-56 bg-white/40 rounded-full animate-float" style={{
           animationDelay: '2s'
+        }} />
+        <div className="absolute top-1/3 right-12 w-40 h-40 bg-emerald-200/30 rounded-full animate-float" style={{
+          animationDelay: '4s'
         }} />
       </div>
 
@@ -194,9 +192,9 @@ const Home = () => {
                 </p>
               </div>
 
-              {/* Category Selection Section with Hero Image */}
-              <div className="max-w-7xl mx-auto mb-16 relative">
-                <div className="text-center mb-8">
+              {/* Category Selection Section - Moved to top */}
+              <div className="space-y-8 max-w-6xl mx-auto mb-16">
+                <div className="text-center">
                   <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4 text-gray-800">
                     <span className="bg-gradient-to-l from-emerald-600 via-emerald-700 to-emerald-800 bg-clip-text text-transparent">
                       באיזה שירות תרצו להתחיל לחסוך היום?
@@ -205,120 +203,101 @@ const Home = () => {
                   <p className="text-lg text-gray-700">בחרו קטגוריות והזינו פרטים לקבלת ניתוח מיידי</p>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                  {/* Hero Woman Image - Left Side */}
-                  <div className="lg:col-span-4 flex justify-center lg:justify-start">
-                    <div className="relative">
-                      <img 
-                        src={heroWomanRealistic} 
-                        alt="אישה מחויכת עם אוזניות וטלפון" 
-                        className="w-80 h-96 object-cover rounded-3xl shadow-2xl"
-                      />
-                      {/* Decorative elements around the image */}
-                      <div className="absolute -top-4 -right-4 w-16 h-16 bg-emerald-400 rounded-full opacity-20"></div>
-                      <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-emerald-300 rounded-full opacity-15"></div>
-                    </div>
-                  </div>
-
-                  {/* Category Cards - Right Side (shifted left) */}
-                  <div className="lg:col-span-8 space-y-8">
-                    {/* Category Cards Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {Object.entries(categoryData).map(([category, data]) => {
-                        const Icon = data.icon;
-                        const isSelected = selectedCategories[category].selected;
-                        const categoryImages = {
-                          electricity: electricityFamily,
-                          cellular: cellularFamily,
-                          internet: internetFamily,
-                          tv: tvFamily
-                        };
-                        return (
-                          <div key={category} className="space-y-4">
-                            <Card 
-                              className={`relative overflow-hidden transition-all duration-300 cursor-pointer group ${
-                                isSelected 
-                                  ? `ring-2 ring-primary/40 shadow-xl scale-105 ${data.borderColor}` 
-                                  : `hover:shadow-lg hover:scale-102 border ${data.borderColor}`
-                              } ${data.bgColor} border-2`}
-                              onClick={() => handleCategorySelect(category)}
-                            >
-                              <CardContent className="p-6 text-center">
-                                <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${data.color} flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                                  <Icon className="w-8 h-8 text-white" />
-                                </div>
-                                <h3 className="font-display font-bold text-lg mb-2 text-gray-700">{data.name}</h3>
-                                
-                                {isSelected && (
-                                  <div className="space-y-3 mt-4" onClick={(e) => e.stopPropagation()}>
-                                    <Select 
-                                      value={selectedCategories[category].provider} 
-                                      onValueChange={(value) => handleProviderChange(category, value)}
-                                    >
-                                      <SelectTrigger className="h-9 text-sm bg-white/90 border-gray-200">
-                                        <SelectValue placeholder="בחרו ספק" />
-                                      </SelectTrigger>
-                                      <SelectContent>
-                                        {data.providers.map(provider => (
-                                          <SelectItem key={provider} value={provider}>{provider}</SelectItem>
-                                        ))}
-                                      </SelectContent>
-                                    </Select>
-                                    
-                                    <Input
-                                      type="number"
-                                      placeholder="סכום חודשי (₪)"
-                                      value={selectedCategories[category].amount}
-                                      onChange={(e) => handleAmountChange(category, e.target.value)}
-                                      className="h-9 text-sm bg-white/90 border-gray-200"
-                                    />
-                                  </div>
-                                )}
-                                
-                                <Button 
-                                  className={`w-full mt-4 transition-all duration-300 ${
-                                    isSelected 
-                                      ? 'bg-gradient-to-r from-primary/80 to-blue-500/80 text-white hover:from-primary hover:to-blue-600' 
-                                      : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-700 hover:to-gray-800'
-                                  }`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleCategorySelect(category);
-                                  }}
-                                >
-                                  {isSelected ? 'נבחר ✓' : `בחר ${data.name}`}
-                                </Button>
-                              </CardContent>
-                            </Card>
-                            
-                            {/* Category Illustration */}
-                            <div className="flex justify-center">
-                              <img 
-                                src={categoryImages[category]} 
-                                alt={`איור ${data.name}`}
-                                className="w-48 h-36 object-cover rounded-xl shadow-md opacity-80 hover:opacity-100 transition-opacity duration-300"
-                              />
+                {/* Category Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {Object.entries(categoryData).map(([category, data]) => {
+                    const Icon = data.icon;
+                    const isSelected = selectedCategories[category].selected;
+                    const categoryImages = {
+                      electricity: electricityFamily,
+                      cellular: cellularFamily,
+                      internet: internetFamily,
+                      tv: tvFamily
+                    };
+                    return (
+                      <div key={category} className="space-y-4">
+                        <Card 
+                          className={`relative overflow-hidden transition-all duration-300 cursor-pointer group ${
+                            isSelected 
+                              ? `ring-2 ring-primary/40 shadow-xl scale-105 ${data.borderColor}` 
+                              : `hover:shadow-lg hover:scale-102 border ${data.borderColor}`
+                          } ${data.bgColor} border-2`}
+                          onClick={() => handleCategorySelect(category)}
+                        >
+                          <CardContent className="p-6 text-center">
+                            <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${data.color} flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                              <Icon className="w-8 h-8 text-white" />
                             </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                            <h3 className="font-display font-bold text-lg mb-2 text-gray-700">{data.name}</h3>
+                            
+                            {isSelected && (
+                              <div className="space-y-3 mt-4" onClick={(e) => e.stopPropagation()}>
+                                <Select 
+                                  value={selectedCategories[category].provider} 
+                                  onValueChange={(value) => handleProviderChange(category, value)}
+                                >
+                                  <SelectTrigger className="h-9 text-sm bg-white/90 border-gray-200">
+                                    <SelectValue placeholder="בחרו ספק" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {data.providers.map(provider => (
+                                      <SelectItem key={provider} value={provider}>{provider}</SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                                
+                                <Input
+                                  type="number"
+                                  placeholder="סכום חודשי (₪)"
+                                  value={selectedCategories[category].amount}
+                                  onChange={(e) => handleAmountChange(category, e.target.value)}
+                                  className="h-9 text-sm bg-white/90 border-gray-200"
+                                />
+                              </div>
+                            )}
+                            
+                            <Button 
+                              className={`w-full mt-4 transition-all duration-300 ${
+                                isSelected 
+                                  ? 'bg-gradient-to-r from-primary/80 to-blue-500/80 text-white hover:from-primary hover:to-blue-600' 
+                                  : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-700 hover:to-gray-800'
+                              }`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCategorySelect(category);
+                              }}
+                            >
+                              {isSelected ? 'נבחר ✓' : `בחר ${data.name}`}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                        
+                        {/* Category Illustration */}
+                        <div className="flex justify-center">
+                          <img 
+                            src={categoryImages[category]} 
+                            alt={`איור ${data.name}`}
+                            className="w-48 h-36 object-cover rounded-xl shadow-md opacity-80 hover:opacity-100 transition-opacity duration-300"
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
 
-                    {/* Start Analysis Button */}
-                    <div className="flex justify-center mt-12">
-                      <Button 
-                        size="lg" 
-                        onClick={handleStartAnalysis}
-                        className="px-20 py-10 bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 hover:from-emerald-500 hover:via-green-600 hover:to-teal-600 text-white font-black text-4xl lg:text-5xl shadow-2xl hover:shadow-emerald-400/30 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-400/40 hover:ring-emerald-500/60 group"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-                        <span className="relative flex items-center gap-8">
-                          <span className="drop-shadow-lg">התחל ניתוח חיסכון</span>
-                          <ArrowRight className="h-10 w-10 group-hover:translate-x-3 transition-transform duration-300 drop-shadow-lg" />
-                        </span>
-                      </Button>
-                    </div>
-                  </div>
+                {/* Start Analysis Button */}
+                <div className="flex justify-center mt-12">
+                  <Button 
+                    size="lg" 
+                    onClick={handleStartAnalysis}
+                    className="px-20 py-10 bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 hover:from-emerald-500 hover:via-green-600 hover:to-teal-600 text-white font-black text-4xl lg:text-5xl shadow-2xl hover:shadow-emerald-400/30 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-400/40 hover:ring-emerald-500/60 group"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+                    <span className="relative flex items-center gap-8">
+                      <span className="drop-shadow-lg">התחל ניתוח חיסכון</span>
+                      <ArrowRight className="h-10 w-10 group-hover:translate-x-3 transition-transform duration-300 drop-shadow-lg" />
+                    </span>
+                  </Button>
                 </div>
               </div>
 
