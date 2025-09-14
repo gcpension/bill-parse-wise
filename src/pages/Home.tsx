@@ -96,9 +96,9 @@ const Home = () => {
       return;
     }
 
-    // Store the data and navigate to results
+    // Store the data and navigate to plans
     localStorage.setItem('analysisData', JSON.stringify(selectedData));
-    navigate('/detailed-analysis-results');
+    navigate('/all-plans');
   };
 
   const features = [{
