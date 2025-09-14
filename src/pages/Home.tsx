@@ -98,7 +98,7 @@ const Home = () => {
 
     // Store the data and navigate to results
     localStorage.setItem('analysisData', JSON.stringify(selectedData));
-    navigate('/detailed-analysis-results');
+    navigate('/all-plans');
   };
 
   const features = [{
