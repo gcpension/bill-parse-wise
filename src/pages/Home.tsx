@@ -257,17 +257,13 @@ const Home = () => {
                             )}
                             
                             <Button 
-                              className={`w-full mt-4 transition-all duration-300 ${
-                                isSelected 
-                                  ? 'bg-gradient-to-r from-primary/80 to-blue-500/80 text-white hover:from-primary hover:to-blue-600' 
-                                  : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-700 hover:to-gray-800'
-                              }`}
+                              className="w-full mt-4 transition-all duration-300 bg-gradient-to-r from-primary to-blue-600 text-white hover:from-primary-600 hover:to-blue-700 hover:scale-105"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleCategorySelect(category);
+                                navigate(`/forms/${category}`);
                               }}
                             >
-                              {isSelected ? 'נבחר ✓' : `בחר ${data.name}`}
+                              {`מעבר ספק ${data.name}`}
                             </Button>
                           </CardContent>
                         </Card>
