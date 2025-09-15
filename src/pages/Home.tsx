@@ -15,7 +15,7 @@ import familyUtilitiesIllustration from '@/assets/family-utilities-illustration.
 import comparisonSuccessIllustration from '@/assets/comparison-success-illustration.png';
 import fastProcessIllustration from '@/assets/fast-process-illustration.png';
 import heroBackgroundIllustration from '@/assets/hero-background-illustration.png';
-import middleSectionIllustration from '@/assets/middle-section-illustration.png';
+import middleSectionIllustration from '@/assets/middle-section-illustration-transparent.png';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
