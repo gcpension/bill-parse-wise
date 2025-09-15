@@ -10,10 +10,9 @@ import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
 import tvFamily from '@/assets/tv-family.jpg';
-import savingsCalculatorIllustration from '@/assets/savings-calculator-illustration.png';
-import familyUtilitiesIllustration from '@/assets/family-utilities-illustration.png';
-import comparisonSuccessIllustration from '@/assets/comparison-success-illustration.png';
-import fastProcessIllustration from '@/assets/fast-process-illustration.png';
+import minimalistSelectionIcon from '@/assets/minimalist-selection-icon.png';
+import minimalistAnalysisIcon from '@/assets/minimalist-analysis-icon.png';
+import minimalistCompletionIcon from '@/assets/minimalist-completion-icon.png';
 import heroBackgroundIllustration from '@/assets/hero-background-illustration.png';
 import middleSectionIllustration from '@/assets/clean-middle-illustration.png';
 import professionalServicesIllustration from '@/assets/professional-services-illustration.png';
@@ -283,92 +282,102 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Professional How It Works Section */}
-          <div className="max-w-7xl mx-auto mt-20">
+          {/* Minimalist How It Works Section */}
+          <div className="max-w-6xl mx-auto mt-32">
             <div className="py-20">
-              {/* Section Header */}
-              <div className="text-center mb-16">
-                <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-6 text-gray-900 leading-tight">
-                  איך זה עובד?
+              {/* Clean Header */}
+              <div className="text-center mb-20">
+                <h2 className="text-5xl lg:text-6xl font-heebo font-light mb-8 text-gray-900 leading-tight">
+                  אנחנו איתכם
                 </h2>  
-                <p className="text-xl text-gray-600 font-assistant leading-relaxed max-w-2xl mx-auto">
-                  תהליך פשוט, מהיר ומקצועי שמביא לכם חיסכון אמיתי בחשבונות הבית
+                <h3 className="text-4xl lg:text-5xl font-heebo font-bold mb-8 text-red-500 leading-tight">
+                  בכאונה קבוצה!
+                </h3>
+                <p className="text-lg text-gray-600 font-assistant leading-relaxed max-w-3xl mx-auto mt-8">
+                  בסיטי היא פלטפורמת השוואה היחידה בישראל שיא הבין את הבעיה.
+                  <br />
+                  ביסוט אלכו אנחנו לא מפשטים למכור לכם ביסוט רק להחליף אותו ונכתוב שאנחנו
+                  <br />
+                  צריך שלכם לא משנה לנו באיזו היצע הנבחר - העיקר שתחסכו!
                 </p>
               </div>
 
-              {/* Professional Steps Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
+              {/* Clean Minimalist Steps */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 max-w-5xl mx-auto">
                 
-                {/* Step 1 - Selection */}
-                <div className="text-center group">
-                  <div className="mb-8 relative">
-                    <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                      <span className="text-white font-bold text-2xl">1</span>
-                    </div>
-                    <div className="w-20 h-20 mx-auto opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Step 1 */}
+                <div className="text-center">
+                  <div className="mb-12">
+                    <div className="w-32 h-32 mx-auto mb-8 flex items-center justify-center">
                       <img 
-                        src={savingsCalculatorIllustration}
+                        src={minimalistSelectionIcon}
                         alt="בחירת שירותים"
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain opacity-90"
                       />
                     </div>
+                    <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
+                      1
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-4">בחירת שירותים</h3>
+                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-6">בחירת שירותים</h3>
                   <p className="text-gray-600 leading-relaxed font-assistant text-lg">
-                    בחרו את השירותים שאתם רוצים לבדוק והזינו את הפרטים הנוכחיים שלכם
+                    בחרו את השירותים שאתם חוזים לבדוק וזינו את
+                    הפרטים הנוכחיים שלכם
                   </p>
                 </div>
 
-                {/* Step 2 - Analysis */}
-                <div className="text-center group">
-                  <div className="mb-8 relative">
-                    <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                      <span className="text-white font-bold text-2xl">2</span>
-                    </div>
-                    <div className="w-20 h-20 mx-auto opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Step 2 */}
+                <div className="text-center">
+                  <div className="mb-12">
+                    <div className="w-32 h-32 mx-auto mb-8 flex items-center justify-center">
                       <img 
-                        src={comparisonSuccessIllustration}
+                        src={minimalistAnalysisIcon}
                         alt="ניתוח מתקדם"
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain opacity-90"
                       />
                     </div>
+                    <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
+                      2
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-4">ניתוח מתקדם</h3>
+                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-6">ניתוח מתקדם</h3>
                   <p className="text-gray-600 leading-relaxed font-assistant text-lg">
-                    המערכת סורקת תעריפים ומוצאת את האפשרויות הטובות ביותר עבורכם
+                    המערכת סורקת תעריפים ומוצאת את האפשרויות
+                    הטובות ביותר עבורכם
                   </p>
                 </div>
 
-                {/* Step 3 - Process */}
-                <div className="text-center group">
-                  <div className="mb-8 relative">
-                    <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                      <span className="text-white font-bold text-2xl">3</span>
-                    </div>
-                    <div className="w-20 h-20 mx-auto opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Step 3 */}
+                <div className="text-center">
+                  <div className="mb-12">
+                    <div className="w-32 h-32 mx-auto mb-8 flex items-center justify-center">
                       <img 
-                        src={fastProcessIllustration}
+                        src={minimalistCompletionIcon}
                         alt="מעבר מהיר"
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain opacity-90"
                       />
                     </div>
+                    <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
+                      3
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-4">מעבר מהיר</h3>
+                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-6">מעבר מלווה</h3>
                   <p className="text-gray-600 leading-relaxed font-assistant text-lg">
-                    אנחנו מטפלים בכל התהליך עד שהמעבר מושלם - ללא טרחה מצידכם
+                    אנחנו מטפלים בכל התהליך עד שהמעבר מושלם -
+                    העיקר שתחסכו!
                   </p>
                 </div>
               </div>
 
-              {/* Professional Stats Section */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div className="text-center p-10 rounded-3xl bg-gradient-to-br from-red-500/10 to-red-600/10 backdrop-blur-sm border border-red-200/30 hover:border-red-300/50 transition-all duration-300">
-                  <div className="text-6xl font-black text-red-600 mb-4">₪2,400</div>
+              {/* Clean Stats Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto mt-24">
+                <div className="text-center p-12 rounded-3xl bg-red-50/50 border border-red-100/50">
+                  <div className="text-6xl font-black text-red-500 mb-6">₪2,400</div>
                   <p className="text-2xl font-semibold text-red-800 mb-3 font-heebo">חיסכון ממוצע בשנה</p>
                   <p className="text-red-700/80 font-assistant text-lg">למשפחה ממוצעת בישראל</p>
                 </div>
-                <div className="text-center p-10 rounded-3xl bg-gradient-to-br from-green-500/10 to-green-600/10 backdrop-blur-sm border border-green-200/30 hover:border-green-300/50 transition-all duration-300">
-                  <div className="text-6xl font-black text-green-600 mb-4">100%</div>
+                <div className="text-center p-12 rounded-3xl bg-green-50/50 border border-green-100/50">
+                  <div className="text-6xl font-black text-green-600 mb-6">100%</div>
                   <p className="text-2xl font-semibold text-green-800 mb-3 font-heebo">שירות חינמי</p>
                   <p className="text-green-700/80 font-assistant text-lg">ללא עלויות נסתרות</p>
                 </div>
