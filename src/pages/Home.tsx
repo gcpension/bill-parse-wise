@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight } from 'lucide-react';
+import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import electricityFamily from '@/assets/electricity-family.jpg';
@@ -91,7 +91,37 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="fixed inset-0 pointer-events-none">
+        {/* Electricity related icons */}
+        <Lightbulb className="absolute top-20 left-10 w-8 h-8 text-yellow-300 opacity-20 animate-pulse" style={{ animationDelay: '0s', animationDuration: '4s' }} />
+        <Plug className="absolute top-32 right-20 w-6 h-6 text-yellow-400 opacity-15 animate-bounce" style={{ animationDelay: '1s', animationDuration: '3s' }} />
+        <Battery className="absolute top-40 left-1/4 w-7 h-7 text-green-300 opacity-25 animate-pulse" style={{ animationDelay: '2s', animationDuration: '5s' }} />
+        <Zap className="absolute bottom-40 right-10 w-9 h-9 text-yellow-500 opacity-20 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4s' }} />
+        
+        {/* Mobile/Cellular icons */}
+        <Smartphone className="absolute top-16 right-1/3 w-8 h-8 text-blue-300 opacity-20 animate-pulse" style={{ animationDelay: '1.5s', animationDuration: '6s' }} />
+        <Phone className="absolute bottom-32 left-16 w-7 h-7 text-blue-400 opacity-15 animate-bounce" style={{ animationDelay: '2.5s', animationDuration: '3.5s' }} />
+        <Tablet className="absolute top-1/2 right-12 w-8 h-8 text-purple-300 opacity-25 animate-pulse" style={{ animationDelay: '3s', animationDuration: '4s' }} />
+        
+        {/* Internet/WiFi icons */}
+        <Wifi className="absolute top-24 left-1/3 w-8 h-8 text-green-400 opacity-20 animate-pulse" style={{ animationDelay: '0.8s', animationDuration: '5s' }} />
+        <Router className="absolute bottom-20 right-1/4 w-7 h-7 text-cyan-300 opacity-15 animate-bounce" style={{ animationDelay: '1.8s', animationDuration: '4s' }} />
+        <Cable className="absolute top-1/3 left-12 w-6 h-6 text-green-500 opacity-25 animate-pulse" style={{ animationDelay: '2.2s', animationDuration: '3s' }} />
+        <Satellite className="absolute bottom-1/3 left-1/5 w-8 h-8 text-teal-300 opacity-20 animate-bounce" style={{ animationDelay: '3.5s', animationDuration: '5s' }} />
+        
+        {/* TV/Entertainment icons */}
+        <Tv className="absolute top-1/4 right-16 w-9 h-9 text-purple-400 opacity-20 animate-pulse" style={{ animationDelay: '1.2s', animationDuration: '4s' }} />
+        <Monitor className="absolute bottom-1/4 right-1/3 w-8 h-8 text-indigo-300 opacity-15 animate-bounce" style={{ animationDelay: '2.8s', animationDuration: '3.5s' }} />
+        <Headphones className="absolute top-3/4 left-1/4 w-7 h-7 text-pink-300 opacity-25 animate-pulse" style={{ animationDelay: '0.3s', animationDuration: '6s' }} />
+        <Radio className="absolute top-1/2 left-1/6 w-6 h-6 text-red-300 opacity-20 animate-bounce" style={{ animationDelay: '4s', animationDuration: '4.5s' }} />
+        
+        {/* Additional scattered elements */}
+        <WifiOff className="absolute bottom-16 left-1/3 w-6 h-6 text-gray-400 opacity-10 animate-pulse" style={{ animationDelay: '5s', animationDuration: '7s' }} />
+        <Lightbulb className="absolute bottom-1/2 right-1/5 w-5 h-5 text-orange-300 opacity-15 animate-bounce" style={{ animationDelay: '3.8s', animationDuration: '2.5s' }} />
+        <Phone className="absolute top-2/3 right-1/6 w-7 h-7 text-emerald-300 opacity-20 animate-pulse" style={{ animationDelay: '6s', animationDuration: '4s' }} />
+      </div>
       {/* Clean Header Section */}
       <section className="bg-white py-16 lg:py-24">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
