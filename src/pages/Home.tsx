@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite } from 'lucide-react';
+import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, TrendingUp, Shield, Clock, Star, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import electricityFamily from '@/assets/electricity-family.jpg';
@@ -13,7 +13,9 @@ import tvFamily from '@/assets/tv-family.jpg';
 import minimalistSelectionIcon from '@/assets/minimalist-selection-icon.png';
 import minimalistAnalysisIcon from '@/assets/minimalist-analysis-icon.png';
 import minimalistCompletionIcon from '@/assets/minimalist-completion-icon.png';
-import heroBackgroundIllustration from '@/assets/hero-background-illustration.png';
+import heroBackgroundModern from '@/assets/hero-background-modern.jpg';
+import floatingElementsBg from '@/assets/floating-elements-bg.png';
+import digitalFamilyHero from '@/assets/digital-family-hero.jpg';
 import middleSectionIllustration from '@/assets/clean-middle-illustration.png';
 import professionalServicesIllustration from '@/assets/professional-services-illustration.png';
 
@@ -97,7 +99,47 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Modern Background Elements */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={heroBackgroundModern} 
+          alt="" 
+          className="w-full h-full object-cover opacity-5"
+        />
+        <div className="absolute inset-0 gradient-primary opacity-5"></div>
+      </div>
+      
+      {/* Floating Modern Elements */}
+      <div className="absolute top-20 right-10 z-0 opacity-20 animate-float">
+        <img 
+          src={floatingElementsBg} 
+          alt="" 
+          className="w-80 h-60 object-contain"
+        />
+      </div>
+      
+      {/* Statistics Cards Floating */}
+      <div className="absolute top-32 left-10 z-10">
+        <Card className="glass-card p-4 animate-bounce-gentle">
+          <CardContent className="p-0 text-center">
+            <TrendingUp className="h-8 w-8 mx-auto mb-2 text-success" />
+            <h3 className="text-xl font-bold text-foreground">₪2.5M</h3>
+            <p className="text-xs text-muted-foreground">חיסכון כולל</p>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <div className="absolute bottom-40 right-20 z-10">
+        <Card className="glass-card p-4 animate-float">
+          <CardContent className="p-0 text-center">
+            <Users className="h-8 w-8 mx-auto mb-2 text-primary" />
+            <h3 className="text-xl font-bold text-foreground">10,000+</h3>
+            <p className="text-xs text-muted-foreground">לקוחות מרוצים</p>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Background decorative elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Electricity related icons - more visible */}
@@ -134,30 +176,57 @@ const Home = () => {
         <Monitor className="absolute top-[15%] left-[58%] w-5 h-5 text-indigo-400 opacity-50 rotate-[55deg] animate-pulse" style={{ animationDelay: '8.8s', animationDuration: '2.7s' }} />
       </div>
 
-      {/* Clean Header Section */}
-      <section className="bg-white py-16 lg:py-24 relative overflow-hidden">
-        {/* Background illustration */}
-        <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" 
-             style={{ backgroundImage: `url(${heroBackgroundIllustration})` }}>
-        </div>
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
-          <div className="text-center">
-            
-            {/* Clean subtitle */}
-            <p className="text-lg text-gray-600 mb-8 font-assistant">
-              המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
-            </p>
-            
-            {/* Clean main title */}
-            <h1 className="text-4xl lg:text-6xl font-heebo font-light text-gray-900 mb-4 leading-tight">
-              חסכו בחשבונות הבית
-              <br />
-              <span className="font-medium text-red-500">בקלות ובמהירות</span>
-            </h1>
-            
-            <p className="text-xl text-gray-600 mt-6 font-assistant max-w-3xl mx-auto">
-              אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
-            </p>
+      {/* Modern Hero Section */}
+      <section className="relative z-10 py-20 lg:py-32">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8 animate-fade-in">
+              <div className="space-y-6">
+                <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+                  <span className="gradient-primary bg-clip-text text-transparent">חסכונט</span>
+                  <br />
+                  <span className="text-foreground">מחשבון חיסכון חכם</span>
+                </h1>
+                <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
+                  השוו ספקים, חסכו כסף ועברו לתוכניות חדשות בקלות. 
+                  המערכת החכמה שלנו מוצאת עבורכם את המסלולים הטובים ביותר.
+                </p>
+                <p className="text-lg text-success font-medium">
+                  המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
+                </p>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="flex flex-wrap items-center gap-6 pt-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Shield className="h-4 w-4 text-success" />
+                  <span>בטוח ומוגן</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Clock className="h-4 w-4 text-primary" />
+                  <span>תוצאות מיידיות</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span>ללא עמלות</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Star className="h-4 w-4 text-warning" />
+                  <span>דירוג 4.9</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative animate-scale-in">
+              <div className="relative rounded-3xl overflow-hidden shadow-elegant">
+                <img 
+                  src={digitalFamilyHero} 
+                  alt="משפחה חוסכת עם חסכונט" 
+                  className="w-full h-auto object-cover"
+                />
+                <div className="absolute inset-0 gradient-primary opacity-10"></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
