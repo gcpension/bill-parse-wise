@@ -283,94 +283,85 @@ const Home = () => {
             </p>
           </div>
 
-          {/* How It Works Section - More Professional */}
+          {/* How It Works Section - Seamless Integration */}
           <div className="max-w-6xl mx-auto mt-20">
-            <div className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-              <div className="p-16">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
-                  {/* Content Side */}
-                  <div>
-                    <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-8 text-gray-900 leading-tight">
-                      איך זה עובד?
-                    </h2>
-                    <p className="text-xl text-gray-700 mb-12 font-assistant leading-relaxed">
-                      תהליך פשוט ומהיר לחיסכון בחשבונות הבית
-                    </p>
+            <div className="py-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
+                {/* Content Side */}
+                <div>
+                  <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-8 text-gray-900 leading-tight">
+                    איך זה עובד?
+                  </h2>
+                  <p className="text-xl text-gray-700 mb-12 font-assistant leading-relaxed">
+                    תהליך פשוט ומהיר לחיסכון בחשבונות הבית
+                  </p>
 
-                    {/* Professional Steps */}
-                    <div className="space-y-8">
-                      <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
-                          1
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-semibold text-gray-900 font-heebo mb-4">בחירת שירותים</h3>
-                          <p className="text-gray-600 leading-relaxed font-assistant text-lg">
-                            בחרו את השירותים שאתם רוצים לבדוק והזינו את הפרטים הנוכחיים שלכם
-                          </p>
-                        </div>
+                  {/* Professional Steps */}
+                  <div className="space-y-8">
+                    <div className="flex items-start gap-6">
+                      <div className="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-lg">
+                        1
                       </div>
-                      
-                      <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
-                          2
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-semibold text-gray-900 font-heebo mb-4">ניתוח מתקדם</h3>
-                          <p className="text-gray-600 leading-relaxed font-assistant text-lg">
-                            המערכת סורקת תעריפים ומוצאת את האפשרויות הטובות ביותר עבורכם
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
-                          3
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-semibold text-gray-900 font-heebo mb-4">מעבר מלווה</h3>
-                          <p className="text-gray-600 leading-relaxed font-assistant text-lg">
-                            אנחנו מטפלים בכל התהליך עד שהמעבר מושלם
-                          </p>
-                        </div>
+                      <div>
+                        <h3 className="text-2xl font-semibold text-gray-900 font-heebo mb-4">בחירת שירותים</h3>
+                        <p className="text-gray-600 leading-relaxed font-assistant text-lg">
+                          בחרו את השירותים שאתם רוצים לבדוק והזינו את הפרטים הנוכחיים שלכם
+                        </p>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Professional Illustration Side */}
-                  <div className="flex justify-center">
-                    <div className="w-full max-w-md">
-                      <img 
-                        src={professionalServicesIllustration}
-                        alt="איור מקצועי של בדיקת שירותים" 
-                        className="w-full h-auto"
-                        style={{ 
-                          mixBlendMode: 'multiply',
-                          backgroundColor: 'transparent'
-                        }}
-                      />
+                    
+                    <div className="flex items-start gap-6">
+                      <div className="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-lg">
+                        2
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-semibold text-gray-900 font-heebo mb-4">ניתוח מתקדם</h3>
+                        <p className="text-gray-600 leading-relaxed font-assistant text-lg">
+                          המערכת סורקת תעריפים ומוצאת את האפשרויות הטובות ביותר עבורכם
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-6">
+                      <div className="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-lg">
+                        3
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-semibold text-gray-900 font-heebo mb-4">מעבר מלווה</h3>
+                        <p className="text-gray-600 leading-relaxed font-assistant text-lg">
+                          אנחנו מטפלים בכל התהליך עד שהמעבר מושלם
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Professional Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="bg-gradient-to-br from-red-50 to-red-100 p-10 rounded-2xl border border-red-200 text-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-red-200 rounded-full opacity-20 -translate-y-10 translate-x-10"></div>
-                    <div className="relative z-10">
-                      <div className="text-5xl font-black text-red-600 mb-4">₪2,400</div>
-                      <p className="text-2xl font-semibold text-red-800 mb-3 font-heebo">חיסכון ממוצע בשנה</p>
-                      <p className="text-red-700 font-assistant text-lg">למשפחה ממוצעת בישראל</p>
-                    </div>
+                {/* Professional Illustration Side */}
+                <div className="flex justify-center">
+                  <div className="w-full max-w-md">
+                    <img 
+                      src={professionalServicesIllustration}
+                      alt="איור מקצועי של בדיקת שירותים" 
+                      className="w-full h-auto opacity-90"
+                      style={{ 
+                        filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.1))'
+                      }}
+                    />
                   </div>
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 p-10 rounded-2xl border border-green-200 text-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-green-200 rounded-full opacity-20 -translate-y-10 translate-x-10"></div>
-                    <div className="relative z-10">
-                      <div className="text-5xl font-black text-green-600 mb-4">100%</div>
-                      <p className="text-2xl font-semibold text-green-800 mb-3 font-heebo">שירות חינמי</p>
-                      <p className="text-green-700 font-assistant text-lg">ללא עלויות נסתרות</p>
-                    </div>
-                  </div>
+                </div>
+              </div>
+
+              {/* Seamless Stats Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-20">
+                <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-red-50/80 to-red-100/80 backdrop-blur-sm border border-red-200/50">
+                  <div className="text-5xl font-black text-red-600 mb-4">₪2,400</div>
+                  <p className="text-2xl font-semibold text-red-800 mb-3 font-heebo">חיסכון ממוצע בשנה</p>
+                  <p className="text-red-700 font-assistant text-lg">למשפחה ממוצעת בישראל</p>
+                </div>
+                <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-green-50/80 to-green-100/80 backdrop-blur-sm border border-green-200/50">
+                  <div className="text-5xl font-black text-green-600 mb-4">100%</div>
+                  <p className="text-2xl font-semibold text-green-800 mb-3 font-heebo">שירות חינמי</p>
+                  <p className="text-green-700 font-assistant text-lg">ללא עלויות נסתרות</p>
                 </div>
               </div>
             </div>
