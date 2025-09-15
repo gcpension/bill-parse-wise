@@ -10,6 +10,10 @@ import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
 import tvFamily from '@/assets/tv-family.jpg';
+import savingsCalculatorIllustration from '@/assets/savings-calculator-illustration.png';
+import familyUtilitiesIllustration from '@/assets/family-utilities-illustration.png';
+import comparisonSuccessIllustration from '@/assets/comparison-success-illustration.png';
+import fastProcessIllustration from '@/assets/fast-process-illustration.png';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -340,6 +344,152 @@ const Home = () => {
           </div>
         </CardContent>
       </Card>
+    </div>
+  </div>
+</section>
+
+{/* Why Choose Us Section */}
+<section className="py-16 bg-gradient-to-br from-gray-50 to-white relative">
+  <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-gray-900 mb-6">
+        למה שווה לבדוק אצלנו?
+      </h2>
+      <p className="text-xl text-gray-700 max-w-4xl mx-auto font-assistant leading-relaxed">
+        אנחנו לא רק מוצאים לכם חיסכון - אנחנו מבטיחים שהמעבר יהיה חלק, מהיר ובטוח
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+      {/* Benefit 1 */}
+      <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+        <CardContent className="p-8 flex items-start gap-6">
+          <div className="w-24 h-24 flex-shrink-0">
+            <img 
+              src={savingsCalculatorIllustration} 
+              alt="איור מחשבון חיסכון"
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4 font-heebo">
+              ניתוח מותאם אישית
+            </h3>
+            <p className="text-gray-600 font-assistant leading-relaxed">
+              המערכת שלנו בודקת את הצרכים הספציפיים שלכם ומוצאת את החבילות המתאימות ביותר. 
+              לא רק המחיר הזול ביותר - אלא את הפתרון הטוב ביותר עבורכם.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Benefit 2 */}
+      <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+        <CardContent className="p-8 flex items-start gap-6">
+          <div className="w-24 h-24 flex-shrink-0">
+            <img 
+              src={familyUtilitiesIllustration} 
+              alt="איור משפחה ושירותים"
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4 font-heebo">
+              כיסוי מקיף לכל הבית
+            </h3>
+            <p className="text-gray-600 font-assistant leading-relaxed">
+              חשמל, סלולר, אינטרנט וטלוויזיה - בודקים הכול במקום אחד. 
+              חוסכים זמן ומקבלים תמונה מלאה של כל האפשרויות לחיסכון בבית.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Benefit 3 */}
+      <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+        <CardContent className="p-8 flex items-start gap-6">
+          <div className="w-24 h-24 flex-shrink-0">
+            <img 
+              src={comparisonSuccessIllustration} 
+              alt="איור הצלחת השוואה"
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4 font-heebo">
+              שקיפות מלאה ללא הפתעות
+            </h3>
+            <p className="text-gray-600 font-assistant leading-relaxed">
+              כל המידע מוצג בצורה ברורה וללא הסתרות. אתם רואים בדיוק מה אתם מקבלים, 
+              כמה זה עולה ומה החיסכון הצפוי שלכם.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Benefit 4 */}
+      <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+        <CardContent className="p-8 flex items-start gap-6">
+          <div className="w-24 h-24 flex-shrink-0">
+            <img 
+              src={fastProcessIllustration} 
+              alt="איור תהליך מהיר"
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4 font-heebo">
+              מעבר מהיר וללא בירוקרטיה
+            </h3>
+            <p className="text-gray-600 font-assistant leading-relaxed">
+              אנחנו מטפלים בכל הניירת והתיאומים. אתם רק חותמים ואנחנו דואגים 
+              לכל השאר - מהתחלה ועד שהמעבר מושלם.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+
+    {/* Trust Indicators */}
+    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div>
+          <div className="text-3xl font-black text-red-500 mb-2">50,000+</div>
+          <p className="text-gray-600 font-assistant">משפחות חסכו עד כה</p>
+        </div>
+        <div>
+          <div className="text-3xl font-black text-green-500 mb-2">4.8/5</div>
+          <p className="text-gray-600 font-assistant">דירוג שביעות רצון</p>
+        </div>
+        <div>
+          <div className="text-3xl font-black text-blue-500 mb-2">72 שעות</div>
+          <p className="text-gray-600 font-assistant">זמן ממוצע למעבר</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Additional Benefits */}
+    <div className="mt-12 text-center">
+      <h3 className="text-2xl font-semibold text-gray-900 mb-6 font-heebo">
+        יתרונות נוספים שחשוב לדעת
+      </h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="bg-red-50 p-6 rounded-xl border border-red-100">
+          <CheckCircle className="w-8 h-8 text-red-500 mx-auto mb-3" />
+          <h4 className="font-semibold text-gray-900 mb-2 font-heebo">ללא התחייבות</h4>
+          <p className="text-sm text-gray-600 font-assistant">אתם מחליטים בסוף אם להמשיך או לא</p>
+        </div>
+        <div className="bg-green-50 p-6 rounded-xl border border-green-100">
+          <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-3" />
+          <h4 className="font-semibold text-gray-900 mb-2 font-heebo">מעקב אחרי התהליך</h4>
+          <p className="text-sm text-gray-600 font-assistant">תקבלו עדכונים לאורך כל הדרך</p>
+        </div>
+        <div className="bg-blue-50 p-6 rounded-xl border border-blue-100">
+          <CheckCircle className="w-8 h-8 text-blue-500 mx-auto mb-3" />
+          <h4 className="font-semibold text-gray-900 mb-2 font-heebo">תמיכה מלאה</h4>
+          <p className="text-sm text-gray-600 font-assistant">צוות מקצועי עומד לרשותכם</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
