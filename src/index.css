@@ -14,12 +14,10 @@ html {
 }
 
 body {
-  font-family: 'Poppins', 'Nunito', 'Heebo', 'IBM Plex Sans Hebrew', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  font-optical-sizing: auto;
+  font-family: 'Assistant', 'Heebo', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   font-weight: 400;
   font-style: normal;
-  letter-spacing: -0.02em;
-  line-height: 1.65;
+  line-height: 1.6;
 }
 
 @layer base {
@@ -60,13 +58,9 @@ body {
     --warning: 48 96% 53%;
     --warning-foreground: 26 83% 14%;
 
-    /* New vibrant colors */
-    --electric-blue: 215 100% 60%;
-    --vibrant-green: 120 100% 40%;
-    --sunset-orange: 25 95% 60%;
-    --royal-purple: 255 65% 60%;
-    --coral-pink: 350 80% 65%;
-    --golden-yellow: 45 100% 55%;
+    /* Clean accent color */
+    --accent-red: 239 68 68;
+    --accent-red-hover: 220 38 38;
     
     /* Trust and brand colors */
     --color-trust-blue: 215 100% 60%;

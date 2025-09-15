@@ -19,18 +19,13 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'poppins': ['Poppins', 'sans-serif'],
-				'nunito': ['Nunito', 'sans-serif'],
-				'outfit': ['Outfit', 'sans-serif'],
-				'source': ['Source Sans Pro', 'sans-serif'],
 				'heebo': ['Heebo', 'sans-serif'],
-				'ibm-plex': ['IBM Plex Sans Hebrew', 'sans-serif'],
 				'assistant': ['Assistant', 'sans-serif'],
 				'rubik': ['Rubik', 'sans-serif'], 
-				'sans': ['Poppins', 'Nunito', 'Assistant', 'Heebo', 'IBM Plex Sans Hebrew', 'ui-sans-serif', 'system-ui'],
-				'display': ['Outfit', 'Poppins', 'Heebo', 'Assistant', 'sans-serif'],
-				'body': ['Nunito', 'Source Sans Pro', 'Assistant', 'IBM Plex Sans Hebrew', 'sans-serif'],
-				'modern': ['Poppins', 'Nunito', 'Outfit', 'sans-serif'],
+				'inter': ['Inter', 'sans-serif'],
+				'sans': ['Heebo', 'Assistant', 'ui-sans-serif', 'system-ui'],
+				'display': ['Heebo', 'Assistant', 'sans-serif'],
+				'body': ['Assistant', 'Heebo', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
