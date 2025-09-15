@@ -31,33 +31,33 @@ const Home = () => {
     electricity: {
       name: 'חשמל',
       icon: Zap,
-      color: 'from-yellow-300 to-amber-400',
-      bgColor: 'bg-gradient-to-br from-yellow-50/80 to-amber-50/80',
-      borderColor: 'border-yellow-200/60',
+      color: 'from-primary to-primary/80',
+      bgColor: 'bg-primary/5',
+      borderColor: 'border-primary/20',
       providers: ['חברת חשמל', 'פז אנרגיה', 'אלקטרה פאוור', 'דור אלון אנרגיה', 'סלקום אנרגיה']
     },
     cellular: {
       name: 'סלולר', 
       icon: Smartphone,
-      color: 'from-purple-300 to-indigo-400',
-      bgColor: 'bg-gradient-to-br from-purple-50/80 to-indigo-50/80',
-      borderColor: 'border-purple-200/60',
+      color: 'from-secondary to-secondary/80',
+      bgColor: 'bg-secondary/5',
+      borderColor: 'border-secondary/20',
       providers: ['פלאפון', 'סלקום', 'פרטנר', 'הוט מובייל', '019 מובייל']
     },
     internet: {
       name: 'אינטרנט',
       icon: Wifi,
-      color: 'from-blue-300 to-cyan-400',
-      bgColor: 'bg-gradient-to-br from-blue-50/80 to-cyan-50/80',
-      borderColor: 'border-blue-200/60',
+      color: 'from-accent to-accent/80',
+      bgColor: 'bg-accent/5',
+      borderColor: 'border-accent/20',
       providers: ['בזק', 'הוט', 'פרטנר', 'סלקום', 'אורנג']
     },
     tv: {
       name: 'טלוויזיה',
       icon: Tv,
-      color: 'from-green-300 to-emerald-400',
-      bgColor: 'bg-gradient-to-br from-green-50/80 to-emerald-50/80',
-      borderColor: 'border-green-200/60',
+      color: 'from-muted-foreground to-muted-foreground/80',
+      bgColor: 'bg-muted/20',
+      borderColor: 'border-muted-foreground/20',
       providers: ['יס', 'הוט', 'סלקום TV', 'פרטנר TV', 'נטפליקס']
     }
   };
@@ -128,79 +128,58 @@ const Home = () => {
   }];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white font-body overflow-hidden">
-      {/* Modern Hero Background inspired by reference */}
+    <div className="min-h-screen bg-background font-body">
+      {/* Clean Professional Background */}
       <div className="fixed inset-0 -z-10">
-        {/* Main gradient background - bright center with green sides */}
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-white to-emerald-400" />
-        <div className="absolute inset-0 bg-gradient-to-b from-emerald-300/30 via-white/90 to-gray-50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
         
-        {/* Geometric circular shapes */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-white/60 rounded-full blur-sm" />
-        <div className="absolute top-32 right-16 w-80 h-80 bg-emerald-200/40 rounded-full blur-md" />
-        <div className="absolute bottom-40 left-20 w-64 h-64 bg-white/50 rounded-full blur-sm" />
-        <div className="absolute bottom-20 right-32 w-72 h-72 bg-emerald-100/60 rounded-full blur-md" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/30 rounded-full blur-3xl" />
-        
-        {/* Additional decorative elements */}
-        <div className="absolute top-16 left-1/3 w-48 h-48 bg-emerald-300/25 rounded-full animate-float" />
-        <div className="absolute bottom-24 right-1/4 w-56 h-56 bg-white/40 rounded-full animate-float" style={{
-          animationDelay: '2s'
-        }} />
-        <div className="absolute top-1/3 right-12 w-40 h-40 bg-emerald-200/30 rounded-full animate-float" style={{
-          animationDelay: '4s'
-        }} />
+        {/* Subtle geometric shapes */}
+        <div className="absolute top-20 right-20 w-64 h-64 bg-primary/10 rounded-full blur-xl opacity-50" />
+        <div className="absolute bottom-32 left-16 w-48 h-48 bg-secondary/15 rounded-full blur-2xl opacity-60" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent/10 rounded-full blur-3xl opacity-40" />
       </div>
 
       {/* Enhanced Hero Section */}
-      <section className="relative py-16 lg:py-20">
+      <section className="relative py-12 lg:py-16">
         <div className="container mx-auto px-4 lg:px-6">
           <div className="max-w-5xl mx-auto text-center">
-            <div className={`transition-all duration-1000 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-              {/* Compact Premium Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 backdrop-blur-md rounded-full border border-emerald-400/30 mb-6 shadow-lg">
-                <div className="w-4 h-4 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center">
-                  <Sparkles className="w-2 h-2 text-white" />
+            <div className={`transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+              {/* Professional Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/5 backdrop-blur-sm rounded-lg border border-primary/20 mb-6">
+                <div className="w-3 h-3 bg-primary rounded-full flex items-center justify-center">
+                  <Sparkles className="w-1.5 h-1.5 text-primary-foreground" />
                 </div>
-                <span className="text-xs font-display font-semibold text-emerald-700">
-                  הפלטפורמה המתקדמת ביותר • 2025
+                <span className="text-xs font-medium text-primary">
+                  פלטפורמה מתקדמת לחיסכון • 2025
                 </span>
               </div>
               
-              {/* Enhanced Main Title */}
-              <h1 className="text-5xl lg:text-6xl font-display font-black tracking-tight leading-tight mb-6">
-                תפסיקו לבזבז כסף
+              {/* Professional Main Title */}
+              <h1 className="text-3xl lg:text-4xl font-display font-bold tracking-tight leading-tight mb-6 text-foreground">
+                חסכו בחשבונות הבית
                 <br />
-                <span className="relative">
-                  <span className="bg-gradient-to-l from-emerald-600 via-emerald-700 to-emerald-800 bg-clip-text text-transparent">
-                    על חשבונות מנופחים
-                  </span>
-                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 rounded-full"></div>
+                <span className="text-primary">
+                  בקלות ובמהירות
                 </span>
               </h1>
               
-              {/* Enhanced Subtitle */}
-              <div className="space-y-3 mb-10">
-                <p className="text-xl lg:text-2xl text-muted-foreground font-body font-light leading-relaxed max-w-4xl mx-auto">
+              {/* Clean Subtitle */}
+              <div className="space-y-3 mb-8">
+                <p className="text-lg lg:text-xl text-muted-foreground font-light leading-relaxed max-w-3xl mx-auto">
                   אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
                 </p>
-                <p className="text-lg font-display font-semibold">
-                  <span className="bg-gradient-to-l from-success via-emerald-600 to-green-600 bg-clip-text text-transparent">
-                    המשפחה הממוצעת חוסכת ₪2,400 בשנה
-                  </span>
-                  {" "}עם השירות שלנו
+                <p className="text-base font-medium text-primary">
+                  המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
                 </p>
               </div>
 
-              {/* Category Selection Section - Moved to top */}
-              <div className="space-y-8 max-w-6xl mx-auto mb-16">
+              {/* Category Selection Section - Professional Design */}
+              <div className="space-y-6 max-w-5xl mx-auto mb-12">
                 <div className="text-center">
-                  <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4 text-gray-800">
-                    <span className="bg-gradient-to-l from-emerald-600 via-emerald-700 to-emerald-800 bg-clip-text text-transparent">
-                      באיזה שירות תרצו להתחיל לחסוך היום?
-                    </span>
+                  <h2 className="text-2xl lg:text-3xl font-display font-semibold mb-3 text-foreground">
+                    באיזה שירות תרצו להתחיל לחסוך?
                   </h2>
-                  <p className="text-lg text-gray-700">בחרו קטגוריות והזינו פרטים לקבלת ניתוח מיידי</p>
+                  <p className="text-base text-muted-foreground">בחרו קטגוריות והזינו פרטים לקבלת ניתוח מיידי</p>
                 </div>
 
                 {/* Category Cards Grid */}
@@ -285,98 +264,91 @@ const Home = () => {
                   })}
                 </div>
 
-                {/* Start Analysis Button */}
-                <div className="flex justify-center mt-12">
+                {/* Professional Start Analysis Button */}
+                <div className="flex justify-center mt-8">
                   <Button 
                     size="lg" 
                     onClick={handleStartAnalysis}
-                    className="px-20 py-10 bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 hover:from-emerald-500 hover:via-green-600 hover:to-teal-600 text-white font-black text-4xl lg:text-5xl shadow-2xl hover:shadow-emerald-400/30 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden rounded-3xl ring-4 ring-emerald-400/40 hover:ring-emerald-500/60 group"
+                    className="px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg transition-all duration-200 border-0 rounded-lg"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-                    <span className="relative flex items-center gap-8">
-                      <span className="drop-shadow-lg">התחל ניתוח חיסכון</span>
-                      <ArrowRight className="h-10 w-10 group-hover:translate-x-3 transition-transform duration-300 drop-shadow-lg" />
+                    <span className="flex items-center gap-3">
+                      <span>התחל ניתוח חיסכון</span>
+                      <ArrowRight className="h-5 w-5" />
                     </span>
                   </Button>
                 </div>
               </div>
 
-              {/* Enhanced How It Works Section */}
-              <div className="max-w-6xl mx-auto mt-16">
-                <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-background to-blue-50/30 shadow-xl">
-                  <CardContent className="p-12">
-                    {/* Main Title */}
-                    <div className="text-center mb-12">
-                      <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6 leading-tight">
-                        <span className="bg-gradient-to-l from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                          איך המערכת עובדת?
-                        </span>
+              {/* Professional How It Works Section */}
+              <div className="max-w-4xl mx-auto mt-16">
+                <Card className="border border-border bg-card shadow-lg">
+                  <CardContent className="p-8">
+                    {/* Clean Title */}
+                    <div className="text-center mb-10">
+                      <h2 className="text-2xl lg:text-3xl font-display font-semibold mb-4 text-foreground">
+                        איך זה עובד?
                       </h2>
-                      <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                        תהליך פשוט ומהיר שחוסך לכם זמן, כסף והטרדות מיותרות
+                      <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+                        תהליך פשוט ומהיר לחיסכון בחשבונות הבית
                       </p>
                     </div>
 
-                    {/* Steps Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                      <div className="text-center space-y-4">
-                        <div className="w-20 h-20 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg mx-auto">
+                    {/* Professional Steps Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                      <div className="text-center space-y-3">
+                        <div className="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-lg mx-auto">
                           1
                         </div>
-                        <h3 className="text-2xl font-bold text-gray-800">בחירת שירותים</h3>
-                        <p className="text-gray-600 leading-relaxed text-lg">
-                          בחרו את השירותים שאתם רוצים לבדוק - חשמל, סלולר, אינטרנט או טלוויזיה. 
-                          הזינו את הספק הנוכחי והסכום החודשי שאתם משלמים.
+                        <h3 className="text-lg font-semibold text-foreground">בחירת שירותים</h3>
+                        <p className="text-muted-foreground leading-relaxed text-sm">
+                          בחרו את השירותים שאתם רוצים לבדוק והזינו את הפרטים הנוכחיים שלכם
                         </p>
                       </div>
                       
-                      <div className="text-center space-y-4">
-                        <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg mx-auto">
+                      <div className="text-center space-y-3">
+                        <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center text-secondary-foreground font-semibold text-lg mx-auto">
                           2
                         </div>
-                        <h3 className="text-2xl font-bold text-gray-800">ניתוח מתקדם</h3>
-                        <p className="text-gray-600 leading-relaxed text-lg">
-                          המערכת שלנו סורקת אלפי תעריפים בזמן אמת, משווה מחירים ומוצאת 
-                          את האפשרויות הזולות והמשתלמות ביותר עבורכם.
+                        <h3 className="text-lg font-semibold text-foreground">ניתוח מתקדם</h3>
+                        <p className="text-muted-foreground leading-relaxed text-sm">
+                          המערכת סורקת תעריפים ומוצאת את האפשרויות הטובות ביותר עבורכם
                         </p>
                       </div>
                       
-                      <div className="text-center space-y-4">
-                        <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg mx-auto">
+                      <div className="text-center space-y-3">
+                        <div className="w-14 h-14 bg-accent rounded-full flex items-center justify-center text-accent-foreground font-semibold text-lg mx-auto">
                           3
                         </div>
-                        <h3 className="text-2xl font-bold text-gray-800">מעבר אוטומטי</h3>
-                        <p className="text-gray-600 leading-relaxed text-lg">
-                          אנחנו מטפלים בכל התהליך - ניתוק מהספק הישן, התחברות לחדש, 
-                          וליווי מלא עד שהמעבר מושלם.
+                        <h3 className="text-lg font-semibold text-foreground">מעבר מלווה</h3>
+                        <p className="text-muted-foreground leading-relaxed text-sm">
+                          אנחנו מטפלים בכל התהליך עד שהמעבר מושלם
                         </p>
                       </div>
                     </div>
 
-                    {/* Key Benefits */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-                      <div className="bg-gradient-to-r from-success/10 to-emerald-500/10 p-8 rounded-2xl border border-success/20">
+                    {/* Professional Key Benefits */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                      <div className="bg-primary/5 p-6 rounded-lg border border-primary/20">
                         <div className="text-center">
-                          <div className="text-6xl font-black text-success mb-4">₪2,400</div>
-                          <p className="text-xl font-bold text-success mb-2">החיסכון הממוצע</p>
-                          <p className="text-gray-600">לשנה למשפחה ממוצעת</p>
+                          <div className="text-3xl font-bold text-primary mb-2">₪2,400</div>
+                          <p className="text-base font-medium text-primary mb-1">חיסכון ממוצע בשנה</p>
+                          <p className="text-sm text-muted-foreground">למשפחה ממוצעת</p>
                         </div>
                       </div>
 
-                      <div className="bg-gradient-to-r from-primary/10 to-blue-500/10 p-8 rounded-2xl border border-primary/20">
+                      <div className="bg-secondary/5 p-6 rounded-lg border border-secondary/20">
                         <div className="text-center">
-                          <div className="text-6xl font-black text-primary mb-4">100%</div>
-                          <p className="text-xl font-bold text-primary mb-2">ללא עלות</p>
-                          <p className="text-gray-600">השירות חינם לחלוטין עבורכם</p>
+                          <div className="text-3xl font-bold text-secondary mb-2">100%</div>
+                          <p className="text-base font-medium text-secondary mb-1">ללא עלות</p>
+                          <p className="text-sm text-muted-foreground">השירות חינם לחלוטין</p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Additional Info */}
-                    <div className="text-center mt-12 p-6 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-200">
-                      <p className="text-lg text-gray-700 font-medium">
-                        <span className="text-primary font-bold">למה זה עובד?</span> אנחנו עובדים עם כל הספקים הגדולים בישראל 
-                        ומקבלים עמלה מהספק החדש רק אם החיסכון שלכם משמעותי. אין לנו אינטרס להעביר אתכם לספק יקר יותר.
+                    {/* Clean Additional Info */}
+                    <div className="text-center mt-8 p-4 bg-muted/30 rounded-lg border border-border">
+                      <p className="text-sm text-muted-foreground">
+                        <span className="text-foreground font-medium">למה השירות חינם?</span> אנחנו מקבלים עמלה מהספק החדש רק כשהחיסכון משמעותי
                       </p>
                     </div>
                   </CardContent>
