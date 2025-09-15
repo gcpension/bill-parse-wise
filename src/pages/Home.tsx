@@ -15,7 +15,7 @@ import familyUtilitiesIllustration from '@/assets/family-utilities-illustration.
 import comparisonSuccessIllustration from '@/assets/comparison-success-illustration.png';
 import fastProcessIllustration from '@/assets/fast-process-illustration.png';
 import heroBackgroundIllustration from '@/assets/hero-background-illustration.png';
-import middleSectionIllustration from '@/assets/middle-section-illustration-transparent.png';
+import middleSectionIllustration from '@/assets/clean-middle-illustration.png';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -436,6 +436,10 @@ const Home = () => {
                   src={middleSectionIllustration}
                   alt="איור של אישה עובדת על השוואת תעריפי שירותי הבית" 
                   className="w-full h-auto"
+                  style={{ 
+                    mixBlendMode: 'multiply',
+                    backgroundColor: 'transparent'
+                  }}
                 />
               </div>
             </div>
