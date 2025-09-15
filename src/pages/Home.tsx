@@ -155,7 +155,7 @@ const Home = () => {
               </div>
               
               {/* Professional Main Title */}
-              <h1 className="text-3xl lg:text-4xl font-display font-bold tracking-tight leading-tight mb-6 text-foreground">
+              <h1 className="text-3xl lg:text-5xl font-display font-bold tracking-tight leading-tight mb-6 text-foreground">
                 חסכו בחשבונות הבית
                 <br />
                 <span className="text-primary">
@@ -165,10 +165,10 @@ const Home = () => {
               
               {/* Clean Subtitle */}
               <div className="space-y-3 mb-8">
-                <p className="text-lg lg:text-xl text-muted-foreground font-light leading-relaxed max-w-3xl mx-auto">
+                <p className="text-lg lg:text-xl text-muted-foreground font-body leading-relaxed max-w-3xl mx-auto">
                   אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
                 </p>
-                <p className="text-base font-medium text-primary">
+                <p className="text-base font-medium text-primary font-body">
                   המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
                 </p>
               </div>
@@ -176,14 +176,14 @@ const Home = () => {
               {/* Category Selection Section - Professional Design */}
               <div className="space-y-6 max-w-5xl mx-auto mb-12">
                 <div className="text-center">
-                  <h2 className="text-2xl lg:text-3xl font-display font-semibold mb-3 text-foreground">
+                  <h2 className="text-2xl lg:text-3xl font-display font-semibold mb-3 text-foreground tracking-tight">
                     באיזה שירות תרצו להתחיל לחסוך?
                   </h2>
-                  <p className="text-base text-muted-foreground">בחרו קטגוריות והזינו פרטים לקבלת ניתוח מיידי</p>
+                  <p className="text-base text-muted-foreground font-body">בחרו קטגוריות והזינו פרטים לקבלת ניתוח מיידי</p>
                 </div>
 
-                {/* Category Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                 {/* Category Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {Object.entries(categoryData).map(([category, data]) => {
                     const Icon = data.icon;
                     const isSelected = selectedCategories[category].selected;
@@ -196,18 +196,18 @@ const Home = () => {
                     return (
                       <div key={category} className="space-y-4">
                         <Card 
-                          className={`relative overflow-hidden transition-all duration-300 cursor-pointer group ${
+                          className={`relative overflow-hidden transition-all duration-500 cursor-pointer group backdrop-blur-sm ${
                             isSelected 
-                              ? `ring-2 ring-primary/40 shadow-xl scale-105 ${data.borderColor}` 
-                              : `hover:shadow-lg hover:scale-102 border ${data.borderColor}`
-                          } ${data.bgColor} border-2`}
+                              ? `ring-2 ring-primary shadow-2xl scale-[1.02] bg-gradient-to-br from-card to-primary/5` 
+                              : `hover:shadow-xl hover:scale-[1.01] bg-card/80 border-border`
+                          } border-2 rounded-2xl`}
                           onClick={() => handleCategorySelect(category)}
                         >
                           <CardContent className="p-6 text-center">
-                            <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${data.color} flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                              <Icon className="w-8 h-8 text-white" />
+                            <div className={`w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br ${data.color} flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
+                              <Icon className="w-8 h-8 text-white drop-shadow-sm" />
                             </div>
-                            <h3 className="font-display font-bold text-lg mb-2 text-gray-700">{data.name}</h3>
+                            <h3 className="font-display font-semibold text-xl mb-2 text-foreground tracking-tight">{data.name}</h3>
                             
                             {isSelected && (
                               <div className="space-y-3 mt-4" onClick={(e) => e.stopPropagation()}>
@@ -215,8 +215,8 @@ const Home = () => {
                                   value={selectedCategories[category].provider} 
                                   onValueChange={(value) => handleProviderChange(category, value)}
                                 >
-                                  <SelectTrigger className="h-9 text-sm bg-white/90 border-gray-200">
-                                    <SelectValue placeholder="בחרו ספק" />
+                                  <SelectTrigger className="h-10 text-sm bg-background/90 border-border/50 rounded-xl font-body">
+                                    <SelectValue placeholder="בחרו ספק נוכחי" />
                                   </SelectTrigger>
                                   <SelectContent>
                                     {data.providers.map(provider => (
@@ -227,19 +227,19 @@ const Home = () => {
                                 
                                 <Input
                                   type="number"
-                                  placeholder="סכום חודשי (₪)"
+                                  placeholder="סכום חודשי נוכחי (₪)"
                                   value={selectedCategories[category].amount}
                                   onChange={(e) => handleAmountChange(category, e.target.value)}
-                                  className="h-9 text-sm bg-white/90 border-gray-200"
+                                  className="h-10 text-sm bg-background/90 border-border/50 rounded-xl font-body"
                                 />
                               </div>
                             )}
                             
                             <Button 
-                              className={`w-full mt-4 transition-all duration-300 ${
+                              className={`w-full mt-5 transition-all duration-300 rounded-xl font-medium ${
                                 isSelected 
-                                  ? 'bg-gradient-to-r from-primary/80 to-blue-500/80 text-white hover:from-primary hover:to-blue-600' 
-                                  : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-700 hover:to-gray-800'
+                                  ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-md' 
+                                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
                               }`}
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -256,7 +256,7 @@ const Home = () => {
                           <img 
                             src={categoryImages[category]} 
                             alt={`איור ${data.name}`}
-                            className="w-48 h-36 object-cover rounded-xl shadow-md opacity-80 hover:opacity-100 transition-opacity duration-300"
+                            className="w-48 h-32 object-cover rounded-2xl shadow-md opacity-75 hover:opacity-95 transition-all duration-300 border border-border/30"
                           />
                         </div>
                       </div>
