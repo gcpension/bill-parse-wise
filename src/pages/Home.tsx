@@ -332,17 +332,65 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Additional Info */}
-                <div className="text-center mt-8 p-6 bg-gray-50 rounded-2xl border border-gray-100">
-                  <p className="text-gray-600 font-assistant">
-                    <span className="text-gray-800 font-medium">למה השירות חינם?</span> אנחנו מקבלים עמלה מהספק החדש רק כשהחיסכון משמעותי
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Additional Info */}
+          <div className="text-center mt-8 p-6 bg-gray-50 rounded-2xl border border-gray-100">
+            <p className="text-gray-600 font-assistant">
+              <span className="text-gray-800 font-medium">למה השירות חינם?</span> אנחנו מקבלים עמלה מהספק החדש רק כשהחיסכון משמעותי
+            </p>
           </div>
-        </div>
-      </section>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>
+
+{/* Our Mission Section */}
+<section className="py-16 bg-white relative">
+  <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+    <div className="max-w-5xl mx-auto">
+      <Card className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-100 shadow-lg">
+        <CardContent className="p-12">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold mb-6 text-gray-900">
+              השליחות שלנו
+            </h2>
+            <p className="text-xl text-gray-700 max-w-4xl mx-auto font-assistant leading-relaxed">
+              אנחנו מאמינים שכל משפחה ישראלית זכאית לחסוך כסף על חשבונות הבית. 
+              המטרה שלנו היא להפוך את התהליך המסובך של השוואת ספקים לפשוט, מהיר ויעיל.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-red-100">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 font-heebo">הערך שלנו</h3>
+              <p className="text-gray-600 font-assistant leading-relaxed">
+                אנחנו מביאים שקיפות מלאה לשוק הספקים. כל המידע מוצג בצורה ברורה וללא עמלות נסתרות.
+                המטרה שלנו היא לחסוך לכם זמן וכסף.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-red-100">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 font-heebo">החזון שלנו</h3>
+              <p className="text-gray-600 font-assistant leading-relaxed">
+                עולם שבו כל משפחה יכולה לנהל את חשבונות הבית בחכמה ולחסוך אלפי שקלים בשנה
+                באמצעות טכנולוגיה מתקדמת ושירות אישי.
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center bg-white p-8 rounded-2xl border border-red-100">
+            <p className="text-lg text-gray-700 font-assistant mb-4">
+              <span className="font-semibold text-red-600">למעלה מ-50,000 משפחות</span> כבר חסכו עם השירות שלנו
+            </p>
+            <p className="text-gray-600 font-assistant">
+              הצטרפו למהפכת החיסכון והתחילו לחסוך כבר היום
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>
     </div>
   );
 };
