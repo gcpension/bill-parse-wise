@@ -6,6 +6,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
+import electricityFamily from '@/assets/electricity-family.jpg';
+import cellularFamily from '@/assets/cellular-family.jpg';
+import internetFamily from '@/assets/internet-family.jpg';
+import tvFamily from '@/assets/tv-family.jpg';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -25,25 +29,25 @@ const Home = () => {
     electricity: {
       name: 'חשמל',
       icon: Zap,
-      illustration: '⚡',
+      image: electricityFamily,
       providers: ['חברת חשמל', 'פז אנרגיה', 'אלקטרה פאוור', 'דור אלון אנרגיה', 'סלקום אנרגיה']
     },
     cellular: {
       name: 'סלולר', 
       icon: Smartphone,
-      illustration: '📱',
+      image: cellularFamily,
       providers: ['פלאפון', 'סלקום', 'פרטנר', 'הוט מובייל', '019 מובייל']
     },
     internet: {
       name: 'אינטרנט',
       icon: Wifi,
-      illustration: '🌐',
+      image: internetFamily,
       providers: ['בזק', 'הוט', 'פרטנר', 'סלקום', 'אורנג']
     },
     tv: {
       name: 'טלוויזיה',
       icon: Tv,
-      illustration: '📺',
+      image: tvFamily,
       providers: ['יס', 'הוט', 'סלקום TV', 'פרטנר TV', 'נטפליקס']
     }
   };
@@ -127,9 +131,13 @@ const Home = () => {
                   onClick={() => handleCategorySelect(category)}
                 >
                   <CardContent className="p-8 text-center">
-                    {/* Simple illustration area */}
-                    <div className="w-24 h-24 mx-auto mb-6 bg-gray-50 rounded-2xl flex items-center justify-center">
-                      <span className="text-4xl">{data.illustration}</span>
+                    {/* Image illustration */}
+                    <div className="w-full h-32 mx-auto mb-6 overflow-hidden rounded-2xl">
+                      <img 
+                        src={data.image}
+                        alt={`איור ${data.name}`}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     
                     {/* Category title */}
