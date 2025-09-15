@@ -283,85 +283,94 @@ const Home = () => {
             </p>
           </div>
 
-          {/* How It Works Section - Seamless Integration */}
-          <div className="max-w-6xl mx-auto mt-20">
-            <div className="py-16">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
-                {/* Content Side */}
-                <div>
-                  <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-8 text-gray-900 leading-tight">
-                    איך זה עובד?
-                  </h2>
-                  <p className="text-xl text-gray-700 mb-12 font-assistant leading-relaxed">
-                    תהליך פשוט ומהיר לחיסכון בחשבונות הבית
-                  </p>
+          {/* Professional How It Works Section */}
+          <div className="max-w-7xl mx-auto mt-20">
+            <div className="py-20">
+              {/* Section Header */}
+              <div className="text-center mb-16">
+                <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-6 text-gray-900 leading-tight">
+                  איך זה עובד?
+                </h2>  
+                <p className="text-xl text-gray-600 font-assistant leading-relaxed max-w-2xl mx-auto">
+                  תהליך פשוט, מהיר ומקצועי שמביא לכם חיסכון אמיתי בחשבונות הבית
+                </p>
+              </div>
 
-                  {/* Professional Steps */}
-                  <div className="space-y-8">
-                    <div className="flex items-start gap-6">
-                      <div className="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-lg">
-                        1
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-semibold text-gray-900 font-heebo mb-4">בחירת שירותים</h3>
-                        <p className="text-gray-600 leading-relaxed font-assistant text-lg">
-                          בחרו את השירותים שאתם רוצים לבדוק והזינו את הפרטים הנוכחיים שלכם
-                        </p>
-                      </div>
+              {/* Professional Steps Layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
+                
+                {/* Step 1 - Selection */}
+                <div className="text-center group">
+                  <div className="mb-8 relative">
+                    <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                      <span className="text-white font-bold text-2xl">1</span>
                     </div>
-                    
-                    <div className="flex items-start gap-6">
-                      <div className="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-lg">
-                        2
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-semibold text-gray-900 font-heebo mb-4">ניתוח מתקדם</h3>
-                        <p className="text-gray-600 leading-relaxed font-assistant text-lg">
-                          המערכת סורקת תעריפים ומוצאת את האפשרויות הטובות ביותר עבורכם
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-6">
-                      <div className="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-lg">
-                        3
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-semibold text-gray-900 font-heebo mb-4">מעבר מלווה</h3>
-                        <p className="text-gray-600 leading-relaxed font-assistant text-lg">
-                          אנחנו מטפלים בכל התהליך עד שהמעבר מושלם
-                        </p>
-                      </div>
+                    <div className="w-20 h-20 mx-auto opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                      <img 
+                        src={savingsCalculatorIllustration}
+                        alt="בחירת שירותים"
+                        className="w-full h-full object-contain"
+                      />
                     </div>
                   </div>
+                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-4">בחירת שירותים</h3>
+                  <p className="text-gray-600 leading-relaxed font-assistant text-lg">
+                    בחרו את השירותים שאתם רוצים לבדוק והזינו את הפרטים הנוכחיים שלכם
+                  </p>
                 </div>
 
-                {/* Professional Illustration Side */}
-                <div className="flex justify-center">
-                  <div className="w-full max-w-md">
-                    <img 
-                      src={professionalServicesIllustration}
-                      alt="איור מקצועי של בדיקת שירותים" 
-                      className="w-full h-auto opacity-90"
-                      style={{ 
-                        filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.1))'
-                      }}
-                    />
+                {/* Step 2 - Analysis */}
+                <div className="text-center group">
+                  <div className="mb-8 relative">
+                    <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                      <span className="text-white font-bold text-2xl">2</span>
+                    </div>
+                    <div className="w-20 h-20 mx-auto opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                      <img 
+                        src={comparisonSuccessIllustration}
+                        alt="ניתוח מתקדם"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                   </div>
+                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-4">ניתוח מתקדם</h3>
+                  <p className="text-gray-600 leading-relaxed font-assistant text-lg">
+                    המערכת סורקת תעריפים ומוצאת את האפשרויות הטובות ביותר עבורכם
+                  </p>
+                </div>
+
+                {/* Step 3 - Process */}
+                <div className="text-center group">
+                  <div className="mb-8 relative">
+                    <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                      <span className="text-white font-bold text-2xl">3</span>
+                    </div>
+                    <div className="w-20 h-20 mx-auto opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                      <img 
+                        src={fastProcessIllustration}
+                        alt="מעבר מהיר"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-4">מעבר מהיר</h3>
+                  <p className="text-gray-600 leading-relaxed font-assistant text-lg">
+                    אנחנו מטפלים בכל התהליך עד שהמעבר מושלם - ללא טרחה מצידכם
+                  </p>
                 </div>
               </div>
 
-              {/* Seamless Stats Section */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-20">
-                <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-red-50/80 to-red-100/80 backdrop-blur-sm border border-red-200/50">
-                  <div className="text-5xl font-black text-red-600 mb-4">₪2,400</div>
+              {/* Professional Stats Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div className="text-center p-10 rounded-3xl bg-gradient-to-br from-red-500/10 to-red-600/10 backdrop-blur-sm border border-red-200/30 hover:border-red-300/50 transition-all duration-300">
+                  <div className="text-6xl font-black text-red-600 mb-4">₪2,400</div>
                   <p className="text-2xl font-semibold text-red-800 mb-3 font-heebo">חיסכון ממוצע בשנה</p>
-                  <p className="text-red-700 font-assistant text-lg">למשפחה ממוצעת בישראל</p>
+                  <p className="text-red-700/80 font-assistant text-lg">למשפחה ממוצעת בישראל</p>
                 </div>
-                <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-green-50/80 to-green-100/80 backdrop-blur-sm border border-green-200/50">
-                  <div className="text-5xl font-black text-green-600 mb-4">100%</div>
+                <div className="text-center p-10 rounded-3xl bg-gradient-to-br from-green-500/10 to-green-600/10 backdrop-blur-sm border border-green-200/30 hover:border-green-300/50 transition-all duration-300">
+                  <div className="text-6xl font-black text-green-600 mb-4">100%</div>
                   <p className="text-2xl font-semibold text-green-800 mb-3 font-heebo">שירות חינמי</p>
-                  <p className="text-green-700 font-assistant text-lg">ללא עלויות נסתרות</p>
+                  <p className="text-green-700/80 font-assistant text-lg">ללא עלויות נסתרות</p>
                 </div>
               </div>
             </div>
