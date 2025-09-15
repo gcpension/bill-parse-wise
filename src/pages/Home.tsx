@@ -14,6 +14,7 @@ import savingsCalculatorIllustration from '@/assets/savings-calculator-illustrat
 import familyUtilitiesIllustration from '@/assets/family-utilities-illustration.png';
 import comparisonSuccessIllustration from '@/assets/comparison-success-illustration.png';
 import fastProcessIllustration from '@/assets/fast-process-illustration.png';
+import heroBackgroundIllustration from '@/assets/hero-background-illustration.png';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -132,8 +133,12 @@ const Home = () => {
         <Monitor className="absolute top-[15%] left-[58%] w-5 h-5 text-indigo-400 opacity-50 rotate-[55deg] animate-pulse" style={{ animationDelay: '8.8s', animationDuration: '2.7s' }} />
       </div>
       {/* Clean Header Section */}
-      <section className="bg-white py-16 lg:py-24 relative">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+      <section className="bg-white py-16 lg:py-24 relative overflow-hidden">
+        {/* Background illustration */}
+        <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" 
+             style={{ backgroundImage: `url(${heroBackgroundIllustration})` }}>
+        </div>
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="text-center">
             
             {/* Clean subtitle */}
