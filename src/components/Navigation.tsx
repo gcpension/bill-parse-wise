@@ -9,9 +9,12 @@ import {
 
 const navigation = [
   { name: 'בית', href: '/', icon: Home },
+  { name: 'מגזין', href: '/magazine', icon: Calculator },
+  { name: 'טיפים', href: '/tips', icon: TrendingDown },
   { name: 'ניתוח חיסכון', href: '/analyze', icon: Calculator },
   { name: 'כל המסלולים', href: '/all-plans', icon: TrendingDown },
-  { name: 'הגדרות', href: '/settings', icon: Settings },
+  { name: 'אודות', href: '/about', icon: Settings },
+  { name: 'צור קשר', href: '/contact', icon: Settings },
 ];
 
 export const Navigation = () => {
@@ -28,7 +31,7 @@ export const Navigation = () => {
               </div>
               <div>
               <h1 className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
-                חסכונט
+                EasySwitch
               </h1>
               <p className="text-xs text-muted-foreground">מחשבון חיסכון חכם</p>
               </div>

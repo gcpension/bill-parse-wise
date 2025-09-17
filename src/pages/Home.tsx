@@ -128,6 +128,9 @@ const Home = () => {
               <a href="/magazine" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
                 מגזין
               </a>
+              <a href="/tips" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
+                טיפים
+              </a>
               <a href="/about" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
                 אודות
               </a>

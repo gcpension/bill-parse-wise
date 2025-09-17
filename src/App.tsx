@@ -5,6 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Home from "./pages/Home";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Magazine from "./pages/Magazine";
+import Tips from "./pages/Tips";
 import { Settings } from "./pages/Settings";
 import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
@@ -34,6 +38,10 @@ const App = () => (
           <div className="min-h-screen bg-background">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/magazine" element={<Magazine />} />
+              <Route path="/tips" element={<Tips />} />
               <Route path="/analyze" element={<Analyze />} />
               <Route path="/results-preview" element={<ResultsPreview />} />
               <Route path="/switch-wizard" element={<SwitchWizard />} />
@@ -46,6 +54,7 @@ const App = () => (
                 path="/switch/:category"
                 element={<ProviderSwitch />}
               />
+              <Route path="/help" element={<Help />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/integration-test" element={<IntegrationTestPage />} />
               {/* Redirect old routes to analyze */}

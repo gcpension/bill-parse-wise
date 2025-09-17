@@ -26,11 +26,15 @@ import { Badge } from "@/components/ui/badge";
 
 const mainMenuItems = [
   { title: "עמוד הבית", url: "/", icon: Home },
+  { title: "מגזין", url: "/magazine", icon: Calculator },
+  { title: "טיפים לחיסכון", url: "/tips", icon: TrendingDown },
   { title: "ניתוח חכם", url: "/analyze", icon: Calculator },
   { title: "כל המסלולים", url: "/all-plans", icon: TrendingDown },
 ];
 
 const helpMenuItems = [
+  { title: "אודות", url: "/about", icon: HelpCircle },
+  { title: "צור קשר", url: "/contact", icon: Settings },
   { title: "עזרה ו-FAQ", url: "/help", icon: HelpCircle },
   { title: "הגדרות", url: "/settings", icon: Settings },
 ];
@@ -70,7 +74,7 @@ export function AppSidebar() {
               </div>
               <div>
                 <h2 className="text-lg font-bold gradient-primary bg-clip-text text-transparent">
-                  חוסכים חכם
+                  EasySwitch
                 </h2>
                 <p className="text-xs text-muted-foreground">המערכת לחיסכון בבית</p>
               </div>
