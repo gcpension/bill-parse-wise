@@ -497,7 +497,7 @@ const Home = () => {
             <div className="order-1 lg:order-2 flex justify-center">
               <div className="w-full max-w-lg bg-gray-50 rounded-3xl p-8 border border-gray-100">
                 <img 
-                  src={middleSectionIllustration}
+                  src={savingsAnalysisIllustration}
                   alt="איור של אדם מנתח חשבונות וחיסכון" 
                   className="w-full h-auto rounded-2xl"
                 />
