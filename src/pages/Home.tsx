@@ -17,7 +17,7 @@ import heroBackgroundIllustration from '@/assets/hero-background-illustration.pn
 import middleSectionIllustration from '@/assets/clean-middle-illustration.png';
 import professionalServicesIllustration from '@/assets/professional-services-illustration.png';
 import israeliTelecomLogos from '@/assets/logos/israeli-telecom-logos.png';
-import savingsAnalysisIllustration from '@/assets/savings-analysis-illustration.png';
+import savingsAnalysisIllustration from '@/assets/savings-analysis-illustration-transparent.png';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -101,7 +101,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gray-50 relative overflow-hidden">
       {/* Top Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200 py-4">
+      <nav className="bg-gray-50 border-b border-gray-200 py-4">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="flex items-center justify-between">
             {/* Logo on the left */}
@@ -132,15 +132,28 @@ const Home = () => {
 
       {/* Background decorative elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {/* Subtle background icons */}
-        <Lightbulb className="absolute top-[15%] left-[8%] w-6 h-6 text-royal-purple opacity-15 animate-pulse" style={{ animationDelay: '0s', animationDuration: '8s' }} />
-        <Smartphone className="absolute top-[25%] right-[12%] w-6 h-6 text-royal-purple opacity-15 animate-pulse" style={{ animationDelay: '2s', animationDuration: '8s' }} />
-        <Wifi className="absolute top-[45%] left-[15%] w-6 h-6 text-royal-purple opacity-15 animate-pulse" style={{ animationDelay: '4s', animationDuration: '8s' }} />
-        <Tv className="absolute bottom-[35%] right-[7%] w-6 h-6 text-royal-purple opacity-15 animate-pulse" style={{ animationDelay: '6s', animationDuration: '8s' }} />
+        {/* Subtle background icons scattered across the page */}
+        <Lightbulb className="absolute top-[15%] left-[8%] w-6 h-6 text-royal-purple opacity-10 animate-pulse" style={{ animationDelay: '0s', animationDuration: '8s' }} />
+        <Smartphone className="absolute top-[25%] right-[12%] w-6 h-6 text-royal-purple opacity-10 animate-pulse" style={{ animationDelay: '2s', animationDuration: '8s' }} />
+        <Wifi className="absolute top-[45%] left-[15%] w-6 h-6 text-royal-purple opacity-10 animate-pulse" style={{ animationDelay: '4s', animationDuration: '8s' }} />
+        <Tv className="absolute bottom-[35%] right-[7%] w-6 h-6 text-royal-purple opacity-10 animate-pulse" style={{ animationDelay: '6s', animationDuration: '8s' }} />
+        
+        {/* Additional scattered elements */}
+        <Phone className="absolute top-[60%] left-[5%] w-5 h-5 text-purple-400 opacity-8 animate-pulse" style={{ animationDelay: '1s', animationDuration: '10s' }} />
+        <Router className="absolute top-[35%] right-[20%] w-5 h-5 text-purple-400 opacity-8 animate-pulse" style={{ animationDelay: '3s', animationDuration: '9s' }} />
+        <Cable className="absolute bottom-[60%] left-[25%] w-4 h-4 text-gray-400 opacity-8 animate-pulse" style={{ animationDelay: '5s', animationDuration: '12s' }} />
+        <Plug className="absolute top-[80%] right-[8%] w-4 h-4 text-gray-400 opacity-8 animate-pulse" style={{ animationDelay: '7s', animationDuration: '11s' }} />
+        <WifiOff className="absolute bottom-[45%] right-[30%] w-4 h-4 text-purple-300 opacity-6 animate-pulse" style={{ animationDelay: '4.5s', animationDuration: '13s' }} />
+        <Battery className="absolute top-[70%] left-[35%] w-4 h-4 text-purple-300 opacity-6 animate-pulse" style={{ animationDelay: '6.5s', animationDuration: '14s' }} />
+        <Monitor className="absolute bottom-[25%] left-[40%] w-5 h-5 text-gray-400 opacity-8 animate-pulse" style={{ animationDelay: '8s', animationDuration: '10s' }} />
+        <Tablet className="absolute top-[50%] right-[40%] w-4 h-4 text-purple-300 opacity-6 animate-pulse" style={{ animationDelay: '2.5s', animationDuration: '15s' }} />
+        <Headphones className="absolute bottom-[70%] right-[15%] w-4 h-4 text-gray-400 opacity-8 animate-pulse" style={{ animationDelay: '9s', animationDuration: '12s' }} />
+        <Radio className="absolute top-[85%] left-[20%] w-4 h-4 text-purple-300 opacity-6 animate-pulse" style={{ animationDelay: '3.5s', animationDuration: '11s' }} />
+        <Satellite className="absolute bottom-[15%] right-[35%] w-5 h-5 text-purple-400 opacity-8 animate-pulse" style={{ animationDelay: '1.5s', animationDuration: '13s' }} />
       </div>
 
       {/* Clean Header Section */}
-      <section className="bg-white py-16 lg:py-24 relative overflow-hidden">
+      <section className="bg-gray-50 py-16 lg:py-24 relative overflow-hidden">
         {/* Background illustration */}
         <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" 
              style={{ backgroundImage: `url(${heroBackgroundIllustration})` }}>
@@ -189,7 +202,7 @@ const Home = () => {
               return (
                 <Card 
                   key={category}
-                  className={`bg-white shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-gray-100 ${
+                  className={`bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-gray-100 ${
                     isSelected ? 'ring-2 ring-royal-purple shadow-lg' : ''
                   }`}
                   onClick={() => handleCategorySelect(category)}
@@ -393,7 +406,7 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 bg-gradient-to-br from-gray-50 to-white relative">
+      <section className="py-16 bg-gray-50 relative">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content Side */}
@@ -450,22 +463,22 @@ const Home = () => {
               </div>
               
               {/* Trust Indicators */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100">
                 <h3 className="text-lg font-semibold text-royal-purple mb-4 font-heebo text-center">
                   יתרונות נוספים שחשוב לדעת
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
+                  <div className="bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 text-center">
                     <CheckCircle className="w-6 h-6 text-royal-purple mx-auto mb-2" />
                     <h4 className="font-semibold text-royal-purple mb-1 font-heebo text-sm">ללא התחייבות</h4>
                     <p className="text-xs text-gray-600 font-assistant">אתם מחליטים בסוף</p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
+                  <div className="bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 text-center">
                     <CheckCircle className="w-6 h-6 text-royal-purple mx-auto mb-2" />
                     <h4 className="font-semibold text-royal-purple mb-1 font-heebo text-sm">מעקב אחרי התהליך</h4>
                     <p className="text-xs text-gray-600 font-assistant">עדכונים לאורך כל הדרך</p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
+                  <div className="bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 text-center">
                     <CheckCircle className="w-6 h-6 text-royal-purple mx-auto mb-2" />
                     <h4 className="font-semibold text-royal-purple mb-1 font-heebo text-sm">תמיכה מלאה</h4>
                     <p className="text-xs text-gray-600 font-assistant">צוות מקצועי לרשותכם</p>
@@ -501,7 +514,7 @@ const Home = () => {
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="max-w-5xl mx-auto">
             {/* Main Mission Card */}
-            <Card className="bg-white border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
               <CardContent className="p-0">
                 {/* Header Section with Gradient Background */}
                 <div className="bg-gradient-to-br from-royal-purple via-purple-600 to-purple-700 p-12 text-white relative overflow-hidden">
@@ -522,7 +535,7 @@ const Home = () => {
                 <div className="p-12">
                   {/* Vision and Values Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
+                    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1 bg-white/60 backdrop-blur-sm">
                       <CardContent className="p-8 text-center">
                         <div className="w-16 h-16 bg-royal-purple rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -537,7 +550,7 @@ const Home = () => {
                       </CardContent>
                     </Card>
                     
-                    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
+                    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1 bg-white/60 backdrop-blur-sm">
                       <CardContent className="p-8 text-center">
                         <div className="w-16 h-16 bg-royal-purple rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -558,7 +571,7 @@ const Home = () => {
                       המספרים מדברים בעד עצמם
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
+                      <div className="group text-center p-6 bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
                         <div className="text-4xl lg:text-5xl font-black text-royal-purple mb-3 group-hover:scale-110 transition-transform duration-300">50,000+</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">משפחות שחסכו</p>
                         <div className="w-full h-1 bg-gray-100 rounded-full mt-3 overflow-hidden">
@@ -566,7 +579,7 @@ const Home = () => {
                         </div>
                       </div>
                       
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
+                      <div className="group text-center p-6 bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
                         <div className="text-4xl lg:text-5xl font-black text-purple-500 mb-3 group-hover:scale-110 transition-transform duration-300">₪120M+</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">סה"כ חיסכון</p>
                         <div className="w-full h-1 bg-gray-100 rounded-full mt-3 overflow-hidden">
@@ -574,7 +587,7 @@ const Home = () => {
                         </div>
                       </div>
                       
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
+                      <div className="group text-center p-6 bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
                         <div className="text-4xl lg:text-5xl font-black text-purple-600 mb-3 group-hover:scale-110 transition-transform duration-300">95%</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">שביעות רצון</p>
                         <div className="w-full h-1 bg-gray-100 rounded-full mt-3 overflow-hidden">
@@ -582,7 +595,7 @@ const Home = () => {
                         </div>
                       </div>
                       
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
+                      <div className="group text-center p-6 bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1">
                         <div className="text-4xl lg:text-5xl font-black text-royal-purple mb-3 group-hover:scale-110 transition-transform duration-300">5</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">שנות ניסיון</p>
                         <div className="w-full h-1 bg-gray-100 rounded-full mt-3 overflow-hidden">
@@ -607,7 +620,7 @@ const Home = () => {
       </section>
 
       {/* Partners Section */}
-      <section className="py-16 bg-white relative">
+      <section className="py-16 bg-gray-50 relative">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-4">
@@ -619,7 +632,7 @@ const Home = () => {
           </div>
 
           <div className="flex justify-center mb-12">
-            <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100 max-w-4xl">
+            <div className="bg-gray-50/80 backdrop-blur-sm p-8 rounded-3xl border border-gray-100 max-w-4xl">
               <img 
                 src={israeliTelecomLogos} 
                 alt="לוגואים של חברות הטלקום המובילות בישראל - בזק, הוט, פרטנר, סלקום, פלאפון, יס"
@@ -647,7 +660,7 @@ const Home = () => {
           </div>
 
           <div className="space-y-4">
-            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
                   <h3 className="text-lg font-semibold text-royal-purple font-heebo">
@@ -667,7 +680,7 @@ const Home = () => {
               </details>
             </Card>
 
-            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
                   <h3 className="text-lg font-semibold text-royal-purple font-heebo">
@@ -687,7 +700,7 @@ const Home = () => {
               </details>
             </Card>
 
-            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
                   <h3 className="text-lg font-semibold text-royal-purple font-heebo">
@@ -707,7 +720,7 @@ const Home = () => {
               </details>
             </Card>
 
-            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
                   <h3 className="text-lg font-semibold text-royal-purple font-heebo">
@@ -727,7 +740,7 @@ const Home = () => {
               </details>
             </Card>
 
-            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
                   <h3 className="text-lg font-semibold text-royal-purple font-heebo">
