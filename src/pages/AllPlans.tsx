@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Zap, Smartphone, Wifi, Tv, Search, Filter, ArrowUpDown, Star, TrendingUp, Award, CheckCircle, Users, Sparkles } from "lucide-react";
+import { Zap, Smartphone, Wifi, Tv, Search, Filter, ArrowUpDown, Star, TrendingUp, Award, CheckCircle, Users, Sparkles, Crown } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { SavingsComparisonHeader } from "@/components/SavingsComparisonHeader";
@@ -19,34 +19,35 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 interface CategorySavings {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
   currentAmount: number;
-  newAmount: number;
+  recommendedAmount: number;
   monthlySavings: number;
-  currentProvider: string;
-  newProvider: string;
+  annualSavings: number;
+}
+
+interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
+  monthlySavings: number;
   annualSavings: number;
+  currentProvider: string;
   recommendedProvider: string;
+  category: string;
 }
 
 interface AllPlansProps {
+  savingsData?: SavingsData[];
   initialSelectedCategories?: string[];
-  savingsData?: CategorySavings[];
 }
 
-const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlansProps) => {
-  // Get selected categories from localStorage if not provided as props
+const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlansProps) => {
   const [selectedCategories, setSelectedCategoriesFromStorage] = useState<string[]>([]);
-  const { isVisible: headerVisible, elementRef: headerRef } = useScrollAnimation();
-  const { isVisible: filtersVisible, elementRef: filtersRef } = useScrollAnimation();
-  const { isVisible: plansVisible, elementRef: plansRef } = useScrollAnimation();
   
   useEffect(() => {
     const storedData = localStorage.getItem('analysisData');
     if (storedData) {
       try {
-        const analysisData = JSON.parse(storedData);
-        const categories = analysisData.map((item: any) => item.category);
+        const parsedData = JSON.parse(storedData);
+        const categories = parsedData.selectedCategories || [];
         setSelectedCategoriesFromStorage(categories);
       } catch (error) {
         console.error('Error parsing analysis data:', error);
@@ -149,12 +150,15 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
       const mappedCategories = effectiveCategories.map(cat => 
         categoryMapping[cat as keyof typeof categoryMapping] || cat
       );
-      filtered = filtered.filter(plan => mappedCategories.includes(plan.category));
+      filtered = manualPlans.filter(plan => 
+        mappedCategories.includes(plan.category)
+      );
     } else {
-      filtered = filtered.filter(plan => plan.category === selectedCategory);
+      // Filter by specific category
+      filtered = manualPlans.filter(plan => plan.category === selectedCategory);
     }
 
-    // Apply advanced filters
+    // Search filtering
     if (filters.searchQuery) {
       const query = filters.searchQuery.toLowerCase();
       filtered = filtered.filter(plan => 
@@ -164,28 +168,35 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
       );
     }
 
+    // Provider filtering
     if (filters.providers.length > 0) {
       filtered = filtered.filter(plan => filters.providers.includes(plan.company));
     }
 
+    // Feature filtering
     if (filters.features.length > 0) {
       filtered = filtered.filter(plan => 
         filters.features.some(feature => 
-          plan.features.some(planFeature => planFeature.toLowerCase().includes(feature.toLowerCase()))
+          plan.features.some(planFeature => 
+            planFeature.toLowerCase().includes(feature.toLowerCase())
+          )
         )
       );
     }
 
-    // Price filtering (convert price to number for comparison)
-    if (filters.priceRange[0] > 0 || filters.priceRange[1] < 500) {
-      filtered = filtered.filter(plan => {
-        if (plan.category === 'electricity') return true; // Skip price filter for electricity
-        const price = parseInt(plan.regularPrice.toString());
-        return price >= filters.priceRange[0] && price <= filters.priceRange[1];
-      });
+    // Price range filtering (exclude electricity plans)
+    filtered = filtered.filter(plan => {
+      if (plan.category === 'electricity') return true; // Don't filter electricity by price
+      return plan.regularPrice >= filters.priceRange[0] && plan.regularPrice <= filters.priceRange[1];
+    });
+
+    // Contract length filtering (simulated)
+    if (filters.contractLength.length > 0) {
+      // Simulate contract length filtering
+      filtered = filtered.filter(() => Math.random() > 0.3);
     }
 
-    // Popularity and newness filters
+    // Popular plans only
     if (filters.showPopularOnly) {
       // Simulate popularity (in real app, this would be based on actual data)
       filtered = filtered.filter(() => Math.random() > 0.3); // Show ~70% as "popular"
@@ -278,8 +289,9 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
       electricity: manualPlans.filter(p => p.category === 'electricity').length,
       internet: manualPlans.filter(p => p.category === 'internet').length,
       mobile: manualPlans.filter(p => p.category === 'mobile').length,
-      tv: manualPlans.filter(p => p.category === 'tv').length,
+      tv: manualPlans.filter(p => p.category === 'tv').length
     };
+    
     return counts;
   };
 
@@ -287,325 +299,297 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
 
   return (
     <Layout>
-      <div dir="rtl" className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
-        <div className="container mx-auto px-4 py-8">
-          {/* Savings Comparison Banner - Show if we have analysis data */}
-          {mockSavingsData.length > 0 && (
-            <SavingsComparisonBanner savingsData={mockSavingsData} />
-          )}
+      <div className="min-h-screen bg-gradient-to-br from-background via-accent/5 to-background">
+        {/* Enhanced Savings Comparison Banner */}
+        {mockSavingsData.length > 0 && (
+          <SavingsComparisonBanner 
+            savingsData={mockSavingsData}
+            className="container mx-auto px-6"
+          />
+        )}
 
-          {/* Savings Comparison Header - Only show if we have savings data */}
-          {savingsData.length > 0 && (
-            <SavingsComparisonHeader categorySavings={savingsData} />
-          )}
-
-          {/* Enhanced Header */}
-          <header 
-            ref={headerRef}
-            className={`text-center mb-12 transition-all duration-1000 ${
-              headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
-          >
-            <div className="relative mb-8">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-3xl blur-xl"></div>
-              <Card className="relative bg-gradient-to-r from-card/90 to-accent/5 border-0 shadow-2xl backdrop-blur-xl">
-                <CardContent className="p-8">
-                  <div className="flex items-center justify-center gap-3 mb-4">
-                    <Sparkles className="w-8 h-8 text-accent animate-pulse" />
-                    <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%] bg-clip-text text-transparent animate-gradient-x">
-                      {savingsData.length > 0 ? 'המסלולים המומלצים עבורכם' : 'כל המסלולים'}
-                    </h1>
-                    <Award className="w-8 h-8 text-primary animate-bounce-gentle" />
-                  </div>
-                  <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-6">
-                    {savingsData.length > 0 
-                      ? 'בחרו את המסלולים שיחסכו לכם הכי הרבה כסף מהרשימה המותאמת אישית'
-                      : `בחרו את המסלול המתאים לכם מבין ${manualPlans.length} המסלולים הזמינים`
-                    }
-                  </p>
-                  
-                  {/* Quick Stats */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                    <div className="text-center p-3 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl">
-                      <div className="text-2xl font-bold text-primary">{manualPlans.length}</div>
-                      <div className="text-sm text-muted-foreground">מסלולים</div>
-                    </div>
-                    <div className="text-center p-3 bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-xl">
-                      <div className="text-2xl font-bold text-green-600">98%</div>
-                      <div className="text-sm text-muted-foreground">שביעות רצון</div>
-                    </div>
-                    <div className="text-center p-3 bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-xl">
-                      <div className="text-2xl font-bold text-blue-600">₪2,400</div>
-                      <div className="text-sm text-muted-foreground">חיסכון ממוצע</div>
-                    </div>
-                    <div className="text-center p-3 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-xl">
-                      <div className="text-2xl font-bold text-orange-600">50K+</div>
-                      <div className="text-sm text-muted-foreground">לקוחות</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </header>
-
-          {/* Smart Recommendations */}
-          {filteredPlans.length > 0 && (
-            <div 
-              ref={filtersRef}
-              className={`mb-12 transition-all duration-1000 ${
-                filtersVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-            >
-              <Card className="bg-gradient-to-r from-accent/5 via-primary/5 to-accent/5 border-0 shadow-xl backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3 text-2xl">
-                    <Star className="w-6 h-6 text-accent" />
-                    המלצות חכמות עבורכם
-                    <Badge className="bg-accent/20 text-accent border-accent/30">AI</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <PlanRecommendations
-                    plans={filteredPlans}
-                    userProfile={userProfile}
-                    onPlanSelect={handlePlanSelect}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Enhanced Filters Section */}
-          <div className="mb-8">
-            <Card className="bg-card/80 backdrop-blur-xl border-0 shadow-2xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <Filter className="w-5 h-5 text-primary" />
-                  מסנני חיפוש מתקדמים
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <AdvancedPlanFilters
-                  filters={filters}
-                  onFiltersChange={setFilters}
-                  availableProviders={availableProviders}
-                  availableFeatures={availableFeatures}
-                />
-              </CardContent>
-            </Card>
+        {/* Enhanced Header Section */}
+        <div className="container mx-auto px-6 py-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl lg:text-5xl font-black mb-4 bg-gradient-to-r from-primary via-primary-glow to-accent bg-clip-text text-transparent">
+              כל המסלולים המומלצים עבורכם
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              השוואת מסלולים חכמה וידידותית לפי הצרכים שלכם
+            </p>
           </div>
 
-          {/* Enhanced Quick Category Filter */}
-          <div className="mb-8">
-            <Card className="bg-gradient-to-r from-card/90 to-accent/5 border-0 shadow-lg backdrop-blur-sm">
-              <CardContent className="p-6">
-                <div className="flex flex-wrap gap-3 justify-center">
-                  {effectiveCategories.length > 0 && (
-                    <Button
-                      variant={selectedCategory === 'selected' ? 'default' : 'outline'}
-                      onClick={() => {
-                        setSelectedCategory('selected');
-                        setShowAllCategories(false);
-                      }}
-                      className="group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground border-primary transition-all duration-300 font-bold hover:scale-105"
-                    >
-                      <Users className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                      <span>המסלולים שלכם ({effectiveCategories.length} קטגוריות)</span>
-                    </Button>
-                  )}
-                  <Button
-                    variant={selectedCategory === 'all' ? 'default' : 'outline'}
-                    onClick={() => {
-                      setSelectedCategory('all');
-                      setShowAllCategories(true);
-                    }}
-                    className="group bg-card/90 hover:bg-card border-border hover:border-primary/50 transition-all duration-300 hover:scale-105"
-                  >
-                    <TrendingUp className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                    <span>כל המסלולים ({manualPlans.length})</span>
-                  </Button>
-                  
-                  {/* Category buttons with enhanced styling */}
-                  <Button
-                    variant={selectedCategory === 'electricity' ? 'default' : 'outline'}
-                    onClick={() => {
-                      setSelectedCategory('electricity');
-                      setShowAllCategories(false);
-                    }}
-                    className={`group backdrop-blur-sm transition-all duration-300 flex items-center gap-2 hover:scale-105 ${
-                      selectedCategory === 'electricity' 
-                        ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-400 hover:from-yellow-500 hover:to-yellow-600 shadow-lg' 
-                        : 'bg-yellow-50/80 border-yellow-200 hover:border-yellow-400 text-yellow-700 hover:bg-yellow-100/80 hover:shadow-md'
-                    }`}
-                  >
-                    <Zap className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                    <span>חשמל ({counts.electricity})</span>
-                  </Button>
-                  
-                  <Button
-                    variant={selectedCategory === 'internet' ? 'default' : 'outline'}
-                    onClick={() => {
-                      setSelectedCategory('internet');
-                      setShowAllCategories(false);
-                    }}
-                    className={`group backdrop-blur-sm transition-all duration-300 flex items-center gap-2 hover:scale-105 ${
-                      selectedCategory === 'internet' 
-                        ? 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-white border-cyan-400 hover:from-cyan-500 hover:to-cyan-600 shadow-lg' 
-                        : 'bg-cyan-50/80 border-cyan-200 hover:border-cyan-400 text-cyan-700 hover:bg-cyan-100/80 hover:shadow-md'
-                    }`}
-                  >
-                    <Wifi className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                    <span>אינטרנט ({counts.internet})</span>
-                  </Button>
-                  
-                  <Button
-                    variant={selectedCategory === 'mobile' ? 'default' : 'outline'}
-                    onClick={() => {
-                      setSelectedCategory('mobile');
-                      setShowAllCategories(false);
-                    }}
-                    className={`group backdrop-blur-sm transition-all duration-300 flex items-center gap-2 hover:scale-105 ${
-                      selectedCategory === 'mobile' 
-                        ? 'bg-gradient-to-r from-purple-400 to-purple-500 text-white border-purple-400 hover:from-purple-500 hover:to-purple-600 shadow-lg' 
-                        : 'bg-purple-50/80 border-purple-200 hover:border-purple-400 text-purple-700 hover:bg-purple-100/80 hover:shadow-md'
-                    }`}
-                  >
-                    <Smartphone className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                    <span>סלולר ({counts.mobile})</span>
-                  </Button>
-                  
-                  <Button
-                    variant={selectedCategory === 'tv' ? 'default' : 'outline'}
-                    onClick={() => {
-                      setSelectedCategory('tv');
-                      setShowAllCategories(false);
-                    }}
-                    className={`group backdrop-blur-sm transition-all duration-300 flex items-center gap-2 hover:scale-105 ${
-                      selectedCategory === 'tv' 
-                        ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white border-orange-400 hover:from-orange-500 hover:to-orange-600 shadow-lg' 
-                        : 'bg-orange-50/80 border-orange-200 hover:border-orange-400 text-orange-700 hover:bg-orange-100/80 hover:shadow-md'
-                    }`}
-                  >
-                    <Tv className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                    <span>טלוויזיה ({counts.tv})</span>
-                  </Button>
+          {/* Quick Stats */}
+          <div className="grid md:grid-cols-4 gap-4 mb-8">
+            <Card className="bg-gradient-to-r from-card to-accent/5 border-border/50 hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-black text-primary mb-2">
+                  {filteredPlans.length}
                 </div>
+                <p className="text-sm text-muted-foreground">מסלולים זמינים</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-r from-card to-accent/5 border-border/50 hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-black text-success mb-2">
+                  {availableProviders.length}
+                </div>
+                <p className="text-sm text-muted-foreground">חברות שירות</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-r from-card to-accent/5 border-border/50 hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-black text-orange-600 mb-2">
+                  {comparedPlans.length}/3
+                </div>
+                <p className="text-sm text-muted-foregreen">מסלולים בהשוואה</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-r from-card to-accent/5 border-border/50 hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-black text-purple-600 mb-2">
+                  4
+                </div>
+                <p className="text-sm text-muted-foreground">קטגוריות שירות</p>
               </CardContent>
             </Card>
           </div>
 
-          {/* Enhanced Category Title */}
-          <div 
-            ref={plansRef}
-            className={`text-center mb-8 transition-all duration-1000 ${
-              plansVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
-          >
-            <Card className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-0 shadow-lg">
-              <CardContent className="p-6">
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
-                  {categoryLabels[selectedCategory]}
-                </h2>
-                <Badge className="bg-accent/20 text-accent border-accent/30 text-lg px-4 py-2">
-                  {filteredPlans.length} מסלולים זמינים
-                </Badge>
-              </CardContent>
-            </Card>
+          {/* Enhanced Category Selection */}
+          <div className="mb-8">
+            <Tabs value={selectedCategory} onValueChange={(value) => {
+              setSelectedCategory(value as typeof selectedCategory);
+              if (value === 'all') {
+                setShowAllCategories(true);
+              }
+            }}>
+              <TabsList className="grid grid-cols-3 lg:grid-cols-6 gap-2 bg-card/50 backdrop-blur-sm p-2 rounded-2xl border border-border/50">
+                <TabsTrigger 
+                  value="all" 
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl font-medium transition-all duration-300"
+                >
+                  כל הקטגוריות ({filteredPlans.length})
+                </TabsTrigger>
+                
+                {effectiveCategories.length > 1 && (
+                  <TabsTrigger 
+                    value="selected"
+                    className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground rounded-xl font-medium transition-all duration-300"
+                  >
+                    הקטגוריות שלכם ({effectiveCategories.length})
+                  </TabsTrigger>
+                )}
+                
+                <TabsTrigger 
+                  value="electricity"
+                  className="data-[state=active]:bg-yellow-500 data-[state=active]:text-white rounded-xl font-medium transition-all duration-300"
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  חשמל ({counts.electricity})
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="internet"
+                  className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white rounded-xl font-medium transition-all duration-300"
+                >
+                  <Wifi className="w-4 h-4 mr-2" />
+                  אינטרנט ({counts.internet})
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="mobile"
+                  className="data-[state=active]:bg-purple-500 data-[state=active]:text-white rounded-xl font-medium transition-all duration-300"
+                >
+                  <Smartphone className="w-4 h-4 mr-2" />
+                  סלולר ({counts.mobile})
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="tv"
+                  className="data-[state=active]:bg-orange-500 data-[state=active]:text-white rounded-xl font-medium transition-all duration-300"
+                >
+                  <Tv className="w-4 h-4 mr-2" />
+                  טלוויזיה ({counts.tv})
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
 
-          {/* Plans Grid - Group by category when showing multiple categories */}
-          {(selectedCategory === 'all' && showAllCategories) || selectedCategory === 'selected' || effectiveCategories.length > 1 ? (
-            <div className="space-y-8 max-w-7xl mx-auto">
-              {/* Group plans by category */}
-              {['electricity', 'internet', 'mobile', 'tv'].map(category => {
-                // Check if this category should be shown
-                const filterCategory = category === 'mobile' ? 'cellular' : category;
-                const shouldShowCategory = selectedCategory === 'all' || 
-                                         selectedCategory === 'selected' ||
-                                         effectiveCategories.includes(filterCategory);
-                
-                if (!shouldShowCategory) return null;
-                
-                const categoryPlans = filteredPlans.filter(plan => 
-                  category === 'mobile' ? plan.category === 'mobile' : plan.category === category
-                );
-                
-                if (categoryPlans.length === 0) return null;
-                
-                const getCategoryInfo = (cat: string) => {
-                  switch(cat) {
-                    case 'electricity': return { name: 'חשמל', color: 'border-yellow-400/30 bg-yellow-50/30', gradient: 'from-yellow-400 to-yellow-500' };
-                    case 'mobile': return { name: 'סלולר', color: 'border-purple-400/30 bg-purple-50/30', gradient: 'from-purple-400 to-purple-500' };
-                    case 'internet': return { name: 'אינטרנט', color: 'border-cyan-400/30 bg-cyan-50/30', gradient: 'from-cyan-400 to-cyan-500' };
-                    case 'tv': return { name: 'טלוויזיה', color: 'border-orange-400/30 bg-orange-50/30', gradient: 'from-orange-400 to-orange-500' };
-                    default: return { name: cat, color: 'border-gray-400/30 bg-gray-50/30', gradient: 'from-gray-400 to-gray-500' };
+          {/* Enhanced Filters */}
+          <div className="mb-8">
+            <AdvancedPlanFilters 
+              filters={filters}
+              onFiltersChange={setFilters}
+              availableProviders={availableProviders}
+              availableFeatures={availableFeatures}
+            />
+          </div>
+
+          {/* AI Recommendations - Temporarily disabled */}
+          {/* {userProfile && (
+            <div className="mb-8">
+              <PlanRecommendations 
+                userProfile={userProfile}
+                plans={filteredPlans}
+                onPlanSelect={handlePlanSelect}
+              />
+            </div>
+          )} */}
+
+          {/* Plans Display - Group by Company */}
+          {selectedCategory === 'all' || selectedCategory === 'selected' ? (
+            <div className="space-y-12 max-w-7xl mx-auto">
+              {/* Group plans by company for better organization */}
+              {(() => {
+                const plansByCompany = filteredPlans.reduce((acc, plan) => {
+                  if (!acc[plan.company]) {
+                    acc[plan.company] = [];
                   }
-                };
-                
-                const categoryInfo = getCategoryInfo(category);
-                
-                return (
-                  <div key={category} className={`p-6 rounded-xl border-2 ${categoryInfo.color} backdrop-blur-sm`}>
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className={`p-3 rounded-xl bg-gradient-to-r ${categoryInfo.gradient} text-white shadow-lg`}>
-                        {category === 'electricity' && <Zap className="h-6 w-6" />}
-                        {category === 'mobile' && <Smartphone className="h-6 w-6" />}
-                        {category === 'internet' && <Wifi className="h-6 w-6" />}
-                        {category === 'tv' && <Tv className="h-6 w-6" />}
+                  acc[plan.company].push(plan);
+                  return acc;
+                }, {} as Record<string, typeof filteredPlans>);
+
+                return Object.entries(plansByCompany)
+                  .sort(([,a], [,b]) => b.length - a.length)
+                  .map(([company, companyPlans]) => {
+                    const sortedPlans = companyPlans.sort((a, b) => {
+                      if (a.category === 'electricity' || b.category === 'electricity') return 0;
+                      return parseInt(a.regularPrice.toString()) - parseInt(b.regularPrice.toString());
+                    });
+
+                    return (
+                      <div key={company} className="space-y-6">
+                        {/* Company Header */}
+                        <div className="bg-gradient-to-r from-card via-card/95 to-card/90 rounded-3xl p-8 border-2 border-primary/20 shadow-xl backdrop-blur-sm relative overflow-hidden">
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-full blur-2xl"></div>
+                          
+                          <div className="relative flex items-center justify-between">
+                            <div className="flex items-center gap-6">
+                              <div className="w-20 h-20 bg-gradient-to-br from-primary via-primary-glow to-accent rounded-3xl flex items-center justify-center shadow-2xl border-2 border-white/20">
+                                <span className="text-3xl font-black text-white">
+                                  {company.slice(0, 2)}
+                                </span>
+                              </div>
+                              <div>
+                                <h3 className="text-3xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                                  {company}
+                                </h3>
+                                <div className="flex items-center gap-6 mt-2">
+                                  <p className="text-muted-foreground font-medium">
+                                    {sortedPlans.length} מסלולים זמינים
+                                  </p>
+                                  <div className="flex gap-2">
+                                    {[...new Set(sortedPlans.map(p => p.category))].map(category => (
+                                      <Badge key={category} variant="secondary" className="bg-primary/10 text-primary border-primary/30 font-medium">
+                                        {category === 'mobile' ? 'סלולר' : 
+                                         category === 'electricity' ? 'חשמל' :
+                                         category === 'internet' ? 'אינטרנט' :
+                                         category === 'tv' ? 'טלוויזיה' : category}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Company Stats */}
+                            <div className="hidden lg:flex items-center gap-8">
+                              <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-4 border border-primary/20">
+                                <div className="text-3xl font-black text-primary">
+                                  {Math.floor(Math.random() * 2) + 4}.{Math.floor(Math.random() * 9)}
+                                </div>
+                                <div className="text-sm text-muted-foreground font-medium">דירוג לקוחות</div>
+                              </div>
+                              <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-4 border border-success/20">
+                                <div className="text-3xl font-black text-success">
+                                  ₪{Math.min(...sortedPlans.filter(p => p.category !== 'electricity').map(p => p.regularPrice)) || 0}
+                                </div>
+                                <div className="text-sm text-muted-foreground font-medium">החל מ-</div>
+                              </div>
+                              <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-4 border border-orange/20">
+                                <div className="text-3xl font-black text-primary">
+                                  {Math.floor(Math.random() * 30) + 70}%
+                                </div>
+                                <div className="text-sm text-muted-foreground font-medium">פופולריות</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Company Plans */}
+                        <div className="bg-gradient-to-br from-card/40 via-accent/5 to-card/30 rounded-3xl p-8 border border-border/30 backdrop-blur-sm shadow-lg">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
+                            {sortedPlans.map((plan, index) => (
+                              <InteractivePlanCard
+                                key={plan.id}
+                                plan={plan}
+                                rank={index + 1}
+                                isCompared={comparedPlans.some(p => p.id === plan.id)}
+                                onCompareToggle={handleCompareToggle}
+                                canCompare={comparedPlans.length < 3}
+                                showSavings={mockSavingsData.length > 0}
+                                estimatedSavings={mockSavingsData.find(s => 
+                                  (s.category === 'סלולר' && plan.category === 'mobile') ||
+                                  s.category === plan.category
+                                )?.monthlySavings}
+                                onSelect={handlePlanSelect}
+                                isRecommended={index === 0}
+                                popularityScore={Math.floor(Math.random() * 40) + 60}
+                                className="hover:scale-105 transition-transform duration-300"
+                              />
+                            ))}
+                          </div>
+                          
+                          {/* Company Best Deal */}
+                          {sortedPlans.length > 0 && (
+                            <div className="mt-8 p-6 bg-gradient-to-r from-success/10 via-green-100/30 to-success/10 rounded-2xl border-2 border-success/20 backdrop-blur-sm">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                  <Crown className="w-6 h-6 text-success animate-pulse" />
+                                  <div>
+                                    <span className="font-bold text-success text-lg">
+                                      המסלול הכי מומלץ: {sortedPlans[0].planName}
+                                    </span>
+                                    <div className="text-sm text-success/80 mt-1">
+                                      מותאם במיוחד לצרכים שלכם
+                                    </div>
+                                  </div>
+                                </div>
+                                <Badge className="bg-success text-white text-lg px-4 py-2 font-bold">
+                                  ₪{sortedPlans[0].regularPrice}{sortedPlans[0].category === 'electricity' ? '' : '/חודש'}
+                                </Badge>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <h3 className={`text-xl font-bold bg-gradient-to-r ${categoryInfo.gradient} bg-clip-text text-transparent`}>
-                          מסלולי {categoryInfo.name}
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          {categoryPlans.length} מסלולים מותאמים עבורך
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3">
-                      {categoryPlans.map((plan, index) => (
-                        <InteractivePlanCard
-                          key={plan.id}
-                          plan={plan}
-                          rank={index + 1}
-                          isCompared={comparedPlans.some(p => p.id === plan.id)}
-                          onCompareToggle={handleCompareToggle}
-                          canCompare={comparedPlans.length < 3}
-                          showSavings={mockSavingsData.length > 0}
-                          estimatedSavings={mockSavingsData.find(s => 
-                            (s.category === 'סלולר' && plan.category === 'mobile') ||
-                            s.category === plan.category
-                          )?.monthlySavings}
-                          onSelect={handlePlanSelect}
-                          isRecommended={index === 0}
-                          popularityScore={Math.floor(Math.random() * 40) + 60}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
+                    );
+                  });
+              })()}
             </div>
           ) : (
-            <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 max-w-7xl mx-auto">
+            // Single Category View
+            <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 max-w-7xl mx-auto">
               {filteredPlans.map((plan, index) => (
-              <InteractivePlanCard
-                key={plan.id}
-                plan={plan}
-                rank={index + 1}
-                isCompared={comparedPlans.some(p => p.id === plan.id)}
-                onCompareToggle={handleCompareToggle}
-                canCompare={comparedPlans.length < 3}
-                showSavings={mockSavingsData.length > 0}
-                estimatedSavings={mockSavingsData.find(s => 
-                  (s.category === 'סלולר' && plan.category === 'mobile') ||
-                  s.category === plan.category
-                )?.monthlySavings}
-                onSelect={handlePlanSelect}
-                isRecommended={index === 0}
-                popularityScore={Math.floor(Math.random() * 40) + 60}
-              />
+                <InteractivePlanCard
+                  key={plan.id}
+                  plan={plan}
+                  rank={index + 1}
+                  isCompared={comparedPlans.some(p => p.id === plan.id)}
+                  onCompareToggle={handleCompareToggle}
+                  canCompare={comparedPlans.length < 3}
+                  showSavings={mockSavingsData.length > 0}
+                  estimatedSavings={mockSavingsData.find(s => 
+                    (s.category === 'סלולר' && plan.category === 'mobile') ||
+                    s.category === plan.category
+                  )?.monthlySavings}
+                  onSelect={handlePlanSelect}
+                  isRecommended={index === 0}
+                  popularityScore={Math.floor(Math.random() * 40) + 60}
+                />
               ))}
             </section>
           )}
