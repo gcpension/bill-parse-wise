@@ -495,11 +495,15 @@ const Home = () => {
             
             {/* Illustration Side */}
             <div className="order-1 lg:order-2 flex justify-center">
-              <div className="w-full max-w-lg bg-gray-50 rounded-3xl p-8 border border-gray-100">
+              <div className="w-full max-w-lg">
                 <img 
-                  src={savingsAnalysisIllustration}
-                  alt="איור של אדם מנתח חשבונות וחיסכון" 
-                  className="w-full h-auto rounded-2xl"
+                  src={middleSectionIllustration}
+                  alt="איור של אישה עובדת על השוואת תעריფי שירותי הבית" 
+                  className="w-full h-auto"
+                  style={{ 
+                    mixBlendMode: 'multiply',
+                    backgroundColor: 'transparent'
+                  }}
                 />
               </div>
             </div>
@@ -518,6 +522,60 @@ const Home = () => {
         </div>
 
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
+          {/* New Analysis Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+            {/* Illustration Side */}
+            <div className="flex justify-center">
+              <div className="w-full max-w-lg bg-white/70 backdrop-blur-sm rounded-3xl p-8 border border-gray-100 shadow-lg">
+                <img 
+                  src={savingsAnalysisIllustration}
+                  alt="איור של אדם מנתח חשבונות וחיסכון" 
+                  className="w-full h-auto rounded-2xl"
+                />
+              </div>
+            </div>
+            
+            {/* Content Side */}
+            <div>
+              <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-6">
+                ניתוח חכם ומדויק
+              </h2>
+              <p className="text-xl text-gray-700 mb-8 font-assistant leading-relaxed">
+                המערכת שלנו מנתחת את הצרכים שלכם ומוצאת את ההצעות הטובות ביותר בשוק
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <CheckCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-heebo font-semibold text-royal-purple mb-2">
+                      השוואה אוטומטית
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed font-assistant">
+                      המערכת סורקת מאות חבילות ומוצאת את הכי משתלמות עבורכם
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <CheckCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-heebo font-semibold text-royal-purple mb-2">
+                      חיסכון מיידי
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed font-assistant">
+                      רואים כמה כסף תחסכו כבר בניתוח הראשוני
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
           <div className="max-w-5xl mx-auto">
             {/* Main Mission Card */}
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
