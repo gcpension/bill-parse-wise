@@ -600,6 +600,13 @@ const PlanComparison = ({
           </div>
         </CardContent>
       </Card>
+      
+      {/* PersonalizedRecommendation Dialog */}
+      <PersonalizedRecommendation
+        isOpen={isRecommendationOpen}
+        onClose={() => setIsRecommendationOpen(false)}
+        comparedPlans={comparedPlans}
+      />
     </div>
   );
 };
