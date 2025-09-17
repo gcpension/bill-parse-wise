@@ -389,10 +389,18 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
           </div>
 
           {/* Plans Grid - Group by category when showing multiple categories */}
-          {(selectedCategory === 'all' && showAllCategories) || selectedCategory === 'selected' ? (
+          {(selectedCategory === 'all' && showAllCategories) || selectedCategory === 'selected' || effectiveCategories.length > 1 ? (
             <div className="space-y-8 max-w-7xl mx-auto">
               {/* Group plans by category */}
               {['electricity', 'internet', 'mobile', 'tv'].map(category => {
+                // Check if this category should be shown
+                const filterCategory = category === 'mobile' ? 'cellular' : category;
+                const shouldShowCategory = selectedCategory === 'all' || 
+                                         selectedCategory === 'selected' ||
+                                         effectiveCategories.includes(filterCategory);
+                
+                if (!shouldShowCategory) return null;
+                
                 const categoryPlans = filteredPlans.filter(plan => 
                   category === 'mobile' ? plan.category === 'mobile' : plan.category === category
                 );
@@ -422,10 +430,10 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
                       </div>
                       <div>
                         <h3 className={`text-xl font-bold bg-gradient-to-r ${categoryInfo.gradient} bg-clip-text text-transparent`}>
-                          {categoryInfo.name}
+                          מסלולי {categoryInfo.name}
                         </h3>
                         <p className="text-muted-foreground text-sm">
-                          {categoryPlans.length} מסלולים זמינים
+                          {categoryPlans.length} מסלולים מותאמים עבורך
                         </p>
                       </div>
                     </div>

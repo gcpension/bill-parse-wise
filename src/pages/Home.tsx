@@ -97,7 +97,13 @@ const Home = () => {
       return;
     }
 
+    // Store analysis data for the AllPlans page
     localStorage.setItem('analysisData', JSON.stringify(selectedData));
+    
+    // Store selected categories for filtering
+    const categories = selectedData.map(item => item.category);
+    localStorage.setItem('selectedCategories', JSON.stringify(categories));
+    
     navigate('/all-plans');
   };
 
@@ -205,7 +211,7 @@ const Home = () => {
           </div>
           
           {/* Category Cards Grid - Enhanced with staggered animations */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {Object.entries(categoryData).map(([category, data], index) => {
               const Icon = data.icon;
               const isSelected = selectedCategories[category].selected;
@@ -213,36 +219,29 @@ const Home = () => {
               return (
                 <Card 
                   key={category}
-                  className={`bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:scale-[1.02] animate-fade-in opacity-0 ${
-                    isSelected ? 'ring-2 ring-purple-500 shadow-purple-200/50' : ''
+                  className={`bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 transform hover:scale-105 hover:-translate-y-2 animate-fade-in opacity-0 ${
+                    isSelected ? 'ring-2 ring-purple-500 shadow-lg scale-105' : ''
                   }`}
                   style={{ 
-                    animationDelay: `${0.6 + index * 0.2}s`, 
+                    animationDelay: `${0.6 + index * 0.1}s`, 
                     animationFillMode: 'forwards' 
                   }}
+                  onClick={() => handleCategorySelect(category)}
                 >
-                  <CardContent className="p-8">
-                    {/* Category Header */}
-                    <div className="flex items-center gap-4 mb-6 cursor-pointer" onClick={() => handleCategorySelect(category)}>
-                      <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg">
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                          {data.name}
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          השווה ספקים וחסוך בחשבונות
-                        </p>
-                      </div>
-                      <div className={`w-6 h-6 rounded-full border-2 transition-all duration-300 ${
-                        isSelected 
-                          ? 'bg-purple-500 border-purple-500' 
-                          : 'border-gray-300 hover:border-purple-400'
-                      }`}>
-                        {isSelected && <CheckCircle className="w-6 h-6 text-white -ml-px -mt-px" />}
-                      </div>
+                  <CardContent className="p-6 text-center">
+                    {/* Image illustration - Enhanced with hover effects */}
+                    <div className="w-full h-24 mx-auto mb-4 overflow-hidden rounded-xl transform transition-transform duration-300 hover:scale-110">
+                      <img 
+                        src={data.image}
+                        alt={`איור ${data.name}`}
+                        className="w-full h-full object-cover transition-all duration-300 hover:brightness-110"
+                      />
                     </div>
+                    
+                    {/* Category title */}
+                    <h3 className="text-lg font-heebo font-medium text-purple-700 mb-4 transition-colors duration-200">
+                      {data.name}
+                    </h3>
                     
                     {/* Enhanced Form fields when selected */}
                     {isSelected && (
@@ -274,25 +273,25 @@ const Home = () => {
                       </div>
                     )}
                     
-                    {/* Enhanced selection button */}
+                    {/* Enhanced button with better animations */}
                     <Button 
-                      className={`w-full h-12 rounded-xl font-semibold text-base transition-all duration-300 transform hover:scale-105 active:scale-95 mt-6 ${
+                      className={`w-full h-10 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 active:scale-95 ${
                         isSelected 
                           ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg hover:shadow-xl' 
                           : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg'
                       }`}
-                      onClick={() => handleCategorySelect(category)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCategorySelect(category);
+                      }}
                     >
                       {isSelected ? (
                         <span className="flex items-center justify-center gap-2">
-                          <CheckCircle className="w-5 h-5 animate-pulse" />
-                          נבחר - ערוך פרטים
+                          <CheckCircle className="w-4 h-4 animate-pulse" />
+                          נבחר
                         </span>
                       ) : (
-                        <span className="flex items-center justify-center gap-2">
-                          <Icon className="w-5 h-5" />
-                          בחר {data.name}
-                        </span>
+                        `בחר ${data.name}`
                       )}
                     </Button>
                   </CardContent>
