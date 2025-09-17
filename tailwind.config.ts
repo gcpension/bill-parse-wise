@@ -23,8 +23,11 @@ export default {
 				'assistant': ['Assistant', 'sans-serif'],
 				'rubik': ['Rubik', 'sans-serif'], 
 				'inter': ['Inter', 'sans-serif'],
+				'playfair': ['Playfair Display', 'serif'],
+				'montserrat': ['Montserrat', 'sans-serif'],
+				'brand': ['Playfair Display', 'Montserrat', 'Heebo', 'serif'],
 				'sans': ['Heebo', 'Assistant', 'ui-sans-serif', 'system-ui'],
-				'display': ['Heebo', 'Assistant', 'sans-serif'],
+				'display': ['Montserrat', 'Heebo', 'Assistant', 'sans-serif'],
 				'body': ['Assistant', 'Heebo', 'sans-serif'],
 			},
 			colors: {
