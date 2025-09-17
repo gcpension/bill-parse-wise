@@ -18,6 +18,7 @@ import middleSectionIllustration from '@/assets/clean-middle-illustration.png';
 import professionalServicesIllustration from '@/assets/professional-services-illustration.png';
 import israeliTelecomLogos from '@/assets/logos/israeli-telecom-logos.png';
 import savingsAnalysisIllustration from '@/assets/savings-analysis-illustration-transparent.png';
+import israeliCompaniesLogos from '@/assets/logos/israeli-companies-real-logos.png';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -697,41 +698,11 @@ const Home = () => {
 
           <div className="flex justify-center mb-12">
             <div className="bg-white/80 backdrop-blur-sm p-12 rounded-3xl border border-gray-100 max-w-6xl w-full">
-              <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
-                {/* Logo with icons and text */}
-                <div className="flex flex-col items-center justify-center h-16 px-4">
-                  <Wifi className="w-8 h-8 text-blue-600 mb-2" />
-                  <span className="text-sm font-semibold text-gray-700 font-heebo">בזק</span>
-                </div>
-                <div className="flex flex-col items-center justify-center h-16 px-4">
-                  <Tv className="w-8 h-8 text-red-600 mb-2" />
-                  <span className="text-sm font-semibold text-gray-700 font-heebo">הוט</span>
-                </div>
-                <div className="flex flex-col items-center justify-center h-16 px-4">
-                  <Smartphone className="w-8 h-8 text-orange-600 mb-2" />
-                  <span className="text-sm font-semibold text-gray-700 font-heebo">פרטנר</span>
-                </div>
-                <div className="flex flex-col items-center justify-center h-16 px-4">
-                  <Phone className="w-8 h-8 text-green-600 mb-2" />
-                  <span className="text-sm font-semibold text-gray-700 font-heebo">סלקום</span>
-                </div>
-                <div className="flex flex-col items-center justify-center h-16 px-4">
-                  <Smartphone className="w-8 h-8 text-blue-700 mb-2" />
-                  <span className="text-sm font-semibold text-gray-700 font-heebo">פלאפון</span>
-                </div>
-                <div className="flex flex-col items-center justify-center h-16 px-4">
-                  <Satellite className="w-8 h-8 text-purple-600 mb-2" />
-                  <span className="text-sm font-semibold text-gray-700 font-heebo">יס</span>
-                </div>
-                <div className="flex flex-col items-center justify-center h-16 px-4">
-                  <Zap className="w-8 h-8 text-yellow-600 mb-2" />
-                  <span className="text-sm font-semibold text-gray-700 font-heebo">חברת חשמל</span>
-                </div>
-                <div className="flex flex-col items-center justify-center h-16 px-4">
-                  <Lightbulb className="w-8 h-8 text-blue-500 mb-2" />
-                  <span className="text-sm font-semibold text-gray-700 font-heebo">אלקטרה</span>
-                </div>
-              </div>
+              <img 
+                src={israeliCompaniesLogos} 
+                alt="לוגואים רשמיים של חברות הטלקום והחשמל הישראליות - בזק, הוט, פרטנר, סלקום, פלאפון, יס, חברת חשמל, אלקטרה"
+                className="w-full h-auto max-w-full"
+              />
             </div>
           </div>
 
