@@ -2,9 +2,7 @@ import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { 
   Home, 
-  BarChart3, 
   Calculator, 
-  BookmarkCheck, 
   HelpCircle, 
   Settings, 
   Zap,
@@ -29,8 +27,7 @@ import { Badge } from "@/components/ui/badge";
 const mainMenuItems = [
   { title: "עמוד הבית", url: "/", icon: Home },
   { title: "ניתוח חכם", url: "/analyze", icon: Calculator },
-  { title: "השוואה מהירה", url: "/compare", icon: BarChart3 },
-  { title: "השוואות שמורות", url: "/saved", icon: BookmarkCheck },
+  { title: "כל המסלולים", url: "/all-plans", icon: TrendingDown },
 ];
 
 const helpMenuItems = [

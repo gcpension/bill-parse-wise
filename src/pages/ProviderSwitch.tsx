@@ -114,8 +114,8 @@ export const ProviderSwitch = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/compare">
-                  <Button variant="outline">השווה ספקים נוספים</Button>
+                <Link to="/all-plans">
+                  <Button variant="outline">ראה כל המסלולים</Button>
                 </Link>
                 <Link to="/">
                   <Button>חזור לעמוד הבית</Button>

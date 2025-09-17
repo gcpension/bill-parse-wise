@@ -3,17 +3,13 @@ import { cn } from '@/lib/utils';
 import { 
   Home, 
   Calculator, 
-  BarChart3, 
   Settings,
-  TrendingDown,
-  LayoutDashboard
+  TrendingDown
 } from 'lucide-react';
 
 const navigation = [
   { name: 'בית', href: '/', icon: Home },
-  { name: 'דשבורד', href: '/dashboard', icon: LayoutDashboard },
   { name: 'ניתוח חיסכון', href: '/analyze', icon: Calculator },
-  { name: 'השוואת ספקים', href: '/compare', icon: BarChart3 },
   { name: 'כל המסלולים', href: '/all-plans', icon: TrendingDown },
   { name: 'הגדרות', href: '/settings', icon: Settings },
 ];
