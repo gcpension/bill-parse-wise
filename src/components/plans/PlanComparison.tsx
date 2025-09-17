@@ -41,13 +41,15 @@ interface PlanComparisonProps {
   onRemovePlan: (planId: string) => void;
   onClearAll: () => void;
   className?: string;
+  onPlanSelect?: (plan: ManualPlan) => void;
 }
 
 const PlanComparison = ({ 
   comparedPlans, 
   onRemovePlan, 
   onClearAll, 
-  className 
+  className,
+  onPlanSelect 
 }: PlanComparisonProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isRecommendationOpen, setIsRecommendationOpen] = useState(false);
@@ -421,7 +423,12 @@ const PlanComparison = ({
                             index === 0 
                               ? "bg-gradient-to-r from-success to-green-600 hover:from-success/90 hover:to-green-600/90 text-white shadow-success/30" 
                               : "bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground"
-                          )}>
+                          )}
+                          onClick={() => {
+                            console.log('Plan selected from comparison:', plan); // Debug log
+                            onPlanSelect?.(plan);
+                          }}
+                          >
                             {index === 0 ? (
                               <>
                                 <Crown className="h-5 w-5 mr-2" />

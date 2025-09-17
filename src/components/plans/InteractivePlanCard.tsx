@@ -257,6 +257,7 @@ const InteractivePlanCard = ({
             className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-bold transition-all duration-300 hover:scale-105 shadow-lg"
             onClick={(e) => {
               e.stopPropagation();
+              console.log('Plan selected:', plan); // Debug log
               onSelect?.(plan);
             }}
           >
