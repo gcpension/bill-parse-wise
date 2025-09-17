@@ -19,6 +19,8 @@ import professionalServicesIllustration from '@/assets/professional-services-ill
 import israeliTelecomLogos from '@/assets/logos/israeli-telecom-logos.png';
 import savingsAnalysisIllustration from '@/assets/savings-analysis-illustration-transparent.png';
 import israeliCompaniesLogos from '@/assets/logos/israeli-companies-real-logos.png';
+import BackToTop from '@/components/BackToTop';
+import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -187,56 +189,62 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Clean Categories Section */}
-      <section className="py-16 bg-gray-50 relative">
+      {/* Clean Categories Section - Enhanced with animations */}
+      <section id="services" className="py-16 bg-gray-50 relative scroll-mt-20">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-heebo font-medium text-royal-purple mb-4">
+            <h2 className="text-3xl font-heebo font-medium text-royal-purple mb-4 animate-fade-in opacity-0"
+                style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
               בחרו את הקטגוריה שלכם
             </h2>
-            <p className="text-lg text-purple-600 font-assistant">
+            <p className="text-lg text-purple-600 font-assistant animate-fade-in opacity-0"
+               style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
               קבלו המלצות מותאמות אישית והשוו מחירים בכל הקטגוריות
             </p>
           </div>
           
-          {/* Category Cards Grid - Clean & Minimal */}
+          {/* Category Cards Grid - Enhanced with staggered animations */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {Object.entries(categoryData).map(([category, data]) => {
+            {Object.entries(categoryData).map(([category, data], index) => {
               const Icon = data.icon;
               const isSelected = selectedCategories[category].selected;
               
               return (
                 <Card 
                   key={category}
-                  className={`bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-gray-100 ${
-                    isSelected ? 'ring-2 ring-royal-purple shadow-lg' : ''
+                  className={`bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 transform hover:scale-105 hover:-translate-y-2 animate-fade-in opacity-0 ${
+                    isSelected ? 'ring-2 ring-royal-purple shadow-lg scale-105' : ''
                   }`}
+                  style={{ 
+                    animationDelay: `${0.6 + index * 0.1}s`, 
+                    animationFillMode: 'forwards' 
+                  }}
                   onClick={() => handleCategorySelect(category)}
                 >
                   <CardContent className="p-6 text-center">
-                    {/* Image illustration - smaller */}
-                    <div className="w-full h-24 mx-auto mb-4 overflow-hidden rounded-xl">
+                    {/* Image illustration - Enhanced with hover effects */}
+                    <div className="w-full h-24 mx-auto mb-4 overflow-hidden rounded-xl transform transition-transform duration-300 hover:scale-110">
                       <img 
                         src={data.image}
                         alt={`איור ${data.name}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-all duration-300 hover:brightness-110"
                       />
                     </div>
                     
                     {/* Category title */}
-                    <h3 className="text-lg font-heebo font-medium text-royal-purple mb-4">
+                    <h3 className="text-lg font-heebo font-medium text-royal-purple mb-4 transition-colors duration-200">
                       {data.name}
                     </h3>
                     
-                    {/* Form fields when selected */}
+                    {/* Form fields when selected - Enhanced animations */}
                     {isSelected && (
-                      <div className="space-y-3 mb-4" onClick={(e) => e.stopPropagation()}>
+                      <div className="space-y-3 mb-4 animate-fade-in" onClick={(e) => e.stopPropagation()}>
                         <Select 
                           value={selectedCategories[category].provider} 
                           onValueChange={(value) => handleProviderChange(category, value)}
                         >
-                          <SelectTrigger className="h-10 bg-gray-50 border-gray-200 text-gray-700 rounded-xl">
+                          <SelectTrigger className="h-10 bg-gray-50 border-gray-200 text-gray-700 rounded-xl transition-all duration-200 hover:border-purple-300 focus:border-purple-500">
                             <SelectValue placeholder="בחרו ספק נוכחי" />
                           </SelectTrigger>
                           <SelectContent>
@@ -253,17 +261,17 @@ const Home = () => {
                           placeholder="סכום חודשי (₪)"
                           value={selectedCategories[category].amount}
                           onChange={(e) => handleAmountChange(category, e.target.value)}
-                          className="h-10 bg-gray-50 border-gray-200 text-gray-700 rounded-xl"
+                          className="h-10 bg-gray-50 border-gray-200 text-gray-700 rounded-xl transition-all duration-200 hover:border-purple-300 focus:border-purple-500"
                         />
                       </div>
                     )}
                     
-                    {/* Clean purple button */}
+                    {/* Enhanced button with better animations */}
                     <Button 
-                      className={`w-full h-10 rounded-xl font-assistant font-medium text-sm transition-all duration-200 ${
+                      className={`w-full h-10 rounded-xl font-assistant font-medium text-sm transition-all duration-300 transform hover:scale-105 active:scale-95 ${
                         isSelected 
-                          ? 'bg-royal-purple hover:bg-purple-700 text-white' 
-                          : 'bg-purple-500 hover:bg-royal-purple text-white'
+                          ? 'bg-royal-purple hover:bg-purple-700 text-white shadow-lg hover:shadow-xl' 
+                          : 'bg-purple-500 hover:bg-royal-purple text-white shadow-md hover:shadow-lg'
                       }`}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -272,7 +280,7 @@ const Home = () => {
                     >
                       {isSelected ? (
                         <span className="flex items-center justify-center gap-2">
-                          <CheckCircle className="w-4 h-4" />
+                          <CheckCircle className="w-4 h-4 animate-pulse" />
                           נבחר
                         </span>
                       ) : (
@@ -285,15 +293,15 @@ const Home = () => {
             })}
           </div>
 
-          {/* Clean CTA Section */}
+          {/* Clean CTA Section - Enhanced animations */}
           <div className="text-center mt-16">
             <Button 
               onClick={handleStartAnalysis}
-              className="bg-royal-purple hover:bg-purple-700 text-white px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+              className="bg-royal-purple hover:bg-purple-700 text-white px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 animate-glow"
             >
               <span className="flex items-center gap-3">
                 <span>התחל ניתוח חיסכון</span>
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </span>
             </Button>
           </div>
@@ -697,11 +705,11 @@ const Home = () => {
           </div>
 
           <div className="flex justify-center mb-12">
-            <div className="bg-white/80 backdrop-blur-sm p-12 rounded-3xl border border-gray-100 max-w-6xl w-full">
+            <div className="bg-white/80 backdrop-blur-sm p-12 rounded-3xl border border-gray-100 max-w-6xl w-full shadow-lg hover:shadow-xl transition-all duration-300">
               <img 
                 src={israeliCompaniesLogos} 
                 alt="לוגואים רשמיים של חברות הטלקום והחשמל הישראליות - בזק, הוט, פרטנר, סלקום, פלאפון, יס, חברת חשמל, אלקטרה"
-                className="w-full h-auto max-w-full"
+                className="w-full h-auto max-w-full hover:scale-105 transition-transform duration-500"
               />
             </div>
           </div>
@@ -967,6 +975,9 @@ const Home = () => {
           </div>
         </div>
       </footer>
+      
+      {/* Back to Top Button */}
+      <BackToTop />
     </div>
   );
 };
