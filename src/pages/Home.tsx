@@ -487,33 +487,44 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Our Mission Section - Clean White Design */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      {/* Our Mission Section - Enhanced */}
+      <section className="py-20 bg-gray-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 pointer-events-none opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-red-500 rounded-full blur-3xl"></div>
+          <div className="absolute top-32 right-20 w-40 h-40 bg-green-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-32 w-36 h-36 bg-blue-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-28 h-28 bg-purple-500 rounded-full blur-3xl"></div>
+        </div>
+
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="max-w-5xl mx-auto">
             {/* Main Mission Card */}
-            <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+            <Card className="bg-white border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
               <CardContent className="p-0">
-                {/* Header Section - Clean White */}
-                <div className="p-12 text-center">
-                  <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-6 text-gray-900 tracking-tight">
-                    השליחות שלנו
-                  </h2>
-                  <p className="text-xl lg:text-2xl max-w-4xl mx-auto font-assistant leading-relaxed text-gray-600">
-                    אנחנו מאמינים שכל משפחה ישראלית זכאית לחסוך כסף על חשבונות הבית. 
-                    <br className="hidden lg:block" />
-                    המטרה שלנו היא להפוך את התהליך המסובך של השוואת ספקים לפשוט, מהיר ויעיל.
-                  </p>
+                {/* Header Section with Gradient Background */}
+                <div className="bg-gradient-to-br from-red-500 via-red-600 to-red-700 p-12 text-white relative overflow-hidden">
+                  <div className="absolute inset-0 bg-black/10"></div>
+                  <div className="relative z-10 text-center">
+                    <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-6 tracking-tight">
+                      השליחות שלנו
+                    </h2>
+                    <p className="text-xl lg:text-2xl max-w-4xl mx-auto font-assistant leading-relaxed text-red-50">
+                      אנחנו מאמינים שכל משפחה ישראלית זכאית לחסוך כסף על חשבונות הבית. 
+                      <br className="hidden lg:block" />
+                      המטרה שלנו היא להפוך את התהליך המסובך של השוואת ספקים לפשוט, מהיר ויעיל.
+                    </p>
+                  </div>
                 </div>
 
                 {/* Content Section */}
-                <div className="px-12 pb-12">
+                <div className="p-12">
                   {/* Vision and Values Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-gray-300 transform hover:-translate-y-1">
+                    <Card className="group hover:shadow-lg transition-all duration-300 border border-red-100 hover:border-red-200 transform hover:-translate-y-1">
                       <CardContent className="p-8 text-center">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gray-200 transition-colors duration-300">
-                          <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                           </svg>
@@ -525,10 +536,10 @@ const Home = () => {
                       </CardContent>
                     </Card>
                     
-                    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-gray-300 transform hover:-translate-y-1">
+                    <Card className="group hover:shadow-lg transition-all duration-300 border border-red-100 hover:border-red-200 transform hover:-translate-y-1">
                       <CardContent className="p-8 text-center">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gray-200 transition-colors duration-300">
-                          <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                           </svg>
                         </div>
@@ -540,30 +551,42 @@ const Home = () => {
                     </Card>
                   </div>
 
-                  {/* Clean Statistics */}
+                  {/* Interactive Statistics */}
                   <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100">
                     <h3 className="text-2xl font-semibold text-gray-900 mb-8 font-heebo text-center">
                       המספרים מדברים בעד עצמם
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                      <div className="text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
-                        <div className="text-4xl lg:text-5xl font-black text-gray-900 mb-3">50,000+</div>
+                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-red-200 transform hover:-translate-y-1">
+                        <div className="text-4xl lg:text-5xl font-black text-red-500 mb-3 group-hover:scale-110 transition-transform duration-300">50,000+</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">משפחות שחסכו</p>
+                        <div className="w-full h-1 bg-red-100 rounded-full mt-3 overflow-hidden">
+                          <div className="h-full bg-red-500 rounded-full group-hover:w-full w-3/4 transition-all duration-1000"></div>
+                        </div>
                       </div>
                       
-                      <div className="text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
-                        <div className="text-4xl lg:text-5xl font-black text-gray-900 mb-3">₪120M+</div>
+                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-green-200 transform hover:-translate-y-1">
+                        <div className="text-4xl lg:text-5xl font-black text-green-500 mb-3 group-hover:scale-110 transition-transform duration-300">₪120M+</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">סה"כ חיסכון</p>
+                        <div className="w-full h-1 bg-green-100 rounded-full mt-3 overflow-hidden">
+                          <div className="h-full bg-green-500 rounded-full group-hover:w-full w-4/5 transition-all duration-1000"></div>
+                        </div>
                       </div>
                       
-                      <div className="text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
-                        <div className="text-4xl lg:text-5xl font-black text-gray-900 mb-3">95%</div>
+                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-blue-200 transform hover:-translate-y-1">
+                        <div className="text-4xl lg:text-5xl font-black text-blue-500 mb-3 group-hover:scale-110 transition-transform duration-300">95%</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">שביעות רצון</p>
+                        <div className="w-full h-1 bg-blue-100 rounded-full mt-3 overflow-hidden">
+                          <div className="h-full bg-blue-500 rounded-full group-hover:w-full w-19/20 transition-all duration-1000"></div>
+                        </div>
                       </div>
                       
-                      <div className="text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
-                        <div className="text-4xl lg:text-5xl font-black text-gray-900 mb-3">5</div>
+                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-purple-200 transform hover:-translate-y-1">
+                        <div className="text-4xl lg:text-5xl font-black text-purple-500 mb-3 group-hover:scale-110 transition-transform duration-300">5</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">שנות ניסיון</p>
+                        <div className="w-full h-1 bg-purple-100 rounded-full mt-3 overflow-hidden">
+                          <div className="h-full bg-purple-500 rounded-full group-hover:w-full w-1/2 transition-all duration-1000"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -581,6 +604,172 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Footer Section */}
+      <footer className="bg-gradient-to-br from-gray-800 via-gray-900 to-red-900 text-white py-16 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 pointer-events-none opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-red-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-red-600 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            
+            {/* Company Info */}
+            <div className="lg:col-span-1">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-red-500 rounded-2xl flex items-center justify-center">
+                  <Zap className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-heebo font-bold">Switch IL</h3>
+                  <p className="text-red-200 text-sm font-assistant">פלטפורמת החיסכון המובילה בישראל</p>
+                </div>
+              </div>
+              <p className="text-gray-300 font-assistant leading-relaxed mb-8">
+                אנחנו עוזרים לישראלים לחסוך אלפי שקלים בשנה על
+                חשבונות הבית. תהליך פשוט, מהיר ובטוח.
+              </p>
+              
+              {/* Statistics */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-green-500/20 p-4 rounded-xl border border-green-400/30">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-2xl font-black text-green-400">50K+</div>
+                      <p className="text-xs text-green-200 font-assistant">לקוחות מרוצים</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-yellow-500/20 p-4 rounded-xl border border-yellow-400/30">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">₪</span>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-black text-yellow-400">₪500M</div>
+                      <p className="text-xs text-yellow-200 font-assistant">חיסכון כולל</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Services */}
+            <div className="lg:col-span-1">
+              <h4 className="text-xl font-heebo font-semibold mb-6 flex items-center gap-2">
+                <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                שירותים
+              </h4>
+              <ul className="space-y-4 font-assistant">
+                <li>
+                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-red-400 transition-colors duration-200 group">
+                    <Smartphone className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                    סלולר
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-red-400 transition-colors duration-200 group">
+                    <Wifi className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                    אינטרנט
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-red-400 transition-colors duration-200 group">
+                    <Tv className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                    טלוויזיה
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-red-400 transition-colors duration-200 group">
+                    <Zap className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                    חשמל
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Links */}
+            <div className="lg:col-span-1">
+              <h4 className="text-xl font-heebo font-semibold mb-6">קישורים מהירים</h4>
+              <ul className="space-y-4 font-assistant">
+                <li>
+                  <a href="#" className="text-gray-300 hover:text-red-400 transition-colors duration-200">
+                    אודות
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-300 hover:text-red-400 transition-colors duration-200">
+                    תנאי שימוש
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-300 hover:text-red-400 transition-colors duration-200">
+                    מדיניות פרטיות
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-300 hover:text-red-400 transition-colors duration-200">
+                    שאלות נפוצות
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div className="lg:col-span-1">
+              <h4 className="text-xl font-heebo font-semibold mb-6 flex items-center gap-2">
+                <Phone className="w-5 h-5 text-red-400" />
+                צור קשר
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-red-500/20 p-4 rounded-xl border border-red-400/30">
+                  <p className="text-red-300 text-sm font-assistant mb-1">טלפון</p>
+                  <p className="text-white font-semibold font-heebo">*3456</p>
+                  <p className="text-red-200 text-xs font-assistant">חיוב שיחה</p>
+                </div>
+                
+                <div className="bg-red-500/20 p-4 rounded-xl border border-red-400/30">
+                  <p className="text-red-300 text-sm font-assistant mb-1">מייל תמיכה</p>
+                  <p className="text-white font-semibold font-mono text-sm">support@switchil.co.il</p>
+                </div>
+                
+                <div className="bg-red-500/20 p-4 rounded-xl border border-red-400/30">
+                  <p className="text-red-300 text-sm font-assistant mb-1">שעות פעילות</p>
+                  <p className="text-white font-semibold font-heebo">א'-ה' 8:00-20:00</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="border-t border-gray-700 mt-12 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="flex items-center gap-2 text-gray-400 text-sm font-assistant">
+                <span>© 2024 Switch IL. כל הזכויות שמורות.</span>
+              </div>
+              <div className="flex items-center gap-6 text-sm font-assistant">
+                <a href="#" className="text-gray-400 hover:text-red-400 transition-colors duration-200">
+                  מדיניות פרטיות
+                </a>
+                <a href="#" className="text-gray-400 hover:text-red-400 transition-colors duration-200">
+                  תנאי שימוש
+                </a>
+                <a href="#" className="text-gray-400 hover:text-red-400 transition-colors duration-200">
+                  אודות
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
