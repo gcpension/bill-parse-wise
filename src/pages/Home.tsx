@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
+import { InteractiveProviderGrid } from '@/components/InteractiveProviderGrid';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
@@ -205,7 +205,7 @@ const Home = () => {
           </div>
           
           {/* Category Cards Grid - Enhanced with staggered animations */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {Object.entries(categoryData).map(([category, data], index) => {
               const Icon = data.icon;
               const isSelected = selectedCategories[category].selected;
@@ -213,78 +213,86 @@ const Home = () => {
               return (
                 <Card 
                   key={category}
-                  className={`bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 transform hover:scale-105 hover:-translate-y-2 animate-fade-in opacity-0 ${
-                    isSelected ? 'ring-2 ring-royal-purple shadow-lg scale-105' : ''
+                  className={`bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:scale-[1.02] animate-fade-in opacity-0 ${
+                    isSelected ? 'ring-2 ring-purple-500 shadow-purple-200/50' : ''
                   }`}
                   style={{ 
-                    animationDelay: `${0.6 + index * 0.1}s`, 
+                    animationDelay: `${0.6 + index * 0.2}s`, 
                     animationFillMode: 'forwards' 
                   }}
-                  onClick={() => handleCategorySelect(category)}
                 >
-                  <CardContent className="p-6 text-center">
-                    {/* Image illustration - Enhanced with hover effects */}
-                    <div className="w-full h-24 mx-auto mb-4 overflow-hidden rounded-xl transform transition-transform duration-300 hover:scale-110">
-                      <img 
-                        src={data.image}
-                        alt={`איור ${data.name}`}
-                        className="w-full h-full object-cover transition-all duration-300 hover:brightness-110"
-                      />
+                  <CardContent className="p-8">
+                    {/* Category Header */}
+                    <div className="flex items-center gap-4 mb-6 cursor-pointer" onClick={() => handleCategorySelect(category)}>
+                      <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg">
+                        <Icon className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                          {data.name}
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          השווה ספקים וחסוך בחשבונות
+                        </p>
+                      </div>
+                      <div className={`w-6 h-6 rounded-full border-2 transition-all duration-300 ${
+                        isSelected 
+                          ? 'bg-purple-500 border-purple-500' 
+                          : 'border-gray-300 hover:border-purple-400'
+                      }`}>
+                        {isSelected && <CheckCircle className="w-6 h-6 text-white -ml-px -mt-px" />}
+                      </div>
                     </div>
                     
-                    {/* Category title */}
-                    <h3 className="text-lg font-heebo font-medium text-royal-purple mb-4 transition-colors duration-200">
-                      {data.name}
-                    </h3>
-                    
-                    {/* Form fields when selected - Enhanced animations */}
+                    {/* Enhanced Form fields when selected */}
                     {isSelected && (
-                      <div className="space-y-3 mb-4 animate-fade-in" onClick={(e) => e.stopPropagation()}>
-                        <Select 
-                          value={selectedCategories[category].provider} 
+                      <div className="space-y-6 animate-fade-in" onClick={(e) => e.stopPropagation()}>
+                        <InteractiveProviderGrid
+                          category={category as 'electricity' | 'cellular' | 'internet' | 'tv'}
+                          value={selectedCategories[category].provider}
                           onValueChange={(value) => handleProviderChange(category, value)}
-                        >
-                          <SelectTrigger className="h-10 bg-gray-50 border-gray-200 text-gray-700 rounded-xl transition-all duration-200 hover:border-purple-300 focus:border-purple-500">
-                            <SelectValue placeholder="בחרו ספק נוכחי" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {data.providers.map(provider => (
-                              <SelectItem key={provider} value={provider}>
-                                {provider}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        
-                        <Input
-                          type="number"
-                          placeholder="סכום חודשי (₪)"
-                          value={selectedCategories[category].amount}
-                          onChange={(e) => handleAmountChange(category, e.target.value)}
-                          className="h-10 bg-gray-50 border-gray-200 text-gray-700 rounded-xl transition-all duration-200 hover:border-purple-300 focus:border-purple-500"
                         />
+                        
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                            <span className="text-lg">₪</span>
+                            סכום חודשי
+                          </label>
+                          <div className="relative">
+                            <Input
+                              type="number"
+                              placeholder="הזינו סכום בשקלים"
+                              value={selectedCategories[category].amount}
+                              onChange={(e) => handleAmountChange(category, e.target.value)}
+                              className="h-12 pr-12 text-lg font-semibold bg-gray-50/80 border-gray-300 hover:border-purple-400 focus:border-purple-500 transition-all duration-300 rounded-xl"
+                            />
+                            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold text-lg">
+                              ₪
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     )}
                     
-                    {/* Enhanced button with better animations */}
+                    {/* Enhanced selection button */}
                     <Button 
-                      className={`w-full h-10 rounded-xl font-assistant font-medium text-sm transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+                      className={`w-full h-12 rounded-xl font-semibold text-base transition-all duration-300 transform hover:scale-105 active:scale-95 mt-6 ${
                         isSelected 
-                          ? 'bg-royal-purple hover:bg-purple-700 text-white shadow-lg hover:shadow-xl' 
-                          : 'bg-purple-500 hover:bg-royal-purple text-white shadow-md hover:shadow-lg'
+                          ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg hover:shadow-xl' 
+                          : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg'
                       }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCategorySelect(category);
-                      }}
+                      onClick={() => handleCategorySelect(category)}
                     >
                       {isSelected ? (
                         <span className="flex items-center justify-center gap-2">
-                          <CheckCircle className="w-4 h-4 animate-pulse" />
-                          נבחר
+                          <CheckCircle className="w-5 h-5 animate-pulse" />
+                          נבחר - ערוך פרטים
                         </span>
                       ) : (
-                        `בחר ${data.name}`
+                        <span className="flex items-center justify-center gap-2">
+                          <Icon className="w-5 h-5" />
+                          בחר {data.name}
+                        </span>
                       )}
                     </Button>
                   </CardContent>
