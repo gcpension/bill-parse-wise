@@ -10,7 +10,6 @@ import { Settings } from "./pages/Settings";
 import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
 import { Analyze } from "./pages/Analyze";
-import { DetailedCompareProviders } from "./pages/DetailedCompareProviders";
 import { ProviderSwitch } from "./pages/ProviderSwitch";
 import { Dashboard } from "./components/Dashboard";
 import ResultsPreview from "./pages/ResultsPreview";

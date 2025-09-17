@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
 import { getCheapestPlan, calculateAnnualSavings, getProvidersByCategory } from '@/data/providers';
 import { AnalysisInput } from '@/components/AnalysisInput';
-import { ResultsGrid } from '@/components/ResultsGrid';
+import { SimpleResults } from '@/components/SimpleResults';
 import { Layout } from '@/components/Layout';
-import AllPlans from './AllPlans';
 import { googleSheetsService } from '@/lib/googleSheets';
 import { toast } from 'sonner';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 interface UploadedFile {
   file: File;
   id: string;
@@ -251,20 +247,20 @@ export const Analyze = () => {
       }
     });
   }, [uploadedFiles, analysisResults]);
-  if (activeStep === 'results') {
-    // Get active categories to filter plans
-    const activeCategories = Object.values(categoryData).filter(cat => cat.isActive).map(cat => cat.category);
 
-    // Prepare savings data for the AllPlans component
-    const savingsData = analysisResults.map(result => ({
-      category: result.category,
-      currentAmount: result.currentAmount,
-      newAmount: result.recommendedPlan.price,
-      monthlySavings: result.monthlySavings,
-      currentProvider: result.currentProvider,
-      newProvider: result.recommendedPlan.company
-    }));
-    return <AllPlans initialSelectedCategories={activeCategories} savingsData={savingsData} />;
+  const handleBackToInput = () => {
+    setActiveStep('input');
+    setAnalysisResults([]);
+  };
+
+  if (activeStep === 'results') {
+    return (
+      <Layout>
+        <div className="max-w-7xl mx-auto p-6">
+          <SimpleResults results={analysisResults} onBackToInput={handleBackToInput} />
+        </div>
+      </Layout>
+    );
   }
   return <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/10 animate-fade-in">
       {/* Background Elements */}
