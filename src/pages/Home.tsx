@@ -696,12 +696,34 @@ const Home = () => {
           </div>
 
           <div className="flex justify-center mb-12">
-            <div className="bg-gray-50/80 backdrop-blur-sm p-8 rounded-3xl border border-gray-100 max-w-4xl">
-              <img 
-                src={israeliTelecomLogos} 
-                alt="לוגואים של חברות הטלקום המובילות בישראל - בזק, הוט, פרטנר, סלקום, פלאפון, יס"
-                className="w-full h-auto max-w-full rounded-2xl"
-              />
+            <div className="bg-white/80 backdrop-blur-sm p-12 rounded-3xl border border-gray-100 max-w-6xl w-full">
+              <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
+                {/* Clean, minimal logo style */}
+                <div className="flex items-center justify-center h-12 px-4">
+                  <span className="text-2xl font-bold text-gray-600 font-heebo">בזק</span>
+                </div>
+                <div className="flex items-center justify-center h-12 px-4">
+                  <span className="text-2xl font-bold text-gray-600 font-heebo">הוט</span>
+                </div>
+                <div className="flex items-center justify-center h-12 px-4">
+                  <span className="text-2xl font-bold text-gray-600 font-heebo">פרטנר</span>
+                </div>
+                <div className="flex items-center justify-center h-12 px-4">
+                  <span className="text-2xl font-bold text-gray-600 font-heebo">סלקום</span>
+                </div>
+                <div className="flex items-center justify-center h-12 px-4">
+                  <span className="text-2xl font-bold text-gray-600 font-heebo">פלאפון</span>
+                </div>
+                <div className="flex items-center justify-center h-12 px-4">
+                  <span className="text-2xl font-bold text-gray-600 font-heebo">יס</span>
+                </div>
+                <div className="flex items-center justify-center h-12 px-4">
+                  <span className="text-xl font-bold text-gray-600 font-heebo">חברת חשמל</span>
+                </div>
+                <div className="flex items-center justify-center h-12 px-4">
+                  <span className="text-2xl font-bold text-gray-600 font-heebo">אלקטרה</span>
+                </div>
+              </div>
             </div>
           </div>
 
