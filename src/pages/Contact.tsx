@@ -6,10 +6,17 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Phone, Mail, MapPin, Clock, MessageSquare, HeadphonesIcon, Zap } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, MessageSquare, HeadphonesIcon, Zap, Send, CheckCircle2 } from 'lucide-react';
 import { enhancedToast } from '@/components/EnhancedToast';
+import { useNavigate } from 'react-router-dom';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Contact = () => {
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isVisible: heroVisible, elementRef: heroRef } = useScrollAnimation();
+  const { isVisible: formVisible, elementRef: formRef } = useScrollAnimation();
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,8 +29,9 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     // Basic validation
     if (!formData.name || !formData.email || !formData.message) {
@@ -31,10 +39,13 @@ const Contact = () => {
         title: 'חסרים פרטים',
         description: 'אנא מלאו את כל השדות הנדרשים'
       });
+      setIsSubmitting(false);
       return;
     }
 
-    // Simulate form submission
+    // Simulate form submission with delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
     enhancedToast.success({
       title: 'ההודעה נשלחה בהצלחה!',
       description: 'נחזור אליכם תוך 24 שעות'
@@ -48,15 +59,24 @@ const Contact = () => {
       subject: '',
       message: ''
     });
+    setIsSubmitting(false);
   };
 
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold mb-6">צרו קשר</h1>
+        <section className="relative bg-gradient-to-r from-primary to-accent text-primary-foreground py-20 overflow-hidden">
+          <div className="absolute inset-0 bg-grid-white/[0.05] bg-grid-16"></div>
+          <div 
+            ref={heroRef}
+            className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${
+              heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-white to-accent-foreground bg-clip-text text-transparent">
+              צרו קשר
+            </h1>
             <p className="text-xl max-w-3xl mx-auto leading-relaxed">
               יש לכם שאלות? רוצים עזרה? אנחנו כאן בשבילכם!
               <br />
@@ -68,11 +88,18 @@ const Contact = () => {
         <div className="container mx-auto px-4 py-16">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div>
-              <Card className="shadow-lg">
+            <div 
+              ref={formRef}
+              className={`transition-all duration-1000 ${
+                formVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
+              }`}
+            >
+              <Card className="shadow-2xl border-0 bg-gradient-to-br from-card to-accent/5">
                 <CardHeader>
-                  <CardTitle className="text-2xl text-gray-800 flex items-center gap-3">
-                    <MessageSquare className="w-8 h-8 text-purple-600" />
+                  <CardTitle className="text-2xl text-foreground flex items-center gap-3">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <MessageSquare className="w-6 h-6 text-primary" />
+                    </div>
                     שלחו לנו הודעה
                   </CardTitle>
                 </CardHeader>
@@ -148,9 +175,20 @@ const Contact = () => {
 
                     <Button 
                       type="submit"
-                      className="w-full h-12 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold text-lg"
+                      disabled={isSubmitting}
+                      className="group w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-bold text-lg transition-all duration-300 hover:scale-[1.02]"
                     >
-                      שלחו הודעה
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                          שולח...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
+                          שלחו הודעה
+                        </>
+                      )}
                     </Button>
                   </form>
                 </CardContent>
@@ -254,8 +292,8 @@ const Contact = () => {
                   </div>
                   <Button 
                     variant="outline" 
-                    className="w-full mt-4 border-purple-300 text-purple-600 hover:bg-purple-50"
-                    onClick={() => window.location.href = '/help'}
+                    className="w-full mt-4 border-primary/30 text-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300"
+                    onClick={() => navigate('/help')}
                   >
                     ראו מענה מלא
                   </Button>

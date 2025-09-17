@@ -18,11 +18,18 @@ import {
   AlertTriangle,
   CheckCircle,
   Star,
-  Target
+  Target,
+  Sparkles,
+  ArrowRight
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Tips = () => {
+  const navigate = useNavigate();
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
+  const { isVisible: heroVisible, elementRef: heroRef } = useScrollAnimation();
+  const { isVisible: statsVisible, elementRef: statsRef } = useScrollAnimation();
 
   const tipCategories = [
     { id: 'electricity', name: 'חשמל', icon: Zap, color: 'yellow' },
@@ -187,20 +194,37 @@ const Tips = () => {
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-green-600 to-green-800 text-white py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold mb-6">טיפים לחיסכון חכם</h1>
+        <section className="relative bg-gradient-to-r from-primary to-accent text-primary-foreground py-20 overflow-hidden">
+          <div className="absolute inset-0 bg-grid-white/[0.05] bg-grid-16"></div>
+          <div 
+            ref={heroRef}
+            className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${
+              heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <Lightbulb className="w-8 h-8 text-accent-foreground animate-pulse" />
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-accent-foreground bg-clip-text text-transparent">
+                טיפים לחיסכון חכם
+              </h1>
+              <Sparkles className="w-8 h-8 text-accent-foreground animate-pulse" />
+            </div>
             <p className="text-xl max-w-3xl mx-auto leading-relaxed">
               טיפים מעשיים שיעזרו לכם לחסוך כסף על חשבונות הבית
               <br />
-              מהפשוטים שאפשר ליישם מיד ועד לשיפורים מתקדמים יותר
+              <span className="font-semibold text-accent-foreground">מהפשוטים שאפשר ליישם מיד ועד לשיפורים מתקדמים יותר</span>
             </p>
           </div>
         </section>
 
         <div className="container mx-auto px-4 py-16">
           {/* Quick Stats */}
-          <section className="mb-16">
+          <section 
+            ref={statsRef}
+            className={`mb-16 transition-all duration-1000 ${
+              statsVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            }`}
+          >
             <div className="grid md:grid-cols-4 gap-6 text-center">
               <Card className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
@@ -319,10 +343,11 @@ const Tips = () => {
               השתמשו בפלטפורמה שלנו למציאת העסקאות הטובות ביותר בשוק
             </p>
             <Button 
-              className="bg-white text-green-600 hover:bg-gray-100 font-bold text-lg px-8 py-4 rounded-xl"
-              onClick={() => window.location.href = '/'}
+              className="group bg-white text-primary hover:bg-gray-100 hover:scale-105 font-bold text-lg px-8 py-4 rounded-xl transition-all duration-300"
+              onClick={() => navigate('/')}
             >
               התחילו השוואה עכשיו
+              <ArrowRight className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </section>
         </div>

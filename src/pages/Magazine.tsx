@@ -4,11 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Calendar, Clock, User, Search, TrendingUp, Zap, Smartphone, Wifi, Tv, DollarSign, Shield, Target } from 'lucide-react';
+import { Calendar, Clock, User, Search, TrendingUp, Zap, Smartphone, Wifi, Tv, DollarSign, Shield, Target, BookOpen, Star } from 'lucide-react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Magazine = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const { isVisible: heroVisible, elementRef: heroRef } = useScrollAnimation();
+  const { isVisible: articlesVisible, elementRef: articlesRef } = useScrollAnimation();
 
   const categories = [
     { id: 'all', name: 'הכל', icon: TrendingUp },
@@ -130,13 +133,25 @@ const Magazine = () => {
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold mb-6">מגזין EasySwitch</h1>
+        <section className="relative bg-gradient-to-r from-primary via-accent to-primary text-primary-foreground py-20 overflow-hidden">
+          <div className="absolute inset-0 bg-grid-white/[0.05] bg-grid-16"></div>
+          <div 
+            ref={heroRef}
+            className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${
+              heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <BookOpen className="w-8 h-8 text-accent-foreground animate-pulse" />
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-accent-foreground bg-clip-text text-transparent">
+                מגזין EasySwitch
+              </h1>
+              <Star className="w-8 h-8 text-accent-foreground animate-pulse" />
+            </div>
             <p className="text-xl max-w-3xl mx-auto leading-relaxed">
               הכל על חיסכון חכם בחשבונות הבית: טיפים, מדריכים ועדכונים מהשוק
               <br />
-              הידע שיעזור לכם לחסוך אלפי שקלים בשנה
+              <span className="font-semibold text-accent-foreground">הידע שיעזור לכם לחסוך אלפי שקלים בשנה</span>
             </p>
           </div>
         </section>
@@ -181,8 +196,14 @@ const Magazine = () => {
 
           {/* Featured Articles */}
           {featuredArticles.length > 0 && (
-            <section className="mb-16">
-              <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">מאמרים מומלצים</h2>
+            <section 
+              ref={articlesRef}
+              className={`mb-16 transition-all duration-1000 ${
+                articlesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
+              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">מאמרים מומלצים</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto mb-8"></div>
               <div className="grid lg:grid-cols-2 gap-8">
                 {featuredArticles.map((article) => {
                   const categoryInfo = getCategoryInfo(article.category);

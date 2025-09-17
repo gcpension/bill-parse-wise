@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,10 +22,13 @@ import {
   FileText,
   Calculator,
   Upload,
-  BarChart3
+  BarChart3,
+  Sparkles,
+  Send
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useToast } from '@/hooks/use-toast';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const faqData = [
   {
@@ -141,6 +145,7 @@ const Help = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [openItems, setOpenItems] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: '',
     email: '',
@@ -148,6 +153,9 @@ const Help = () => {
     message: ''
   });
   const { toast } = useToast();
+  const { isVisible: heroVisible, elementRef: heroRef } = useScrollAnimation();
+  const { isVisible: guidesVisible, elementRef: guidesRef } = useScrollAnimation();
+  const { isVisible: faqVisible, elementRef: faqRef } = useScrollAnimation();
 
   const filteredFAQ = faqData
     .map(category => ({
@@ -168,81 +176,102 @@ const Help = () => {
     );
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
     toast({
       title: "פנייה נשלחה בהצלחה!",
       description: "נחזור אליך בתוך 24 שעות",
     });
     setContactForm({ name: '', email: '', subject: '', message: '' });
+    setIsSubmitting(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
-      <div className="container mx-auto px-4 py-12 space-y-12">
-        {/* Header */}
-        <div className="text-center space-y-6">
-          <div className="flex items-center justify-center space-x-3 rtl:space-x-reverse mb-6">
-            <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center">
-              <HelpCircle className="h-10 w-10 text-primary" />
+    <Layout>
+      <div className="min-h-screen bg-gradient-to-b from-primary/5 to-background">
+        <div className="container mx-auto px-4 py-12 space-y-12">
+          {/* Header */}
+          <div 
+            ref={heroRef}
+            className={`text-center space-y-6 transition-all duration-1000 ${
+              heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="flex items-center justify-center space-x-3 rtl:space-x-reverse mb-6">
+              <Sparkles className="w-8 h-8 text-accent animate-pulse" />
+              <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center">
+                <HelpCircle className="h-10 w-10 text-primary" />
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                עזרה ותמיכה
+              </h1>
+              <Sparkles className="w-8 h-8 text-accent animate-pulse" />
             </div>
-            <h1 className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              עזרה ותמיכה
-            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              מצא תשובות לשאלות נפוצות, מדריכים מפורטים או פנה אלינו לעזרה אישית
+            </p>
           </div>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            מצא תשובות לשאלות נפוצות, מדריכים מפורטים או פנה אלינו לעזרה אישית
-          </p>
-        </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="bg-white/70 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
-            <CardContent className="p-6 text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Clock className="h-8 w-8 text-primary" />
-              </div>
-              <div className="text-2xl font-bold text-primary mb-2">&lt; 5 דק׳</div>
-              <p className="text-sm text-muted-foreground">זמן תגובה ממוצע</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/70 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
-            <CardContent className="p-6 text-center">
-              <div className="w-16 h-16 bg-success/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 className="h-8 w-8 text-success" />
-              </div>
-              <div className="text-2xl font-bold text-success mb-2">98%</div>
-              <p className="text-sm text-muted-foreground">שביעות רצון</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/70 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
-            <CardContent className="p-6 text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <MessageCircle className="h-8 w-8 text-primary" />
-              </div>
-              <div className="text-2xl font-bold text-primary mb-2">24/7</div>
-              <p className="text-sm text-muted-foreground">צ׳אט אונליין</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/70 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
-            <CardContent className="p-6 text-center">
-              <div className="w-16 h-16 bg-warning/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Lightbulb className="h-8 w-8 text-warning-foreground" />
-              </div>
-              <div className="text-2xl font-bold text-warning-foreground mb-2">15+</div>
-              <p className="text-sm text-muted-foreground">מדריכים</p>
-            </CardContent>
-          </Card>
-        </div>
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <Card className="group bg-card border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <CardContent className="p-6 text-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Clock className="h-8 w-8 text-primary" />
+                </div>
+                <div className="text-2xl font-bold text-primary mb-2">&lt; 5 דק׳</div>
+                <p className="text-sm text-muted-foreground">זמן תגובה ממוצע</p>
+              </CardContent>
+            </Card>
+            <Card className="group bg-card border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <CardContent className="p-6 text-center">
+                <div className="w-16 h-16 bg-green-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <CheckCircle2 className="h-8 w-8 text-green-600" />
+                </div>
+                <div className="text-2xl font-bold text-green-600 mb-2">98%</div>
+                <p className="text-sm text-muted-foreground">שביעות רצון</p>
+              </CardContent>
+            </Card>
+            <Card className="group bg-card border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <CardContent className="p-6 text-center">
+                <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <MessageCircle className="h-8 w-8 text-accent" />
+                </div>
+                <div className="text-2xl font-bold text-accent mb-2">24/7</div>
+                <p className="text-sm text-muted-foreground">צ׳אט אונליין</p>
+              </CardContent>
+            </Card>
+            <Card className="group bg-card border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <CardContent className="p-6 text-center">
+                <div className="w-16 h-16 bg-orange-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Lightbulb className="h-8 w-8 text-orange-600" />
+                </div>
+                <div className="text-2xl font-bold text-orange-600 mb-2">15+</div>
+                <p className="text-sm text-muted-foreground">מדריכים</p>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* Quick Guides */}
-        <Card className="bg-white/70 backdrop-blur-sm border-border/50">
-          <CardHeader>
-            <CardTitle className="flex items-center text-2xl">
-              <BookOpen className="ml-2 h-6 w-6 text-primary" />
-              מדריכים מהירים
-            </CardTitle>
-          </CardHeader>
+          {/* Quick Guides */}
+          <Card 
+            ref={guidesRef}
+            className={`bg-gradient-to-br from-card to-accent/5 border-0 shadow-2xl transition-all duration-1000 ${
+              guidesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <CardHeader>
+              <CardTitle className="flex items-center text-2xl">
+                <div className="p-2 bg-primary/10 rounded-lg ml-2">
+                  <BookOpen className="h-6 w-6 text-primary" />
+                </div>
+                מדריכים מהירים
+              </CardTitle>
+            </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-8">
               {quickGuides.map((guide, index) => (
@@ -273,7 +302,12 @@ const Help = () => {
         </Card>
 
         {/* FAQ Section */}
-        <Card className="bg-white/70 backdrop-blur-sm border-border/50">
+        <Card 
+          ref={faqRef}
+          className={`bg-gradient-to-br from-card to-primary/5 border-0 shadow-2xl transition-all duration-1000 ${
+            faqVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <CardHeader>
             <CardTitle className="flex items-center text-2xl">
               <MessageCircle className="ml-2 h-6 w-6 text-primary" />
@@ -447,9 +481,10 @@ const Help = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  </div>
-);
+        </div>
+      </div>
+    </Layout>
+  );
 };
 
 export default Help;
