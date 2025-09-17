@@ -334,7 +334,7 @@ const Home = () => {
           <div className="text-center mt-16">
             <Button 
               onClick={handleStartAnalysis}
-              className="bg-royal-purple hover:bg-purple-700 text-white px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 animate-glow"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
             >
               <span className="flex items-center gap-3">
                 <span>התחל ניתוח חיסכון</span>
