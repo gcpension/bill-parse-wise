@@ -16,6 +16,9 @@ import minimalistCompletionIcon from '@/assets/minimalist-completion-icon.png';
 import heroBackgroundIllustration from '@/assets/hero-background-illustration.png';
 import middleSectionIllustration from '@/assets/clean-middle-illustration.png';
 import professionalServicesIllustration from '@/assets/professional-services-illustration.png';
+import familyUtilitiesHero from '@/assets/family-utilities-hero.jpg';
+import savingsBackground from '@/assets/savings-background.jpg';
+import comparisonServices from '@/assets/comparison-services.jpg';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -106,6 +109,8 @@ const Home = () => {
         <Battery className="absolute top-[45%] left-[15%] w-8 h-8 text-green-500 opacity-50 animate-pulse" style={{ animationDelay: '2.1s', animationDuration: '5.5s' }} />
         <Zap className="absolute bottom-[35%] right-[7%] w-9 h-9 text-yellow-600 opacity-35 animate-bounce" style={{ animationDelay: '0.7s', animationDuration: '4.3s' }} />
         <Lightbulb className="absolute bottom-[55%] right-[18%] w-6 h-6 text-orange-400 opacity-55 rotate-12 animate-pulse" style={{ animationDelay: '3.2s', animationDuration: '2.8s' }} />
+        <Battery className="absolute top-[12%] left-[25%] w-6 h-6 text-green-400 opacity-45 rotate-45 animate-bounce" style={{ animationDelay: '4.1s', animationDuration: '5.2s' }} />
+        <Plug className="absolute bottom-[45%] left-[3%] w-7 h-7 text-yellow-500 opacity-50 rotate-[-30deg] animate-pulse" style={{ animationDelay: '5.5s', animationDuration: '3.7s' }} />
         
         {/* Mobile/Cellular icons - more visible */}
         <Smartphone className="absolute top-[18%] right-[28%] w-8 h-8 text-blue-500 opacity-45 rotate-[-15deg] animate-pulse" style={{ animationDelay: '1.8s', animationDuration: '6.2s' }} />
@@ -113,6 +118,8 @@ const Home = () => {
         <Tablet className="absolute top-[55%] right-[8%] w-8 h-8 text-purple-500 opacity-40 rotate-[8deg] animate-pulse" style={{ animationDelay: '3.5s', animationDuration: '4.8s' }} />
         <Smartphone className="absolute bottom-[65%] left-[5%] w-6 h-6 text-indigo-500 opacity-60 rotate-[-8deg] animate-bounce" style={{ animationDelay: '4.1s', animationDuration: '5.1s' }} />
         <Phone className="absolute top-[72%] right-[35%] w-7 h-7 text-cyan-500 opacity-45 rotate-[18deg] animate-pulse" style={{ animationDelay: '5.3s', animationDuration: '3.9s' }} />
+        <Tablet className="absolute top-[8%] left-[45%] w-6 h-6 text-blue-400 opacity-50 rotate-[35deg] animate-bounce" style={{ animationDelay: '6.2s', animationDuration: '4.5s' }} />
+        <Smartphone className="absolute bottom-[15%] right-[5%] w-7 h-7 text-purple-400 opacity-45 rotate-[-25deg] animate-pulse" style={{ animationDelay: '7.1s', animationDuration: '5.8s' }} />
         
         {/* Internet/WiFi icons - more visible */}
         <Wifi className="absolute top-[22%] left-[35%] w-8 h-8 text-green-600 opacity-50 animate-pulse" style={{ animationDelay: '1.1s', animationDuration: '5.3s' }} />
@@ -120,25 +127,39 @@ const Home = () => {
         <Cable className="absolute top-[38%] left-[8%] w-6 h-6 text-green-600 opacity-55 rotate-[-22deg] animate-pulse" style={{ animationDelay: '2.9s', animationDuration: '3.4s' }} />
         <Satellite className="absolute bottom-[42%] left-[18%] w-8 h-8 text-teal-500 opacity-45 rotate-[15deg] animate-bounce" style={{ animationDelay: '3.8s', animationDuration: '5.7s' }} />
         <Wifi className="absolute top-[68%] right-[15%] w-6 h-6 text-emerald-500 opacity-60 rotate-[-5deg] animate-pulse" style={{ animationDelay: '4.6s', animationDuration: '4.4s' }} />
+        <Router className="absolute top-[5%] right-[45%] w-6 h-6 text-cyan-400 opacity-50 rotate-[20deg] animate-bounce" style={{ animationDelay: '5.8s', animationDuration: '3.9s' }} />
+        <Cable className="absolute bottom-[8%] left-[35%] w-5 h-5 text-green-500 opacity-45 rotate-[-45deg] animate-pulse" style={{ animationDelay: '6.7s', animationDuration: '4.2s' }} />
         
         {/* TV/Entertainment icons - more visible */}
         <Tv className="absolute top-[28%] right-[18%] w-9 h-9 text-purple-600 opacity-45 rotate-[5deg] animate-pulse" style={{ animationDelay: '1.5s', animationDuration: '4.7s' }} />
         <Monitor className="absolute bottom-[22%] right-[28%] w-8 h-8 text-indigo-500 opacity-50 rotate-[-12deg] animate-bounce" style={{ animationDelay: '2.8s', animationDuration: '3.6s' }} />
         <Headphones className="absolute top-[78%] left-[25%] w-7 h-7 text-pink-500 opacity-55 rotate-[20deg] animate-pulse" style={{ animationDelay: '0.4s', animationDuration: '6.8s' }} />
         <Radio className="absolute top-[48%] left-[12%] w-6 h-6 text-red-500 opacity-45 rotate-[-18deg] animate-bounce" style={{ animationDelay: '4.2s', animationDuration: '4.9s' }} />
+        <Monitor className="absolute top-[2%] left-[15%] w-7 h-7 text-indigo-400 opacity-40 rotate-[30deg] animate-pulse" style={{ animationDelay: '7.3s', animationDuration: '5.1s' }} />
+        <Tv className="absolute bottom-[5%] right-[40%] w-6 h-6 text-purple-500 opacity-50 rotate-[-20deg] animate-bounce" style={{ animationDelay: '8.1s', animationDuration: '4.3s' }} />
         
         {/* Additional scattered elements */}
         <Battery className="absolute bottom-[38%] right-[45%] w-6 h-6 text-yellow-400 opacity-35 rotate-[-25deg] animate-bounce" style={{ animationDelay: '3.3s', animationDuration: '2.9s' }} />
         <Plug className="absolute bottom-[58%] right-[52%] w-5 h-5 text-green-400 opacity-40 rotate-[-35deg] animate-pulse" style={{ animationDelay: '2.2s', animationDuration: '5.8s' }} />
         <Smartphone className="absolute top-[35%] left-[65%] w-6 h-6 text-blue-400 opacity-40 rotate-[40deg] animate-bounce" style={{ animationDelay: '6.7s', animationDuration: '4.3s' }} />
         <Monitor className="absolute top-[15%] left-[58%] w-5 h-5 text-indigo-400 opacity-50 rotate-[55deg] animate-pulse" style={{ animationDelay: '8.8s', animationDuration: '2.7s' }} />
+        <WifiOff className="absolute bottom-[75%] left-[40%] w-5 h-5 text-gray-400 opacity-35 rotate-[10deg] animate-bounce" style={{ animationDelay: '9.2s', animationDuration: '6.1s' }} />
+        <Headphones className="absolute top-[85%] right-[20%] w-6 h-6 text-pink-400 opacity-45 rotate-[-40deg] animate-pulse" style={{ animationDelay: '10.5s', animationDuration: '3.8s' }} />
+        <Radio className="absolute bottom-[60%] left-[60%] w-5 h-5 text-red-400 opacity-40 rotate-[25deg] animate-bounce" style={{ animationDelay: '11.1s', animationDuration: '4.7s' }} />
+        <Satellite className="absolute top-[40%] right-[50%] w-6 h-6 text-teal-400 opacity-50 rotate-[-15deg] animate-pulse" style={{ animationDelay: '12.3s', animationDuration: '5.2s' }} />
       </div>
 
       {/* Clean Header Section */}
       <section className="bg-white py-16 lg:py-24 relative overflow-hidden">
-        {/* Background illustration */}
+        {/* Background illustration with multiple layers */}
         <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" 
              style={{ backgroundImage: `url(${heroBackgroundIllustration})` }}>
+        </div>
+        <div className="absolute inset-0 opacity-3 bg-cover bg-center bg-no-repeat" 
+             style={{ backgroundImage: `url(${familyUtilitiesHero})` }}>
+        </div>
+        <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 bg-cover bg-right bg-no-repeat" 
+             style={{ backgroundImage: `url(${savingsBackground})` }}>
         </div>
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="text-center">
@@ -283,8 +304,12 @@ const Home = () => {
           </div>
 
           {/* Minimalist How It Works Section */}
-          <div className="max-w-6xl mx-auto mt-32">
-            <div className="py-20">
+          <div className="max-w-6xl mx-auto mt-32 relative">
+            {/* Additional background illustration for this section */}
+            <div className="absolute inset-0 opacity-8 bg-cover bg-center bg-no-repeat" 
+                 style={{ backgroundImage: `url(${comparisonServices})` }}>
+            </div>
+            <div className="py-20 relative z-10">
               {/* Clean Header */}
               <div className="text-center mb-20">
                 <h2 className="text-5xl lg:text-6xl font-heebo font-light mb-8 text-gray-900 leading-tight">

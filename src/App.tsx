@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { Navigation } from "@/components/Navigation";
 import Home from "./pages/Home";
 import { Forms } from "./pages/Forms";
 import { Settings } from "./pages/Settings";
@@ -35,6 +36,7 @@ const App = () => (
           }}
         >
           <div className="min-h-screen bg-background">
+            <Navigation />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
