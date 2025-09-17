@@ -17,6 +17,7 @@ import heroBackgroundIllustration from '@/assets/hero-background-illustration.pn
 import middleSectionIllustration from '@/assets/clean-middle-illustration.png';
 import professionalServicesIllustration from '@/assets/professional-services-illustration.png';
 import israeliTelecomLogos from '@/assets/logos/israeli-telecom-logos.png';
+import savingsAnalysisIllustration from '@/assets/savings-analysis-illustration.png';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -99,14 +100,35 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 relative overflow-hidden">
-      {/* Top Bar with EasySwitch */}
-      <div className="bg-white border-b border-gray-200 py-3">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl text-center">
-          <h1 className="text-lg font-bold text-purple-600 font-heebo">
-            EasySwitch
-          </h1>
+      {/* Top Navigation Bar */}
+      <nav className="bg-white border-b border-gray-200 py-4">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+          <div className="flex items-center justify-between">
+            {/* Logo on the left */}
+            <div className="flex items-center">
+              <h1 className="text-3xl font-bold text-purple-600 font-heebo">
+                EasySwitch
+              </h1>
+            </div>
+            
+            {/* Navigation Links on the right */}
+            <div className="flex items-center space-x-8">
+              <a href="/" className="text-purple-600 font-medium hover:text-purple-700 transition-colors font-heebo">
+                דף הבית
+              </a>
+              <a href="/magazine" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
+                מגזין
+              </a>
+              <a href="/about" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
+                אודות
+              </a>
+              <a href="/contact" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
+                צור קשר
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
+      </nav>
 
       {/* Background decorative elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -456,13 +478,9 @@ const Home = () => {
             <div className="order-1 lg:order-2 flex justify-center">
               <div className="w-full max-w-lg">
                 <img 
-                  src={middleSectionIllustration}
-                  alt="איור של אישה עובדת על השוואת תעריפי שירותי הבית" 
+                  src={savingsAnalysisIllustration}
+                  alt="איור של אדם מנתח חשבונות וחיסכון" 
                   className="w-full h-auto"
-                  style={{ 
-                    mixBlendMode: 'multiply',
-                    backgroundColor: 'transparent'
-                  }}
                 />
               </div>
             </div>
