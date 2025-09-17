@@ -250,7 +250,7 @@ export const AnalysisInput = ({
                       </div>
                     </div>
                     
-                    <Button variant={data.isActive ? "default" : "outline"} size="sm" onClick={e => {
+                    <Button variant={data.isActive ? "purple" : "outline"} size="sm" onClick={e => {
                   e.stopPropagation();
                   onCategoryToggle(key);
                 }}>
@@ -387,7 +387,7 @@ export const AnalysisInput = ({
             <Progress value={Object.values(categoryData).filter(cat => cat.isActive && cat.monthlyAmount && parseFloat(cat.monthlyAmount) > 0).length / 4 * 100} className="h-2" />
           </div>}
         
-        <Button size="lg" className={`px-8 py-3 font-semibold transition-all duration-300 ${canAnalyze() && !isProcessing && isValid ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : 'opacity-50 cursor-not-allowed'}`} onClick={handleAnalyze} disabled={!canAnalyze() || isProcessing || !isValid}>
+        <Button variant="purple" size="lg" className={`px-8 py-3 font-semibold transition-all duration-300 ${canAnalyze() && !isProcessing && isValid ? 'shadow-lg hover:shadow-xl hover:scale-105' : 'opacity-50 cursor-not-allowed'}`} onClick={handleAnalyze} disabled={!canAnalyze() || isProcessing || !isValid}>
           {isProcessing ? <>
               <Loader2 className="ml-2 h-5 w-5 animate-spin" />
               מעבד את הנתונים...
