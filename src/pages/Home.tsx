@@ -100,38 +100,11 @@ const Home = () => {
     <div className="min-h-screen bg-gray-50 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {/* Electricity related icons - more visible */}
-        <Lightbulb className="absolute top-[15%] left-[8%] w-8 h-8 text-yellow-500 opacity-40 animate-pulse" style={{ animationDelay: '0s', animationDuration: '4.2s' }} />
-        <Plug className="absolute top-[25%] right-[12%] w-7 h-7 text-yellow-600 opacity-45 animate-bounce" style={{ animationDelay: '1.3s', animationDuration: '3.8s' }} />
-        <Battery className="absolute top-[45%] left-[15%] w-8 h-8 text-green-500 opacity-50 animate-pulse" style={{ animationDelay: '2.1s', animationDuration: '5.5s' }} />
-        <Zap className="absolute bottom-[35%] right-[7%] w-9 h-9 text-yellow-600 opacity-35 animate-bounce" style={{ animationDelay: '0.7s', animationDuration: '4.3s' }} />
-        <Lightbulb className="absolute bottom-[55%] right-[18%] w-6 h-6 text-orange-400 opacity-55 rotate-12 animate-pulse" style={{ animationDelay: '3.2s', animationDuration: '2.8s' }} />
-        
-        {/* Mobile/Cellular icons - more visible */}
-        <Smartphone className="absolute top-[18%] right-[28%] w-8 h-8 text-blue-500 opacity-45 rotate-[-15deg] animate-pulse" style={{ animationDelay: '1.8s', animationDuration: '6.2s' }} />
-        <Phone className="absolute bottom-[28%] left-[22%] w-7 h-7 text-blue-600 opacity-50 rotate-[25deg] animate-bounce" style={{ animationDelay: '2.7s', animationDuration: '3.2s' }} />
-        <Tablet className="absolute top-[55%] right-[8%] w-8 h-8 text-purple-500 opacity-40 rotate-[8deg] animate-pulse" style={{ animationDelay: '3.5s', animationDuration: '4.8s' }} />
-        <Smartphone className="absolute bottom-[65%] left-[5%] w-6 h-6 text-indigo-500 opacity-60 rotate-[-8deg] animate-bounce" style={{ animationDelay: '4.1s', animationDuration: '5.1s' }} />
-        <Phone className="absolute top-[72%] right-[35%] w-7 h-7 text-cyan-500 opacity-45 rotate-[18deg] animate-pulse" style={{ animationDelay: '5.3s', animationDuration: '3.9s' }} />
-        
-        {/* Internet/WiFi icons - more visible */}
-        <Wifi className="absolute top-[22%] left-[35%] w-8 h-8 text-green-600 opacity-50 animate-pulse" style={{ animationDelay: '1.1s', animationDuration: '5.3s' }} />
-        <Router className="absolute bottom-[18%] right-[22%] w-7 h-7 text-cyan-500 opacity-45 rotate-[12deg] animate-bounce" style={{ animationDelay: '2.4s', animationDuration: '4.1s' }} />
-        <Cable className="absolute top-[38%] left-[8%] w-6 h-6 text-green-600 opacity-55 rotate-[-22deg] animate-pulse" style={{ animationDelay: '2.9s', animationDuration: '3.4s' }} />
-        <Satellite className="absolute bottom-[42%] left-[18%] w-8 h-8 text-teal-500 opacity-45 rotate-[15deg] animate-bounce" style={{ animationDelay: '3.8s', animationDuration: '5.7s' }} />
-        <Wifi className="absolute top-[68%] right-[15%] w-6 h-6 text-emerald-500 opacity-60 rotate-[-5deg] animate-pulse" style={{ animationDelay: '4.6s', animationDuration: '4.4s' }} />
-        
-        {/* TV/Entertainment icons - more visible */}
-        <Tv className="absolute top-[28%] right-[18%] w-9 h-9 text-purple-600 opacity-45 rotate-[5deg] animate-pulse" style={{ animationDelay: '1.5s', animationDuration: '4.7s' }} />
-        <Monitor className="absolute bottom-[22%] right-[28%] w-8 h-8 text-indigo-500 opacity-50 rotate-[-12deg] animate-bounce" style={{ animationDelay: '2.8s', animationDuration: '3.6s' }} />
-        <Headphones className="absolute top-[78%] left-[25%] w-7 h-7 text-pink-500 opacity-55 rotate-[20deg] animate-pulse" style={{ animationDelay: '0.4s', animationDuration: '6.8s' }} />
-        <Radio className="absolute top-[48%] left-[12%] w-6 h-6 text-red-500 opacity-45 rotate-[-18deg] animate-bounce" style={{ animationDelay: '4.2s', animationDuration: '4.9s' }} />
-        
-        {/* Additional scattered elements */}
-        <Battery className="absolute bottom-[38%] right-[45%] w-6 h-6 text-yellow-400 opacity-35 rotate-[-25deg] animate-bounce" style={{ animationDelay: '3.3s', animationDuration: '2.9s' }} />
-        <Plug className="absolute bottom-[58%] right-[52%] w-5 h-5 text-green-400 opacity-40 rotate-[-35deg] animate-pulse" style={{ animationDelay: '2.2s', animationDuration: '5.8s' }} />
-        <Smartphone className="absolute top-[35%] left-[65%] w-6 h-6 text-blue-400 opacity-40 rotate-[40deg] animate-bounce" style={{ animationDelay: '6.7s', animationDuration: '4.3s' }} />
-        <Monitor className="absolute top-[15%] left-[58%] w-5 h-5 text-indigo-400 opacity-50 rotate-[55deg] animate-pulse" style={{ animationDelay: '8.8s', animationDuration: '2.7s' }} />
+        {/* Subtle background icons */}
+        <Lightbulb className="absolute top-[15%] left-[8%] w-6 h-6 text-gray-400 opacity-15 animate-pulse" style={{ animationDelay: '0s', animationDuration: '8s' }} />
+        <Smartphone className="absolute top-[25%] right-[12%] w-6 h-6 text-gray-400 opacity-15 animate-pulse" style={{ animationDelay: '2s', animationDuration: '8s' }} />
+        <Wifi className="absolute top-[45%] left-[15%] w-6 h-6 text-gray-400 opacity-15 animate-pulse" style={{ animationDelay: '4s', animationDuration: '8s' }} />
+        <Tv className="absolute bottom-[35%] right-[7%] w-6 h-6 text-gray-400 opacity-15 animate-pulse" style={{ animationDelay: '6s', animationDuration: '8s' }} />
       </div>
 
       {/* Clean Header Section */}
@@ -152,7 +125,7 @@ const Home = () => {
             <h1 className="text-4xl lg:text-6xl font-heebo font-light text-gray-900 mb-4 leading-tight">
               חסכו בחשבונות הבית
               <br />
-              <span className="font-medium text-red-500">בקלות ובמהירות</span>
+              <span className="font-medium text-gray-700">בקלות ובמהירות</span>
             </h1>
             
             <p className="text-xl text-gray-600 mt-6 font-assistant max-w-3xl mx-auto">
@@ -185,7 +158,7 @@ const Home = () => {
                 <Card 
                   key={category}
                   className={`bg-white shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-gray-100 ${
-                    isSelected ? 'ring-2 ring-red-500 shadow-lg' : ''
+                    isSelected ? 'ring-2 ring-gray-400 shadow-lg' : ''
                   }`}
                   onClick={() => handleCategorySelect(category)}
                 >
@@ -237,8 +210,8 @@ const Home = () => {
                     <Button 
                       className={`w-full h-10 rounded-xl font-assistant font-medium text-sm transition-all duration-200 ${
                         isSelected 
-                          ? 'bg-green-500 hover:bg-green-600 text-white' 
-                          : 'bg-red-500 hover:bg-red-600 text-white'
+                          ? 'bg-gray-600 hover:bg-gray-700 text-white' 
+                          : 'bg-gray-500 hover:bg-gray-600 text-white'
                       }`}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -264,7 +237,7 @@ const Home = () => {
           <div className="text-center mt-16">
             <Button 
               onClick={handleStartAnalysis}
-              className="bg-red-500 hover:bg-red-600 text-white px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+              className="bg-gray-600 hover:bg-gray-700 text-white px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
             >
               <span className="flex items-center gap-3">
                 <span>התחל ניתוח חיסכון</span>
@@ -290,7 +263,7 @@ const Home = () => {
                 <h2 className="text-5xl lg:text-6xl font-heebo font-light mb-8 text-gray-900 leading-tight">
                   אנחנו איתכם
                 </h2>  
-                <h3 className="text-4xl lg:text-5xl font-heebo font-bold mb-8 text-red-500 leading-tight">
+                <h3 className="text-4xl lg:text-5xl font-heebo font-bold mb-8 text-gray-700 leading-tight">
                   בכאונה קבוצה!
                 </h3>
                 <p className="text-lg text-gray-600 font-assistant leading-relaxed max-w-3xl mx-auto mt-8">
@@ -315,7 +288,7 @@ const Home = () => {
                         className="w-full h-full object-contain opacity-90"
                       />
                     </div>
-                    <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
+                    <div className="w-16 h-16 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
                       1
                     </div>
                   </div>
@@ -336,7 +309,7 @@ const Home = () => {
                         className="w-full h-full object-contain opacity-90"
                       />
                     </div>
-                    <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
+                    <div className="w-16 h-16 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
                       2
                     </div>
                   </div>
@@ -357,7 +330,7 @@ const Home = () => {
                         className="w-full h-full object-contain opacity-90"
                       />
                     </div>
-                    <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
+                    <div className="w-16 h-16 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
                       3
                     </div>
                   </div>
@@ -913,7 +886,7 @@ const Home = () => {
             {/* Company Info */}
             <div className="lg:col-span-1">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-red-500 rounded-2xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-gray-600 rounded-2xl flex items-center justify-center">
                   <Zap className="w-7 h-7 text-white" />
                 </div>
                 <div>
@@ -930,32 +903,32 @@ const Home = () => {
             {/* Services */}
             <div className="lg:col-span-1">
               <h4 className="text-xl font-heebo font-semibold mb-6 flex items-center gap-2">
-                <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 שירותים
               </h4>
               <ul className="space-y-4 font-assistant">
                 <li>
-                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-red-400 transition-colors duration-200 group">
+                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group">
                     <Smartphone className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
                     סלולר
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-red-400 transition-colors duration-200 group">
+                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group">
                     <Wifi className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
                     אינטרנט
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-red-400 transition-colors duration-200 group">
+                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group">
                     <Tv className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
                     טלוויזיה
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-red-400 transition-colors duration-200 group">
+                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group">
                     <Zap className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
                     חשמל
                   </a>
@@ -968,22 +941,22 @@ const Home = () => {
               <h4 className="text-xl font-heebo font-semibold mb-6">קישורים מהירים</h4>
               <ul className="space-y-4 font-assistant">
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-red-400 transition-colors duration-200">
+                  <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">
                     אודות
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-red-400 transition-colors duration-200">
+                  <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">
                     תנאי שימוש
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-red-400 transition-colors duration-200">
+                  <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">
                     מדיניות פרטיות
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-red-400 transition-colors duration-200">
+                  <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">
                     שאלות נפוצות
                   </a>
                 </li>
@@ -993,7 +966,7 @@ const Home = () => {
             {/* Contact */}
             <div className="lg:col-span-1">
               <h4 className="text-xl font-heebo font-semibold mb-6 flex items-center gap-2">
-                <Phone className="w-5 h-5 text-red-400" />
+                <Phone className="w-5 h-5 text-gray-400" />
                 צור קשר
               </h4>
               <div className="space-y-4">
