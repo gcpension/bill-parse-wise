@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -14,6 +13,7 @@ import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 import { useFormValidation } from '@/components/DataValidation';
 import { enhancedToast } from '@/components/EnhancedToast';
 import { ProgressIndicator, Step } from '@/components/ProgressIndicator';
+import { ProviderSelector } from '@/components/ProviderSelector';
 interface UploadedFile {
   file: File;
   id: string;
@@ -274,44 +274,15 @@ export const AnalysisInput = ({
                       </Alert>}
 
                     <div className="grid md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium">ספק נוכחי</Label>
-                        <Select value={data.currentProvider} onValueChange={value => {
-                    onCategoryDataUpdate(key, 'currentProvider', value);
-                    validateField(key, 'currentProvider', value);
-                  }}>
-                          <SelectTrigger className="h-10 bg-background border-border">
-                            <SelectValue placeholder="בחרו ספק נוכחי" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background border border-border shadow-lg z-[100]">
-                            {/* Additional common providers for each category */}
-                            {data.category === 'electricity' && ['חברת חשמל', 'פז אנרגיה', 'אלקטרה פאוור', 'דור אלון אנרגיה', 'סלקום אנרגיה', 'נקסט אנרגיה', 'אורמת אנרגיה', 'גין אנרגיה', 'בזק אנרגיה'].map(providerName => <SelectItem key={providerName} value={providerName} className="hover:bg-muted focus:bg-muted cursor-pointer">
-                                {providerName}
-                              </SelectItem>)}
-                            
-                            {data.category === 'cellular' && ['פלאפון', 'סלקום', 'פרטנר', 'הוט מובייל', '019 מובייל', 'רמי לוי תקשורת', 'אלקטרה אפיקים', 'יס', 'גולן טלקום', 'סמארט מובייל'].map(providerName => <SelectItem key={providerName} value={providerName} className="hover:bg-muted focus:bg-muted cursor-pointer">
-                                {providerName}
-                              </SelectItem>)}
-                            
-                            {data.category === 'internet' && ['בזק', 'הוט', 'פרטנר', 'סלקום', 'אורנג', 'סלקום TV', 'גולד ליינס', 'נטוויזן', '013 נטליין', 'יס'].map(providerName => <SelectItem key={providerName} value={providerName} className="hover:bg-muted focus:bg-muted cursor-pointer">
-                                {providerName}
-                              </SelectItem>)}
-                            
-                            {data.category === 'tv' && ['יס', 'הוט', 'סלקום TV', 'פרטנר TV', 'נטפליקס', 'סטרימקס', 'פרטנר', 'בזק בינלאומי', 'סלקום', 'אמזון פריים'].map(providerName => <SelectItem key={providerName} value={providerName} className="hover:bg-muted focus:bg-muted cursor-pointer">
-                                {providerName}
-                              </SelectItem>)}
-                            
-                            {/* Show providers from data if available */}
-                            {providers.length > 0 && providers.map(provider => <SelectItem key={provider.name} value={provider.name} className="hover:bg-muted focus:bg-muted cursor-pointer">
-                                {provider.name}
-                              </SelectItem>)}
-                            
-                            <SelectItem value="אחר" className="border-t mt-1 font-medium">
-                              + אחר (ספק שלא ברשימה)
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                      <ProviderSelector
+                        category={data.category}
+                        value={data.currentProvider}
+                        onValueChange={value => {
+                          onCategoryDataUpdate(key, 'currentProvider', value);
+                          validateField(key, 'currentProvider', value);
+                        }}
+                        placeholder="בחרו ספק נוכחי"
+                      />
                       
                       <div className="space-y-2">
                         <Label className="text-sm font-medium">סכום חודשי (₪)</Label>
@@ -319,8 +290,8 @@ export const AnalysisInput = ({
                           <Input type="number" placeholder="הזינו סכום" value={data.monthlyAmount} onChange={e => {
                       onCategoryDataUpdate(key, 'monthlyAmount', e.target.value);
                       validateField(key, 'monthlyAmount', e.target.value);
-                    }} className={`h-10 pr-8 bg-background ${hasError(key) ? 'border-destructive focus:border-destructive' : ''}`} onBlur={e => validateField(key, 'monthlyAmount', e.target.value)} />
-                          <div className="w-4 h-4 flex items-center justify-center text-muted-foreground absolute right-2 top-2">
+                    }} className={`h-12 pr-10 bg-background text-lg font-semibold ${hasError(key) ? 'border-destructive focus:border-destructive' : 'border-border hover:border-primary/50 focus:border-primary'} transition-colors`} onBlur={e => validateField(key, 'monthlyAmount', e.target.value)} />
+                          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground font-bold text-lg">
                             ₪
                           </div>
                         </div>
