@@ -30,7 +30,8 @@ import {
   Crown,
   Flame,
   Shield,
-  Heart
+  Heart,
+  CheckCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -128,72 +129,95 @@ const PlanComparison = ({
                 <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle className="text-3xl font-bold text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                      השוואה מפורטת ומותאמת אישית
+                      השוואה מפורטת בין המסלולים
                     </DialogTitle>
                     <p className="text-muted-foreground text-center mt-2">
-                      ניתוח חכם של ההבדלים עם המלצות מותאמות לצרכים שלך
+                      ניתוח ההבדלים המשמעותיים בין המסלולים שבחרתם
                     </p>
                   </DialogHeader>
                   
-                  {/* AI Recommendations Banner */}
-                  <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-6 mb-6 border border-primary/20">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-2 bg-gradient-to-r from-primary to-accent rounded-lg">
-                        <Lightbulb className="h-5 w-5 text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold">המלצת AI מותאמת אישית</h3>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="bg-white/50 backdrop-blur-sm rounded-lg p-4 border border-success/20">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Crown className="h-4 w-4 text-yellow-500" />
-                          <span className="font-semibold text-success">הבחירה הטובה ביותר</span>
+                  {/* Category Validation Check */}
+                  {(() => {
+                    const categories = [...new Set(comparedPlans.map(plan => plan.category))];
+                    const isSameCategory = categories.length === 1;
+                    
+                    if (!isSameCategory && comparedPlans.length > 1) {
+                      return (
+                        <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl p-6 mb-6 border-2 border-orange-200">
+                          <div className="flex items-center gap-3 mb-4">
+                            <AlertTriangle className="h-6 w-6 text-orange-600" />
+                            <h3 className="text-xl font-bold text-orange-800">שימו לב - מסלולים מקטגוריות שונות</h3>
+                          </div>
+                          <p className="text-orange-700 mb-4">
+                            אתם משווים בין מסלולים מקטגוריות שונות: {categories.map(cat => 
+                              cat === 'mobile' ? 'סלולר' : 
+                              cat === 'electricity' ? 'חשמל' :
+                              cat === 'internet' ? 'אינטרנט' :
+                              cat === 'tv' ? 'טלוויזיה' : cat
+                            ).join(', ')}
+                          </p>
+                          <p className="text-orange-600 text-sm">
+                            💡 המלצה: השוואה תהיה מדויקת יותר בין מסלולים מאותה קטגוריה
+                          </p>
                         </div>
-                        <p className="text-sm text-foreground">
-                          {comparedPlans[0]?.company} - מציע את היחס הטוב ביותר בין מחיר לביצועים עבור הפרופיל שלך
-                        </p>
-                      </div>
-                      <div className="bg-white/50 backdrop-blur-sm rounded-lg p-4 border border-primary/20">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Target className="h-4 w-4 text-primary" />
-                          <span className="font-semibold text-primary">התאמה מושלמת</span>
+                      );
+                    }
+                    
+                    if (isSameCategory && comparedPlans.length > 1) {
+                      const categoryName = comparedPlans[0].category === 'mobile' ? 'סלולר' : 
+                                          comparedPlans[0].category === 'electricity' ? 'חשמל' :
+                                          comparedPlans[0].category === 'internet' ? 'אינטרנט' :
+                                          comparedPlans[0].category === 'tv' ? 'טלוויזיה' : comparedPlans[0].category;
+                      
+                      return (
+                        <div className="bg-gradient-to-r from-green-50 to-emerald-100 rounded-xl p-6 mb-6 border-2 border-green-200">
+                          <div className="flex items-center gap-3 mb-4">
+                            <CheckCircle className="h-6 w-6 text-green-600" />
+                            <h3 className="text-xl font-bold text-green-800">השוואה מדויקת - מסלולי {categoryName}</h3>
+                          </div>
+                          <p className="text-green-700">
+                            מעולה! אתם משווים בין {comparedPlans.length} מסלולי {categoryName} - זו השוואה מדויקת שתעזור לכם לקבל החלטה נכונה.
+                          </p>
                         </div>
-                        <p className="text-sm text-foreground">
-                          בהתבסס על דפוסי השימוש שלך, מסלול זה יחסוך לך הכי הרבה כסף
-                        </p>
-                      </div>
-                    </div>
+                      );
+                    }
+                    
+                    return null;
+                  })()}
+
+                  {/* Optional AI Recommendations */}
+                  <div className="mb-6">
+                    <Card className="bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-gradient-to-r from-primary to-accent rounded-lg">
+                              <Lightbulb className="h-5 w-5 text-white" />
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-bold">רוצים המלצה מותאמת אישית?</h3>
+                              <p className="text-muted-foreground text-sm">
+                                ספרו לנו על הצרכים שלכם ונתן המלצה חכמה ומדויקת
+                              </p>
+                            </div>
+                          </div>
+                          <Button variant="outline" className="border-primary/30 hover:bg-primary/5">
+                            <Target className="h-4 w-4 mr-2" />
+                            קבלו המלצה אישית
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
 
-                  {/* Side by Side Comparison */}
+                  {/* Side by Side Comparison - Focus on Differences */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     {comparedPlans.map((plan, index) => (
                       <Card key={plan.id} className={cn(
                         "relative overflow-hidden transition-all duration-300",
-                        index === 0 && "ring-2 ring-success/30 shadow-lg shadow-success/20"
+                        "border-2 hover:shadow-lg"
                       )}>
-                        {/* Rank Badge */}
-                        <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-                          {index === 0 && (
-                            <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white">
-                              <Crown className="h-3 w-3 mr-1" />
-                              #1 מומלץ
-                            </Badge>
-                          )}
-                          {index === 1 && (
-                            <Badge className="bg-gradient-to-r from-gray-400 to-gray-500 text-white">
-                              <Award className="h-3 w-3 mr-1" />
-                              #2 טוב מאוד
-                            </Badge>
-                          )}
-                          {index === 2 && (
-                            <Badge className="bg-gradient-to-r from-orange-400 to-orange-500 text-white">
-                              <Star className="h-3 w-3 mr-1" />
-                              #3 אופציה טובה
-                            </Badge>
-                          )}
-                        </div>
-
+                        {/* Plan Header */}
                         <CardHeader className="pb-4">
                           <div className="flex items-center gap-3">
                             {getCategoryIcon(plan.category)}
@@ -206,7 +230,7 @@ const PlanComparison = ({
                             </div>
                           </div>
                           
-                          {/* Rating & Savings */}
+                          {/* Rating & Basic Info */}
                           <div className="flex items-center gap-2 mt-3">
                             <div className="flex items-center gap-1">
                               {Array.from({ length: 5 }).map((_, i) => (
@@ -222,269 +246,195 @@ const PlanComparison = ({
                               ))}
                             </div>
                             <span className="text-sm font-medium">{getRandomRating()}</span>
-                            <Badge variant="secondary" className="text-xs">
-                              <TrendingUp className="h-3 w-3 mr-1" />
-                              חיסכון ₪{getRandomSavings()}
-                            </Badge>
                           </div>
                         </CardHeader>
 
                         <CardContent className="space-y-4">
-                          {/* Price with Comparison */}
-                          <div className={cn(
-                            "text-center p-4 rounded-lg relative",
-                            index === 0 
-                              ? "bg-gradient-to-r from-success/10 to-success/5 border border-success/20" 
-                              : "bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10"
-                          )}>
-                            <div className={cn(
-                              "text-2xl font-black mb-1",
-                              index === 0 ? "text-success" : "text-primary"
-                            )}>
+                          {/* Price Comparison */}
+                          <div className="text-center p-4 rounded-lg border border-border/50 bg-gradient-to-r from-card/50 to-accent/5">
+                            <div className="text-2xl font-black text-primary mb-1">
                               {formatPrice(plan)}
                             </div>
                             {plan.category !== 'electricity' && (
                               <div className="text-sm text-muted-foreground">לחודש</div>
                             )}
-                            {/* Price Comparison */}
-                            {index > 0 && (
-                              <div className="text-xs text-muted-foreground mt-1">
-                                {plan.regularPrice > comparedPlans[0].regularPrice ? (
-                                  <span className="text-destructive">
-                                    +₪{plan.regularPrice - comparedPlans[0].regularPrice} יותר יקר
-                                  </span>
-                                ) : (
-                                  <span className="text-success">
-                                    הרבה כסף!
-                                  </span>
-                                )}
-                              </div>
-                            )}
                           </div>
 
-                          {/* Plan Details */}
-                          <div className="space-y-2">
+                          {/* Technical Specifications */}
+                          <div className="space-y-3">
+                            <h4 className="font-semibold text-sm border-b border-border/50 pb-2">מפרט טכני:</h4>
+                            
                             {plan.category === 'internet' && (
                               <>
-                                <div className="flex items-center justify-between text-sm">
+                                <div className="flex items-center justify-between text-sm bg-blue-50 rounded-lg p-2">
                                   <div className="flex items-center gap-2">
-                                    <Download className="h-4 w-4 text-primary" />
-                                    <span>הורדה</span>
+                                    <Download className="h-4 w-4 text-blue-600" />
+                                    <span>מהירות הורדה</span>
                                   </div>
-                                  <span className="font-medium">{plan.downloadSpeed}</span>
+                                  <span className="font-medium text-blue-700">{plan.downloadSpeed}</span>
                                 </div>
                                 {plan.uploadSpeed && (
-                                  <div className="flex items-center justify-between text-sm">
+                                  <div className="flex items-center justify-between text-sm bg-green-50 rounded-lg p-2">
                                     <div className="flex items-center gap-2">
-                                      <Upload className="h-4 w-4 text-success" />
-                                      <span>העלאה</span>
+                                      <Upload className="h-4 w-4 text-green-600" />
+                                      <span>מהירות העלאה</span>
                                     </div>
-                                    <span className="font-medium">{plan.uploadSpeed}</span>
+                                    <span className="font-medium text-green-700">{plan.uploadSpeed}</span>
                                   </div>
                                 )}
                               </>
                             )}
 
                             {plan.dataAmount && (
-                              <div className="flex items-center justify-between text-sm">
+                              <div className="flex items-center justify-between text-sm bg-purple-50 rounded-lg p-2">
                                 <div className="flex items-center gap-2">
-                                  <Wifi className="h-4 w-4 text-blue-500" />
-                                  <span>נתונים</span>
+                                  <Wifi className="h-4 w-4 text-purple-600" />
+                                  <span>כמות גלישה</span>
                                 </div>
-                                <span className="font-medium">{plan.dataAmount}</span>
+                                <span className="font-medium text-purple-700">{plan.dataAmount}</span>
                               </div>
                             )}
 
                             {plan.callMinutes && (
-                              <div className="flex items-center justify-between text-sm">
+                              <div className="flex items-center justify-between text-sm bg-orange-50 rounded-lg p-2">
                                 <div className="flex items-center gap-2">
-                                  <Phone className="h-4 w-4 text-orange-500" />
+                                  <Phone className="h-4 w-4 text-orange-600" />
                                   <span>דקות שיחה</span>
                                 </div>
-                                <span className="font-medium">{plan.callMinutes}</span>
+                                <span className="font-medium text-orange-700">{plan.callMinutes}</span>
                               </div>
                             )}
                           </div>
 
-                          {/* Contract & Features Summary */}
-                          <div className="text-sm text-muted-foreground">
-                            <div className="flex items-center gap-2 mb-2">
-                              <Clock className="h-4 w-4" />
-                              <span>התחייבות: {Math.random() > 0.5 ? '24 חודשים' : '12 חודשים'}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Check className="h-4 w-4 text-success" />
-                              <span>{plan.features.length} תכונות כלולות</span>
+                          {/* Key Features Highlight */}
+                          <div className="space-y-2">
+                            <h4 className="font-semibold text-sm border-b border-border/50 pb-2">תכונות בולטות:</h4>
+                            <div className="space-y-2 max-h-32 overflow-y-auto">
+                              {plan.features.slice(0, 4).map((feature, featureIndex) => (
+                                <div key={featureIndex} className="flex items-start gap-2 text-sm">
+                                  <Check className="h-4 w-4 text-success flex-shrink-0 mt-0.5" />
+                                  <span className="text-muted-foreground leading-relaxed">
+                                    {feature}
+                                  </span>
+                                </div>
+                              ))}
+                              {plan.features.length > 4 && (
+                                <p className="text-xs text-muted-foreground">ועוד {plan.features.length - 4} תכונות...</p>
+                              )}
                             </div>
                           </div>
 
-                          {/* Plan Strengths */}
-                          <div className="bg-white/50 rounded-lg p-3 border border-primary/10">
-                            <div className="flex items-center gap-2 mb-2">
-                              <ThumbsUp className="h-4 w-4 text-success" />
-                              <span className="font-semibold text-sm">נקודות חוזק:</span>
+                          {/* Contract Terms */}
+                          <div className="bg-muted/50 rounded-lg p-3 text-sm">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Clock className="h-4 w-4 text-muted-foreground" />
+                                <span>תקופת התחייבות</span>
+                              </div>
+                              <span className="font-medium">
+                                {Math.random() > 0.5 ? '24 חודשים' : '12 חודשים'}
+                              </span>
                             </div>
-                            <ul className="text-xs text-muted-foreground space-y-1">
-                              {index === 0 && (
-                                <>
-                                  <li>• יחס מחיר-ביצועים מעולה</li>
-                                  <li>• מותאם בדיוק לצרכים שלך</li>
-                                  <li>• חיסכון משמעותי לטווח ארוך</li>
-                                </>
-                              )}
-                              {index === 1 && (
-                                <>
-                                  <li>• שירות לקוחות מצוין</li>
-                                  <li>• טכנולוgia מתקדמת</li>
-                                  <li>• גמישות בחבילה</li>
-                                </>
-                              )}
-                              {index === 2 && (
-                                <>
-                                  <li>• מותג מוכר ואמין</li>
-                                  <li>• כיסוי רחב</li>
-                                  <li>• תכונות בונוס</li>
-                                </>
-                              )}
-                            </ul>
                           </div>
 
-                          <Button className={cn(
-                            "w-full font-bold transition-all duration-300",
-                            index === 0 
-                              ? "bg-gradient-to-r from-success to-green-600 hover:from-success/90 hover:to-green-600/90 text-white shadow-lg hover:scale-105" 
-                              : "bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground"
-                          )}>
-                            {index === 0 ? (
-                              <>
-                                <Crown className="h-4 w-4 mr-2" />
-                                בחר את הטוב ביותר
-                              </>
-                            ) : (
-                              <>
-                                <Check className="h-4 w-4 mr-2" />
-                                בחר מסלול זה
-                              </>
-                            )}
+                          <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-bold">
+                            <Check className="h-4 w-4 mr-2" />
+                            בחר מסלול זה
                           </Button>
                         </CardContent>
                       </Card>
                     ))}
                   </div>
 
-                  {/* Detailed Comparison Analysis */}
-                  <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Info className="h-5 w-5 text-primary" />
-                        ניתוח מפורט וההבדלים המשמעותיים
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                      {/* Key Differences */}
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                          <h4 className="font-bold text-success flex items-center gap-2">
-                            <Flame className="h-4 w-4" />
-                            למה {comparedPlans[0]?.company} זה הכי טוב?
-                          </h4>
-                          <div className="space-y-3">
-                            <div className="flex items-start gap-3 p-3 bg-success/10 rounded-lg border border-success/20">
-                              <Check className="h-5 w-5 text-success flex-shrink-0 mt-0.5" />
-                              <div>
-                                <p className="font-semibold text-success">חיסכון מקסימלי</p>
-                                <p className="text-sm text-muted-foreground">
-                                  המסלול הזה חוסך לך הכי הרבה כסף בהשוואה לשאר המתחרים
-                                </p>
+                  {/* Detailed Differences Analysis - Only for Same Category */}
+                  {(() => {
+                    const categories = [...new Set(comparedPlans.map(plan => plan.category))];
+                    const isSameCategory = categories.length === 1;
+                    
+                    if (isSameCategory && comparedPlans.length > 1) {
+                      return (
+                        <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/20">
+                          <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                              <Info className="h-5 w-5 text-primary" />
+                              ניתוח ההבדלים המשמעותיים
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="space-y-6">
+                            {/* Price Differences */}
+                            <div>
+                              <h4 className="font-bold text-primary mb-3">השוואת מחירים:</h4>
+                              <div className="grid md:grid-cols-2 gap-4">
+                                {comparedPlans.map((plan, index) => (
+                                  <div key={plan.id} className={cn(
+                                    "p-3 rounded-lg border",
+                                    index === 0 ? "bg-success/10 border-success/30" : "bg-card border-border"
+                                  )}>
+                                    <div className="font-semibold">{plan.company}</div>
+                                    <div className="text-2xl font-bold">{formatPrice(plan)}</div>
+                                    {index > 0 && plan.category !== 'electricity' && (
+                                      <div className="text-sm text-muted-foreground">
+                                        {plan.regularPrice > comparedPlans[0].regularPrice ? (
+                                          <span className="text-destructive">
+                                            +₪{plan.regularPrice - comparedPlans[0].regularPrice} יותר יקר
+                                          </span>
+                                        ) : plan.regularPrice < comparedPlans[0].regularPrice ? (
+                                          <span className="text-success">
+                                            -₪{comparedPlans[0].regularPrice - plan.regularPrice} זול יותר
+                                          </span>
+                                        ) : (
+                                          <span>מחיר זהה</span>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
                             </div>
-                            <div className="flex items-start gap-3 p-3 bg-success/10 rounded-lg border border-success/20">
-                              <Target className="h-5 w-5 text-success flex-shrink-0 mt-0.5" />
-                              <div>
-                                <p className="font-semibold text-success">התאמה מושלמת</p>
-                                <p className="text-sm text-muted-foreground">
-                                  נבחר בהתבסס על דפוסי השימוש והצרכים שלך
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-start gap-3 p-3 bg-success/10 rounded-lg border border-success/20">
-                              <Shield className="h-5 w-5 text-success flex-shrink-0 mt-0.5" />
-                              <div>
-                                <p className="font-semibold text-success">אמינות מוכחת</p>
-                                <p className="text-sm text-muted-foreground">
-                                  ציון שביעות רצון לקוחות גבוה ושירות איכותי
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
 
-                        <div className="space-y-4">
-                          <h4 className="font-bold text-primary flex items-center gap-2">
-                            <AlertTriangle className="h-4 w-4" />
-                            נקודות לתשומת לב
-                          </h4>
-                          <div className="space-y-3">
-                            <div className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg border border-orange-200">
-                              <Info className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                              <div>
-                                <p className="font-semibold text-orange-600">תקופת התקשרות</p>
-                                <p className="text-sm text-muted-foreground">
-                                  המסלולים דורשים התחייבות לתקופה מסוימת - וודא שאתה מרוצה
-                                </p>
+                            {/* Feature Comparison */}
+                            <div>
+                              <h4 className="font-bold text-primary mb-3">השוואת תכונות:</h4>
+                              <div className="space-y-2">
+                                {(() => {
+                                  // Get unique features from all compared plans
+                                  const allFeatures = [...new Set(comparedPlans.flatMap(plan => plan.features))];
+                                  
+                                  return allFeatures.slice(0, 8).map((feature, index) => (
+                                    <div key={index} className="flex items-center gap-4 p-2 bg-white/50 rounded-lg">
+                                      <div className="flex-1 text-sm font-medium">{feature}</div>
+                                      <div className="flex gap-2">
+                                        {comparedPlans.map((plan, planIndex) => (
+                                          <div key={plan.id} className="text-center">
+                                            {plan.features.includes(feature) ? (
+                                              <Check className="h-4 w-4 text-success" />
+                                            ) : (
+                                              <X className="h-4 w-4 text-muted-foreground" />
+                                            )}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  ));
+                                })()}
                               </div>
                             </div>
-                            <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                              <Lightbulb className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                              <div>
-                                <p className="font-semibold text-blue-600">טיפ חכם</p>
-                                <p className="text-sm text-muted-foreground">
-                                  נסה לתאם תאריכי חידוש דומים לכל השירותים שלך לחיסכון נוסף
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                              <Heart className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                              <div>
-                                <p className="font-semibold text-purple-600">המלצה אישית</p>
-                                <p className="text-sm text-muted-foreground">
-                                  בהתבסס על הפרופיל שלך, מסלול זה יתאים לך במיוחד
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
 
-                      {/* Summary Action */}
-                      <div className="text-center pt-6 border-t border-primary/20">
-                        <div className="bg-gradient-to-r from-success/10 to-green-100 rounded-xl p-6 border border-success/20">
-                          <h4 className="text-xl font-bold text-success mb-2">
-                            סיכום: החלטה חכמה מומלצת
-                          </h4>
-                          <p className="text-muted-foreground mb-4">
-                            בהתבסס על הניתוח המפורט, {comparedPlans[0]?.company} מציע את המסלול הטוב ביותר עבורך
-                          </p>
-                          <div className="flex items-center justify-center gap-4 text-sm">
-                            <div className="flex items-center gap-1">
-                              <TrendingUp className="h-4 w-4 text-success" />
-                              <span>חיסכון מקסימלי</span>
+                            {/* Bottom Line Recommendation */}
+                            <div className="bg-gradient-to-r from-success/10 to-green-100 rounded-xl p-6 border border-success/20">
+                              <h4 className="font-bold text-success mb-2">סיכום ההשוואה:</h4>
+                              <p className="text-sm text-muted-foreground">
+                                ההשוואה מבוססת על המפרט הטכני והמחירים המפורסמים. לקבלת המלצה מותאמת אישית, 
+                                השתמשו באפשרות "קבלו המלצה אישית" למעלה.
+                              </p>
                             </div>
-                            <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                            <div className="flex items-center gap-1">
-                              <Target className="h-4 w-4 text-primary" />
-                              <span>התאמה מושלמת</span>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                            <div className="flex items-center gap-1">
-                              <Shield className="h-4 w-4 text-blue-600" />
-                              <span>אמינות מוכחת</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                          </CardContent>
+                        </Card>
+                      );
+                    }
+                    
+                    return null;
+                  })()}
                 </DialogContent>
               </Dialog>
 
