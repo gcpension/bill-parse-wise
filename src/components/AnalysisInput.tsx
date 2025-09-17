@@ -13,7 +13,7 @@ import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 import { useFormValidation } from '@/components/DataValidation';
 import { enhancedToast } from '@/components/EnhancedToast';
 import { ProgressIndicator, Step } from '@/components/ProgressIndicator';
-import { ProviderSelector } from '@/components/ProviderSelector';
+import { InteractiveProviderGrid } from '@/components/InteractiveProviderGrid';
 interface UploadedFile {
   file: File;
   id: string;
@@ -273,27 +273,43 @@ export const AnalysisInput = ({
                         </AlertDescription>
                       </Alert>}
 
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <ProviderSelector
+                    <div className="space-y-6">
+                      <InteractiveProviderGrid
                         category={data.category}
                         value={data.currentProvider}
                         onValueChange={value => {
                           onCategoryDataUpdate(key, 'currentProvider', value);
                           validateField(key, 'currentProvider', value);
                         }}
-                        placeholder="בחרו ספק נוכחי"
                       />
                       
                       <div className="space-y-2">
-                        <Label className="text-sm font-medium">סכום חודשי (₪)</Label>
+                        <Label className="text-sm font-medium flex items-center gap-2">
+                          <span className="text-lg">₪</span>
+                          סכום חודשי
+                        </Label>
                         <div className="relative">
-                          <Input type="number" placeholder="הזינו סכום" value={data.monthlyAmount} onChange={e => {
-                      onCategoryDataUpdate(key, 'monthlyAmount', e.target.value);
-                      validateField(key, 'monthlyAmount', e.target.value);
-                    }} className={`h-12 pr-10 bg-background text-lg font-semibold ${hasError(key) ? 'border-destructive focus:border-destructive' : 'border-border hover:border-primary/50 focus:border-primary'} transition-colors`} onBlur={e => validateField(key, 'monthlyAmount', e.target.value)} />
-                          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground font-bold text-lg">
+                          <Input 
+                            type="number" 
+                            placeholder="הזינו סכום בשקלים" 
+                            value={data.monthlyAmount} 
+                            onChange={e => {
+                              onCategoryDataUpdate(key, 'monthlyAmount', e.target.value);
+                              validateField(key, 'monthlyAmount', e.target.value);
+                            }} 
+                            className={`h-14 pr-12 text-lg font-semibold bg-background/80 backdrop-blur-sm ${
+                              hasError(key) 
+                                ? 'border-destructive focus:border-destructive shadow-destructive/20' 
+                                : 'border-border hover:border-primary/50 focus:border-primary shadow-card'
+                            } transition-all duration-300`} 
+                            onBlur={e => validateField(key, 'monthlyAmount', e.target.value)} 
+                          />
+                          <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground font-bold text-xl">
                             ₪
                           </div>
+                          {data.monthlyAmount && parseFloat(data.monthlyAmount) > 0 && (
+                            <div className="absolute left-2 top-2 w-3 h-3 bg-success rounded-full animate-pulse"></div>
+                          )}
                         </div>
                       </div>
                     </div>
