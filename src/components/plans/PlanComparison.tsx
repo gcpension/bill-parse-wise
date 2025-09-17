@@ -221,6 +221,35 @@ const PlanComparison = ({
                     return null;
                   })()}
 
+                  {/* AI Recommendation Button */}
+                  <div className="mb-6">
+                    <Card className="bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-gradient-to-r from-primary to-accent rounded-lg">
+                              <Lightbulb className="h-5 w-5 text-white" />
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-bold">רוצים המלצה מותאמת אישית?</h3>
+                              <p className="text-muted-foreground text-sm">
+                                ספרו לנו על הצרכים שלכם ונתן המלצה חכמה ומדויקת
+                              </p>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            className="border-primary/30 hover:bg-primary/5"
+                            onClick={() => setIsRecommendationOpen(true)}
+                          >
+                            <Target className="h-4 w-4 mr-2" />
+                            קבלו המלצה אישית
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
                   {/* Enhanced Comparison Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
                     {comparedPlans.map((plan, index) => (
@@ -548,28 +577,6 @@ const PlanComparison = ({
                               </div>
                             </div>
 
-                            {/* Bottom Line Summary */}
-                            <Card className="bg-gradient-to-r from-success/10 via-emerald-50 to-success/10 border-2 border-success/30">
-                              <CardContent className="p-6">
-                                <h4 className="font-bold text-xl text-success mb-3 flex items-center gap-2">
-                                  <Target className="h-5 w-5" />
-                                  המסקנה החכמה
-                                </h4>
-                                <p className="text-foreground leading-relaxed">
-                                  ההשוואה מבוססת על נתונים טכניים ומחירים מפורסמים. {comparedPlans[0]?.company} מוביל במדדי המחיר-ביצועים, 
-                                  בעוד {comparedPlans[1]?.company} מציע תכונות מתקדמות יותר.
-                                </p>
-                                <div className="mt-4 p-4 bg-white/70 rounded-lg border border-success/20">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <Lightbulb className="h-4 w-4 text-success" />
-                                    <span className="font-semibold text-success">המלצה מקצועית:</span>
-                                  </div>
-                                  <p className="text-sm text-muted-foreground">
-                                    לקבלת המלצה מותאמת אישית לצרכים שלכם, השתמשו בכפתור "קבלו המלצה אישית" למעלה.
-                                  </p>
-                                </div>
-                              </CardContent>
-                            </Card>
                           </CardContent>
                         </Card>
                       );
