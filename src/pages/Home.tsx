@@ -97,14 +97,14 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+    <div className="min-h-screen bg-purple-50 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Subtle background icons */}
-        <Lightbulb className="absolute top-[15%] left-[8%] w-6 h-6 text-gray-400 opacity-15 animate-pulse" style={{ animationDelay: '0s', animationDuration: '8s' }} />
-        <Smartphone className="absolute top-[25%] right-[12%] w-6 h-6 text-gray-400 opacity-15 animate-pulse" style={{ animationDelay: '2s', animationDuration: '8s' }} />
-        <Wifi className="absolute top-[45%] left-[15%] w-6 h-6 text-gray-400 opacity-15 animate-pulse" style={{ animationDelay: '4s', animationDuration: '8s' }} />
-        <Tv className="absolute bottom-[35%] right-[7%] w-6 h-6 text-gray-400 opacity-15 animate-pulse" style={{ animationDelay: '6s', animationDuration: '8s' }} />
+        <Lightbulb className="absolute top-[15%] left-[8%] w-6 h-6 text-royal-purple opacity-15 animate-pulse" style={{ animationDelay: '0s', animationDuration: '8s' }} />
+        <Smartphone className="absolute top-[25%] right-[12%] w-6 h-6 text-royal-purple opacity-15 animate-pulse" style={{ animationDelay: '2s', animationDuration: '8s' }} />
+        <Wifi className="absolute top-[45%] left-[15%] w-6 h-6 text-royal-purple opacity-15 animate-pulse" style={{ animationDelay: '4s', animationDuration: '8s' }} />
+        <Tv className="absolute bottom-[35%] right-[7%] w-6 h-6 text-royal-purple opacity-15 animate-pulse" style={{ animationDelay: '6s', animationDuration: '8s' }} />
       </div>
 
       {/* Clean Header Section */}
@@ -117,18 +117,18 @@ const Home = () => {
           <div className="text-center">
             
             {/* Clean subtitle */}
-            <p className="text-lg text-gray-600 mb-8 font-assistant">
+            <p className="text-lg text-purple-600 mb-8 font-assistant">
               המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
             </p>
             
             {/* Clean main title */}
-            <h1 className="text-4xl lg:text-6xl font-heebo font-light text-gray-900 mb-4 leading-tight">
+            <h1 className="text-4xl lg:text-6xl font-heebo font-light text-royal-purple mb-4 leading-tight">
               חסכו בחשבונות הבית
               <br />
-              <span className="font-medium text-gray-700">בקלות ובמהירות</span>
+              <span className="font-medium text-purple-700">בקלות ובמהירות</span>
             </h1>
             
-            <p className="text-xl text-gray-600 mt-6 font-assistant max-w-3xl mx-auto">
+            <p className="text-xl text-purple-600 mt-6 font-assistant max-w-3xl mx-auto">
               אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
             </p>
           </div>
@@ -136,14 +136,14 @@ const Home = () => {
       </section>
 
       {/* Clean Categories Section */}
-      <section className="py-16 bg-gray-50 relative">
+      <section className="py-16 bg-purple-50 relative">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-heebo font-medium text-gray-900 mb-4">
+            <h2 className="text-3xl font-heebo font-medium text-royal-purple mb-4">
               בחרו את הקטגוריה שלכם
             </h2>
-            <p className="text-lg text-gray-600 font-assistant">
+            <p className="text-lg text-purple-600 font-assistant">
               קבלו המלצות מותאמות אישית והשוו מחירים בכל הקטגוריות
             </p>
           </div>
@@ -157,8 +157,8 @@ const Home = () => {
               return (
                 <Card 
                   key={category}
-                  className={`bg-white shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-gray-100 ${
-                    isSelected ? 'ring-2 ring-gray-400 shadow-lg' : ''
+                  className={`bg-white shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-purple-100 ${
+                    isSelected ? 'ring-2 ring-royal-purple shadow-lg' : ''
                   }`}
                   onClick={() => handleCategorySelect(category)}
                 >
@@ -173,7 +173,7 @@ const Home = () => {
                     </div>
                     
                     {/* Category title */}
-                    <h3 className="text-lg font-heebo font-medium text-gray-900 mb-4">
+                    <h3 className="text-lg font-heebo font-medium text-royal-purple mb-4">
                       {data.name}
                     </h3>
                     
@@ -184,7 +184,7 @@ const Home = () => {
                           value={selectedCategories[category].provider} 
                           onValueChange={(value) => handleProviderChange(category, value)}
                         >
-                          <SelectTrigger className="h-10 bg-gray-50 border-gray-200 text-gray-700 rounded-xl">
+                          <SelectTrigger className="h-10 bg-purple-50 border-purple-200 text-purple-700 rounded-xl">
                             <SelectValue placeholder="בחרו ספק נוכחי" />
                           </SelectTrigger>
                           <SelectContent>
@@ -201,17 +201,17 @@ const Home = () => {
                           placeholder="סכום חודשי (₪)"
                           value={selectedCategories[category].amount}
                           onChange={(e) => handleAmountChange(category, e.target.value)}
-                          className="h-10 bg-gray-50 border-gray-200 text-gray-700 rounded-xl"
+                          className="h-10 bg-purple-50 border-purple-200 text-purple-700 rounded-xl"
                         />
                       </div>
                     )}
                     
-                    {/* Clean red button */}
+                    {/* Clean purple button */}
                     <Button 
                       className={`w-full h-10 rounded-xl font-assistant font-medium text-sm transition-all duration-200 ${
                         isSelected 
-                          ? 'bg-gray-600 hover:bg-gray-700 text-white' 
-                          : 'bg-gray-500 hover:bg-gray-600 text-white'
+                          ? 'bg-royal-purple hover:bg-purple-700 text-white' 
+                          : 'bg-purple-500 hover:bg-royal-purple text-white'
                       }`}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -237,7 +237,7 @@ const Home = () => {
           <div className="text-center mt-16">
             <Button 
               onClick={handleStartAnalysis}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+              className="bg-royal-purple hover:bg-purple-700 text-white px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
             >
               <span className="flex items-center gap-3">
                 <span>התחל ניתוח חיסכון</span>
@@ -248,10 +248,10 @@ const Home = () => {
 
           {/* Clean info section */}
           <div className="text-center mt-12 max-w-4xl mx-auto">
-            <p className="text-gray-600 text-lg font-assistant leading-relaxed mb-8">
+            <p className="text-purple-600 text-lg font-assistant leading-relaxed mb-8">
               אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר.
               <br />
-              <span className="font-medium text-gray-800">השירות חינם לחלוטין</span> - המשפחה הממוצעת חוסכת ₪2,400 בשנה.
+              <span className="font-medium text-purple-800">השירות חינם לחלוטין</span> - המשפחה הממוצעת חוסכת ₪2,400 בשנה.
             </p>
           </div>
 
@@ -260,13 +260,13 @@ const Home = () => {
             <div className="py-20">
               {/* Clean Header */}
               <div className="text-center mb-20">
-                <h2 className="text-5xl lg:text-6xl font-heebo font-light mb-8 text-gray-900 leading-tight">
+                <h2 className="text-5xl lg:text-6xl font-heebo font-light mb-8 text-royal-purple leading-tight">
                   אנחנו איתכם
                 </h2>  
-                <h3 className="text-4xl lg:text-5xl font-heebo font-bold mb-8 text-gray-700 leading-tight">
+                <h3 className="text-4xl lg:text-5xl font-heebo font-bold mb-8 text-purple-700 leading-tight">
                   בכאונה קבוצה!
                 </h3>
-                <p className="text-lg text-gray-600 font-assistant leading-relaxed max-w-3xl mx-auto mt-8">
+                <p className="text-lg text-purple-600 font-assistant leading-relaxed max-w-3xl mx-auto mt-8">
                   בסיטי היא פלטפורמת השוואה היחידה בישראל שיא הבין את הבעיה.
                   <br />
                   ביסוט אלכו אנחנו לא מפשטים למכור לכם ביסוט רק להחליף אותו ונכתוב שאנחנו
@@ -288,12 +288,12 @@ const Home = () => {
                         className="w-full h-full object-contain opacity-90"
                       />
                     </div>
-                    <div className="w-16 h-16 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
+                    <div className="w-16 h-16 bg-royal-purple rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
                       1
                     </div>
                   </div>
-                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-6">בחירת שירותים</h3>
-                  <p className="text-gray-600 leading-relaxed font-assistant text-lg">
+                  <h3 className="text-2xl font-heebo font-bold text-royal-purple mb-6">בחירת שירותים</h3>
+                  <p className="text-purple-600 leading-relaxed font-assistant text-lg">
                     בחרו את השירותים שאתם חוזים לבדוק וזינו את
                     הפרטים הנוכחיים שלכם
                   </p>
@@ -309,12 +309,12 @@ const Home = () => {
                         className="w-full h-full object-contain opacity-90"
                       />
                     </div>
-                    <div className="w-16 h-16 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
+                    <div className="w-16 h-16 bg-royal-purple rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
                       2
                     </div>
                   </div>
-                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-6">ניתוח מתקדם</h3>
-                  <p className="text-gray-600 leading-relaxed font-assistant text-lg">
+                  <h3 className="text-2xl font-heebo font-bold text-royal-purple mb-6">ניתוח מתקדם</h3>
+                  <p className="text-purple-600 leading-relaxed font-assistant text-lg">
                     המערכת סורקת תעריפים ומוצאת את האפשרויות
                     הטובות ביותר עבורכם
                   </p>
@@ -330,12 +330,12 @@ const Home = () => {
                         className="w-full h-full object-contain opacity-90"
                       />
                     </div>
-                    <div className="w-16 h-16 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
+                    <div className="w-16 h-16 bg-royal-purple rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-8">
                       3
                     </div>
                   </div>
-                  <h3 className="text-2xl font-heebo font-bold text-gray-900 mb-6">מעבר מלווה</h3>
-                  <p className="text-gray-600 leading-relaxed font-assistant text-lg">
+                  <h3 className="text-2xl font-heebo font-bold text-royal-purple mb-6">מעבר מלווה</h3>
+                  <p className="text-purple-600 leading-relaxed font-assistant text-lg">
                     אנחנו מטפלים בכל התהליך עד שהמעבר מושלם -
                     העיקר שתחסכו!
                   </p>
@@ -344,15 +344,15 @@ const Home = () => {
 
               {/* Clean Stats Section */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto mt-24">
-                <div className="text-center p-12 rounded-3xl bg-red-50/50 border border-red-100/50">
-                  <div className="text-6xl font-black text-red-500 mb-6">₪2,400</div>
-                  <p className="text-2xl font-semibold text-red-800 mb-3 font-heebo">חיסכון ממוצע בשנה</p>
-                  <p className="text-red-700/80 font-assistant text-lg">למשפחה ממוצעת בישראל</p>
+                <div className="text-center p-12 rounded-3xl bg-purple-50/50 border border-purple-100/50">
+                  <div className="text-6xl font-black text-purple-500 mb-6">₪2,400</div>
+                  <p className="text-2xl font-semibold text-purple-800 mb-3 font-heebo">חיסכון ממוצע בשנה</p>
+                  <p className="text-purple-700/80 font-assistant text-lg">למשפחה ממוצעת בישראל</p>
                 </div>
-                <div className="text-center p-12 rounded-3xl bg-green-50/50 border border-green-100/50">
-                  <div className="text-6xl font-black text-green-600 mb-6">100%</div>
-                  <p className="text-2xl font-semibold text-green-800 mb-3 font-heebo">שירות חינמי</p>
-                  <p className="text-green-700/80 font-assistant text-lg">ללא עלויות נסתרות</p>
+                <div className="text-center p-12 rounded-3xl bg-purple-100/50 border border-purple-200/50">
+                  <div className="text-6xl font-black text-purple-600 mb-6">100%</div>
+                  <p className="text-2xl font-semibold text-purple-800 mb-3 font-heebo">שירות חינמי</p>
+                  <p className="text-purple-700/80 font-assistant text-lg">ללא עלויות נסתרות</p>
                 </div>
               </div>
             </div>
@@ -361,56 +361,56 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 bg-gradient-to-br from-gray-50 to-white relative">
+      <section className="py-16 bg-gradient-to-br from-purple-50 to-white relative">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content Side */}
             <div className="order-2 lg:order-1">
-              <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-gray-900 mb-6">
+              <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-6">
                 למה שווה לבדוק אצלנו?
               </h2>
-              <p className="text-xl text-gray-700 mb-8 font-assistant leading-relaxed">
+              <p className="text-xl text-purple-700 mb-8 font-assistant leading-relaxed">
                 אנחנו לא רק מוצאים לכם חיסכון - אנחנו מבטיחים שהמעבר יהיה חלק, מהיר ובטוח
               </p>
               
               <div className="space-y-6 mb-8">
                 <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 bg-royal-purple rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-heebo font-semibold text-gray-900 mb-2">
+                    <h3 className="text-xl font-heebo font-semibold text-royal-purple mb-2">
                       ניתוח מותאם אישית
                     </h3>
-                    <p className="text-gray-600 leading-relaxed font-assistant">
+                    <p className="text-purple-600 leading-relaxed font-assistant">
                       המערכת שלנו בודקת את הצרכים הספציפיים שלכם ומוצאת את החבילות המתאימות ביותר
                     </p>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 bg-royal-purple rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-heebo font-semibold text-gray-900 mb-2">
+                    <h3 className="text-xl font-heebo font-semibold text-royal-purple mb-2">
                       כיסוי מקיף לכל הבית
                     </h3>
-                    <p className="text-gray-600 leading-relaxed font-assistant">
+                    <p className="text-purple-600 leading-relaxed font-assistant">
                       חשמל, סלולר, אינטרנט וטלוויזיה - בודקים הכול במקום אחד וחוסכים זמן
                     </p>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 bg-royal-purple rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-heebo font-semibold text-gray-900 mb-2">
+                    <h3 className="text-xl font-heebo font-semibold text-royal-purple mb-2">
                       מעבר מהיר וללא בירוקרטיה
                     </h3>
-                    <p className="text-gray-600 leading-relaxed font-assistant">
+                    <p className="text-purple-600 leading-relaxed font-assistant">
                       אנחנו מטפלים בכל הניירת והתיאומים - אתם רק חותמים ואנחנו דואגים לכל השאר
                     </p>
                   </div>
@@ -418,25 +418,25 @@ const Home = () => {
               </div>
               
               {/* Trust Indicators */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 font-heebo text-center">
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-purple-100">
+                <h3 className="text-lg font-semibold text-royal-purple mb-4 font-heebo text-center">
                   יתרונות נוספים שחשוב לדעת
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-red-50 p-4 rounded-xl border border-red-100 text-center">
-                    <CheckCircle className="w-6 h-6 text-red-500 mx-auto mb-2" />
-                    <h4 className="font-semibold text-gray-900 mb-1 font-heebo text-sm">ללא התחייבות</h4>
-                    <p className="text-xs text-gray-600 font-assistant">אתם מחליטים בסוף</p>
+                  <div className="bg-purple-50 p-4 rounded-xl border border-purple-100 text-center">
+                    <CheckCircle className="w-6 h-6 text-royal-purple mx-auto mb-2" />
+                    <h4 className="font-semibold text-royal-purple mb-1 font-heebo text-sm">ללא התחייבות</h4>
+                    <p className="text-xs text-purple-600 font-assistant">אתם מחליטים בסוף</p>
                   </div>
-                  <div className="bg-green-50 p-4 rounded-xl border border-green-100 text-center">
-                    <CheckCircle className="w-6 h-6 text-green-500 mx-auto mb-2" />
-                    <h4 className="font-semibold text-gray-900 mb-1 font-heebo text-sm">מעקב אחרי התהליך</h4>
-                    <p className="text-xs text-gray-600 font-assistant">עדכונים לאורך כל הדרך</p>
+                  <div className="bg-purple-50 p-4 rounded-xl border border-purple-100 text-center">
+                    <CheckCircle className="w-6 h-6 text-royal-purple mx-auto mb-2" />
+                    <h4 className="font-semibold text-royal-purple mb-1 font-heebo text-sm">מעקב אחרי התהליך</h4>
+                    <p className="text-xs text-purple-600 font-assistant">עדכונים לאורך כל הדרך</p>
                   </div>
-                  <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 text-center">
-                    <CheckCircle className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                    <h4 className="font-semibold text-gray-900 mb-1 font-heebo text-sm">תמיכה מלאה</h4>
-                    <p className="text-xs text-gray-600 font-assistant">צוות מקצועי לרשותכם</p>
+                  <div className="bg-purple-50 p-4 rounded-xl border border-purple-100 text-center">
+                    <CheckCircle className="w-6 h-6 text-royal-purple mx-auto mb-2" />
+                    <h4 className="font-semibold text-royal-purple mb-1 font-heebo text-sm">תמיכה מלאה</h4>
+                    <p className="text-xs text-purple-600 font-assistant">צוות מקצועי לרשותכם</p>
                   </div>
                 </div>
               </div>
@@ -461,28 +461,28 @@ const Home = () => {
       </section>
 
       {/* Our Mission Section - Enhanced */}
-      <section className="py-20 bg-gray-50 relative overflow-hidden">
+      <section className="py-20 bg-purple-50 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 pointer-events-none opacity-10">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-red-500 rounded-full blur-3xl"></div>
-          <div className="absolute top-32 right-20 w-40 h-40 bg-green-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-32 w-36 h-36 bg-blue-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-28 h-28 bg-purple-500 rounded-full blur-3xl"></div>
+          <div className="absolute top-10 left-10 w-32 h-32 bg-royal-purple rounded-full blur-3xl"></div>
+          <div className="absolute top-32 right-20 w-40 h-40 bg-purple-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-32 w-36 h-36 bg-purple-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-28 h-28 bg-purple-600 rounded-full blur-3xl"></div>
         </div>
 
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="max-w-5xl mx-auto">
             {/* Main Mission Card */}
-            <Card className="bg-white border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+            <Card className="bg-white border border-purple-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
               <CardContent className="p-0">
                 {/* Header Section with Gradient Background */}
-                <div className="bg-gradient-to-br from-red-500 via-red-600 to-red-700 p-12 text-white relative overflow-hidden">
+                <div className="bg-gradient-to-br from-royal-purple via-purple-600 to-purple-700 p-12 text-white relative overflow-hidden">
                   <div className="absolute inset-0 bg-black/10"></div>
                   <div className="relative z-10 text-center">
                     <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-6 tracking-tight">
                       השליחות שלנו
                     </h2>
-                    <p className="text-xl lg:text-2xl max-w-4xl mx-auto font-assistant leading-relaxed text-red-50">
+                    <p className="text-xl lg:text-2xl max-w-4xl mx-auto font-assistant leading-relaxed text-purple-50">
                       אנחנו מאמינים שכל משפחה ישראלית זכאית לחסוך כסף על חשבונות הבית. 
                       <br className="hidden lg:block" />
                       המטרה שלנו היא להפוך את התהליך המסובך של השוואת ספקים לפשוט, מהיר ויעיל.
@@ -494,30 +494,30 @@ const Home = () => {
                 <div className="p-12">
                   {/* Vision and Values Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                    <Card className="group hover:shadow-lg transition-all duration-300 border border-red-100 hover:border-red-200 transform hover:-translate-y-1">
+                    <Card className="group hover:shadow-lg transition-all duration-300 border border-purple-100 hover:border-purple-200 transform hover:-translate-y-1">
                       <CardContent className="p-8 text-center">
-                        <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-16 h-16 bg-royal-purple rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                           </svg>
                         </div>
-                        <h3 className="text-2xl font-semibold text-gray-900 mb-4 font-heebo">החזון שלנו</h3>
-                        <p className="text-gray-600 font-assistant leading-relaxed text-lg">
+                        <h3 className="text-2xl font-semibold text-royal-purple mb-4 font-heebo">החזון שלנו</h3>
+                        <p className="text-purple-600 font-assistant leading-relaxed text-lg">
                           להיות הכתובת המובילה בישראל לחיסכון בשירותי הבית, תוך מתן שירות אישי ואמין לכל לקוח.
                         </p>
                       </CardContent>
                     </Card>
                     
-                    <Card className="group hover:shadow-lg transition-all duration-300 border border-red-100 hover:border-red-200 transform hover:-translate-y-1">
+                    <Card className="group hover:shadow-lg transition-all duration-300 border border-purple-100 hover:border-purple-200 transform hover:-translate-y-1">
                       <CardContent className="p-8 text-center">
-                        <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-16 h-16 bg-royal-purple rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                           </svg>
                         </div>
-                        <h3 className="text-2xl font-semibold text-gray-900 mb-4 font-heebo">הערכים שלנו</h3>
-                        <p className="text-gray-600 font-assistant leading-relaxed text-lg">
+                        <h3 className="text-2xl font-semibold text-royal-purple mb-4 font-heebo">הערכים שלנו</h3>
+                        <p className="text-purple-600 font-assistant leading-relaxed text-lg">
                           שקיפות מלאה, שירות מעולה ומחויבות לחיסכון אמיתי עבור הלקוחות שלנו.
                         </p>
                       </CardContent>
@@ -525,40 +525,40 @@ const Home = () => {
                   </div>
 
                   {/* Interactive Statistics */}
-                  <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100">
-                    <h3 className="text-2xl font-semibold text-gray-900 mb-8 font-heebo text-center">
+                  <div className="bg-purple-50 rounded-3xl p-8 border border-purple-100">
+                    <h3 className="text-2xl font-semibold text-royal-purple mb-8 font-heebo text-center">
                       המספרים מדברים בעד עצמם
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-red-200 transform hover:-translate-y-1">
-                        <div className="text-4xl lg:text-5xl font-black text-red-500 mb-3 group-hover:scale-110 transition-transform duration-300">50,000+</div>
-                        <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">משפחות שחסכו</p>
-                        <div className="w-full h-1 bg-red-100 rounded-full mt-3 overflow-hidden">
-                          <div className="h-full bg-red-500 rounded-full group-hover:w-full w-3/4 transition-all duration-1000"></div>
-                        </div>
-                      </div>
-                      
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-green-200 transform hover:-translate-y-1">
-                        <div className="text-4xl lg:text-5xl font-black text-green-500 mb-3 group-hover:scale-110 transition-transform duration-300">₪120M+</div>
-                        <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">סה"כ חיסכון</p>
-                        <div className="w-full h-1 bg-green-100 rounded-full mt-3 overflow-hidden">
-                          <div className="h-full bg-green-500 rounded-full group-hover:w-full w-4/5 transition-all duration-1000"></div>
-                        </div>
-                      </div>
-                      
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-blue-200 transform hover:-translate-y-1">
-                        <div className="text-4xl lg:text-5xl font-black text-blue-500 mb-3 group-hover:scale-110 transition-transform duration-300">95%</div>
-                        <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">שביעות רצון</p>
-                        <div className="w-full h-1 bg-blue-100 rounded-full mt-3 overflow-hidden">
-                          <div className="h-full bg-blue-500 rounded-full group-hover:w-full w-19/20 transition-all duration-1000"></div>
-                        </div>
-                      </div>
-                      
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-purple-200 transform hover:-translate-y-1">
-                        <div className="text-4xl lg:text-5xl font-black text-purple-500 mb-3 group-hover:scale-110 transition-transform duration-300">5</div>
-                        <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">שנות ניסיון</p>
+                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100 hover:border-purple-200 transform hover:-translate-y-1">
+                        <div className="text-4xl lg:text-5xl font-black text-royal-purple mb-3 group-hover:scale-110 transition-transform duration-300">50,000+</div>
+                        <p className="text-sm lg:text-base text-purple-600 font-assistant font-semibold">משפחות שחסכו</p>
                         <div className="w-full h-1 bg-purple-100 rounded-full mt-3 overflow-hidden">
-                          <div className="h-full bg-purple-500 rounded-full group-hover:w-full w-1/2 transition-all duration-1000"></div>
+                          <div className="h-full bg-royal-purple rounded-full group-hover:w-full w-3/4 transition-all duration-1000"></div>
+                        </div>
+                      </div>
+                      
+                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100 hover:border-purple-200 transform hover:-translate-y-1">
+                        <div className="text-4xl lg:text-5xl font-black text-purple-500 mb-3 group-hover:scale-110 transition-transform duration-300">₪120M+</div>
+                        <p className="text-sm lg:text-base text-purple-600 font-assistant font-semibold">סה"כ חיסכון</p>
+                        <div className="w-full h-1 bg-purple-100 rounded-full mt-3 overflow-hidden">
+                          <div className="h-full bg-purple-500 rounded-full group-hover:w-full w-4/5 transition-all duration-1000"></div>
+                        </div>
+                      </div>
+                      
+                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100 hover:border-purple-200 transform hover:-translate-y-1">
+                        <div className="text-4xl lg:text-5xl font-black text-purple-600 mb-3 group-hover:scale-110 transition-transform duration-300">95%</div>
+                        <p className="text-sm lg:text-base text-purple-600 font-assistant font-semibold">שביעות רצון</p>
+                        <div className="w-full h-1 bg-purple-100 rounded-full mt-3 overflow-hidden">
+                          <div className="h-full bg-purple-600 rounded-full group-hover:w-full w-19/20 transition-all duration-1000"></div>
+                        </div>
+                      </div>
+                      
+                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100 hover:border-purple-200 transform hover:-translate-y-1">
+                        <div className="text-4xl lg:text-5xl font-black text-royal-purple mb-3 group-hover:scale-110 transition-transform duration-300">5</div>
+                        <p className="text-sm lg:text-base text-purple-600 font-assistant font-semibold">שנות ניסיון</p>
+                        <div className="w-full h-1 bg-purple-100 rounded-full mt-3 overflow-hidden">
+                          <div className="h-full bg-royal-purple rounded-full group-hover:w-full w-1/2 transition-all duration-1000"></div>
                         </div>
                       </div>
                     </div>
@@ -566,7 +566,7 @@ const Home = () => {
 
                   {/* Call to Action */}
                   <div className="text-center mt-12">
-                    <div className="inline-flex items-center gap-3 bg-red-500 text-white px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl hover:bg-red-600 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+                    <div className="inline-flex items-center gap-3 bg-royal-purple text-white px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl hover:bg-purple-700 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
                       <span className="text-lg font-semibold font-assistant">הצטרפו למשפחה שלנו</span>
                       <ArrowRight className="w-5 h-5" />
                     </div>
@@ -582,91 +582,91 @@ const Home = () => {
       <section className="py-16 bg-white relative">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-4">
               השותפים שלנו
             </h2>
-            <p className="text-lg text-gray-600 font-assistant max-w-3xl mx-auto">
+            <p className="text-lg text-purple-600 font-assistant max-w-3xl mx-auto">
               אנחנו עובדים עם הספקים המובילים בישראל כדי להבטיח לכם את המחירים הטובים ביותר
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
             {/* Partner Logos */}
-            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+            <div className="flex items-center justify-center p-6 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-colors duration-200 group">
               <div className="text-center">
-                <Zap className="w-8 h-8 text-yellow-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
-                <p className="text-sm font-semibold text-gray-700 font-heebo">חברת חשמל</p>
+                <Zap className="w-8 h-8 text-royal-purple mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-purple-700 font-heebo">חברת חשמל</p>
               </div>
             </div>
             
-            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+            <div className="flex items-center justify-center p-6 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-colors duration-200 group">
               <div className="text-center">
-                <Smartphone className="w-8 h-8 text-blue-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
-                <p className="text-sm font-semibold text-gray-700 font-heebo">פלאפון</p>
+                <Smartphone className="w-8 h-8 text-royal-purple mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-purple-700 font-heebo">פלאפון</p>
               </div>
             </div>
             
-            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+            <div className="flex items-center justify-center p-6 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-colors duration-200 group">
               <div className="text-center">
-                <Wifi className="w-8 h-8 text-green-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
-                <p className="text-sm font-semibold text-gray-700 font-heebo">בזק</p>
+                <Wifi className="w-8 h-8 text-royal-purple mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-purple-700 font-heebo">בזק</p>
               </div>
             </div>
             
-            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+            <div className="flex items-center justify-center p-6 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-colors duration-200 group">
               <div className="text-center">
-                <Tv className="w-8 h-8 text-purple-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
-                <p className="text-sm font-semibold text-gray-700 font-heebo">יס</p>
+                <Tv className="w-8 h-8 text-royal-purple mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-purple-700 font-heebo">יס</p>
               </div>
             </div>
             
-            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+            <div className="flex items-center justify-center p-6 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-colors duration-200 group">
               <div className="text-center">
-                <Smartphone className="w-8 h-8 text-red-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
-                <p className="text-sm font-semibold text-gray-700 font-heebo">סלקום</p>
+                <Smartphone className="w-8 h-8 text-royal-purple mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-purple-700 font-heebo">סלקום</p>
               </div>
             </div>
             
-            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+            <div className="flex items-center justify-center p-6 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-colors duration-200 group">
               <div className="text-center">
-                <Tv className="w-8 h-8 text-orange-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
-                <p className="text-sm font-semibold text-gray-700 font-heebo">הוט</p>
+                <Tv className="w-8 h-8 text-royal-purple mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-purple-700 font-heebo">הוט</p>
               </div>
             </div>
           </div>
 
           <div className="text-center mt-8">
-            <p className="text-gray-500 font-assistant">ועוד עשרות ספקים נוספים</p>
+            <p className="text-purple-500 font-assistant">ועוד עשרות ספקים נוספים</p>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-gray-50 relative">
+      <section className="py-16 bg-purple-50 relative">
         <div className="container mx-auto px-4 lg:px-6 max-w-4xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-4">
               שאלות נפוצות
             </h2>
-            <p className="text-lg text-gray-600 font-assistant">
+            <p className="text-lg text-purple-600 font-assistant">
               כל מה שרציתם לדעת על התהליך
             </p>
           </div>
 
           <div className="space-y-4">
-            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+            <Card className="bg-white border border-purple-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-gray-900 font-heebo">
+                  <h3 className="text-lg font-semibold text-royal-purple font-heebo">
                     האם השירות באמת חינמי?
                   </h3>
-                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" 
+                  <svg className="w-5 h-5 text-purple-500 group-open:rotate-180 transition-transform duration-200" 
                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
                 <div className="px-6 pb-6">
-                  <p className="text-gray-600 font-assistant leading-relaxed">
+                  <p className="text-purple-600 font-assistant leading-relaxed">
                     כן, השירות חינמי לחלוטין! אנחנו מקבלים עמלה מהספקים כשאתם עוברים אליהם, 
                     אבל זה לא משפיע על המחירים שאתם מקבלים. אתם לא משלמים לנו כלום.
                   </p>
