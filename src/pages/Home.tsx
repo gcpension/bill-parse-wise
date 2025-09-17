@@ -487,44 +487,33 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Our Mission Section - Enhanced */}
-      <section className="py-20 bg-gray-50 relative overflow-hidden">
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 pointer-events-none opacity-10">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-red-500 rounded-full blur-3xl"></div>
-          <div className="absolute top-32 right-20 w-40 h-40 bg-green-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-32 w-36 h-36 bg-blue-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-28 h-28 bg-purple-500 rounded-full blur-3xl"></div>
-        </div>
-
+      {/* Our Mission Section - Clean White Design */}
+      <section className="py-20 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="max-w-5xl mx-auto">
             {/* Main Mission Card */}
-            <Card className="bg-white border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+            <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
               <CardContent className="p-0">
-                {/* Header Section with Gradient Background */}
-                <div className="bg-gradient-to-br from-red-500 via-red-600 to-red-700 p-12 text-white relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/10"></div>
-                  <div className="relative z-10 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-6 tracking-tight">
-                      השליחות שלנו
-                    </h2>
-                    <p className="text-xl lg:text-2xl max-w-4xl mx-auto font-assistant leading-relaxed text-red-50">
-                      אנחנו מאמינים שכל משפחה ישראלית זכאית לחסוך כסף על חשבונות הבית. 
-                      <br className="hidden lg:block" />
-                      המטרה שלנו היא להפוך את התהליך המסובך של השוואת ספקים לפשוט, מהיר ויעיל.
-                    </p>
-                  </div>
+                {/* Header Section - Clean White */}
+                <div className="p-12 text-center">
+                  <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-6 text-gray-900 tracking-tight">
+                    השליחות שלנו
+                  </h2>
+                  <p className="text-xl lg:text-2xl max-w-4xl mx-auto font-assistant leading-relaxed text-gray-600">
+                    אנחנו מאמינים שכל משפחה ישראלית זכאית לחסוך כסף על חשבונות הבית. 
+                    <br className="hidden lg:block" />
+                    המטרה שלנו היא להפוך את התהליך המסובך של השוואת ספקים לפשוט, מהיר ויעיל.
+                  </p>
                 </div>
 
                 {/* Content Section */}
-                <div className="p-12">
+                <div className="px-12 pb-12">
                   {/* Vision and Values Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                    <Card className="group hover:shadow-lg transition-all duration-300 border border-red-100 hover:border-red-200 transform hover:-translate-y-1">
+                    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-gray-300 transform hover:-translate-y-1">
                       <CardContent className="p-8 text-center">
-                        <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gray-200 transition-colors duration-300">
+                          <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                           </svg>
@@ -536,10 +525,10 @@ const Home = () => {
                       </CardContent>
                     </Card>
                     
-                    <Card className="group hover:shadow-lg transition-all duration-300 border border-red-100 hover:border-red-200 transform hover:-translate-y-1">
+                    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-gray-300 transform hover:-translate-y-1">
                       <CardContent className="p-8 text-center">
-                        <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gray-200 transition-colors duration-300">
+                          <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                           </svg>
                         </div>
@@ -551,42 +540,30 @@ const Home = () => {
                     </Card>
                   </div>
 
-                  {/* Interactive Statistics */}
+                  {/* Clean Statistics */}
                   <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100">
                     <h3 className="text-2xl font-semibold text-gray-900 mb-8 font-heebo text-center">
                       המספרים מדברים בעד עצמם
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-red-200 transform hover:-translate-y-1">
-                        <div className="text-4xl lg:text-5xl font-black text-red-500 mb-3 group-hover:scale-110 transition-transform duration-300">50,000+</div>
+                      <div className="text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+                        <div className="text-4xl lg:text-5xl font-black text-gray-900 mb-3">50,000+</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">משפחות שחסכו</p>
-                        <div className="w-full h-1 bg-red-100 rounded-full mt-3 overflow-hidden">
-                          <div className="h-full bg-red-500 rounded-full group-hover:w-full w-3/4 transition-all duration-1000"></div>
-                        </div>
                       </div>
                       
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-green-200 transform hover:-translate-y-1">
-                        <div className="text-4xl lg:text-5xl font-black text-green-500 mb-3 group-hover:scale-110 transition-transform duration-300">₪120M+</div>
+                      <div className="text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+                        <div className="text-4xl lg:text-5xl font-black text-gray-900 mb-3">₪120M+</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">סה"כ חיסכון</p>
-                        <div className="w-full h-1 bg-green-100 rounded-full mt-3 overflow-hidden">
-                          <div className="h-full bg-green-500 rounded-full group-hover:w-full w-4/5 transition-all duration-1000"></div>
-                        </div>
                       </div>
                       
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-blue-200 transform hover:-translate-y-1">
-                        <div className="text-4xl lg:text-5xl font-black text-blue-500 mb-3 group-hover:scale-110 transition-transform duration-300">95%</div>
+                      <div className="text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+                        <div className="text-4xl lg:text-5xl font-black text-gray-900 mb-3">95%</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">שביעות רצון</p>
-                        <div className="w-full h-1 bg-blue-100 rounded-full mt-3 overflow-hidden">
-                          <div className="h-full bg-blue-500 rounded-full group-hover:w-full w-19/20 transition-all duration-1000"></div>
-                        </div>
                       </div>
                       
-                      <div className="group text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-purple-200 transform hover:-translate-y-1">
-                        <div className="text-4xl lg:text-5xl font-black text-purple-500 mb-3 group-hover:scale-110 transition-transform duration-300">5</div>
+                      <div className="text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+                        <div className="text-4xl lg:text-5xl font-black text-gray-900 mb-3">5</div>
                         <p className="text-sm lg:text-base text-gray-600 font-assistant font-semibold">שנות ניסיון</p>
-                        <div className="w-full h-1 bg-purple-100 rounded-full mt-3 overflow-hidden">
-                          <div className="h-full bg-purple-500 rounded-full group-hover:w-full w-1/2 transition-all duration-1000"></div>
-                        </div>
                       </div>
                     </div>
                   </div>
