@@ -214,7 +214,7 @@ const Home = () => {
           </div>
           
           {/* Category Cards Grid - Enhanced with staggered animations */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Object.entries(categoryData).map(([category, data], index) => {
               const Icon = data.icon;
               const isSelected = selectedCategories[category].selected;
@@ -222,8 +222,8 @@ const Home = () => {
               return (
                 <Card 
                   key={category}
-                  className={`bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 transform hover:scale-105 hover:-translate-y-2 animate-fade-in opacity-0 ${
-                    isSelected ? 'ring-2 ring-purple-500 shadow-lg scale-105 md:col-span-2' : ''
+                  className={`bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 transform hover:scale-105 hover:-translate-y-1 animate-fade-in opacity-0 ${
+                    isSelected ? 'ring-2 ring-purple-500 shadow-lg scale-105 md:col-span-4' : ''
                   }`}
                   style={{ 
                     animationDelay: `${0.6 + index * 0.1}s`, 
@@ -231,12 +231,12 @@ const Home = () => {
                   }}
                   onClick={() => !isSelected && handleCategorySelect(category)}
                 >
-                  <CardContent className={`${isSelected ? 'p-8' : 'p-6'} ${isSelected ? '' : 'text-center'}`}>
+                  <CardContent className={`${isSelected ? 'p-6' : 'p-4'} ${isSelected ? '' : 'text-center'}`}>
                     {!isSelected ? (
                       // Compact view when not selected
                       <>
                         {/* Image illustration - Enhanced with hover effects */}
-                        <div className="w-full h-24 mx-auto mb-4 overflow-hidden rounded-xl transform transition-transform duration-300 hover:scale-110">
+                        <div className="w-full h-16 mx-auto mb-3 overflow-hidden rounded-lg transform transition-transform duration-300 hover:scale-105">
                           <img 
                             src={data.image}
                             alt={`איור ${data.name}`}
@@ -245,20 +245,20 @@ const Home = () => {
                         </div>
                         
                         {/* Category title */}
-                        <h3 className="text-lg font-heebo font-medium text-purple-700 mb-4 transition-colors duration-200">
+                        <h3 className="text-base font-heebo font-medium text-purple-700 mb-3 transition-colors duration-200">
                           {data.name}
                         </h3>
                         
                         {/* Enhanced button with better animations */}
                         <Button 
-                          className="w-full h-10 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 active:scale-95 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg"
+                          className="w-full h-8 rounded-lg font-medium text-xs transition-all duration-300 transform hover:scale-105 active:scale-95 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleCategorySelect(category);
                           }}
                         >
-                          <span className="flex items-center justify-center gap-2">
-                            <Icon className="w-4 h-4" />
+                          <span className="flex items-center justify-center gap-1.5">
+                            <Icon className="w-3 h-3" />
                             בחר {data.name}
                           </span>
                         </Button>

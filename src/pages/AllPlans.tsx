@@ -1,7 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Smartphone, Wifi, Tv, Search } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Zap, Smartphone, Wifi, Tv, Search, Filter, ArrowUpDown, Star, TrendingUp, Award, CheckCircle, Users, Sparkles } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { SavingsComparisonHeader } from "@/components/SavingsComparisonHeader";
@@ -10,6 +13,7 @@ import PlanComparison from "@/components/plans/PlanComparison";
 import EnhancedPlanCard from "@/components/plans/EnhancedPlanCard";
 import PlanRecommendations from "@/components/plans/PlanRecommendations";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 interface CategorySavings {
   category: 'electricity' | 'cellular' | 'internet' | 'tv';
@@ -28,6 +32,9 @@ interface AllPlansProps {
 const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlansProps) => {
   // Get selected categories from localStorage if not provided as props
   const [selectedCategories, setSelectedCategoriesFromStorage] = useState<string[]>([]);
+  const { isVisible: headerVisible, elementRef: headerRef } = useScrollAnimation();
+  const { isVisible: filtersVisible, elementRef: filtersRef } = useScrollAnimation();
+  const { isVisible: plansVisible, elementRef: plansRef } = useScrollAnimation();
   
   useEffect(() => {
     const storedData = localStorage.getItem('analysisData');
@@ -252,140 +259,225 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
 
   return (
     <Layout>
-      <div dir="rtl" className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
-        <div className="container mx-auto px-4 py-12">
+      <div dir="rtl" className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
+        <div className="container mx-auto px-4 py-8">
           {/* Savings Comparison Header - Only show if we have savings data */}
           {savingsData.length > 0 && (
             <SavingsComparisonHeader categorySavings={savingsData} />
           )}
 
-          {/* Header */}
-          <header className="text-center mb-8">
-            <div className="mb-4">
-              <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-3">
-                {savingsData.length > 0 ? 'המסלולים המומלצים עבורך' : 'כל המסלולים'}
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                {savingsData.length > 0 
-                  ? 'בחר את המסלולים שיחסכו לך הכי הרבה כסף מהרשימה המותאמת אישית'
-                  : `בחר את המסלול המתאים לך מבין ${manualPlans.length} המסלולים הזמינים`
-                }
-              </p>
+          {/* Enhanced Header */}
+          <header 
+            ref={headerRef}
+            className={`text-center mb-12 transition-all duration-1000 ${
+              headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="relative mb-8">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-3xl blur-xl"></div>
+              <Card className="relative bg-gradient-to-r from-card/90 to-accent/5 border-0 shadow-2xl backdrop-blur-xl">
+                <CardContent className="p-8">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <Sparkles className="w-8 h-8 text-accent animate-pulse" />
+                    <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%] bg-clip-text text-transparent animate-gradient-x">
+                      {savingsData.length > 0 ? 'המסלולים המומלצים עבורכם' : 'כל המסלולים'}
+                    </h1>
+                    <Award className="w-8 h-8 text-primary animate-bounce-gentle" />
+                  </div>
+                  <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-6">
+                    {savingsData.length > 0 
+                      ? 'בחרו את המסלולים שיחסכו לכם הכי הרבה כסף מהרשימה המותאמת אישית'
+                      : `בחרו את המסלול המתאים לכם מבין ${manualPlans.length} המסלולים הזמינים`
+                    }
+                  </p>
+                  
+                  {/* Quick Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                    <div className="text-center p-3 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl">
+                      <div className="text-2xl font-bold text-primary">{manualPlans.length}</div>
+                      <div className="text-sm text-muted-foreground">מסלולים</div>
+                    </div>
+                    <div className="text-center p-3 bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-xl">
+                      <div className="text-2xl font-bold text-green-600">98%</div>
+                      <div className="text-sm text-muted-foreground">שביעות רצון</div>
+                    </div>
+                    <div className="text-center p-3 bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-xl">
+                      <div className="text-2xl font-bold text-blue-600">₪2,400</div>
+                      <div className="text-sm text-muted-foreground">חיסכון ממוצע</div>
+                    </div>
+                    <div className="text-center p-3 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-xl">
+                      <div className="text-2xl font-bold text-orange-600">50K+</div>
+                      <div className="text-sm text-muted-foreground">לקוחות</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </header>
 
           {/* Smart Recommendations */}
           {filteredPlans.length > 0 && (
-            <div className="mb-8">
-              <PlanRecommendations
-                plans={filteredPlans}
-                userProfile={userProfile}
-                onPlanSelect={handlePlanSelect}
-              />
+            <div 
+              ref={filtersRef}
+              className={`mb-12 transition-all duration-1000 ${
+                filtersVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
+              <Card className="bg-gradient-to-r from-accent/5 via-primary/5 to-accent/5 border-0 shadow-xl backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3 text-2xl">
+                    <Star className="w-6 h-6 text-accent" />
+                    המלצות חכמות עבורכם
+                    <Badge className="bg-accent/20 text-accent border-accent/30">AI</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <PlanRecommendations
+                    plans={filteredPlans}
+                    userProfile={userProfile}
+                    onPlanSelect={handlePlanSelect}
+                  />
+                </CardContent>
+              </Card>
             </div>
           )}
 
-          {/* Advanced Filters */}
+          {/* Enhanced Filters Section */}
           <div className="mb-8">
-            <AdvancedPlanFilters
-              filters={filters}
-              onFiltersChange={setFilters}
-              availableProviders={availableProviders}
-              availableFeatures={availableFeatures}
-            />
+            <Card className="bg-card/80 backdrop-blur-xl border-0 shadow-2xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                  <Filter className="w-5 h-5 text-primary" />
+                  מסנני חיפוש מתקדמים
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <AdvancedPlanFilters
+                  filters={filters}
+                  onFiltersChange={setFilters}
+                  availableProviders={availableProviders}
+                  availableFeatures={availableFeatures}
+                />
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Quick Category Filter */}
-          <div className="flex flex-wrap gap-3 justify-center mb-8">
-            {effectiveCategories.length > 0 && (
-              <Button
-                variant={selectedCategory === 'selected' ? 'default' : 'outline'}
-                onClick={() => {
-                  setSelectedCategory('selected');
-                  setShowAllCategories(false);
-                }}
-                className="bg-gradient-to-r from-primary to-primary-glow text-white border-primary hover:from-primary-glow hover:to-primary transition-all duration-300 font-semibold"
-              >
-                <span>המסלולים שלכם ({effectiveCategories.length} קטגוריות)</span>
-              </Button>
-            )}
-            <Button
-              variant={selectedCategory === 'all' ? 'default' : 'outline'}
-              onClick={() => {
-                setSelectedCategory('all');
-                setShowAllCategories(true);
-              }}
-              className="bg-white/70 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300"
-            >
-              <span>כל המסלולים ({manualPlans.length})</span>
-            </Button>
-            <Button
-              variant={selectedCategory === 'electricity' ? 'default' : 'outline'}
-              onClick={() => {
-                setSelectedCategory('electricity');
-                setShowAllCategories(false);
-              }}
-              className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
-                selectedCategory === 'electricity' 
-                  ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-400 hover:from-yellow-500 hover:to-yellow-600' 
-                  : 'bg-yellow-50/70 border-yellow-200 hover:border-yellow-400 text-yellow-700 hover:bg-yellow-100/70'
-              }`}
-            >
-              <Zap className="h-4 w-4" />
-              <span>חשמל ({counts.electricity})</span>
-            </Button>
-            <Button
-              variant={selectedCategory === 'internet' ? 'default' : 'outline'}
-              onClick={() => {
-                setSelectedCategory('internet');
-                setShowAllCategories(false);
-              }}
-              className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
-                selectedCategory === 'internet' 
-                  ? 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-white border-cyan-400 hover:from-cyan-500 hover:to-cyan-600' 
-                  : 'bg-cyan-50/70 border-cyan-200 hover:border-cyan-400 text-cyan-700 hover:bg-cyan-100/70'
-              }`}
-            >
-              <Wifi className="h-4 w-4" />
-              <span>אינטרנט ({counts.internet})</span>
-            </Button>
-            <Button
-              variant={selectedCategory === 'mobile' ? 'default' : 'outline'}
-              onClick={() => {
-                setSelectedCategory('mobile');
-                setShowAllCategories(false);
-              }}
-              className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
-                selectedCategory === 'mobile' 
-                  ? 'bg-gradient-to-r from-purple-400 to-purple-500 text-white border-purple-400 hover:from-purple-500 hover:to-purple-600' 
-                  : 'bg-purple-50/70 border-purple-200 hover:border-purple-400 text-purple-700 hover:bg-purple-100/70'
-              }`}
-            >
-              <Smartphone className="h-4 w-4" />
-              <span>סלולר ({counts.mobile})</span>
-            </Button>
-            <Button
-              variant={selectedCategory === 'tv' ? 'default' : 'outline'}
-              onClick={() => {
-                setSelectedCategory('tv');
-                setShowAllCategories(false);
-              }}
-              className={`backdrop-blur-sm transition-all duration-300 flex items-center gap-2 ${
-                selectedCategory === 'tv' 
-                  ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white border-orange-400 hover:from-orange-500 hover:to-orange-600' 
-                  : 'bg-orange-50/70 border-orange-200 hover:border-orange-400 text-orange-700 hover:bg-orange-100/70'
-              }`}
-            >
-              <Tv className="h-4 w-4" />
-              <span>טלוויזיה ({counts.tv})</span>
-            </Button>
+          {/* Enhanced Quick Category Filter */}
+          <div className="mb-8">
+            <Card className="bg-gradient-to-r from-card/90 to-accent/5 border-0 shadow-lg backdrop-blur-sm">
+              <CardContent className="p-6">
+                <div className="flex flex-wrap gap-3 justify-center">
+                  {effectiveCategories.length > 0 && (
+                    <Button
+                      variant={selectedCategory === 'selected' ? 'default' : 'outline'}
+                      onClick={() => {
+                        setSelectedCategory('selected');
+                        setShowAllCategories(false);
+                      }}
+                      className="group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground border-primary transition-all duration-300 font-bold hover:scale-105"
+                    >
+                      <Users className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                      <span>המסלולים שלכם ({effectiveCategories.length} קטגוריות)</span>
+                    </Button>
+                  )}
+                  <Button
+                    variant={selectedCategory === 'all' ? 'default' : 'outline'}
+                    onClick={() => {
+                      setSelectedCategory('all');
+                      setShowAllCategories(true);
+                    }}
+                    className="group bg-card/90 hover:bg-card border-border hover:border-primary/50 transition-all duration-300 hover:scale-105"
+                  >
+                    <TrendingUp className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                    <span>כל המסלולים ({manualPlans.length})</span>
+                  </Button>
+                  
+                  {/* Category buttons with enhanced styling */}
+                  <Button
+                    variant={selectedCategory === 'electricity' ? 'default' : 'outline'}
+                    onClick={() => {
+                      setSelectedCategory('electricity');
+                      setShowAllCategories(false);
+                    }}
+                    className={`group backdrop-blur-sm transition-all duration-300 flex items-center gap-2 hover:scale-105 ${
+                      selectedCategory === 'electricity' 
+                        ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-400 hover:from-yellow-500 hover:to-yellow-600 shadow-lg' 
+                        : 'bg-yellow-50/80 border-yellow-200 hover:border-yellow-400 text-yellow-700 hover:bg-yellow-100/80 hover:shadow-md'
+                    }`}
+                  >
+                    <Zap className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                    <span>חשמל ({counts.electricity})</span>
+                  </Button>
+                  
+                  <Button
+                    variant={selectedCategory === 'internet' ? 'default' : 'outline'}
+                    onClick={() => {
+                      setSelectedCategory('internet');
+                      setShowAllCategories(false);
+                    }}
+                    className={`group backdrop-blur-sm transition-all duration-300 flex items-center gap-2 hover:scale-105 ${
+                      selectedCategory === 'internet' 
+                        ? 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-white border-cyan-400 hover:from-cyan-500 hover:to-cyan-600 shadow-lg' 
+                        : 'bg-cyan-50/80 border-cyan-200 hover:border-cyan-400 text-cyan-700 hover:bg-cyan-100/80 hover:shadow-md'
+                    }`}
+                  >
+                    <Wifi className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                    <span>אינטרנט ({counts.internet})</span>
+                  </Button>
+                  
+                  <Button
+                    variant={selectedCategory === 'mobile' ? 'default' : 'outline'}
+                    onClick={() => {
+                      setSelectedCategory('mobile');
+                      setShowAllCategories(false);
+                    }}
+                    className={`group backdrop-blur-sm transition-all duration-300 flex items-center gap-2 hover:scale-105 ${
+                      selectedCategory === 'mobile' 
+                        ? 'bg-gradient-to-r from-purple-400 to-purple-500 text-white border-purple-400 hover:from-purple-500 hover:to-purple-600 shadow-lg' 
+                        : 'bg-purple-50/80 border-purple-200 hover:border-purple-400 text-purple-700 hover:bg-purple-100/80 hover:shadow-md'
+                    }`}
+                  >
+                    <Smartphone className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                    <span>סלולר ({counts.mobile})</span>
+                  </Button>
+                  
+                  <Button
+                    variant={selectedCategory === 'tv' ? 'default' : 'outline'}
+                    onClick={() => {
+                      setSelectedCategory('tv');
+                      setShowAllCategories(false);
+                    }}
+                    className={`group backdrop-blur-sm transition-all duration-300 flex items-center gap-2 hover:scale-105 ${
+                      selectedCategory === 'tv' 
+                        ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white border-orange-400 hover:from-orange-500 hover:to-orange-600 shadow-lg' 
+                        : 'bg-orange-50/80 border-orange-200 hover:border-orange-400 text-orange-700 hover:bg-orange-100/80 hover:shadow-md'
+                    }`}
+                  >
+                    <Tv className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                    <span>טלוויזיה ({counts.tv})</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Category Title */}
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-foreground">
-              {categoryLabels[selectedCategory]} ({filteredPlans.length})
-            </h2>
+          {/* Enhanced Category Title */}
+          <div 
+            ref={plansRef}
+            className={`text-center mb-8 transition-all duration-1000 ${
+              plansVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <Card className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-0 shadow-lg">
+              <CardContent className="p-6">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
+                  {categoryLabels[selectedCategory]}
+                </h2>
+                <Badge className="bg-accent/20 text-accent border-accent/30 text-lg px-4 py-2">
+                  {filteredPlans.length} מסלולים זמינים
+                </Badge>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Plans Grid - Group by category when showing multiple categories */}
