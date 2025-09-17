@@ -4,7 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { Layout } from "@/components/Layout";
 import Home from "./pages/Home";
 import { Forms } from "./pages/Forms";
 import { Settings } from "./pages/Settings";
@@ -35,7 +34,7 @@ const App = () => (
             v7_relativeSplatPath: true,
           }}
         >
-          <Layout>
+          <div className="min-h-screen bg-background">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -61,7 +60,7 @@ const App = () => (
               <Route path="/integration-test" element={<IntegrationTestPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </Layout>
+          </div>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
