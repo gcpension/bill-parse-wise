@@ -605,6 +605,300 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Partners Section */}
+      <section className="py-16 bg-white relative">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-gray-900 mb-4">
+              השותפים שלנו
+            </h2>
+            <p className="text-lg text-gray-600 font-assistant max-w-3xl mx-auto">
+              אנחנו עובדים עם הספקים המובילים בישראל כדי להבטיח לכם את המחירים הטובים ביותר
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+            {/* Partner Logos */}
+            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+              <div className="text-center">
+                <Zap className="w-8 h-8 text-yellow-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-gray-700 font-heebo">חברת חשמל</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+              <div className="text-center">
+                <Smartphone className="w-8 h-8 text-blue-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-gray-700 font-heebo">פלאפון</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+              <div className="text-center">
+                <Wifi className="w-8 h-8 text-green-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-gray-700 font-heebo">בזק</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+              <div className="text-center">
+                <Tv className="w-8 h-8 text-purple-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-gray-700 font-heebo">יס</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+              <div className="text-center">
+                <Smartphone className="w-8 h-8 text-red-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-gray-700 font-heebo">סלקום</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200 group">
+              <div className="text-center">
+                <Tv className="w-8 h-8 text-orange-500 mx-auto mb-2 group-hover:scale-110 transition-transform duration-200" />
+                <p className="text-sm font-semibold text-gray-700 font-heebo">הוט</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-8">
+            <p className="text-gray-500 font-assistant">ועוד עשרות ספקים נוספים</p>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-gray-50 relative">
+        <div className="container mx-auto px-4 lg:px-6 max-w-4xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-gray-900 mb-4">
+              שאלות נפוצות
+            </h2>
+            <p className="text-lg text-gray-600 font-assistant">
+              כל מה שרציתם לדעת על התהליך
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+              <details className="group">
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                  <h3 className="text-lg font-semibold text-gray-900 font-heebo">
+                    האם השירות באמת חינמי?
+                  </h3>
+                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" 
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-6">
+                  <p className="text-gray-600 font-assistant leading-relaxed">
+                    כן, השירות חינמי לחלוטין! אנחנו מקבלים עמלה מהספקים כשאתם עוברים אליהם, 
+                    אבל זה לא משפיע על המחירים שאתם מקבלים. אתם לא משלמים לנו כלום.
+                  </p>
+                </div>
+              </details>
+            </Card>
+
+            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+              <details className="group">
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                  <h3 className="text-lg font-semibold text-gray-900 font-heebo">
+                    כמה זמן לוקח התהליך?
+                  </h3>
+                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" 
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-6">
+                  <p className="text-gray-600 font-assistant leading-relaxed">
+                    הניתוח לוקח כמה דקות בלבד. המעבר בפועל יכול לקחת 7-14 ימי עסקים, 
+                    תלוי בספק. אנחנו נטפל בכל הניירת עבורכם.
+                  </p>
+                </div>
+              </details>
+            </Card>
+
+            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+              <details className="group">
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                  <h3 className="text-lg font-semibold text-gray-900 font-heebo">
+                    מה קורה אם אני לא מרוצה מהמעבר?
+                  </h3>
+                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" 
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-6">
+                  <p className="text-gray-600 font-assistant leading-relaxed">
+                    אתם תמיד יכולים לחזור לספק הקודם או לעבור לספק אחר. 
+                    אנחנו כאן לתמוך בכם לאורך כל הדרך ולוודא שאתם מרוצים.
+                  </p>
+                </div>
+              </details>
+            </Card>
+
+            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+              <details className="group">
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                  <h3 className="text-lg font-semibold text-gray-900 font-heebo">
+                    האם המידע שלי מוגן?
+                  </h3>
+                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" 
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-6">
+                  <p className="text-gray-600 font-assistant leading-relaxed">
+                    בהחלט! אנחנו משתמשים בהצפנה מתקדמת וכל המידע מוגן לפי התקנים הגבוהים ביותר. 
+                    המידע שלכם לא יועבר לצדדים שלישיים ללא אישורכם המפורש.
+                  </p>
+                </div>
+              </details>
+            </Card>
+
+            <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200">
+              <details className="group">
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                  <h3 className="text-lg font-semibold text-gray-900 font-heebo">
+                    האם יש מחויבות לתקופה מסוימת?
+                  </h3>
+                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" 
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-6">
+                  <p className="text-gray-600 font-assistant leading-relaxed">
+                    לא, אין שום מחויבות כלפינו. התחייבויות קיימות רק מול הספק החדש שתבחרו, 
+                    בהתאם לתנאי החוזה איתו. אנחנו נסביר לכם את כל התנאים לפני החתימה.
+                  </p>
+                </div>
+              </details>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Security Section */}
+      <section className="py-16 bg-white relative">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-gray-900 mb-4">
+              אבטחת מידע ברמה הגבוהה ביותר
+            </h2>
+            <p className="text-lg text-gray-600 font-assistant max-w-3xl mx-auto">
+              המידע שלכם מוגן בטכנולוגיות האבטחה המתקדמות ביותר
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            {/* SSL Certificate */}
+            <div className="text-center p-6 bg-green-50 rounded-2xl border border-green-100 hover:shadow-md transition-shadow duration-200">
+              <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2 font-heebo">SSL הצפנה</h3>
+              <p className="text-gray-600 font-assistant text-sm">
+                כל התקשורת מוצפנת ברמת SSL 256-bit
+              </p>
+            </div>
+
+            {/* GDPR Compliant */}
+            <div className="text-center p-6 bg-blue-50 rounded-2xl border border-blue-100 hover:shadow-md transition-shadow duration-200">
+              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2 font-heebo">GDPR מוגן</h3>
+              <p className="text-gray-600 font-assistant text-sm">
+                עומדים בתקני הגנת הפרטיות האירופיים
+              </p>
+            </div>
+
+            {/* Secure Storage */}
+            <div className="text-center p-6 bg-purple-50 rounded-2xl border border-purple-100 hover:shadow-md transition-shadow duration-200">
+              <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2 font-heebo">אחסון מאובטח</h3>
+              <p className="text-gray-600 font-assistant text-sm">
+                שרתים מאובטחים בישראל ובחו"ל
+              </p>
+            </div>
+
+            {/* 24/7 Monitoring */}
+            <div className="text-center p-6 bg-red-50 rounded-2xl border border-red-100 hover:shadow-md transition-shadow duration-200">
+              <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2 font-heebo">ניטור 24/7</h3>
+              <p className="text-gray-600 font-assistant text-sm">
+                מעקב רציף אחר אבטחת המערכת
+              </p>
+            </div>
+          </div>
+
+          {/* Security Badges */}
+          <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4 font-heebo">
+                תעודות אבטחה ואישורים
+              </h3>
+              <p className="text-gray-600 font-assistant">
+                אנחנו מאושרים ומוכרים על ידי הרשויות המובילות
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <CheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-sm font-semibold text-gray-900 font-heebo">ISO 27001</p>
+                <p className="text-xs text-gray-600 font-assistant">אבטחת מידע</p>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <CheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-sm font-semibold text-gray-900 font-heebo">SOC 2</p>
+                <p className="text-xs text-gray-600 font-assistant">ביקורת אבטחה</p>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+                <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <CheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-sm font-semibold text-gray-900 font-heebo">PCI DSS</p>
+                <p className="text-xs text-gray-600 font-assistant">אבטחת תשלומים</p>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+                <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <CheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-sm font-semibold text-gray-900 font-heebo">משרד המשפטים</p>
+                <p className="text-xs text-gray-600 font-assistant">רישיון ישראלי</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer Section */}
       <footer className="bg-gradient-to-br from-gray-800 to-gray-900 text-white py-16 relative overflow-hidden">
         {/* Background decorative elements */}
