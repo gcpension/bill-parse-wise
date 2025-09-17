@@ -8,9 +8,10 @@ import { Zap, Smartphone, Wifi, Tv, Search, Filter, ArrowUpDown, Star, TrendingU
 import { Layout } from "@/components/Layout";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { SavingsComparisonHeader } from "@/components/SavingsComparisonHeader";
+import { SavingsComparisonBanner } from "@/components/plans/SavingsComparisonBanner";
 import AdvancedPlanFilters, { FilterOptions } from "@/components/plans/AdvancedPlanFilters";
 import PlanComparison from "@/components/plans/PlanComparison";
-import EnhancedPlanCard from "@/components/plans/EnhancedPlanCard";
+import InteractivePlanCard from "@/components/plans/InteractivePlanCard";
 import PlanRecommendations from "@/components/plans/PlanRecommendations";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -22,6 +23,10 @@ interface CategorySavings {
   monthlySavings: number;
   currentProvider: string;
   newProvider: string;
+  currentMonthly: number;
+  recommendedMonthly: number;
+  annualSavings: number;
+  recommendedProvider: string;
 }
 
 interface AllPlansProps {
@@ -51,6 +56,29 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
 
   // Use provided categories or fallback to stored categories
   const effectiveCategories = initialSelectedCategories.length > 0 ? initialSelectedCategories : selectedCategories;
+  
+  // Generate mock savings data if not provided
+  const mockSavingsData = useMemo(() => {
+    if (savingsData.length > 0) return savingsData;
+    
+    // Create mock data based on selected categories for demo
+    if (effectiveCategories.length > 0) {
+      return effectiveCategories.map(category => ({
+        currentMonthly: 180 + Math.random() * 100,
+        recommendedMonthly: 120 + Math.random() * 60,
+        monthlySavings: 40 + Math.random() * 40,
+        annualSavings: (40 + Math.random() * 40) * 12,
+        currentProvider: 'ספק נוכחי',
+        recommendedProvider: 'מסלול מומלץ',
+        category: category === 'cellular' ? 'סלולר' : 
+                  category === 'electricity' ? 'חשמל' :
+                  category === 'internet' ? 'אינטרנט' :
+                  category === 'tv' ? 'טלוויזיה' : category
+      }));
+    }
+    
+    return [];
+  }, [savingsData, effectiveCategories]);
   
   // Set initial category based on analyzed categories
   const getInitialCategory = () => {
@@ -261,6 +289,11 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
     <Layout>
       <div dir="rtl" className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
         <div className="container mx-auto px-4 py-8">
+          {/* Savings Comparison Banner - Show if we have analysis data */}
+          {mockSavingsData.length > 0 && (
+            <SavingsComparisonBanner savingsData={mockSavingsData} />
+          )}
+
           {/* Savings Comparison Header - Only show if we have savings data */}
           {savingsData.length > 0 && (
             <SavingsComparisonHeader categorySavings={savingsData} />
@@ -532,19 +565,21 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
                     
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3">
                       {categoryPlans.map((plan, index) => (
-                        <EnhancedPlanCard
+                        <InteractivePlanCard
                           key={plan.id}
                           plan={plan}
                           rank={index + 1}
                           isCompared={comparedPlans.some(p => p.id === plan.id)}
                           onCompareToggle={handleCompareToggle}
                           canCompare={comparedPlans.length < 3}
-                          showSavings={savingsData.length > 0}
-                          estimatedSavings={savingsData.find(s => 
-                            (s.category === 'cellular' && plan.category === 'mobile') ||
+                          showSavings={mockSavingsData.length > 0}
+                          estimatedSavings={mockSavingsData.find(s => 
+                            (s.category === 'סלולר' && plan.category === 'mobile') ||
                             s.category === plan.category
                           )?.monthlySavings}
-                          compact
+                          onSelect={handlePlanSelect}
+                          isRecommended={index === 0}
+                          popularityScore={Math.floor(Math.random() * 40) + 60}
                         />
                       ))}
                     </div>
@@ -555,19 +590,21 @@ const AllPlans = ({ initialSelectedCategories = [], savingsData = [] }: AllPlans
           ) : (
             <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 max-w-7xl mx-auto">
               {filteredPlans.map((plan, index) => (
-              <EnhancedPlanCard
+              <InteractivePlanCard
                 key={plan.id}
                 plan={plan}
                 rank={index + 1}
                 isCompared={comparedPlans.some(p => p.id === plan.id)}
                 onCompareToggle={handleCompareToggle}
                 canCompare={comparedPlans.length < 3}
-                showSavings={savingsData.length > 0}
-                estimatedSavings={savingsData.find(s => 
-                  (s.category === 'cellular' && plan.category === 'mobile') ||
+                showSavings={mockSavingsData.length > 0}
+                estimatedSavings={mockSavingsData.find(s => 
+                  (s.category === 'סלולר' && plan.category === 'mobile') ||
                   s.category === plan.category
                 )?.monthlySavings}
-                compact
+                onSelect={handlePlanSelect}
+                isRecommended={index === 0}
+                popularityScore={Math.floor(Math.random() * 40) + 60}
               />
               ))}
             </section>
