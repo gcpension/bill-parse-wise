@@ -228,354 +228,458 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-        {/* Header */}
-        <div className="container mx-auto px-6 py-8">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl lg:text-3xl font-bold mb-3 text-gray-900">
-              מציאת המסלול המושלם עבורכם
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              תהליך מונחה ומותאם אישית למציאת המסלול הטוב ביותר
-            </p>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-background via-accent/10 to-primary/5">
+        {/* Hero Header with Glass Effect */}
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-mesh opacity-20"></div>
+          <div className="container mx-auto px-6 py-12 relative z-10">
+            <div className="text-center mb-12">
+              <h1 className="text-3xl lg:text-4xl font-display font-bold mb-4 bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent animate-shimmer-text bg-300%">
+                מציאת המסלול המושלם עבורכם
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                תהליך מונחה ומותאם אישית למציאת המסלול הטוב ביותר עם חיסכון מקסימלי
+              </p>
+            </div>
 
-          {/* Progress Steps */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <div className="flex items-center justify-between">
-              <div className={`flex items-center ${currentStep === 'category' ? 'text-blue-600' : currentStep === 'companies' || currentStep === 'plans' ? 'text-green-600' : 'text-gray-400'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                  currentStep === 'category' ? 'bg-blue-600' : 
-                  currentStep === 'companies' || currentStep === 'plans' ? 'bg-green-600' : 
-                  'bg-gray-300'
-                }`}>
-                  1
+            {/* Enhanced Progress Steps */}
+            <div className="max-w-5xl mx-auto mb-16">
+              <div className="glass-card rounded-2xl p-8">
+                <div className="flex items-center justify-between">
+                  <div className={`flex items-center transition-all duration-500 ${
+                    currentStep === 'category' ? 'text-primary scale-110' : 
+                    (currentStep === 'companies' || currentStep === 'plans') ? 'text-success' : 'text-muted-foreground'
+                  }`}>
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg transition-all duration-500 ${
+                      currentStep === 'category' ? 'bg-gradient-primary animate-pulse-glow' : 
+                      (currentStep === 'companies' || currentStep === 'plans') ? 'bg-gradient-success' : 
+                      'bg-muted'
+                    }`}>
+                      {currentStep === 'category' ? <Sparkles className="w-5 h-5" /> : 
+                       (currentStep === 'companies' || currentStep === 'plans') ? <CheckCircle className="w-5 h-5" /> : '1'}
+                    </div>
+                    <span className="mr-3 font-semibold">בחירת קטגוריה</span>
+                  </div>
+                  
+                  <div className={`h-2 flex-1 mx-4 rounded-full transition-all duration-700 ${
+                    currentStep === 'companies' || currentStep === 'plans' ? 'bg-gradient-success' : 'bg-muted'
+                  }`}></div>
+                  
+                  <div className={`flex items-center transition-all duration-500 ${
+                    currentStep === 'companies' ? 'text-primary scale-110' : 
+                    currentStep === 'plans' ? 'text-success' : 'text-muted-foreground'
+                  }`}>
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg transition-all duration-500 ${
+                      currentStep === 'companies' ? 'bg-gradient-primary animate-pulse-glow' : 
+                      currentStep === 'plans' ? 'bg-gradient-success' : 
+                      'bg-muted'
+                    }`}>
+                      {currentStep === 'companies' ? <Building2 className="w-5 h-5" /> :
+                       currentStep === 'plans' ? <CheckCircle className="w-5 h-5" /> : '2'}
+                    </div>
+                    <span className="mr-3 font-semibold">בחירת חברה</span>
+                  </div>
+                  
+                  <div className={`h-2 flex-1 mx-4 rounded-full transition-all duration-700 ${
+                    currentStep === 'plans' ? 'bg-gradient-success' : 'bg-muted'
+                  }`}></div>
+                  
+                  <div className={`flex items-center transition-all duration-500 ${
+                    currentStep === 'plans' ? 'text-primary scale-110' : 'text-muted-foreground'
+                  }`}>
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg transition-all duration-500 ${
+                      currentStep === 'plans' ? 'bg-gradient-primary animate-pulse-glow' : 'bg-muted'
+                    }`}>
+                      {currentStep === 'plans' ? <Crown className="w-5 h-5" /> : '3'}
+                    </div>
+                    <span className="mr-3 font-semibold">בחירת מסלול</span>
+                  </div>
                 </div>
-                <span className="mr-2 font-medium">בחירת קטגוריה</span>
-              </div>
-              
-              <div className={`w-16 h-1 ${currentStep === 'companies' || currentStep === 'plans' ? 'bg-green-600' : 'bg-gray-200'}`}></div>
-              
-              <div className={`flex items-center ${currentStep === 'companies' ? 'text-blue-600' : currentStep === 'plans' ? 'text-green-600' : 'text-gray-400'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                  currentStep === 'companies' ? 'bg-blue-600' : 
-                  currentStep === 'plans' ? 'bg-green-600' : 
-                  'bg-gray-300'
-                }`}>
-                  2
-                </div>
-                <span className="mr-2 font-medium">בחירת חברה</span>
-              </div>
-              
-              <div className={`w-16 h-1 ${currentStep === 'plans' ? 'bg-green-600' : 'bg-gray-200'}`}></div>
-              
-              <div className={`flex items-center ${currentStep === 'plans' ? 'text-blue-600' : 'text-gray-400'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                  currentStep === 'plans' ? 'bg-blue-600' : 'bg-gray-300'
-                }`}>
-                  3
-                </div>
-                <span className="mr-2 font-medium">בחירת מסלול</span>
               </div>
             </div>
-          </div>
 
-          {/* Savings Display */}
-          {mockSavingsData.length > 0 && selectedCategory && (
-            <div className="mb-8">
-              {(() => {
-                const categoryKey = selectedCategory === 'mobile' ? 'סלולר' : 
-                                 selectedCategory === 'electricity' ? 'חשמל' :
-                                 selectedCategory === 'internet' ? 'אינטרנט' :
-                                 selectedCategory === 'tv' ? 'טלוויזיה' : selectedCategory;
-                
-                const savingsForCategory = mockSavingsData.find(s => s.category === categoryKey);
-                
-                if (!savingsForCategory) return null;
-                
-                return (
-                  <Card className="max-w-2xl mx-auto bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200">
-                    <CardContent className="p-6">
-                      <div className="text-center mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                          החיסכון הצפוי בקטגוריית {categoryKey}
-                        </h3>
+            {/* Premium Savings Display */}
+            {mockSavingsData.length > 0 && selectedCategory && (
+              <div className="mb-12 animate-fade-in">
+                {(() => {
+                  const categoryKey = selectedCategory === 'mobile' ? 'סלולר' : 
+                                   selectedCategory === 'electricity' ? 'חשמל' :
+                                   selectedCategory === 'internet' ? 'אינטרנט' :
+                                   selectedCategory === 'tv' ? 'טלוויזיה' : selectedCategory;
+                  
+                  const savingsForCategory = mockSavingsData.find(s => s.category === categoryKey);
+                  
+                  if (!savingsForCategory) return null;
+                  
+                  return (
+                    <div className="max-w-4xl mx-auto">
+                      <div className="glass-card rounded-3xl p-8 shadow-elegant">
+                        <div className="text-center mb-8">
+                          <div className="inline-flex items-center gap-3 mb-4">
+                            <TrendingUp className="w-8 h-8 text-success animate-bounce-gentle" />
+                            <h3 className="text-2xl font-bold text-foreground">
+                              החיסכון הצפוי בקטגוריית {categoryKey}
+                            </h3>
+                          </div>
+                          <p className="text-muted-foreground">השוואה מדויקת בין המצב הנוכחי למסלול המומלץ</p>
+                        </div>
+                        
+                        <div className="grid md:grid-cols-3 gap-8 items-center">
+                          {/* Current Payment */}
+                          <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-destructive/10 to-destructive/5 border border-destructive/20">
+                            <div className="text-sm font-medium text-muted-foreground mb-2">תשלום נוכחי</div>
+                            <div className="text-3xl font-bold text-destructive mb-1">₪{savingsForCategory.currentMonthly.toLocaleString()}</div>
+                            <div className="text-xs text-muted-foreground">לחודש</div>
+                            <div className="text-xs text-destructive/70 mt-1">₪{(savingsForCategory.currentMonthly * 12).toLocaleString()} לשנה</div>
+                          </div>
+                          
+                          {/* Arrow with Animation */}
+                          <div className="flex justify-center">
+                            <div className="p-4 rounded-full bg-gradient-primary text-white animate-pulse">
+                              <ArrowRight className="w-6 h-6" />
+                            </div>
+                          </div>
+                          
+                          {/* New Payment */}
+                          <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-success/10 to-success/5 border border-success/20">
+                            <div className="text-sm font-medium text-muted-foreground mb-2">תשלום חדש</div>
+                            <div className="text-3xl font-bold text-success mb-1">₪{savingsForCategory.recommendedMonthly.toLocaleString()}</div>
+                            <div className="text-xs text-muted-foreground">לחודש</div>
+                            <div className="text-xs text-success/70 mt-1">₪{(savingsForCategory.recommendedMonthly * 12).toLocaleString()} לשנה</div>
+                          </div>
+                        </div>
+                        
+                        {/* Savings Highlight */}
+                        <div className="mt-8 text-center">
+                          <div className="inline-flex items-center gap-4 bg-gradient-to-r from-success via-success-glow to-success p-6 rounded-2xl text-white shadow-glow">
+                            <Award className="w-10 h-10 animate-float" />
+                            <div>
+                              <div className="text-lg font-semibold mb-1">חיסכון כולל</div>
+                              <div className="text-4xl font-bold">₪{savingsForCategory.monthlySavings.toLocaleString()}</div>
+                              <div className="text-sm opacity-90">לחודש • ₪{savingsForCategory.annualSavings.toLocaleString()} לשנה</div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      
-                      <div className="flex items-center justify-center gap-8">
-                        <div className="text-center">
-                          <div className="text-sm text-gray-600 mb-1">תשלום נוכחי</div>
-                          <div className="text-xl font-bold text-red-600">₪{savingsForCategory.currentMonthly.toLocaleString()}</div>
-                          <div className="text-xs text-gray-500">לחודש</div>
-                        </div>
-                        
-                        <ArrowRight className="w-6 h-6 text-gray-400" />
-                        
-                        <div className="text-center">
-                          <div className="text-sm text-gray-600 mb-1">תשלום חדש</div>
-                          <div className="text-xl font-bold text-green-600">₪{savingsForCategory.recommendedMonthly.toLocaleString()}</div>
-                          <div className="text-xs text-gray-500">לחודש</div>
-                        </div>
-                        
-                        <div className="bg-green-100 border border-green-200 rounded-lg p-3 text-center">
-                          <div className="text-sm text-green-700 mb-1">חיסכון</div>
-                          <div className="text-2xl font-bold text-green-700">₪{savingsForCategory.monthlySavings.toLocaleString()}</div>
-                          <div className="text-xs text-green-600">₪{savingsForCategory.annualSavings.toLocaleString()} לשנה</div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })()}
-            </div>
-          )}
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
 
-          {/* Back Button */}
-          {currentStep !== 'category' && (
-            <div className="mb-6">
-              <Button 
-                variant="outline" 
-                onClick={handleBack}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                חזרה
-              </Button>
-            </div>
-          )}
+            {/* Back Button with Style */}
+            {currentStep !== 'category' && (
+              <div className="mb-8">
+                <Button 
+                  variant="outline" 
+                  onClick={handleBack}
+                  className="flex items-center gap-2 hover-scale glass-card border-primary/20 hover:border-primary/40"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  חזרה
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
 
-          {/* Step 1: Category Selection */}
+        {/* Main Content Container */}
+        <div className="container mx-auto px-6 pb-16">
+          {/* Step 1: Enhanced Category Selection */}
           {currentStep === 'category' && (
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            <div className="max-w-6xl mx-auto animate-fade-in">
+              <div className="text-center mb-12">
+                <h2 className="text-2xl font-semibold text-foreground mb-3">
                   באיזה תחום אתם מעוניינים לחסוך?
                 </h2>
-                <p className="text-gray-600">בחרו את הקטגוריה שמעניינת אתכם</p>
+                <p className="text-muted-foreground text-lg">בחרו את הקטגוריה שמעניינת אתכם</p>
               </div>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {(Object.keys(categoryConfig) as CategoryType[]).map((category) => {
                   const config = categoryConfig[category];
                   const categoryPlans = manualPlans.filter(p => p.category === category);
                   const companiesCount = [...new Set(categoryPlans.map(p => p.company))].length;
                   
                   return (
-                    <Card 
+                    <div 
                       key={category}
-                      className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 hover:border-blue-300"
+                      className="group cursor-pointer hover-scale animate-scale-in"
                       onClick={() => handleCategorySelect(category)}
+                      style={{ animationDelay: `${(Object.keys(categoryConfig).indexOf(category)) * 100}ms` }}
                     >
-                      <CardContent className="p-6 text-center">
-                        <div className={`w-16 h-16 ${config.color} rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg`}>
-                          {config.icon}
+                      <div className="glass-card rounded-3xl p-8 text-center border-2 border-transparent hover:border-primary/30 transition-all duration-500 hover:shadow-elegant">
+                        <div className="relative mb-6">
+                          <div className={`w-20 h-20 bg-gradient-to-br ${
+                            category === 'electricity' ? 'from-yellow-400 to-orange-500' :
+                            category === 'internet' ? 'from-blue-400 to-cyan-500' :
+                            category === 'mobile' ? 'from-purple-400 to-pink-500' :
+                            'from-orange-400 to-red-500'
+                          } rounded-3xl flex items-center justify-center text-white mx-auto shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110`}>
+                            {config.icon}
+                            <div className="absolute inset-0 bg-white/20 rounded-3xl animate-pulse-glow opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                          </div>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                           {config.label}
                         </h3>
-                        <p className="text-sm text-gray-600 mb-4">
+                        <p className="text-muted-foreground mb-6 leading-relaxed">
                           {config.description}
                         </p>
-                        <div className="flex justify-between text-sm text-gray-500">
-                          <span>{companiesCount} חברות</span>
-                          <span>{categoryPlans.length} מסלולים</span>
+                        <div className="flex justify-between items-center text-sm">
+                          <div className="flex items-center gap-2 text-muted-foreground">
+                            <Building2 className="w-4 h-4" />
+                            <span>{companiesCount}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-muted-foreground">
+                            <Users className="w-4 h-4" />
+                            <span>{categoryPlans.length}</span>
+                          </div>
                         </div>
-                      </CardContent>
-                    </Card>
+                        
+                        <div className="mt-6">
+                          <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
+                            <div className="h-full bg-gradient-to-r from-primary to-primary-glow transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
             </div>
           )}
 
-          {/* Step 2: Company Selection */}
+          {/* Step 2: Enhanced Company Selection */}
           {currentStep === 'companies' && selectedCategory && (
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-8">
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <div className={`w-12 h-12 ${categoryConfig[selectedCategory].color} rounded-xl flex items-center justify-center text-white`}>
+            <div className="max-w-7xl mx-auto animate-fade-in">
+              <div className="text-center mb-12">
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <div className={`w-16 h-16 bg-gradient-to-br ${
+                    selectedCategory === 'electricity' ? 'from-yellow-400 to-orange-500' :
+                    selectedCategory === 'internet' ? 'from-blue-400 to-cyan-500' :
+                    selectedCategory === 'mobile' ? 'from-purple-400 to-pink-500' :
+                    'from-orange-400 to-red-500'
+                  } rounded-2xl flex items-center justify-center text-white shadow-lg animate-float`}>
                     {categoryConfig[selectedCategory].icon}
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900">
-                    {categoryConfig[selectedCategory].label}
-                  </h2>
+                  <div>
+                    <h2 className="text-2xl font-bold text-foreground">
+                      {categoryConfig[selectedCategory].label}
+                    </h2>
+                    <p className="text-muted-foreground">בחרו את החברה המועדפת עליכם</p>
+                  </div>
                 </div>
-                <p className="text-gray-600">בחרו את החברה שמעניינת אתכם</p>
               </div>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {availableCompanies.map((company) => (
-                  <Card 
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {availableCompanies.map((company, index) => (
+                  <div 
                     key={company.name}
-                    className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:border-blue-300 border"
+                    className="group cursor-pointer hover-scale animate-slide-up"
                     onClick={() => handleCompanySelect(company.name)}
+                    style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                          <span className="text-lg font-bold text-gray-700">
+                    <div className="glass-card rounded-2xl p-6 border border-border hover:border-primary/40 transition-all duration-500 hover:shadow-elegant">
+                      <div className="flex items-start gap-4 mb-6">
+                        <div className="w-14 h-14 bg-gradient-to-br from-accent to-accent/50 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300">
+                          <span className="text-lg font-bold text-accent-foreground">
                             {company.name.slice(0, 2)}
                           </span>
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
                             {company.name}
                           </h3>
-                          <div className="flex items-center gap-3 mb-2">
+                          <div className="flex items-center gap-3 mb-3">
                             <div className="flex items-center gap-1">
                               <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                              <span className="text-sm font-medium">{company.avgRating}</span>
+                              <span className="text-sm font-semibold text-foreground">{company.avgRating}</span>
                             </div>
-                            <Badge className="bg-green-50 text-green-700 border-green-200 text-xs">
+                            <Badge className="bg-success/10 text-success border-success/20 text-xs font-medium">
                               מומלץ
                             </Badge>
                           </div>
-                          <p className="text-gray-600 text-sm">
-                            {company.plansCount} מסלולים זמינים
+                          <p className="text-muted-foreground text-sm">
+                            {company.plansCount} מסלולים זמינים למבחר
                           </p>
                         </div>
                       </div>
                       
-                      <div className="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
-                        <div>
-                          <div className="text-xs text-gray-600 mb-1">מחיר התחלתי</div>
-                          <div className="text-lg font-bold text-gray-900">
-                            {selectedCategory !== 'electricity' ? `₪${company.minPrice}/חודש` : 'הנחה משתנה'}
+                      <div className="bg-gradient-to-r from-accent/20 to-accent/10 rounded-xl p-4 mb-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="text-xs text-muted-foreground mb-1 font-medium">מחיר התחלתי</div>
+                            <div className="text-lg font-bold text-foreground">
+                              {selectedCategory !== 'electricity' ? `₪${company.minPrice}/חודש` : 'הנחה משתנה'}
+                            </div>
                           </div>
+                          <TrendingUp className="w-6 h-6 text-success animate-bounce-gentle" />
                         </div>
-                        <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                          צפה במסלולים
-                        </Button>
                       </div>
-                    </CardContent>
-                  </Card>
+                      
+                      <Button 
+                        className="w-full btn-gradient hover:scale-105 transition-transform duration-200"
+                        size="lg"
+                      >
+                        <span className="flex items-center gap-2">
+                          צפה במסלולים
+                          <ArrowRight className="w-4 h-4" />
+                        </span>
+                      </Button>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Step 3: Plans Selection */}
+          {/* Step 3: Enhanced Plans Selection */}
           {currentStep === 'plans' && selectedCategory && selectedCompany && (
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-8">
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <div className={`w-10 h-10 ${categoryConfig[selectedCategory].color} rounded-lg flex items-center justify-center text-white text-sm font-bold`}>
+            <div className="max-w-7xl mx-auto animate-fade-in">
+              <div className="text-center mb-12">
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent/70 rounded-xl flex items-center justify-center text-accent-foreground text-sm font-bold shadow-lg">
                     {selectedCompany.slice(0, 2)}
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900">
-                    מסלולי {selectedCompany} - {categoryConfig[selectedCategory].label}
-                  </h2>
+                  <div>
+                    <h2 className="text-2xl font-bold text-foreground">
+                      מסלולי {selectedCompany}
+                    </h2>
+                    <p className="text-muted-foreground">{companyPlans.length} מסלולים זמינים • {categoryConfig[selectedCategory].label}</p>
+                  </div>
                 </div>
-                <p className="text-gray-600">{companyPlans.length} מסלולים זמינים</p>
               </div>
 
-              {/* Plan Comparison with Current Data */}
+              {/* Enhanced Plan Comparison with Current Data */}
               {(() => {
                 const currentData = getCurrentPlanData();
                 return currentData && (
-                  <div className="mb-8">
-                    <Card className="max-w-4xl mx-auto bg-blue-50 border border-blue-200">
-                      <CardContent className="p-6">
-                        <h3 className="text-lg font-semibold text-center mb-4">השוואה למצב הנוכחי שלכם</h3>
-                        <div className="text-center text-gray-700">
-                          אתם משלמים כיום: <span className="font-bold text-red-600">₪{currentData.currentMonthly}/חודש</span>
+                  <div className="mb-12">
+                    <div className="glass-card rounded-2xl p-6 max-w-4xl mx-auto border border-primary/20">
+                      <div className="text-center">
+                        <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center justify-center gap-2">
+                          <Award className="w-6 h-6 text-primary" />
+                          השוואה למצב הנוכחי שלכם
+                        </h3>
+                        <div className="flex items-center justify-center gap-8">
+                          <div className="text-center">
+                            <div className="text-sm text-muted-foreground mb-1">אתם משלמים כיום</div>
+                            <div className="text-2xl font-bold text-destructive">₪{currentData.currentMonthly}</div>
+                            <div className="text-xs text-muted-foreground">לחודש</div>
+                          </div>
+                          
                           {currentData.currentProvider && (
-                            <span className="block text-sm text-gray-600 mt-1">
-                              ספק נוכחי: {currentData.currentProvider}
-                            </span>
+                            <div className="text-center">
+                              <div className="text-sm text-muted-foreground mb-1">ספק נוכחי</div>
+                              <div className="text-lg font-semibold text-foreground bg-accent/20 px-3 py-1 rounded-lg">
+                                {currentData.currentProvider}
+                              </div>
+                            </div>
                           )}
                         </div>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
                   </div>
                 );
               })()}
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {companyPlans.map((plan, index) => {
                   const currentData = getCurrentPlanData();
                   const potentialSavings = currentData ? 
                     Math.max(0, currentData.currentMonthly - plan.regularPrice) : undefined;
                   
                   return (
-                    <div key={plan.id} className="relative">
+                    <div 
+                      key={plan.id} 
+                      className="relative animate-scale-in hover-scale"
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
                       {index === 0 && (
                         <div className="absolute -top-3 -right-3 z-10">
-                          <div className="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                            <Crown className="w-3 h-3 inline mr-1" />
+                          <div className="bg-gradient-to-r from-success to-success-glow text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg animate-pulse">
+                            <Crown className="w-3 h-3 inline ml-1" />
                             הכי מומלץ
                           </div>
                         </div>
                       )}
                       
-                      <Card className="h-full hover:shadow-lg transition-all duration-300 relative">
-                        <CardContent className="p-6">
-                          {/* Plan Header */}
-                          <div className="text-center mb-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                              {plan.planName}
-                            </h3>
-                            <div className="text-3xl font-bold text-blue-600 mb-1">
+                      <div className="glass-card rounded-2xl p-6 h-full border border-border hover:border-primary/30 transition-all duration-500 hover:shadow-elegant">
+                        {/* Plan Header */}
+                        <div className="text-center mb-8">
+                          <h3 className="text-xl font-bold text-foreground mb-3">
+                            {plan.planName}
+                          </h3>
+                          <div className="relative">
+                            <div className="text-4xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-2">
                               ₪{plan.regularPrice}
                             </div>
-                            <div className="text-sm text-gray-500">לחודש</div>
+                            <div className="text-sm text-muted-foreground">לחודש</div>
                           </div>
+                        </div>
 
-                          {/* Savings Comparison */}
-                          {potentialSavings !== undefined && (
-                            <div className={`text-center mb-4 p-3 rounded-lg ${
-                              potentialSavings > 0 ? 'bg-green-50 border border-green-200' : 
-                              potentialSavings === 0 ? 'bg-yellow-50 border border-yellow-200' :
-                              'bg-red-50 border border-red-200'
-                            }`}>
-                              {potentialSavings > 0 ? (
-                                <>
-                                  <div className="text-green-700 font-semibold">חיסכון של ₪{potentialSavings}</div>
-                                  <div className="text-xs text-green-600">₪{potentialSavings * 12} לשנה</div>
-                                </>
-                              ) : potentialSavings === 0 ? (
-                                <div className="text-yellow-700 font-semibold">מחיר זהה למצב הנוכחי</div>
-                              ) : (
-                                <div className="text-red-700 font-semibold">₪{Math.abs(potentialSavings)} יותר יקר</div>
-                              )}
-                            </div>
-                          )}
-
-                          {/* Features */}
-                          <div className="space-y-2 mb-6">
-                            {plan.features.slice(0, 4).map((feature, featureIndex) => (
-                              <div key={featureIndex} className="flex items-center gap-2 text-sm">
-                                <CheckCircle className="w-4 h-4 text-green-500" />
-                                <span>{feature}</span>
+                        {/* Enhanced Savings Comparison */}
+                        {potentialSavings !== undefined && (
+                          <div className={`text-center mb-6 p-4 rounded-xl border transition-all duration-300 ${
+                            potentialSavings > 0 ? 'bg-gradient-to-r from-success/10 to-success-glow/10 border-success/20' : 
+                            potentialSavings === 0 ? 'bg-gradient-to-r from-warning/10 to-warning/5 border-warning/20' :
+                            'bg-gradient-to-r from-destructive/10 to-destructive/5 border-destructive/20'
+                          }`}>
+                            {potentialSavings > 0 ? (
+                              <div className="flex items-center justify-center gap-2">
+                                <TrendingUp className="w-5 h-5 text-success" />
+                                <div>
+                                  <div className="text-success font-bold text-lg">חיסכון של ₪{potentialSavings}</div>
+                                  <div className="text-xs text-success/70">₪{potentialSavings * 12} לשנה</div>
+                                </div>
                               </div>
-                            ))}
-                            {plan.features.length > 4 && (
-                              <div className="text-xs text-gray-500 text-center">
-                                ועוד {plan.features.length - 4} תכונות...
-                              </div>
+                            ) : potentialSavings === 0 ? (
+                              <div className="text-warning font-semibold">מחיר זהה למצב הנוכחי</div>
+                            ) : (
+                              <div className="text-destructive font-semibold">₪{Math.abs(potentialSavings)} יותר יקר</div>
                             )}
                           </div>
+                        )}
 
-                          {/* Actions */}
-                          <div className="space-y-3">
-                            <Button
-                              className="w-full"
-                              onClick={() => handlePlanSelect(plan)}
-                            >
+                        {/* Features */}
+                        <div className="space-y-3 mb-8">
+                          {plan.features.slice(0, 4).map((feature, featureIndex) => (
+                            <div key={featureIndex} className="flex items-center gap-3 text-sm">
+                              <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
+                              <span className="text-foreground">{feature}</span>
+                            </div>
+                          ))}
+                          {plan.features.length > 4 && (
+                            <div className="text-xs text-muted-foreground text-center py-2">
+                              ועוד {plan.features.length - 4} תכונות נוספות...
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="space-y-3 mt-auto">
+                          <Button
+                            className="w-full btn-gradient hover:scale-105 transition-all duration-200"
+                            size="lg"
+                            onClick={() => handlePlanSelect(plan)}
+                          >
+                            <span className="flex items-center gap-2">
                               בחר מסלול זה
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="w-full"
-                              onClick={() => handleCompareToggle(plan)}
-                              disabled={comparedPlans.length >= 3 && !comparedPlans.find(p => p.id === plan.id)}
-                            >
-                              {comparedPlans.find(p => p.id === plan.id) ? 'הסר מהשוואה' : 'הוסף להשוואה'}
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
+                              <Sparkles className="w-4 h-4" />
+                            </span>
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full border-primary/20 text-primary hover:bg-primary/10 hover:border-primary/40"
+                            onClick={() => handleCompareToggle(plan)}
+                            disabled={comparedPlans.length >= 3 && !comparedPlans.find(p => p.id === plan.id)}
+                          >
+                            {comparedPlans.find(p => p.id === plan.id) ? 'הסר מהשוואה' : 'הוסף להשוואה'}
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   );
                 })}
