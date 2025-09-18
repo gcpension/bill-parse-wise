@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ManualPlan } from "@/data/manual-plans";
 import { 
   Scale, 
   X, 
-  Check, 
   Zap, 
   Wifi, 
   Smartphone, 
@@ -16,7 +15,8 @@ import {
   TrendingUp,
   Crown,
   CheckCircle,
-  BarChart3
+  BarChart3,
+  Plus
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -39,11 +39,11 @@ const PlanComparison = ({
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'electricity': return <Zap className="h-5 w-5" />;
-      case 'mobile': return <Smartphone className="h-5 w-5" />;
-      case 'internet': return <Wifi className="h-5 w-5" />;
-      case 'tv': return <Tv className="h-5 w-5" />;
-      default: return <Building2 className="h-5 w-5" />;
+      case 'electricity': return <Zap className="h-4 w-4" />;
+      case 'mobile': return <Smartphone className="h-4 w-4" />;
+      case 'internet': return <Wifi className="h-4 w-4" />;
+      case 'tv': return <Tv className="h-4 w-4" />;
+      default: return <Building2 className="h-4 w-4" />;
     }
   };
 
@@ -57,46 +57,82 @@ const PlanComparison = ({
     }
   };
 
+  const getBestPlanIndex = () => {
+    if (comparedPlans.length === 0) return -1;
+    let bestIndex = 0;
+    let bestPrice = comparedPlans[0].regularPrice;
+    
+    comparedPlans.forEach((plan, index) => {
+      if (plan.regularPrice < bestPrice) {
+        bestPrice = plan.regularPrice;
+        bestIndex = index;
+      }
+    });
+    
+    return bestIndex;
+  };
+
   if (comparedPlans.length === 0) {
     return null;
   }
 
+  const bestPlanIndex = getBestPlanIndex();
+
   return (
     <div className={cn("fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50", className)}>
-      <Card className="bg-white/95 backdrop-blur-sm shadow-xl border border-purple-200">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between gap-6">
+      <Card className="bg-white/95 backdrop-blur-md shadow-2xl border border-primary/20 rounded-2xl">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between gap-4">
             {/* Header */}
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Scale className="h-5 w-5 text-purple-600" />
+              <div className="p-2 bg-primary/10 rounded-xl">
+                <Scale className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="font-bold text-gray-800 font-heebo">השוואת מסלולים</p>
-                <p className="text-sm text-gray-600 font-assistant">
+                <p className="font-bold text-foreground font-heebo">השוואת מסלולים</p>
+                <p className="text-sm text-muted-foreground font-assistant">
                   {comparedPlans.length} מתוך 3 מסלולים
                 </p>
               </div>
             </div>
 
-            {/* Plans Preview */}
+            {/* Plans Preview Cards */}
             <div className="flex items-center gap-2">
               {comparedPlans.map((plan, index) => (
                 <div key={plan.id} className="relative group">
-                  <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg border hover:bg-gray-100 transition-all">
-                    {index === 0 && <Crown className="h-4 w-4 text-yellow-500" />}
-                    <span className="text-sm font-medium font-assistant">{plan.company}</span>
+                  <div className={cn(
+                    "flex items-center gap-2 px-3 py-2 rounded-xl border transition-all duration-300",
+                    index === bestPlanIndex 
+                      ? "bg-green-50 border-green-200 ring-2 ring-green-300/50" 
+                      : "bg-card hover:bg-accent border-border"
+                  )}>
+                    {index === bestPlanIndex && <Crown className="h-4 w-4 text-yellow-500" />}
+                    {getCategoryIcon(plan.category)}
+                    <div className="text-center">
+                      <div className="text-xs font-medium font-assistant">{plan.company}</div>
+                      <div className="text-xs text-primary font-bold font-heebo">₪{plan.regularPrice}</div>
+                    </div>
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => onRemovePlan(plan.id)}
-                    className="absolute -top-2 -right-2 h-5 w-5 p-0 rounded-full bg-red-100 hover:bg-red-200"
+                    className="absolute -top-2 -right-2 h-5 w-5 p-0 rounded-full bg-destructive/10 hover:bg-destructive/20 border border-destructive/20"
                   >
-                    <X className="h-3 w-3 text-red-600" />
+                    <X className="h-3 w-3 text-destructive" />
                   </Button>
                 </div>
               ))}
+              
+              {/* Add More Plans Indicator */}
+              {comparedPlans.length < 3 && (
+                <div className="flex items-center gap-2 px-3 py-2 bg-muted/50 border border-dashed border-muted-foreground/30 rounded-xl">
+                  <Plus className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground font-assistant">
+                    הוסף עוד {3 - comparedPlans.length}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Actions */}
@@ -105,117 +141,138 @@ const PlanComparison = ({
                 variant="outline" 
                 size="sm" 
                 onClick={onClearAll}
-                className="text-red-600 border-red-200 hover:bg-red-50 font-assistant"
+                className="text-destructive border-destructive/30 hover:bg-destructive/10 font-assistant"
               >
                 נקה הכל
               </Button>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-purple-600 hover:bg-purple-700 font-heebo font-medium">
+                  <Button className="bg-primary hover:bg-primary/90 font-heebo font-medium shadow-lg">
                     <BarChart3 className="h-4 w-4 ml-2" />
-                    השווה
+                    השווה מסלולים
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-purple-800 font-heebo text-center">
-                      השוואת מסלולים
+                    <DialogTitle className="text-3xl font-bold text-primary font-heebo text-center">
+                      השוואת המסלולים שלכם
                     </DialogTitle>
+                    <p className="text-center text-muted-foreground font-assistant mt-2">
+                      כל המידע שאתם צריכים כדי לבחור את המסלול הטוב ביותר
+                    </p>
                   </DialogHeader>
                   
-                  {/* Simple Comparison Table */}
-                  <div className="mt-6">
+                  {/* Comparison Cards */}
+                  <div className="mt-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       {comparedPlans.map((plan, index) => (
                         <Card key={plan.id} className={cn(
-                          "relative transition-all duration-300 hover:shadow-lg",
-                          index === 0 ? "ring-2 ring-green-400 bg-green-50/50" : "border-gray-200"
+                          "relative transition-all duration-500 hover:shadow-xl border-2",
+                          index === bestPlanIndex 
+                            ? "ring-4 ring-green-400/30 bg-green-50/50 border-green-300" 
+                            : "border-border hover:border-primary/30"
                         )}>
-                          {index === 0 && (
-                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                              <Badge className="bg-green-500 text-white">
-                                <Crown className="h-3 w-3 ml-1" />
-                                הכי מומלץ
+                          {index === bestPlanIndex && (
+                            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                              <Badge className="bg-green-500 text-white px-4 py-2 shadow-lg">
+                                <Crown className="h-4 w-4 ml-2" />
+                                הכי חסכוני
                               </Badge>
                             </div>
                           )}
                           
-                          <CardContent className="p-6">
-                            {/* Company & Category */}
-                            <div className="text-center mb-6">
-                              <div className="flex items-center justify-center gap-2 mb-2">
-                                {getCategoryIcon(plan.category)}
-                                <Badge variant="outline" className="text-xs">
-                                  {getCategoryLabel(plan.category)}
-                                </Badge>
-                              </div>
-                              <h3 className="text-xl font-bold text-gray-800 font-heebo">
-                                {plan.company}
-                              </h3>
-                              <p className="text-gray-600 font-assistant">{plan.planName}</p>
+                          <CardHeader className="text-center pb-4">
+                            <div className="flex items-center justify-center gap-2 mb-3">
+                              {getCategoryIcon(plan.category)}
+                              <Badge variant="outline" className="text-xs font-assistant">
+                                {getCategoryLabel(plan.category)}
+                              </Badge>
                             </div>
+                            <h3 className="text-2xl font-bold text-foreground font-heebo">
+                              {plan.company}
+                            </h3>
+                            <p className="text-muted-foreground font-assistant text-sm">{plan.planName}</p>
+                          </CardHeader>
 
-                            {/* Price */}
-                            <div className="text-center mb-6">
-                              <div className="text-3xl font-bold text-purple-600 font-heebo">
+                          <CardContent className="space-y-6">
+                            {/* Price - Main Focus */}
+                            <div className="text-center bg-primary/5 rounded-2xl p-6 border border-primary/10">
+                              <div className="text-4xl font-bold text-primary font-heebo mb-2">
                                 ₪{plan.regularPrice}
                               </div>
-                              <div className="text-sm text-gray-500 font-assistant">לחודש</div>
-                            </div>
-
-                            {/* Features */}
-                            <div className="space-y-2 mb-6">
-                              {plan.features.slice(0, 4).map((feature, idx) => (
-                                <div key={idx} className="flex items-center gap-2 text-sm">
-                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                  <span className="text-gray-700 font-assistant">{feature}</span>
+                              <div className="text-sm text-muted-foreground font-assistant">לחודש</div>
+                              {index === bestPlanIndex && (
+                                <div className="mt-3 text-sm text-green-600 font-medium font-assistant flex items-center justify-center gap-1">
+                                  <TrendingUp className="h-4 w-4" />
+                                  המחיר הטוב ביותר!
                                 </div>
-                              ))}
+                              )}
                             </div>
 
-                            {/* Action */}
+                            {/* Key Features - Simplified */}
+                            <div className="space-y-3">
+                              <h4 className="font-semibold text-foreground font-heebo">תכונות עיקריות:</h4>
+                              <div className="space-y-2">
+                                {plan.features.slice(0, 3).map((feature, idx) => (
+                                  <div key={idx} className="flex items-start gap-2 text-sm">
+                                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
+                                    <span className="text-muted-foreground font-assistant">{feature}</span>
+                                  </div>
+                                ))}
+                                {plan.features.length > 3 && (
+                                  <div className="text-xs text-muted-foreground text-center py-2 bg-muted/50 rounded-lg font-assistant">
+                                    +{plan.features.length - 3} תכונות נוספות
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Action Button */}
                             <Button
                               onClick={() => {
                                 onPlanSelect?.(plan);
                                 setIsDialogOpen(false);
                               }}
                               className={cn(
-                                "w-full font-heebo",
-                                index === 0 
-                                  ? "bg-green-600 hover:bg-green-700" 
-                                  : "bg-purple-600 hover:bg-purple-700"
+                                "w-full font-heebo h-12 text-lg font-semibold shadow-lg transition-all duration-300",
+                                index === bestPlanIndex 
+                                  ? "bg-green-600 hover:bg-green-700 hover:scale-105" 
+                                  : "bg-primary hover:bg-primary/90 hover:scale-105"
                               )}
                             >
-                              בחר מסלול זה
+                              {index === bestPlanIndex ? "בחר מסלול מומלץ" : "בחר מסלול זה"}
                             </Button>
                           </CardContent>
                         </Card>
                       ))}
                     </div>
 
-                    {/* Quick Comparison Summary */}
-                    <div className="mt-8 bg-gray-50 rounded-xl p-6">
-                      <h4 className="text-lg font-bold text-gray-800 mb-4 font-heebo text-center">
-                        סיכום מהיר
+                    {/* Quick Summary */}
+                    <div className="mt-8 bg-muted/30 rounded-2xl p-6 border border-border">
+                      <h4 className="text-xl font-bold text-foreground mb-6 font-heebo text-center">
+                        סיכום השוואה
                       </h4>
-                      <div className="grid md:grid-cols-3 gap-4">
-                        <div className="text-center">
-                          <div className="text-sm text-gray-600 font-assistant">המחיר הנמוך ביותר</div>
-                          <div className="text-xl font-bold text-green-600 font-heebo">
+                      <div className="grid md:grid-cols-3 gap-6">
+                        <div className="text-center bg-green-50 rounded-xl p-4 border border-green-200">
+                          <div className="text-sm text-green-700 font-assistant mb-1">המחיר הטוב ביותר</div>
+                          <div className="text-2xl font-bold text-green-600 font-heebo">
                             ₪{Math.min(...comparedPlans.map(p => p.regularPrice))}
                           </div>
+                          <div className="text-xs text-green-600 font-assistant">לחודש</div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-sm text-gray-600 font-assistant">המחיר הגבוה ביותר</div>
-                          <div className="text-xl font-bold text-red-600 font-heebo">
+                        <div className="text-center bg-red-50 rounded-xl p-4 border border-red-200">
+                          <div className="text-sm text-red-700 font-assistant mb-1">המחיר הגבוה ביותר</div>
+                          <div className="text-2xl font-bold text-red-600 font-heebo">
                             ₪{Math.max(...comparedPlans.map(p => p.regularPrice))}
                           </div>
+                          <div className="text-xs text-red-600 font-assistant">לחודש</div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-sm text-gray-600 font-assistant">חיסכון פוטנציאלי</div>
-                          <div className="text-xl font-bold text-purple-600 font-heebo">
+                        <div className="text-center bg-primary/5 rounded-xl p-4 border border-primary/20">
+                          <div className="text-sm text-primary font-assistant mb-1">חיסכון פוטנציאלי</div>
+                          <div className="text-2xl font-bold text-primary font-heebo">
                             ₪{Math.max(...comparedPlans.map(p => p.regularPrice)) - Math.min(...comparedPlans.map(p => p.regularPrice))}
                           </div>
+                          <div className="text-xs text-primary font-assistant">לחודש</div>
                         </div>
                       </div>
                     </div>

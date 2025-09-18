@@ -87,17 +87,10 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
         setCurrentStep('category');
       }
     } else {
-      console.log('No stored analysis data found, going to category selection');
-      // Check if we have categories from props
-      if (initialSelectedCategories.length > 0) {
-        console.log('Using initial selected categories:', initialSelectedCategories);
-        setAnalyzedCategories(initialSelectedCategories as CategoryType[]);
-        setCurrentStep('analysis-plans');
-      } else {
-        setCurrentStep('category');
-      }
+      console.log('No stored analysis data found');
+      setCurrentStep('category');
     }
-  }, [initialSelectedCategories]);
+  }, []); // Remove dependency to prevent infinite loop
 
   useEffect(() => {
     document.title = "כל המסלולים | EasySwitch";
