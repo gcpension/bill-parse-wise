@@ -6,6 +6,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Separator } from "@/components/ui/separator";
 import { ManualPlan } from "@/data/manual-plans";
 import PersonalizedRecommendation from "./PersonalizedRecommendation";
+import SmartComparisonTable from "./advanced/SmartComparisonTable";
+import ComparisonAnalytics from "./advanced/ComparisonAnalytics";
+import { ComparisonAnalyzer } from "@/lib/comparisonAnalyzer";
 import { 
   Scale, 
   X, 
@@ -32,7 +35,8 @@ import {
   Flame,
   Shield,
   Heart,
-  CheckCircle
+  CheckCircle,
+  BarChart3
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -53,6 +57,10 @@ const PlanComparison = ({
 }: PlanComparisonProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isRecommendationOpen, setIsRecommendationOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'enhanced' | 'analytics'>('enhanced');
+
+  // Generate AI analysis when dialog opens
+  const comparisonMatrix = isDialogOpen ? ComparisonAnalyzer.analyzeComparison(comparedPlans) : null;
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -130,15 +138,57 @@ const PlanComparison = ({
                     השווה עכשיו
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto bg-gradient-to-br from-background via-background/95 to-accent/5">
+                <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-gradient-to-br from-background via-background/95 to-accent/5">
                   <DialogHeader>
                     <DialogTitle className="text-4xl font-bold text-center bg-gradient-to-r from-primary via-primary-glow to-accent bg-clip-text text-transparent">
-                      השוואה מפורטת ומקצועית
+                      השוואה מתקדמת עם ניתוח AI
                     </DialogTitle>
                     <p className="text-muted-foreground text-center mt-3 text-lg">
-                      ניתוח מעמיק של ההבדלים המשמעותיים בין המסלולים שבחרתם
+                      ניתוח מעמיק וחכם של המסלולים שבחרתם עם המלצות מותאמות אישית
                     </p>
+                    
+                    {/* View Mode Toggle */}
+                    <div className="flex justify-center mt-6">
+                      <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm p-2 rounded-2xl border border-border/50">
+                        <Button
+                          variant={viewMode === 'enhanced' ? 'default' : 'ghost'}
+                          size="sm"
+                          onClick={() => setViewMode('enhanced')}
+                          className="rounded-xl"
+                        >
+                          <Target className="w-4 h-4 mr-2" />
+                          השוואה מתקדמת
+                        </Button>
+                        <Button
+                          variant={viewMode === 'analytics' ? 'default' : 'ghost'}
+                          size="sm"
+                          onClick={() => setViewMode('analytics')}
+                          className="rounded-xl"
+                        >
+                          <BarChart3 className="w-4 h-4 mr-2" />
+                          אנליטיקה וניתוח
+                        </Button>
+                      </div>
+                    </div>
                   </DialogHeader>
+                  
+                  {/* Enhanced AI Analysis */}
+                  {comparisonMatrix && (
+                    <div className="mt-8">
+                      {viewMode === 'enhanced' ? (
+                        <SmartComparisonTable 
+                          comparisonMatrix={comparisonMatrix}
+                          plans={comparedPlans}
+                          onPlanSelect={onPlanSelect}
+                        />
+                      ) : (
+                        <ComparisonAnalytics 
+                          comparisonMatrix={comparisonMatrix}
+                          plans={comparedPlans}
+                        />
+                      )}
+                    </div>
+                  )}
                   
                   {/* Category Validation Check - Enhanced Design */}
                   {(() => {
