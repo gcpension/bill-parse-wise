@@ -6,6 +6,8 @@ import { Zap, Smartphone, Wifi, Tv, ArrowRight, ArrowLeft, Building2, Users, Cro
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import PlanComparison from "@/components/plans/PlanComparison";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
+import ProviderGrid from "@/components/providers/ProviderGrid";
+import PlanGrid from "@/components/providers/PlanGrid";
 
 interface SavingsData {
   currentMonthly: number;
@@ -221,6 +223,24 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
     } else if (currentStep === 'category') {
       setCurrentStep('analysis-plans');
     }
+  };
+
+  // Get user context for intelligent recommendations
+  const getUserContext = () => {
+    if (!analysisData || !selectedCategory) return undefined;
+    
+    const categoryKey = selectedCategory === 'mobile' ? 'cellular' : selectedCategory;
+    const categoryData = analysisData.responses?.[categoryKey];
+    
+    return {
+      currentAmount: categoryData?.monthlyAmount ? parseInt(categoryData.monthlyAmount) : 200,
+      currentProvider: categoryData?.currentProvider || 'ספק נוכחי',
+      familySize: 3,
+      budget: categoryData?.monthlyAmount ? parseInt(categoryData.monthlyAmount) * 0.8 : 160,
+      usage: 'medium' as const,
+      priorities: ['חיסכון', 'אמינות'],
+      homeType: 'apartment' as const
+    };
   };
 
   const handleExploreOtherCategories = () => {
@@ -912,11 +932,12 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
 
       {/* Comparison Panel */}
       {comparedPlans.length > 0 && (
-        <PlanComparison
+        <PlanComparison 
           comparedPlans={comparedPlans}
           onRemovePlan={handleRemoveFromComparison}
           onClearAll={handleClearComparison}
           onPlanSelect={handlePlanSelect}
+          userContext={getUserContext()}
         />
       )}
 
