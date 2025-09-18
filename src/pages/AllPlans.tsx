@@ -365,7 +365,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
             </div>
           )}
 
-          {/* Persuasive Minimalist Savings Display */}
+          {/* Premium Interactive Savings Display */}
           {mockSavingsData.length > 0 && (currentStep === 'analysis-plans' || selectedCategory) && (
             <div className="mb-12 animate-fade-in opacity-0" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
               {mockSavingsData.map((savingsData, index) => {
@@ -381,117 +381,173 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                 const savingsPercentage = ((savingsData.monthlySavings / savingsData.currentMonthly) * 100).toFixed(0);
                 
                 return (
-                  <div key={index} className="max-w-4xl mx-auto">
-                    {/* Compelling Sales Message */}
-                    <div className="text-center mb-6">
-                      <h3 className="text-3xl font-bold text-gray-800 mb-3 font-heebo">
-                        🎯 אתם משלמים יותר מדי על {savingsData.category}!
-                      </h3>
-                      <p className="text-lg text-gray-600 font-assistant mb-2">
-                        <span className="font-semibold text-red-600">חוסכים {savingsPercentage}%</span> מהתשלום הנוכחי - 
-                        <span className="font-semibold text-green-600"> ₪{savingsData.annualSavings.toLocaleString()} בשנה!</span>
-                      </p>
-                      <p className="text-sm text-gray-500 font-assistant">
-                        ⚡ מעבר מיידי וללא עלויות נסתרות
-                      </p>
-                    </div>
-
-                    {/* Dramatic Comparison */}
-                    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-500">
-                      <div className="grid grid-cols-2 divide-x divide-gray-200">
-                        
-                        {/* Current - Emphasized as Expensive */}
-                        <div className="relative overflow-hidden group">
-                          <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-red-600/10 group-hover:from-red-500/10 group-hover:to-red-600/15 transition-all duration-300"></div>
-                          <div className="relative p-6 text-center">
-                            <div className="text-xs uppercase tracking-wider text-red-500 font-semibold mb-2 font-assistant">
-                              💸 אתם משלמים עכשיו
-                            </div>
-                            <div className="text-4xl font-bold text-red-600 mb-1 font-heebo">
-                              ₪{savingsData.currentMonthly}
-                            </div>
-                            <div className="text-sm text-red-500 font-assistant">
-                              לחודש
-                            </div>
-                            <div className="text-xs text-red-400 mt-2 font-assistant">
-                              ₪{(savingsData.currentMonthly * 12).toLocaleString()} לשנה
-                            </div>
-                            {/* Emphasis - Too Much */}
-                            <div className="absolute top-2 right-2">
-                              <div className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-assistant animate-pulse">
-                                יקר מדי!
-                              </div>
-                            </div>
+                  <div key={index} className="max-w-5xl mx-auto">
+                    {/* Compelling Header */}
+                    <div className="text-center mb-8">
+                      <div className="inline-flex items-center gap-3 mb-4">
+                        <div className="relative">
+                          <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <TrendingUp className="w-6 h-6 text-white" />
                           </div>
+                          <div className="absolute -top-1 -right-1 w-4 h-4 bg-purple-400 rounded-full animate-ping"></div>
                         </div>
-
-                        {/* New - Emphasized as Great Deal */}
-                        <div className="relative overflow-hidden group">
-                          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-green-600/10 group-hover:from-green-500/10 group-hover:to-green-600/15 transition-all duration-300"></div>
-                          <div className="relative p-6 text-center">
-                            <div className="text-xs uppercase tracking-wider text-green-500 font-semibold mb-2 font-assistant">
-                              ✨ תשלמו רק
-                            </div>
-                            <div className="text-4xl font-bold text-green-600 mb-1 font-heebo">
-                              ₪{savingsData.recommendedMonthly}
-                            </div>
-                            <div className="text-sm text-green-500 font-assistant">
-                              לחודש
-                            </div>
-                            <div className="text-xs text-green-400 mt-2 font-assistant">
-                              ₪{(savingsData.recommendedMonthly * 12).toLocaleString()} לשנה
-                            </div>
-                            {/* Emphasis - Great Deal */}
-                            <div className="absolute top-2 left-2">
-                              <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-assistant animate-bounce">
-                                מחיר מעולה!
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Dramatic Savings Bar */}
-                      <div className="bg-gray-50 border-t border-gray-200 p-4">
-                        <div className="flex items-center justify-center">
-                          <div className="bg-gradient-to-r from-green-600 to-green-500 rounded-2xl px-8 py-4 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-                            <div className="flex items-center gap-4 text-white">
-                              <div className="text-center">
-                                <div className="text-2xl font-bold font-heebo animate-pulse">
-                                  ₪{savingsData.monthlySavings}
-                                </div>
-                                <div className="text-xs opacity-90 font-assistant">חיסכון לחודש</div>
-                              </div>
-                              <div className="w-px h-8 bg-white/30"></div>
-                              <div className="text-center">
-                                <div className="text-xl font-bold font-heebo">
-                                  {savingsPercentage}%
-                                </div>
-                                <div className="text-xs opacity-90 font-assistant">פחות תשלום</div>
-                              </div>
-                              <div className="w-px h-8 bg-white/30"></div>
-                              <div className="text-center">
-                                <div className="text-xl font-bold font-heebo">
-                                  ₪{savingsData.annualSavings.toLocaleString()}
-                                </div>
-                                <div className="text-xs opacity-90 font-assistant">חיסכון שנתי</div>
-                              </div>
-                            </div>
-                          </div>
+                        <div>
+                          <h3 className="text-3xl font-bold text-gray-800 font-heebo">
+                            חיסכון של <span className="text-purple-600">{savingsPercentage}%</span> בקטגוריית {savingsData.category}
+                          </h3>
+                          <p className="text-lg text-gray-600 font-assistant">
+                            חסכו <span className="font-bold text-purple-600">₪{savingsData.annualSavings.toLocaleString()}</span> בשנה עם מעבר חכם
+                          </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Urgency Call to Action */}
-                    <div className="text-center mt-6 space-y-2">
-                      <div className="inline-flex items-center gap-2 bg-yellow-50 border border-yellow-200 rounded-full px-4 py-2">
-                        <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                        <p className="text-sm text-yellow-700 font-medium font-assistant">
-                          כל יום שאתם מחכים = ₪{Math.round(savingsData.monthlySavings / 30)} שאתם מפסידים
-                        </p>
+                    {/* Advanced Interactive Comparison */}
+                    <div className="relative">
+                      {/* Background Glow Effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-100 via-purple-50 to-purple-100 rounded-3xl blur-xl opacity-60"></div>
+                      
+                      <div className="relative bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-100 overflow-hidden">
+                        <div className="grid md:grid-cols-2 divide-x divide-purple-100">
+                          
+                          {/* Current Payment - Enhanced */}
+                          <div className="relative group cursor-pointer">
+                            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-25 to-purple-25 group-hover:from-gray-75 group-hover:to-purple-50 transition-all duration-500"></div>
+                            <div className="relative p-8 text-center">
+                              {/* Status Badge */}
+                              <div className="absolute top-4 left-4">
+                                <div className="bg-gray-500 text-white text-xs px-3 py-1 rounded-full font-assistant flex items-center gap-1">
+                                  <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+                                  מצב נוכחי
+                                </div>
+                              </div>
+                              
+                              <div className="pt-4">
+                                <div className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-3 font-assistant">
+                                  התשלום שלכם כרגע
+                                </div>
+                                <div className="relative">
+                                  <div className="text-5xl font-bold text-gray-700 mb-2 font-heebo group-hover:scale-110 transition-transform duration-300">
+                                    ₪{savingsData.currentMonthly}
+                                  </div>
+                                  <div className="text-lg text-gray-500 font-assistant mb-4">לחודש</div>
+                                  
+                                  {/* Annual Cost */}
+                                  <div className="bg-gray-100 rounded-xl p-3 border border-gray-200">
+                                    <div className="text-sm text-gray-600 font-assistant">עלות שנתית</div>
+                                    <div className="text-xl font-semibold text-gray-700 font-heebo">
+                                      ₪{(savingsData.currentMonthly * 12).toLocaleString()}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* New Payment - Enhanced */}
+                          <div className="relative group cursor-pointer">
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-purple-25 to-purple-50 group-hover:from-purple-75 group-hover:to-purple-100 transition-all duration-500"></div>
+                            <div className="relative p-8 text-center">
+                              {/* Status Badge */}
+                              <div className="absolute top-4 left-4">
+                                <div className="bg-purple-500 text-white text-xs px-3 py-1 rounded-full font-assistant flex items-center gap-1 animate-pulse">
+                                  <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                                  מסלול מומלץ
+                                </div>
+                              </div>
+                              
+                              <div className="pt-4">
+                                <div className="text-sm uppercase tracking-wider text-purple-500 font-semibold mb-3 font-assistant">
+                                  התשלום החדש שלכם
+                                </div>
+                                <div className="relative">
+                                  <div className="text-5xl font-bold text-purple-600 mb-2 font-heebo group-hover:scale-110 transition-transform duration-300">
+                                    ₪{savingsData.recommendedMonthly}
+                                  </div>
+                                  <div className="text-lg text-purple-500 font-assistant mb-4">לחודש</div>
+                                  
+                                  {/* Annual Cost with Savings */}
+                                  <div className="bg-purple-100 rounded-xl p-3 border border-purple-200">
+                                    <div className="text-sm text-purple-600 font-assistant">עלות שנתית</div>
+                                    <div className="text-xl font-semibold text-purple-700 font-heebo">
+                                      ₪{(savingsData.recommendedMonthly * 12).toLocaleString()}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Interactive Savings Showcase */}
+                        <div className="bg-gradient-to-r from-purple-600 via-purple-700 to-purple-600 p-6">
+                          <div className="flex items-center justify-center">
+                            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 cursor-pointer group">
+                              <div className="flex items-center gap-6 text-white">
+                                
+                                {/* Monthly Savings */}
+                                <div className="text-center group-hover:scale-105 transition-transform duration-300">
+                                  <div className="text-3xl font-bold font-heebo mb-1">
+                                    ₪{savingsData.monthlySavings}
+                                  </div>
+                                  <div className="text-sm opacity-90 font-assistant">חיסכון חודשי</div>
+                                </div>
+
+                                {/* Divider */}
+                                <div className="w-px h-12 bg-white/30"></div>
+
+                                {/* Percentage */}
+                                <div className="text-center group-hover:scale-105 transition-transform duration-300">
+                                  <div className="text-3xl font-bold font-heebo mb-1">
+                                    {savingsPercentage}%
+                                  </div>
+                                  <div className="text-sm opacity-90 font-assistant">פחות תשלום</div>
+                                </div>
+
+                                {/* Divider */}
+                                <div className="w-px h-12 bg-white/30"></div>
+
+                                {/* Annual Savings */}
+                                <div className="text-center group-hover:scale-105 transition-transform duration-300">
+                                  <div className="text-2xl font-bold font-heebo mb-1">
+                                    ₪{savingsData.annualSavings.toLocaleString()}
+                                  </div>
+                                  <div className="text-sm opacity-90 font-assistant">חיסכון שנתי</div>
+                                </div>
+
+                                {/* Interactive Arrow */}
+                                <div className="ml-4">
+                                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
+                                    <ArrowRight className="w-6 h-6" />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
+                    </div>
+
+                    {/* Smart Call to Action */}
+                    <div className="mt-8 text-center space-y-4">
+                      <div className="flex items-center justify-center gap-4">
+                        <div className="bg-purple-50 border border-purple-200 rounded-full px-6 py-3 hover:bg-purple-100 transition-colors cursor-pointer group">
+                          <div className="flex items-center gap-3">
+                            <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+                            <span className="text-sm font-medium text-purple-700 font-assistant group-hover:font-semibold transition-all">
+                              חיסכון יומי: ₪{Math.round(savingsData.monthlySavings / 30)}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="bg-gray-50 border border-gray-200 rounded-full px-6 py-3 hover:bg-gray-100 transition-colors cursor-pointer">
+                          <span className="text-sm text-gray-600 font-assistant">
+                            🚀 מעבר מהיר ללא עמלות
+                          </span>
+                        </div>
+                      </div>
+                      
                       <p className="text-xs text-gray-500 font-assistant">
-                        🚀 מעבר מהיר וקל - התחילו לחסוך כבר השבוע
+                        * החיסכון מבוסס על השוואת מסלולים זמינים במועד הבדיקה
                       </p>
                     </div>
                   </div>
