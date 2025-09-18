@@ -8,6 +8,7 @@ import PlanComparison from "@/components/plans/PlanComparison";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
 import ProviderGrid from "@/components/providers/ProviderGrid";
 import PlanGrid from "@/components/providers/PlanGrid";
+import EnhancedPlanGrid from "@/components/providers/EnhancedPlanGrid";
 import DetailedAIComparison from "@/components/plans/DetailedAIComparison";
 
 interface SavingsData {
