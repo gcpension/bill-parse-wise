@@ -27,9 +27,19 @@ import {
   Zap
 } from 'lucide-react';
 import { ManualPlan } from '@/data/manual-plans';
+import { PlanRecord } from '@/hooks/useAllPlans';
 import { RecommendationEngine, RecommendationContext, EnhancedRecommendation } from '@/lib/recommendationEngine';
 import { DataAccuracyValidator } from '@/lib/dataAccuracy';
 import { logger } from '@/lib/logger';
+
+// Helper functions to handle both ManualPlan and PlanRecord types
+const getPlanName = (plan: ManualPlan | PlanRecord): string => {
+  return 'planName' in plan ? plan.planName : plan.plan;
+};
+
+const getPlanPrice = (plan: ManualPlan | PlanRecord): number => {
+  return 'regularPrice' in plan ? plan.regularPrice : (plan.monthlyPrice || 0);
+};
 
 interface PersonalizedRecommendationProps {
   isOpen: boolean;
@@ -225,12 +235,12 @@ const PersonalizedRecommendation = ({ isOpen, onClose, comparedPlans }: Personal
                               {index === 0 ? 'המלצה #1' : `חלופה #${index + 1}`}
                             </Badge>
                             <CardTitle className="text-xl">{recommendation.plan.company}</CardTitle>
-                            <p className="text-muted-foreground">{recommendation.plan.planName}</p>
+                            <p className="text-muted-foreground">{getPlanName(recommendation.plan)}</p>
                           </div>
                         </div>
                         <div className="text-center">
                           <div className={`text-3xl font-black ${index === 0 ? 'text-primary' : 'text-muted-foreground'}`}>
-                            ₪{recommendation.plan.regularPrice}
+                            ₪{getPlanPrice(recommendation.plan)}
                           </div>
                           <div className="text-sm text-muted-foreground">לחודש</div>
                         </div>
