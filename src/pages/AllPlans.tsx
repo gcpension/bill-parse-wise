@@ -116,6 +116,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
   const [comparedPlans, setComparedPlans] = useState<ManualPlan[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<ManualPlan | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   
   useEffect(() => {
     document.title = "כל המסלולים | חסכונט";
@@ -439,7 +440,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
             </div>
           )} */}
 
-          {/* Plans Display - Group by Category (Sector) with Enhanced Design */}
+          {/* Plans Display - Company Selection First */}
           <div className="space-y-16 max-w-7xl mx-auto">
             {(() => {
               // First filter plans by selected category
@@ -558,154 +559,149 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                       </div>
                     </div>
 
-                    {/* Enhanced Companies in Category */}
-                    <div className="space-y-10">
-                      {Object.entries(companiesInCategory)
-                        .sort(([,a], [,b]) => b.length - a.length)
-                        .map(([company, companyPlans]) => {
-                          const sortedPlans = companyPlans.sort((a, b) => {
-                            if (a.category === 'electricity' || b.category === 'electricity') return 0;
-                            return parseInt(a.regularPrice.toString()) - parseInt(b.regularPrice.toString());
-                          });
-
-                          return (
-                            <div key={`${category}-${company}`} className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-white/60 shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
-                              {/* Enhanced Company Header */}
-                              <div className="bg-gradient-to-r from-white via-gray-50 to-white p-6 border-b border-gray-200/50">
-                                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                                  <div className="flex items-center gap-4">
-                                    <div className="relative">
-                                      <div className={`w-16 h-16 bg-gradient-to-br ${categoryColors[category as keyof typeof categoryColors]} rounded-2xl flex items-center justify-center shadow-lg border-2 border-white`}>
+                    {/* Company Selection or Plans Display */}
+                    <div className="space-y-8">
+                      {!selectedCompany ? (
+                        // Show company grid when no company is selected
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {Object.entries(companiesInCategory)
+                            .sort(([,a], [,b]) => b.length - a.length)
+                            .map(([company, companyPlans]) => {
+                              const minPrice = Math.min(...companyPlans.map(p => p.regularPrice));
+                              const avgRating = (Math.random() * 1.5 + 3.5).toFixed(1);
+                              
+                              return (
+                                <Card 
+                                  key={`${category}-${company}`}
+                                  className="group bg-white/90 backdrop-blur-sm border-2 border-white/60 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer"
+                                  onClick={() => setSelectedCompany(company)}
+                                >
+                                  <CardContent className="p-8">
+                                    <div className="flex items-start gap-4 mb-6">
+                                      <div className={`w-16 h-16 bg-gradient-to-br ${categoryColors[category as keyof typeof categoryColors]} rounded-2xl flex items-center justify-center shadow-lg border-2 border-white group-hover:scale-110 transition-all duration-300`}>
                                         <span className="text-2xl font-black text-white">
                                           {company.slice(0, 2)}
                                         </span>
                                       </div>
-                                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center border-2 border-white">
-                                        <CheckCircle className="w-4 h-4 text-white" />
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <h3 className="text-2xl lg:text-3xl font-black text-gray-900 mb-1">
-                                        {company}
-                                      </h3>
-                                      <div className="flex flex-wrap items-center gap-3">
-                                        <p className="text-gray-600 font-medium">
-                                          {sortedPlans.length} מסלולים ב{categoryLabelsHebrew[category as keyof typeof categoryLabelsHebrew]?.replace('מסלולי ', '')}
-                                        </p>
-                                        <div className="flex items-center gap-1">
+                                      <div className="flex-1">
+                                        <h3 className="text-2xl font-black text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                                          {company}
+                                        </h3>
+                                        <div className="flex items-center gap-2 mb-2">
                                           <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                                          <span className="text-sm font-bold text-gray-700">
-                                            {(Math.random() * 1.5 + 3.5).toFixed(1)}
-                                          </span>
+                                          <span className="text-sm font-bold text-gray-700">{avgRating}</span>
+                                          <Badge className="bg-success/10 text-success border-success/30 text-xs">מומלץ</Badge>
                                         </div>
-                                        <Badge className="bg-success/10 text-success border-success/30 font-medium">
-                                          מומלץ
-                                        </Badge>
+                                        <p className="text-gray-600 font-medium text-sm">
+                                          {companyPlans.length} מסלולים זמינים
+                                        </p>
                                       </div>
                                     </div>
-                                  </div>
-                                  
-                                  {/* Enhanced Price Badge */}
-                                  <div className="flex items-center gap-3">
-                                    {category !== 'electricity' && (
-                                      <div className="text-center bg-success/10 border-2 border-success/20 rounded-xl p-3">
-                                        <div className="text-2xl font-black text-success">
-                                          ₪{Math.min(...sortedPlans.map(p => p.regularPrice))}
-                                        </div>
-                                        <div className="text-xs text-success/80 font-medium">החל מ- לחודש</div>
-                                      </div>
-                                    )}
-                                    <div className="text-center bg-primary/10 border-2 border-primary/20 rounded-xl p-3">
-                                      <div className="text-lg font-black text-primary">
-                                        {Math.floor(Math.random() * 30) + 70}%
-                                      </div>
-                                      <div className="text-xs text-primary/80 font-medium">פופולריות</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* Enhanced Company Plans Grid */}
-                              <div className="p-8">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                  {sortedPlans.map((plan, index) => (
-                                    <div key={plan.id} className="relative">
-                                      {index === 0 && (
-                                        <div className="absolute -top-3 -right-3 z-10">
-                                          <div className="bg-gradient-to-r from-success to-green-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg border-2 border-white">
-                                            <Crown className="w-3 h-3 inline mr-1" />
-                                            הכי מומלץ
-                                          </div>
-                                        </div>
-                                      )}
-                                      <InteractivePlanCard
-                                        plan={plan}
-                                        rank={index + 1}
-                                        isCompared={comparedPlans.some(p => p.id === plan.id)}
-                                        onCompareToggle={handleCompareToggle}
-                                        canCompare={comparedPlans.length < 3}
-                                        showSavings={mockSavingsData.length > 0}
-                                        estimatedSavings={mockSavingsData.find(s => 
-                                          (s.category === 'סלולר' && plan.category === 'mobile') ||
-                                          s.category === plan.category
-                                        )?.monthlySavings}
-                                        onSelect={handlePlanSelect}
-                                        isRecommended={index === 0}
-                                        popularityScore={Math.floor(Math.random() * 40) + 60}
-                                        className="hover:scale-105 transition-all duration-300 hover:shadow-xl"
-                                      />
-                                    </div>
-                                  ))}
-                                </div>
-                                
-                                {/* Enhanced Company Summary */}
-                                {sortedPlans.length > 0 && (
-                                  <div className="mt-8 p-6 bg-gradient-to-r from-gray-50 via-white to-gray-50 rounded-2xl border-2 border-gray-200/50 shadow-inner">
-                                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                                      <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 bg-gradient-to-r from-success to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                                          <Sparkles className="w-6 h-6 text-white" />
-                                        </div>
+                                    
+                                    <div className="space-y-4">
+                                      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-success/10 to-green-100/50 rounded-xl border border-success/20">
                                         <div>
-                                          <h4 className="text-xl font-black text-gray-900 mb-2">
-                                            המסלול המוביל של {company}
-                                          </h4>
-                                          <p className="text-lg font-bold text-success mb-1">
-                                            {sortedPlans[0].planName}
-                                          </p>
-                                          <p className="text-sm text-gray-600 font-medium">
-                                            הבחירה הפופולרית ביותר - מותאם לרוב הלקוחות
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <div className="flex items-center gap-4">
-                                        <div className="text-center">
-                                          <div className="text-3xl font-black text-success">
-                                            ₪{sortedPlans[0].regularPrice}
-                                            {sortedPlans[0].category === 'electricity' ? '' : '/חודש'}
+                                          <p className="text-sm font-medium text-gray-600 mb-1">מחיר התחלתי</p>
+                                          <div className="text-2xl font-black text-success">
+                                            {category !== 'electricity' ? `₪${minPrice}/חודש` : `${Math.max(...companyPlans.map(p => parseInt(p.speed.replace('%', '')) || 0))}% הנחה`}
                                           </div>
-                                          {sortedPlans[0].introPrice > 0 && sortedPlans[0].introPrice !== sortedPlans[0].regularPrice && (
-                                            <div className="text-sm text-gray-500 line-through">
-                                              ₪{sortedPlans[0].introPrice}
-                                            </div>
-                                          )}
                                         </div>
-                                        <Button 
-                                          size="lg"
-                                          className="bg-gradient-to-r from-success to-green-600 hover:from-success/90 hover:to-green-600/90 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300"
-                                          onClick={() => handlePlanSelect(sortedPlans[0])}
-                                        >
-                                          <TrendingUp className="w-5 h-5 mr-2" />
-                                          בחר עכשיו
-                                        </Button>
+                                        <div className="text-center">
+                                          <div className="text-lg font-black text-primary">
+                                            {Math.floor(Math.random() * 30) + 70}%
+                                          </div>
+                                          <div className="text-xs text-gray-600">פופולריות</div>
+                                        </div>
                                       </div>
+                                      
+                                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                                        <CheckCircle className="w-4 h-4 text-success" />
+                                        <span>מסלולים מומלצים במיוחד</span>
+                                      </div>
+                                      
+                                      <Button 
+                                        className="w-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 text-white font-bold shadow-lg group-hover:shadow-xl transition-all duration-300"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setSelectedCompany(company);
+                                        }}
+                                      >
+                                        צפה במסלולים
+                                        <Sparkles className="w-4 h-4 mr-2" />
+                                      </Button>
                                     </div>
-                                  </div>
-                                )}
+                                  </CardContent>
+                                </Card>
+                              );
+                            })}
+                        </div>
+                      ) : (
+                        // Show plans for selected company
+                        <div className="space-y-8">
+                          {/* Back button and company header */}
+                          <div className="flex items-center gap-4 mb-8">
+                            <Button 
+                              variant="outline"
+                              onClick={() => setSelectedCompany(null)}
+                              className="flex items-center gap-2 hover:bg-primary/10"
+                            >
+                              ← חזרה לבחירת חברה
+                            </Button>
+                            <div className="flex items-center gap-4">
+                              <div className={`w-12 h-12 bg-gradient-to-br ${categoryColors[category as keyof typeof categoryColors]} rounded-xl flex items-center justify-center shadow-lg border-2 border-white`}>
+                                <span className="text-lg font-black text-white">
+                                  {selectedCompany.slice(0, 2)}
+                                </span>
+                              </div>
+                              <div>
+                                <h3 className="text-2xl font-black text-gray-900">
+                                  מסלולי {selectedCompany}
+                                </h3>
+                                <p className="text-gray-600">
+                                  {companiesInCategory[selectedCompany]?.length} מסלולים זמינים
+                                </p>
                               </div>
                             </div>
-                          );
-                        })}
+                          </div>
+                          
+                          {/* Plans grid for selected company */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {companiesInCategory[selectedCompany]
+                              ?.sort((a, b) => {
+                                if (a.category === 'electricity' || b.category === 'electricity') return 0;
+                                return parseInt(a.regularPrice.toString()) - parseInt(b.regularPrice.toString());
+                              })
+                              .map((plan, index) => (
+                                <div key={plan.id} className="relative">
+                                  {index === 0 && (
+                                    <div className="absolute -top-3 -right-3 z-10">
+                                      <div className="bg-gradient-to-r from-success to-green-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg border-2 border-white">
+                                        <Crown className="w-3 h-3 inline mr-1" />
+                                        הכי מומלץ
+                                      </div>
+                                    </div>
+                                  )}
+                                  <InteractivePlanCard
+                                    plan={plan}
+                                    rank={index + 1}
+                                    isCompared={comparedPlans.some(p => p.id === plan.id)}
+                                    onCompareToggle={handleCompareToggle}
+                                    canCompare={comparedPlans.length < 3}
+                                    showSavings={mockSavingsData.length > 0}
+                                    estimatedSavings={mockSavingsData.find(s => 
+                                      (s.category === 'סלולר' && plan.category === 'mobile') ||
+                                      s.category === plan.category
+                                    )?.monthlySavings}
+                                    onSelect={handlePlanSelect}
+                                    isRecommended={index === 0}
+                                    popularityScore={Math.floor(Math.random() * 40) + 60}
+                                    className="hover:scale-105 transition-all duration-300 hover:shadow-xl"
+                                  />
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </section>
                 ));
