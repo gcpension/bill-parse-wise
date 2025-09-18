@@ -365,9 +365,9 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
             </div>
           )}
 
-          {/* Professional Compact Savings Dashboard */}
+          {/* Modern Minimal Savings Widget */}
           {mockSavingsData.length > 0 && (currentStep === 'analysis-plans' || selectedCategory) && (
-            <div className="mb-10 animate-fade-in opacity-0" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
+            <div className="mb-8 animate-fade-in opacity-0" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
               {mockSavingsData.map((savingsData, index) => {
                 if (currentStep !== 'analysis-plans' && selectedCategory) {
                   const categoryKey = selectedCategory === 'mobile' ? 'סלולר' : 
@@ -378,138 +378,62 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                   if (savingsData.category !== categoryKey) return null;
                 }
                 
-                const savingsPercentage = ((savingsData.monthlySavings / savingsData.currentMonthly) * 100).toFixed(1);
+                const savingsPercentage = Math.round((savingsData.monthlySavings / savingsData.currentMonthly) * 100);
                 
                 return (
-                  <div key={index} className="max-w-4xl mx-auto">
-                    
-                    {/* Elegant Header */}
-                    <div className="text-center mb-6">
-                      <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-6 py-2 border border-purple-100 shadow-sm">
-                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-                        <span className="text-sm font-medium text-purple-700 font-assistant">
-                          ניתוח חיסכון - {savingsData.category}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Professional Savings Card */}
-                    <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden hover:shadow-3xl transition-all duration-700 group">
+                  <div key={index} className="max-w-2xl mx-auto">
+                    <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 hover:shadow-2xl transition-all duration-500 group">
                       
-                      {/* Gradient Header */}
-                      <div className="bg-gradient-to-r from-purple-600 via-purple-700 to-purple-800 p-6 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-50"></div>
-                        <div className="relative">
-                          <div className="flex items-center justify-between text-white">
-                            <div>
-                              <h3 className="text-xl font-bold font-heebo mb-1">חיסכון מותאם אישית</h3>
-                              <p className="text-purple-100 text-sm font-assistant opacity-90">השוואת מסלולים חכמה</p>
-                            </div>
-                            <div className="text-right">
-                              <div className="text-3xl font-bold font-heebo">{savingsPercentage}%</div>
-                              <div className="text-purple-200 text-xs font-assistant">חיסכון</div>
-                            </div>
-                          </div>
+                      {/* Header */}
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                          <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                          <span className="text-sm font-medium text-gray-700 font-assistant">
+                            {savingsData.category} • ניתוח חיסכון
+                          </span>
                         </div>
+                        <div className="text-right">
+                          <div className="text-2xl font-bold text-purple-600 font-heebo">{savingsPercentage}%</div>
+                          <div className="text-xs text-gray-500 font-assistant">חיסכון</div>
+                        </div>
+                      </div>
+
+                      {/* Main Content */}
+                      <div className="flex items-center justify-between">
                         
-                        {/* Decorative Elements */}
-                        <div className="absolute top-2 right-2 w-20 h-20 bg-white/5 rounded-full"></div>
-                        <div className="absolute bottom-2 left-2 w-12 h-12 bg-white/5 rounded-full"></div>
-                      </div>
+                        {/* Current */}
+                        <div className="text-center flex-1">
+                          <div className="text-xs text-gray-400 mb-1 font-assistant">נוכחי</div>
+                          <div className="text-xl font-bold text-gray-700 font-heebo">₪{savingsData.currentMonthly}</div>
+                        </div>
 
-                      {/* Content Grid */}
-                      <div className="p-6">
-                        <div className="grid md:grid-cols-3 gap-6">
-                          
-                          {/* Current Payment */}
-                          <div className="relative group/card">
-                            <div className="bg-gray-50/80 rounded-2xl p-5 border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-lg">
-                              <div className="flex items-center justify-between mb-3">
-                                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider font-assistant">נוכחי</div>
-                                <div className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center group-hover/card:bg-gray-300 transition-colors">
-                                  <div className="w-3 h-3 bg-gray-400 rounded-sm"></div>
-                                </div>
-                              </div>
-                              <div className="space-y-2">
-                                <div className="text-2xl font-bold text-gray-800 font-heebo">₪{savingsData.currentMonthly.toLocaleString()}</div>
-                                <div className="text-sm text-gray-500 font-assistant">לחודש</div>
-                                <div className="text-xs text-gray-400 bg-gray-100 rounded-lg px-2 py-1 font-assistant">
-                                  ₪{(savingsData.currentMonthly * 12).toLocaleString()} שנתי
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Arrow Transition */}
-                          <div className="flex items-center justify-center">
-                            <div className="relative">
-                              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                                <ArrowRight className="w-6 h-6 text-white group-hover:translate-x-1 transition-transform duration-300" />
-                              </div>
-                              <div className="absolute -top-2 -right-2 w-4 h-4 bg-purple-400 rounded-full animate-ping"></div>
-                            </div>
-                          </div>
-
-                          {/* New Payment */}
-                          <div className="relative group/card">
-                            <div className="bg-purple-50/80 rounded-2xl p-5 border border-purple-100 hover:border-purple-200 transition-all duration-300 hover:shadow-lg">
-                              <div className="flex items-center justify-between mb-3">
-                                <div className="text-xs font-semibold text-purple-600 uppercase tracking-wider font-assistant">מומלץ</div>
-                                <div className="w-8 h-8 bg-purple-200 rounded-lg flex items-center justify-center group-hover/card:bg-purple-300 transition-colors">
-                                  <div className="w-3 h-3 bg-purple-500 rounded-sm"></div>
-                                </div>
-                              </div>
-                              <div className="space-y-2">
-                                <div className="text-2xl font-bold text-purple-800 font-heebo">₪{savingsData.recommendedMonthly.toLocaleString()}</div>
-                                <div className="text-sm text-purple-600 font-assistant">לחודש</div>
-                                <div className="text-xs text-purple-500 bg-purple-100 rounded-lg px-2 py-1 font-assistant">
-                                  ₪{(savingsData.recommendedMonthly * 12).toLocaleString()} שנתי
-                                </div>
-                              </div>
-                            </div>
+                        {/* Arrow */}
+                        <div className="mx-6">
+                          <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                            <ArrowRight className="w-4 h-4 text-purple-600" />
                           </div>
                         </div>
 
-                        {/* Savings Summary */}
-                        <div className="mt-6 pt-6 border-t border-gray-100">
-                          <div className="bg-gradient-to-r from-purple-500/10 via-purple-600/5 to-purple-500/10 rounded-2xl p-4">
-                            <div className="flex items-center justify-between">
-                              
-                              {/* Monthly Savings */}
-                              <div className="text-center">
-                                <div className="text-lg font-bold text-purple-700 font-heebo">₪{savingsData.monthlySavings}</div>
-                                <div className="text-xs text-purple-600 font-assistant">חיסכון חודשי</div>
-                              </div>
+                        {/* New */}
+                        <div className="text-center flex-1">
+                          <div className="text-xs text-purple-500 mb-1 font-assistant">חדש</div>
+                          <div className="text-xl font-bold text-purple-700 font-heebo">₪{savingsData.recommendedMonthly}</div>
+                        </div>
 
-                              {/* Divider */}
-                              <div className="w-px h-8 bg-purple-200"></div>
-
-                              {/* Annual Savings */}
-                              <div className="text-center">
-                                <div className="text-lg font-bold text-purple-700 font-heebo">₪{savingsData.annualSavings.toLocaleString()}</div>
-                                <div className="text-xs text-purple-600 font-assistant">חיסכון שנתי</div>
-                              </div>
-
-                              {/* Divider */}
-                              <div className="w-px h-8 bg-purple-200"></div>
-
-                              {/* Daily Impact */}
-                              <div className="text-center">
-                                <div className="text-lg font-bold text-purple-700 font-heebo">₪{Math.round(savingsData.monthlySavings / 30)}</div>
-                                <div className="text-xs text-purple-600 font-assistant">חיסכון יומי</div>
-                              </div>
-                            </div>
+                        {/* Savings */}
+                        <div className="mr-6 text-center">
+                          <div className="bg-purple-500 text-white rounded-2xl px-4 py-2 group-hover:bg-purple-600 transition-colors">
+                            <div className="text-sm font-bold font-heebo">₪{savingsData.monthlySavings}</div>
+                            <div className="text-xs opacity-90 font-assistant">חיסכון</div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Subtle Call to Action */}
-                    <div className="text-center mt-4">
-                      <div className="inline-flex items-center gap-2 text-sm text-gray-500 font-assistant">
-                        <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
-                        <span>מעבר פשוט ומהיר ללא עמלות</span>
-                        <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
+                      {/* Bottom Note */}
+                      <div className="mt-4 pt-4 border-t border-gray-50">
+                        <div className="text-center text-xs text-gray-500 font-assistant">
+                          ₪{savingsData.annualSavings.toLocaleString()} חיסכון בשנה • מעבר ללא עמלות
+                        </div>
                       </div>
                     </div>
                   </div>
