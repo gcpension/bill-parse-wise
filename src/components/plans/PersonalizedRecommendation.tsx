@@ -21,9 +21,15 @@ import {
   Sparkles,
   Crown,
   Clock,
-  DollarSign
+  DollarSign,
+  ShieldCheck,
+  AlertTriangle,
+  Zap
 } from 'lucide-react';
 import { ManualPlan } from '@/data/manual-plans';
+import { RecommendationEngine, RecommendationContext, EnhancedRecommendation } from '@/lib/recommendationEngine';
+import { DataAccuracyValidator } from '@/lib/dataAccuracy';
+import { logger } from '@/lib/logger';
 
 interface PersonalizedRecommendationProps {
   isOpen: boolean;
@@ -45,6 +51,8 @@ const PersonalizedRecommendation = ({ isOpen, onClose, comparedPlans }: Personal
   const [step, setStep] = useState(1);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showRecommendation, setShowRecommendation] = useState(false);
+  const [enhancedRecommendations, setEnhancedRecommendations] = useState<EnhancedRecommendation[]>([]);
+  const [dataValidation, setDataValidation] = useState<any>(null);
   const [preferences, setPreferences] = useState<UserPreferences>({
     usage: 'medium',
     budget: [200],
@@ -58,44 +66,60 @@ const PersonalizedRecommendation = ({ isOpen, onClose, comparedPlans }: Personal
   const handleAnalyze = async () => {
     setIsAnalyzing(true);
     
-    // Simulate AI analysis
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    setIsAnalyzing(false);
-    setShowRecommendation(true);
+    try {
+      logger.info('Starting enhanced recommendation analysis', 'PersonalizedRecommendation', {
+        preferences,
+        plansCount: comparedPlans.length
+      });
+
+      // Create recommendation context
+      const context: RecommendationContext = {
+        category: (comparedPlans[0]?.category === 'mobile' ? 'cellular' : comparedPlans[0]?.category) || 'electricity',
+        currentProvider: comparedPlans[0]?.company || 'לא ידוע',
+        currentAmount: preferences.budget[0] * 1.2, // Assume current is 20% higher than budget
+        familySize: preferences.familySize,
+        usage: preferences.usage,
+        budget: preferences.budget[0],
+        priorities: preferences.priorities,
+        homeType: preferences.homeType
+      };
+
+      // Validate data accuracy
+      const validation = DataAccuracyValidator.validateCategoryData(
+        context.category,
+        {
+          currentProvider: context.currentProvider,
+          monthlyAmount: context.currentAmount,
+          familySize: preferences.familySize,
+          homeType: preferences.homeType
+        }
+      );
+      setDataValidation(validation);
+
+      // Generate enhanced recommendations
+      const recommendations = RecommendationEngine.generateRecommendations(
+        comparedPlans,
+        context
+      );
+      
+      setEnhancedRecommendations(recommendations.slice(0, 3)); // Top 3 recommendations
+      
+      // Simulate analysis time for better UX
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      
+    } catch (error) {
+      logger.error('Failed to generate enhanced recommendations', 'PersonalizedRecommendation', error);
+    } finally {
+      setIsAnalyzing(false);
+      setShowRecommendation(true);
+    }
   };
 
   const getPersonalizedRecommendation = () => {
-    if (comparedPlans.length === 0) return null;
-    
-    // Simple recommendation logic based on preferences
-    const sortedPlans = [...comparedPlans].sort((a, b) => {
-      let scoreA = 0;
-      let scoreB = 0;
-      
-      // Budget consideration
-      if (a.regularPrice <= preferences.budget[0]) scoreA += 3;
-      if (b.regularPrice <= preferences.budget[0]) scoreB += 3;
-      
-      // Family size consideration
-      if (preferences.familySize > 3) {
-        if (a.features.some(f => f.includes('משפחתי') || f.includes('רב משתמשים'))) scoreA += 2;
-        if (b.features.some(f => f.includes('משפחתי') || f.includes('רב משתמשים'))) scoreB += 2;
-      }
-      
-      // Usage consideration
-      if (preferences.usage === 'heavy') {
-        if (a.category === 'internet' && a.downloadSpeed && parseFloat(a.downloadSpeed) > 100) scoreA += 2;
-        if (b.category === 'internet' && b.downloadSpeed && parseFloat(b.downloadSpeed) > 100) scoreB += 2;
-      }
-      
-      return scoreB - scoreA;
-    });
-    
-    return sortedPlans[0];
+    return enhancedRecommendations[0] || null;
   };
 
-  const recommendedPlan = getPersonalizedRecommendation();
+  const recommendedPlan = getPersonalizedRecommendation()?.plan;
 
   if (showRecommendation) {
     return (
@@ -118,154 +142,177 @@ const PersonalizedRecommendation = ({ isOpen, onClose, comparedPlans }: Personal
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-success">
                   <Target className="w-6 h-6" />
-                  ניתוח הפרופיל שלכם
+                  ניתוח הפרופיל החכם שלכם
                 </CardTitle>
               </CardHeader>
-              <CardContent className="grid md:grid-cols-3 gap-4">
-                <div className="bg-white/70 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-success">{preferences.familySize}</div>
-                  <div className="text-sm text-muted-foreground">חברי משפחה</div>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="bg-white/70 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-success">{preferences.familySize}</div>
+                    <div className="text-sm text-muted-foreground">חברי משפחה</div>
+                  </div>
+                  <div className="bg-white/70 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-primary">₪{preferences.budget[0]}</div>
+                    <div className="text-sm text-muted-foreground">תקציב חודשי</div>
+                  </div>
+                  <div className="bg-white/70 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-purple-600 capitalize">{preferences.usage}</div>
+                    <div className="text-sm text-muted-foreground">רמת שימוש</div>
+                  </div>
                 </div>
-                <div className="bg-white/70 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-primary">₪{preferences.budget[0]}</div>
-                  <div className="text-sm text-muted-foreground">תקציב חודשי</div>
-                </div>
-                <div className="bg-white/70 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-purple-600 capitalize">{preferences.usage}</div>
-                  <div className="text-sm text-muted-foreground">רמת שימוש</div>
-                </div>
+
+                {/* Data Accuracy Indicator */}
+                {dataValidation && (
+                  <div className={`p-3 rounded-lg border ${
+                    dataValidation.overallAccuracy === 'high' ? 'bg-success/10 border-success/30' :
+                    dataValidation.overallAccuracy === 'medium' ? 'bg-warning/10 border-warning/30' :
+                    'bg-destructive/10 border-destructive/30'
+                  }`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      {dataValidation.overallAccuracy === 'high' ? 
+                        <ShieldCheck className="w-4 h-4 text-success" /> :
+                        <AlertTriangle className="w-4 h-4 text-warning" />
+                      }
+                      <span className={`text-sm font-medium ${
+                        dataValidation.overallAccuracy === 'high' ? 'text-success' : 'text-warning'
+                      }`}>
+                        רמת דיוק הנתונים: {dataValidation.overallAccuracy === 'high' ? 'גבוהה' : 
+                        dataValidation.overallAccuracy === 'medium' ? 'בינונית' : 'נמוכה'}
+                      </span>
+                    </div>
+                    {dataValidation.recommendedActions.length > 0 && (
+                      <div className="text-xs text-muted-foreground">
+                        המלצות לשיפור: {dataValidation.recommendedActions.slice(0, 2).join(', ')}
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
 
-            {/* Recommended Plan */}
-            {recommendedPlan && (
-              <Card className="bg-gradient-to-r from-primary/5 to-accent/5 border-2 border-primary/30 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/20 to-transparent rounded-full blur-2xl"></div>
+            {/* Enhanced Recommendations */}
+            {enhancedRecommendations.length > 0 && (
+              <div className="space-y-6">
+                <h3 className="text-xl font-bold text-center">ההמלצות החכמות שלנו:</h3>
                 
-                <CardHeader className="relative">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center">
-                        <Crown className="w-8 h-8 text-white" />
+                {enhancedRecommendations.map((recommendation, index) => (
+                  <Card key={index} className={`${index === 0 ? 
+                    'bg-gradient-to-r from-primary/5 to-accent/5 border-2 border-primary/30 shadow-2xl' :
+                    'border border-border/50 hover:shadow-lg transition-shadow'
+                  } relative overflow-hidden`}>
+                    
+                    {index === 0 && (
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/20 to-transparent rounded-full blur-2xl"></div>
+                    )}
+                    
+                    <CardHeader className="relative">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className={`w-16 h-16 ${index === 0 ? 
+                            'bg-gradient-to-r from-primary to-accent' : 
+                            'bg-gradient-to-r from-muted to-muted-foreground/20'
+                          } rounded-2xl flex items-center justify-center`}>
+                            {index === 0 ? 
+                              <Crown className="w-8 h-8 text-white" /> :
+                              <Star className="w-6 h-6 text-muted-foreground" />
+                            }
+                          </div>
+                          <div>
+                            <Badge className={index === 0 ? 
+                              "bg-success text-white mb-2" : 
+                              "bg-muted text-muted-foreground mb-2"
+                            }>
+                              {index === 0 ? 'המלצה #1' : `חלופה #${index + 1}`}
+                            </Badge>
+                            <CardTitle className="text-xl">{recommendation.plan.company}</CardTitle>
+                            <p className="text-muted-foreground">{recommendation.plan.planName}</p>
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className={`text-3xl font-black ${index === 0 ? 'text-primary' : 'text-muted-foreground'}`}>
+                            ₪{recommendation.plan.regularPrice}
+                          </div>
+                          <div className="text-sm text-muted-foreground">לחודש</div>
+                        </div>
                       </div>
-                      <div>
-                        <Badge className="bg-success text-white mb-2">ההמלצה שלנו #1</Badge>
-                        <CardTitle className="text-2xl">{recommendedPlan.company}</CardTitle>
-                        <p className="text-muted-foreground">{recommendedPlan.planName}</p>
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-4xl font-black text-primary">₪{recommendedPlan.regularPrice}</div>
-                      <div className="text-sm text-muted-foreground">לחודש</div>
-                    </div>
-                  </div>
-                </CardHeader>
+                    </CardHeader>
 
-                <CardContent className="space-y-6">
-                  {/* Why This Plan */}
-                  <div className="bg-gradient-to-r from-success/10 to-green-100/50 rounded-xl p-6 border border-success/30">
-                    <h3 className="text-xl font-bold text-success mb-4 flex items-center gap-2">
-                      <Lightbulb className="w-5 h-5" />
-                      למה בדיוק המסלול הזה מושלם עבורכם?
-                    </h3>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <CheckCircle className="w-5 h-5 text-success" />
-                          <span>מתאים לתקציב שקבעתם (₪{preferences.budget[0]})</span>
+                    <CardContent className="space-y-4">
+                      {/* Recommendation Score & Confidence */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-center p-3 bg-muted/30 rounded-lg">
+                          <div className="text-lg font-bold text-primary">{Math.round(recommendation.score)}/100</div>
+                          <div className="text-xs text-muted-foreground">ציון התאמה</div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <CheckCircle className="w-5 h-5 text-success" />
-                          <span>מותאם לרמת השימוש שלכם ({preferences.usage})</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <CheckCircle className="w-5 h-5 text-success" />
-                          <span>מתאים למשפחה בגודל {preferences.familySize}</span>
+                        <div className="text-center p-3 bg-muted/30 rounded-lg">
+                          <div className="text-lg font-bold text-success">{Math.round(recommendation.savings.confidenceScore * 100)}%</div>
+                          <div className="text-xs text-muted-foreground">רמת ביטחון</div>
                         </div>
                       </div>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <TrendingUp className="w-5 h-5 text-primary" />
-                          <span>חיסכון צפוי: ₪{Math.floor(Math.random() * 50 + 30)} לחודש</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Star className="w-5 h-5 text-yellow-500" />
-                          <span>דירוג מעולה מלקוחות קיימים</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Clock className="w-5 h-5 text-blue-500" />
-                          <span>התחייבות גמישה</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Plan Features */}
-                  <div>
-                    <h4 className="font-bold mb-3">תכונות המסלול:</h4>
-                    <div className="grid md:grid-cols-2 gap-2">
-                      {recommendedPlan.features.slice(0, 8).map((feature, index) => (
-                        <div key={index} className="flex items-center gap-2 p-2 bg-white/50 rounded-lg">
-                          <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
-                          <span className="text-sm">{feature}</span>
+                      {/* Savings Information */}
+                      {recommendation.savings.monthlySavings > 0 && (
+                        <div className="p-4 bg-success/10 rounded-lg border border-success/20">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="text-lg font-bold text-success">
+                                חיסכון: ₪{Math.round(recommendation.savings.monthlySavings)} לחודש
+                              </div>
+                              <div className="text-sm text-success/70">
+                                ₪{Math.round(recommendation.savings.annualSavings)} בשנה 
+                                ({recommendation.savings.percentageSaving.toFixed(1)}%)
+                              </div>
+                            </div>
+                            <Zap className="w-6 h-6 text-success" />
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
+                      )}
 
-                  {/* Action Buttons */}
-                  <div className="flex gap-4 pt-6 border-t">
-                    <Button 
-                      size="lg"
-                      className="flex-1 bg-gradient-to-r from-success to-green-600 hover:from-success/90 hover:to-green-600/90 text-white font-bold text-lg py-4 shadow-lg"
-                    >
-                      <Crown className="w-5 h-5 mr-2" />
-                      בחר במסלול המומלץ
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="lg"
-                      onClick={() => {
-                        setShowRecommendation(false);
-                        setStep(1);
-                      }}
-                      className="px-8"
-                    >
-                      שנה העדיפויות
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+                      {/* Match Reasons */}
+                      {recommendation.matchReasons.length > 0 && (
+                        <div className="space-y-2">
+                          <h5 className="font-medium text-sm">למה זה מתאים לך:</h5>
+                          <div className="space-y-1">
+                            {recommendation.matchReasons.map((reason, reasonIndex) => (
+                              <div key={reasonIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
+                                {reason}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
 
-            {/* Alternative Options */}
-            <div>
-              <h3 className="text-xl font-bold mb-4">אופציות נוספות שעשויות להתאים:</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                {comparedPlans.filter(plan => plan.id !== recommendedPlan?.id).slice(0, 2).map((plan, index) => (
-                  <Card key={plan.id} className="border border-border/50 hover:shadow-lg transition-all duration-300">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <div>
-                          <h4 className="font-bold">{plan.company}</h4>
-                          <p className="text-sm text-muted-foreground">{plan.planName}</p>
+                      {/* Warnings */}
+                      {recommendation.warnings.length > 0 && (
+                        <div className="p-3 bg-warning/10 rounded-lg border border-warning/30">
+                          <h5 className="font-medium text-sm text-warning mb-2">שים לב:</h5>
+                          <div className="space-y-1">
+                            {recommendation.warnings.map((warning, warningIndex) => (
+                              <div key={warningIndex} className="flex items-center gap-2 text-sm text-warning">
+                                <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                                {warning}
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-primary">₪{plan.regularPrice}</div>
-                          <div className="text-xs text-muted-foreground">לחודש</div>
-                        </div>
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {index === 0 ? 'יותר זול אבל עם פחות תכונות' : 'יותר יקר עם תכונות מתקדמות'}
-                      </div>
-                      <Button variant="outline" size="sm" className="w-full mt-3">
-                        בחר במסלול זה
-                      </Button>
+                      )}
+
+                      {/* Action Button */}
+                      {index === 0 && (
+                        <Button 
+                          size="lg"
+                          className="w-full bg-gradient-to-r from-success to-green-600 hover:from-success/90 hover:to-green-600/90 text-white font-bold text-lg py-4 shadow-lg"
+                        >
+                          <Crown className="w-5 h-5 mr-2" />
+                          בחר במסלול המומלץ
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
               </div>
-            </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
