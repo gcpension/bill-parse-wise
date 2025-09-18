@@ -92,12 +92,12 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
       // If multiple categories selected, show selected categories only
       return 'selected' as const;
     }
-    // Default to all plans if no specific category
-    return 'all' as const;
+    // Default to selected categories if available, otherwise all plans
+    return effectiveCategories.length > 0 ? 'selected' as const : 'all' as const;
   };
   
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'selected' | 'electricity' | 'internet' | 'mobile' | 'tv'>(getInitialCategory());
-  const [showAllCategories, setShowAllCategories] = useState(false); // Track if user explicitly chose to see all categories
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'selected' | 'electricity' | 'internet' | 'mobile' | 'tv'>(() => getInitialCategory());
+  const [showAllCategories, setShowAllCategories] = useState(() => effectiveCategories.length === 0); // Track if user explicitly chose to see all categories
   
   // Enhanced state for new features
   const [filters, setFilters] = useState<FilterOptions>({
