@@ -8,6 +8,7 @@ import PlanComparison from "@/components/plans/PlanComparison";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
 import ProviderGrid from "@/components/providers/ProviderGrid";
 import PlanGrid from "@/components/providers/PlanGrid";
+import DetailedAIComparison from "@/components/plans/DetailedAIComparison";
 
 interface SavingsData {
   currentMonthly: number;
@@ -365,155 +366,148 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
             </div>
           )}
 
-          {/* Modern Financial Dashboard */}
+          {/* Unified Savings Dashboard */}
           {mockSavingsData.length > 0 && (currentStep === 'analysis-plans' || selectedCategory) && (
             <div className="mb-12 animate-fade-in opacity-0" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
-              {mockSavingsData.map((savingsData, index) => {
-                if (currentStep !== 'analysis-plans' && selectedCategory) {
-                  const categoryKey = selectedCategory === 'mobile' ? 'סלולר' : 
-                                   selectedCategory === 'electricity' ? 'חשמל' :
-                                   selectedCategory === 'internet' ? 'אינטרנט' :
-                                   selectedCategory === 'tv' ? 'טלוויזיה' : selectedCategory;
-                  
-                  if (savingsData.category !== categoryKey) return null;
-                }
+              {(() => {
+                // Calculate total savings if multiple categories
+                const totalMonthlySavings = mockSavingsData.reduce((sum, data) => sum + data.monthlySavings, 0);
+                const totalAnnualSavings = mockSavingsData.reduce((sum, data) => sum + data.annualSavings, 0);
+                const totalCurrentMonthly = mockSavingsData.reduce((sum, data) => sum + data.currentMonthly, 0);
+                const totalSavingsPercentage = Math.round((totalMonthlySavings / totalCurrentMonthly) * 100);
                 
                 return (
-                  <div key={index} className="max-w-5xl mx-auto">
-                    
-                    {/* Clean Modern Design */}
-                    <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-purple-100/50 shadow-xl overflow-hidden group hover:shadow-2xl hover:border-purple-200/70 transition-all duration-500">
+                  <div className="max-w-6xl mx-auto">
+                    {/* Main Unified Savings Card */}
+                    <div className={`bg-gradient-to-br from-white via-purple-50/30 to-white backdrop-blur-md rounded-3xl border border-purple-100/50 shadow-2xl overflow-hidden group hover:shadow-3xl transition-all duration-700 ${
+                      mockSavingsData.length > 1 ? 'p-8' : 'p-12'
+                    }`}>
                       
-                      {/* Header Strip */}
-                      <div className="bg-gradient-to-r from-purple-50 via-white to-purple-50 px-8 py-4 border-b border-purple-100/30">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                            <h3 className="text-lg font-semibold text-purple-800 font-heebo">
-                              חיסכון חכם ב{savingsData.category}
-                            </h3>
+                      {/* Premium Header */}
+                      <div className="text-center mb-8">
+                        <div className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+                          <Star className="w-5 h-5" />
+                          <span className="font-semibold font-heebo">ניתוח חיסכון מתקדם</span>
+                        </div>
+                        {mockSavingsData.length > 1 ? (
+                          <h2 className="text-2xl font-bold text-purple-800 font-heebo">
+                            חיסכון משולב בכל השירותים
+                          </h2>
+                        ) : (
+                          <h2 className="text-3xl font-bold text-purple-800 font-heebo">
+                            חיסכון חכם ב{mockSavingsData[0].category}
+                          </h2>
+                        )}
+                      </div>
+
+                      {/* Massive Savings Display */}
+                      <div className="text-center mb-12">
+                        <div className="bg-gradient-to-r from-purple-500/10 via-purple-600/5 to-purple-500/10 rounded-3xl p-8 border border-purple-200/30">
+                          <div className="text-sm text-purple-600 font-assistant mb-3 tracking-widest uppercase">
+                            החיסכון השנתי שלכם
                           </div>
-                          <div className="text-xs text-purple-600 font-assistant">
-                            ניתוח מתקדם
+                          <div className="flex items-center justify-center gap-4 mb-4">
+                            <div className="text-8xl lg:text-9xl font-extralight text-purple-800 font-heebo leading-none">
+                              {totalAnnualSavings.toLocaleString()}
+                            </div>
+                            <div className="text-4xl text-purple-600 font-heebo">₪</div>
+                          </div>
+                          
+                          {/* Percentage and Monthly */}
+                          <div className="flex items-center justify-center gap-8 text-2xl font-heebo">
+                            <div className="bg-green-100 text-green-800 px-6 py-3 rounded-2xl font-bold">
+                              {totalSavingsPercentage}% חיסכון
+                            </div>
+                            <div className="text-purple-700">
+                              ₪{totalMonthlySavings.toLocaleString()} לחודש
+                            </div>
                           </div>
                         </div>
                       </div>
 
-                      {/* Main Content - Split Layout */}
-                      <div className="p-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                          
-                          {/* Left Side - Typography Focus */}
-                          <div className="space-y-6">
-                            
-                            {/* Primary Savings Display */}
-                            <div className="text-center lg:text-right">
-                              <div className="text-sm text-purple-600 font-assistant mb-2 tracking-wide uppercase">
-                                חיסכון חודשי
-                              </div>
-                              <div className="text-6xl lg:text-7xl font-light text-purple-800 font-heebo leading-none mb-2">
-                                {savingsData.monthlySavings}
-                              </div>
-                              <div className="text-2xl text-purple-600 font-heebo">
-                                ₪
-                              </div>
-                            </div>
-
-                            {/* Secondary Info */}
-                            <div className="bg-purple-50/50 rounded-xl p-4 border border-purple-100/30">
-                              <div className="flex items-center justify-between text-sm">
-                                <span className="text-purple-700 font-assistant">חיסכון שנתי</span>
-                                <span className="text-2xl font-bold text-purple-800 font-heebo">
-                                  ₪{savingsData.annualSavings.toLocaleString()}
-                                </span>
-                              </div>
-                            </div>
-
-                            {/* Impact Statement */}
-                            <div className="text-center lg:text-right">
-                              <p className="text-purple-700 font-assistant text-lg leading-relaxed">
-                                מעבר ל<strong className="text-purple-800">{savingsData.recommendedProvider}</strong> 
-                                <br />
-                                יחסוך לכם <strong className="text-purple-800">{Math.round((savingsData.monthlySavings / savingsData.currentMonthly) * 100)}%</strong> מהחשבון
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Right Side - Visual Data */}
-                          <div className="space-y-6">
-                            
-                            {/* Current vs Recommended Comparison */}
-                            <div className="space-y-4">
-                              
-                              {/* Current Provider */}
-                              <div className="group/item">
-                                <div className="flex items-center justify-between mb-2">
-                                  <span className="text-sm font-medium text-gray-600 font-assistant">הספק הנוכחי</span>
-                                  <span className="text-sm text-gray-500 font-assistant">{savingsData.currentProvider}</span>
+                      {/* Categories Breakdown */}
+                      {mockSavingsData.length > 1 && (
+                        <div className="mb-8">
+                          <h3 className="text-xl font-semibold text-purple-800 font-heebo mb-6 text-center">
+                            פירוט החיסכון לפי קטגוריה
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {mockSavingsData.map((data, index) => (
+                              <div key={index} className="bg-white/60 rounded-2xl p-6 border border-purple-100/50">
+                                <div className="flex items-center justify-between mb-3">
+                                  <span className="font-medium text-purple-800 font-heebo">{data.category}</span>
+                                  <span className="text-sm text-purple-600 font-assistant">{data.currentProvider} → {data.recommendedProvider}</span>
                                 </div>
-                                <div className="bg-gray-100 rounded-lg h-3 overflow-hidden">
-                                  <div 
-                                    className="h-full bg-gradient-to-r from-gray-400 to-gray-500 rounded-lg transition-all duration-1000 ease-out"
-                                    style={{ width: '100%' }}
-                                  ></div>
-                                </div>
-                                <div className="text-right mt-1">
-                                  <span className="text-lg font-bold text-gray-700 font-heebo">₪{savingsData.currentMonthly}</span>
-                                </div>
-                              </div>
-
-                              {/* Divider Line */}
-                              <div className="relative my-6">
-                                <div className="absolute inset-0 flex items-center">
-                                  <div className="w-full border-t border-purple-200"></div>
-                                </div>
-                                <div className="relative flex justify-center">
-                                  <div className="bg-white px-4">
-                                    <TrendingUp className="w-5 h-5 text-purple-500" />
+                                <div className="flex items-center justify-between">
+                                  <div className="text-2xl font-bold text-purple-700 font-heebo">
+                                    ₪{data.annualSavings.toLocaleString()}
+                                  </div>
+                                  <div className="text-right">
+                                    <div className="text-sm text-purple-600">₪{data.monthlySavings}/חודש</div>
+                                    <div className="text-xs text-green-600 font-bold">
+                                      {Math.round((data.monthlySavings / data.currentMonthly) * 100)}% חיסכון
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-
-                              {/* Recommended Provider */}
-                              <div className="group/item">
-                                <div className="flex items-center justify-between mb-2">
-                                  <span className="text-sm font-medium text-purple-700 font-assistant">הספק המומלץ</span>
-                                  <span className="text-sm text-purple-600 font-assistant">{savingsData.recommendedProvider}</span>
-                                </div>
-                                <div className="bg-purple-100 rounded-lg h-3 overflow-hidden">
-                                  <div 
-                                    className="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg transition-all duration-1000 ease-out"
-                                    style={{ 
-                                      width: `${(savingsData.recommendedMonthly / savingsData.currentMonthly) * 100}%`,
-                                      animationDelay: '0.5s'
-                                    }}
-                                  ></div>
-                                </div>
-                                <div className="text-right mt-1">
-                                  <span className="text-lg font-bold text-purple-700 font-heebo">₪{savingsData.recommendedMonthly}</span>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Daily Loss Indicator */}
-                            <div className="bg-purple-500/10 border border-purple-200/50 rounded-xl p-4">
-                              <div className="text-center">
-                                <div className="text-sm text-purple-700 font-assistant mb-1">הפסד יומי</div>
-                                <div className="text-2xl font-bold text-purple-800 font-heebo">
-                                  ₪{Math.round(savingsData.monthlySavings / 30)}
-                                </div>
-                                <div className="text-xs text-purple-600 font-assistant mt-1">
-                                  כל יום שלא עושים מעבר
-                                </div>
-                              </div>
-                            </div>
+                            ))}
                           </div>
+                        </div>
+                      )}
+
+                      {/* Impact Metrics */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-gradient-to-br from-purple-100 to-purple-50 rounded-2xl p-6 text-center">
+                          <div className="text-3xl font-bold text-purple-800 font-heebo mb-2">
+                            ₪{Math.round(totalMonthlySavings / 30).toLocaleString()}
+                          </div>
+                          <div className="text-purple-600 font-assistant text-sm">חיסכון יומי</div>
+                        </div>
+                        <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-2xl p-6 text-center">
+                          <div className="text-3xl font-bold text-green-800 font-heebo mb-2">
+                            {Math.round(totalAnnualSavings / 2000)}
+                          </div>
+                          <div className="text-green-600 font-assistant text-sm">חופשות בשנה</div>
+                        </div>
+                        <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl p-6 text-center">
+                          <div className="text-3xl font-bold text-blue-800 font-heebo mb-2">
+                            {Math.round(totalAnnualSavings / 12)}
+                          </div>
+                          <div className="text-blue-600 font-assistant text-sm">₪ חופשי לחודש</div>
+                        </div>
+                      </div>
+
+                      {/* Call to Action */}
+                      <div className="text-center">
+                        <p className="text-purple-700 font-assistant text-lg mb-6">
+                          המעבר פשוט וחינמי • החיסכון מתחיל מיד • שירות מקצועי ואמין
+                        </p>
+                        <div className="flex items-center justify-center gap-4">
+                          <Button className="h-14 px-8 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-heebo text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                            בואו נתחיל לחסוך
+                          </Button>
+                          {analyzedCategories.length > 0 && analysisPlans.length > 0 && (
+                            <DetailedAIComparison 
+                              plans={analysisPlans}
+                              userContext={{
+                                category: analyzedCategories[0] === 'mobile' ? 'cellular' : analyzedCategories[0],
+                                currentProvider: analysisData?.responses?.[analyzedCategories[0] === 'mobile' ? 'cellular' : analyzedCategories[0]]?.currentProvider || 'ספק נוכחי',
+                                currentAmount: parseInt(analysisData?.responses?.[analyzedCategories[0] === 'mobile' ? 'cellular' : analyzedCategories[0]]?.monthlyAmount) || 200,
+                                familySize: 3,
+                                budget: parseInt(analysisData?.responses?.[analyzedCategories[0] === 'mobile' ? 'cellular' : analyzedCategories[0]]?.monthlyAmount) * 0.8 || 160,
+                                usage: 'medium' as const,
+                                priorities: ['חיסכון', 'אמינות'],
+                                homeType: 'apartment' as const
+                              }}
+                              category={analyzedCategories[0]}
+                            />
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                 );
-              })}
+              })()}
             </div>
           )}
 
