@@ -439,8 +439,8 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
             </div>
           )} */}
 
-          {/* Plans Display - Group by Category (Sector) */}
-          <div className="space-y-12 max-w-7xl mx-auto">
+          {/* Plans Display - Group by Category (Sector) with Enhanced Design */}
+          <div className="space-y-16 max-w-7xl mx-auto">
             {(() => {
               // First filter plans by selected category
               let categoryFilteredPlans = filteredPlans;
@@ -476,10 +476,17 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
               };
 
               const categoryColors = {
-                'electricity': 'from-yellow-400 to-yellow-600',
-                'internet': 'from-cyan-400 to-cyan-600',
-                'mobile': 'from-purple-400 to-purple-600',
-                'tv': 'from-orange-400 to-orange-600'
+                'electricity': 'from-yellow-500 via-yellow-400 to-amber-500',
+                'internet': 'from-blue-500 via-cyan-400 to-teal-500',
+                'mobile': 'from-purple-500 via-violet-400 to-fuchsia-500',
+                'tv': 'from-orange-500 via-red-400 to-pink-500'
+              };
+
+              const categoryBgPatterns = {
+                'electricity': 'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50',
+                'internet': 'bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50',
+                'mobile': 'bg-gradient-to-br from-purple-50 via-violet-50 to-fuchsia-50',
+                'tv': 'bg-gradient-to-br from-orange-50 via-red-50 to-pink-50'
               };
 
               return Object.entries(plansByCategory)
@@ -489,51 +496,70 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                   return order.indexOf(a) - order.indexOf(b);
                 })
                 .map(([category, companiesInCategory]) => (
-                  <div key={category} className="space-y-8">
-                    {/* Category Header */}
-                    <div className={`bg-gradient-to-r ${categoryColors[category as keyof typeof categoryColors]} rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden`}>
-                      {/* Background Pattern */}
-                      <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
-                      
-                      <div className="relative flex items-center justify-between">
-                        <div className="flex items-center gap-6">
-                          <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center shadow-2xl border-2 border-white/30">
-                            {categoryIcons[category as keyof typeof categoryIcons]}
-                          </div>
-                          <div>
-                            <h2 className="text-4xl font-black mb-2">
-                              {categoryLabelsHebrew[category as keyof typeof categoryLabelsHebrew]}
-                            </h2>
-                            <p className="text-xl text-white/90 font-medium">
-                              {Object.values(companiesInCategory).flat().length} מסלולים מ-{Object.keys(companiesInCategory).length} חברות
-                            </p>
-                          </div>
-                        </div>
+                  <section key={category} className={`${categoryBgPatterns[category as keyof typeof categoryBgPatterns]} rounded-3xl p-8 border-2 border-white/60 shadow-2xl backdrop-blur-sm`}>
+                    {/* Enhanced Category Header */}
+                    <div className="mb-12">
+                      <div className={`bg-gradient-to-r ${categoryColors[category as keyof typeof categoryColors]} rounded-2xl p-8 text-white shadow-xl relative overflow-hidden`}>
+                        {/* Background decorative elements */}
+                        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
                         
-                        {/* Category Stats */}
-                        <div className="hidden lg:flex items-center gap-6">
-                          <div className="text-center bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
-                            <div className="text-3xl font-black">
-                              {Object.keys(companiesInCategory).length}
+                        <div className="relative">
+                          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                            <div className="flex items-center gap-6">
+                              <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-2xl border-2 border-white/30 ring-4 ring-white/10">
+                                {categoryIcons[category as keyof typeof categoryIcons]}
+                              </div>
+                              <div>
+                                <h2 className="text-4xl lg:text-5xl font-black mb-3 tracking-tight">
+                                  {categoryLabelsHebrew[category as keyof typeof categoryLabelsHebrew]}
+                                </h2>
+                                <div className="flex flex-wrap items-center gap-4">
+                                  <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+                                    <Users className="w-4 h-4" />
+                                    <span className="text-lg font-bold">
+                                      {Object.values(companiesInCategory).flat().length} מסלולים
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+                                    <Award className="w-4 h-4" />
+                                    <span className="text-lg font-bold">
+                                      {Object.keys(companiesInCategory).length} חברות
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm text-white/90 font-medium">חברות שירות</div>
-                          </div>
-                          <div className="text-center bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
-                            <div className="text-3xl font-black">
-                              ₪{category !== 'electricity' ? 
-                                Math.min(...Object.values(companiesInCategory).flat().map(p => p.regularPrice)) || 0 :
-                                '—'
-                              }
+                            
+                            {/* Enhanced Category Stats */}
+                            <div className="flex items-center gap-4">
+                              <div className="text-center bg-white/25 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+                                <div className="text-3xl font-black mb-1">
+                                  {Object.keys(companiesInCategory).length}
+                                </div>
+                                <div className="text-sm font-medium text-white/90">ספקים</div>
+                              </div>
+                              <div className="text-center bg-white/25 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+                                <div className="text-3xl font-black mb-1">
+                                  {category !== 'electricity' ? (
+                                    `₪${Math.min(...Object.values(companiesInCategory).flat().map(p => p.regularPrice)) || 0}`
+                                  ) : (
+                                    `${Math.max(...Object.values(companiesInCategory).flat().map(p => parseInt(p.speed.replace('%', '')) || 0))}%`
+                                  )}
+                                </div>
+                                <div className="text-sm font-medium text-white/90">
+                                  {category === 'electricity' ? 'הנחה עד' : 'החל מ-'}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm text-white/90 font-medium">{category === 'electricity' ? 'הנחה עד' : 'החל מ-'}</div>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Companies in Category */}
-                    <div className="space-y-8">
+                    {/* Enhanced Companies in Category */}
+                    <div className="space-y-10">
                       {Object.entries(companiesInCategory)
                         .sort(([,a], [,b]) => b.length - a.length)
                         .map(([company, companyPlans]) => {
@@ -543,77 +569,145 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                           });
 
                           return (
-                            <div key={`${category}-${company}`} className="bg-gradient-to-r from-card via-card/95 to-card/90 rounded-2xl p-6 border border-border/30 shadow-lg backdrop-blur-sm">
-                              {/* Company Header */}
-                              <div className="flex items-center justify-between mb-6">
-                                <div className="flex items-center gap-4">
-                                  <div className="w-16 h-16 bg-gradient-to-br from-primary via-primary-glow to-accent rounded-2xl flex items-center justify-center shadow-xl border border-white/20">
-                                    <span className="text-2xl font-black text-white">
-                                      {company.slice(0, 2)}
-                                    </span>
+                            <div key={`${category}-${company}`} className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-white/60 shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
+                              {/* Enhanced Company Header */}
+                              <div className="bg-gradient-to-r from-white via-gray-50 to-white p-6 border-b border-gray-200/50">
+                                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                                  <div className="flex items-center gap-4">
+                                    <div className="relative">
+                                      <div className={`w-16 h-16 bg-gradient-to-br ${categoryColors[category as keyof typeof categoryColors]} rounded-2xl flex items-center justify-center shadow-lg border-2 border-white`}>
+                                        <span className="text-2xl font-black text-white">
+                                          {company.slice(0, 2)}
+                                        </span>
+                                      </div>
+                                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center border-2 border-white">
+                                        <CheckCircle className="w-4 h-4 text-white" />
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <h3 className="text-2xl lg:text-3xl font-black text-gray-900 mb-1">
+                                        {company}
+                                      </h3>
+                                      <div className="flex flex-wrap items-center gap-3">
+                                        <p className="text-gray-600 font-medium">
+                                          {sortedPlans.length} מסלולים ב{categoryLabelsHebrew[category as keyof typeof categoryLabelsHebrew]?.replace('מסלולי ', '')}
+                                        </p>
+                                        <div className="flex items-center gap-1">
+                                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                                          <span className="text-sm font-bold text-gray-700">
+                                            {(Math.random() * 1.5 + 3.5).toFixed(1)}
+                                          </span>
+                                        </div>
+                                        <Badge className="bg-success/10 text-success border-success/30 font-medium">
+                                          מומלץ
+                                        </Badge>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div>
-                                    <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                                      {company}
-                                    </h3>
-                                    <p className="text-muted-foreground font-medium">
-                                      {sortedPlans.length} מסלולים ב{categoryLabelsHebrew[category as keyof typeof categoryLabelsHebrew]?.replace('מסלולי ', '')}
-                                    </p>
+                                  
+                                  {/* Enhanced Price Badge */}
+                                  <div className="flex items-center gap-3">
+                                    {category !== 'electricity' && (
+                                      <div className="text-center bg-success/10 border-2 border-success/20 rounded-xl p-3">
+                                        <div className="text-2xl font-black text-success">
+                                          ₪{Math.min(...sortedPlans.map(p => p.regularPrice))}
+                                        </div>
+                                        <div className="text-xs text-success/80 font-medium">החל מ- לחודש</div>
+                                      </div>
+                                    )}
+                                    <div className="text-center bg-primary/10 border-2 border-primary/20 rounded-xl p-3">
+                                      <div className="text-lg font-black text-primary">
+                                        {Math.floor(Math.random() * 30) + 70}%
+                                      </div>
+                                      <div className="text-xs text-primary/80 font-medium">פופולריות</div>
+                                    </div>
                                   </div>
                                 </div>
-                                
-                                {/* Best Price Badge */}
-                                {category !== 'electricity' && (
-                                  <Badge className="bg-success text-white text-lg px-4 py-2 font-bold">
-                                    החל מ-₪{Math.min(...sortedPlans.map(p => p.regularPrice))}
-                                  </Badge>
-                                )}
                               </div>
 
-                              {/* Company Plans Grid */}
-                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                {sortedPlans.map((plan, index) => (
-                                  <InteractivePlanCard
-                                    key={plan.id}
-                                    plan={plan}
-                                    rank={index + 1}
-                                    isCompared={comparedPlans.some(p => p.id === plan.id)}
-                                    onCompareToggle={handleCompareToggle}
-                                    canCompare={comparedPlans.length < 3}
-                                    showSavings={mockSavingsData.length > 0}
-                                    estimatedSavings={mockSavingsData.find(s => 
-                                      (s.category === 'סלולר' && plan.category === 'mobile') ||
-                                      s.category === plan.category
-                                    )?.monthlySavings}
-                                    onSelect={handlePlanSelect}
-                                    isRecommended={index === 0}
-                                    popularityScore={Math.floor(Math.random() * 40) + 60}
-                                    className="hover:scale-105 transition-transform duration-200"
-                                  />
-                                ))}
-                              </div>
-                              
-                              {/* Company Best Deal */}
-                              {sortedPlans.length > 0 && (
-                                <div className="mt-6 p-4 bg-gradient-to-r from-success/10 via-green-100/20 to-success/10 rounded-xl border border-success/20">
-                                  <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                      <Crown className="w-5 h-5 text-success" />
-                                      <span className="font-bold text-success">
-                                        המסלול הכי מומלץ: {sortedPlans[0].planName}
-                                      </span>
+                              {/* Enhanced Company Plans Grid */}
+                              <div className="p-8">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                  {sortedPlans.map((plan, index) => (
+                                    <div key={plan.id} className="relative">
+                                      {index === 0 && (
+                                        <div className="absolute -top-3 -right-3 z-10">
+                                          <div className="bg-gradient-to-r from-success to-green-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg border-2 border-white">
+                                            <Crown className="w-3 h-3 inline mr-1" />
+                                            הכי מומלץ
+                                          </div>
+                                        </div>
+                                      )}
+                                      <InteractivePlanCard
+                                        plan={plan}
+                                        rank={index + 1}
+                                        isCompared={comparedPlans.some(p => p.id === plan.id)}
+                                        onCompareToggle={handleCompareToggle}
+                                        canCompare={comparedPlans.length < 3}
+                                        showSavings={mockSavingsData.length > 0}
+                                        estimatedSavings={mockSavingsData.find(s => 
+                                          (s.category === 'סלולר' && plan.category === 'mobile') ||
+                                          s.category === plan.category
+                                        )?.monthlySavings}
+                                        onSelect={handlePlanSelect}
+                                        isRecommended={index === 0}
+                                        popularityScore={Math.floor(Math.random() * 40) + 60}
+                                        className="hover:scale-105 transition-all duration-300 hover:shadow-xl"
+                                      />
                                     </div>
-                                    <Badge className="bg-success text-white px-3 py-1">
-                                      ₪{sortedPlans[0].regularPrice}{sortedPlans[0].category === 'electricity' ? '' : '/חודש'}
-                                    </Badge>
-                                  </div>
+                                  ))}
                                 </div>
-                              )}
+                                
+                                {/* Enhanced Company Summary */}
+                                {sortedPlans.length > 0 && (
+                                  <div className="mt-8 p-6 bg-gradient-to-r from-gray-50 via-white to-gray-50 rounded-2xl border-2 border-gray-200/50 shadow-inner">
+                                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                                      <div className="flex items-start gap-4">
+                                        <div className="w-12 h-12 bg-gradient-to-r from-success to-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                                          <Sparkles className="w-6 h-6 text-white" />
+                                        </div>
+                                        <div>
+                                          <h4 className="text-xl font-black text-gray-900 mb-2">
+                                            המסלול המוביל של {company}
+                                          </h4>
+                                          <p className="text-lg font-bold text-success mb-1">
+                                            {sortedPlans[0].planName}
+                                          </p>
+                                          <p className="text-sm text-gray-600 font-medium">
+                                            הבחירה הפופולרית ביותר - מותאם לרוב הלקוחות
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="flex items-center gap-4">
+                                        <div className="text-center">
+                                          <div className="text-3xl font-black text-success">
+                                            ₪{sortedPlans[0].regularPrice}
+                                            {sortedPlans[0].category === 'electricity' ? '' : '/חודש'}
+                                          </div>
+                                          {sortedPlans[0].introPrice > 0 && sortedPlans[0].introPrice !== sortedPlans[0].regularPrice && (
+                                            <div className="text-sm text-gray-500 line-through">
+                                              ₪{sortedPlans[0].introPrice}
+                                            </div>
+                                          )}
+                                        </div>
+                                        <Button 
+                                          size="lg"
+                                          className="bg-gradient-to-r from-success to-green-600 hover:from-success/90 hover:to-green-600/90 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+                                          onClick={() => handlePlanSelect(sortedPlans[0])}
+                                        >
+                                          <TrendingUp className="w-5 h-5 mr-2" />
+                                          בחר עכשיו
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           );
                         })}
                     </div>
-                  </div>
+                  </section>
                 ));
             })()}
           </div>
