@@ -320,113 +320,75 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
              </p>
            </div>
 
-           {/* Innovative Savings Display */}
+           {/* Professional Savings Display */}
            {mockSavingsData.length > 0 && (
              <div className="mb-12">
                <div className="text-center mb-8">
-                 <h2 className="text-xl font-bold text-foreground mb-2">החיסכון שלכם</h2>
-                 <p className="text-muted-foreground">כמה אתם משלמים היום מול כמה תוכלו לחסוך</p>
+                 <h2 className="text-lg font-semibold text-foreground mb-2">סיכום החיסכון שלכם</h2>
+                 <p className="text-sm text-muted-foreground">השוואה בין המצב הנוכחי לבין המסלולים המומלצים</p>
                </div>
                
-               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                 {mockSavingsData.map((savings, index) => {
-                   const currentMonthly = Math.round(savings.currentMonthly);
-                   const recommendedMonthly = Math.round(savings.recommendedMonthly);
-                   const monthlySavings = Math.round(savings.monthlySavings);
-                   const annualSavings = Math.round(savings.annualSavings);
-                   const savingsPercentage = Math.round((monthlySavings / currentMonthly) * 100);
-                   
-                   return (
-                     <Card key={index} className="relative overflow-hidden bg-gradient-to-br from-white via-accent/5 to-white border-2 border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105">
-                       {/* Background decoration */}
-                       <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-2xl"></div>
-                       <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-success/20 to-primary/20 rounded-full blur-xl"></div>
-                       
-                       <CardContent className="p-8 relative z-10">
-                         <div className="text-center mb-6">
-                           <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg">
-                             <span className="text-2xl font-black text-white">
-                               {savings.category.charAt(0)}
-                             </span>
-                           </div>
-                           <h3 className="text-lg font-bold text-foreground">{savings.category}</h3>
-                         </div>
-
-                         {/* Current Payment */}
-                         <div className="space-y-4 mb-6">
-                           <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-4">
-                             <div className="text-center">
-                               <p className="text-sm text-destructive/80 mb-1">מה שאתם משלמים היום</p>
-                               <div className="flex items-center justify-center gap-3">
-                                 <div>
-                                   <div className="text-2xl font-black text-destructive">₪{currentMonthly.toLocaleString()}</div>
-                                   <div className="text-xs text-destructive/60">לחודש</div>
-                                 </div>
-                                 <div className="w-px h-8 bg-destructive/30"></div>
-                                 <div>
-                                   <div className="text-xl font-bold text-destructive">₪{(currentMonthly * 12).toLocaleString()}</div>
-                                   <div className="text-xs text-destructive/60">לשנה</div>
-                                 </div>
+               <div className="max-w-4xl mx-auto">
+                 <div className="grid gap-6">
+                   {mockSavingsData.map((savings, index) => {
+                     const currentMonthly = Math.round(savings.currentMonthly);
+                     const recommendedMonthly = Math.round(savings.recommendedMonthly);
+                     const monthlySavings = Math.round(savings.monthlySavings);
+                     const annualSavings = Math.round(savings.annualSavings);
+                     const savingsPercentage = Math.round((monthlySavings / currentMonthly) * 100);
+                     
+                     return (
+                       <Card key={index} className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+                         <CardContent className="p-6">
+                           <div className="flex items-center justify-between">
+                             {/* Category Info */}
+                             <div className="flex items-center gap-4">
+                               <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                                 <span className="text-lg font-semibold text-gray-600">
+                                   {savings.category === 'סלולר' ? '📱' : 
+                                    savings.category === 'חשמל' ? '⚡' :
+                                    savings.category === 'אינטרנט' ? '🌐' :
+                                    savings.category === 'טלוויזיה' ? '📺' : '🏠'}
+                                 </span>
+                               </div>
+                               <div>
+                                 <h3 className="font-semibold text-gray-900">{savings.category}</h3>
+                                 <p className="text-sm text-gray-500">מסלולים מומלצים זמינים</p>
                                </div>
                              </div>
-                           </div>
 
-                           {/* Savings Arrow */}
-                           <div className="flex justify-center">
-                             <div className="w-12 h-12 bg-gradient-to-r from-success to-green-600 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                               <ArrowRight className="w-6 h-6 text-white transform rotate-90" />
-                             </div>
-                           </div>
-
-                           {/* New Payment */}
-                           <div className="bg-success/10 border border-success/20 rounded-xl p-4">
-                             <div className="text-center">
-                               <p className="text-sm text-success/80 mb-1">עם המסלול החדש</p>
-                               <div className="flex items-center justify-center gap-3">
-                                 <div>
-                                   <div className="text-2xl font-black text-success">₪{recommendedMonthly.toLocaleString()}</div>
-                                   <div className="text-xs text-success/60">לחודש</div>
-                                 </div>
-                                 <div className="w-px h-8 bg-success/30"></div>
-                                 <div>
-                                   <div className="text-xl font-bold text-success">₪{(recommendedMonthly * 12).toLocaleString()}</div>
-                                   <div className="text-xs text-success/60">לשנה</div>
-                                 </div>
-                               </div>
-                             </div>
-                           </div>
-                         </div>
-
-                         {/* Savings Highlight */}
-                         <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-success/10 border-2 border-primary/30 rounded-2xl p-6 text-center">
-                           <div className="flex items-center justify-center gap-2 mb-3">
-                             <Crown className="w-5 h-5 text-primary animate-pulse" />
-                             <span className="text-sm font-bold text-primary">החיסכון שלכם</span>
-                           </div>
-                           
-                           <div className="space-y-2">
-                             <div className="text-3xl font-black bg-gradient-to-r from-primary via-accent to-success bg-clip-text text-transparent">
-                               ₪{monthlySavings.toLocaleString()}
-                             </div>
-                             <div className="text-sm text-muted-foreground">לחודש</div>
-                             
-                             <div className="flex items-center justify-center gap-4 mt-4">
+                             {/* Current vs New Payment */}
+                             <div className="flex items-center gap-8">
                                <div className="text-center">
-                                 <div className="text-xl font-black text-success">₪{annualSavings.toLocaleString()}</div>
-                                 <div className="text-xs text-muted-foreground">לשנה</div>
+                                 <p className="text-xs text-gray-500 mb-1">תשלום נוכחי</p>
+                                 <div className="text-lg font-bold text-gray-900">₪{currentMonthly.toLocaleString()}</div>
+                                 <div className="text-xs text-gray-400">לחודש</div>
                                </div>
-                               <div className="w-px h-8 bg-border"></div>
+                               
+                               <div className="flex items-center text-gray-400">
+                                 <ArrowRight className="w-4 h-4" />
+                               </div>
+                               
                                <div className="text-center">
-                                 <div className="text-xl font-black text-primary">{savingsPercentage}%</div>
-                                 <div className="text-xs text-muted-foreground">חיסכון</div>
+                                 <p className="text-xs text-gray-500 mb-1">תשלום חדש</p>
+                                 <div className="text-lg font-bold text-blue-600">₪{recommendedMonthly.toLocaleString()}</div>
+                                 <div className="text-xs text-gray-400">לחודש</div>
+                               </div>
+                               
+                               {/* Savings Highlight */}
+                               <div className="bg-green-50 border border-green-100 rounded-lg p-4 text-center">
+                                 <div className="text-xs text-green-600 font-medium mb-1">חיסכון</div>
+                                 <div className="text-xl font-bold text-green-700">₪{monthlySavings.toLocaleString()}</div>
+                                 <div className="text-xs text-green-600">{savingsPercentage}% לחודש</div>
+                                 <div className="text-xs text-green-500 mt-1">₪{annualSavings.toLocaleString()} לשנה</div>
                                </div>
                              </div>
                            </div>
-                         </div>
-                       </CardContent>
-                     </Card>
-                   );
-                 })}
+                         </CardContent>
+                       </Card>
+                     );
+                   })}
+                 </div>
                </div>
              </div>
            )}
@@ -592,60 +554,50 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                   return order.indexOf(a) - order.indexOf(b);
                 })
                 .map(([category, companiesInCategory]) => (
-                  <section key={category} className={`${categoryBgPatterns[category as keyof typeof categoryBgPatterns]} rounded-3xl p-8 border-2 border-white/60 shadow-2xl backdrop-blur-sm`}>
-                    {/* Elegant Category Header */}
-                    <div className="mb-8">
-                      <div className={`bg-gradient-to-r ${categoryColors[category as keyof typeof categoryColors]} rounded-xl p-6 text-white shadow-lg relative overflow-hidden`}>
-                        {/* Subtle background decoration */}
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full blur-xl"></div>
-                        <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full blur-lg"></div>
-                        
-                        <div className="relative">
-                          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                            <div className="flex items-center gap-4">
-                              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg border border-white/30">
-                                {categoryIcons[category as keyof typeof categoryIcons]}
-                              </div>
-                              <div>
-                                <h2 className="text-xl lg:text-2xl font-bold mb-2">
-                                  {categoryLabelsHebrew[category as keyof typeof categoryLabelsHebrew]}
-                                </h2>
-                                <div className="flex flex-wrap items-center gap-3">
-                                  <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20 text-sm">
-                                    <Users className="w-3 h-3" />
-                                    <span className="font-medium">
-                                      {Object.values(companiesInCategory).flat().length} מסלולים
-                                    </span>
-                                  </div>
-                                  <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20 text-sm">
-                                    <Award className="w-3 h-3" />
-                                    <span className="font-medium">
-                                      {Object.keys(companiesInCategory).length} חברות
-                                    </span>
-                                  </div>
+                  <section key={category} className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+                    {/* Professional Category Header */}
+                    <div className="mb-6">
+                      <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center shadow-sm">
+                              {categoryIcons[category as keyof typeof categoryIcons]}
+                            </div>
+                            <div>
+                              <h2 className="text-lg font-semibold text-gray-900 mb-1">
+                                {categoryLabelsHebrew[category as keyof typeof categoryLabelsHebrew]}
+                              </h2>
+                              <div className="flex items-center gap-3 text-sm text-gray-600">
+                                <div className="flex items-center gap-1">
+                                  <Users className="w-4 h-4" />
+                                  <span>{Object.values(companiesInCategory).flat().length} מסלולים</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Award className="w-4 h-4" />
+                                  <span>{Object.keys(companiesInCategory).length} חברות</span>
                                 </div>
                               </div>
                             </div>
-                            
-                            {/* Category Stats */}
-                            <div className="flex items-center gap-3">
-                              <div className="text-center bg-white/20 backdrop-blur-sm rounded-lg p-3 border border-white/20 shadow-md">
-                                <div className="text-lg font-bold mb-1">
-                                  {Object.keys(companiesInCategory).length}
-                                </div>
-                                <div className="text-xs font-medium text-white/80">ספקים</div>
+                          </div>
+                          
+                          {/* Category Stats */}
+                          <div className="flex items-center gap-3">
+                            <div className="text-center bg-white rounded-lg p-3 border border-gray-100 shadow-sm">
+                              <div className="text-sm font-semibold text-gray-900 mb-1">
+                                {Object.keys(companiesInCategory).length}
                               </div>
-                              <div className="text-center bg-white/20 backdrop-blur-sm rounded-lg p-3 border border-white/20 shadow-md">
-                                <div className="text-lg font-bold mb-1">
-                                  {category !== 'electricity' ? (
-                                    `₪${Math.min(...Object.values(companiesInCategory).flat().map(p => p.regularPrice)) || 0}`
-                                  ) : (
-                                    `${Math.max(...Object.values(companiesInCategory).flat().map(p => parseInt(p.speed.replace('%', '')) || 0))}%`
-                                  )}
-                                </div>
-                                <div className="text-xs font-medium text-white/80">
-                                  {category === 'electricity' ? 'הנחה עד' : 'החל מ-'}
-                                </div>
+                              <div className="text-xs text-gray-500">ספקים</div>
+                            </div>
+                            <div className="text-center bg-white rounded-lg p-3 border border-gray-100 shadow-sm">
+                              <div className="text-sm font-semibold text-gray-900 mb-1">
+                                {category !== 'electricity' ? (
+                                  `₪${Math.min(...Object.values(companiesInCategory).flat().map(p => p.regularPrice)) || 0}`
+                                ) : (
+                                  `${Math.max(...Object.values(companiesInCategory).flat().map(p => parseInt(p.speed.replace('%', '')) || 0))}%`
+                                )}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {category === 'electricity' ? 'הנחה עד' : 'החל מ-'}
                               </div>
                             </div>
                           </div>
@@ -657,7 +609,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                     <div className="space-y-8">
                       {!selectedCompany ? (
                         // Show company grid when no company is selected
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           {Object.entries(companiesInCategory)
                             .sort(([,a], [,b]) => b.length - a.length)
                             .map(([company, companyPlans]) => {
@@ -667,61 +619,64 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                               return (
                                 <Card 
                                   key={`${category}-${company}`}
-                                  className="group bg-white/90 backdrop-blur-sm border-2 border-white/60 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer"
+                                  className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:border-gray-300 cursor-pointer group"
                                   onClick={() => setSelectedCompany(company)}
                                 >
-                                  <CardContent className="p-8">
-                                    <div className="flex items-start gap-4 mb-6">
-                                      <div className={`w-16 h-16 bg-gradient-to-br ${categoryColors[category as keyof typeof categoryColors]} rounded-2xl flex items-center justify-center shadow-lg border-2 border-white group-hover:scale-110 transition-all duration-300`}>
-                                        <span className="text-2xl font-black text-white">
+                                  <CardContent className="p-5">
+                                    <div className="flex items-start gap-3 mb-4">
+                                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center shadow-sm border border-gray-200 group-hover:bg-gray-200 transition-colors">
+                                        <span className="text-lg font-bold text-gray-700">
                                           {company.slice(0, 2)}
                                         </span>
                                       </div>
                                       <div className="flex-1">
-                                        <h3 className="text-2xl font-black text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                                        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                                           {company}
                                         </h3>
-                                        <div className="flex items-center gap-2 mb-2">
-                                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                                          <span className="text-sm font-bold text-gray-700">{avgRating}</span>
-                                          <Badge className="bg-success/10 text-success border-success/30 text-xs">מומלץ</Badge>
+                                        <div className="flex items-center gap-3 mb-2">
+                                          <div className="flex items-center gap-1">
+                                            <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                                            <span className="text-sm font-medium text-gray-700">{avgRating}</span>
+                                          </div>
+                                          <Badge className="bg-green-50 text-green-700 border-green-200 text-xs px-2 py-1">
+                                            מומלץ
+                                          </Badge>
                                         </div>
-                                        <p className="text-gray-600 font-medium text-sm">
+                                        <p className="text-gray-600 text-sm">
                                           {companyPlans.length} מסלולים זמינים
                                         </p>
                                       </div>
                                     </div>
                                     
-                                    <div className="space-y-4">
-                                      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-success/10 to-green-100/50 rounded-xl border border-success/20">
+                                    <div className="space-y-3">
+                                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
                                         <div>
-                                          <p className="text-sm font-medium text-gray-600 mb-1">מחיר התחלתי</p>
-                                          <div className="text-2xl font-black text-success">
+                                          <p className="text-xs text-gray-600 mb-1">מחיר התחלתי</p>
+                                          <div className="text-lg font-bold text-gray-900">
                                             {category !== 'electricity' ? `₪${minPrice}/חודש` : `${Math.max(...companyPlans.map(p => parseInt(p.speed.replace('%', '')) || 0))}% הנחה`}
                                           </div>
                                         </div>
                                         <div className="text-center">
-                                          <div className="text-lg font-black text-primary">
+                                          <div className="text-sm font-semibold text-blue-600">
                                             {Math.floor(Math.random() * 30) + 70}%
                                           </div>
-                                          <div className="text-xs text-gray-600">פופולריות</div>
+                                          <div className="text-xs text-gray-500">פופולריות</div>
                                         </div>
                                       </div>
                                       
                                       <div className="flex items-center gap-2 text-sm text-gray-600">
-                                        <CheckCircle className="w-4 h-4 text-success" />
+                                        <CheckCircle className="w-4 h-4 text-green-600" />
                                         <span>מסלולים מומלצים במיוחד</span>
                                       </div>
                                       
                                       <Button 
-                                        className="w-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 text-white font-bold shadow-lg group-hover:shadow-xl transition-all duration-300"
+                                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 text-sm transition-all duration-300 group-hover:bg-blue-700"
                                         onClick={(e) => {
                                           e.stopPropagation();
                                           setSelectedCompany(company);
                                         }}
                                       >
                                         צפה במסלולים
-                                        <Sparkles className="w-4 h-4 mr-2" />
                                       </Button>
                                     </div>
                                   </CardContent>
