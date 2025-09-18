@@ -63,7 +63,12 @@ const EnhancedPlanGrid = ({
   // Generate AI recommendations if userContext is provided
   const aiRecommendations = useMemo(() => {
     if (!userContext) return [];
-    return RecommendationEngine.generateRecommendations(plans, userContext);
+    // Ensure we only work with ManualPlan objects and cast the result properly
+    const recommendations = RecommendationEngine.generateRecommendations(plans, userContext);
+    return recommendations.map(rec => ({
+      ...rec,
+      plan: rec.plan as ManualPlan // Type assertion since we know plans are ManualPlan[]
+    }));
   }, [plans, userContext]);
 
   const sortedPlans = useMemo(() => {
