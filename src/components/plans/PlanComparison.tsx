@@ -36,7 +36,8 @@ import {
   Shield,
   Heart,
   CheckCircle,
-  BarChart3
+  BarChart3,
+  Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -98,32 +99,52 @@ const PlanComparison = ({
 
   return (
     <div className={cn("fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50", className)}>
-      <Card className="bg-white/95 backdrop-blur-md border-border/50 shadow-2xl">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="p-2 bg-gradient-to-r from-primary/10 to-primary-glow/10 rounded-lg">
-                <Scale className="h-5 w-5 text-primary" />
+      <Card className="bg-white/95 backdrop-blur-md border-2 border-primary/20 shadow-2xl hover:shadow-3xl transition-all duration-500 animate-pulse-glow">
+        <CardContent className="p-6">
+          <div className="flex flex-col lg:flex-row items-center gap-6">
+            {/* Enhanced Header Section */}
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <div className="p-3 bg-gradient-to-r from-primary via-primary-glow to-accent rounded-2xl shadow-lg animate-pulse">
+                  <Scale className="h-6 w-6 text-white" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-success rounded-full animate-bounce"></div>
               </div>
-              <div>
-                <p className="font-semibold text-sm">השוואת מסלולים</p>
-                <p className="text-xs text-muted-foreground">
-                  {comparedPlans.length} מתוך 3 מסלולים נבחרו
-                </p>
+              <div className="text-center lg:text-right">
+                <p className="font-black text-lg text-foreground">השוואת מסלולים חכמה</p>
+                <div className="flex items-center gap-2 justify-center lg:justify-start">
+                  <p className="text-sm text-muted-foreground font-medium">
+                    {comparedPlans.length} מתוך 3 מסלולים נבחרו
+                  </p>
+                  <Badge className="bg-primary/10 text-primary border-primary/30 text-xs animate-pulse">
+                    <Flame className="w-3 h-3 mr-1" />
+                    פעיל
+                  </Badge>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              {comparedPlans.map((plan) => (
-                <div key={plan.id} className="relative">
-                  <Badge variant="outline" className="pr-6 bg-white/80">
-                    {plan.company}
-                  </Badge>
+            {/* Enhanced Plan Pills */}
+            <div className="flex items-center gap-3 flex-wrap">
+              {comparedPlans.map((plan, index) => (
+                <div key={plan.id} className="relative group">
+                  <div className={cn(
+                    "flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-all duration-300 hover:scale-105 cursor-pointer",
+                    index === 0 
+                      ? "bg-gradient-to-r from-success/20 to-emerald-100 border-success/40 shadow-success/20" 
+                      : "bg-gradient-to-r from-card via-accent/5 to-card border-border/50"
+                  )}>
+                    {index === 0 && <Crown className="h-4 w-4 text-success" />}
+                    <span className="font-semibold text-sm">{plan.company}</span>
+                    <Badge className="bg-white/50 text-primary text-xs px-2 py-0.5">
+                      #{index + 1}
+                    </Badge>
+                  </div>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => onRemovePlan(plan.id)}
-                    className="absolute -top-1 -right-1 h-5 w-5 p-0 rounded-full bg-destructive/10 hover:bg-destructive/20"
+                    className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full bg-destructive/20 hover:bg-destructive/30 border-2 border-white shadow-lg transition-all duration-300 hover:scale-110"
                   >
                     <X className="h-3 w-3 text-destructive" />
                   </Button>
@@ -131,50 +152,106 @@ const PlanComparison = ({
               ))}
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* Enhanced Action Buttons */}
+            <div className="flex items-center gap-3">
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-gradient-to-r from-primary to-primary-glow text-white">
-                    השווה עכשיו
+                  <Button className="bg-gradient-to-r from-primary via-primary-glow to-accent hover:from-primary/90 hover:via-primary-glow/90 hover:to-accent/90 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 animate-pulse-subtle relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                    <div className="relative flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5 animate-bounce" />
+                      השווה עם AI
+                      <Sparkles className="h-4 w-4 animate-pulse" />
+                    </div>
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-gradient-to-br from-background via-background/95 to-accent/5">
-                  <DialogHeader>
-                    <DialogTitle className="text-4xl font-bold text-center bg-gradient-to-r from-primary via-primary-glow to-accent bg-clip-text text-transparent">
-                      השוואה מתקדמת עם ניתוח AI
-                    </DialogTitle>
-                    <p className="text-muted-foreground text-center mt-3 text-lg">
-                      ניתוח מעמיק וחכם של המסלולים שבחרתם עם המלצות מותאמות אישית
-                    </p>
+                <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-gradient-to-br from-background via-background/95 to-accent/5 backdrop-blur-xl border-2 border-primary/20">
+                  <DialogHeader className="relative overflow-hidden">
+                    {/* Background decorative elements */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl animate-pulse"></div>
+                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-success/20 to-primary/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
                     
-                    {/* View Mode Toggle */}
-                    <div className="flex justify-center mt-6">
-                      <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm p-2 rounded-2xl border border-border/50">
+                    <div className="relative z-10">
+                      <DialogTitle className="text-5xl lg:text-6xl font-black text-center mb-4">
+                        <span className="bg-gradient-to-r from-primary via-primary-glow via-accent to-success bg-clip-text text-transparent animate-gradient-x">
+                          השוואה חכמה עם AI
+                        </span>
+                      </DialogTitle>
+                      
+                      <div className="text-center space-y-4">
+                        <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                          ניתוח מעמיק ומתקדם של המסלולים שבחרתם עם המלצות מותאמות אישית באמצעות בינה מלאכותית
+                        </p>
+                        
+                        <div className="flex items-center justify-center gap-6">
+                          <div className="flex items-center gap-2 bg-success/10 backdrop-blur-sm px-4 py-2 rounded-full border border-success/30">
+                            <CheckCircle className="w-5 h-5 text-success" />
+                            <span className="font-bold text-success text-sm">ניתוח מדויק 100%</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/30">
+                            <Sparkles className="w-5 h-5 text-primary animate-pulse" />
+                            <span className="font-bold text-primary text-sm">חסכון מובטח</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-accent/10 backdrop-blur-sm px-4 py-2 rounded-full border border-accent/30">
+                            <Shield className="w-5 h-5 text-accent" />
+                            <span className="font-bold text-accent text-sm">מהימן ואמין</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Enhanced View Mode Toggle */}
+                    <div className="flex justify-center mt-8 relative z-10">
+                      <div className="flex items-center gap-1 bg-gradient-to-r from-card/80 via-accent/10 to-card/80 backdrop-blur-sm p-2 rounded-3xl border-2 border-primary/20 shadow-2xl">
                         <Button
                           variant={viewMode === 'enhanced' ? 'default' : 'ghost'}
-                          size="sm"
+                          size="lg"
                           onClick={() => setViewMode('enhanced')}
-                          className="rounded-xl"
+                          className={cn(
+                            "rounded-2xl font-bold text-lg px-6 py-3 transition-all duration-300",
+                            viewMode === 'enhanced' 
+                              ? "bg-gradient-to-r from-primary to-primary-glow text-white shadow-lg hover:shadow-xl" 
+                              : "hover:bg-primary/10"
+                          )}
                         >
-                          <Target className="w-4 h-4 mr-2" />
+                          <Target className="w-5 h-5 mr-2" />
                           השוואה מתקדמת
                         </Button>
                         <Button
                           variant={viewMode === 'analytics' ? 'default' : 'ghost'}
-                          size="sm"
+                          size="lg"
                           onClick={() => setViewMode('analytics')}
-                          className="rounded-xl"
+                          className={cn(
+                            "rounded-2xl font-bold text-lg px-6 py-3 transition-all duration-300",
+                            viewMode === 'analytics' 
+                              ? "bg-gradient-to-r from-success to-green-600 text-white shadow-lg hover:shadow-xl" 
+                              : "hover:bg-success/10"
+                          )}
                         >
-                          <BarChart3 className="w-4 h-4 mr-2" />
+                          <BarChart3 className="w-5 h-5 mr-2" />
                           אנליטיקה וניתוח
                         </Button>
                       </div>
                     </div>
                   </DialogHeader>
                   
-                  {/* Enhanced AI Analysis */}
+                  {/* Enhanced AI Analysis with Interactive Features */}
                   {comparisonMatrix && (
-                    <div className="mt-8">
+                    <div className="mt-12 relative">
+                      {/* AI Analysis Header */}
+                      <div className="mb-8 text-center">
+                        <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 backdrop-blur-sm px-8 py-4 rounded-3xl border-2 border-primary/30 shadow-xl">
+                          <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center animate-pulse">
+                            <Sparkles className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="text-right">
+                            <h3 className="text-2xl font-black text-primary">ניתוח AI מתקדם</h3>
+                            <p className="text-sm text-muted-foreground">מופעל על ידי בינה מלאכותית מתקדמת</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Analysis Content */}
                       {viewMode === 'enhanced' ? (
                         <SmartComparisonTable 
                           comparisonMatrix={comparisonMatrix}
@@ -271,30 +348,67 @@ const PlanComparison = ({
                     return null;
                   })()}
 
-                  {/* AI Recommendation Button */}
-                  <div className="mb-6">
-                    <Card className="bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20">
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2 bg-gradient-to-r from-primary to-accent rounded-lg">
-                              <Lightbulb className="h-5 w-5 text-white" />
+                  {/* Enhanced Interactive AI Recommendation Button */}
+                  <div className="mb-8">
+                    <Card className="bg-gradient-to-r from-primary/10 via-accent/5 to-success/10 border-2 border-primary/30 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden relative animate-pulse-subtle">
+                      {/* Background Animation */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/10 to-success/5 animate-gradient-x"></div>
+                      
+                      <CardContent className="p-8 relative z-10">
+                        <div className="flex flex-col lg:flex-row items-center gap-8">
+                          <div className="flex items-center gap-6 flex-1">
+                            <div className="relative">
+                              <div className="w-16 h-16 bg-gradient-to-r from-primary via-accent to-success rounded-2xl flex items-center justify-center shadow-2xl animate-pulse">
+                                <Sparkles className="h-8 w-8 text-white animate-spin-slow" />
+                              </div>
+                              <div className="absolute -top-2 -right-2 w-6 h-6 bg-success rounded-full flex items-center justify-center animate-bounce">
+                                <Heart className="h-3 w-3 text-white" />
+                              </div>
                             </div>
-                            <div>
-                              <h3 className="text-lg font-bold">רוצים המלצה מותאמת אישית?</h3>
-                              <p className="text-muted-foreground text-sm">
-                                ספרו לנו על הצרכים שלכם ונתן המלצה חכמה ומדויקת
+                            <div className="text-center lg:text-right">
+                              <h3 className="text-3xl font-black mb-3 bg-gradient-to-r from-primary via-accent to-success bg-clip-text text-transparent">
+                                רוצים המלצה מותאמת אישית?
+                              </h3>
+                              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+                                בואו נכיר אתכם קצת יותר ונתן לכם המלצה חכמה ומדויקת בהתאם לצרכים הייחודיים שלכם
+                              </p>
+                              <div className="flex items-center justify-center lg:justify-start gap-4 mt-4">
+                                <div className="flex items-center gap-2 bg-success/10 px-3 py-1 rounded-full">
+                                  <CheckCircle className="w-4 h-4 text-success" />
+                                  <span className="text-sm font-medium text-success">100% חינם</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full">
+                                  <Shield className="w-4 h-4 text-primary" />
+                                  <span className="text-sm font-medium text-primary">בטוח ומאובטח</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-accent/10 px-3 py-1 rounded-full">
+                                  <Zap className="w-4 h-4 text-accent" />
+                                  <span className="text-sm font-medium text-accent">תוצאות מיידיות</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex flex-col gap-4">
+                            <Button 
+                              size="lg"
+                              className="bg-gradient-to-r from-primary via-accent to-success hover:from-primary/90 hover:via-accent/90 hover:to-success/90 text-white font-black text-xl px-12 py-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 relative overflow-hidden group"
+                              onClick={() => setIsRecommendationOpen(true)}
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                              <div className="relative flex items-center gap-3">
+                                <Target className="h-6 w-6 animate-pulse" />
+                                קבלו המלצה מותאמת אישית
+                                <Sparkles className="h-5 w-5 animate-bounce" />
+                              </div>
+                            </Button>
+                            
+                            <div className="text-center">
+                              <p className="text-sm text-muted-foreground">
+                                ⭐ מעל 10,000 לקוחות מרוצים השתמשו בשירות
                               </p>
                             </div>
                           </div>
-                          <Button 
-                            variant="outline" 
-                            className="border-primary/30 hover:bg-primary/5"
-                            onClick={() => setIsRecommendationOpen(true)}
-                          >
-                            <Target className="h-4 w-4 mr-2" />
-                            קבלו המלצה אישית
-                          </Button>
                         </div>
                       </CardContent>
                     </Card>
