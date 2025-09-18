@@ -36,20 +36,50 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
   
   useEffect(() => {
     const storedData = localStorage.getItem('analysisData');
+    console.log('Stored analysis data:', storedData);
+    
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
-        setAnalysisData(parsedData);
-        if (parsedData.selectedCategories && parsedData.selectedCategories.length > 0) {
+        console.log('Parsed analysis data:', parsedData);
+        
+        // If it's an array (new format from Home.tsx)
+        if (Array.isArray(parsedData)) {
+          setAnalysisData({ 
+            selectedCategories: parsedData.map(item => item.category),
+            responses: parsedData.reduce((acc, item) => {
+              acc[item.category] = {
+                currentProvider: item.provider,
+                monthlyAmount: item.amount
+              };
+              return acc;
+            }, {})
+          });
+          
+          const categoryMapping: Record<string, CategoryType> = {
+            'cellular': 'mobile', 'electricity': 'electricity', 'internet': 'internet', 'tv': 'tv'
+          };
+          const mappedCategories = parsedData.map((item: any) => 
+            categoryMapping[item.category] || item.category as CategoryType
+          );
+          console.log('Mapped categories from array:', mappedCategories);
+          setAnalyzedCategories(mappedCategories);
+          setCurrentStep('analysis-plans');
+        }
+        // If it's an object (old format)
+        else if (parsedData.selectedCategories && parsedData.selectedCategories.length > 0) {
+          setAnalysisData(parsedData);
           const categoryMapping: Record<string, CategoryType> = {
             'cellular': 'mobile', 'electricity': 'electricity', 'internet': 'internet', 'tv': 'tv'
           };
           const mappedCategories = parsedData.selectedCategories.map((cat: string) => 
             categoryMapping[cat] || cat as CategoryType
           );
+          console.log('Mapped categories from object:', mappedCategories);
           setAnalyzedCategories(mappedCategories);
           setCurrentStep('analysis-plans');
         } else {
+          console.log('No selected categories found, going to category selection');
           setCurrentStep('category');
         }
       } catch (error) {
@@ -57,9 +87,17 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
         setCurrentStep('category');
       }
     } else {
-      setCurrentStep('category');
+      console.log('No stored analysis data found, going to category selection');
+      // Check if we have categories from props
+      if (initialSelectedCategories.length > 0) {
+        console.log('Using initial selected categories:', initialSelectedCategories);
+        setAnalyzedCategories(initialSelectedCategories as CategoryType[]);
+        setCurrentStep('analysis-plans');
+      } else {
+        setCurrentStep('category');
+      }
     }
-  }, []);
+  }, [initialSelectedCategories]);
 
   useEffect(() => {
     document.title = "כל המסלולים | EasySwitch";
