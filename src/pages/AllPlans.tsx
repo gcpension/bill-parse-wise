@@ -25,7 +25,7 @@ interface AllPlansProps {
 type CategoryType = 'electricity' | 'internet' | 'mobile' | 'tv';
 
 const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlansProps) => {
-  const [currentStep, setCurrentStep] = useState<'analysis-plans' | 'category' | 'companies' | 'plans'>('category');
+  const [currentStep, setCurrentStep] = useState<'analysis-plans' | 'category' | 'companies' | 'plans'>('analysis-plans');
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<ManualPlan | null>(null);
@@ -49,10 +49,15 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
           );
           setAnalyzedCategories(mappedCategories);
           setCurrentStep('analysis-plans');
+        } else {
+          setCurrentStep('category');
         }
       } catch (error) {
         console.error('Error parsing analysis data:', error);
+        setCurrentStep('category');
       }
+    } else {
+      setCurrentStep('category');
     }
   }, []);
 
@@ -98,11 +103,25 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
   }, [selectedCategory]);
 
   const companyPlans = useMemo(() => {
-    if (!selectedCategory || !selectedCompany) return [];
+    if (!selectedCategory) return [];
+    if (selectedCompany) {
+      return manualPlans
+        .filter(plan => plan.category === selectedCategory && plan.company === selectedCompany)
+        .sort((a, b) => parseInt(a.regularPrice.toString()) - parseInt(b.regularPrice.toString()));
+    }
+    // If no company selected, show all plans for the category for comparison
     return manualPlans
-      .filter(plan => plan.category === selectedCategory && plan.company === selectedCompany)
+      .filter(plan => plan.category === selectedCategory)
       .sort((a, b) => parseInt(a.regularPrice.toString()) - parseInt(b.regularPrice.toString()));
   }, [selectedCategory, selectedCompany]);
+
+  // Get all plans for analyzed categories
+  const analysisPlans = useMemo(() => {
+    if (analyzedCategories.length === 0) return [];
+    return manualPlans
+      .filter(plan => analyzedCategories.includes(plan.category as CategoryType))
+      .sort((a, b) => parseInt(a.regularPrice.toString()) - parseInt(b.regularPrice.toString()));
+  }, [analyzedCategories]);
 
   const categoryConfig = {
     electricity: { 
