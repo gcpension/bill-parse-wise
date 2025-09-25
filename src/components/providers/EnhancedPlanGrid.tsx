@@ -2,6 +2,9 @@ import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { 
   ArrowLeft, 
   CheckCircle, 
@@ -18,7 +21,11 @@ import {
   Brain,
   Target,
   AlertTriangle,
-  Sparkles
+  Sparkles,
+  Eye,
+  X,
+  BarChart3,
+  Calculator
 } from "lucide-react";
 import { ManualPlan } from "@/data/manual-plans";
 import { cn } from "@/lib/utils";
@@ -49,6 +56,13 @@ const EnhancedPlanGrid = ({
 }: EnhancedPlanGridProps) => {
   const [sortBy, setSortBy] = useState<'price' | 'features' | 'ai'>('ai');
   const [showAIInsights, setShowAIInsights] = useState(true);
+  const [showFeaturesDialog, setShowFeaturesDialog] = useState<string | null>(null);
+  const [currentPlan, setCurrentPlan] = useState({
+    name: '',
+    price: '',
+    company: ''
+  });
+  const [showComparison, setShowComparison] = useState(false);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -110,6 +124,135 @@ const EnhancedPlanGrid = ({
   };
 
   const topRecommendation = aiRecommendations[0];
+
+  // Enhanced comparison view with current plan
+  const ComparisonView = () => (
+    <Card className="mt-8 border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-white">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <BarChart3 className="w-6 h-6 text-primary" />
+            <h3 className="text-2xl font-bold text-primary font-heebo">השוואת מסלולים מפורטת</h3>
+          </div>
+          <Button 
+            variant="outline" 
+            onClick={() => setShowComparison(!showComparison)}
+            className="font-assistant"
+          >
+            {showComparison ? 'הסתר השוואה' : 'הצג השוואה'}
+          </Button>
+        </div>
+        <p className="text-muted-foreground font-assistant">
+          השווה עד 3 מסלולים + המסלול הקיים שלך לקבלת החלטה מושכלת
+        </p>
+      </CardHeader>
+      
+      {showComparison && (
+        <CardContent className="space-y-6">
+          {/* Current Plan Input */}
+          <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+            <h4 className="font-semibold text-yellow-800 font-heebo mb-3 flex items-center gap-2">
+              <Calculator className="w-5 h-5" />
+              המסלול הקיים שלכם
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <Label htmlFor="current-name" className="font-assistant">שם המסלול</Label>
+                <Input
+                  id="current-name"
+                  value={currentPlan.name}
+                  onChange={(e) => setCurrentPlan(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="למשל: מסלול בסיס"
+                  className="font-assistant"
+                />
+              </div>
+              <div>
+                <Label htmlFor="current-price" className="font-assistant">מחיר חודשי</Label>
+                <Input
+                  id="current-price"
+                  value={currentPlan.price}
+                  onChange={(e) => setCurrentPlan(prev => ({ ...prev, price: e.target.value }))}
+                  placeholder="₪150"
+                  className="font-assistant"
+                />
+              </div>
+              <div>
+                <Label htmlFor="current-company" className="font-assistant">חברה</Label>
+                <Input
+                  id="current-company"
+                  value={currentPlan.company}
+                  onChange={(e) => setCurrentPlan(prev => ({ ...prev, company: e.target.value }))}
+                  placeholder="למשל: חברת חשמל"
+                  className="font-assistant"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Comparison Table */}
+          {comparedPlans.length > 0 && (
+            <div className="overflow-x-auto">
+              <table className="w-full border border-gray-200 rounded-lg">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="p-3 text-right font-heebo font-semibold">מאפיין</th>
+                    {currentPlan.name && (
+                      <th className="p-3 text-center font-heebo font-semibold text-yellow-700 bg-yellow-50">
+                        {currentPlan.name}
+                        <div className="text-xs text-yellow-600">(קיים)</div>
+                      </th>
+                    )}
+                    {comparedPlans.map(plan => (
+                      <th key={plan.id} className="p-3 text-center font-heebo font-semibold">
+                        {plan.planName}
+                        <div className="text-xs text-muted-foreground">{plan.company}</div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-t">
+                    <td className="p-3 font-semibold font-assistant">מחיר חודשי</td>
+                    {currentPlan.name && (
+                      <td className="p-3 text-center font-bold text-yellow-700 bg-yellow-50">
+                        ₪{currentPlan.price}
+                      </td>
+                    )}
+                    {comparedPlans.map(plan => (
+                      <td key={plan.id} className="p-3 text-center font-bold text-primary">
+                        ₪{plan.regularPrice}
+                      </td>
+                    ))}
+                  </tr>
+                  {currentPlan.price && comparedPlans.length > 0 && (
+                    <tr className="border-t bg-green-50">
+                      <td className="p-3 font-semibold font-assistant">חיסכון חודשי</td>
+                      <td className="p-3 text-center text-yellow-700">-</td>
+                      {comparedPlans.map(plan => {
+                        const savings = parseInt(currentPlan.price) - plan.regularPrice;
+                        return (
+                          <td key={plan.id} className={`p-3 text-center font-bold ${savings > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {savings > 0 ? `+₪${savings}` : `₪${Math.abs(savings)}-`}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {comparedPlans.length === 0 && (
+            <div className="text-center py-8 text-muted-foreground">
+              <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-50" />
+              <p className="font-assistant">בחרו עד 3 מסלולים להשוואה מפורטת</p>
+            </div>
+          )}
+        </CardContent>
+      )}
+    </Card>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
@@ -376,7 +519,7 @@ const EnhancedPlanGrid = ({
                   </div>
 
                   {/* Enhanced Action Buttons */}
-                  <div className="grid grid-cols-2 gap-2 pt-4">
+                  <div className="grid grid-cols-1 gap-2 pt-4">
                     <Button
                       onClick={() => onPlanSelect(plan)}
                       className={cn(
@@ -391,33 +534,74 @@ const EnhancedPlanGrid = ({
                       {isTopRecommendation ? 'בחר המלצת AI' : 'בחר מסלול'}
                     </Button>
                     
-                    <Button
-                      variant="outline"
-                      onClick={() => onCompareToggle(plan)}
-                      disabled={!canAddToComparison && !inComparison}
-                      className={cn(
-                        "font-assistant font-medium transition-all duration-300",
-                        inComparison && "bg-blue-50 border-blue-300 text-blue-700"
-                      )}
-                    >
-                      {inComparison ? (
-                        <>
-                          <Minus className="w-4 h-4 ml-1" />
-                          הסר
-                        </>
-                      ) : (
-                        <>
-                          <Plus className="w-4 h-4 ml-1" />
-                          השווה
-                        </>
-                      )}
-                    </Button>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={() => onCompareToggle(plan)}
+                        disabled={!canAddToComparison && !inComparison}
+                        className={cn(
+                          "font-assistant font-medium transition-all duration-300",
+                          inComparison && "bg-blue-50 border-blue-300 text-blue-700"
+                        )}
+                      >
+                        {inComparison ? (
+                          <>
+                            <Minus className="w-4 h-4 ml-1" />
+                            הסר
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="w-4 h-4 ml-1" />
+                            השווה
+                          </>
+                        )}
+                      </Button>
+
+                      <Dialog open={showFeaturesDialog === plan.id} onOpenChange={(open) => setShowFeaturesDialog(open ? plan.id : null)}>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" className="font-assistant font-medium">
+                            <Eye className="w-4 h-4 ml-1" />
+                            כל התכונות
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                          <DialogHeader>
+                            <DialogTitle className="font-heebo text-xl">
+                              כל התכונות - {plan.planName}
+                            </DialogTitle>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Badge variant="outline">{plan.company}</Badge>
+                              <span className="font-bold text-primary">₪{plan.regularPrice} לחודש</span>
+                            </div>
+                          </DialogHeader>
+                          <div className="mt-4 space-y-3">
+                            {(plan.features || []).map((feature, idx) => (
+                              <div key={idx} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
+                                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                                <span className="font-assistant text-sm leading-relaxed">
+                                  {feature}
+                                </span>
+                              </div>
+                            ))}
+                            {(!plan.features || plan.features.length === 0) && (
+                              <div className="text-center py-8 text-muted-foreground">
+                                <AlertTriangle className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                                <p className="font-assistant">אין מידע זמין על תכונות המסלול</p>
+                              </div>
+                            )}
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
             );
           })}
         </div>
+
+        {/* Enhanced Comparison Section */}
+        <ComparisonView />
 
         {/* Enhanced Summary Stats */}
         <div className="mt-12 bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-primary/10">
