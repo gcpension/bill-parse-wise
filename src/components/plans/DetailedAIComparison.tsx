@@ -18,10 +18,16 @@ const DetailedAIComparison = ({ plans, userContext, category }: DetailedAICompar
   const [open, setOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState('recommendations');
 
-  // Generate AI recommendations - ensure we only use ManualPlan
+  // Generate AI recommendations only if userContext exists
   const recommendations = useMemo(() => {
-    return RecommendationEngine.generateRecommendations(plans, userContext)
-      .slice(0, 5); // Top 5 recommendations
+    if (!userContext || !plans.length) return [];
+    try {
+      return RecommendationEngine.generateRecommendations(plans, userContext)
+        .slice(0, 5); // Top 5 recommendations
+    } catch (error) {
+      console.warn('Failed to generate recommendations:', error);
+      return [];
+    }
   }, [plans, userContext]);
 
   const topRecommendation = recommendations[0];
@@ -29,6 +35,55 @@ const DetailedAIComparison = ({ plans, userContext, category }: DetailedAICompar
                        category === 'electricity' ? 'חשמל' :
                        category === 'internet' ? 'אינטרנט' :
                        category === 'tv' ? 'טלוויזיה' : category;
+
+  // If no valid context, show simplified comparison
+  if (!userContext || !recommendations.length) {
+    return (
+      <Card className="border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-white">
+        <CardContent className="p-6">
+          <div className="text-center">
+            <Brain className="w-12 h-12 text-purple-500 mx-auto mb-4 opacity-50" />
+            <h3 className="text-lg font-semibold text-purple-800 font-heebo mb-2">
+              השוואה בסיסית
+            </h3>
+            <p className="text-purple-600 font-assistant mb-6">
+              השוואה פשוטה בין המסלולים שבחרתם
+            </p>
+            
+            {/* Basic comparison table */}
+            <div className="overflow-x-auto">
+              <table className="w-full border border-gray-200 rounded-lg">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="p-3 text-right font-heebo font-semibold">מסלול</th>
+                    <th className="p-3 text-center font-heebo font-semibold">חברה</th>
+                    <th className="p-3 text-center font-heebo font-semibold">מחיר חודשי</th>
+                    <th className="p-3 text-center font-heebo font-semibold">תכונות</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {plans.map((plan, index) => (
+                    <tr key={plan.id} className="border-t">
+                      <td className="p-3 font-semibold font-assistant">{plan.planName}</td>
+                      <td className="p-3 text-center font-assistant">{plan.company}</td>
+                      <td className="p-3 text-center font-bold text-primary font-heebo">
+                        ₪{plan.regularPrice}
+                      </td>
+                      <td className="p-3 text-center">
+                        <span className="text-sm text-muted-foreground">
+                          {plan.features?.length || 0} תכונות
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const getConfidenceColor = (confidence: string) => {
     switch (confidence) {
@@ -72,66 +127,112 @@ const DetailedAIComparison = ({ plans, userContext, category }: DetailedAICompar
       
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-purple-800 font-heebo flex items-center gap-3">
-            <Brain className="w-7 h-7 text-purple-600" />
-            ניתוח AI מתקדם - מסלולי {categoryLabel}
+          <DialogTitle className="text-3xl font-bold text-purple-800 font-heebo flex items-center gap-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center">
+              <Brain className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <div>ניתוח AI מתקדם</div>
+              <div className="text-lg text-purple-600 font-normal">מסלולי {categoryLabel}</div>
+            </div>
           </DialogTitle>
         </DialogHeader>
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6">
-            <TabsTrigger value="recommendations" className="font-heebo">המלצות חכמות</TabsTrigger>
-            <TabsTrigger value="comparison" className="font-heebo">השוואה מפורטת</TabsTrigger>
-            <TabsTrigger value="analysis" className="font-heebo">ניתוח עמוק</TabsTrigger>
-            <TabsTrigger value="insights" className="font-heebo">תובנות</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 mb-8 h-14">
+            <TabsTrigger value="recommendations" className="font-heebo text-base h-12">
+              <Award className="w-4 h-4 ml-2" />
+              המלצות חכמות
+            </TabsTrigger>
+            <TabsTrigger value="comparison" className="font-heebo text-base h-12">
+              <TrendingUp className="w-4 h-4 ml-2" />
+              השוואה מפורטת
+            </TabsTrigger>
+            <TabsTrigger value="analysis" className="font-heebo text-base h-12">
+              <Target className="w-4 h-4 ml-2" />
+              ניתוח עמוק
+            </TabsTrigger>
+            <TabsTrigger value="insights" className="font-heebo text-base h-12">
+              <Zap className="w-4 h-4 ml-2" />
+              תובנות
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="recommendations">
             <div className="space-y-6">
               {/* Top Recommendation Highlight */}
               {topRecommendation && (
-                <Card className="border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-white">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center">
-                          <Award className="w-6 h-6 text-white" />
+                <Card className="border-3 border-purple-300 bg-gradient-to-br from-purple-50 via-white to-purple-50 shadow-xl">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg">
+                          <Award className="w-8 h-8 text-white" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold text-purple-800 font-heebo">המסלול המומלץ ביותר</h3>
-                          <p className="text-purple-600 font-assistant">{topRecommendation.plan.company} - {getPlanName(topRecommendation.plan)}</p>
+                          <div className="flex items-center gap-2 mb-2">
+                            <h3 className="text-2xl font-bold text-purple-800 font-heebo">המסלול המומלץ ביותר</h3>
+                            <Badge className="bg-yellow-500 text-white px-3 py-1 rounded-full">
+                              <Star className="w-3 h-3 ml-1" />
+                              #1
+                            </Badge>
+                          </div>
+                          <p className="text-lg text-purple-600 font-assistant font-medium">
+                            {topRecommendation.plan.company} • {getPlanName(topRecommendation.plan)}
+                          </p>
                         </div>
                       </div>
                       <div className="text-left">
-                        <Badge className={`${getConfidenceColor(topRecommendation.confidence)} mb-2`}>
+                        <Badge className={`${getConfidenceColor(topRecommendation.confidence)} mb-3 px-4 py-2 text-sm font-semibold`}>
                           רמת ביטחון: {topRecommendation.confidence === 'high' ? 'גבוהה' : 
                                         topRecommendation.confidence === 'medium' ? 'בינונית' : 'נמוכה'}
                         </Badge>
-                        <div className="text-3xl font-bold text-purple-800 font-heebo">
+                        <div className="text-4xl font-bold text-purple-800 font-heebo">
                           ₪{getPlanPrice(topRecommendation.plan)}
                         </div>
+                        <div className="text-purple-600 font-assistant">לחודש</div>
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="bg-green-50 rounded-lg p-4">
-                        <div className="text-2xl font-bold text-green-800 font-heebo mb-1">
+                  <CardContent className="pt-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                      <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                            <TrendingUp className="w-4 h-4 text-white" />
+                          </div>
+                          <span className="text-green-700 font-semibold font-assistant">חיסכון שנתי</span>
+                        </div>
+                        <div className="text-3xl font-bold text-green-800 font-heebo">
                           ₪{topRecommendation.savings.annualSavings.toLocaleString()}
                         </div>
-                        <div className="text-green-600 font-assistant text-sm">חיסכון שנתי</div>
+                        <div className="text-sm text-green-600 font-assistant">
+                          ₪{topRecommendation.savings.monthlySavings} לחודש
+                        </div>
                       </div>
-                      <div className="bg-blue-50 rounded-lg p-4">
-                        <div className="text-2xl font-bold text-blue-800 font-heebo mb-1">
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <Target className="w-4 h-4 text-white" />
+                          </div>
+                          <span className="text-blue-700 font-semibold font-assistant">ציון התאמה</span>
+                        </div>
+                        <div className="text-3xl font-bold text-blue-800 font-heebo">
                           {Math.round(topRecommendation.score)}
                         </div>
-                        <div className="text-blue-600 font-assistant text-sm">ציון התאמה</div>
+                        <div className="text-sm text-blue-600 font-assistant">מתוך 100</div>
                       </div>
-                      <div className="bg-purple-50 rounded-lg p-4">
-                        <div className="text-2xl font-bold text-purple-800 font-heebo mb-1">
+                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
+                            <Zap className="w-4 h-4 text-white" />
+                          </div>
+                          <span className="text-purple-700 font-semibold font-assistant">אחוז חיסכון</span>
+                        </div>
+                        <div className="text-3xl font-bold text-purple-800 font-heebo">
                           {Math.round(topRecommendation.savings.percentageSaving)}%
                         </div>
-                        <div className="text-purple-600 font-assistant text-sm">אחוז חיסכון</div>
+                        <div className="text-sm text-purple-600 font-assistant">מהעלות הנוכחית</div>
                       </div>
                     </div>
                     

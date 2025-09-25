@@ -25,7 +25,8 @@ import {
   Eye,
   X,
   BarChart3,
-  Calculator
+  Calculator,
+  Shield
 } from "lucide-react";
 import { ManualPlan } from "@/data/manual-plans";
 import { cn } from "@/lib/utils";
@@ -271,34 +272,42 @@ const EnhancedPlanGrid = ({
           
           {/* AI Top Recommendation Banner */}
           {topRecommendation && showAIInsights && (
-            <Card className="mb-6 border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-white">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <Brain className="w-6 h-6 text-white" />
+            <Card className="mb-8 border-3 border-purple-300 bg-gradient-to-br from-purple-50 via-white to-purple-50 shadow-2xl hover:shadow-3xl transition-all duration-500">
+              <CardContent className="p-8">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-6">
+                    <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 rounded-3xl flex items-center justify-center shadow-xl">
+                      <Brain className="w-10 h-10 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-purple-800 font-heebo">המסלול המומלץ ביותר עבורכם</h3>
-                      <p className="text-purple-600 font-assistant">
-                        {topRecommendation.plan.company} - {topRecommendation.plan.planName}
+                      <div className="flex items-center gap-3 mb-3">
+                        <h3 className="text-3xl font-bold text-purple-800 font-heebo">המסלול המומלץ ביותר עבורכם</h3>
+                        <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-2 rounded-full shadow-lg">
+                          <Crown className="w-4 h-4 ml-1" />
+                          AI המלצה
+                        </Badge>
+                      </div>
+                      <p className="text-xl text-purple-600 font-assistant font-medium mb-4">
+                        {topRecommendation.plan.company} • {topRecommendation.plan.planName}
                       </p>
-                      <div className="flex items-center gap-4 mt-2">
-                        <Badge className={getConfidenceColor(topRecommendation.confidence)}>
+                      <div className="flex items-center gap-6">
+                        <Badge className={`${getConfidenceColor(topRecommendation.confidence)} px-4 py-2 font-semibold`}>
+                          <Shield className="w-4 h-4 ml-1" />
                           ביטחון {topRecommendation.confidence === 'high' ? 'גבוה' : 
                                    topRecommendation.confidence === 'medium' ? 'בינוני' : 'נמוך'}
                         </Badge>
-                        <span className="text-sm text-green-600 font-medium">
-                          חיסכון ₪{topRecommendation.savings.annualSavings.toLocaleString()} בשנה
-                        </span>
+                        <div className="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full">
+                          <TrendingUp className="w-4 h-4" />
+                          <span className="font-bold">חיסכון ₪{topRecommendation.savings.annualSavings.toLocaleString()} בשנה</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-purple-800 font-heebo">
+                  <div className="text-left bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-purple-200 shadow-lg">
+                    <div className="text-5xl font-bold text-purple-800 font-heebo mb-2">
                       ₪{topRecommendation.plan.regularPrice}
                     </div>
-                    <div className="text-sm text-purple-600">לחודש</div>
+                    <div className="text-lg text-purple-600 font-assistant">לחודש</div>
                   </div>
                 </div>
               </CardContent>
