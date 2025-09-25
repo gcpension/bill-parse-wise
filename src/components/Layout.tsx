@@ -1,17 +1,23 @@
 import { ReactNode } from 'react';
 import { Navigation } from './Navigation';
+import BackToTop from './BackToTop';
+import { Toaster } from '@/components/ui/toaster';
 
 interface LayoutProps {
   children: ReactNode;
+  showBackToTop?: boolean;
+  className?: string;
 }
 
-export const Layout = ({ children }: LayoutProps) => {
+export const Layout = ({ children, showBackToTop = true, className = '' }: LayoutProps) => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navigation />
-      <main className="container mx-auto px-4 py-8">
+      <main className={`flex-1 ${className}`}>
         {children}
       </main>
+      {showBackToTop && <BackToTop />}
+      <Toaster />
     </div>
   );
 };
