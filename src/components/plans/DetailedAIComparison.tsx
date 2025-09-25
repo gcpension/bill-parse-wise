@@ -11,7 +11,7 @@ import { RecommendationEngine, RecommendationContext, EnhancedRecommendation } f
 interface DetailedAIComparisonProps {
   plans: ManualPlan[];
   userContext: RecommendationContext;
-  category: string;
+  category: 'electricity' | 'internet' | 'mobile' | 'tv';
 }
 
 const DetailedAIComparison = ({ plans, userContext, category }: DetailedAIComparisonProps) => {

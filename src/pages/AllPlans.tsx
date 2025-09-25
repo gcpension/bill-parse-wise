@@ -442,7 +442,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                   <DetailedAIComparison 
                     plans={comparedPlans}
                     userContext={userContext}
-                    category={selectedCategory || 'electricity'}
+                    category={selectedCategory as 'electricity' | 'internet' | 'mobile' | 'tv'}
                   />
                   <Button
                     onClick={() => setShowComparison(!showComparison)}
