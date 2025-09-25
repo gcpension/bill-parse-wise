@@ -7,7 +7,6 @@ import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import PlanComparison from "@/components/plans/PlanComparison";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
 import ProviderGrid from "@/components/providers/ProviderGrid";
-import PlanGrid from "@/components/providers/PlanGrid";
 import EnhancedPlanGrid from "@/components/providers/EnhancedPlanGrid";
 import DetailedAIComparison from "@/components/plans/DetailedAIComparison";
 
@@ -457,53 +456,14 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                         </div>
                       )}
 
-                      {/* Impact Metrics */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div className="bg-gradient-to-br from-purple-100 to-purple-50 rounded-2xl p-6 text-center">
-                          <div className="text-3xl font-bold text-purple-800 font-heebo mb-2">
-                            ₪{Math.round(totalMonthlySavings / 30).toLocaleString()}
-                          </div>
-                          <div className="text-purple-600 font-assistant text-sm">חיסכון יומי</div>
-                        </div>
-                        <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-2xl p-6 text-center">
-                          <div className="text-3xl font-bold text-green-800 font-heebo mb-2">
-                            {Math.round(totalAnnualSavings / 2000)}
-                          </div>
-                          <div className="text-green-600 font-assistant text-sm">חופשות בשנה</div>
-                        </div>
-                        <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl p-6 text-center">
-                          <div className="text-3xl font-bold text-blue-800 font-heebo mb-2">
-                            {Math.round(totalAnnualSavings / 12)}
-                          </div>
-                          <div className="text-blue-600 font-assistant text-sm">₪ חופשי לחודש</div>
-                        </div>
-                      </div>
-
                       {/* Call to Action */}
                       <div className="text-center">
-                        <p className="text-purple-700 font-assistant text-lg mb-6">
-                          המעבר פשוט וחינמי • החיסכון מתחיל מיד • שירות מקצועי ואמין
-                        </p>
-                        <div className="flex items-center justify-center gap-4">
-                          <Button className="h-14 px-8 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-heebo text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
-                            בואו נתחיל לחסוך
-                          </Button>
-                          {analyzedCategories.length > 0 && analysisPlans.length > 0 && (
-                            <DetailedAIComparison 
-                              plans={analysisPlans}
-                              userContext={{
-                                category: analyzedCategories[0] === 'mobile' ? 'cellular' : analyzedCategories[0],
-                                currentProvider: analysisData?.responses?.[analyzedCategories[0] === 'mobile' ? 'cellular' : analyzedCategories[0]]?.currentProvider || 'ספק נוכחי',
-                                currentAmount: parseInt(analysisData?.responses?.[analyzedCategories[0] === 'mobile' ? 'cellular' : analyzedCategories[0]]?.monthlyAmount) || 200,
-                                familySize: 3,
-                                budget: parseInt(analysisData?.responses?.[analyzedCategories[0] === 'mobile' ? 'cellular' : analyzedCategories[0]]?.monthlyAmount) * 0.8 || 160,
-                                usage: 'medium' as const,
-                                priorities: ['חיסכון', 'אמינות'],
-                                homeType: 'apartment' as const
-                              }}
-                              category={analyzedCategories[0]}
-                            />
-                          )}
+                        <div className="inline-flex items-center gap-4 bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-105 cursor-pointer group">
+                          <Award className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
+                          <span className="text-lg font-bold font-heebo">
+                            {mockSavingsData.length > 1 ? 'בחר מסלולים והתחל לחסוך' : 'התחל לחסוך עוד היום'}
+                          </span>
+                          <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
                         </div>
                       </div>
                     </div>
@@ -512,195 +472,105 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
               })()}
             </div>
           )}
-
-          {/* Back Button */}
-          {currentStep !== 'category' && (
-            <div className="mb-8">
-              <Button 
-                variant="outline" 
-                onClick={handleBack}
-                className="flex items-center gap-3 h-12 px-6 bg-white/60 backdrop-blur-sm border-purple-200 text-purple-700 hover:bg-purple-50 hover:border-purple-300 transition-all duration-300 rounded-xl font-heebo font-medium"
-              >
-                <ArrowLeft className="w-5 h-5" />
-                חזרה
-              </Button>
-            </div>
-          )}
         </div>
       </section>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 lg:px-6 max-w-6xl pb-16 relative z-10">
-        {/* Analysis Plans View */}
-        {currentStep === 'analysis-plans' && analyzedCategories.length > 0 && (
-          <div className="max-w-7xl mx-auto animate-fade-in opacity-0" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-heebo font-medium text-purple-800 mb-6">
-                המסלולים המתאימים לכם
-              </h2>
-              <p className="text-xl text-purple-600 font-assistant max-w-2xl mx-auto">
-                על פי הניתוח שלכם, אלו המסלולים הטובים ביותר בקטגוריות שבחרתם
-              </p>
-              
-              {/* Explore Other Categories Button */}
-              <div className="mt-8">
-                <Button 
-                  onClick={handleExploreOtherCategories}
-                  variant="outline"
-                  className="h-12 px-8 bg-white/60 backdrop-blur-sm border-2 border-purple-200 text-purple-700 hover:bg-purple-50 hover:border-purple-300 transition-all duration-300 rounded-xl font-heebo font-medium"
-                >
-                  <Sparkles className="w-5 h-5 ml-2" />
-                  עיין בקטגוריות נוספות
-                </Button>
-              </div>
-            </div>
-
-            {/* Category Cards with Plans */}
-            <div className="space-y-16">
-              {analyzedCategories.map((category, categoryIndex) => {
-                const config = categoryConfig[category];
-                const categoryPlans = manualPlans
-                  .filter(p => p.category === category)
-                  .sort((a, b) => parseInt(a.regularPrice.toString()) - parseInt(b.regularPrice.toString()));
-                const topPlans = categoryPlans.slice(0, 6); // Show top 6 plans per category
+      <div className="container mx-auto px-4 lg:px-6 max-w-6xl py-8 relative z-10">
+        
+        {/* Analysis Plans Display - Using EnhancedPlanGrid */}
+        {currentStep === 'analysis-plans' && (
+          <div className="animate-fade-in opacity-0" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}>
+            {/* Display analyzed plans by category using EnhancedPlanGrid */}
+            <div className="space-y-12">
+              {analyzedCategories.map(category => {
+                const categoryPlans = analysisPlans.filter(plan => plan.category === category);
+                if (categoryPlans.length === 0) return null;
 
                 return (
-                  <div 
-                    key={category}
-                    className="animate-fade-in opacity-0"
-                    style={{ animationDelay: `${1.2 + categoryIndex * 0.2}s`, animationFillMode: 'forwards' }}
-                  >
-                    {/* Category Header */}
-                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 mb-10 shadow-xl border border-purple-100">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-6">
-                          <div className={`w-20 h-20 rounded-3xl flex items-center justify-center text-white shadow-2xl ${
-                            category === 'electricity' ? 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-500' :
-                            category === 'internet' ? 'bg-gradient-to-br from-blue-400 via-blue-500 to-cyan-500' :
-                            category === 'mobile' ? 'bg-gradient-to-br from-purple-400 via-purple-500 to-pink-500' :
-                            'bg-gradient-to-br from-orange-400 via-red-500 to-red-600'
-                          }`}>
-                            {config.icon}
-                          </div>
-                          <div>
-                            <h3 className="text-3xl font-bold text-purple-800 font-heebo mb-2">
-                              {config.label}
-                            </h3>
-                            <p className="text-lg text-purple-600 font-assistant">
-                              {topPlans.length} מסלולים מומלצים מתוך {categoryPlans.length} זמינים
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <Button
-                          onClick={() => handleCategorySelect(category)}
-                          className="h-14 px-8 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-xl font-heebo font-medium shadow-lg hover:shadow-xl transition-all duration-300"
-                        >
-                          <Crown className="w-5 h-5 ml-2" />
-                          צפה בכל המסלולים
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* Plans Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {topPlans.map((plan, planIndex) => {
-                        const currentData = getCurrentPlanData();
-                        const categoryKey = category === 'mobile' ? 'cellular' : category;
-                        const categoryAnalysisData = analysisData?.responses?.[categoryKey];
-                        const currentMonthly = categoryAnalysisData ? parseInt(categoryAnalysisData.monthlyAmount) || 0 : 0;
-                        const potentialSavings = currentMonthly > 0 ? Math.max(0, currentMonthly - plan.regularPrice) : undefined;
-                        
-                        return (
-                          <div 
-                            key={plan.id} 
-                            className="relative transition-all duration-500 animate-fade-in opacity-0 hover:scale-105 hover:-translate-y-2"
-                            style={{ animationDelay: `${1.4 + categoryIndex * 0.2 + planIndex * 0.1}s`, animationFillMode: 'forwards' }}
-                          >
-                            {planIndex === 0 && (
-                              <div className="absolute -top-4 -right-4 z-10">
-                                <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl animate-pulse">
-                                  <Crown className="w-4 h-4 inline ml-2" />
-                                  הכי מומלץ
-                                </div>
-                              </div>
-                            )}
-                            
-                            <Card className="bg-white/90 backdrop-blur-sm rounded-3xl h-full border-2 border-gray-100 hover:border-purple-300 transition-all duration-500 hover:shadow-2xl shadow-lg">
-                              <CardContent className="p-8">
-                                <div className="text-center mb-8">
-                                  <h4 className="text-xl font-bold text-purple-800 mb-2 font-heebo">
-                                    {plan.company}
-                                  </h4>
-                                  <h5 className="text-lg font-semibold text-gray-700 mb-4 font-assistant">
-                                    {plan.planName}
-                                  </h5>
-                                  <div className="relative">
-                                    <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-700 bg-clip-text text-transparent mb-3 font-heebo">
-                                      ₪{plan.regularPrice}
-                                    </div>
-                                    <div className="text-lg text-purple-600 font-assistant">לחודש</div>
-                                  </div>
-                                </div>
-
-                                {/* Savings Comparison */}
-                                {potentialSavings !== undefined && (
-                                  <div className={`text-center mb-6 p-4 rounded-2xl border-2 transition-all duration-300 ${
-                                    potentialSavings > 0 ? 'bg-gradient-to-r from-green-50 to-green-100 border-green-200' : 
-                                    potentialSavings === 0 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100 border-yellow-200' :
-                                    'bg-gradient-to-r from-red-50 to-red-100 border-red-200'
-                                  }`}>
-                                    {potentialSavings > 0 ? (
-                                      <div className="flex items-center justify-center gap-2">
-                                        <TrendingUp className="w-5 h-5 text-green-600" />
-                                        <div>
-                                          <div className="text-green-700 font-bold text-lg font-heebo">₪{potentialSavings} חיסכון</div>
-                                          <div className="text-xs text-green-600 font-assistant">₪{potentialSavings * 12} לשנה</div>
-                                        </div>
-                                      </div>
-                                    ) : potentialSavings === 0 ? (
-                                      <div className="text-yellow-700 font-bold text-sm font-heebo">מחיר זהה</div>
-                                    ) : (
-                                      <div className="text-red-700 font-bold text-sm font-heebo">₪{Math.abs(potentialSavings)} יותר יקר</div>
-                                    )}
-                                  </div>
-                                )}
-
-                                <div className="space-y-2 mb-6">
-                                  {plan.features.slice(0, 3).map((feature, idx) => (
-                                    <div key={idx} className="flex items-center gap-3 text-gray-700 text-sm">
-                                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                                      <span className="font-assistant">{feature}</span>
-                                    </div>
-                                  ))}
-                                </div>
-
-                                <div className="space-y-3">
-                                  <Button
-                                    onClick={() => handlePlanSelect(plan)}
-                                    className="w-full h-12 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-xl font-heebo font-medium shadow-lg hover:shadow-xl transition-all duration-300"
-                                  >
-                                    בחר מסלול זה
-                                  </Button>
-                                  
-                                  <Button
-                                    variant="outline"
-                                    onClick={() => handleCompareToggle(plan)}
-                                    disabled={comparedPlans.length >= 3 && !comparedPlans.find(p => p.id === plan.id)}
-                                    className="w-full h-10 border-purple-200 text-purple-700 hover:bg-purple-50 rounded-xl font-assistant transition-all duration-300"
-                                  >
-                                    {comparedPlans.find(p => p.id === plan.id) ? 'הסר מהשוואה' : 'הוסף להשוואה'}
-                                  </Button>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          </div>
-                        );
-                      })}
-                    </div>
+                  <div key={category} className="bg-white/60 backdrop-blur-sm rounded-3xl p-4 border border-purple-100/50 shadow-lg">
+                    <EnhancedPlanGrid
+                      plans={categoryPlans}
+                      category={category}
+                      userContext={getUserContext()}
+                      onBack={handleExploreOtherCategories}
+                      onPlanSelect={handlePlanSelect}
+                      onCompareToggle={handleCompareToggle}
+                      comparedPlans={comparedPlans}
+                      showAllCompanies={true}
+                    />
                   </div>
                 );
               })}
+            </div>
+
+            {/* Enhanced Comparison Section */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-purple-100/50 shadow-lg mt-12">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+                  <Award className="w-5 h-5" />
+                  <span className="font-semibold font-heebo">השוואה מתקדמת מרכזית</span>
+                </div>
+                <h3 className="text-2xl font-bold text-purple-800 font-heebo mb-3">
+                  השווה מסלולים מכל הקטגוריות במקום אחד
+                </h3>
+                <p className="text-purple-600 font-assistant max-w-2xl mx-auto">
+                  השוואה חכמה הכוללת את המסלול הקיים שלכם + עד 3 מסלולים חדשים עם ניתוח חיסכון מפורט
+                </p>
+              </div>
+
+              {comparedPlans.length > 0 ? (
+                <div className="space-y-6">
+                  <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-white">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                          <TrendingUp className="w-6 h-6 text-primary" />
+                          <h4 className="text-xl font-bold text-primary font-heebo">
+                            השוואה מפורטת ({comparedPlans.length}/3 מסלולים)
+                          </h4>
+                        </div>
+                        <Button
+                          variant="outline"
+                          onClick={handleClearComparison}
+                          className="text-purple-700 border-purple-200 hover:bg-purple-50 font-assistant"
+                        >
+                          נקה הכל
+                        </Button>
+                      </div>
+
+                      {/* Detailed Comparison with Current Plan Integration */}
+                      <DetailedAIComparison 
+                        plans={comparedPlans}
+                        userContext={getUserContext()}
+                        category={selectedCategory || 'electricity'}
+                      />
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <div className="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-12 border border-gray-200 text-center">
+                  <TrendingUp className="w-12 h-12 text-purple-500 mx-auto mb-4 opacity-50" />
+                  <h4 className="text-lg font-semibold text-purple-800 font-heebo mb-2">
+                    התחל השוואה חכמה
+                  </h4>
+                  <p className="text-purple-600 font-assistant">
+                    בחר מסלולים מהרשימות למעלה כדי לקבל השוואה מפורטת כולל המסלול הקיים שלך
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Explore Other Categories */}
+            <div className="text-center mt-12">
+              <Button
+                variant="outline"
+                onClick={handleExploreOtherCategories}
+                className="text-purple-700 border-purple-200 hover:bg-purple-50 font-assistant px-8 py-3"
+              >
+                חקור קטגוריות נוספות
+                <ArrowLeft className="w-4 h-4 mr-2" />
+              </Button>
             </div>
           </div>
         )}
