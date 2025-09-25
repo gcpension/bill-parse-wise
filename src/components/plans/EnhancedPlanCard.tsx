@@ -1,415 +1,283 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ManualPlan } from "@/data/manual-plans";
-import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
-import TrustIndicators from "./TrustIndicators";
-import PlanInsights from "./PlanInsights";
+import { useState } from 'react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
 import { 
-  Building2, 
-  Check, 
+  Crown, 
+  Sparkles, 
   Star, 
-  TrendingUp, 
-  Award, 
-  Flame, 
-  Sparkles,
-  Download,
-  Upload,
-  Wifi,
-  Phone,
-  Clock,
-  Shield,
-  HeartHandshake,
+  CheckCircle, 
+  Plus, 
+  Minus, 
+  Eye, 
   Zap,
-  Eye,
-  EyeOff
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+  Shield,
+  Award,
+  TrendingUp,
+  Brain,
+  Target
+} from 'lucide-react';
+import { ManualPlan } from '@/data/manual-plans';
+import { cn } from '@/lib/utils';
 
 interface EnhancedPlanCardProps {
   plan: ManualPlan;
-  isCompared?: boolean;
-  onCompareToggle?: (plan: ManualPlan) => void;
-  canCompare?: boolean;
-  showSavings?: boolean;
-  estimatedSavings?: number;
-  rank?: number;
-  className?: string;
-  compact?: boolean;
+  index: number;
+  isCheapest?: boolean;
+  isTopRecommendation?: boolean;
+  isInComparison?: boolean;
+  canAddToComparison?: boolean;
+  aiScore?: number;
+  monthlySavings?: number;
+  onSelect: (plan: ManualPlan) => void;
+  onCompareToggle: (plan: ManualPlan) => void;
 }
 
-const EnhancedPlanCard = ({
+export const EnhancedPlanCard = ({
   plan,
-  isCompared = false,
-  onCompareToggle,
-  canCompare = true,
-  showSavings = false,
-  estimatedSavings,
-  rank,
-  className,
-  compact = false
+  index,
+  isCheapest = false,
+  isTopRecommendation = false,
+  isInComparison = false,
+  canAddToComparison = true,
+  aiScore,
+  monthlySavings,
+  onSelect,
+  onCompareToggle
 }: EnhancedPlanCardProps) => {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
+  const [showAllFeatures, setShowAllFeatures] = useState(false);
 
-  // Generate realistic ratings and popularity scores
-  const rating = (Math.random() * 1.5 + 3.5).toFixed(1);
-  const reviewCount = Math.floor(Math.random() * 2000) + 100;
-  const popularityScore = Math.floor(Math.random() * 40) + 60;
-  const savingsAmount = estimatedSavings || Math.floor(Math.random() * 150) + 50;
-  
-  // Determine if plan is popular (top 30% popularity)
-  const isPopular = popularityScore > 80;
-  const isHighRated = parseFloat(rating) >= 4.0;
-  const isNewPlan = Math.random() > 0.8; // 20% chance of being "new"
-
-  const getCategoryIcon = () => {
-    switch (plan.category) {
-      case 'electricity': return <Zap className="h-6 w-6" />;
-      case 'mobile': return <Phone className="h-6 w-6" />;
-      case 'internet': return <Wifi className="h-6 w-6" />;
-      case 'tv': return <Building2 className="h-6 w-6" />;
-      default: return <Building2 className="h-6 w-6" />;
-    }
+  const getScoreColor = (score: number) => {
+    if (score >= 85) return 'from-green-500 to-green-600';
+    if (score >= 70) return 'from-yellow-500 to-yellow-600';
+    return 'from-red-500 to-red-600';
   };
 
-  const getCategoryColors = () => {
-    switch (plan.category) {
-      case 'electricity': 
-        return {
-          gradient: 'from-yellow-400/20 to-yellow-500/20',
-          border: 'border-yellow-400/30',
-          text: 'text-yellow-700',
-          bgGradient: 'bg-gradient-to-r from-yellow-400 to-yellow-500',
-          iconBg: 'from-yellow-400/10 to-yellow-500/10 group-hover:from-yellow-400 group-hover:to-yellow-500'
-        };
-      case 'mobile':
-        return {
-          gradient: 'from-purple-400/20 to-purple-500/20',
-          border: 'border-purple-400/30',
-          text: 'text-purple-700',
-          bgGradient: 'bg-gradient-to-r from-purple-400 to-purple-500',
-          iconBg: 'from-purple-400/10 to-purple-500/10 group-hover:from-purple-400 group-hover:to-purple-500'
-        };
-      case 'internet':
-        return {
-          gradient: 'from-cyan-400/20 to-cyan-500/20',
-          border: 'border-cyan-400/30',
-          text: 'text-cyan-700',
-          bgGradient: 'bg-gradient-to-r from-cyan-400 to-cyan-500',
-          iconBg: 'from-cyan-400/10 to-cyan-500/10 group-hover:from-cyan-400 group-hover:to-cyan-500'
-        };
-      case 'tv':
-        return {
-          gradient: 'from-orange-400/20 to-orange-500/20',
-          border: 'border-orange-400/30',
-          text: 'text-orange-700',
-          bgGradient: 'bg-gradient-to-r from-orange-400 to-orange-500',
-          iconBg: 'from-orange-400/10 to-orange-500/10 group-hover:from-orange-400 group-hover:to-orange-500'
-        };
-      default:
-        return {
-          gradient: 'from-gray-400/20 to-gray-500/20',
-          border: 'border-gray-400/30',
-          text: 'text-gray-700',
-          bgGradient: 'bg-gradient-to-r from-gray-400 to-gray-500',
-          iconBg: 'from-gray-400/10 to-gray-500/10 group-hover:from-gray-400 group-hover:to-gray-500'
-        };
-    }
+  const getScoreBadgeColor = (score: number) => {
+    if (score >= 85) return 'bg-green-100 text-green-800 border-green-200';
+    if (score >= 70) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+    return 'bg-red-100 text-red-800 border-red-200';
   };
-
-  const getCategoryLabel = () => {
-    switch (plan.category) {
-      case 'electricity': return 'חשמל';
-      case 'mobile': return 'סלולר';
-      case 'internet': return 'אינטרנט';
-      case 'tv': return 'טלוויזיה';
-      default: return '';
-    }
-  };
-
-  const formatPrice = () => {
-    if (plan.category === 'electricity') {
-      return plan.speed; // For electricity, speed is the discount percentage
-    }
-    return `₪${plan.regularPrice}`;
-  };
-
-  const categoryColors = getCategoryColors();
 
   return (
-    <Card className={cn(
-      "relative overflow-hidden transition-all duration-300 hover:shadow-2xl group border-border/50",
-      "bg-gradient-to-br from-white/95 via-white/90 to-white/85 backdrop-blur-sm",
-      `bg-gradient-to-br ${categoryColors.gradient}`,
-      `border-2 ${categoryColors.border}`,
-      isCompared && "ring-2 ring-primary/50 shadow-lg",
-      rank === 1 && "border-4 border-success/60 shadow-2xl shadow-success/30 bg-gradient-to-br from-success/10 via-success/5 to-success/15 ring-4 ring-success/20 ring-offset-2 scale-105 z-10",
-      className
-    )}>
-      {/* Top Badges */}
-      <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-        {rank === 1 && (
-          <Badge className="bg-gradient-to-r from-success via-green-500 to-emerald-500 text-white shadow-2xl animate-pulse border-2 border-white/50 text-lg py-2 px-4 font-bold">
-            <Award className="h-5 w-5 mr-2" />
-            ⭐ המומלץ ביותר! ⭐
-          </Badge>
-        )}
-        {isPopular && rank !== 1 && (
-          <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg">
-            <Flame className="h-3 w-3 mr-1" />
-            פופולרי
-          </Badge>
-        )}
-        {isNewPlan && rank !== 1 && (
-          <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg">
-            <Sparkles className="h-3 w-3 mr-1" />
-            חדש
-          </Badge>
-        )}
-        {showSavings && (
-          <Badge className={`text-white shadow-lg ${rank === 1 ? 'bg-gradient-to-r from-yellow-500 to-amber-500 border-2 border-white/30' : 'bg-gradient-to-r from-green-600 to-emerald-600'}`}>
-            <TrendingUp className="h-3 w-3 mr-1" />
-            {rank === 1 ? '🔥 חסכת' : 'חסכת'} ₪{savingsAmount}
-          </Badge>
-        )}
-      </div>
+    <Card 
+      className={cn(
+        "group transition-all duration-500 hover:shadow-2xl border-2 relative overflow-hidden",
+        "animate-fade-in opacity-0 hover:-translate-y-1",
+        isCheapest && "ring-2 ring-green-400/60 bg-gradient-to-br from-green-50/50 via-white to-green-50/30",
+        isInComparison && "ring-2 ring-blue-400/60 bg-gradient-to-br from-blue-50/50 via-white to-blue-50/30",
+        isTopRecommendation && "ring-2 ring-purple-400/60 bg-gradient-to-br from-purple-50/50 via-white to-purple-50/30",
+        "hover:border-primary/40"
+      )}
+      style={{ 
+        animationDelay: `${index * 0.15}s`, 
+        animationFillMode: 'forwards' 
+      }}
+    >
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/50 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-      {/* Comparison Checkbox */}
-      {onCompareToggle && (
-        <div className="absolute top-4 left-4 z-10">
-          <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-sm">
-            <Checkbox
-              id={`compare-${plan.id}`}
-              checked={isCompared}
-              onCheckedChange={() => onCompareToggle(plan)}
-              disabled={!canCompare && !isCompared}
-              className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-            />
-            <label 
-              htmlFor={`compare-${plan.id}`} 
-              className="text-xs font-medium cursor-pointer select-none"
-            >
-              השווה
-            </label>
-          </div>
+      {/* Top AI Recommendation Badge */}
+      {isTopRecommendation && (
+        <div className="absolute -top-3 -right-3 z-10">
+          <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-2 shadow-xl animate-pulse">
+            <Brain className="w-4 h-4 ml-1" />
+            בחירת AI #1
+          </Badge>
         </div>
       )}
 
-      <CardHeader className="pb-4">
-        <div className={cn("flex items-start justify-between gap-4", compact ? "mt-6" : "mt-8")}>
-          {/* Company Info */}
-          <div className="flex items-center gap-4 flex-1">
-            <div className={cn(
-              `${compact ? 'w-12 h-12' : 'w-16 h-16'} rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg text-white`,
-              `bg-gradient-to-r ${categoryColors.iconBg}`
-            )}>
-              {getCategoryIcon()}
-            </div>
-            
-            <div className="flex-1">
-              {/* Category and Rating */}
-              <div className="flex items-center gap-2 mb-2">
-                <Badge className={cn(
-                  "text-xs text-white border-0 shadow-sm",
-                  categoryColors.bgGradient
-                )}>
-                  {getCategoryLabel()}
-                </Badge>
-                <div className="flex items-center gap-1">
-                  <div className="flex items-center">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={cn(
-                          "h-4 w-4",
-                          i < Math.floor(parseFloat(rating)) 
-                            ? "text-yellow-400 fill-yellow-400" 
-                            : "text-gray-300"
-                        )} 
-                      />
-                    ))}
-                  </div>
-                  <span className="text-sm font-medium text-muted-foreground">
-                    {rating} ({reviewCount.toLocaleString()})
-                  </span>
-                </div>
-              </div>
-              
-              {/* Company and Plan Names */}
-              <h3 className={cn("font-bold text-foreground mb-1", compact ? "text-lg" : "text-xl")}>{plan.company}</h3>
-              <p className="text-muted-foreground font-medium">{plan.planName}</p>
-            </div>
-          </div>
+      {/* Best Deal Badge */}
+      {isCheapest && !isTopRecommendation && (
+        <div className="absolute -top-3 -right-3 z-10">
+          <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 shadow-xl">
+            <Crown className="w-4 h-4 ml-1" />
+            המחיר הטוב ביותר
+          </Badge>
+        </div>
+      )}
 
-          {/* Price */}
-          <div className={cn(
-            "text-center rounded-xl border shadow-sm",
-            compact ? "p-3" : "p-4",
-            categoryColors.gradient,
-            categoryColors.border
-          )}>
-            <div className={cn(
-              "font-black bg-clip-text text-transparent",
-              compact ? "text-xl" : "text-3xl",
-              categoryColors.bgGradient
-            )}>
-              {formatPrice()}
+      {/* Comparison Badge */}
+      {isInComparison && (
+        <div className="absolute -top-3 -left-3 z-10">
+          <Badge className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 shadow-xl">
+            <CheckCircle className="w-4 h-4 ml-1" />
+            בהשוואה
+          </Badge>
+        </div>
+      )}
+
+      {/* AI Score Badge */}
+      {aiScore && (
+        <div className="absolute top-4 left-4 z-10">
+          <Badge className={`${getScoreBadgeColor(aiScore)} px-3 py-1 shadow-lg font-bold`}>
+            <Target className="w-3 h-3 ml-1" />
+            {Math.round(aiScore)}
+          </Badge>
+        </div>
+      )}
+
+      <CardHeader className="pb-4 relative z-10">
+        <div className="flex items-start justify-between">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <h3 className="text-xl font-bold text-foreground font-heebo group-hover:text-primary transition-colors">
+                {plan.company}
+              </h3>
+              {plan.company === 'חברת החשמל' && (
+                <Badge variant="outline" className="text-xs">
+                  <Shield className="w-3 h-3 ml-1" />
+                  רשמי
+                </Badge>
+              )}
             </div>
-            {plan.category !== 'electricity' && (
-              <div className={cn("text-muted-foreground font-medium", compact ? "text-xs" : "text-sm")}>לחודש</div>
+            <h4 className="text-lg text-muted-foreground font-assistant font-medium">
+              {plan.planName}
+            </h4>
+            {aiScore && (
+              <div className="flex items-center gap-2 mt-2">
+                <div className={`w-16 h-2 bg-gradient-to-r ${getScoreColor(aiScore)} rounded-full shadow-inner`}>
+                  <div 
+                    className="h-full bg-white/30 rounded-full transition-all duration-1000"
+                    style={{ width: `${100 - aiScore}%` }}
+                  />
+                </div>
+                <span className="text-xs text-muted-foreground font-assistant">
+                  התאמה: {Math.round(aiScore)}%
+                </span>
+              </div>
+            )}
+          </div>
+          <div className="text-left">
+            <div className="text-3xl font-bold text-primary font-heebo mb-1 group-hover:scale-110 transition-transform duration-300">
+              ₪{plan.regularPrice}
+            </div>
+            <div className="text-sm text-muted-foreground font-assistant">לחודש</div>
+            {monthlySavings && monthlySavings > 0 && (
+              <Badge className="bg-green-100 text-green-800 border-green-200 mt-2">
+                <TrendingUp className="w-3 h-3 ml-1" />
+                חוסך ₪{monthlySavings}
+              </Badge>
             )}
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className={cn(compact ? "space-y-4" : "space-y-6")}>
-        {/* Plan Specifications */}
-        <div className="grid grid-cols-2 gap-3">
-          {plan.category === 'internet' && plan.downloadSpeed && (
-            <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-primary/5 to-primary-glow/5 rounded-xl border border-primary/10">
-              <Download className="h-4 w-4 text-primary" />
-              <div className="text-sm">
-                <div className="font-medium text-foreground">הורדה</div>
-                <div className="text-muted-foreground">{plan.downloadSpeed}</div>
-              </div>
-            </div>
-          )}
-          
-          {plan.category === 'internet' && plan.uploadSpeed && (
-            <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-success/5 to-success/10 rounded-xl border border-success/10">
-              <Upload className="h-4 w-4 text-success" />
-              <div className="text-sm">
-                <div className="font-medium text-foreground">העלאה</div>
-                <div className="text-muted-foreground">{plan.uploadSpeed}</div>
-              </div>
-            </div>
-          )}
-          
-          {plan.dataAmount && (
-            <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-blue-500/5 to-blue-500/10 rounded-xl border border-blue-500/10">
-              <Wifi className="h-4 w-4 text-blue-500" />
-              <div className="text-sm">
-                <div className="font-medium text-foreground">נתונים</div>
-                <div className="text-muted-foreground">{plan.dataAmount}</div>
-              </div>
-            </div>
-          )}
-          
-          {plan.callMinutes && (
-            <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-orange-500/5 to-orange-500/10 rounded-xl border border-orange-500/10">
-              <Phone className="h-4 w-4 text-orange-500" />
-              <div className="text-sm">
-                <div className="font-medium text-foreground">שיחות</div>
-                <div className="text-muted-foreground">{plan.callMinutes}</div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Contract and Trust Info */}
-        <div className="flex items-center justify-between p-3 bg-gradient-to-r from-muted/30 to-muted/10 rounded-xl border border-border/30">
-          <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium">
-              תקופת התקשרות: {Math.random() > 0.5 ? '24 חודשים' : '12 חודשים'}
-            </span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Shield className="h-4 w-4 text-green-600" />
-            <HeartHandshake className="h-4 w-4 text-blue-600" />
-          </div>
-        </div>
-
-        {/* Features List */}
-        <div className="space-y-3">
-          <h4 className="font-semibold text-foreground flex items-center gap-2">
-            <Check className="h-4 w-4 text-success" />
-            מה כלול במסלול:
-          </h4>
-          <div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto">
-            {plan.features.slice(0, 6).map((feature, index) => (
-              <div key={index} className="flex items-start gap-3 text-sm">
-                <Check className="h-4 w-4 text-success flex-shrink-0 mt-0.5" />
-                <span className="text-muted-foreground leading-relaxed">{feature}</span>
+      <CardContent className="space-y-4 relative z-10">
+        {/* Features Preview */}
+        <div className="space-y-2">
+          <h5 className="font-semibold text-foreground font-assistant flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            עיקרי התכונות
+          </h5>
+          <div className="space-y-1">
+            {plan.features?.slice(0, 3).map((feature, idx) => (
+              <div key={idx} className="flex items-center gap-2 text-sm">
+                <CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" />
+                <span className="text-muted-foreground font-assistant">{feature}</span>
               </div>
             ))}
-            {plan.features.length > 6 && (
-              <div className="text-sm text-primary font-medium">
-                +{plan.features.length - 6} תכונות נוספות
-              </div>
+            {(plan.features?.length || 0) > 3 && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="link" className="text-xs p-0 h-auto font-assistant">
+                    <Plus className="w-3 h-3 ml-1" />
+                    +{(plan.features?.length || 0) - 3} תכונות נוספות
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle className="font-heebo text-xl">
+                      {plan.company} - {plan.planName}
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <h4 className="font-semibold font-assistant mb-2">כל התכונות</h4>
+                        <div className="space-y-2 max-h-60 overflow-y-auto">
+                          {plan.features?.map((feature, idx) => (
+                            <div key={idx} className="flex items-start gap-2 text-sm">
+                              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-muted-foreground font-assistant">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="bg-muted/50 rounded-lg p-4">
+                        <h4 className="font-semibold font-assistant mb-2">פרטי המסלול</h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span>חברה:</span>
+                            <span className="font-semibold">{plan.company}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>מחיר חודשי:</span>
+                            <span className="font-bold text-primary">₪{plan.regularPrice}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>מחיר שנתי:</span>
+                            <span className="font-semibold">₪{(plan.regularPrice * 12).toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>תכונות:</span>
+                            <span>{plan.features?.length || 0}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             )}
           </div>
         </div>
 
-        {/* Popularity Indicator */}
-        <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-200/30 dark:border-blue-800/30">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-blue-600" />
-            <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
-              רמת פופולריות: {popularityScore}%
-            </span>
-          </div>
-          <div className="text-xs text-blue-600 dark:text-blue-400">
-            {popularityScore > 90 ? 'נבחר ביותר' : popularityScore > 70 ? 'פופולרי מאוד' : 'פופולרי'}
-          </div>
-        </div>
+        <Separator className="opacity-50" />
 
         {/* Action Buttons */}
-        <div className="space-y-3">
+        <div className="flex gap-2">
           <Button 
-            className={cn(
-              "w-full text-white font-bold rounded-xl shadow-lg transition-all duration-300 border-0",
-              compact ? "text-sm py-3" : "text-lg py-6",
-              rank === 1 
-                ? "bg-gradient-to-r from-success via-green-500 to-emerald-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 shadow-2xl shadow-success/50 animate-pulse border-2 border-white/30"
-                : categoryColors.bgGradient,
-              rank === 1 ? "" : "hover:opacity-90",
-              compact ? "" : "hover:shadow-xl hover:scale-105"
-            )}
-            onClick={() => setIsFormOpen(true)}
+            onClick={() => onSelect(plan)}
+            className="flex-1 font-assistant h-12 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg group-hover:shadow-xl transition-all duration-300"
           >
-            {rank === 1 ? '🚀 בחר במסלול המומלץ ביותר! 🚀' : 'בחר מסלול זה 🚀'}
+            <Zap className="w-4 h-4 ml-2" />
+            בחר מסלול זה
           </Button>
-          
           <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowDetails(!showDetails)}
-            className="w-full text-sm"
+            variant={isInComparison ? "secondary" : "outline"}
+            onClick={() => onCompareToggle(plan)}
+            disabled={!canAddToComparison && !isInComparison}
+            className="h-12 font-assistant border-2 hover:scale-105 transition-all duration-300"
           >
-            {showDetails ? (
-              <>
-                <EyeOff className="h-4 w-4 mr-1" />
-                הסתר פרטים מתקדמים
-              </>
+            {isInComparison ? (
+              <Minus className="w-4 h-4" />
             ) : (
-              <>
-                <Eye className="h-4 w-4 mr-1" />
-                פרטים מתקדמים
-              </>
+              <Plus className="w-4 h-4" />
             )}
           </Button>
         </div>
 
-        {/* Advanced Details - Collapsible */}
-        {showDetails && (
-          <div className="space-y-4 pt-4 border-t border-border/30">
-            <TrustIndicators plan={plan} />
-            <PlanInsights plan={plan} />
+        {/* Quick Stats */}
+        {(aiScore || monthlySavings) && (
+          <div className="grid grid-cols-2 gap-4 pt-2">
+            {aiScore && (
+              <div className="text-center">
+                <div className="text-lg font-bold font-heebo text-primary">{Math.round(aiScore)}%</div>
+                <div className="text-xs text-muted-foreground font-assistant">התאמה</div>
+              </div>
+            )}
+            {monthlySavings && monthlySavings > 0 && (
+              <div className="text-center">
+                <div className="text-lg font-bold font-heebo text-green-600">₪{monthlySavings}</div>
+                <div className="text-xs text-muted-foreground font-assistant">חיסכון</div>
+              </div>
+            )}
           </div>
         )}
       </CardContent>
-      
-      <EnhancedSwitchRequestForm 
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        selectedPlan={plan}
-      />
     </Card>
   );
 };
-
-export default EnhancedPlanCard;
