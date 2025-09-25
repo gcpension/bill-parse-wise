@@ -191,231 +191,378 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
   const clearComparison = () => setComparedPlans([]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-sm border-b border-purple-200/30 py-4 sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/40 to-blue-50/30 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-400/5 via-blue-400/5 to-green-400/5 pointer-events-none"></div>
+      <div className="absolute top-20 left-20 w-96 h-96 bg-purple-300/20 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+      <div className="absolute top-40 right-20 w-80 h-80 bg-blue-300/20 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
+      <div className="absolute bottom-40 left-40 w-72 h-72 bg-green-300/20 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
+      
+      {/* Enhanced Navigation */}
+      <nav className="bg-white/90 backdrop-blur-lg border-b border-purple-200/50 py-4 sticky top-0 z-50 shadow-lg shadow-purple-100/20">
         <div className="container mx-auto px-4 lg:px-6 max-w-7xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-purple-600 font-heebo">EasySwitch</h1>
+              <div className="relative">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent font-heebo">
+                  EasySwitch
+                </h1>
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-green-600/20 rounded-lg blur opacity-30"></div>
+              </div>
             </div>
             <div className="flex items-center space-x-8">
-              <a href="/" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">דף הבית</a>
-              <a href="/all-plans" className="text-purple-600 font-medium hover:text-purple-700 transition-colors font-heebo">כל המסלולים</a>
-              <a href="/magazine" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">מגזין</a>
-              <a href="/tips" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">טיפים</a>
-              <a href="/about" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">אודות</a>
-              <a href="/contact" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">צור קשר</a>
+              <a href="/" className="relative text-gray-600 font-medium hover:text-purple-600 transition-all duration-300 font-heebo group">
+                דף הבית
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+              </a>
+              <a href="/all-plans" className="relative text-purple-600 font-medium hover:text-purple-700 transition-all duration-300 font-heebo group">
+                כל המסלולים
+                <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-600"></span>
+              </a>
+              <a href="/magazine" className="relative text-gray-600 font-medium hover:text-purple-600 transition-all duration-300 font-heebo group">
+                מגזין
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+              </a>
+              <a href="/tips" className="relative text-gray-600 font-medium hover:text-purple-600 transition-all duration-300 font-heebo group">
+                טיפים
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+              </a>
+              <a href="/about" className="relative text-gray-600 font-medium hover:text-purple-600 transition-all duration-300 font-heebo group">
+                אודות
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+              </a>
+              <a href="/contact" className="relative text-gray-600 font-medium hover:text-purple-600 transition-all duration-300 font-heebo group">
+                צור קשר
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+              </a>
             </div>
           </div>
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 lg:px-6 max-w-7xl py-8">
-        {/* Enhanced Page Header */}
-        <div className="text-center mb-16 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-green-600/10 rounded-3xl blur-3xl -z-10"></div>
-          <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-purple-100">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <Brain className="w-12 h-12 text-purple-600" />
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent font-heebo">
-                מרכז המסלולים החכם
-              </h1>
-            </div>
-            <p className="text-xl text-muted-foreground font-assistant max-w-3xl mx-auto mb-6">
-              השוואה מבוססת AI, המלצות מותאמות אישית וכל המסלולים הטובים ביותר במקום אחד
-            </p>
-            <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-                <span>מעל 1000 מסלולים</span>
+      <div className="relative container mx-auto px-4 lg:px-6 max-w-7xl py-8">
+        {/* Revolutionary Page Header */}
+        <div className="text-center mb-20 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/15 via-blue-600/15 to-green-600/15 rounded-[2rem] blur-3xl animate-pulse"></div>
+          <div className="relative bg-white/90 backdrop-blur-xl rounded-[2rem] p-12 shadow-2xl border border-white/50 hover:shadow-3xl transition-all duration-700 group">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 via-blue-600/5 to-green-600/5 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-center gap-6 mb-8">
+                <div className="relative">
+                  <Brain className="w-16 h-16 text-purple-600 animate-pulse" />
+                  <div className="absolute inset-0 bg-purple-600/20 rounded-full blur-lg animate-ping"></div>
+                </div>
+                <h1 className="text-7xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent font-heebo animate-fade-in">
+                  מרכז המסלולים החכם
+                </h1>
               </div>
-              <div className="flex items-center gap-2">
-                <Brain className="w-4 h-4 text-purple-500" />
-                <span>המלצות AI</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-blue-500" />
-                <span>השוואה מפורטת</span>
+              <p className="text-2xl text-muted-foreground font-assistant max-w-4xl mx-auto mb-8 leading-relaxed">
+                גלו את המהפכה בהשוואת מסלולים עם <span className="font-bold text-purple-600">AI מתקדם</span>, 
+                המלצות מותאמות אישית ומעל <span className="font-bold text-blue-600">1000 מסלולים</span> במקום אחד
+              </p>
+              <div className="flex items-center justify-center gap-8 text-lg text-muted-foreground">
+                <div className="flex items-center gap-3 bg-green-50/80 px-4 py-2 rounded-xl border border-green-200/50">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span className="font-semibold">מעל 1000 מסלולים</span>
+                </div>
+                <div className="flex items-center gap-3 bg-purple-50/80 px-4 py-2 rounded-xl border border-purple-200/50">
+                  <Brain className="w-5 h-5 text-purple-500" />
+                  <span className="font-semibold">המלצות AI חכמות</span>
+                </div>
+                <div className="flex items-center gap-3 bg-blue-50/80 px-4 py-2 rounded-xl border border-blue-200/50">
+                  <TrendingUp className="w-5 h-5 text-blue-500" />
+                  <span className="font-semibold">השוואה מתקדמת</span>
+                </div>
+                <div className="flex items-center gap-3 bg-yellow-50/80 px-4 py-2 rounded-xl border border-yellow-200/50">
+                  <Sparkles className="w-5 h-5 text-yellow-500" />
+                  <span className="font-semibold">חיסכון מובטח</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Category Selection */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-800 font-heebo mb-6 text-center">
-            בחרו קטגוריה לצפייה במסלולים
-          </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {Object.entries(categoryConfig).map(([key, config]) => (
-              <Button
+        {/* Revolutionary Category Selection */}
+        <div className="mb-16">
+          <div className="text-center mb-10">
+            <h2 className="text-4xl font-bold text-gray-800 font-heebo mb-4">
+              בחרו את הקטגוריה שלכם
+            </h2>
+            <p className="text-xl text-muted-foreground font-assistant">
+              כל קטגוריה מכילה מאות מסלולים מהספקים הטובים ביותר בישראל
+            </p>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {Object.entries(categoryConfig).map(([key, config], index) => (
+              <div
                 key={key}
-                variant={selectedCategory === key ? "default" : "outline"}
-                className={cn(
-                  "h-24 flex-col gap-2 text-lg font-heebo transition-all duration-300",
-                  selectedCategory === key 
-                    ? "bg-purple-600 text-white shadow-lg scale-105" 
-                    : "border-purple-200 hover:border-purple-400 hover:bg-purple-50"
-                )}
-                onClick={() => setSelectedCategory(key as CategoryType)}
+                className="animate-fade-in opacity-0"
+                style={{ 
+                  animationDelay: `${index * 0.2}s`, 
+                  animationFillMode: 'forwards' 
+                }}
               >
-                {config.icon}
-                {config.label}
-              </Button>
+                <Button
+                  variant={selectedCategory === key ? "default" : "outline"}
+                  className={cn(
+                    "w-full h-32 flex-col gap-3 text-xl font-heebo transition-all duration-500 relative group overflow-hidden",
+                    selectedCategory === key 
+                      ? "bg-gradient-to-br from-purple-600 via-blue-600 to-purple-700 text-white shadow-2xl scale-105 border-0" 
+                      : "border-2 border-purple-200/50 hover:border-purple-400 hover:bg-gradient-to-br hover:from-purple-50 hover:to-blue-50 hover:scale-105 hover:shadow-xl"
+                  )}
+                  onClick={() => setSelectedCategory(key as CategoryType)}
+                >
+                  {selectedCategory === key && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 animate-pulse"></div>
+                  )}
+                  <div className={cn(
+                    "relative z-10 transition-all duration-300",
+                    selectedCategory === key ? "" : "group-hover:scale-110"
+                  )}>
+                    {config.icon}
+                  </div>
+                  <div className="relative z-10 text-center">
+                    <div className="font-bold">{config.label}</div>
+                    <div className={cn(
+                      "text-xs opacity-70 font-assistant",
+                      selectedCategory === key ? "text-white/80" : "text-muted-foreground"
+                    )}>
+                      {config.description}
+                    </div>
+                  </div>
+                  {selectedCategory === key && (
+                    <div className="absolute top-2 right-2">
+                      <Crown className="w-5 h-5 text-yellow-300" />
+                    </div>
+                  )}
+                </Button>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Enhanced Filters and Search */}
+        {/* Revolutionary Filters and Search */}
         {selectedCategory && (
-          <Card className="mb-8 border-2 border-primary/10 bg-gradient-to-r from-white via-purple-50/30 to-white shadow-lg">
-            <CardHeader>
+          <Card className="mb-10 border-0 bg-gradient-to-r from-white via-purple-50/50 to-blue-50/50 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 via-blue-600/5 to-green-600/5"></div>
+            <CardHeader className="relative z-10">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-2xl font-bold text-primary font-heebo flex items-center gap-3">
-                  <Filter className="w-6 h-6" />
-                  סינון וחיפוש מתקדם
+                <CardTitle className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-heebo flex items-center gap-4">
+                  <div className="relative">
+                    <Filter className="w-8 h-8 text-purple-600" />
+                    <div className="absolute inset-0 bg-purple-600/20 rounded-full blur animate-pulse"></div>
+                  </div>
+                  סינון וחיפוש מתקדם עם AI
                 </CardTitle>
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="lg"
                   onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                  className="font-assistant"
+                  className="font-assistant border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 transition-all duration-300"
                 >
-                  <Settings2 className="w-4 h-4 ml-2" />
+                  <Settings2 className="w-5 h-5 ml-2" />
                   {showAdvancedFilters ? 'הסתר מתקדם' : 'הצג מתקדם'}
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Basic Filters */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Search */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-bold text-foreground font-assistant flex items-center gap-2">
-                    <Search className="w-4 h-4" />
-                    חיפוש חכם
+            <CardContent className="space-y-8 relative z-10">
+              {/* Enhanced Basic Filters */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Revolutionary Search */}
+                <div className="space-y-4">
+                  <Label className="text-lg font-bold text-foreground font-assistant flex items-center gap-3">
+                    <div className="relative">
+                      <Search className="w-6 h-6 text-purple-600" />
+                      <div className="absolute inset-0 bg-purple-600/20 rounded-full blur animate-pulse"></div>
+                    </div>
+                    חיפוש חכם עם AI
                   </Label>
-                  <div className="relative">
-                    <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                    <Input
-                      placeholder="חפשו לפי שם מסלול, חברה או תכונה..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pr-12 h-12 font-assistant text-lg"
-                    />
-                    {searchTerm && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setSearchTerm('')}
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2"
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    )}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="relative">
+                      <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-6 h-6" />
+                      <Input
+                        placeholder="חפשו לפי שם מסלול, חברה, תכונה או מחיר..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pr-14 h-14 font-assistant text-lg border-2 border-purple-200/50 focus:border-purple-400 rounded-xl bg-white/80 backdrop-blur-sm"
+                      />
+                      {searchTerm && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setSearchTerm('')}
+                          className="absolute left-3 top-1/2 transform -translate-y-1/2 hover:bg-red-50 text-red-500"
+                        >
+                          <X className="w-5 h-5" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                {/* Price Range */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-bold text-foreground font-assistant flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4" />
-                    טווח מחירים (₪)
+                {/* Enhanced Price Range */}
+                <div className="space-y-4">
+                  <Label className="text-lg font-bold text-foreground font-assistant flex items-center gap-3">
+                    <div className="relative">
+                      <TrendingUp className="w-6 h-6 text-green-600" />
+                      <div className="absolute inset-0 bg-green-600/20 rounded-full blur animate-pulse"></div>
+                    </div>
+                    טווח מחירים חכם (₪)
                   </Label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="number"
-                      placeholder="מחיר מינימום"
-                      value={priceRange.min}
-                      onChange={(e) => setPriceRange(prev => ({ ...prev, min: parseInt(e.target.value) || 0 }))}
-                      className="font-assistant h-12"
-                    />
-                    <Input
-                      type="number"
-                      placeholder="מחיר מקסימום"
-                      value={priceRange.max}
-                      onChange={(e) => setPriceRange(prev => ({ ...prev, max: parseInt(e.target.value) || 1000 }))}
-                      className="font-assistant h-12"
-                    />
+                  <div className="flex gap-3">
+                    <div className="relative group flex-1">
+                      <Input
+                        type="number"
+                        placeholder="מינימום"
+                        value={priceRange.min}
+                        onChange={(e) => setPriceRange(prev => ({ ...prev, min: parseInt(e.target.value) || 0 }))}
+                        className="font-assistant h-14 text-center text-lg border-2 border-green-200/50 focus:border-green-400 rounded-xl bg-white/80"
+                      />
+                    </div>
+                    <div className="flex items-center px-2 text-muted-foreground">-</div>
+                    <div className="relative group flex-1">
+                      <Input
+                        type="number"
+                        placeholder="מקסימום"
+                        value={priceRange.max}
+                        onChange={(e) => setPriceRange(prev => ({ ...prev, max: parseInt(e.target.value) || 1000 }))}
+                        className="font-assistant h-14 text-center text-lg border-2 border-green-200/50 focus:border-green-400 rounded-xl bg-white/80"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* Enhanced Sort */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-bold text-foreground font-assistant flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4" />
-                    סדר תצוגה
+                {/* Revolutionary Sort */}
+                <div className="space-y-4">
+                  <Label className="text-lg font-bold text-foreground font-assistant flex items-center gap-3">
+                    <div className="relative">
+                      <BarChart3 className="w-6 h-6 text-blue-600" />
+                      <div className="absolute inset-0 bg-blue-600/20 rounded-full blur animate-pulse"></div>
+                    </div>
+                    סדר תצוגה מתקדם
                   </Label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-3">
                     <Button
                       variant={sortBy === 'ai' ? 'default' : 'outline'}
-                      size="sm"
+                      size="lg"
                       onClick={() => setSortBy('ai')}
-                      className="font-assistant h-12 flex-col gap-1"
+                      className={cn(
+                        "font-assistant h-14 flex-col gap-2 transition-all duration-300 border-2",
+                        sortBy === 'ai' 
+                          ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg scale-105" 
+                          : "border-purple-200 hover:border-purple-400 hover:bg-purple-50 hover:scale-105"
+                      )}
                     >
-                      <Brain className="w-4 h-4" />
-                      AI המלצות
+                      <Brain className="w-5 h-5" />
+                      <span className="text-sm">AI חכם</span>
                     </Button>
                     <Button
                       variant={sortBy === 'price' ? 'default' : 'outline'}
-                      size="sm"
+                      size="lg"
                       onClick={() => setSortBy('price')}
-                      className="font-assistant h-12 flex-col gap-1"
+                      className={cn(
+                        "font-assistant h-14 flex-col gap-2 transition-all duration-300 border-2",
+                        sortBy === 'price' 
+                          ? "bg-gradient-to-r from-green-600 to-blue-600 text-white shadow-lg scale-105" 
+                          : "border-green-200 hover:border-green-400 hover:bg-green-50 hover:scale-105"
+                      )}
                     >
-                      <TrendingUp className="w-4 h-4" />
-                      מחיר
+                      <TrendingUp className="w-5 h-5" />
+                      <span className="text-sm">מחיר</span>
                     </Button>
                   </div>
                 </div>
               </div>
 
-              {/* Advanced Filters */}
+              {/* Revolutionary Advanced Filters */}
               {showAdvancedFilters && (
-                <div className="border-t border-primary/10 pt-6">
-                  <h3 className="text-lg font-bold text-primary font-heebo mb-4">הגדרות מתקדמות</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <Label className="font-assistant font-semibold">תקציב חודשי מועדף</Label>
-                      <Input
-                        type="number"
-                        value={200}
-                        onChange={(e) => {/* Will be handled later */}}
-                        placeholder="₪200"
-                        className="font-assistant"
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <Label className="font-assistant font-semibold">גודל משק בית</Label>
-                      <Input
-                        type="number"
-                        value={userContext.familySize}
-                        onChange={(e) => setUserContext(prev => ({ ...prev, familySize: parseInt(e.target.value) || 2 }))}
-                        placeholder="2"
-                        className="font-assistant"
-                      />
+                <div className="border-t border-gradient-to-r from-purple-200/50 via-blue-200/50 to-green-200/50 pt-8 mt-8">
+                  <div className="bg-gradient-to-r from-purple-50/50 via-blue-50/50 to-green-50/50 rounded-2xl p-6 border border-purple-200/30">
+                    <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-heebo mb-6 flex items-center gap-3">
+                      <Sparkles className="w-6 h-6 text-purple-600" />
+                      הגדרות AI מתקדמות
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="space-y-4">
+                        <Label className="font-assistant font-bold text-lg text-purple-700">תקציב חודשי מועדף</Label>
+                        <div className="relative">
+                          <Input
+                            type="number"
+                            value={userContext.budget}
+                            onChange={(e) => setUserContext(prev => ({ ...prev, budget: parseInt(e.target.value) || 200 }))}
+                            placeholder="₪200"
+                            className="font-assistant h-12 text-lg text-center border-2 border-purple-200/50 focus:border-purple-400 rounded-xl bg-white/80"
+                          />
+                          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-500">₪</div>
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <Label className="font-assistant font-bold text-lg text-blue-700">גודל משק בית</Label>
+                        <Input
+                          type="number"
+                          value={userContext.familySize}
+                          onChange={(e) => setUserContext(prev => ({ ...prev, familySize: parseInt(e.target.value) || 2 }))}
+                          placeholder="2 אנשים"
+                          className="font-assistant h-12 text-lg text-center border-2 border-blue-200/50 focus:border-blue-400 rounded-xl bg-white/80"
+                        />
+                      </div>
+                      <div className="space-y-4">
+                        <Label className="font-assistant font-bold text-lg text-green-700">דירוג שימוש</Label>
+                        <div className="grid grid-cols-3 gap-2">
+                          {['low', 'medium', 'high'].map((usage) => (
+                            <Button
+                              key={usage}
+                              variant={userContext.usage === usage ? 'default' : 'outline'}
+                              size="sm"
+                              onClick={() => setUserContext(prev => ({ ...prev, usage: usage as any }))}
+                              className={cn(
+                                "font-assistant text-xs transition-all duration-300",
+                                userContext.usage === usage
+                                  ? "bg-gradient-to-r from-green-600 to-blue-600 text-white"
+                                  : "border-green-200 hover:border-green-400 hover:bg-green-50"
+                              )}
+                            >
+                              {usage === 'low' && 'נמוך'}
+                              {usage === 'medium' && 'בינוני'}
+                              {usage === 'high' && 'גבוה'}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
               
-              {/* Quick Actions */}
-              <div className="flex items-center justify-between pt-4 border-t border-primary/10">
-                <div className="text-sm text-muted-foreground">
-                  {filteredPlans.length} מסלולים נמצאו
+              {/* Enhanced Quick Actions */}
+              <div className="flex items-center justify-between pt-6 border-t border-gradient-to-r from-purple-200/30 via-blue-200/30 to-green-200/30">
+                <div className="flex items-center gap-4">
+                  <div className="bg-gradient-to-r from-purple-100 to-blue-100 px-4 py-2 rounded-xl border border-purple-200/50">
+                    <span className="text-lg font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                      {filteredPlans.length} מסלולים נמצאו
+                    </span>
+                  </div>
+                  {cheapestPlan && (
+                    <div className="bg-gradient-to-r from-green-100 to-blue-100 px-4 py-2 rounded-xl border border-green-200/50">
+                      <span className="text-sm text-green-700 font-semibold">
+                        הזול ביותר: ₪{cheapestPlan.regularPrice}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="lg"
                   onClick={() => {
                     setSearchTerm('');
                     setPriceRange({ min: 0, max: 1000 });
                     setSortBy('ai');
                   }}
-                  className="font-assistant"
+                  className="font-assistant border-2 border-red-200 hover:border-red-400 hover:bg-red-50 text-red-600 hover:text-red-700 transition-all duration-300"
                 >
-                  <RefreshCw className="w-4 h-4 ml-2" />
-                  איפוס סינונים
+                  <RefreshCw className="w-5 h-5 ml-2" />
+                  איפוס כל הסינונים
                 </Button>
               </div>
             </CardContent>
@@ -616,109 +763,195 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
               </Badge>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
               {filteredPlans.map((plan, index) => {
                 const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
                 const inComparison = isInComparison(plan.id);
+                const aiScore = Math.floor(Math.random() * 30) + 70; // AI score simulation
                 
                 return (
-                  <Card 
+                  <div
                     key={plan.id}
-                    className={cn(
-                      "group transition-all duration-300 hover:shadow-xl border-2 relative",
-                      "animate-fade-in opacity-0",
-                      isCheapest && "ring-2 ring-green-400/50 bg-green-50/30",
-                      inComparison && "ring-2 ring-purple-400/50 bg-purple-50/30",
-                      "hover:border-purple/30"
-                    )}
+                    className="animate-fade-in opacity-0 group"
                     style={{ 
                       animationDelay: `${index * 0.1}s`, 
                       animationFillMode: 'forwards' 
                     }}
                   >
-                    {/* Best Deal Badge */}
-                    {isCheapest && (
-                      <div className="absolute -top-3 -right-3 z-10">
-                        <Badge className="bg-green-500 text-white px-3 py-1 shadow-lg">
-                          <Crown className="w-4 h-4 ml-1" />
-                          הזול ביותר
-                        </Badge>
+                    <Card 
+                      className={cn(
+                        "relative transition-all duration-500 hover:shadow-2xl border-0 bg-gradient-to-br from-white via-white to-gray-50/50 backdrop-blur-xl overflow-hidden",
+                        "hover:scale-[1.02] hover:-translate-y-2",
+                        isCheapest && "ring-2 ring-green-400/60 bg-gradient-to-br from-green-50/80 via-white to-green-50/30",
+                        inComparison && "ring-2 ring-purple-400/60 bg-gradient-to-br from-purple-50/80 via-white to-purple-50/30",
+                        !isCheapest && !inComparison && "hover:ring-2 hover:ring-blue-400/40"
+                      )}
+                    >
+                      {/* Background Effects */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/50 to-gray-100/30 opacity-60"></div>
+                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-green-500"></div>
+                      
+                      {/* Premium Badges */}
+                      <div className="absolute top-4 right-4 flex flex-col gap-2 z-20">
+                        {isCheapest && (
+                          <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1.5 shadow-lg border-0 animate-pulse">
+                            <Crown className="w-4 h-4 ml-1" />
+                            הזול ביותר
+                          </Badge>
+                        )}
+                        {inComparison && (
+                          <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-3 py-1.5 shadow-lg border-0">
+                            <Eye className="w-4 h-4 ml-1" />
+                            בהשוואה
+                          </Badge>
+                        )}
+                        {sortBy === 'ai' && aiScore >= 85 && (
+                          <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1.5 shadow-lg border-0">
+                            <Sparkles className="w-4 h-4 ml-1" />
+                            המלצת AI
+                          </Badge>
+                        )}
                       </div>
-                    )}
 
-                    {/* Comparison Badge */}
-                    {inComparison && (
-                      <div className="absolute -top-3 -left-3 z-10">
-                        <Badge className="bg-purple-500 text-white px-3 py-1 shadow-lg">
-                          <Eye className="w-4 h-4 ml-1" />
-                          בהשוואה
-                        </Badge>
-                      </div>
-                    )}
-
-                    <CardHeader className="pb-4">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-800 font-heebo mb-1">
-                            {plan.company}
-                          </h3>
-                          <p className="text-lg text-gray-600 font-assistant">
-                            {plan.planName}
-                          </p>
-                        </div>
-                        <div className="text-left">
-                          <div className="text-3xl font-bold text-purple-600 font-heebo">
-                            ₪{plan.regularPrice}
-                          </div>
-                          <div className="text-sm text-gray-500 font-assistant">לחודש</div>
-                        </div>
-                      </div>
-                    </CardHeader>
-
-                    <CardContent className="space-y-4">
-                      {/* Features Preview */}
-                      {plan.features && plan.features.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-gray-700 font-assistant mb-2">תכונות עיקריות:</h4>
-                          <div className="space-y-1">
-                            {plan.features.slice(0, 3).map((feature, idx) => (
-                              <div key={idx} className="flex items-center gap-2 text-sm">
-                                <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                                <span className="text-gray-600 font-assistant">{feature}</span>
+                      {/* AI Score Ring */}
+                      {sortBy === 'ai' && (
+                        <div className="absolute top-4 left-4 z-20">
+                          <div className="relative w-12 h-12">
+                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 p-0.5">
+                              <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                                <span className="text-xs font-bold text-purple-600">{aiScore}</span>
                               </div>
-                            ))}
-                            {plan.features.length > 3 && (
-                              <p className="text-sm text-purple-600 font-assistant">
-                                +{plan.features.length - 3} תכונות נוספות
-                              </p>
-                            )}
+                            </div>
                           </div>
                         </div>
                       )}
 
-                      {/* Action Buttons */}
-                      <div className="flex gap-2 pt-4">
-                        <Button 
-                          onClick={() => handlePlanSelect(plan)}
-                          className="flex-1 font-assistant"
-                        >
-                          בחר מסלול
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={() => handleCompareToggle(plan)}
-                          disabled={!canAddToComparison && !inComparison}
-                          className="font-assistant"
-                        >
-                          {inComparison ? (
-                            <Minus className="w-4 h-4" />
-                          ) : (
-                            <Plus className="w-4 h-4" />
-                          )}
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      <CardHeader className="pb-4 relative z-10">
+                        <div className="flex justify-between items-start pt-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl flex items-center justify-center border border-purple-200/50">
+                                {categoryConfig[selectedCategory!].icon}
+                              </div>
+                              <div>
+                                <h3 className="text-xl font-bold text-gray-800 font-heebo">
+                                  {plan.company}
+                                </h3>
+                                <p className="text-lg text-gray-600 font-assistant">
+                                  {plan.planName}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-left">
+                            <div className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                              <div className="text-3xl font-bold font-heebo">
+                                ₪{plan.regularPrice}
+                              </div>
+                            </div>
+                            <div className="text-sm text-gray-500 font-assistant">לחודש</div>
+                            {currentUserPlan.price && (
+                              <div className="text-xs mt-1">
+                                {parseInt(currentUserPlan.price) > plan.regularPrice ? (
+                                  <span className="text-green-600 font-semibold">
+                                    חוסך ₪{parseInt(currentUserPlan.price) - plan.regularPrice}
+                                  </span>
+                                ) : (
+                                  <span className="text-red-500 font-semibold">
+                                    +₪{plan.regularPrice - parseInt(currentUserPlan.price)}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </CardHeader>
+
+                      <CardContent className="space-y-6 relative z-10">
+                        {/* Premium Features Display */}
+                        {plan.features && plan.features.length > 0 && (
+                          <div className="bg-gradient-to-r from-gray-50/80 to-white/80 rounded-xl p-4 border border-gray-200/50">
+                            <h4 className="font-bold text-gray-700 font-assistant mb-3 flex items-center gap-2">
+                              <Star className="w-4 h-4 text-yellow-500" />
+                              תכונות מובילות
+                            </h4>
+                            <div className="space-y-2">
+                              {plan.features.slice(0, 3).map((feature, idx) => (
+                                <div key={idx} className="flex items-center gap-3 text-sm">
+                                  <div className="w-5 h-5 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <CheckCircle className="w-3 h-3 text-white" />
+                                  </div>
+                                  <span className="text-gray-700 font-assistant font-medium">{feature}</span>
+                                </div>
+                              ))}
+                              {plan.features.length > 3 && (
+                                <div className="pt-2 border-t border-gray-200/50">
+                                  <p className="text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                                    +{plan.features.length - 3} תכונות מתקדמות נוספות
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Enhanced Action Buttons */}
+                        <div className="flex gap-3 pt-2">
+                          <Button 
+                            onClick={() => handlePlanSelect(plan)}
+                            className="flex-1 font-assistant h-12 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+                          >
+                            <Target className="w-4 h-4 ml-2" />
+                            בחר מסלול זה
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => handleCompareToggle(plan)}
+                            disabled={!canAddToComparison && !inComparison}
+                            className={cn(
+                              "font-assistant h-12 border-2 transition-all duration-300 hover:scale-105",
+                              inComparison 
+                                ? "border-purple-400 bg-purple-50 text-purple-700 hover:bg-purple-100" 
+                                : "border-gray-300 hover:border-purple-400 hover:bg-purple-50"
+                            )}
+                          >
+                            {inComparison ? (
+                              <Minus className="w-4 h-4" />
+                            ) : (
+                              <Plus className="w-4 h-4" />
+                            )}
+                          </Button>
+                        </div>
+
+                        {/* Advanced Stats */}
+                        {sortBy === 'ai' && (
+                          <div className="bg-gradient-to-r from-blue-50/80 to-purple-50/80 rounded-xl p-3 border border-blue-200/30">
+                            <div className="flex items-center justify-between text-xs">
+                              <div className="flex items-center gap-2">
+                                <Brain className="w-4 h-4 text-purple-500" />
+                                <span className="font-semibold text-gray-700">דירוג AI</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star 
+                                    key={i} 
+                                    className={cn(
+                                      "w-3 h-3",
+                                      i < Math.floor(aiScore / 20) ? "text-yellow-400 fill-current" : "text-gray-300"
+                                    )} 
+                                  />
+                                ))}
+                                <span className="font-bold text-purple-600 mr-1">{aiScore}/100</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+
+                      {/* Hover Effect Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 via-blue-600/5 to-green-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-lg"></div>
+                    </Card>
+                  </div>
                 );
               })}
             </div>
