@@ -241,7 +241,8 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
       budget: categoryData?.monthlyAmount ? parseInt(categoryData.monthlyAmount) * 0.8 : 160,
       usage: 'medium' as const,
       priorities: ['חיסכון', 'אמינות'],
-      homeType: 'apartment' as const
+      homeType: 'apartment' as const,
+      category: categoryKey as 'electricity' | 'internet' | 'tv' | 'cellular'
     };
   };
 
@@ -853,156 +854,17 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
 
         {/* Step 3: Plans Selection */}
         {currentStep === 'plans' && selectedCategory && selectedCompany && (
-          <div className="max-w-7xl mx-auto animate-fade-in opacity-0" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
-            <div className="text-center mb-16">
-              <div className="flex items-center justify-center gap-6 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center text-purple-700 font-bold text-xl shadow-lg font-heebo">
-                  {selectedCompany.slice(0, 2)}
-                </div>
-                <div className="text-right">
-                  <h2 className="text-4xl font-bold text-purple-800 font-heebo">
-                    מסלולי {selectedCompany}
-                  </h2>
-                  <p className="text-xl text-purple-600 font-assistant">{companyPlans.length} מסלולים זמינים • {categoryConfig[selectedCategory].label}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Current Plan Comparison */}
-            {(() => {
-              const currentData = getCurrentPlanData();
-              return currentData && (
-                <div className="mb-16">
-                  <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 max-w-5xl mx-auto border-2 border-purple-200 shadow-2xl">
-                    <div className="text-center">
-                      <h3 className="text-3xl font-bold text-purple-800 mb-6 flex items-center justify-center gap-4 font-heebo">
-                        <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                          <Award className="w-8 h-8 text-white" />
-                        </div>
-                        השוואה למצב הנוכחי שלכם
-                      </h3>
-                      <div className="flex items-center justify-center gap-12">
-                        <div className="text-center p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl border-2 border-red-200">
-                          <div className="text-lg font-semibold text-red-600 mb-3 font-assistant">אתם משלמים כיום</div>
-                          <div className="text-4xl font-bold text-red-700 font-heebo">₪{currentData.currentMonthly}</div>
-                          <div className="text-sm text-red-600 font-assistant">לחודש</div>
-                        </div>
-                        
-                        {currentData.currentProvider && (
-                          <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-gray-200">
-                            <div className="text-lg font-semibold text-gray-600 mb-3 font-assistant">ספק נוכחי</div>
-                            <div className="text-2xl font-bold text-gray-800 bg-white px-4 py-2 rounded-xl shadow-sm font-heebo">
-                              {currentData.currentProvider}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })()}
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {companyPlans.map((plan, index) => {
-                const currentData = getCurrentPlanData();
-                const potentialSavings = currentData ? 
-                  Math.max(0, currentData.currentMonthly - plan.regularPrice) : undefined;
-                
-                return (
-                  <div 
-                    key={plan.id} 
-                    className="relative transition-all duration-500 animate-fade-in opacity-0 hover:scale-105 hover:-translate-y-2"
-                    style={{ animationDelay: `${0.5 + index * 0.1}s`, animationFillMode: 'forwards' }}
-                  >
-                    {index === 0 && (
-                      <div className="absolute -top-4 -right-4 z-10">
-                        <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl animate-pulse">
-                          <Crown className="w-4 h-4 inline ml-2" />
-                          הכי מומלץ
-                        </div>
-                      </div>
-                    )}
-                    
-                    <Card className="bg-white/90 backdrop-blur-sm rounded-3xl h-full border-2 border-gray-100 hover:border-purple-300 transition-all duration-500 hover:shadow-2xl shadow-lg">
-                      <CardContent className="p-8">
-                        <div className="text-center mb-8">
-                          <h3 className="text-2xl font-bold text-purple-800 mb-4 font-heebo">
-                            {plan.planName}
-                          </h3>
-                          <div className="relative">
-                            <div className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-purple-700 bg-clip-text text-transparent mb-3 font-heebo">
-                              ₪{plan.regularPrice}
-                            </div>
-                            <div className="text-lg text-purple-600 font-assistant">לחודש</div>
-                          </div>
-                        </div>
-
-                        {/* Savings Comparison */}
-                        {potentialSavings !== undefined && (
-                          <div className={`text-center mb-8 p-6 rounded-2xl border-2 transition-all duration-300 ${
-                            potentialSavings > 0 ? 'bg-gradient-to-r from-green-50 to-green-100 border-green-200' : 
-                            potentialSavings === 0 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100 border-yellow-200' :
-                            'bg-gradient-to-r from-red-50 to-red-100 border-red-200'
-                          }`}>
-                            {potentialSavings > 0 ? (
-                              <div className="flex items-center justify-center gap-3">
-                                <div className="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg">
-                                  <TrendingUp className="w-6 h-6 text-white" />
-                                </div>
-                                <div>
-                                  <div className="text-green-700 font-bold text-2xl font-heebo">₪{potentialSavings} חיסכון</div>
-                                  <div className="text-sm text-green-600 font-assistant">₪{potentialSavings * 12} לשנה</div>
-                                </div>
-                              </div>
-                            ) : potentialSavings === 0 ? (
-                              <div className="text-yellow-700 font-bold text-lg font-heebo">מחיר זהה למצב הנוכחי</div>
-                            ) : (
-                              <div className="text-red-700 font-bold text-lg font-heebo">₪{Math.abs(potentialSavings)} יותר יקר</div>
-                            )}
-                          </div>
-                        )}
-
-                        <div className="space-y-4 mb-8">
-                          {plan.features.slice(0, 4).map((feature, featureIndex) => (
-                            <div key={featureIndex} className="flex items-center gap-3">
-                              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                              <span className="text-purple-700 font-assistant">{feature}</span>
-                            </div>
-                          ))}
-                          {plan.features.length > 4 && (
-                            <div className="text-sm text-purple-500 text-center py-3 bg-purple-50 rounded-xl font-assistant">
-                              ועוד {plan.features.length - 4} תכונות נוספות...
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="space-y-4 mt-auto">
-                          <div
-                            className="w-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-4 text-center text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
-                            onClick={() => handlePlanSelect(plan)}
-                          >
-                            <span className="flex items-center justify-center gap-3 text-lg font-bold font-heebo">
-                              בחר מסלול זה
-                              <Sparkles className="w-5 h-5" />
-                            </span>
-                          </div>
-                          <Button
-                            variant="outline"
-                            className="w-full h-12 border-2 border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 font-heebo font-semibold"
-                            onClick={() => handleCompareToggle(plan)}
-                            disabled={comparedPlans.length >= 3 && !comparedPlans.find(p => p.id === plan.id)}
-                          >
-                            {comparedPlans.find(p => p.id === plan.id) ? 'הסר מהשוואה' : 'הוסף להשוואה'}
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <EnhancedPlanGrid
+            plans={companyPlans}
+            category={selectedCategory}
+            company={selectedCompany}
+            userContext={getUserContext()}
+            onBack={handleBack}
+            onPlanSelect={handlePlanSelect}
+            onCompareToggle={handleCompareToggle}
+            comparedPlans={comparedPlans}
+            showAllCompanies={false}
+          />
         )}
       </div>
 
