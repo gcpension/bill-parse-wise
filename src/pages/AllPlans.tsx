@@ -17,6 +17,8 @@ import { useSavingsData } from "@/hooks/useSavingsData";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { BreadcrumbNavigation } from "@/components/BreadcrumbNavigation";
 import { SmartPlanMatchingBanner } from "@/components/SmartPlanMatchingBanner";
+import { ComparisonAnalyzer } from "@/lib/comparisonAnalyzer";
+import { SmartComparisonTable } from "@/components/plans/advanced/SmartComparisonTable";
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -46,6 +48,8 @@ const AllPlans = ({
   const [showComparison, setShowComparison] = useState(false);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'price' | 'rating' | 'features' | 'ai'>('ai');
+  const [showSmartComparison, setShowSmartComparison] = useState(false);
+  const [smartComparisonMatrix, setSmartComparisonMatrix] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [priceRange, setPriceRange] = useState({
     min: 0,
@@ -198,6 +202,24 @@ const AllPlans = ({
     window.location.href = '/service-request';
   };
   const clearComparison = () => setComparedPlans([]);
+
+  const handleSmartComparison = () => {
+    if (comparedPlans.length < 2) {
+      // Auto-select top 3 plans if not enough plans selected
+      const topPlans = filteredPlans.slice(0, 3);
+      setComparedPlans(topPlans);
+      
+      // Perform AI analysis
+      const matrix = ComparisonAnalyzer.analyzeComparison(topPlans);
+      setSmartComparisonMatrix(matrix);
+      setShowSmartComparison(true);
+    } else {
+      // Use selected plans
+      const matrix = ComparisonAnalyzer.analyzeComparison(comparedPlans);
+      setSmartComparisonMatrix(matrix);
+      setShowSmartComparison(true);
+    }
+  };
 
   // Convert saved data to banner format
   const bannerSavingsData = persistedSavings.map(saving => ({
@@ -749,7 +771,37 @@ const AllPlans = ({
       </Dialog>
 
       {/* Smart Plan Matching Banner */}
-      <SmartPlanMatchingBanner onMatchingClick={() => setShowComparison(true)} />
+      {selectedCategory && comparedPlans.length >= 0 && (
+        <SmartPlanMatchingBanner onMatchingClick={handleSmartComparison} />
+      )}
+
+      {/* Smart Comparison Dialog */}
+      <Dialog open={showSmartComparison} onOpenChange={setShowSmartComparison}>
+        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-3xl font-bold text-primary font-heebo flex items-center gap-3">
+              <Brain className="w-8 h-8" />
+              השוואה חכמה מבוססת AI
+            </DialogTitle>
+            <p className="text-lg text-muted-foreground font-assistant mt-2">
+              ניתוח מתקדם של המסלולים עם המלצות מותאמות אישית
+            </p>
+          </DialogHeader>
+          
+          {smartComparisonMatrix && (
+            <div className="mt-6">
+              <SmartComparisonTable 
+                comparisonMatrix={smartComparisonMatrix}
+                plans={comparedPlans.length >= 2 ? comparedPlans : filteredPlans.slice(0, 3)}
+                onPlanSelect={(plan) => {
+                  handlePlanSelect(plan);
+                  setShowSmartComparison(false);
+                }}
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>;
 };
 export default AllPlans;

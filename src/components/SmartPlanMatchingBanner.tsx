@@ -13,35 +13,39 @@ export const SmartPlanMatchingBanner = ({
 }: SmartPlanMatchingBannerProps) => {
   return (
     <div className={cn(
-      "fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50",
+      "fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in",
       className
     )}>
-      <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 px-6 py-4 max-w-md">
-        <div className="flex items-center justify-between gap-4">
-          {/* Content */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Brain className="w-5 h-5 text-purple-600" />
+      <div className="bg-gradient-to-r from-white via-purple-50/80 to-white backdrop-blur-sm rounded-2xl shadow-2xl border-2 border-purple-200/50 px-8 py-6 max-w-lg hover:shadow-3xl transition-all duration-300 hover:scale-105">
+        <div className="flex items-center justify-between gap-6">
+          {/* Enhanced Content */}
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg animate-pulse">
+              <Brain className="w-7 h-7 text-white" />
             </div>
             
             <div>
-              <h3 className="text-sm font-bold text-gray-800 font-heebo">
-                השוואה חכמה
+              <h3 className="text-lg font-bold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent font-heebo">
+                השוואה חכמה מבוססת AI
               </h3>
-              <p className="text-xs text-gray-600 font-assistant">
-                השוו מסלולים עם AI
+              <p className="text-sm text-gray-600 font-assistant">
+                ניתוח מתקדם עם המלצות מותאמות אישית
               </p>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-xs text-green-600 font-medium">זמין עכשיו</span>
+              </div>
             </div>
           </div>
           
-          {/* Button */}
+          {/* Enhanced Button */}
           <Button 
-            size="sm" 
-            className="h-9 px-4 text-sm font-heebo bg-purple-600 hover:bg-purple-700 text-white"
+            size="lg"
+            className="h-12 px-6 text-base font-heebo bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             onClick={onMatchingClick}
           >
-            <BarChart3 className="w-4 h-4 ml-1" />
-            התחל
+            <BarChart3 className="w-5 h-5 ml-2" />
+            התחל השוואה
           </Button>
         </div>
       </div>
