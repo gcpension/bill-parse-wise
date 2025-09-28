@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
@@ -27,9 +28,9 @@ import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<Record<string, { provider: string; amount: string; selected: boolean }>>({
+  const [selectedCategories, setSelectedCategories] = useState<Record<string, { provider: string; amount: string; selected: boolean; lines?: number }>>({
     electricity: { provider: '', amount: '', selected: false },
-    cellular: { provider: '', amount: '', selected: false },
+    cellular: { provider: '', amount: '', selected: false, lines: 1 },
     internet: { provider: '', amount: '', selected: false },
     tv: { provider: '', amount: '', selected: false }
   });
@@ -306,6 +307,44 @@ const Home = () => {
                             value={selectedCategories[category].provider}
                             onValueChange={(value) => handleProviderChange(category, value)}
                           />
+                          
+                          {/* Number of cellular lines - Only for cellular category */}
+                          {category === 'cellular' && selectedCategories[category].provider && (
+                            <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
+                              <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                <Smartphone className="w-4 h-4" />
+                                כמה קווי סלולרי יש לכם?
+                              </Label>
+                              <div className="flex items-center gap-4">
+                                <div className="flex-1">
+                                  <Input
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    value={selectedCategories[category].lines || 1}
+                                    onChange={(e) => setSelectedCategories(prev => ({
+                                      ...prev,
+                                      [category]: { ...prev[category], lines: parseInt(e.target.value) }
+                                    }))}
+                                    className="w-full h-2 bg-gradient-to-r from-purple-200 to-blue-200 rounded-lg appearance-none cursor-pointer slider"
+                                  />
+                                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>1</span>
+                                    <span>5</span>
+                                    <span>10</span>
+                                  </div>
+                                </div>
+                                <div className="bg-white px-4 py-2 rounded-lg border border-purple-300 shadow-sm">
+                                  <span className="text-lg font-bold text-purple-700">
+                                    {selectedCategories[category].lines || 1}
+                                  </span>
+                                  <span className="text-sm text-gray-600 mr-1">
+                                    {(selectedCategories[category].lines || 1) === 1 ? 'קו' : 'קווים'}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                           
                           <div className="space-y-2">
                             <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">

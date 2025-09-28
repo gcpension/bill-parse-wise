@@ -373,6 +373,153 @@ const AllPlans = ({
           </div>
         )}
 
+        {/* Current Spending and Savings Potential Section */}
+        {selectedCategory && (
+          <div className="mb-12">
+            <Card className="border-2 border-gradient-to-r from-green-200 to-blue-200 bg-gradient-to-r from-green-50/80 via-white to-blue-50/80 shadow-xl backdrop-blur-sm">
+              <CardContent className="p-8">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent font-heebo mb-4">
+                    כמה אתם משלמים היום?
+                  </h2>
+                  <p className="text-lg text-gray-600 font-assistant">
+                    הזינו את הפרטים הנוכחיים שלכם כדי לראות כמה תוכלו לחסוך
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                  {/* Current Monthly Payment */}
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-200">
+                    <div className="text-center mb-4">
+                      <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <Calculator className="w-8 h-8 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-800 font-heebo mb-2">
+                        התשלום החודשי הנוכחי
+                      </h3>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-sm font-semibold text-gray-700 mb-2 block">
+                          הספק הנוכחי
+                        </Label>
+                        <Input
+                          placeholder="לדוגמה: חברת החשמל, בזק..."
+                          value={currentUserPlan.company}
+                          onChange={(e) => setCurrentUserPlan(prev => ({ ...prev, company: e.target.value }))}
+                          className="h-12 text-base"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-semibold text-gray-700 mb-2 block">
+                          סכום חודשי (₪)
+                        </Label>
+                        <div className="relative">
+                          <Input
+                            type="number"
+                            placeholder="0"
+                            value={currentUserPlan.price}
+                            onChange={(e) => setCurrentUserPlan(prev => ({ ...prev, price: e.target.value }))}
+                            className="h-12 text-base pr-8 text-center font-bold text-lg"
+                          />
+                          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">₪</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Cheapest Alternative */}
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-green-200">
+                    <div className="text-center mb-4">
+                      <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <TrendingUp className="w-8 h-8 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-800 font-heebo mb-2">
+                        המסלול הזול ביותר
+                      </h3>
+                    </div>
+                    {cheapestPlan ? (
+                      <div className="space-y-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-green-600 font-heebo">
+                            ₪{cheapestPlan.regularPrice}
+                          </div>
+                          <div className="text-sm text-gray-600 font-assistant">
+                            {cheapestPlan.company}
+                          </div>
+                        </div>
+                        <div className="bg-green-50 rounded-lg p-3 text-center">
+                          <div className="text-sm text-green-700 font-assistant">
+                            {cheapestPlan.planName}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center text-gray-500 font-assistant">
+                        בחרו קטגוריה לצפייה במסלולים
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Potential Savings */}
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-blue-200">
+                    <div className="text-center mb-4">
+                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <Sparkles className="w-8 h-8 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-800 font-heebo mb-2">
+                        החיסכון הפוטנציאלי
+                      </h3>
+                    </div>
+                    {currentUserPlan.price && cheapestPlan && parseFloat(currentUserPlan.price) > 0 ? (
+                      <div className="space-y-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-blue-600 font-heebo">
+                            ₪{Math.max(0, parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice)}
+                          </div>
+                          <div className="text-sm text-gray-600 font-assistant">
+                            חיסכון חודשי
+                          </div>
+                        </div>
+                        <div className="bg-blue-50 rounded-lg p-3 text-center">
+                          <div className="text-sm text-blue-700 font-assistant">
+                            ₪{Math.max(0, (parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) * 12)} חיסכון שנתי
+                          </div>
+                        </div>
+                        {parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && (
+                          <div className="text-center">
+                            <Badge className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-4 py-2">
+                              חיסכון של {Math.round(((parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) / parseFloat(currentUserPlan.price)) * 100)}%
+                            </Badge>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center text-gray-500 font-assistant">
+                        הזינו את התשלום הנוכחי לחישוב החיסכון
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                {currentUserPlan.price && currentUserPlan.company && cheapestPlan && parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && (
+                  <div className="text-center mt-8">
+                    <Button 
+                      onClick={() => handlePlanSelect(cheapestPlan)}
+                      size="lg" 
+                      className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-4 text-lg font-heebo shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                      <ArrowLeft className="w-5 h-5 ml-2" />
+                      עבור למסלול הזול ביותר וחסוך ₪{Math.max(0, parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice)} בחודש
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
 
         {/* Enhanced Comparison Bar */}
         {comparedPlans.length > 0 && <Card className="mb-8 border-2 border-blue-200 bg-gradient-to-r from-blue-50 via-white to-blue-50 shadow-xl animate-fade-in">
