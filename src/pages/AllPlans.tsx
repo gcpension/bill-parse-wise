@@ -119,9 +119,9 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
     document.title = "כל המסלולים | EasySwitch";
   }, []);
 
-  // Get filtered and sorted plans
-  const filteredPlans = useMemo(() => {
-    if (!selectedCategory) return [];
+  // Get filtered and sorted plans grouped by company
+  const { filteredPlans, groupedByCompany } = useMemo(() => {
+    if (!selectedCategory) return { filteredPlans: [], groupedByCompany: {} };
     
     let filtered = manualPlans.filter(plan => {
       // Filter by category
@@ -155,7 +155,16 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
         break;
     }
     
-    return filtered;
+    // Group by company
+    const grouped = filtered.reduce((acc, plan) => {
+      if (!acc[plan.company]) {
+        acc[plan.company] = [];
+      }
+      acc[plan.company].push(plan);
+      return acc;
+    }, {} as Record<string, ManualPlan[]>);
+    
+    return { filteredPlans: filtered, groupedByCompany: grouped };
   }, [selectedCategory, searchTerm, priceRange, sortBy]);
 
   const categoryConfig = {
@@ -435,7 +444,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
               {/* Quick Actions */}
               <div className="flex items-center justify-between pt-4 border-t border-primary/10">
                 <div className="text-sm text-muted-foreground">
-                  {filteredPlans.length} מסלולים נמצאו
+                  {filteredPlans.length} מסלולים נמצאו • {Object.keys(groupedByCompany).length} חברות
                 </div>
                 <Button
                   variant="outline"
@@ -637,123 +646,196 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
           </Card>
         )}
 
-        {/* Plans Grid */}
-        {selectedCategory && (
+        {/* Plans Grid - Organized by Company */}
+        {selectedCategory && Object.keys(groupedByCompany).length > 0 && (
           <div>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-gray-800 font-heebo">
                 מסלולי {categoryConfig[selectedCategory].label}
               </h2>
               <Badge variant="secondary" className="text-lg px-4 py-2 font-assistant">
-                {filteredPlans.length} מסלולים
+                {filteredPlans.length} מסלולים • {Object.keys(groupedByCompany).length} חברות
               </Badge>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPlans.map((plan, index) => {
-                const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
-                const inComparison = isInComparison(plan.id);
-                
-                return (
-                  <Card 
-                    key={plan.id}
-                    className={cn(
-                      "group transition-all duration-300 hover:shadow-xl border-2 relative",
-                      "animate-fade-in opacity-0",
-                      isCheapest && "ring-2 ring-green-400/50 bg-green-50/30",
-                      inComparison && "ring-2 ring-purple-400/50 bg-purple-50/30",
-                      "hover:border-purple/30"
-                    )}
-                    style={{ 
-                      animationDelay: `${index * 0.1}s`, 
-                      animationFillMode: 'forwards' 
-                    }}
-                  >
-                    {/* Best Deal Badge */}
-                    {isCheapest && (
-                      <div className="absolute -top-3 -right-3 z-10">
-                        <Badge className="bg-green-500 text-white px-3 py-1 shadow-lg">
-                          <Crown className="w-4 h-4 ml-1" />
-                          הזול ביותר
-                        </Badge>
-                      </div>
-                    )}
-
-                    {/* Comparison Badge */}
-                    {inComparison && (
-                      <div className="absolute -top-3 -left-3 z-10">
-                        <Badge className="bg-purple-500 text-white px-3 py-1 shadow-lg">
-                          <Eye className="w-4 h-4 ml-1" />
-                          בהשוואה
-                        </Badge>
-                      </div>
-                    )}
-
-                    <CardHeader className="pb-4">
-                      <div className="flex justify-between items-start">
+            {/* Company Sections */}
+            <div className="space-y-12">
+              {Object.entries(groupedByCompany).map(([companyName, companyPlans], companyIndex) => (
+                <div key={companyName} className="relative">
+                  {/* Company Header */}
+                  <div className="bg-gradient-to-r from-purple-100 via-blue-50 to-purple-100 rounded-2xl p-6 mb-6 border-2 border-purple-200/50 shadow-lg">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                          <Building2 className="w-8 h-8 text-white" />
+                        </div>
                         <div>
-                          <h3 className="text-xl font-bold text-gray-800 font-heebo mb-1">
-                            {plan.company}
+                          <h3 className="text-3xl font-bold text-purple-800 font-heebo mb-1">
+                            {companyName}
                           </h3>
-                          <p className="text-lg text-gray-600 font-assistant">
-                            {plan.planName}
+                          <p className="text-purple-600 font-assistant text-lg">
+                            {companyPlans.length} מסלולים זמינים • קטגוריית {categoryConfig[selectedCategory].label}
                           </p>
                         </div>
-                        <div className="text-left">
-                          <div className="text-3xl font-bold text-purple-600 font-heebo">
-                            ₪{plan.regularPrice}
-                          </div>
-                          <div className="text-sm text-gray-500 font-assistant">לחודש</div>
-                        </div>
                       </div>
-                    </CardHeader>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-purple-800 font-heebo">
+                          מ-₪{Math.min(...companyPlans.map(p => p.regularPrice))}
+                        </div>
+                        <div className="text-purple-600 font-assistant">החל מ</div>
+                      </div>
+                    </div>
+                  </div>
 
-                    <CardContent className="space-y-4">
-                      {/* Features Preview */}
-                      {plan.features && plan.features.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-gray-700 font-assistant mb-2">תכונות עיקריות:</h4>
-                          <div className="space-y-1">
-                            {plan.features.slice(0, 3).map((feature, idx) => (
-                              <div key={idx} className="flex items-center gap-2 text-sm">
-                                <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                                <span className="text-gray-600 font-assistant">{feature}</span>
-                              </div>
-                            ))}
-                            {plan.features.length > 3 && (
-                              <p className="text-sm text-purple-600 font-assistant">
-                                +{plan.features.length - 3} תכונות נוספות
-                              </p>
+                  {/* Company Plans Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
+                    {/* Company accent line */}
+                    <div className="absolute -right-4 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-300 to-blue-300 rounded-full opacity-50 hidden lg:block"></div>
+                    
+                    {companyPlans.map((plan, index) => {
+                      const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
+                      const inComparison = isInComparison(plan.id);
+                      const isCompanyCheapest = plan.regularPrice === Math.min(...companyPlans.map(p => p.regularPrice));
+                      
+                      return (
+                        <Card 
+                          key={plan.id}
+                          className={cn(
+                            "group transition-all duration-300 hover:shadow-xl border-2 relative",
+                            "animate-fade-in opacity-0 hover:scale-105",
+                            isCheapest && "ring-2 ring-green-400/50 bg-green-50/30",
+                            isCompanyCheapest && !isCheapest && "ring-2 ring-blue-400/50 bg-blue-50/30",
+                            inComparison && "ring-2 ring-purple-400/50 bg-purple-50/30",
+                            "hover:border-purple-300"
+                          )}
+                          style={{ 
+                            animationDelay: `${(companyIndex * 3 + index) * 0.1}s`, 
+                            animationFillMode: 'forwards' 
+                          }}
+                        >
+                          {/* Badges */}
+                          <div className="absolute -top-3 -right-3 z-10 flex flex-col gap-1">
+                            {isCheapest && (
+                              <Badge className="bg-green-500 text-white px-3 py-1 shadow-lg">
+                                <Crown className="w-4 h-4 ml-1" />
+                                הזול ביותר
+                              </Badge>
+                            )}
+                            {isCompanyCheapest && !isCheapest && (
+                              <Badge className="bg-blue-500 text-white px-3 py-1 shadow-lg">
+                                <Star className="w-4 h-4 ml-1" />
+                                הזול ב{companyName}
+                              </Badge>
                             )}
                           </div>
-                        </div>
-                      )}
 
-                      {/* Action Buttons */}
-                      <div className="flex gap-2 pt-4">
-                        <Button 
-                          onClick={() => handlePlanSelect(plan)}
-                          className="flex-1 font-assistant"
-                        >
-                          בחר מסלול
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={() => handleCompareToggle(plan)}
-                          disabled={!canAddToComparison && !inComparison}
-                          className="font-assistant"
-                        >
-                          {inComparison ? (
-                            <Minus className="w-4 h-4" />
-                          ) : (
-                            <Plus className="w-4 h-4" />
+                          {/* Comparison Badge */}
+                          {inComparison && (
+                            <div className="absolute -top-3 -left-3 z-10">
+                              <Badge className="bg-purple-500 text-white px-3 py-1 shadow-lg">
+                                <Eye className="w-4 h-4 ml-1" />
+                                בהשוואה
+                              </Badge>
+                            </div>
                           )}
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+
+                          <CardHeader className="pb-4">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <div className="text-sm text-purple-600 font-assistant mb-1">
+                                  {companyName}
+                                </div>
+                                <h4 className="text-xl font-bold text-gray-800 font-heebo mb-1">
+                                  {plan.planName}
+                                </h4>
+                                <p className="text-sm text-gray-500 font-assistant">
+                                  מסלול #{index + 1} מתוך {companyPlans.length}
+                                </p>
+                              </div>
+                              <div className="text-left">
+                                <div className="text-3xl font-bold text-purple-600 font-heebo">
+                                  ₪{plan.regularPrice}
+                                </div>
+                                <div className="text-sm text-gray-500 font-assistant">לחודש</div>
+                              </div>
+                            </div>
+                          </CardHeader>
+
+                          <CardContent className="space-y-4">
+                            {/* Price Comparison within Company */}
+                            {companyPlans.length > 1 && (
+                              <div className="bg-gray-50 rounded-lg p-3">
+                                <div className="text-xs text-gray-600 font-assistant text-center">
+                                  {isCompanyCheapest ? (
+                                    <span className="text-blue-600 font-semibold">המחיר הטוב ביותר אצל {companyName}</span>
+                                  ) : (
+                                    <span>
+                                      ₪{plan.regularPrice - Math.min(...companyPlans.map(p => p.regularPrice))} יותר מהזול ביותר
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Features Preview */}
+                            {plan.features && plan.features.length > 0 && (
+                              <div>
+                                <h5 className="font-semibold text-gray-700 font-assistant mb-2">תכונות עיקריות:</h5>
+                                <div className="space-y-1">
+                                  {plan.features.slice(0, 3).map((feature, idx) => (
+                                    <div key={idx} className="flex items-center gap-2 text-sm">
+                                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                                      <span className="text-gray-600 font-assistant">{feature}</span>
+                                    </div>
+                                  ))}
+                                  {plan.features.length > 3 && (
+                                    <p className="text-sm text-purple-600 font-assistant">
+                                      +{plan.features.length - 3} תכונות נוספות
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Action Buttons */}
+                            <div className="flex gap-2 pt-4">
+                              <Button 
+                                onClick={() => handlePlanSelect(plan)}
+                                className="flex-1 font-assistant"
+                                variant={isCompanyCheapest ? "default" : "outline"}
+                              >
+                                {isCompanyCheapest ? "בחר מסלול מומלץ" : "בחר מסלול"}
+                              </Button>
+                              <Button
+                                variant="outline"
+                                onClick={() => handleCompareToggle(plan)}
+                                disabled={!canAddToComparison && !inComparison}
+                                className="font-assistant"
+                                title={inComparison ? "הסר מהשוואה" : "הוסף להשוואה"}
+                              >
+                                {inComparison ? (
+                                  <Minus className="w-4 h-4" />
+                                ) : (
+                                  <Plus className="w-4 h-4" />
+                                )}
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Company Summary */}
+                  <div className="mt-6 bg-white/50 rounded-lg p-4 border border-purple-100">
+                    <div className="flex items-center justify-between text-sm text-gray-600 font-assistant">
+                      <span>סה"כ {companyPlans.length} מסלולים</span>
+                      <span>טווח מחירים: ₪{Math.min(...companyPlans.map(p => p.regularPrice))} - ₪{Math.max(...companyPlans.map(p => p.regularPrice))}</span>
+                      <span>חיסכון אפשרי: עד ₪{Math.max(...companyPlans.map(p => p.regularPrice)) - Math.min(...companyPlans.map(p => p.regularPrice))}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {filteredPlans.length === 0 && (
