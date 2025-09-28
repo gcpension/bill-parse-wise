@@ -21,6 +21,7 @@ import { ComparisonAnalyzer } from "@/lib/comparisonAnalyzer";
 import { SmartComparisonTable } from "@/components/plans/advanced/SmartComparisonTable";
 import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecommendationWizard";
 import { PersonalizedRecommendationEngine, UserProfile } from "@/lib/personalizedRecommendations";
+import { PersonalizedRecommendationBanner } from "@/components/PersonalizedRecommendationBanner";
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -797,19 +798,11 @@ const AllPlans = ({
       {/* Smart Plan Matching Banner */}
       {selectedCategory && comparedPlans.length >= 0 && (
         <div>
-          <div className="flex flex-col sm:flex-row gap-4 mb-24">
-            <Button
-              size="lg"
-              className="h-12 px-6 text-base font-heebo bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 rounded-2xl"
-              onClick={() => setShowPersonalizedWizard(true)}
-            >
-              <User className="w-5 h-5 ml-2" />
-              המלצה אישית
-            </Button>
-          </div>
-          
           {/* Smart Matching Banner - Fixed Position */}
           <SmartPlanMatchingBanner onMatchingClick={handleSmartComparison} />
+          
+          {/* Personalized Recommendation Banner - Fixed Position */}
+          <PersonalizedRecommendationBanner onRecommendationClick={() => setShowPersonalizedWizard(true)} />
         </div>
       )}
 
