@@ -277,12 +277,118 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
           </div>
         </div>
 
-        {/* Savings Comparison Banner */}
+        {/* Enhanced Savings Overview */}
         {bannerSavingsData.length > 0 && (
           <div className="mb-16">
+            {/* Quick Savings Summary */}
+            <Card className="bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 border-2 border-green-200 shadow-xl mb-8">
+              <CardContent className="p-8">
+                <div className="text-center mb-6">
+                  <h2 className="text-3xl font-bold text-green-800 font-heebo mb-2">
+                    💰 החיסכון שלכם במספרים
+                  </h2>
+                  <p className="text-green-600 font-assistant text-lg">
+                    סיכום החיסכון לפי הניתוח שביצעתם
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                  <Card className="bg-white border-green-200 shadow-lg">
+                    <CardContent className="p-6 text-center">
+                      <TrendingUp className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                      <div className="text-3xl font-bold text-green-800 font-heebo mb-1">
+                        ₪{bannerSavingsData.reduce((sum, data) => sum + data.monthlySavings, 0)}
+                      </div>
+                      <div className="text-green-600 font-assistant">חיסכון חודשי כולל</div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white border-blue-200 shadow-lg">
+                    <CardContent className="p-6 text-center">
+                      <Calculator className="w-12 h-12 text-blue-600 mx-auto mb-3" />
+                      <div className="text-3xl font-bold text-blue-800 font-heebo mb-1">
+                        ₪{(bannerSavingsData.reduce((sum, data) => sum + data.monthlySavings, 0) * 12).toLocaleString()}
+                      </div>
+                      <div className="text-blue-600 font-assistant">חיסכון שנתי כולל</div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white border-purple-200 shadow-lg">
+                    <CardContent className="p-6 text-center">
+                      <Target className="w-12 h-12 text-purple-600 mx-auto mb-3" />
+                      <div className="text-3xl font-bold text-purple-800 font-heebo mb-1">
+                        {bannerSavingsData.length}
+                      </div>
+                      <div className="text-purple-600 font-assistant">קטגוריות נותחו</div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white border-orange-200 shadow-lg">
+                    <CardContent className="p-6 text-center">
+                      <Award className="w-12 h-12 text-orange-600 mx-auto mb-3" />
+                      <div className="text-3xl font-bold text-orange-800 font-heebo mb-1">
+                        {Math.round((bannerSavingsData.reduce((sum, data) => sum + data.monthlySavings, 0) / 
+                          bannerSavingsData.reduce((sum, data) => sum + data.currentMonthly, 0)) * 100)}%
+                      </div>
+                      <div className="text-orange-600 font-assistant">אחוז חיסכון ממוצע</div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
+            
             <SavingsComparisonBanner savingsData={bannerSavingsData} />
           </div>
         )}
+
+        {/* Enhanced AI Comparison CTA */}
+        <Card className="mb-12 bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 text-white shadow-2xl">
+          <CardContent className="p-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center backdrop-blur-sm">
+                  <Brain className="w-12 h-12 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-4xl font-bold font-heebo mb-2">
+                    השוואה חכמה מבוססת AI
+                  </h2>
+                  <p className="text-xl font-assistant opacity-90 mb-4">
+                    השוו עד 3 מסלולים עם ניתוח מתקדם, המלצות אישיות וחישוב חיסכון מדויק
+                  </p>
+                  <div className="flex items-center gap-6 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-5 h-5" />
+                      <span>ניתוח AI מתקדם</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5" />
+                      <span>חישוב חיסכון מדויק</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Target className="w-5 h-5" />
+                      <span>המלצות אישיות</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="text-center">
+                <Button 
+                  size="lg" 
+                  variant="secondary"
+                  className="h-16 px-8 text-lg font-bold font-heebo bg-white text-purple-600 hover:bg-gray-100 shadow-lg"
+                  onClick={() => setShowComparison(true)}
+                >
+                  <BarChart3 className="w-6 h-6 ml-2" />
+                  התחל השוואה חכמה
+                </Button>
+                <div className="text-sm mt-2 opacity-75">
+                  {comparedPlans.length > 0 ? `${comparedPlans.length} מסלולים נבחרו` : 'בחרו מסלולים להשוואה'}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Category Selection */}
         <div className="mb-12">
@@ -466,21 +572,37 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
 
         {/* Enhanced Comparison Bar */}
         {comparedPlans.length > 0 && (
-          <Card className="mb-8 border-2 border-blue-200 bg-gradient-to-r from-blue-50 via-white to-blue-50 shadow-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <BarChart3 className="w-6 h-6 text-white" />
+          <Card className="mb-8 border-2 border-blue-200 bg-gradient-to-r from-blue-50 via-white to-blue-50 shadow-xl animate-fade-in">
+            <CardContent className="p-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-6">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl flex items-center justify-center shadow-lg">
+                    <BarChart3 className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-blue-800 font-heebo">השוואת מסלולים חכמה</h3>
-                    <p className="text-blue-600 font-assistant">
-                      {comparedPlans.length} מסלולים נבחרו • עד {3 - comparedPlans.length} נוספים
+                    <h3 className="text-2xl font-bold text-blue-800 font-heebo mb-1">
+                      השוואת מסלולים מתקדמת
+                    </h3>
+                    <p className="text-blue-600 font-assistant text-lg">
+                      {comparedPlans.length} מסלולים נבחרו • עד {3 - comparedPlans.length} נוספים ניתן להוסיף
                     </p>
+                    <div className="flex items-center gap-4 mt-2">
+                      <Badge className="bg-blue-100 text-blue-800 px-3 py-1">
+                        <Brain className="w-4 h-4 ml-1" />
+                        ניתוח AI
+                      </Badge>
+                      <Badge className="bg-green-100 text-green-800 px-3 py-1">
+                        <TrendingUp className="w-4 h-4 ml-1" />
+                        חישוב חיסכון
+                      </Badge>
+                      <Badge className="bg-purple-100 text-purple-800 px-3 py-1">
+                        <Target className="w-4 h-4 ml-1" />
+                        המלצות אישיות
+                      </Badge>
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                   <DetailedAIComparison 
                     plans={comparedPlans}
                     userContext={userContext}
@@ -489,32 +611,42 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                   <Button
                     onClick={() => setShowComparison(!showComparison)}
                     variant="outline"
-                    className="font-assistant"
+                    size="lg"
+                    className="font-assistant h-14 px-6"
                   >
-                    <Eye className="w-4 h-4 ml-2" />
+                    <Eye className="w-5 h-5 ml-2" />
                     {showComparison ? 'הסתר טבלה' : 'הצג טבלה'}
                   </Button>
                   <Button
                     variant="destructive"
-                    size="sm"
+                    size="lg"
                     onClick={clearComparison}
-                    className="font-assistant"
+                    className="font-assistant h-14 px-6"
                   >
-                    <X className="w-4 h-4 ml-2" />
+                    <X className="w-5 h-5 ml-2" />
                     נקה הכל
                   </Button>
                 </div>
               </div>
               
-              {/* Comparison Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {comparedPlans.map((plan) => (
-                  <Card key={plan.id} className="border border-blue-200 bg-white/70 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <div>
-                          <h4 className="font-bold text-primary font-heebo">{plan.company}</h4>
-                          <p className="text-sm text-muted-foreground font-assistant">{plan.planName}</p>
+              {/* Enhanced Comparison Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {comparedPlans.map((plan, index) => (
+                  <Card key={plan.id} className="border-2 border-blue-200 bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${
+                            index === 0 ? 'bg-gradient-to-r from-blue-500 to-blue-600' :
+                            index === 1 ? 'bg-gradient-to-r from-purple-500 to-purple-600' :
+                            'bg-gradient-to-r from-green-500 to-green-600'
+                          }`}>
+                            {index + 1}
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-primary font-heebo">{plan.company}</h4>
+                            <p className="text-sm text-muted-foreground font-assistant">{plan.planName}</p>
+                          </div>
                         </div>
                         <Button
                           variant="ghost"
@@ -525,16 +657,82 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                           <X className="w-4 h-4" />
                         </Button>
                       </div>
-                      <div className="text-2xl font-bold text-primary font-heebo mb-2">
-                        ₪{plan.regularPrice}
+                      
+                      <div className="text-center mb-4">
+                        <div className="text-3xl font-bold text-primary font-heebo mb-1">
+                          ₪{plan.regularPrice}
+                        </div>
+                        <div className="text-sm text-muted-foreground font-assistant">לחודש</div>
                       </div>
-                      <div className="text-xs text-muted-foreground">
+                      
+                      <div className="space-y-2 mb-4">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground font-assistant">תכונות:</span>
+                          <span className="font-semibold">{plan.features?.length || 0}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground font-assistant">קטגוריה:</span>
+                          <Badge variant="outline" className="text-xs">
+                            {categoryConfig[plan.category as CategoryType]?.label}
+                          </Badge>
+                        </div>
+                      </div>
+                      
+                      <div className="text-xs text-muted-foreground font-assistant">
                         {plan.features?.slice(0, 2).join(' • ')}
                         {(plan.features?.length || 0) > 2 && ` +${(plan.features?.length || 0) - 2} נוספות`}
                       </div>
                     </CardContent>
                   </Card>
                 ))}
+                
+                {/* Add More Plans Prompt */}
+                {comparedPlans.length < 3 && (
+                  <Card className="border-2 border-dashed border-blue-300 bg-blue-50/50 hover:bg-blue-50 transition-colors">
+                    <CardContent className="p-6 flex flex-col items-center justify-center text-center min-h-[200px]">
+                      <div className="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center mb-4">
+                        <Plus className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <h4 className="font-bold text-blue-800 font-heebo mb-2">
+                        הוסיפו מסלול נוסף
+                      </h4>
+                      <p className="text-blue-600 font-assistant text-sm">
+                        לחצו על כפתור ה + ליד המסלולים למטה כדי להוסיף עד {3 - comparedPlans.length} מסלולים נוספים
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Enhanced Call to Action for Comparison */}
+        {comparedPlans.length === 0 && selectedCategory && (
+          <Card className="mb-8 bg-gradient-to-r from-purple-100 via-blue-100 to-green-100 border-2 border-purple-200 shadow-lg">
+            <CardContent className="p-8 text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <BarChart3 className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-purple-800 font-heebo mb-4">
+                🚀 התחילו השוואה חכמה עכשיו!
+              </h3>
+              <p className="text-purple-600 font-assistant text-lg mb-6 max-w-2xl mx-auto">
+                בחרו עד 3 מסלולים ותקבלו ניתוח AI מתקדם עם המלצות אישיות וחישוב חיסכון מדויק
+              </p>
+              <div className="flex items-center justify-center gap-8 text-sm text-purple-700">
+                <div className="flex items-center gap-2">
+                  <Brain className="w-5 h-5" />
+                  <span>ניתוח מבוסס AI</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calculator className="w-5 h-5" />
+                  <span>חישוב חיסכון מדויק</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Target className="w-5 h-5" />
+                  <span>המלצות מותאמות אישית</span>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -797,20 +995,33 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                               </div>
                             )}
 
-                            {/* Action Buttons */}
+                            {/* Action Buttons with Enhanced UX */}
                             <div className="flex gap-2 pt-4">
                               <Button 
                                 onClick={() => handlePlanSelect(plan)}
-                                className="flex-1 font-assistant"
+                                className={cn(
+                                  "flex-1 font-assistant transition-all duration-300",
+                                  isCompanyCheapest ? "bg-blue-600 hover:bg-blue-700 shadow-lg" : ""
+                                )}
                                 variant={isCompanyCheapest ? "default" : "outline"}
                               >
-                                {isCompanyCheapest ? "בחר מסלול מומלץ" : "בחר מסלול"}
+                                {isCompanyCheapest ? (
+                                  <>
+                                    <Star className="w-4 h-4 ml-2" />
+                                    בחר מסלול מומלץ
+                                  </>
+                                ) : (
+                                  "בחר מסלול"
+                                )}
                               </Button>
                               <Button
-                                variant="outline"
+                                variant={inComparison ? "default" : "outline"}
                                 onClick={() => handleCompareToggle(plan)}
                                 disabled={!canAddToComparison && !inComparison}
-                                className="font-assistant"
+                                className={cn(
+                                  "font-assistant transition-all duration-300",
+                                  inComparison ? "bg-purple-600 hover:bg-purple-700" : "hover:bg-purple-50 hover:border-purple-300"
+                                )}
                                 title={inComparison ? "הסר מהשוואה" : "הוסף להשוואה"}
                               >
                                 {inComparison ? (
