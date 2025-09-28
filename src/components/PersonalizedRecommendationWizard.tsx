@@ -164,6 +164,35 @@ export const PersonalizedRecommendationWizard = ({
               />
             </div>
 
+            {/* Mobile Lines Count - Only for mobile category */}
+            {category === 'mobile' && (
+              <div className="space-y-3">
+                <Label className="text-base font-medium">כמה קווי סלולרי יש לכם כיום?</Label>
+                <div className="flex items-center gap-4">
+                  <Slider
+                    value={[profile.categorySpecific?.multipleLines || 1]}
+                    onValueChange={([value]) => updateProfile({ 
+                      categorySpecific: { 
+                        ...profile.categorySpecific, 
+                        multipleLines: value 
+                      } 
+                    })}
+                    max={10}
+                    min={1}
+                    step={1}
+                    className="flex-1"
+                  />
+                  <Badge variant="secondary" className="min-w-[70px] text-center">
+                    {profile.categorySpecific?.multipleLines || 1} {(profile.categorySpecific?.multipleLines || 1) === 1 ? 'קו' : 'קווים'}
+                  </Badge>
+                </div>
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>קו אחד</span>
+                  <span>10 קווים</span>
+                </div>
+              </div>
+            )}
+
             {/* Work From Home */}
             <div className="flex items-center justify-between py-2">
               <div>
