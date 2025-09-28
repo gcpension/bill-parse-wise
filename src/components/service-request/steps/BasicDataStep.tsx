@@ -3,6 +3,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import ProviderSelector, { defaultProviders } from '@/components/ui/provider-selector';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
 import { Info, User, Mail, Phone, MapPin, Building2, Languages } from 'lucide-react';
 
@@ -239,54 +240,35 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
             <h3 className="text-xl font-bold text-slate-900">פרטי ספקים</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-8">
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="current_provider" className="text-sm font-semibold text-slate-700">
+              <div className="flex items-center mb-4">
+                <h4 className="text-lg font-semibold text-slate-700">
                   הספק הנוכחי <span className="text-red-500">*</span>
-                </Label>
+                </h4>
                 <InfoTooltip content="בחר את הספק שממנו אתה מבקש לעבור או לבצע פעולה. זה הספק שמספק לך כרגע את השירות." />
               </div>
-              <Select
-                value={formData.current_provider || ''}
-                onValueChange={(value) => handleFieldChange('current_provider', value)}
-              >
-                <SelectTrigger className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20">
-                  <SelectValue placeholder="בחר ספק נוכחי" />
-                </SelectTrigger>
-                <SelectContent>
-                  {providerOptions.map((provider) => (
-                    <SelectItem key={provider} value={provider}>
-                      {provider}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <ProviderSelector
+                providers={defaultProviders}
+                selectedProvider={formData.current_provider}
+                onSelect={(providerId) => handleFieldChange('current_provider', providerId)}
+              />
             </div>
 
             {needsTargetProvider && (
               <div>
-                <div className="flex items-center mb-2">
-                  <Label htmlFor="target_provider" className="text-sm font-semibold text-slate-700">
+                <div className="flex items-center mb-4">
+                  <h4 className="text-lg font-semibold text-slate-700">
                     ספק היעד <span className="text-red-500">*</span>
-                  </Label>
+                  </h4>
                   <InfoTooltip content="בחר את הספק החדש אליו אתה רוצה לעבור. וודא שהספק מספק שירות באזור שלך." />
                 </div>
-                <Select
-                  value={formData.target_provider || ''}
-                  onValueChange={(value) => handleFieldChange('target_provider', value)}
-                >
-                  <SelectTrigger className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20">
-                    <SelectValue placeholder="בחר ספק יעד" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {providerOptions.filter(p => p !== formData.current_provider).map((provider) => (
-                      <SelectItem key={provider} value={provider}>
-                        {provider}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <ProviderSelector
+                  providers={defaultProviders}
+                  selectedProvider={formData.target_provider}
+                  onSelect={(providerId) => handleFieldChange('target_provider', providerId)}
+                  excludeProvider={formData.current_provider}
+                />
               </div>
             )}
           </div>
