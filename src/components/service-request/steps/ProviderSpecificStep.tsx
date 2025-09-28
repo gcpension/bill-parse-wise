@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
 import { cn } from '@/lib/utils';
+import { FileText, Shield, Info, MessageSquare } from 'lucide-react';
 
 interface ProviderSpecificStepProps {
   formData: Partial<ServiceRequestFormData>;
@@ -103,18 +104,28 @@ export default function ProviderSpecificStep({ formData, updateFormData }: Provi
   const sectorColor = sectorColors[sector as keyof typeof sectorColors] || 'border-gray-200 bg-gray-50';
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">פרטי ספקים</h2>
+        <p className="text-gray-600">פרטים ספציפיים הנדרשים לביצוע הבקשה</p>
+      </div>
+      
       {/* Current Provider Details */}
       {currentConfig && (
-        <Card className={cn("animate-fade-in", sectorColor)}>
+        <Card className="border-2 border-blue-200 bg-blue-50/30">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="font-heebo text-xl">פרטי הספק הנוכחי</CardTitle>
-              <Badge variant="secondary">{currentProvider}</Badge>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <FileText className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <CardTitle className="text-xl text-blue-900">פרטי הספק הנוכחי</CardTitle>
+                <p className="text-sm text-blue-700 mt-1">
+                  פרטים נדרשים לביטול השירות הקיים אצל {currentProvider}
+                </p>
+              </div>
+              <Badge className="bg-blue-600 mr-auto">{currentProvider}</Badge>
             </div>
-            <p className="text-sm text-muted-foreground">
-              פרטים נדרשים לביטול השירות הקיים
-            </p>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -140,15 +151,20 @@ export default function ProviderSpecificStep({ formData, updateFormData }: Provi
 
       {/* Target Provider Details */}
       {targetConfig && formData.action_type === 'switch' && (
-        <Card className={cn("animate-fade-in border-green-200 bg-green-50")}>
+        <Card className="border-2 border-green-200 bg-green-50/30">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="font-heebo text-xl text-green-800">פרטי הספק החדש</CardTitle>
-              <Badge className="bg-green-600">{targetProvider}</Badge>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <Shield className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <CardTitle className="text-xl text-green-900">פרטי הספק החדש</CardTitle>
+                <p className="text-sm text-green-700 mt-1">
+                  פרטים נדרשים לפתיחת שירות חדש אצל {targetProvider}
+                </p>
+              </div>
+              <Badge className="bg-green-600 mr-auto">{targetProvider}</Badge>
             </div>
-            <p className="text-sm text-green-600">
-              פרטים נדרשים לפתיחת שירות חדש
-            </p>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -173,12 +189,19 @@ export default function ProviderSpecificStep({ formData, updateFormData }: Provi
 
       {/* Generic Provider Information for unknown providers */}
       {!currentConfig && currentProvider && (
-        <Card className={cn("animate-fade-in", sectorColor)}>
+        <Card className="border-2 border-gray-200 bg-gray-50/30">
           <CardHeader>
-            <CardTitle className="font-heebo text-xl">פרטי ספק כלליים</CardTitle>
-            <p className="text-sm text-muted-foreground">
-              פרטים בסיסיים עבור {currentProvider}
-            </p>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-100 rounded-lg">
+                <Info className="w-5 h-5 text-gray-600" />
+              </div>
+              <div>
+                <CardTitle className="text-xl text-gray-900">פרטי ספק כלליים</CardTitle>
+                <p className="text-sm text-gray-700 mt-1">
+                  פרטים בסיסיים עבור {currentProvider}
+                </p>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -207,21 +230,26 @@ export default function ProviderSpecificStep({ formData, updateFormData }: Provi
       )}
 
       {/* Additional Notes */}
-      <Card className="animate-fade-in">
+      <Card className="border-2 border-purple-200 bg-purple-50/30">
         <CardHeader>
-          <CardTitle className="font-heebo text-xl">הערות נוספות</CardTitle>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <MessageSquare className="w-5 h-5 text-purple-600" />
+            </div>
+            <div>
+              <CardTitle className="text-xl text-purple-900">הערות נוספות</CardTitle>
+              <p className="text-sm text-purple-700 mt-1">מידע נוסף שיכול לסייע בטיפול</p>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2">
-            <Label className="font-assistant font-semibold">הערות או בקשות מיוחדות</Label>
-            <textarea
-              value={formData.additional_notes || ''}
-              onChange={(e) => updateFormData({ additional_notes: e.target.value })}
-              placeholder="פרטים נוספים שיכולים לסייע בטיפול בבקשה..."
-              className="w-full min-h-[100px] p-3 border border-input rounded-md font-assistant"
-              rows={4}
-            />
-          </div>
+          <textarea
+            value={formData.additional_notes || ''}
+            onChange={(e) => updateFormData({ additional_notes: e.target.value })}
+            placeholder="פרטים נוספים, הערות מיוחדות או בקשות ספציפיות..."
+            className="w-full min-h-[120px] p-4 border-2 border-gray-200 rounded-xl font-assistant text-sm resize-none focus:border-purple-300 focus:ring-0 transition-colors"
+            rows={5}
+          />
         </CardContent>
       </Card>
     </div>

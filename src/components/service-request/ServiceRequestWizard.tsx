@@ -190,7 +190,7 @@ export default function ServiceRequestWizard() {
     }
   };
 
-  const StepComponent = steps[currentStep].component;
+  const StepComponent = currentStep < steps.length ? steps[currentStep].component : null;
   const progress = ((currentStep + 1) / steps.length) * 100;
 
   return (
