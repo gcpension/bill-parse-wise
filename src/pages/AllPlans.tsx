@@ -796,16 +796,20 @@ const AllPlans = ({
 
       {/* Smart Plan Matching Banner */}
       {selectedCategory && comparedPlans.length >= 0 && (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex gap-4">
+        <div>
+          <div className="flex flex-col sm:flex-row gap-4 mb-24">
+            <Button
+              size="lg"
+              className="h-12 px-6 text-base font-heebo bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 rounded-2xl"
+              onClick={() => setShowPersonalizedWizard(true)}
+            >
+              <User className="w-5 h-5 ml-2" />
+              המלצה אישית
+            </Button>
+          </div>
+          
+          {/* Smart Matching Banner - Fixed Position */}
           <SmartPlanMatchingBanner onMatchingClick={handleSmartComparison} />
-          <Button
-            size="lg"
-            className="h-12 px-6 text-base font-heebo bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 rounded-2xl"
-            onClick={() => setShowPersonalizedWizard(true)}
-          >
-            <User className="w-5 h-5 ml-2" />
-            המלצה אישית
-          </Button>
         </div>
       )}
 
@@ -838,15 +842,17 @@ const AllPlans = ({
       </Dialog>
 
       {/* Personalized Recommendation Wizard */}
-      <Dialog open={showPersonalizedWizard} onOpenChange={setShowPersonalizedWizard}>
-        <DialogContent className="max-w-none w-screen h-screen p-0 bg-transparent border-none shadow-none">
-          <PersonalizedRecommendationWizard
-            category={selectedCategory as any}
-            onComplete={handlePersonalizedRecommendation}
-            onClose={() => setShowPersonalizedWizard(false)}
-          />
-        </DialogContent>
-      </Dialog>
+      {showPersonalizedWizard && (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <PersonalizedRecommendationWizard
+              category={selectedCategory as any}
+              onComplete={handlePersonalizedRecommendation}
+              onClose={() => setShowPersonalizedWizard(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>;
 };
 export default AllPlans;
