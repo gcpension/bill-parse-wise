@@ -1,9 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
+import { ServiceRequestFormData } from '@/types/serviceRequest';
+import { FileUpload } from '@/components/ui/file-upload';
 import { 
   Zap, 
   Smartphone, 
@@ -15,11 +14,13 @@ import {
   UserX,
   Home,
   Calendar,
-  CheckCircle
+  CheckCircle,
+  Sparkles,
+  Target
 } from 'lucide-react';
-import { ServiceRequestFormData } from '@/types/serviceRequest';
-import { FileUpload } from '@/components/ui/file-upload';
-import { cn } from '@/lib/utils';
+import { InteractiveCard } from '../components/InteractiveCard';
+import { InteractiveChoiceGrid } from '../components/InteractiveChoiceGrid';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface GeneralChoicesStepProps {
   formData: Partial<ServiceRequestFormData>;
@@ -27,290 +28,280 @@ interface GeneralChoicesStepProps {
 }
 
 export default function GeneralChoicesStep({ formData, updateFormData }: GeneralChoicesStepProps) {
+  const { isVisible, elementRef } = useScrollAnimation();
   
   const actionTypes = [
-    { value: 'disconnect', label: 'ניתוק שירות', icon: <UserX className="w-5 h-5" />, color: 'bg-red-500', description: 'סיום מוחלט של השירות' },
-    { value: 'switch', label: 'מעבר ספק', icon: <ArrowRightLeft className="w-5 h-5" />, color: 'bg-blue-500', description: 'מעבר לספק אחר' },
-    { value: 'move', label: 'העברת דירה', icon: <Home className="w-5 h-5" />, color: 'bg-green-500', description: 'העברת שירות לכתובת חדשה' },
-    { value: 'early_terminate', label: 'סיום מוקדם', icon: <Calendar className="w-5 h-5" />, color: 'bg-orange-500', description: 'סיום חוזה לפני תום התקופה' }
+    { 
+      value: 'disconnect', 
+      label: 'ניתוק שירות', 
+      icon: <UserX className="w-6 h-6" />, 
+      color: 'bg-red-500', 
+      description: 'סיום מוחלט של השירות הקיים',
+      badge: 'פעולה מיוחדת'
+    },
+    { 
+      value: 'switch', 
+      label: 'מעבר ספק', 
+      icon: <ArrowRightLeft className="w-6 h-6" />, 
+      color: 'bg-blue-500', 
+      description: 'מעבר לספק אחר תוך שמירה על רציפות השירות',
+      badge: 'פופולרי'
+    },
+    { 
+      value: 'move', 
+      label: 'העברת דירה', 
+      icon: <Home className="w-6 h-6" />, 
+      color: 'bg-green-500', 
+      description: 'העברת השירות הקיים לכתובת חדשה'
+    },
+    { 
+      value: 'early_terminate', 
+      label: 'סיום מוקדם', 
+      icon: <Calendar className="w-6 h-6" />, 
+      color: 'bg-orange-500', 
+      description: 'סיום חוזה לפני תום התקופה הקבועה'
+    }
   ];
 
   const sectors = [
-    { value: 'cellular', label: 'סלולר', icon: <Smartphone className="w-5 h-5" />, color: 'bg-purple-500' },
-    { value: 'internet_isp', label: 'אינטרנט ISP', icon: <Wifi className="w-5 h-5" />, color: 'bg-blue-500' },
-    { value: 'internet_infra', label: 'תשתית אינטרנט', icon: <Wifi className="w-5 h-5" />, color: 'bg-cyan-500' },
-    { value: 'tv', label: 'טלוויזיה', icon: <Tv className="w-5 h-5" />, color: 'bg-green-500' },
-    { value: 'electricity', label: 'חשמל', icon: <Zap className="w-5 h-5" />, color: 'bg-yellow-500' }
+    { 
+      value: 'cellular', 
+      label: 'סלולר', 
+      icon: <Smartphone className="w-6 h-6" />, 
+      color: 'bg-purple-500',
+      description: 'מעבר ספק סלולרי, מספר נייד וחבילות נתונים'
+    },
+    { 
+      value: 'internet_isp', 
+      label: 'אינטרנט ISP', 
+      icon: <Wifi className="w-6 h-6" />, 
+      color: 'bg-blue-500',
+      description: 'ספקי אינטרנט וחבילות גלישה ביתיות'
+    },
+    { 
+      value: 'internet_infra', 
+      label: 'תשתית אינטרנט', 
+      icon: <Wifi className="w-6 h-6" />, 
+      color: 'bg-cyan-500',
+      description: 'תשתיות תקשורת ופתרונות אינטרנט מתקדמים'
+    },
+    { 
+      value: 'tv', 
+      label: 'טלוויזיה', 
+      icon: <Tv className="w-6 h-6" />, 
+      color: 'bg-green-500',
+      description: 'שירותי טלוויזיה ומולטימדיה ביתיים'
+    },
+    { 
+      value: 'electricity', 
+      label: 'חשמל', 
+      icon: <Zap className="w-6 h-6" />, 
+      color: 'bg-yellow-500',
+      description: 'ספקי חשמל ופתרונות אנרגיה'
+    }
   ];
 
   const customerTypes = [
-    { value: 'private', label: 'לקוח פרטי', icon: <User className="w-5 h-5" />, description: 'משק בית רגיל' },
-    { value: 'business', label: 'לקוח עסקי', icon: <Building2 className="w-5 h-5" />, description: 'חברה או עסק' }
+    { 
+      value: 'private', 
+      label: 'לקוח פרטי', 
+      icon: <User className="w-6 h-6" />, 
+      description: 'משק בית רגיל - פרטיות מלאה ותמיכה אישית'
+    },
+    { 
+      value: 'business', 
+      label: 'לקוח עסקי', 
+      icon: <Building2 className="w-6 h-6" />, 
+      description: 'חברה או עסק - פתרונות מתקדמים ותמיכה מקצועית'
+    }
   ];
 
   // Auto-hide action type and sector if already detected from plan selection
   const isAutoDetected = formData.selected_plan_name && formData.action_type && formData.sector;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10" ref={elementRef}>
       {/* Auto-Detection Banner */}
       {isAutoDetected && (
-        <Card className="border-success/30 bg-gradient-to-r from-success/10 to-success-glow/10 animate-scale-in glass-card">
-          <CardHeader className="pb-4">
-            <div className="flex items-center justify-center gap-4">
-              <div className="w-12 h-12 bg-success rounded-full flex items-center justify-center animate-bounce-gentle">
-                <CheckCircle className="w-7 h-7 text-white" />
+        <InteractiveCard
+          title="🎯 פרטי השירות זוהו אוטומטית"
+          description="המערכת זיהתה את הבחירות שלך על בסיס התוכנית שנבחרה"
+          icon={<Target className="w-7 h-7" />}
+          variant="success"
+          className="animate-bounce-gentle"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+            <div className="text-center p-4 bg-white/50 rounded-xl hover-scale transition-all duration-300">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <ArrowRightLeft className="w-6 h-6 text-primary" />
               </div>
-              <CardTitle className="text-xl text-success font-heebo">
-                🎯 פרטי השירות זוהו אוטומטית
-              </CardTitle>
+              <p className="font-bold text-lg font-heebo text-primary">
+                {actionTypes.find(a => a.value === formData.action_type)?.label}
+              </p>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center p-4 bg-white/50 rounded-xl hover-scale">
-                <Badge variant="secondary" className="mb-3 bg-primary/10 text-primary">סוג פעולה</Badge>
-                <p className="font-bold text-lg font-heebo">{actionTypes.find(a => a.value === formData.action_type)?.label}</p>
+            <div className="text-center p-4 bg-white/50 rounded-xl hover-scale transition-all duration-300">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                {sectors.find(s => s.value === formData.sector)?.icon}
               </div>
-              <div className="text-center p-4 bg-white/50 rounded-xl hover-scale">
-                <Badge variant="secondary" className="mb-3 bg-primary/10 text-primary">סקטור</Badge>
-                <p className="font-bold text-lg font-heebo">{sectors.find(s => s.value === formData.sector)?.label}</p>
-              </div>
-              <div className="text-center p-4 bg-white/50 rounded-xl hover-scale">
-                <Badge variant="secondary" className="mb-3 bg-primary/10 text-primary">ספק יעד</Badge>
-                <p className="font-bold text-lg font-heebo">{formData.target_provider}</p>
-              </div>
+              <p className="font-bold text-lg font-heebo text-primary">
+                {sectors.find(s => s.value === formData.sector)?.label}
+              </p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="text-center p-4 bg-white/50 rounded-xl hover-scale transition-all duration-300">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <CheckCircle className="w-6 h-6 text-success" />
+              </div>
+              <p className="font-bold text-lg font-heebo text-success">
+                {formData.target_provider}
+              </p>
+            </div>
+          </div>
+        </InteractiveCard>
       )}
 
       {/* Action Type Selection */}
       {!isAutoDetected && (
-        <Card className="animate-fade-in glass-card border-primary/10">
-          <CardHeader className="pb-6">
-            <CardTitle className="font-heebo text-2xl text-center bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              🎯 סוג הפעולה המבוקשת
-            </CardTitle>
-            <p className="text-center text-muted-foreground font-assistant mt-2">
-              בחר את סוג הפעולה שברצונך לבצע
-            </p>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {actionTypes.map((action) => (
-                <Button
-                  key={action.value}
-                  variant={formData.action_type === action.value ? "default" : "outline"}
-                  className={cn(
-                    "h-auto p-6 flex flex-col items-start gap-4 transition-all duration-300 hover-scale relative overflow-hidden group",
-                    formData.action_type === action.value 
-                      ? "bg-gradient-to-r from-primary to-primary-glow text-white shadow-elegant border-0" 
-                      : "border-2 border-primary/20 hover:border-primary/50 bg-white/50 backdrop-blur-sm"
-                  )}
-                  onClick={() => updateFormData({ action_type: action.value as any })}
-                >
-                  {formData.action_type === action.value && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary-glow/10 animate-pulse"></div>
-                  )}
-                  <div className="flex items-center gap-4 w-full relative z-10">
-                    <div className={cn(
-                      "p-3 rounded-xl",
-                      formData.action_type === action.value 
-                        ? "bg-white/20 backdrop-blur-sm" 
-                        : "bg-gradient-to-r from-primary to-primary-glow"
-                    )}>
-                      <div className="text-white text-lg">
-                        {action.icon}
-                      </div>
-                    </div>
-                    <span className="font-heebo font-bold text-lg">{action.label}</span>
-                  </div>
-                  <p className={cn(
-                    "text-sm text-right w-full relative z-10",
-                    formData.action_type === action.value ? "text-white/90" : "text-muted-foreground"
-                  )}>
-                    {action.description}
-                  </p>
-                </Button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <div className={isVisible ? "animate-fade-in" : "opacity-0 translate-y-10"}>
+          <InteractiveChoiceGrid
+            title="🎯 בחר את סוג הפעולה"
+            description="איזה סוג פעולה ברצונך לבצע? כל אפשרות מותאמת לצרכים שלך"
+            choices={actionTypes}
+            selectedValue={formData.action_type}
+            onSelect={(value) => updateFormData({ action_type: value as any })}
+            columns={2}
+          />
+        </div>
       )}
 
       {/* Sector Selection */}
       {!isAutoDetected && (
-        <Card className="animate-fade-in glass-card border-primary/10">
-          <CardHeader className="pb-6">
-            <CardTitle className="font-heebo text-2xl text-center bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              🏢 בחירת סקטור השירות
-            </CardTitle>
-            <p className="text-center text-muted-foreground font-assistant mt-2">
-              באיזה תחום אתה מעוניין לבצע את הפעולה?
-            </p>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
-              {sectors.map((sector) => (
-                <Button
-                  key={sector.value}
-                  variant={formData.sector === sector.value ? "default" : "outline"}
-                  className={cn(
-                    "h-28 flex flex-col gap-3 transition-all duration-300 hover-scale relative overflow-hidden group",
-                    formData.sector === sector.value 
-                      ? "bg-gradient-to-r from-primary to-primary-glow text-white shadow-elegant border-0" 
-                      : "border-2 border-primary/20 hover:border-primary/50 bg-white/50 backdrop-blur-sm"
-                  )}
-                  onClick={() => updateFormData({ sector: sector.value as any })}
-                >
-                  {formData.sector === sector.value && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary-glow/10 animate-pulse"></div>
-                  )}
-                  <div className={cn(
-                    "p-3 rounded-xl relative z-10",
-                    formData.sector === sector.value 
-                      ? "bg-white/20 backdrop-blur-sm" 
-                      : "bg-gradient-to-r from-primary to-primary-glow"
-                  )}>
-                    <div className="text-white text-xl">
-                      {sector.icon}
-                    </div>
-                  </div>
-                  <span className="font-heebo font-bold text-sm relative z-10">{sector.label}</span>
-                </Button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <div className={isVisible ? "animate-fade-in" : "opacity-0 translate-y-10"} style={{ animationDelay: '200ms' }}>
+          <InteractiveChoiceGrid
+            title="🏢 בחר את סקטור השירות"
+            description="באיזה תחום אתה מעוניין לבצע את הפעולה? נתאמן למגוון רחב של שירותים"
+            choices={sectors}
+            selectedValue={formData.sector}
+            onSelect={(value) => updateFormData({ sector: value as any })}
+            columns={3}
+          />
+        </div>
       )}
 
       {/* Customer Type Selection */}
-      <Card className="animate-fade-in glass-card border-primary/10">
-        <CardHeader className="pb-6">
-          <CardTitle className="font-heebo text-2xl text-center bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-            👤 סוג הלקוח
-          </CardTitle>
-          <p className="text-center text-muted-foreground font-assistant mt-2">
-            האם אתה לקוח פרטי או עסקי?
-          </p>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {customerTypes.map((type) => (
-              <Button
-                key={type.value}
-                variant={formData.customer_type === type.value ? "default" : "outline"}
-                className={cn(
-                  "h-auto p-6 flex flex-col items-start gap-4 transition-all duration-300 hover-scale relative overflow-hidden group",
-                  formData.customer_type === type.value 
-                    ? "bg-gradient-to-r from-primary to-primary-glow text-white shadow-elegant border-0" 
-                    : "border-2 border-primary/20 hover:border-primary/50 bg-white/50 backdrop-blur-sm"
-                )}
-                onClick={() => updateFormData({ customer_type: type.value as any })}
-              >
-                {formData.customer_type === type.value && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary-glow/10 animate-pulse"></div>
-                )}
-                <div className="flex items-center gap-4 w-full relative z-10">
-                  <div className={cn(
-                    "p-3 rounded-xl",
-                    formData.customer_type === type.value 
-                      ? "bg-white/20 backdrop-blur-sm" 
-                      : "bg-gradient-to-r from-primary to-primary-glow"
-                  )}>
-                    <div className="text-white text-lg">
-                      {type.icon}
-                    </div>
-                  </div>
-                  <span className="font-heebo font-bold text-lg">{type.label}</span>
-                </div>
-                <p className={cn(
-                  "text-sm text-right w-full relative z-10",
-                  formData.customer_type === type.value ? "text-white/90" : "text-muted-foreground"
-                )}>
-                  {type.description}
-                </p>
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <div className={isVisible ? "animate-fade-in" : "opacity-0 translate-y-10"} style={{ animationDelay: '400ms' }}>
+        <InteractiveChoiceGrid
+          title="👤 בחר את סוג הלקוח"
+          description="האם אתה לקוח פרטי או עסקי? זה יעזור לנו להתאים את השירות הטוב ביותר עבורך"
+          choices={customerTypes}
+          selectedValue={formData.customer_type}
+          onSelect={(value) => updateFormData({ customer_type: value as any })}
+          columns={2}
+        />
+      </div>
 
       {/* Business-specific fields */}
       {formData.customer_type === 'business' && (
-        <Card className="border-primary/30 bg-gradient-to-r from-primary/5 to-primary-glow/5 animate-scale-in glass-card">
-          <CardHeader className="pb-6">
-            <CardTitle className="font-heebo text-2xl text-center bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              🏢 פרטים עסקיים נוספים
-            </CardTitle>
-            <p className="text-center text-muted-foreground font-assistant mt-2">
-              נדרש מידע נוסף עבור לקוחות עסקיים
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="company_name" className="font-assistant font-semibold">שם החברה *</Label>
-                <Input
-                  id="company_name"
-                  value={formData.company_name || ''}
-                  onChange={(e) => updateFormData({ company_name: e.target.value })}
-                  placeholder="שם החברה המלא"
-                  className="font-assistant"
-                  required
-                />
+        <InteractiveCard
+          title="🏢 פרטים עסקיים נוספים"
+          description="מידע נוסף הנדרש עבור לקוחות עסקיים כדי לטפל בבקשה בצורה המקצועית ביותר"
+          icon={<Building2 className="w-7 h-7" />}
+          variant="purple"
+          className="animate-scale-in border-l-4 border-l-primary"
+        >
+          <div className="space-y-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <Label htmlFor="company_name" className="font-assistant font-semibold text-lg flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  שם החברה <span className="text-destructive">*</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="company_name"
+                    value={formData.company_name || ''}
+                    onChange={(e) => updateFormData({ company_name: e.target.value })}
+                    placeholder="שם החברה המלא כפי שמופיע ברישום"
+                    className="font-assistant h-12 border-2 border-primary/20 focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
+                    required
+                  />
+                  <div className="absolute inset-0 rounded-md opacity-0 hover:opacity-20 transition-opacity duration-300 bg-gradient-to-r from-primary/10 to-primary-glow/10 pointer-events-none" />
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="corp_registration_number" className="font-assistant font-semibold">מספר רישום חברה *</Label>
-                <Input
-                  id="corp_registration_number"
-                  value={formData.corp_registration_number || ''}
-                  onChange={(e) => updateFormData({ corp_registration_number: e.target.value })}
-                  placeholder="מספר ח.פ/ע.ר"
-                  className="font-assistant"
-                  required
-                />
+              
+              <div className="space-y-3">
+                <Label htmlFor="corp_registration_number" className="font-assistant font-semibold text-lg flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  מספר רישום חברה <span className="text-destructive">*</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="corp_registration_number"
+                    value={formData.corp_registration_number || ''}
+                    onChange={(e) => updateFormData({ corp_registration_number: e.target.value })}
+                    placeholder="מספר ח.פ או ע.ר"
+                    className="font-assistant h-12 border-2 border-primary/20 focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
+                    required
+                  />
+                  <div className="absolute inset-0 rounded-md opacity-0 hover:opacity-20 transition-opacity duration-300 bg-gradient-to-r from-primary/10 to-primary-glow/10 pointer-events-none" />
+                </div>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="signer_name" className="font-assistant font-semibold">שם החותם *</Label>
-                <Input
-                  id="signer_name"
-                  value={formData.signer_name || ''}
-                  onChange={(e) => updateFormData({ signer_name: e.target.value })}
-                  placeholder="שם מלא של החותם"
-                  className="font-assistant"
-                  required
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <Label htmlFor="signer_name" className="font-assistant font-semibold text-lg flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  שם החותם <span className="text-destructive">*</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="signer_name"
+                    value={formData.signer_name || ''}
+                    onChange={(e) => updateFormData({ signer_name: e.target.value })}
+                    placeholder="שם מלא של המורשה לחתום"
+                    className="font-assistant h-12 border-2 border-primary/20 focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
+                    required
+                  />
+                  <div className="absolute inset-0 rounded-md opacity-0 hover:opacity-20 transition-opacity duration-300 bg-gradient-to-r from-primary/10 to-primary-glow/10 pointer-events-none" />
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="signer_title" className="font-assistant font-semibold">תפקיד החותם *</Label>
-                <Input
-                  id="signer_title"
-                  value={formData.signer_title || ''}
-                  onChange={(e) => updateFormData({ signer_title: e.target.value })}
-                  placeholder="מנכ״ל, בעלים, מורשה חתימה"
-                  className="font-assistant"
-                  required
-                />
+              
+              <div className="space-y-3">
+                <Label htmlFor="signer_title" className="font-assistant font-semibold text-lg flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  תפקיד החותם <span className="text-destructive">*</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="signer_title"
+                    value={formData.signer_title || ''}
+                    onChange={(e) => updateFormData({ signer_title: e.target.value })}
+                    placeholder="מנכ״ל, בעלים, מורשה חתימה"
+                    className="font-assistant h-12 border-2 border-primary/20 focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
+                    required
+                  />
+                  <div className="absolute inset-0 rounded-md opacity-0 hover:opacity-20 transition-opacity duration-300 bg-gradient-to-r from-primary/10 to-primary-glow/10 pointer-events-none" />
+                </div>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label className="font-assistant font-semibold">ייפוי כוח עסקי (PDF) *</Label>
-              <FileUpload
-                onFileUpload={(file) => updateFormData({ power_of_attorney_file: file })}
-                accept=".pdf"
-                maxSize={10 * 1024 * 1024}
-                className="border-orange-200"
-                helperText="נדרש ייפוי כוח חתום עבור לקוחות עסקיים"
-              />
+            <div className="space-y-3">
+              <Label className="font-assistant font-semibold text-lg flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary" />
+                ייפוי כוח עסקי (PDF) <span className="text-destructive">*</span>
+              </Label>
+              <div className="p-6 border-2 border-dashed border-primary/30 rounded-xl bg-gradient-to-r from-primary/5 to-primary-glow/5 hover:from-primary/10 hover:to-primary-glow/10 transition-all duration-300">
+                <FileUpload
+                  onFileUpload={(file) => updateFormData({ power_of_attorney_file: file })}
+                  accept=".pdf"
+                  maxSize={10 * 1024 * 1024}
+                  className="border-0 bg-transparent"
+                  helperText="העלה ייפוי כוח חתום וסרוק במקום. קובץ PDF עד 10MB"
+                />
+              </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </InteractiveCard>
       )}
     </div>
   );

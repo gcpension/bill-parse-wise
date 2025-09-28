@@ -7,8 +7,11 @@ import { FileUpload } from '@/components/ui/file-upload';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
-import { Info, Mail, Phone, MapPin, Building, AlertCircle, CheckCircle } from 'lucide-react';
+import { Info, Mail, Phone, MapPin, Building, AlertCircle, CheckCircle, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { InteractiveCard } from '../components/InteractiveCard';
+import { AnimatedInput } from '../components/AnimatedInput';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface BasicDataStepProps {
   formData: Partial<ServiceRequestFormData>;
@@ -37,6 +40,8 @@ const languageOptions = [
 ];
 
 export default function BasicDataStep({ formData, updateFormData }: BasicDataStepProps) {
+  const { isVisible, elementRef } = useScrollAnimation();
+  
   const handleFieldChange = (field: keyof ServiceRequestFormData, value: any) => {
     updateFormData({ [field]: value });
   };
@@ -63,133 +68,81 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                               (!needsTargetProvider || formData.target_provider));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10" ref={elementRef}>
       {/* Step Overview */}
-      <Alert className="border-blue-200 bg-blue-50">
-        <Info className="h-4 w-4 text-blue-600" />
-        <AlertDescription className="text-blue-800 font-assistant">
-          <strong>שלב 2:</strong> מלאו את הפרטים הבסיסיים הנדרשים לטיפול בבקשה. 
-          כל השדות המסומנים ב-<span className="text-red-500">*</span> הם חובה.
+      <Alert className="border-primary/30 bg-gradient-to-r from-primary/10 to-primary-glow/10 animate-fade-in">
+        <Info className="h-5 w-5 text-primary" />
+        <AlertDescription className="text-primary font-assistant text-lg">
+          <strong className="font-heebo">שלב 2 - נתונים בסיסיים:</strong> מלא את הפרטים הבסיסיים הנדרשים לטיפול בבקשה. 
+          כל השדות המסומנים ב-<span className="text-destructive font-bold">*</span> הם חובה.
         </AlertDescription>
       </Alert>
 
       {/* Personal Details */}
-      <Card className="animate-fade-in border-l-4 border-l-blue-500">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Mail className="w-5 h-5 text-blue-600" />
-              </div>
-              <CardTitle className="text-xl font-heebo">פרטים אישיים</CardTitle>
-            </div>
-            {personalDetailsComplete && (
-              <Badge className="bg-green-100 text-green-800 border-green-200">
-                <CheckCircle className="w-4 h-4 ml-1" />
-                הושלם
-              </Badge>
-            )}
-          </div>
-          <p className="text-sm text-muted-foreground font-assistant mt-2">
-            פרטים אלו ישמשו לזיהוי ויצירת קשר עמכם במהלך תהליך הטיפול בבקשה
-          </p>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="full_name" className="font-assistant font-semibold">
-                שם מלא <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="full_name"
-                value={formData.full_name || ''}
-                onChange={(e) => handleFieldChange('full_name', e.target.value)}
-                placeholder="הזן שם מלא כפי שמופיע בתעודת הזהות"
-                className={cn(
-                  "font-assistant",
-                  formData.full_name ? "border-green-300 bg-green-50" : ""
-                )}
-              />
-            </div>
+      <InteractiveCard
+        title="📧 פרטים אישיים"
+        description="פרטים אלו ישמשו לזיהוי ויצירת קשר עמכם במהלך תהליך הטיפול בבקשה"
+        icon={<Mail className="w-7 h-7" />}
+        variant="blue"
+        isCompleted={personalDetailsComplete}
+        className={isVisible ? "animate-fade-in" : "opacity-0 translate-y-10"}
+      >
+        <div className="space-y-6 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <AnimatedInput
+              id="full_name"
+              label="שם מלא"
+              value={formData.full_name || ''}
+              onChange={(value) => handleFieldChange('full_name', value)}
+              placeholder="הזן שם מלא כפי שמופיע בתעודת הזהות"
+              required
+              helperText="השם ישמש לזיהוי ויצירת המסמכים הרשמיים"
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="national_id_or_corp" className="font-assistant font-semibold">
-                ת.ז / ח.פ <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="national_id_or_corp"
-                value={formData.national_id_or_corp || ''}
-                onChange={(e) => handleFieldChange('national_id_or_corp', e.target.value)}
-                placeholder={formData.customer_type === 'business' ? "מספר ח.פ" : "מספר תעודת זהות"}
-                className={cn(
-                  "font-assistant",
-                  formData.national_id_or_corp ? "border-green-300 bg-green-50" : ""
-                )}
-              />
-              <p className="text-xs text-muted-foreground">
-                {formData.customer_type === 'business' ? 
-                  'הזן מספר חברה פרטית או עמותה רשומה' : 
-                  'הזן 9 ספרות של תעודת הזהות'}
-              </p>
-            </div>
+            <AnimatedInput
+              id="national_id_or_corp"
+              label={formData.customer_type === 'business' ? "ח.פ / ע.ר" : "תעודת זהות"}
+              value={formData.national_id_or_corp || ''}
+              onChange={(value) => handleFieldChange('national_id_or_corp', value)}
+              placeholder={formData.customer_type === 'business' ? "מספר ח.פ או ע.ר" : "מספר תעודת זהות (9 ספרות)"}
+              required
+              helperText={formData.customer_type === 'business' ? 
+                'מספר רישום רשמי של החברה או העמותה' : 
+                'מספר תעודת הזהות (ללא ספרת ביקורת)'}
+            />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="font-assistant font-semibold">
-                דוא״ל <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email || ''}
-                onChange={(e) => handleFieldChange('email', e.target.value)}
-                placeholder="example@domain.com"
-                className={cn(
-                  "font-assistant",
-                  formData.email && isValidEmail(formData.email) ? "border-green-300 bg-green-50" : 
-                  formData.email && !isValidEmail(formData.email) ? "border-red-300 bg-red-50" : ""
-                )}
-              />
-              {formData.email && !isValidEmail(formData.email) && (
-                <p className="text-xs text-red-600 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  כתובת דוא״ל לא תקינה
-                </p>
-              )}
-              <p className="text-xs text-muted-foreground">
-                נשלח אליכם עדכונים על סטטוס הבקשה
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <AnimatedInput
+              id="email"
+              label="כתובת דוא״ל"
+              type="email"
+              value={formData.email || ''}
+              onChange={(value) => handleFieldChange('email', value)}
+              placeholder="example@domain.com"
+              required
+              validation={isValidEmail}
+              errorMessage="כתובת דוא״ל לא תקינה"
+              successMessage="כתובת דוא״ל תקינה ✓"
+              helperText="נשלח אליכם עדכונים על סטטוס הבקשה"
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="font-assistant font-semibold">
-                טלפון נייד <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="phone"
-                value={formData.phone || ''}
-                onChange={(e) => handleFieldChange('phone', e.target.value)}
-                placeholder="050-1234567"
-                className={cn(
-                  "font-assistant",
-                  formData.phone && isValidPhone(formData.phone) ? "border-green-300 bg-green-50" : 
-                  formData.phone && !isValidPhone(formData.phone) ? "border-red-300 bg-red-50" : ""
-                )}
-              />
-              {formData.phone && !isValidPhone(formData.phone) && (
-                <p className="text-xs text-red-600 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  מספר טלפון לא תקין
-                </p>
-              )}
-              <p className="text-xs text-muted-foreground">
-                נשלח SMS עם קוד אימוח לחתימה דיגיטלית
-              </p>
-            </div>
+            <AnimatedInput
+              id="phone"
+              label="טלפון נייד"
+              type="tel"
+              value={formData.phone || ''}
+              onChange={(value) => handleFieldChange('phone', value)}
+              placeholder="050-1234567"
+              required
+              validation={isValidPhone}
+              errorMessage="מספר טלפון לא תקין (נדרש פורמט ישראלי)"
+              successMessage="מספר טלפון תקין ✓"
+              helperText="נשלח SMS עם קוד אימות לחתימה דיגיטלית"
+            />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </InteractiveCard>
 
       {/* Service Address */}
       <Card className="animate-fade-in border-l-4 border-l-green-500">
