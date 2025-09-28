@@ -415,13 +415,14 @@ export const PersonalizedRecommendationWizard = ({
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl max-h-[90vh] overflow-hidden">
-        <CardHeader className="border-b">
+      <div className="w-full max-w-2xl max-h-[90vh] bg-background rounded-lg shadow-lg border flex flex-col">
+        {/* Header - Fixed */}
+        <div className="border-b p-6 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {categoryConfig[category].icon}
               <div>
-                <CardTitle className="text-xl">המלצה אישית ל{categoryConfig[category].label}</CardTitle>
+                <h2 className="text-xl font-semibold">המלצה אישית ל{categoryConfig[category].label}</h2>
                 <p className="text-sm text-muted-foreground">
                   שלב {currentStep + 1} מתוך {steps.length}: {steps[currentStep].title}
                 </p>
@@ -439,13 +440,15 @@ export const PersonalizedRecommendationWizard = ({
               style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
             />
           </div>
-        </CardHeader>
+        </div>
 
-        <CardContent className="p-6 overflow-y-auto max-h-[60vh]">
+        {/* Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-6" style={{ maxHeight: 'calc(90vh - 180px)' }}>
           {renderStepContent()}
-        </CardContent>
+        </div>
 
-        <div className="border-t p-6 flex justify-between">
+        {/* Footer - Fixed */}
+        <div className="border-t p-6 flex justify-between flex-shrink-0">
           <Button 
             variant="outline" 
             onClick={handlePrevious}
@@ -464,7 +467,7 @@ export const PersonalizedRecommendationWizard = ({
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };
