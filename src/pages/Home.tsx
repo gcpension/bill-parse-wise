@@ -224,8 +224,8 @@ const Home = () => {
             </p>
           </div>
           
-          {/* Category Cards Grid - Enhanced with staggered animations */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Category Cards Grid - Keep uniform layout */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {Object.entries(categoryData).map(([category, data], index) => {
               const Icon = data.icon;
               const isSelected = selectedCategories[category].selected;
@@ -234,145 +234,165 @@ const Home = () => {
                 <Card 
                   key={category}
                   className={`bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 transform hover:scale-105 hover:-translate-y-1 animate-fade-in opacity-0 ${
-                    isSelected ? 'ring-2 ring-purple-500 shadow-lg scale-105 md:col-span-4' : ''
+                    isSelected ? 'ring-2 ring-purple-500 shadow-lg' : ''
                   }`}
                   style={{ 
                     animationDelay: `${0.6 + index * 0.1}s`, 
                     animationFillMode: 'forwards' 
                   }}
-                  onClick={() => !isSelected && handleCategorySelect(category)}
+                  onClick={() => handleCategorySelect(category)}
                 >
-                  <CardContent className={`${isSelected ? 'p-6' : 'p-4'} ${isSelected ? '' : 'text-center'}`}>
-                    {!isSelected ? (
-                      // Compact view when not selected
-                      <>
-                        {/* Image illustration - Enhanced with hover effects */}
-                        <div className="w-full h-16 mx-auto mb-3 overflow-hidden rounded-lg transform transition-transform duration-300 hover:scale-105">
-                          <img 
-                            src={data.image}
-                            alt={`איור ${data.name}`}
-                            className="w-full h-full object-cover transition-all duration-300 hover:brightness-110"
-                          />
-                        </div>
-                        
-                        {/* Category title */}
-                        <h3 className="text-base font-heebo font-medium text-purple-700 mb-3 transition-colors duration-200">
-                          {data.name}
-                        </h3>
-                        
-                        {/* Enhanced button with better animations */}
-                        <Button 
-                          className="w-full h-8 rounded-lg font-medium text-xs transition-all duration-300 transform hover:scale-105 active:scale-95 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCategorySelect(category);
-                          }}
-                        >
-                          <span className="flex items-center justify-center gap-1.5">
-                            <Icon className="w-3 h-3" />
-                            בחר {data.name}
-                          </span>
-                        </Button>
-                      </>
-                    ) : (
-                      // Expanded view when selected
-                      <>
-                        {/* Category Header */}
-                        <div className="flex items-center gap-4 mb-6">
-                          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg">
-                            <Icon className="w-8 h-8 text-white" />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                              {data.name}
-                            </h3>
-                            <p className="text-gray-600 text-sm">
-                              השווה ספקים וחסוך בחשבונות
-                            </p>
-                          </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleCategorySelect(category)}
-                            className="text-red-600 border-red-200 hover:bg-red-50"
-                          >
-                            ביטול
-                          </Button>
-                        </div>
-                        
-                        {/* Enhanced Form fields when selected */}
-                        <div className="space-y-6 animate-fade-in" onClick={(e) => e.stopPropagation()}>
-                          <InteractiveProviderGrid
-                            category={category as 'electricity' | 'cellular' | 'internet' | 'tv'}
-                            value={selectedCategories[category].provider}
-                            onValueChange={(value) => handleProviderChange(category, value)}
-                          />
-                          
-                          {/* Number of cellular lines - Only for cellular category */}
-                          {category === 'cellular' && selectedCategories[category].provider && (
-                            <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
-                              <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                <Smartphone className="w-4 h-4" />
-                                כמה קווי סלולרי יש לכם?
-                              </Label>
-                              <div className="flex items-center gap-4">
-                                <div className="flex-1">
-                                  <Input
-                                    type="range"
-                                    min="1"
-                                    max="10"
-                                    value={selectedCategories[category].lines || 1}
-                                    onChange={(e) => setSelectedCategories(prev => ({
-                                      ...prev,
-                                      [category]: { ...prev[category], lines: parseInt(e.target.value) }
-                                    }))}
-                                    className="w-full h-2 bg-gradient-to-r from-purple-200 to-blue-200 rounded-lg appearance-none cursor-pointer slider"
-                                  />
-                                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                    <span>1</span>
-                                    <span>5</span>
-                                    <span>10</span>
-                                  </div>
-                                </div>
-                                <div className="bg-white px-4 py-2 rounded-lg border border-purple-300 shadow-sm">
-                                  <span className="text-lg font-bold text-purple-700">
-                                    {selectedCategories[category].lines || 1}
-                                  </span>
-                                  <span className="text-sm text-gray-600 mr-1">
-                                    {(selectedCategories[category].lines || 1) === 1 ? 'קו' : 'קווים'}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                          
-                          <div className="space-y-2">
-                            <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                              <span className="text-lg">₪</span>
-                              סכום חודשי
-                            </label>
-                            <div className="relative">
-                              <Input
-                                type="number"
-                                placeholder="הזינו סכום בשקלים"
-                                value={selectedCategories[category].amount}
-                                onChange={(e) => handleAmountChange(category, e.target.value)}
-                                className="h-12 pr-12 text-lg font-semibold bg-gray-50/80 border-gray-300 hover:border-purple-400 focus:border-purple-500 transition-all duration-300 rounded-xl"
-                              />
-                              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold text-lg">
-                                ₪
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                      </>
-                    )}
+                  <CardContent className="p-4 text-center">
+                    {/* Image illustration - Enhanced with hover effects */}
+                    <div className="w-full h-16 mx-auto mb-3 overflow-hidden rounded-lg transform transition-transform duration-300 hover:scale-105">
+                      <img 
+                        src={data.image}
+                        alt={`איור ${data.name}`}
+                        className="w-full h-full object-cover transition-all duration-300 hover:brightness-110"
+                      />
+                    </div>
+                    
+                    {/* Category title */}
+                    <h3 className="text-base font-heebo font-medium text-purple-700 mb-3 transition-colors duration-200">
+                      {data.name}
+                    </h3>
+                    
+                    {/* Enhanced button with better animations */}
+                    <Button 
+                      className={`w-full h-8 rounded-lg font-medium text-xs transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg ${
+                        isSelected 
+                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white' 
+                          : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white'
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCategorySelect(category);
+                      }}
+                    >
+                      <span className="flex items-center justify-center gap-1.5">
+                        <Icon className="w-3 h-3" />
+                        {isSelected ? 'נבחר' : `בחר ${data.name}`}
+                      </span>
+                    </Button>
                   </CardContent>
                 </Card>
               );
             })}
           </div>
+
+          {/* Selected Category Details - Separate section below cards */}
+          {Object.entries(selectedCategories).some(([_, data]) => data.selected) && (
+            <div className="mt-8">
+              {Object.entries(selectedCategories).map(([category, categoryData]) => {
+                if (!categoryData.selected) return null;
+                
+                const data = categoryData;
+                const categoryInfo = {
+                  'electricity': { name: 'חשמל', icon: Lightbulb },
+                  'cellular': { name: 'סלולר', icon: Smartphone },
+                  'internet': { name: 'אינטרנט', icon: Wifi },
+                  'tv': { name: 'טלוויזיה', icon: Tv }
+                }[category];
+                
+                const Icon = categoryInfo?.icon || Lightbulb;
+                
+                return (
+                  <Card key={category} className="bg-white/80 backdrop-blur-sm shadow-lg border border-purple-200 animate-fade-in">
+                    <CardContent className="p-6">
+                      {/* Category Header */}
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg">
+                          <Icon className="w-8 h-8 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                            {categoryInfo?.name}
+                          </h3>
+                          <p className="text-gray-600 text-sm">
+                            השווה ספקים וחסוך בחשבונות
+                          </p>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleCategorySelect(category)}
+                          className="text-red-600 border-red-200 hover:bg-red-50"
+                        >
+                          ביטול
+                        </Button>
+                      </div>
+                      
+                      {/* Form fields */}
+                      <div className="space-y-6">
+                        <InteractiveProviderGrid
+                          category={category as 'electricity' | 'cellular' | 'internet' | 'tv'}
+                          value={categoryData.provider}
+                          onValueChange={(value) => handleProviderChange(category, value)}
+                        />
+                        
+                        {/* Number of cellular lines - Only for cellular category */}
+                        {category === 'cellular' && categoryData.provider && (
+                          <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
+                            <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                              <Smartphone className="w-4 h-4" />
+                              כמה קווי סלולרי יש לכם?
+                            </Label>
+                            <div className="flex items-center gap-4">
+                              <div className="flex-1">
+                                <Input
+                                  type="range"
+                                  min="1"
+                                  max="10"
+                                  value={categoryData.lines || 1}
+                                  onChange={(e) => setSelectedCategories(prev => ({
+                                    ...prev,
+                                    [category]: { ...prev[category], lines: parseInt(e.target.value) }
+                                  }))}
+                                  className="w-full h-2 bg-gradient-to-r from-purple-200 to-blue-200 rounded-lg appearance-none cursor-pointer slider"
+                                />
+                                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                  <span>1</span>
+                                  <span>5</span>
+                                  <span>10</span>
+                                </div>
+                              </div>
+                              <div className="bg-white px-4 py-2 rounded-lg border border-purple-300 shadow-sm">
+                                <span className="text-lg font-bold text-purple-700">
+                                  {categoryData.lines || 1}
+                                </span>
+                                <span className="text-sm text-gray-600 mr-1">
+                                  {(categoryData.lines || 1) === 1 ? 'קו' : 'קווים'}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        
+                         <div className="space-y-2">
+                           <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                             <span className="text-lg">₪</span>
+                             סכום חודשי
+                           </label>
+                           <div className="relative">
+                             <Input
+                               type="number"
+                               placeholder="הזינו סכום בשקלים"
+                               value={categoryData.amount}
+                               onChange={(e) => handleAmountChange(category, e.target.value)}
+                               className="h-12 pr-12 text-lg font-semibold bg-gray-50/80 border-gray-300 hover:border-purple-400 focus:border-purple-500 transition-all duration-300 rounded-xl"
+                             />
+                             <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold text-lg">
+                               ₪
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </CardContent>
+                   </Card>
+                 );
+               })}
+             </div>
+           )}
 
           {/* Clean CTA Section - Enhanced animations */}
           <div className="text-center mt-16 space-y-6">
