@@ -31,7 +31,7 @@ import { usePageMeta } from "@/hooks/usePageMeta";
 import { BreadcrumbNavigation } from "@/components/BreadcrumbNavigation";
 import { ComparisonAnalyzer } from "@/lib/comparisonAnalyzer";
 import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecommendationWizard";
-import { PersonalizedRecommendationEngine, UserProfile } from "@/lib/personalizedRecommendations";
+import { PersonalizedRecommendationEngine, UserProfile, PersonalizedRecommendation } from "@/lib/personalizedRecommendations";
 import { PersonalizedRecommendationBanner } from "@/components/PersonalizedRecommendationBanner";
 import { PersonalizedRecommendationResults } from "@/components/PersonalizedRecommendationResults";
 import { EnhancedNavigation } from "@/components/ui/enhanced-navigation";
@@ -64,7 +64,7 @@ const AllPlans = ({
   const [selectedPlan, setSelectedPlan] = useState<ManualPlan | null>(null);
   const [showComparison, setShowComparison] = useState(false);
   const [showPersonalizedWizard, setShowPersonalizedWizard] = useState(false);
-  const [personalizedRecommendations, setPersonalizedRecommendations] = useState<any[]>([]);
+  const [personalizedRecommendations, setPersonalizedRecommendations] = useState<PersonalizedRecommendation[]>([]);
   const [showPersonalizedResults, setShowPersonalizedResults] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [currentUserPlan, setCurrentUserPlan] = useState({

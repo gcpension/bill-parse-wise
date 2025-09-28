@@ -326,25 +326,39 @@ export const PersonalizedRecommendationWizard = ({
 
       case 'priorities':
         return (
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground font-assistant text-center">
-              דרגו לפי חשיבות (1 = לא חשוב, 5 = חשוב מאוד)
-            </p>
+          <div className="space-y-6">
+            <div className="text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 mb-6">
+              <h4 className="text-lg font-bold text-gray-800 font-heebo mb-2">
+                מה הכי חשוב לכם?
+              </h4>
+              <p className="text-sm text-gray-600 font-assistant">
+                דרגו לפי חשיבות (1 = לא חשוב, 5 = חשוב מאוד)
+              </p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(profile.priorities).map(([key, value]) => (
-                <div key={key} className="space-y-2">
+                <div key={key} className="space-y-3 p-4 bg-white/60 rounded-xl border border-gray-200/50">
                   <div className="flex justify-between items-center">
                     <Label className="text-sm font-semibold font-heebo">
-                      {key === 'price' && 'מחיר נמוך'}
-                      {key === 'reliability' && 'אמינות'}
-                      {key === 'speed' && 'מהירות/ביצועים'}
-                      {key === 'customerService' && 'שירות לקוחות'}
-                      {key === 'flexibility' && 'גמישות'}
-                      {key === 'features' && 'תכונות נוספות'}
-                      {key === 'brandTrust' && 'אמון במותג'}
-                      {key === 'innovation' && 'חדשנות'}
+                      {key === 'price' && '💰 מחיר נמוך'}
+                      {key === 'reliability' && '🔒 אמינות'}
+                      {key === 'speed' && '⚡ מהירות/ביצועים'}
+                      {key === 'customerService' && '🎧 שירות לקוחות'}
+                      {key === 'flexibility' && '🔄 גמישות'}
+                      {key === 'features' && '✨ תכונות נוספות'}
+                      {key === 'brandTrust' && '🏢 אמון במותג'}
+                      {key === 'innovation' && '🚀 חדשנות'}
                     </Label>
-                    <Badge variant="outline" className="min-w-[30px] justify-center text-xs">
+                    <Badge 
+                      variant="outline" 
+                      className={cn(
+                        "min-w-[40px] justify-center text-xs font-bold",
+                        value >= 4 ? "bg-green-100 text-green-700 border-green-300" :
+                        value >= 3 ? "bg-blue-100 text-blue-700 border-blue-300" :
+                        value >= 2 ? "bg-yellow-100 text-yellow-700 border-yellow-300" :
+                        "bg-gray-100 text-gray-700 border-gray-300"
+                      )}
+                    >
                       {value}
                     </Badge>
                   </div>
@@ -356,6 +370,10 @@ export const PersonalizedRecommendationWizard = ({
                     step={1}
                     className="w-full"
                   />
+                  <div className="flex justify-between text-xs text-gray-500">
+                    <span>לא חשוב</span>
+                    <span>חשוב מאוד</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -409,9 +427,14 @@ export const PersonalizedRecommendationWizard = ({
         </div>
 
         {/* Step Title */}
-        <div className="text-center mt-3">
-          <h2 className="text-base font-bold font-heebo">{steps[currentStep].title}</h2>
+        <div className="text-center mt-4">
+          <h2 className="text-lg font-bold font-heebo">{steps[currentStep].title}</h2>
           <p className="text-white/90 font-assistant text-sm">{steps[currentStep].description}</p>
+          <div className="flex items-center justify-center gap-1 mt-2">
+            <div className="w-1 h-1 bg-white/60 rounded-full"></div>
+            <span className="text-xs text-white/80">שלב {currentStep + 1} מתוך {steps.length}</span>
+            <div className="w-1 h-1 bg-white/60 rounded-full"></div>
+          </div>
         </div>
       </div>
 
