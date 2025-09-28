@@ -29,9 +29,7 @@ import { SavingsComparisonBanner } from "@/components/plans/SavingsComparisonBan
 import { useSavingsData } from "@/hooks/useSavingsData";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { BreadcrumbNavigation } from "@/components/BreadcrumbNavigation";
-import { SmartPlanMatchingBanner } from "@/components/SmartPlanMatchingBanner";
 import { ComparisonAnalyzer } from "@/lib/comparisonAnalyzer";
-import { SmartComparisonTable } from "@/components/plans/advanced/SmartComparisonTable";
 import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecommendationWizard";
 import { PersonalizedRecommendationEngine, UserProfile } from "@/lib/personalizedRecommendations";
 import { PersonalizedRecommendationBanner } from "@/components/PersonalizedRecommendationBanner";
@@ -62,8 +60,6 @@ const AllPlans = ({
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<ManualPlan | null>(null);
   const [showComparison, setShowComparison] = useState(false);
-  const [showSmartComparison, setShowSmartComparison] = useState(false);
-  const [smartComparisonMatrix, setSmartComparisonMatrix] = useState<any>(null);
   const [showPersonalizedWizard, setShowPersonalizedWizard] = useState(false);
   const [personalizedRecommendations, setPersonalizedRecommendations] = useState<any[]>([]);
   const [currentUserPlan, setCurrentUserPlan] = useState({
@@ -193,23 +189,6 @@ const AllPlans = ({
   };
   const clearComparison = () => setComparedPlans([]);
 
-  const handleSmartComparison = () => {
-    if (comparedPlans.length < 2) {
-      // Auto-select top 3 plans if not enough plans selected
-      const topPlans = filteredPlans.slice(0, 3);
-      setComparedPlans(topPlans);
-      
-      // Perform AI analysis
-      const matrix = ComparisonAnalyzer.analyzeComparison(topPlans);
-      setSmartComparisonMatrix(matrix);
-      setShowSmartComparison(true);
-    } else {
-      // Use selected plans
-      const matrix = ComparisonAnalyzer.analyzeComparison(comparedPlans);
-      setSmartComparisonMatrix(matrix);
-      setShowSmartComparison(true);
-    }
-  };
 
   const handlePersonalizedRecommendation = (userProfile: UserProfile) => {
     const plansToAnalyze = comparedPlans.length >= 2 ? comparedPlans : filteredPlans.slice(0, 5);
@@ -221,14 +200,6 @@ const AllPlans = ({
     
     setPersonalizedRecommendations(recommendations);
     setShowPersonalizedWizard(false);
-    
-    // Show results in smart comparison with personalized insights
-    const matrix = ComparisonAnalyzer.analyzeComparison(plansToAnalyze);
-    setSmartComparisonMatrix({
-      ...matrix,
-      personalizedRecommendations: recommendations
-    });
-    setShowSmartComparison(true);
   };
 
   // Convert saved data to banner format
@@ -753,44 +724,11 @@ const AllPlans = ({
         </DialogContent>
       </Dialog>
 
-      {/* Smart Plan Matching Banner */}
-      {selectedCategory && comparedPlans.length >= 0 && (
-        <div>
-          {/* Smart Matching Banner - Fixed Position */}
-          <SmartPlanMatchingBanner onMatchingClick={handleSmartComparison} />
-          
-          {/* Personalized Recommendation Banner - Fixed Position */}
-          <PersonalizedRecommendationBanner onRecommendationClick={() => setShowPersonalizedWizard(true)} />
-        </div>
+      {/* Enhanced Personalized Recommendation Banner */}
+      {selectedCategory && (
+        <PersonalizedRecommendationBanner onRecommendationClick={() => setShowPersonalizedWizard(true)} />
       )}
 
-      {/* Smart Comparison Dialog */}
-      <Dialog open={showSmartComparison} onOpenChange={setShowSmartComparison}>
-        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-3xl font-bold text-primary font-heebo flex items-center gap-3">
-              <Brain className="w-8 h-8" />
-              השוואה חכמה מבוססת AI
-            </DialogTitle>
-            <p className="text-lg text-muted-foreground font-assistant mt-2">
-              ניתוח מתקדם של המסלולים עם המלצות מותאמות אישית
-            </p>
-          </DialogHeader>
-          
-          {smartComparisonMatrix && (
-            <div className="mt-6">
-              <SmartComparisonTable 
-                comparisonMatrix={smartComparisonMatrix}
-                plans={comparedPlans.length >= 2 ? comparedPlans : filteredPlans.slice(0, 3)}
-                onPlanSelect={(plan) => {
-                  handlePlanSelect(plan);
-                  setShowSmartComparison(false);
-                }}
-              />
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
 
       {/* Personalized Recommendation Wizard */}
       {showPersonalizedWizard && (
