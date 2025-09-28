@@ -42,22 +42,41 @@ export interface UserProfile {
     hasSmartMeter?: boolean;
     hasSolarPanels?: boolean;
     timeOfUseAware?: boolean;
+    monthlyKWH?: number;
+    airConditioner?: boolean;
+    waterHeater?: boolean;
+    washer?: boolean;
+    dishwasher?: boolean;
     
     // For internet
     requiredSpeed?: number;
     uploadImportant?: boolean;
     staticIPNeeded?: boolean;
+    internetSpeed?: number;
+    streaming?: boolean;
+    workFromHome?: boolean;
+    gaming?: boolean;
+    videoConf?: boolean;
     
     // For mobile
     internationalCalls?: boolean;
     dataHeavyUser?: boolean;
     multipleLines?: number;
+    callsOnly?: boolean;
+    dataHeavy?: boolean;
+    international?: boolean;
+    roaming?: boolean;
     
     // For TV
     sportsImportant?: boolean;
     kidsChannels?: boolean;
     internationalChannels?: boolean;
     recordingImportant?: boolean;
+    tvPackage?: string;
+    netflix?: boolean;
+    disney?: boolean;
+    hbo?: boolean;
+    local?: boolean;
   };
 }
 

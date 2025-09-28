@@ -32,7 +32,13 @@ import {
   TrendingUp,
   Building,
   GraduationCap,
-  Briefcase
+  Briefcase,
+  Globe,
+  Battery,
+  Signal,
+  MonitorSpeaker,
+  Lightbulb,
+  Router
 } from 'lucide-react';
 import { UserProfile } from '@/lib/personalizedRecommendations';
 import { cn } from '@/lib/utils';
@@ -84,12 +90,36 @@ export const PersonalizedRecommendationWizard = ({
     tv: { icon: <Tv className="w-4 h-4" />, label: 'טלוויזיה' }
   };
 
-  const steps = [
-    { id: 'basic', title: 'פרטים בסיסיים', icon: <User className="w-4 h-4" /> },
-    { id: 'budget', title: 'תקציב', icon: <DollarSign className="w-4 h-4" /> },
-    { id: 'usage', title: 'שימוש', icon: <Activity className="w-4 h-4" /> },
-    { id: 'priorities', title: 'עדיפויות', icon: <Star className="w-4 h-4" /> }
-  ];
+  // שלבים ספציפיים לכל סקטור
+  const getSectorSteps = () => {
+    const baseSteps = [
+      { id: 'basic', title: 'פרטים בסיסיים', icon: <User className="w-4 h-4" /> },
+      { id: 'budget', title: 'תקציב', icon: <DollarSign className="w-4 h-4" /> }
+    ];
+
+    const sectorSpecificSteps = {
+      electricity: [
+        { id: 'usage', title: 'צריכת חשמל', icon: <Zap className="w-4 h-4" /> },
+        { id: 'priorities', title: 'עדיפויות', icon: <Star className="w-4 h-4" /> }
+      ],
+      internet: [
+        { id: 'usage', title: 'שימוש באינטרנט', icon: <Router className="w-4 h-4" /> },
+        { id: 'priorities', title: 'עדיפויות', icon: <Star className="w-4 h-4" /> }
+      ],
+      mobile: [
+        { id: 'usage', title: 'שימוש בסלולר', icon: <Signal className="w-4 h-4" /> },
+        { id: 'priorities', title: 'עדיפויות', icon: <Star className="w-4 h-4" /> }
+      ],
+      tv: [
+        { id: 'usage', title: 'צפייה בטלוויזיה', icon: <MonitorSpeaker className="w-4 h-4" /> },
+        { id: 'priorities', title: 'עדיפויות', icon: <Star className="w-4 h-4" /> }
+      ]
+    };
+
+    return [...baseSteps, ...sectorSpecificSteps[category]];
+  };
+
+  const steps = getSectorSteps();
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -117,6 +147,352 @@ export const PersonalizedRecommendationWizard = ({
         [key]: value
       }
     }));
+  };
+
+  // שאלות ספציפיות לכל סקטור
+  const renderSectorSpecificUsage = () => {
+    switch (category) {
+      case 'electricity':
+        return (
+          <div className="space-y-8">
+            {/* צריכת חשמל - קילו-וואט שעה */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
+                  <Lightbulb className="w-5 h-5 text-primary" />
+                  צריכת חשמל חודשית משוערת
+                </Label>
+                <p className="text-sm text-muted-foreground mt-1">בקילו-וואט שעה (kWh)</p>
+              </div>
+              
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => updateProfile({ 
+                    categorySpecific: { 
+                      ...profile.categorySpecific, 
+                      monthlyKWH: Math.max(100, (profile.categorySpecific?.monthlyKWH || 500) - 50) 
+                    } 
+                  })}
+                  className="h-12 w-12 rounded-full hover:scale-110 transition-transform"
+                >
+                  -
+                </Button>
+                
+                <div className="flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-r from-primary/10 to-primary-glow/10 border-4 border-primary/20 shadow-lg">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-primary">{profile.categorySpecific?.monthlyKWH || 500}</div>
+                    <div className="text-sm text-muted-foreground">kWh</div>
+                  </div>
+                </div>
+                
+                <Button
+                  variant="outline" 
+                  size="icon"
+                  onClick={() => updateProfile({ 
+                    categorySpecific: { 
+                      ...profile.categorySpecific, 
+                      monthlyKWH: Math.min(2000, (profile.categorySpecific?.monthlyKWH || 500) + 50) 
+                    } 
+                  })}
+                  className="h-12 w-12 rounded-full hover:scale-110 transition-transform"
+                >
+                  +
+                </Button>
+              </div>
+            </div>
+
+            {/* מכשירי חשמל */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <Label className="text-lg font-semibold">מכשירי חשמל עיקריים</Label>
+                <p className="text-sm text-muted-foreground mt-1">בחרו את המכשירים שיש לכם</p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { key: 'airConditioner', label: 'מזגן', emoji: '❄️' },
+                  { key: 'waterHeater', label: 'דוד מים', emoji: '🚿' },
+                  { key: 'washer', label: 'מכונת כביסה', emoji: '👕' },
+                  { key: 'dishwasher', label: 'מדיח כלים', emoji: '🍽️' }
+                ].map(({ key, label, emoji }) => (
+                  <Card 
+                    key={key}
+                    className={cn(
+                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
+                      profile.categorySpecific?.[key] 
+                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
+                        : "hover:bg-muted/50"
+                    )}
+                    onClick={() => updateProfile({ 
+                      categorySpecific: { 
+                        ...profile.categorySpecific, 
+                        [key]: !profile.categorySpecific?.[key] 
+                      } 
+                    })}
+                  >
+                    <CardContent className="p-4 text-center">
+                      <div className="text-3xl mb-2">{emoji}</div>
+                      <div className="font-medium text-sm">{label}</div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'internet':
+        return (
+          <div className="space-y-8">
+            {/* מהירות אינטרנט */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
+                  <Globe className="w-5 h-5 text-primary" />
+                  מהירות אינטרנט נדרשת
+                </Label>
+                <p className="text-sm text-muted-foreground mt-1">מגה-ביט לשנייה (Mbps)</p>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { value: 100, label: 'בסיסי', desc: '100 Mbps', emoji: '🐌' },
+                  { value: 200, label: 'בינוני', desc: '200 Mbps', emoji: '🚀' },
+                  { value: 500, label: 'מהיר', desc: '500+ Mbps', emoji: '⚡' }
+                ].map(({ value, label, desc, emoji }) => (
+                  <Card 
+                    key={value}
+                    className={cn(
+                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
+                      profile.categorySpecific?.internetSpeed === value 
+                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
+                        : "hover:bg-muted/50"
+                    )}
+                    onClick={() => updateProfile({ 
+                      categorySpecific: { ...profile.categorySpecific, internetSpeed: value } 
+                    })}
+                  >
+                    <CardContent className="p-4 text-center">
+                      <div className="text-3xl mb-2">{emoji}</div>
+                      <div className="font-medium">{label}</div>
+                      <div className="text-xs text-muted-foreground">{desc}</div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* שימושים באינטרנט */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <Label className="text-lg font-semibold">שימושים עיקריים</Label>
+                <p className="text-sm text-muted-foreground mt-1">מה אתם עושים באינטרנט?</p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { key: 'streaming', label: 'סטרימינג', emoji: '📺' },
+                  { key: 'workFromHome', label: 'עבודה מהבית', emoji: '💻' },
+                  { key: 'gaming', label: 'משחקים', emoji: '🎮' },
+                  { key: 'videoConf', label: 'ועידות וידאו', emoji: '📹' }
+                ].map(({ key, label, emoji }) => (
+                  <Card 
+                    key={key}
+                    className={cn(
+                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
+                      profile.categorySpecific?.[key] 
+                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
+                        : "hover:bg-muted/50"
+                    )}
+                    onClick={() => updateProfile({ 
+                      categorySpecific: { 
+                        ...profile.categorySpecific, 
+                        [key]: !profile.categorySpecific?.[key] 
+                      } 
+                    })}
+                  >
+                    <CardContent className="p-4 text-center">
+                      <div className="text-3xl mb-2">{emoji}</div>
+                      <div className="font-medium text-sm">{label}</div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'mobile':
+        return (
+          <div className="space-y-8">
+            {/* מספר קווים */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
+                  <Phone className="w-5 h-5 text-primary" />
+                  כמה קווי סלולרי יש לכם?
+                </Label>
+                <p className="text-sm text-muted-foreground mt-1">מספר הקווים במשפחה</p>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-primary/20 to-primary-glow/20 border-2 border-primary/30">
+                    <div className="text-center">
+                      <div className="text-xl font-bold text-primary">{profile.categorySpecific?.multipleLines || 1}</div>
+                      <div className="text-xs text-muted-foreground">{(profile.categorySpecific?.multipleLines || 1) === 1 ? 'קו' : 'קווים'}</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="px-4">
+                  <Slider
+                    value={[profile.categorySpecific?.multipleLines || 1]}
+                    onValueChange={([value]) => updateProfile({ 
+                      categorySpecific: { 
+                        ...profile.categorySpecific, 
+                        multipleLines: value 
+                      } 
+                    })}
+                    max={10}
+                    min={1}
+                    step={1}
+                    className="w-full [&_.relative]:h-3 [&_[role=slider]]:h-6 [&_[role=slider]]:w-6"
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                    <span>קו אחד</span>
+                    <span>10 קווים</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* שימוש בסלולר */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <Label className="text-lg font-semibold">סוג השימוש</Label>
+                <p className="text-sm text-muted-foreground mt-1">איך אתם משתמשים בסלולר?</p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { key: 'callsOnly', label: 'שיחות בלבד', emoji: '📞' },
+                  { key: 'dataHeavy', label: 'שימוש באינטרנט', emoji: '📱' },
+                  { key: 'international', label: 'שיחות בינלאומיות', emoji: '🌍' },
+                  { key: 'roaming', label: 'נדידה בחו"ל', emoji: '✈️' }
+                ].map(({ key, label, emoji }) => (
+                  <Card 
+                    key={key}
+                    className={cn(
+                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
+                      profile.categorySpecific?.[key] 
+                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
+                        : "hover:bg-muted/50"
+                    )}
+                    onClick={() => updateProfile({ 
+                      categorySpecific: { 
+                        ...profile.categorySpecific, 
+                        [key]: !profile.categorySpecific?.[key] 
+                      } 
+                    })}
+                  >
+                    <CardContent className="p-4 text-center">
+                      <div className="text-3xl mb-2">{emoji}</div>
+                      <div className="font-medium text-sm">{label}</div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'tv':
+        return (
+          <div className="space-y-8">
+            {/* סוג הצפייה */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
+                  <Tv className="w-5 h-5 text-primary" />
+                  סוג הצפייה
+                </Label>
+                <p className="text-sm text-muted-foreground mt-1">איך אתם אוהבים לצפות?</p>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { value: 'basic', label: 'בסיסי', desc: 'ערוצי חינם', emoji: '📺' },
+                  { value: 'premium', label: 'מורחב', desc: 'חבילות תוכן', emoji: '🎬' },
+                  { value: 'sports', label: 'ספורט', desc: 'ערוצי ספורט', emoji: '⚽' }
+                ].map(({ value, label, desc, emoji }) => (
+                  <Card 
+                    key={value}
+                    className={cn(
+                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
+                      profile.categorySpecific?.tvPackage === value 
+                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
+                        : "hover:bg-muted/50"
+                    )}
+                    onClick={() => updateProfile({ 
+                      categorySpecific: { ...profile.categorySpecific, tvPackage: value } 
+                    })}
+                  >
+                    <CardContent className="p-4 text-center">
+                      <div className="text-3xl mb-2">{emoji}</div>
+                      <div className="font-medium">{label}</div>
+                      <div className="text-xs text-muted-foreground">{desc}</div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* שירותי VOD */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <Label className="text-lg font-semibold">שירותי VOD</Label>
+                <p className="text-sm text-muted-foreground mt-1">איזה שירותים אתם רוצים?</p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { key: 'netflix', label: 'נטפליקס', emoji: '🍿' },
+                  { key: 'disney', label: 'דיסני+', emoji: '🏰' },
+                  { key: 'hbo', label: 'HBO Max', emoji: '🎭' },
+                  { key: 'local', label: 'תוכן ישראלי', emoji: '🇮🇱' }
+                ].map(({ key, label, emoji }) => (
+                  <Card 
+                    key={key}
+                    className={cn(
+                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
+                      profile.categorySpecific?.[key] 
+                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
+                        : "hover:bg-muted/50"
+                    )}
+                    onClick={() => updateProfile({ 
+                      categorySpecific: { 
+                        ...profile.categorySpecific, 
+                        [key]: !profile.categorySpecific?.[key] 
+                      } 
+                    })}
+                  >
+                    <CardContent className="p-4 text-center">
+                      <div className="text-3xl mb-2">{emoji}</div>
+                      <div className="font-medium text-sm">{label}</div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
   };
 
   const renderStepContent = () => {
@@ -163,19 +539,6 @@ export const PersonalizedRecommendationWizard = ({
                 >
                   +
                 </Button>
-              </div>
-              
-              <div className="flex justify-center">
-                <div className="flex gap-1">
-                  {Array.from({ length: 8 }, (_, i) => (
-                    <div
-                      key={i}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        i < profile.familySize ? 'bg-primary scale-125' : 'bg-muted'
-                      }`}
-                    />
-                  ))}
-                </div>
               </div>
             </div>
 
@@ -240,106 +603,6 @@ export const PersonalizedRecommendationWizard = ({
                 )}
               </div>
             </div>
-
-            {/* Mobile Lines Count - Interactive Slider */}
-            {category === 'mobile' && (
-              <div className="space-y-4">
-                <div className="text-center">
-                  <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                    <Phone className="w-5 h-5 text-primary" />
-                    כמה קווי סלולרי יש לכם?
-                  </Label>
-                  <p className="text-sm text-muted-foreground mt-1">מספר הקווים במשפחה</p>
-                </div>
-                
-                <div className="space-y-6">
-                  <div className="flex items-center justify-center">
-                    <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-primary/20 to-primary-glow/20 border-2 border-primary/30">
-                      <div className="text-center">
-                        <div className="text-xl font-bold text-primary">{profile.categorySpecific?.multipleLines || 1}</div>
-                        <div className="text-xs text-muted-foreground">{(profile.categorySpecific?.multipleLines || 1) === 1 ? 'קו' : 'קווים'}</div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="px-4">
-                    <Slider
-                      value={[profile.categorySpecific?.multipleLines || 1]}
-                      onValueChange={([value]) => updateProfile({ 
-                        categorySpecific: { 
-                          ...profile.categorySpecific, 
-                          multipleLines: value 
-                        } 
-                      })}
-                      max={10}
-                      min={1}
-                      step={1}
-                      className="w-full [&_.relative]:h-3 [&_[role=slider]]:h-6 [&_[role=slider]]:w-6"
-                    />
-                    <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                      <span>קו אחד</span>
-                      <span>10 קווים</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-center">
-                    <div className="flex gap-1">
-                      {Array.from({ length: 10 }, (_, i) => (
-                        <div
-                          key={i}
-                          className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                            i < (profile.categorySpecific?.multipleLines || 1) ? 'bg-primary scale-125' : 'bg-muted'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Work From Home - Toggle Card */}
-            <div className="space-y-4">
-              <div className="text-center">
-                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <Briefcase className="w-5 h-5 text-primary" />
-                  עבודה מהבית
-                </Label>
-                <p className="text-sm text-muted-foreground mt-1">האם אתם עובדים מהבית באופן קבוע?</p>
-              </div>
-              
-              <Card 
-                className={cn(
-                  "cursor-pointer transition-all duration-300 hover:scale-105",
-                  profile.workFromHome 
-                    ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
-                    : "hover:bg-muted/50"
-                )}
-                onClick={() => updateProfile({ workFromHome: !profile.workFromHome })}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={cn(
-                        "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300",
-                        profile.workFromHome ? "bg-primary text-primary-foreground" : "bg-muted"
-                      )}>
-                        <Home className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <div className="font-semibold">עבודה מהבית</div>
-                        <div className="text-sm text-muted-foreground">עבודה קבועה מהבית</div>
-                      </div>
-                    </div>
-                    <Switch
-                      checked={profile.workFromHome}
-                      onCheckedChange={(checked) => updateProfile({ workFromHome: checked })}
-                      className="scale-125"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         );
 
@@ -351,7 +614,7 @@ export const PersonalizedRecommendationWizard = ({
               <div className="text-center">
                 <Label className="text-lg font-semibold flex items-center justify-center gap-2">
                   <DollarSign className="w-5 h-5 text-primary" />
-                  תקציב חודשי מקסימלי
+                  תקציב חודshי מקסימלי
                 </Label>
                 <p className="text-sm text-muted-foreground mt-1">כמה אתם מוכנים להשקיע בחודש?</p>
               </div>
@@ -391,7 +654,7 @@ export const PersonalizedRecommendationWizard = ({
                     max={500}
                     min={50}
                     step={10}
-                    className="w-full [&_.relative]:h-4 [&_[role=slider]]:h-8 [&_[role=slider]]:w-8 [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-primary [&_[role=slider]]:to-primary-glow"
+                    className="w-full"
                   />
                   <div className="flex justify-between text-sm text-muted-foreground mt-2">
                     <span>50₪</span>
@@ -401,7 +664,7 @@ export const PersonalizedRecommendationWizard = ({
               </div>
             </div>
 
-            {/* Current Spending - Interactive Comparison */}
+            {/* Current Spending */}
             <div className="space-y-6">
               <div className="text-center">
                 <Label className="text-lg font-semibold flex items-center justify-center gap-2">
@@ -420,380 +683,59 @@ export const PersonalizedRecommendationWizard = ({
                   className="h-16 text-center text-2xl font-bold rounded-xl border-2 transition-all duration-300 focus:scale-105"
                   min="0"
                 />
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-muted-foreground">₪</div>
-                {profile.currentMonthlySpend > 0 && (
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                    <CheckCircle className="w-6 h-6 text-success animate-scale-in" />
-                  </div>
-                )}
-              </div>
-              
-              {profile.currentMonthlySpend > 0 && profile.monthlyBudget > profile.currentMonthlySpend && (
-                <Card className="bg-gradient-to-r from-success/10 to-success/5 border-success/20 animate-fade-in">
-                  <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <Sparkles className="w-5 h-5 text-success" />
-                      <span className="font-semibold text-success">פוטנציאל חיסכון!</span>
-                    </div>
-                    <div className="text-2xl font-bold text-success">
-                      {profile.monthlyBudget - profile.currentMonthlySpend}₪ בחודש
-                    </div>
-                    <div className="text-sm text-success/80 mt-1">
-                      {(profile.monthlyBudget - profile.currentMonthlySpend) * 12}₪ בשנה
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-
-            {/* Price Flexibility - Card Selection */}
-            <div className="space-y-4">
-              <div className="text-center">
-                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <Heart className="w-5 h-5 text-primary" />
-                  עד כמה המחיר חשוב לכם?
-                </Label>
-                <p className="text-sm text-muted-foreground mt-1">איך אתם מתייחסים למחיר?</p>
-              </div>
-              
-              <div className="space-y-3">
-                {[
-                  { value: 'strict', label: 'המחיר הכי חשוב', desc: 'רוצה את הזול ביותר', icon: '💰', color: 'from-red-500/10 to-red-400/10' },
-                  { value: 'flexible', label: 'מוכן לשלם יותר', desc: 'עבור שירות טוב', icon: '⚖️', color: 'from-yellow-500/10 to-yellow-400/10' },
-                  { value: 'premium', label: 'מחיר לא משנה', desc: 'רוצה את הטוב ביותר', icon: '👑', color: 'from-green-500/10 to-green-400/10' }
-                ].map(({ value, label, desc, icon, color }) => (
-                  <Card 
-                    key={value}
-                    className={cn(
-                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.priceFlexibility === value 
-                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
-                        : "hover:bg-muted/50"
-                    )}
-                    onClick={() => updateProfile({ priceFlexibility: value as any })}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${color} flex items-center justify-center text-xl`}>
-                          {icon}
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-semibold">{label}</div>
-                          <div className="text-sm text-muted-foreground">{desc}</div>
-                        </div>
-                        {profile.priceFlexibility === value && (
-                          <CheckCircle className="w-5 h-5 text-primary animate-scale-in" />
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">₪</div>
               </div>
             </div>
           </div>
         );
 
       case 'usage':
-        return (
-          <div className="space-y-8">
-            {/* Usage Level - Interactive Cards */}
-            <div className="space-y-4">
-              <div className="text-center">
-                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <Activity className="w-5 h-5 text-primary" />
-                  רמת השימוש ב{categoryConfig[category].label}
-                </Label>
-                <p className="text-sm text-muted-foreground mt-1">איך אתם משתמשים בשירות?</p>
-              </div>
-              
-              <div className="grid gap-3">
-                {[
-                  { 
-                    value: 'light', 
-                    label: 'שימוש קל', 
-                    desc: 'בסיסי ומינימלי', 
-                    icon: '🌱',
-                    gradient: 'from-blue-500/10 to-blue-400/10',
-                    intensity: 33
-                  },
-                  { 
-                    value: 'medium', 
-                    label: 'שימוש בינוני', 
-                    desc: 'יומיומי ורגיל', 
-                    icon: '🌿',
-                    gradient: 'from-green-500/10 to-green-400/10',
-                    intensity: 66
-                  },
-                  { 
-                    value: 'heavy', 
-                    label: 'שימוש כבד', 
-                    desc: 'אינטנסיבי ומקצועי', 
-                    icon: '🔥',
-                    gradient: 'from-red-500/10 to-red-400/10',
-                    intensity: 100
-                  }
-                ].map(({ value, label, desc, icon, gradient, intensity }) => (
-                  <Card 
-                    key={value}
-                    className={cn(
-                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.usageLevel === value 
-                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
-                        : "hover:bg-muted/50"
-                    )}
-                    onClick={() => updateProfile({ usageLevel: value as any })}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${gradient} flex items-center justify-center text-2xl relative overflow-hidden`}>
-                          {icon}
-                          <div 
-                            className="absolute bottom-0 left-0 right-0 bg-primary/20 transition-all duration-500"
-                            style={{ height: `${intensity}%` }}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-semibold text-lg">{label}</div>
-                          <div className="text-sm text-muted-foreground">{desc}</div>
-                          <div className="flex items-center gap-1 mt-2">
-                            {Array.from({ length: 3 }, (_, i) => (
-                              <div
-                                key={i}
-                                className={`h-1 w-8 rounded-full transition-all duration-300 ${
-                                  i < intensity / 33 ? 'bg-primary' : 'bg-muted'
-                                }`}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        {profile.usageLevel === value && (
-                          <CheckCircle className="w-6 h-6 text-primary animate-scale-in" />
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Usage Hours - Time Selection */}
-            <div className="space-y-4">
-              <div className="text-center">
-                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <Clock className="w-5 h-5 text-primary" />
-                  מתי השימוש העיקרי?
-                </Label>
-                <p className="text-sm text-muted-foreground mt-1">באיזה שעות אתם הכי פעילים?</p>
-              </div>
-              
-              <div className="grid gap-3">
-                {[
-                  { value: 'day', label: 'בעיקר ביום', icon: '☀️', time: '09:00-17:00', gradient: 'from-yellow-500/10 to-yellow-400/10' },
-                  { value: 'evening', label: 'בעיקר בערב', icon: '🌙', time: '18:00-23:00', gradient: 'from-purple-500/10 to-purple-400/10' },
-                  { value: 'mixed', label: 'לאורך כל היום', icon: '🔄', time: '24/7', gradient: 'from-orange-500/10 to-orange-400/10' }
-                ].map(({ value, label, icon, time, gradient }) => (
-                  <Card 
-                    key={value}
-                    className={cn(
-                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.usageHours === value 
-                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
-                        : "hover:bg-muted/50"
-                    )}
-                    onClick={() => updateProfile({ usageHours: value as any })}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${gradient} flex items-center justify-center text-xl`}>
-                          {icon}
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-semibold">{label}</div>
-                          <div className="text-sm text-muted-foreground">{time}</div>
-                        </div>
-                        {profile.usageHours === value && (
-                          <CheckCircle className="w-5 h-5 text-primary animate-scale-in" />
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Interactive Toggle Cards */}
-            <div className="space-y-4">
-              <div className="text-center">
-                <Label className="text-lg font-semibold">פעילויות מיוחדות</Label>
-                <p className="text-sm text-muted-foreground mt-1">בחרו את הפעילויות הרלוונטיות</p>
-              </div>
-              
-              <div className="grid gap-3">
-                {/* Streaming Card */}
-                <Card 
-                  className={cn(
-                    "cursor-pointer transition-all duration-300 hover:scale-105",
-                    profile.streamingHeavy 
-                      ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
-                      : "hover:bg-muted/50"
-                  )}
-                  onClick={() => updateProfile({ streamingHeavy: !profile.streamingHeavy })}
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={cn(
-                          "w-12 h-12 rounded-full flex items-center justify-center text-xl transition-all duration-300",
-                          profile.streamingHeavy ? "bg-gradient-to-r from-red-500/20 to-red-400/20" : "bg-muted"
-                        )}>
-                          📺
-                        </div>
-                        <div>
-                          <div className="font-semibold">צפייה בסטרימינג</div>
-                          <div className="text-sm text-muted-foreground">נטפליקס, יוטיוב וכו'</div>
-                        </div>
-                      </div>
-                      <Switch
-                        checked={profile.streamingHeavy}
-                        onCheckedChange={(checked) => updateProfile({ streamingHeavy: checked })}
-                        className="scale-125"
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Gaming Card */}
-                <Card 
-                  className={cn(
-                    "cursor-pointer transition-all duration-300 hover:scale-105",
-                    profile.gamingHeavy 
-                      ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
-                      : "hover:bg-muted/50"
-                  )}
-                  onClick={() => updateProfile({ gamingHeavy: !profile.gamingHeavy })}
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={cn(
-                          "w-12 h-12 rounded-full flex items-center justify-center text-xl transition-all duration-300",
-                          profile.gamingHeavy ? "bg-gradient-to-r from-purple-500/20 to-purple-400/20" : "bg-muted"
-                        )}>
-                          🎮
-                        </div>
-                        <div>
-                          <div className="font-semibold">גיימינג אונליין</div>
-                          <div className="text-sm text-muted-foreground">משחקים באינטרנט</div>
-                        </div>
-                      </div>
-                      <Switch
-                        checked={profile.gamingHeavy}
-                        onCheckedChange={(checked) => updateProfile({ gamingHeavy: checked })}
-                        className="scale-125"
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </div>
-        );
+        return renderSectorSpecificUsage();
 
       case 'priorities':
         return (
           <div className="space-y-8">
             <div className="text-center">
-              <Label className="text-2xl font-bold flex items-center justify-center gap-3 mb-2">
-                <Star className="w-6 h-6 text-primary" />
-                העדיפות שלכם
-              </Label>
-              <p className="text-muted-foreground">דרגו כל קריטריון לפי החשיבות שלו עבורכם</p>
-              <div className="flex items-center justify-center gap-4 mt-4 text-sm">
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-muted"></div>
-                  <span>לא חשוב</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  <span>חשוב מאוד</span>
-                </div>
-              </div>
+              <Label className="text-lg font-semibold">מה הכי חשוב לכם?</Label>
+              <p className="text-sm text-muted-foreground mt-1">דרגו את החשיבות של כל קריטריון</p>
             </div>
-
+            
             <div className="space-y-6">
               {[
-                { key: 'price', label: 'מחיר', icon: DollarSign, emoji: '💰', desc: 'העלות החודשית', color: 'from-green-500/10 to-green-400/10' },
-                { key: 'reliability', label: 'אמינות', icon: Shield, emoji: '🛡️', desc: 'יציבות השירות', color: 'from-blue-500/10 to-blue-400/10' },
-                { key: 'speed', label: 'מהירות', icon: Zap, emoji: '⚡', desc: 'ביצועים וזמני תגובה', color: 'from-yellow-500/10 to-yellow-400/10' },
-                { key: 'customerService', label: 'שירות לקוחות', icon: Users, emoji: '👥', desc: 'תמיכה ויעוץ', color: 'from-purple-500/10 to-purple-400/10' },
-                { key: 'flexibility', label: 'גמישות חוזה', icon: Settings, emoji: '🔧', desc: 'תנאי הסכם גמישים', color: 'from-orange-500/10 to-orange-400/10' },
-                { key: 'features', label: 'תוספות ופיצ\'רים', icon: Star, emoji: '✨', desc: 'אפשרויות נוספות', color: 'from-pink-500/10 to-pink-400/10' },
-                { key: 'brandTrust', label: 'מוניטין החברה', icon: CheckCircle, emoji: '🏆', desc: 'אמינות המותג', color: 'from-indigo-500/10 to-indigo-400/10' },
-                { key: 'innovation', label: 'טכנולוגיה חדשנית', icon: Activity, emoji: '🚀', desc: 'חדשנות וטכנולוגיה', color: 'from-cyan-500/10 to-cyan-400/10' }
-              ].map(({ key, label, icon: Icon, emoji, desc, color }) => {
-                const value = profile.priorities[key as keyof UserProfile['priorities']];
-                return (
-                  <Card key={key} className={`bg-gradient-to-r ${color} border-2 transition-all duration-300 hover:shadow-lg`}>
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-full bg-background/80 flex items-center justify-center text-xl">
-                            {emoji}
-                          </div>
-                          <div>
-                            <div className="font-semibold text-lg flex items-center gap-2">
-                              <Icon className="w-5 h-5 text-primary" />
-                              {label}
-                            </div>
-                            <div className="text-sm text-muted-foreground">{desc}</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge 
-                            variant={value >= 4 ? "default" : value >= 3 ? "secondary" : "outline"} 
-                            className="text-lg px-3 py-1 min-w-[50px] text-center font-bold"
-                          >
-                            {value}
-                          </Badge>
-                        </div>
+                { key: 'price' as const, label: 'מחיר', icon: DollarSign, desc: 'המחיר הכי נמוך' },
+                { key: 'reliability' as const, label: 'אמינות', icon: Shield, desc: 'שירות יציב וחזק' },
+                { key: 'speed' as const, label: 'מהירות', icon: Zap, desc: 'ביצועים מהירים' },
+                { key: 'customerService' as const, label: 'שירות לקוחות', icon: Heart, desc: 'תמיכה איכותית' }
+              ].map(({ key, label, icon: Icon, desc }) => (
+                <div key={key} className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Icon className="w-5 h-5 text-primary" />
+                      <div>
+                        <div className="font-medium">{label}</div>
+                        <div className="text-sm text-muted-foreground">{desc}</div>
                       </div>
-                      
-                      <div className="space-y-3">
-                        <Slider
-                          value={[value]}
-                          onValueChange={([newValue]) => updatePriorities(key as keyof UserProfile['priorities'], newValue)}
-                          max={5}
-                          min={1}
-                          step={1}
-                          className="w-full [&_.relative]:h-3 [&_[role=slider]]:h-6 [&_[role=slider]]:w-6"
-                        />
-                        
-                        <div className="flex justify-between items-center">
-                          <div className="flex gap-1">
-                            {Array.from({ length: 5 }, (_, i) => (
-                              <div
-                                key={i}
-                                className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer hover:scale-125 ${
-                                  i < value ? 'bg-primary shadow-lg' : 'bg-muted hover:bg-muted-foreground/30'
-                                }`}
-                                onClick={() => updatePriorities(key as keyof UserProfile['priorities'], i + 1)}
-                              />
-                            ))}
-                          </div>
-                          
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            {value === 1 && <span className="text-red-500 font-medium">לא חשוב</span>}
-                            {value === 2 && <span className="text-orange-500 font-medium">קצת חשוב</span>}
-                            {value === 3 && <span className="text-yellow-500 font-medium">חשוב</span>}
-                            {value === 4 && <span className="text-blue-500 font-medium">מאוד חשוב</span>}
-                            {value === 5 && <span className="text-green-500 font-medium">קריטי</span>}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+                    </div>
+                    <Badge variant="secondary" className="px-3 py-1">
+                      {profile.priorities[key]}/5
+                    </Badge>
+                  </div>
+                  
+                  <Slider
+                    value={[profile.priorities[key]]}
+                    onValueChange={([value]) => updatePriorities(key, value)}
+                    max={5}
+                    min={1}
+                    step={1}
+                    className="w-full"
+                  />
+                  
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>לא חשוב</span>
+                    <span>חשוב מאוד</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         );
@@ -806,7 +748,7 @@ export const PersonalizedRecommendationWizard = ({
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="w-full max-w-4xl max-h-[90vh] bg-background rounded-2xl shadow-2xl border-2 border-primary/10 flex flex-col overflow-hidden">
-        {/* Header - Fixed with Enhanced Design */}
+        {/* Header */}
         <div className="bg-gradient-to-r from-primary/5 to-primary-glow/5 border-b border-primary/10 p-6 flex-shrink-0">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4">
@@ -832,7 +774,7 @@ export const PersonalizedRecommendationWizard = ({
             </Button>
           </div>
           
-          {/* Enhanced Progress Bar */}
+          {/* Progress Bar */}
           <div className="space-y-4">
             <div className="flex items-center justify-between text-sm">
               <span className="font-medium">שלב {currentStep + 1} מתוך {steps.length}</span>
@@ -844,39 +786,34 @@ export const PersonalizedRecommendationWizard = ({
                 value={((currentStep + 1) / steps.length) * 100} 
                 className="h-3 bg-muted/50"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary-glow/20 rounded-full opacity-50" />
             </div>
             
-            {/* Interactive Step Indicators */}
+            {/* Step Indicators */}
             <div className="flex justify-between">
               {steps.map((step, index) => (
                 <div 
                   key={step.id}
                   className={cn(
-                    "flex flex-col items-center text-xs cursor-pointer transition-all duration-300 hover:scale-110",
+                    "flex flex-col items-center text-xs transition-all duration-300",
                     index === currentStep ? "text-primary" : 
                     index < currentStep ? "text-success" : "text-muted-foreground"
                   )}
-                  onClick={() => index < currentStep && setCurrentStep(index)}
                 >
                   <div className={cn(
                     "w-10 h-10 rounded-full flex items-center justify-center mb-2 transition-all duration-300 shadow-lg",
-                    index === currentStep ? "bg-primary text-primary-foreground animate-pulse" : 
+                    index === currentStep ? "bg-primary text-primary-foreground" : 
                     index < currentStep ? "bg-success text-success-foreground" : "bg-muted"
                   )}>
                     {index < currentStep ? <CheckCircle className="w-5 h-5" /> : step.icon}
                   </div>
                   <span className="hidden sm:block font-medium">{step.title}</span>
-                  {index === currentStep && (
-                    <div className="w-2 h-2 bg-primary rounded-full mt-1 animate-bounce" />
-                  )}
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Content - Scrollable with Enhanced Styling */}
+        {/* Content */}
         <div className="flex-1 overflow-y-auto">
           <div className="p-8">
             <div className="animate-fade-in">
@@ -885,7 +822,7 @@ export const PersonalizedRecommendationWizard = ({
           </div>
         </div>
 
-        {/* Footer - Enhanced Design */}
+        {/* Footer */}
         <div className="bg-muted/30 border-t border-primary/10 p-6 flex-shrink-0">
           <div className="flex justify-between items-center">
             <Button

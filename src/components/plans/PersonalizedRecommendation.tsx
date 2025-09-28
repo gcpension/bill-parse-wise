@@ -82,11 +82,11 @@ const PersonalizedRecommendation = ({ isOpen, onClose, comparedPlans }: Personal
         plansCount: comparedPlans.length
       });
 
-      // Create recommendation context
+  // Create recommendation context with sector-specific data
       const context: RecommendationContext = {
         category: (comparedPlans[0]?.category === 'mobile' ? 'cellular' : comparedPlans[0]?.category) || 'electricity',
         currentProvider: comparedPlans[0]?.company || 'לא ידוע',
-        currentAmount: preferences.budget[0] * 1.2, // Assume current is 20% higher than budget
+        currentAmount: preferences.budget[0] * 1.2,
         familySize: preferences.familySize,
         usage: preferences.usage,
         budget: preferences.budget[0],
