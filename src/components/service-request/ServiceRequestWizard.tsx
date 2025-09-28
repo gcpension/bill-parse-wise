@@ -122,51 +122,36 @@ export default function ServiceRequestWizard() {
   };
 
   const canProceed = () => {
-    console.log('Checking canProceed for step:', currentStep, 'formData:', formData);
-    
     // Enhanced validation based on current step
     switch (currentStep) {
       case 0: // General Choices
-        // Basic requirements
-        const hasBasicChoices = !!(formData.action_type && formData.sector && formData.customer_type);
-        console.log('Step 0 - hasBasicChoices:', hasBasicChoices);
-        
-        if (!hasBasicChoices) {
+        if (!formData.action_type || !formData.sector || !formData.customer_type) {
           return false;
         }
-        
         // Business customer additional validation
         if (formData.customer_type === 'business') {
-          const hasBusinessDetails = !!(formData.company_name && formData.corp_registration_number && 
+          return !!(formData.company_name && formData.corp_registration_number && 
                    formData.signer_name && formData.signer_title);
-          console.log('Step 0 - Business hasBusinessDetails:', hasBusinessDetails);
-          return hasBusinessDetails;
         }
         return true;
         
       case 1: // Basic Data
-        const basicRequired = !!(formData.full_name && formData.national_id_or_corp && 
+        const basicRequired = formData.full_name && formData.national_id_or_corp && 
                              formData.email && formData.phone && formData.current_provider &&
                              formData.service_address?.street && formData.service_address?.number && 
-                             formData.service_address?.city && formData.preferred_language);
-        console.log('Step 1 - basicRequired:', basicRequired);
+                             formData.service_address?.city && formData.preferred_language;
         
         // Additional validation for switch action
         if (formData.action_type === 'switch') {
-          const hasTargetProvider = !!formData.target_provider;
-          console.log('Step 1 - Switch action hasTargetProvider:', hasTargetProvider);
-          return basicRequired && hasTargetProvider;
+          return basicRequired && formData.target_provider;
         }
         return basicRequired;
         
       case 2: // Declarations
-        const hasDeclarations = !!(formData.poa && formData.privacy_tos && formData.fees_ack && formData.esign_ok);
-        console.log('Step 2 - hasDeclarations:', hasDeclarations);
-        return hasDeclarations;
+        return !!(formData.poa && formData.privacy_tos && formData.fees_ack && formData.esign_ok);
         
       case 3: // Provider Specific
       case 4: // Sector Specific
-        console.log('Step 3/4 - Always true');
         return true; // These steps are informational/optional
         
       default:
