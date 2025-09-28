@@ -110,6 +110,32 @@ export interface ServiceRequestFormData {
   };
   current_provider: string;
   target_provider?: string;
+  
+  // Provider-specific fields
+  customer_number?: string;
+  account_number?: string;
+  current_customer_number?: string;
+  current_account_number?: string;
+  current_meter_number?: string;
+  current_last_reading?: string;
+  current_subscriber_number?: string;
+  current_sim_number?: string;
+  current_puk_code?: string;
+  current_line_number?: string;
+  current_phone_number?: string;
+  current_installation_address?: string;
+  current_mac_address?: string;
+  current_modem_serial?: string;
+  current_decoder_number?: string;
+  current_smart_card?: string;
+  target_customer_number?: string;
+  target_account_number?: string;
+  target_subscriber_number?: string;
+  additional_notes?: string;
+  // Auto-detected plan information
+  selected_plan_name?: string;
+  selected_plan_price?: number;
+  selected_plan_features?: string[];
   preferred_contact_window?: string;
   preferred_language: 'he' | 'en' | 'ru' | 'other';
   account_or_contract_no?: string;
