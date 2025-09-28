@@ -57,11 +57,13 @@ export const SmartComparisonTable = ({ comparisonMatrix, plans, onPlanSelect }: 
     return `₪${plan.regularPrice}`;
   };
 
-  const getInsightIcon = (type: 'advantage' | 'disadvantage' | 'neutral' | 'warning') => {
+  const getInsightIcon = (type: 'advantage' | 'disadvantage' | 'neutral' | 'warning' | 'opportunity' | 'trend') => {
     switch (type) {
       case 'advantage': return <CheckCircle className="w-4 h-4 text-success" />;
       case 'disadvantage': return <X className="w-4 h-4 text-destructive" />;
       case 'warning': return <AlertTriangle className="w-4 h-4 text-warning" />;
+      case 'opportunity': return <TrendingUp className="w-4 h-4 text-primary" />;
+      case 'trend': return <Sparkles className="w-4 h-4 text-purple-600" />;
       default: return <Info className="w-4 h-4 text-muted-foreground" />;
     }
   };
@@ -507,23 +509,23 @@ export const SmartComparisonTable = ({ comparisonMatrix, plans, onPlanSelect }: 
                             </div>
                           </div>
 
-                          {/* Warnings */}
+                          {/* Opportunities & Trends */}
                           <div>
-                            <h4 className="font-bold text-warning mb-4 flex items-center gap-2 text-lg">
-                              <AlertTriangle className="w-5 h-5" />
-                              התראות
+                            <h4 className="font-bold text-primary mb-4 flex items-center gap-2 text-lg">
+                              <TrendingUp className="w-5 h-5" />
+                              הזדמנות ומגמות
                             </h4>
                             <div className="space-y-3">
                               {comparison.insights
-                                .filter(insight => insight.type === 'warning')
+                                .filter(insight => ['opportunity', 'trend'].includes(insight.type))
                                 .slice(0, 3)
                                 .map((insight, index) => (
-                                  <div key={index} className="bg-warning/10 rounded-xl p-4 border border-warning/30">
+                                  <div key={index} className="bg-primary/10 rounded-xl p-4 border border-primary/30">
                                     <div className="flex items-start gap-3">
                                       {getInsightIcon(insight.type)}
                                       <div>
-                                        <h5 className="font-bold text-warning text-sm">{insight.title}</h5>
-                                        <p className="text-xs text-warning/80 mt-1">{insight.description}</p>
+                                        <h5 className="font-bold text-primary text-sm">{insight.title}</h5>
+                                        <p className="text-xs text-primary/80 mt-1">{insight.description}</p>
                                       </div>
                                     </div>
                                   </div>

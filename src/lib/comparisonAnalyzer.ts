@@ -1,5 +1,7 @@
 import { ManualPlan } from '@/data/manual-plans';
 import { logger } from './logger';
+import { AdvancedAnalytics } from './advancedAnalytics';
+import { AdvancedInsights } from './advancedInsights';
 
 export interface ComparisonScore {
   overall: number;
@@ -7,15 +9,21 @@ export interface ComparisonScore {
   features: number;
   usability: number;
   reliability: number;
+  marketPosition: number;
+  futureProofing: number;
+  customerSatisfaction: number;
+  roi: number;
 }
 
 export interface ComparisonInsight {
-  type: 'advantage' | 'disadvantage' | 'neutral' | 'warning';
-  category: 'price' | 'features' | 'performance' | 'contract' | 'quality';
+  type: 'advantage' | 'disadvantage' | 'neutral' | 'warning' | 'opportunity' | 'trend';
+  category: 'price' | 'features' | 'performance' | 'contract' | 'quality' | 'market' | 'future' | 'roi';
   title: string;
   description: string;
-  impact: 'high' | 'medium' | 'low';
+  impact: 'critical' | 'high' | 'medium' | 'low';
   confidence: number;
+  urgency: 'immediate' | 'soon' | 'eventual' | 'monitor';
+  dataSource: 'pricing' | 'features' | 'market' | 'predictions' | 'user_behavior';
 }
 
 export interface DetailedComparison {
@@ -31,6 +39,24 @@ export interface DetailedComparison {
     isCompetitive: boolean;
     savingsVsBest: number;
     valueRating: number;
+    roi12Months: number;
+    roi24Months: number;
+    inflationAdjusted: number;
+    marketRanking: number;
+  };
+  riskAssessment: {
+    priceStability: 'stable' | 'volatile' | 'increasing' | 'decreasing';
+    contractFlexibility: number;
+    providerStability: number;
+    technologyRisk: number;
+    overallRisk: 'low' | 'medium' | 'high';
+  };
+  predictiveInsights: {
+    priceProjection6Months: number;
+    priceProjection12Months: number;
+    marketTrend: 'improving' | 'stable' | 'declining';
+    competitivePosition: string;
+    userSatisfactionTrend: 'up' | 'stable' | 'down';
   };
 }
 
@@ -41,13 +67,37 @@ export interface ComparisonMatrix {
     bestValue: string;
     bestFeatures: string;
     mostReliable: string;
+    bestRoi: string;
+    safestChoice: string;
+    innovativePick: string;
     recommendations: string[];
+    marketInsights: string[];
+    seasonalFactors: string[];
   };
   categoryAnalysis: {
     averagePrice: number;
     priceRange: [number, number];
     commonFeatures: string[];
     uniqueFeatures: Record<string, string[]>;
+    marketTrends: {
+      priceDirection: 'up' | 'down' | 'stable';
+      competitionIntensity: number;
+      innovationRate: number;
+      customerSwitchingRate: number;
+    };
+    benchmarkMetrics: {
+      industryAveragePrice: number;
+      topPerformerScore: number;
+      valueThreshold: number;
+      premiumJustificationScore: number;
+    };
+  };
+  aiInsights: {
+    overallRecommendation: string;
+    riskWarnings: string[];
+    opportunityAlerts: string[];
+    seasonalConsiderations: string[];
+    personalizedAdvice: string[];
   };
 }
 
@@ -84,21 +134,25 @@ export class ComparisonAnalyzer {
 
     const categoryAnalysis = this.analyzeCategoryMetrics(plans);
     const summary = this.generateSummary(detailedComparisons, plans);
+    const aiInsights = this.generateAIInsights(detailedComparisons, plans);
 
     return {
       plans: detailedComparisons,
       summary,
-      categoryAnalysis
+      categoryAnalysis,
+      aiInsights
     };
   }
 
   /**
-   * Analyze individual plan in context of all compared plans
+   * Analyze individual plan in context of all compared plans with advanced analytics
    */
   private static analyzePlan(plan: ManualPlan, allPlans: ManualPlan[], index: number): DetailedComparison {
     const score = this.calculateComparisonScore(plan, allPlans);
-    const insights = this.generateInsights(plan, allPlans);
-    const priceAnalysis = this.analyzePricing(plan, allPlans);
+    const insights = this.generateAdvancedInsights(plan, allPlans);
+    const priceAnalysis = this.analyzePricingAdvanced(plan, allPlans);
+    const riskAssessment = AdvancedAnalytics.generateRiskAssessment(plan);
+    const predictiveInsights = AdvancedAnalytics.generatePredictiveInsights(plan, allPlans);
     
     const { strongPoints, weakPoints } = this.identifyStrengthsWeaknesses(plan, allPlans);
     const { bestFor, notRecommendedFor } = this.generateUseCaseRecommendations(plan, allPlans);
@@ -112,40 +166,67 @@ export class ComparisonAnalyzer {
       weakPoints,
       bestFor,
       notRecommendedFor,
-      priceAnalysis
+      priceAnalysis,
+      riskAssessment,
+      predictiveInsights
     };
   }
 
   /**
-   * Calculate comprehensive comparison scores
+   * Calculate comprehensive comparison scores with advanced metrics
    */
   private static calculateComparisonScore(plan: ManualPlan, allPlans: ManualPlan[]): ComparisonScore {
-    // Price competitiveness (40% weight)
+    // Core scoring metrics with refined weights
     const priceScore = this.calculatePriceScore(plan, allPlans);
-    
-    // Feature richness (30% weight)  
     const featuresScore = this.calculateFeaturesScore(plan, allPlans);
-    
-    // Usability factors (20% weight)
     const usabilityScore = this.calculateUsabilityScore(plan);
-    
-    // Reliability indicators (10% weight)
     const reliabilityScore = this.calculateReliabilityScore(plan);
+    
+    // Advanced metrics
+    const marketPosition = this.calculateMarketPositionScore(plan, allPlans);
+    const futureProofing = this.calculateFutureProofingScore(plan);
+    const customerSatisfaction = this.calculateCustomerSatisfactionScore(plan);
+    const roi = this.calculateROIScore(plan, allPlans);
 
+    // Weighted overall calculation with dynamic weights based on category
+    const weights = this.getDynamicWeights(plan.category);
+    
     const overall = Math.round(
-      priceScore * 0.4 + 
-      featuresScore * 0.3 + 
-      usabilityScore * 0.2 + 
-      reliabilityScore * 0.1
+      priceScore * weights.price + 
+      featuresScore * weights.features + 
+      usabilityScore * weights.usability + 
+      reliabilityScore * weights.reliability +
+      marketPosition * weights.market +
+      futureProofing * weights.future +
+      customerSatisfaction * weights.satisfaction +
+      roi * weights.roi
     );
 
     return {
-      overall,
+      overall: Math.min(100, Math.max(0, overall)),
       value: priceScore,
       features: featuresScore,
       usability: usabilityScore,
-      reliability: reliabilityScore
+      reliability: reliabilityScore,
+      marketPosition,
+      futureProofing,
+      customerSatisfaction,
+      roi
     };
+  }
+
+  /**
+   * Get dynamic weights based on category
+   */
+  private static getDynamicWeights(category: string) {
+    const baseWeights = {
+      electricity: { price: 0.35, features: 0.20, usability: 0.15, reliability: 0.15, market: 0.05, future: 0.05, satisfaction: 0.03, roi: 0.02 },
+      internet: { price: 0.25, features: 0.30, usability: 0.20, reliability: 0.10, market: 0.05, future: 0.05, satisfaction: 0.03, roi: 0.02 },
+      mobile: { price: 0.30, features: 0.25, usability: 0.20, reliability: 0.10, market: 0.05, future: 0.05, satisfaction: 0.03, roi: 0.02 },
+      tv: { price: 0.25, features: 0.35, usability: 0.15, reliability: 0.10, market: 0.05, future: 0.05, satisfaction: 0.03, roi: 0.02 }
+    };
+    
+    return baseWeights[category as keyof typeof baseWeights] || baseWeights.electricity;
   }
 
   /**
@@ -250,28 +331,105 @@ export class ComparisonAnalyzer {
   }
 
   /**
-   * Generate actionable insights for each plan
+   * Calculate market position score
    */
-  private static generateInsights(plan: ManualPlan, allPlans: ManualPlan[]): ComparisonInsight[] {
+  private static calculateMarketPositionScore(plan: ManualPlan, allPlans: ManualPlan[]): number {
+    return AdvancedAnalytics.calculateMarketPositionScore(plan, allPlans);
+  }
+
+  /**
+   * Calculate future-proofing score
+   */
+  private static calculateFutureProofingScore(plan: ManualPlan): number {
+    return AdvancedAnalytics.calculateFutureProofingScore(plan);
+  }
+
+  /**
+   * Calculate customer satisfaction score
+   */
+  private static calculateCustomerSatisfactionScore(plan: ManualPlan): number {
+    return AdvancedAnalytics.calculateCustomerSatisfactionScore(plan);
+  }
+
+  /**
+   * Calculate ROI score
+   */
+  private static calculateROIScore(plan: ManualPlan, allPlans: ManualPlan[]): number {
+    return AdvancedAnalytics.calculateROIScore(plan, allPlans);
+  }
+
+  /**
+   * Generate advanced AI-powered insights for each plan
+   */
+  private static generateAdvancedInsights(plan: ManualPlan, allPlans: ManualPlan[]): ComparisonInsight[] {
     const insights: ComparisonInsight[] = [];
     
-    // Price insights
-    const priceInsights = this.generatePriceInsights(plan, allPlans);
+    // Enhanced price insights
+    const priceInsights = AdvancedInsights.generateAdvancedPriceInsights(plan, allPlans);
     insights.push(...priceInsights);
     
-    // Feature insights
-    const featureInsights = this.generateFeatureInsights(plan, allPlans);
+    // Feature insights with competitive analysis
+    const featureInsights = AdvancedInsights.generateAdvancedFeatureInsights(plan, allPlans);
     insights.push(...featureInsights);
     
-    // Performance insights
-    const performanceInsights = this.generatePerformanceInsights(plan, allPlans);
+    // Performance insights with market context
+    const performanceInsights = this.generateAdvancedPerformanceInsights(plan, allPlans);
     insights.push(...performanceInsights);
+
+    // Market insights
+    const marketInsights = AdvancedInsights.generateMarketInsights(plan, allPlans);
+    insights.push(...marketInsights);
+
+    // Future trends insights
+    const trendInsights = AdvancedInsights.generateTrendInsights(plan, allPlans);
+    insights.push(...trendInsights);
+
+    // ROI insights
+    const roiInsights = AdvancedInsights.generateROIInsights(plan, allPlans);
+    insights.push(...roiInsights);
+    
+  /**
+   * Generate advanced performance insights
+   */
+  private static generateAdvancedPerformanceInsights(plan: ManualPlan, allPlans: ManualPlan[]): ComparisonInsight[] {
+    const insights: ComparisonInsight[] = [];
+    
+    if (plan.category === 'internet' && plan.downloadSpeed) {
+      const speed = parseFloat(plan.downloadSpeed);
+      const speeds = allPlans.map(p => parseFloat(p.downloadSpeed) || 0);
+      const maxSpeed = Math.max(...speeds);
+      const avgSpeed = speeds.reduce((a, b) => a + b, 0) / speeds.length;
+      
+      if (speed === maxSpeed && speed > 0) {
+        insights.push({
+          type: 'advantage',
+          category: 'performance',
+          title: 'המהירות הגבוהה ביותר',
+          description: `מהירות הורדה מקסימלית של ${speed} Mbps - מושלם לעבודה מהבית וסטרימינג 4K`,
+          impact: 'high',
+          confidence: 0.9,
+          urgency: 'immediate',
+          dataSource: 'features'
+        });
+      } else if (speed >= avgSpeed * 1.5) {
+        insights.push({
+          type: 'advantage',
+          category: 'performance',
+          title: 'מהירות מעולה',
+          description: `מהירות ${speed} Mbps - גבוה מהממוצע ב-${Math.round(((speed - avgSpeed) / avgSpeed) * 100)}%`,
+          impact: 'medium',
+          confidence: 0.85,
+          urgency: 'immediate',
+          dataSource: 'features'
+        });
+      }
+    }
     
     return insights;
   }
 
   /**
-   * Generate price-related insights
+   * Generate advanced price insights with market context
    */
   private static generatePriceInsights(plan: ManualPlan, allPlans: ManualPlan[]): ComparisonInsight[] {
     const insights: ComparisonInsight[] = [];
@@ -289,7 +447,9 @@ export class ComparisonAnalyzer {
           title: 'המחיר הטוב ביותר',
           description: `זהו המסלול הזול ביותר מבין כל המושווים - חיסכון של עד ₪${maxPrice - minPrice} לחודש`,
           impact: 'high',
-          confidence: 0.95
+          confidence: 0.95,
+          urgency: 'immediate',
+          dataSource: 'pricing'
         });
       } else if (plan.regularPrice <= avgPrice) {
         insights.push({
@@ -298,7 +458,9 @@ export class ComparisonAnalyzer {
           title: 'מחיר תחרותי',
           description: `המחיר נמוך מהממוצע ב-₪${Math.round(avgPrice - plan.regularPrice)} לחודש`,
           impact: 'medium',
-          confidence: 0.85
+          confidence: 0.85,
+          urgency: 'immediate',
+          dataSource: 'pricing'
         });
       } else if (plan.regularPrice === maxPrice) {
         insights.push({
@@ -307,7 +469,9 @@ export class ComparisonAnalyzer {
           title: 'המחיר הגבוה ביותר',
           description: `זהו המסלול היקר ביותר - ₪${plan.regularPrice - minPrice} יותר מהזול ביותר`,
           impact: 'high',
-          confidence: 0.95
+          confidence: 0.95,
+          urgency: 'immediate',
+          dataSource: 'pricing'
         });
       }
     }
@@ -333,7 +497,9 @@ export class ComparisonAnalyzer {
         title: 'תכונות ייחודיות',
         description: `כולל ${uniqueFeatures.length} תכונות שלא קיימות במסלולים האחרים`,
         impact: uniqueFeatures.length > 2 ? 'high' : 'medium',
-        confidence: 0.9
+        confidence: 0.9,
+        urgency: 'immediate',
+        dataSource: 'features'
       });
     }
     
@@ -345,7 +511,9 @@ export class ComparisonAnalyzer {
         title: 'עשיר בתכונות',
         description: `המסלול עם מספר התכונות הגבוה ביותר (${plan.features.length})`,
         impact: 'medium',
-        confidence: 0.85
+        confidence: 0.85,
+        urgency: 'immediate',
+        dataSource: 'features'
       });
     }
     
@@ -370,7 +538,9 @@ export class ComparisonAnalyzer {
           title: 'המהירות הגבוהה ביותר',
           description: `מהירות הורדה מקסימלית של ${speed} Mbps`,
           impact: 'high',
-          confidence: 0.9
+          confidence: 0.9,
+          urgency: 'immediate',
+          dataSource: 'features'
         });
       }
     }
@@ -462,33 +632,53 @@ export class ComparisonAnalyzer {
   }
 
   /**
-   * Analyze pricing in context
+   * Analyze pricing in advanced context
    */
-  private static analyzePricing(plan: ManualPlan, allPlans: ManualPlan[]): DetailedComparison['priceAnalysis'] {
+  private static analyzePricingAdvanced(plan: ManualPlan, allPlans: ManualPlan[]): DetailedComparison['priceAnalysis'] {
     if (plan.category === 'electricity') {
       const discount = parseFloat(plan.speed.replace('%', '')) || 0;
       const maxDiscount = Math.max(...allPlans.map(p => parseFloat(p.speed.replace('%', '')) || 0));
+      const avgDiscount = allPlans.reduce((sum, p) => sum + (parseFloat(p.speed.replace('%', '')) || 0), 0) / allPlans.length;
+      
+      const roi12Months = discount * 12 * 10; // Estimated annual savings per 1% discount
+      const roi24Months = roi12Months * 2;
+      const inflationAdjusted = roi12Months * 0.95; // 5% inflation adjustment
+      const marketRanking = allPlans.filter(p => (parseFloat(p.speed.replace('%', '')) || 0) < discount).length + 1;
       
       return {
         isCompetitive: discount >= maxDiscount * 0.8,
         savingsVsBest: maxDiscount - discount,
-        valueRating: Math.round((discount / maxDiscount) * 100)
+        valueRating: Math.round((discount / maxDiscount) * 100),
+        roi12Months,
+        roi24Months,
+        inflationAdjusted,
+        marketRanking
       };
     }
     
     const prices = allPlans.map(p => p.regularPrice).sort((a, b) => a - b);
     const minPrice = prices[0];
     const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+    const marketRanking = prices.indexOf(plan.regularPrice) + 1;
+    
+    const monthlySavings = avgPrice - plan.regularPrice;
+    const roi12Months = monthlySavings * 12;
+    const roi24Months = roi12Months * 2;
+    const inflationAdjusted = roi12Months * 0.95;
     
     return {
       isCompetitive: plan.regularPrice <= avgPrice,
       savingsVsBest: plan.regularPrice - minPrice,
-      valueRating: Math.round(((avgPrice - plan.regularPrice) / avgPrice) * 100 + 50)
+      valueRating: Math.round(((avgPrice - plan.regularPrice) / avgPrice) * 100 + 50),
+      roi12Months,
+      roi24Months,
+      inflationAdjusted,
+      marketRanking
     };
   }
 
   /**
-   * Analyze category-wide metrics
+   * Analyze category-wide metrics with advanced insights
    */
   private static analyzeCategoryMetrics(plans: ManualPlan[]): ComparisonMatrix['categoryAnalysis'] {
     const prices = plans.filter(p => p.category !== 'electricity').map(p => p.regularPrice);
@@ -518,16 +708,41 @@ export class ComparisonAnalyzer {
       }
     });
     
+    // Market trends analysis
+    const category = plans[0]?.category || 'electricity';
+    const competitionIntensity = [...new Set(plans.map(p => p.company))].length / 10; // More competitors = higher intensity
+    const priceDirection = this.analyzePriceTrend(plans);
+    const innovationRate = this.analyzeInnovationRate(plans);
+    const customerSwitchingRate = 0.15; // Estimated 15% annual switching rate
+    
+    // Benchmark metrics
+    const industryAveragePrice = averagePrice;
+    const topPerformerScore = 95; // Highest possible score
+    const valueThreshold = averagePrice * 0.8; // 20% below average is good value
+    const premiumJustificationScore = 75; // Score needed to justify premium pricing
+    
     return {
       averagePrice,
       priceRange,
       commonFeatures,
-      uniqueFeatures
+      uniqueFeatures,
+      marketTrends: {
+        priceDirection,
+        competitionIntensity: Math.min(1, competitionIntensity),
+        innovationRate,
+        customerSwitchingRate
+      },
+      benchmarkMetrics: {
+        industryAveragePrice,
+        topPerformerScore,
+        valueThreshold,
+        premiumJustificationScore
+      }
     };
   }
 
   /**
-   * Generate comparison summary
+   * Generate advanced comparison summary
    */
   private static generateSummary(comparisons: DetailedComparison[], plans: ManualPlan[]): ComparisonMatrix['summary'] {
     const bestOverall = comparisons[0]?.planId || '';
@@ -541,15 +756,35 @@ export class ComparisonAnalyzer {
     
     const mostReliable = comparisons
       .sort((a, b) => b.score.reliability - a.score.reliability)[0]?.planId || bestOverall;
+
+    const bestRoi = comparisons
+      .sort((a, b) => b.score.roi - a.score.roi)[0]?.planId || bestOverall;
+
+    const safestChoice = comparisons
+      .sort((a, b) => {
+        const aRisk = a.riskAssessment.overallRisk === 'low' ? 3 : a.riskAssessment.overallRisk === 'medium' ? 2 : 1;
+        const bRisk = b.riskAssessment.overallRisk === 'low' ? 3 : b.riskAssessment.overallRisk === 'medium' ? 2 : 1;
+        return bRisk - aRisk;
+      })[0]?.planId || bestOverall;
+
+    const innovativePick = comparisons
+      .sort((a, b) => b.score.futureProofing - a.score.futureProofing)[0]?.planId || bestOverall;
     
-    const recommendations = this.generateRecommendations(comparisons, plans);
+    const recommendations = this.generateAdvancedRecommendations(comparisons, plans);
+    const marketInsights = this.generateMarketInsights(comparisons, plans);
+    const seasonalFactors = this.generateSeasonalFactors(plans);
     
     return {
       bestOverall,
       bestValue,
       bestFeatures,
       mostReliable,
-      recommendations
+      bestRoi,
+      safestChoice,
+      innovativePick,
+      recommendations,
+      marketInsights,
+      seasonalFactors
     };
   }
 
@@ -580,6 +815,152 @@ export class ComparisonAnalyzer {
     }
     
     return recommendations;
+  }
+
+  /**
+   * Helper methods for advanced analysis
+   */
+  private static analyzePriceTrend(plans: ManualPlan[]): 'up' | 'down' | 'stable' {
+    // Simplified trend analysis - in real world would use historical data
+    const category = plans[0]?.category;
+    const trendMap: Record<string, 'up' | 'down' | 'stable'> = {
+      electricity: 'up',
+      internet: 'stable', 
+      mobile: 'down',
+      tv: 'up'
+    };
+    return trendMap[category || 'electricity'] || 'stable';
+  }
+
+  private static analyzeInnovationRate(plans: ManualPlan[]): number {
+    // Calculate innovation based on modern features
+    const modernFeatures = ['5G', 'סיבים', 'חכם', '4K', 'WiFi 6', 'cloud'];
+    const totalPlans = plans.length;
+    const plansWithModernFeatures = plans.filter(p => 
+      p.features.some(f => modernFeatures.some(mf => f.toLowerCase().includes(mf.toLowerCase())))
+    ).length;
+    
+    return Math.min(1, plansWithModernFeatures / totalPlans);
+  }
+
+  private static generateAdvancedRecommendations(comparisons: DetailedComparison[], plans: ManualPlan[]): string[] {
+    const recommendations: string[] = [];
+    
+    if (comparisons.length >= 2) {
+      const topPlan = comparisons[0];
+      const secondPlan = comparisons[1];
+      
+      const topPlanData = plans.find(p => p.id === topPlan.planId);
+      const secondPlanData = plans.find(p => p.id === secondPlan.planId);
+      
+      if (topPlanData && secondPlanData) {
+        recommendations.push(`🏆 המסלול המוביל: ${topPlanData.company} - ${topPlanData.planName} (ציון: ${topPlan.score.overall})`);
+        
+        if (topPlan.score.overall - secondPlan.score.overall < 10) {
+          recommendations.push(`🥈 ${secondPlanData.company} גם הוא בחירה מעולה - הפרש של ${topPlan.score.overall - secondPlan.score.overall} נקודות בלבד`);
+        }
+        
+        if (topPlan.priceAnalysis.isCompetitive) {
+          recommendations.push('💰 המסלול המוביל מציע גם יחס מחיר-ביצועים מעולה');
+        }
+
+        // Risk-based recommendations
+        if (topPlan.riskAssessment.overallRisk === 'low') {
+          recommendations.push('✅ המסלול המוביל נחשב לבחירה בטוחה עם סיכון נמוך');
+        }
+
+        // ROI recommendations
+        const bestRoi = comparisons.sort((a, b) => b.score.roi - a.score.roi)[0];
+        if (bestRoi.planId !== topPlan.planId) {
+          const roiPlan = plans.find(p => p.id === bestRoi.planId);
+          if (roiPlan) {
+            recommendations.push(`📈 לתשואה מקסימלית: ${roiPlan.company} - ${roiPlan.planName}`);
+          }
+        }
+      }
+    }
+    
+    return recommendations;
+  }
+
+  private static generateMarketInsights(comparisons: DetailedComparison[], plans: ManualPlan[]): string[] {
+    const insights: string[] = [];
+    const category = plans[0]?.category;
+    const companies = [...new Set(plans.map(p => p.company))];
+    
+    insights.push(`📊 השוק מציע ${plans.length} מסלולים מ-${companies.length} חברות שונות`);
+    
+    const avgScore = comparisons.reduce((sum, c) => sum + c.score.overall, 0) / comparisons.length;
+    insights.push(`⭐ ציון איכות ממוצע: ${Math.round(avgScore)} נקודות`);
+    
+    const highRiskPlans = comparisons.filter(c => c.riskAssessment.overallRisk === 'high').length;
+    if (highRiskPlans > 0) {
+      insights.push(`⚠️ ${highRiskPlans} מסלולים מסווגים כבעלי סיכון גבוה`);
+    }
+    
+    return insights;
+  }
+
+  private static generateSeasonalFactors(plans: ManualPlan[]): string[] {
+    const factors: string[] = [];
+    const category = plans[0]?.category;
+    const currentMonth = new Date().getMonth() + 1;
+    
+    if (category === 'electricity') {
+      if (currentMonth >= 6 && currentMonth <= 9) {
+        factors.push('🌡️ עונת הקיץ - צריכת חשמל גבוהה עקב מזגנים');
+      } else if (currentMonth >= 11 || currentMonth <= 2) {
+        factors.push('❄️ עונת החורף - צריכת חשמל מוגברת לחימום');
+      }
+    }
+    
+    if (category === 'tv') {
+      if (currentMonth >= 11 && currentMonth <= 1) {
+        factors.push('📺 עונת הטלוויזיה - מבצעים מיוחדים לקראת החגים');
+      }
+    }
+    
+    return factors;
+  }
+
+  private static generateAIInsights(comparisons: DetailedComparison[], plans: ManualPlan[]): ComparisonMatrix['aiInsights'] {
+    const bestPlan = comparisons[0];
+    const worstPlan = comparisons[comparisons.length - 1];
+    
+    const overallRecommendation = bestPlan ? 
+      `על בסיס ניתוח מקיף של ${comparisons.length} מסלולים, המסלול המומלץ ביותר הוא ${plans.find(p => p.id === bestPlan.planId)?.company} עם ציון של ${bestPlan.score.overall} נקודות` :
+      'לא נמצאו מסלולים להשוואה';
+
+    const riskWarnings = comparisons
+      .filter(c => c.riskAssessment.overallRisk === 'high')
+      .map(c => {
+        const plan = plans.find(p => p.id === c.planId);
+        return `⚠️ ${plan?.company} - ${plan?.planName} מסווג כבעל סיכון גבוה`;
+      });
+
+    const opportunityAlerts = comparisons
+      .filter(c => c.insights.some(i => i.type === 'opportunity'))
+      .map(c => {
+        const plan = plans.find(p => p.id === c.planId);
+        const opportunity = c.insights.find(i => i.type === 'opportunity');
+        return `💡 ${plan?.company}: ${opportunity?.title}`;
+      });
+
+    const seasonalConsiderations = this.generateSeasonalFactors(plans);
+
+    const personalizedAdvice = [
+      'המלצה אישית תתבסס על הצרכים הספציפיים שלכם',
+      'כדאי לשקול את תקופת ההתחייבות מול הגמישות הנדרשת',
+      'בדקו האם יש מבצעים מיוחדים או הטבות נוספות'
+    ];
+
+    return {
+      overallRecommendation,
+      riskWarnings,
+      opportunityAlerts,
+      seasonalConsiderations,
+      personalizedAdvice
+    };
   }
 }
 
