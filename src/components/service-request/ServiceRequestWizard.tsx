@@ -27,13 +27,39 @@ export default function ServiceRequestWizard() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Load draft from localStorage on mount
+  // Load draft and selected plan from localStorage on mount
   useEffect(() => {
+    // Load selected plan data
+    const selectedPlan = localStorage.getItem('selectedPlanForSwitch');
+    if (selectedPlan) {
+      try {
+        const planData = JSON.parse(selectedPlan);
+        setFormData(prev => ({
+          ...prev,
+          action_type: 'switch',
+          target_provider: planData.company,
+          // Map category from plan to our categories
+          sector: planData.category === 'mobile' ? 'cellular' : planData.category
+        }));
+        
+        toast({
+          title: 'מסלול נבחר',
+          description: `מסלול ${planData.planName} מ${planData.company} נטען לטופס`,
+        });
+        
+        // Clear the stored plan data after loading
+        localStorage.removeItem('selectedPlanForSwitch');
+      } catch (error) {
+        console.error('Error loading selected plan:', error);
+      }
+    }
+
+    // Load saved draft
     const savedDraft = localStorage.getItem(STORAGE_KEY);
     if (savedDraft) {
       try {
         const parsed = JSON.parse(savedDraft);
-        setFormData(parsed.formData || {});
+        setFormData(prev => ({ ...prev, ...parsed.formData }));
         setCurrentStep(parsed.currentStep || 0);
         toast({
           title: 'טיוטה נטענה',

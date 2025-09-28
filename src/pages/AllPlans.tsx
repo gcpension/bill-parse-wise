@@ -206,8 +206,17 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
   };
 
   const handlePlanSelect = (plan: ManualPlan) => {
-    setSelectedPlan(plan);
-    setIsFormOpen(true);
+    // Store selected plan data for service request
+    localStorage.setItem('selectedPlanForSwitch', JSON.stringify({
+      planName: plan.planName,
+      company: plan.company,
+      price: plan.regularPrice,
+      category: plan.category,
+      features: plan.features
+    }));
+    
+    // Navigate to service request page
+    window.location.href = '/service-request';
   };
 
   const clearComparison = () => setComparedPlans([]);
@@ -235,6 +244,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
             <div className="flex items-center space-x-8">
               <a href="/" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">דף הבית</a>
               <a href="/all-plans" className="text-purple-600 font-medium hover:text-purple-700 transition-colors font-heebo">כל המסלולים</a>
+              <a href="/service-request" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">בקשת שירות</a>
               <a href="/magazine" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">מגזין</a>
               <a href="/tips" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">טיפים</a>
               <a href="/about" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">אודות</a>
