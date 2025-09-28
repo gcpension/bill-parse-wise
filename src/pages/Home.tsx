@@ -341,7 +341,7 @@ const Home = () => {
           </div>
 
           {/* Clean CTA Section - Enhanced animations */}
-          <div className="text-center mt-16">
+          <div className="text-center mt-16 space-y-6">
             <Button 
               onClick={handleStartAnalysis}
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
@@ -351,6 +351,22 @@ const Home = () => {
                 <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </span>
             </Button>
+            
+            {/* New Service Request Button */}
+            <div className="pt-4">
+              <p className="text-gray-600 text-sm mb-4">או</p>
+              <Button 
+                onClick={() => navigate('/service-request')}
+                variant="outline"
+                className="border-slate-400 text-slate-700 hover:bg-slate-50 px-8 py-3 text-base font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <span className="flex items-center gap-3">
+                  <span>בקש שירות ישירות</span>
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </Button>
+              <p className="text-gray-500 text-xs mt-2">עם בחירת ספקים מהירה ויפה ✨</p>
+            </div>
           </div>
 
           {/* Clean info section */}
