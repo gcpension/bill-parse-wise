@@ -72,22 +72,22 @@ export const PersonalizedRecommendationWizard = ({
     electricity: {
       icon: <Zap className="w-5 h-5" />,
       label: 'חשמל',
-      color: 'bg-yellow-500'
+      color: 'bg-warning'
     },
     internet: {
       icon: <Wifi className="w-5 h-5" />,
       label: 'אינטרנט',
-      color: 'bg-blue-500'
+      color: 'bg-primary'
     },
     mobile: {
       icon: <Phone className="w-5 h-5" />,
       label: 'סלולר',
-      color: 'bg-green-500'
+      color: 'bg-success'
     },
     tv: {
       icon: <Tv className="w-5 h-5" />,
       label: 'טלוויזיה',
-      color: 'bg-purple-500'
+      color: 'bg-secondary'
     }
   };
 
@@ -327,19 +327,19 @@ export const PersonalizedRecommendationWizard = ({
       case 'priorities':
         return (
           <div className="space-y-6">
-            <div className="text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 mb-6">
-              <h4 className="text-lg font-bold text-gray-800 font-heebo mb-2">
+            <div className="text-center bg-muted/50 rounded-2xl p-5 mb-6 border border-border">
+              <h4 className="text-lg font-bold text-foreground font-heebo mb-2">
                 מה הכי חשוב לכם?
               </h4>
-              <p className="text-sm text-gray-600 font-assistant">
+              <p className="text-sm text-muted-foreground font-assistant">
                 דרגו לפי חשיבות (1 = לא חשוב, 5 = חשוב מאוד)
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(profile.priorities).map(([key, value]) => (
-                <div key={key} className="space-y-3 p-4 bg-white/60 rounded-xl border border-gray-200/50">
+                <div key={key} className="space-y-3 p-4 bg-card rounded-xl border border-border shadow-card hover:shadow-elegant transition-all duration-300">
                   <div className="flex justify-between items-center">
-                    <Label className="text-sm font-semibold font-heebo">
+                    <Label className="text-sm font-semibold font-heebo text-foreground">
                       {key === 'price' && '💰 מחיר נמוך'}
                       {key === 'reliability' && '🔒 אמינות'}
                       {key === 'speed' && '⚡ מהירות/ביצועים'}
@@ -353,10 +353,10 @@ export const PersonalizedRecommendationWizard = ({
                       variant="outline" 
                       className={cn(
                         "min-w-[40px] justify-center text-xs font-bold",
-                        value >= 4 ? "bg-green-100 text-green-700 border-green-300" :
-                        value >= 3 ? "bg-blue-100 text-blue-700 border-blue-300" :
-                        value >= 2 ? "bg-yellow-100 text-yellow-700 border-yellow-300" :
-                        "bg-gray-100 text-gray-700 border-gray-300"
+                        value >= 4 ? "bg-success/10 text-success border-success/30" :
+                        value >= 3 ? "bg-primary/10 text-primary border-primary/30" :
+                        value >= 2 ? "bg-warning/10 text-warning border-warning/30" :
+                        "bg-muted text-muted-foreground border-border"
                       )}
                     >
                       {value}
@@ -370,7 +370,7 @@ export const PersonalizedRecommendationWizard = ({
                     step={1}
                     className="w-full"
                   />
-                  <div className="flex justify-between text-xs text-gray-500">
+                  <div className="flex justify-between text-xs text-muted-foreground">
                     <span>לא חשוב</span>
                     <span>חשוב מאוד</span>
                   </div>
@@ -386,26 +386,26 @@ export const PersonalizedRecommendationWizard = ({
   };
 
   return (
-    <div className="bg-white h-full flex flex-col">
+    <div className="bg-background h-full flex flex-col">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary via-primary to-blue-600 text-white py-4 px-6 shrink-0">
+      <div className="bg-primary text-primary-foreground py-6 px-6 shrink-0 shadow-card">
         <div className="flex items-center justify-between">
           <Button 
             variant="ghost" 
             size="sm"
             onClick={onClose}
-            className="text-white hover:bg-white/20 p-2"
+            className="text-primary-foreground hover:bg-primary-foreground/10 p-2 rounded-lg"
           >
             <X className="w-4 h-4" />
           </Button>
           
           <div className="flex items-center gap-3">
-            <div className={cn("w-8 h-8 rounded-full flex items-center justify-center text-white", categoryConfig[category].color)}>
+            <div className={cn("w-8 h-8 rounded-xl flex items-center justify-center text-foreground", categoryConfig[category].color)}>
               {categoryConfig[category].icon}
             </div>
             <div className="text-center">
-              <h1 className="text-lg font-bold font-heebo">המלצה אישית</h1>
-              <p className="text-white/90 font-assistant text-sm">עבור {categoryConfig[category].label}</p>
+              <h1 className="text-xl font-bold font-heebo">המלצה אישית</h1>
+              <p className="text-primary-foreground/90 font-assistant text-sm">עבור {categoryConfig[category].label}</p>
             </div>
           </div>
           
@@ -413,28 +413,23 @@ export const PersonalizedRecommendationWizard = ({
         </div>
 
         {/* Progress Bar */}
-        <div className="mt-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-assistant">שלב {currentStep + 1} מתוך {steps.length}</span>
-            <span className="text-sm font-assistant">{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
+        <div className="mt-6">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-assistant text-primary-foreground/90">שלב {currentStep + 1} מתוך {steps.length}</span>
+            <span className="text-sm font-assistant text-primary-foreground/90">{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
           </div>
-          <div className="w-full bg-white/20 rounded-full h-2">
+          <div className="w-full bg-primary-foreground/20 rounded-full h-2">
             <div 
-              className="bg-white h-2 rounded-full transition-all duration-300" 
+              className="bg-primary-foreground h-2 rounded-full transition-all duration-500 shadow-sm" 
               style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
             />
           </div>
         </div>
 
         {/* Step Title */}
-        <div className="text-center mt-4">
-          <h2 className="text-lg font-bold font-heebo">{steps[currentStep].title}</h2>
-          <p className="text-white/90 font-assistant text-sm">{steps[currentStep].description}</p>
-          <div className="flex items-center justify-center gap-1 mt-2">
-            <div className="w-1 h-1 bg-white/60 rounded-full"></div>
-            <span className="text-xs text-white/80">שלב {currentStep + 1} מתוך {steps.length}</span>
-            <div className="w-1 h-1 bg-white/60 rounded-full"></div>
-          </div>
+        <div className="text-center mt-6">
+          <h2 className="text-xl font-bold font-heebo text-primary-foreground">{steps[currentStep].title}</h2>
+          <p className="text-primary-foreground/90 font-assistant text-sm mt-1">{steps[currentStep].description}</p>
         </div>
       </div>
 
@@ -446,14 +441,13 @@ export const PersonalizedRecommendationWizard = ({
       </div>
 
       {/* Footer */}
-      <div className="bg-gray-50 border-t px-6 py-3 shrink-0">
+      <div className="bg-card border-t border-border px-6 py-4 shrink-0 shadow-card">
         <div className="max-w-2xl mx-auto flex justify-between items-center">
           <Button
             variant="outline"
             onClick={handlePrevious}
             disabled={currentStep === 0}
-            className="flex items-center gap-2 font-assistant"
-            size="sm"
+            className="flex items-center gap-2 font-assistant h-10"
           >
             <ArrowRight className="w-4 h-4" />
             קודם
@@ -468,8 +462,8 @@ export const PersonalizedRecommendationWizard = ({
                   index === currentStep 
                     ? "bg-primary scale-125" 
                     : index < currentStep 
-                    ? "bg-green-500" 
-                    : "bg-gray-300"
+                    ? "bg-success" 
+                    : "bg-muted"
                 )}
               />
             ))}
@@ -477,8 +471,7 @@ export const PersonalizedRecommendationWizard = ({
 
           <Button
             onClick={handleNext}
-            className="flex items-center gap-2 font-assistant bg-primary hover:bg-primary/90"
-            size="sm"
+            className="flex items-center gap-2 font-assistant bg-primary hover:bg-primary/90 shadow-card hover:shadow-elegant transition-all duration-300 h-10"
           >
             {currentStep === steps.length - 1 ? (
               <>

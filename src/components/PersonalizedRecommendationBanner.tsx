@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { User, Target } from "lucide-react";
+import { User, Target, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PersonalizedRecommendationBannerProps {
@@ -13,23 +13,23 @@ export const PersonalizedRecommendationBanner = ({
 }: PersonalizedRecommendationBannerProps) => {
   return (
     <div className={cn(
-      "fixed bottom-6 right-6 z-50 animate-fade-in hover:scale-105 transition-all duration-300",
+      "fixed bottom-6 right-6 z-50 animate-fade-in hover:scale-105 transition-all duration-500",
       className
     )}>
-      <div className="bg-gradient-to-r from-white via-green-50/90 to-white backdrop-blur-md rounded-xl shadow-lg border border-green-200/60 px-5 py-3 max-w-sm hover:shadow-xl transition-all duration-300">
+      <div className="glass-card rounded-2xl shadow-elegant hover:shadow-glow px-4 py-3 max-w-xs border border-border/50 transition-all duration-500 group">
         <div className="flex items-center justify-between gap-3">
           {/* Content */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-md">
-              <User className="w-5 h-5 text-white" />
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-gradient-to-br from-primary to-primary-glow rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300">
+              <User className="w-4 h-4 text-primary-foreground" />
             </div>
             
             <div>
-              <h3 className="text-sm font-bold text-green-700 font-heebo leading-tight">
-                המלצה אישית מותאמת
+              <h3 className="text-sm font-bold text-foreground font-heebo leading-tight">
+                המלצה אישית
               </h3>
-              <p className="text-xs text-gray-600 font-assistant">
-                קבלו המלצות מדויקות בהתאם לצרכים
+              <p className="text-xs text-muted-foreground font-assistant">
+                מותאמת לצרכים שלכם
               </p>
             </div>
           </div>
@@ -37,10 +37,10 @@ export const PersonalizedRecommendationBanner = ({
           {/* Button */}
           <Button 
             size="sm"
-            className="h-8 px-3 text-xs font-heebo bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-md hover:shadow-lg transition-all duration-300"
+            className="h-7 px-3 text-xs font-heebo bg-primary hover:bg-primary/90 text-primary-foreground shadow-card hover:shadow-elegant transition-all duration-300 rounded-lg"
             onClick={onRecommendationClick}
           >
-            <Target className="w-3 h-3 ml-1.5" />
+            <Sparkles className="w-3 h-3 ml-1" />
             התחל
           </Button>
         </div>
