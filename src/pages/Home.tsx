@@ -327,11 +327,6 @@ const Home = () => {
                           </div>
                         </div>
                         
-                        {/* Status indicator */}
-                        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-3">
-                          <CheckCircle className="w-5 h-5 text-green-600" />
-                          <span className="text-green-700 font-medium">קטגוריה נבחרה בהצלחה</span>
-                        </div>
                       </>
                     )}
                   </CardContent>
