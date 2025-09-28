@@ -125,7 +125,6 @@ const AllPlans = ({
       filteredPlans: [],
       groupedByCompany: {}
     };
-    
     let filtered = manualPlans.filter(plan => {
       return plan.category === selectedCategory;
     });
@@ -141,7 +140,6 @@ const AllPlans = ({
       acc[plan.company].push(plan);
       return acc;
     }, {} as Record<string, ManualPlan[]>);
-    
     return {
       filteredPlans: filtered,
       groupedByCompany: grouped
@@ -193,27 +191,17 @@ const AllPlans = ({
     window.location.href = '/service-request';
   };
   const clearComparison = () => setComparedPlans([]);
-
-
   const handlePersonalizedRecommendation = async (userProfile: UserProfile) => {
     setIsAnalyzing(true);
     setShowPersonalizedWizard(false);
-    
     try {
       // Simulate analysis time for better UX
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
       const plansToAnalyze = comparedPlans.length >= 2 ? comparedPlans : filteredPlans.slice(0, 5);
-      const recommendations = PersonalizedRecommendationEngine.generatePersonalizedRecommendations(
-        plansToAnalyze,
-        userProfile,
-        selectedCategory as string
-      );
-      
+      const recommendations = PersonalizedRecommendationEngine.generatePersonalizedRecommendations(plansToAnalyze, userProfile, selectedCategory as string);
       setPersonalizedRecommendations(recommendations);
       setIsAnalyzing(false);
       setShowPersonalizedResults(true);
-      
     } catch (error) {
       console.error('Error generating recommendations:', error);
       setIsAnalyzing(false);
@@ -240,31 +228,7 @@ const AllPlans = ({
         <BreadcrumbNavigation />
         
         {/* Enhanced Page Header */}
-        <div className="text-center mb-16 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-green-600/10 rounded-3xl blur-3xl -z-10"></div>
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent font-heebo mb-4">
-            כל המסלולים במקום אחד
-          </h1>
-          <p className="text-xl text-gray-600 font-assistant mb-8 max-w-3xl mx-auto">
-            השוו, בחרו והחליפו בקלות את הספק שלכם. גלו חבילות חדשות וחסכו כסף כל חודש
-          </p>
-          
-          {/* Enhanced Statistics */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-100 hover:shadow-xl transition-all duration-300">
-              <div className="text-3xl font-bold text-purple-600 font-heebo">200+</div>
-              <div className="text-gray-600 font-assistant">מסלולים במערכת</div>
-            </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-blue-100 hover:shadow-xl transition-all duration-300">
-              <div className="text-3xl font-bold text-blue-600 font-heebo">₪500</div>
-              <div className="text-gray-600 font-assistant">חיסכון ממוצע לחודש</div>
-            </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-green-100 hover:shadow-xl transition-all duration-300">
-              <div className="text-3xl font-bold text-green-600 font-heebo">5 דק׳</div>
-              <div className="text-gray-600 font-assistant">זמן השוואה ממוצע</div>
-            </div>
-          </div>
-        </div>
+        
 
 
         {/* Category Selection - Enhanced Design */}
@@ -276,62 +240,41 @@ const AllPlans = ({
             לחצו על הקטגוריה המעניינת אתכם כדי לגלות את המסלולים הזמינים
           </p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {Object.entries(categoryConfig).map(([key, config]) => (
-              <Button 
-                key={key} 
-                variant={selectedCategory === key ? "default" : "outline"} 
-                className={cn(
-                  "h-32 flex-col gap-3 text-lg font-heebo transition-all duration-300 group relative overflow-hidden", 
-                  selectedCategory === key 
-                    ? "bg-gradient-to-br from-purple-600 to-blue-600 text-white shadow-2xl scale-105 border-0" 
-                    : "border-2 border-purple-200 hover:border-purple-400 hover:bg-gradient-to-br hover:from-purple-50 hover:to-blue-50 hover:scale-105 bg-white/80 backdrop-blur-sm"
-                )} 
-                onClick={() => setSelectedCategory(key as CategoryType)}
-              >
-                <div className={cn(
-                  "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-                  selectedCategory === key ? "from-white/10 to-white/5" : "from-purple-100/50 to-blue-100/50"
-                )}></div>
+            {Object.entries(categoryConfig).map(([key, config]) => <Button key={key} variant={selectedCategory === key ? "default" : "outline"} className={cn("h-32 flex-col gap-3 text-lg font-heebo transition-all duration-300 group relative overflow-hidden", selectedCategory === key ? "bg-gradient-to-br from-purple-600 to-blue-600 text-white shadow-2xl scale-105 border-0" : "border-2 border-purple-200 hover:border-purple-400 hover:bg-gradient-to-br hover:from-purple-50 hover:to-blue-50 hover:scale-105 bg-white/80 backdrop-blur-sm")} onClick={() => setSelectedCategory(key as CategoryType)}>
+                <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300", selectedCategory === key ? "from-white/10 to-white/5" : "from-purple-100/50 to-blue-100/50")}></div>
                 <div className="relative z-10">
                   {config.icon}
                   <span className="font-bold">{config.label}</span>
                 </div>
-              </Button>
-            ))}
+              </Button>)}
           </div>
         </div>
 
         {/* Company Logos by Category */}
-        {selectedCategory && (
-          <div className="mb-8">
+        {selectedCategory && <div className="mb-8">
             <h3 className="text-xl font-bold text-gray-700 font-heebo mb-4 text-center">
               החברות הזמינות
             </h3>
             <div className="grid grid-cols-3 md:grid-cols-6 gap-4 max-w-4xl mx-auto">
-              {selectedCategory === 'electricity' && (
-                <>
+              {selectedCategory === 'electricity' && <>
                   <div className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
                     <img src="/src/assets/logos/electra-logo.png" alt="אלקטרה" className="w-full h-12 object-contain" />
                   </div>
                   <div className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
                     <img src="/src/assets/logos/electricity-logo.png" alt="חברת החשמל" className="w-full h-12 object-contain" />
                   </div>
-                </>
-              )}
+                </>}
               
-              {selectedCategory === 'internet' && (
-                <>
+              {selectedCategory === 'internet' && <>
                   <div className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
                     <img src="/src/assets/logos/bezeq-logo.png" alt="בזק" className="w-full h-12 object-contain" />
                   </div>
                   <div className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
                     <img src="/src/assets/logos/hot-logo.svg" alt="HOT" className="w-full h-12 object-contain" />
                   </div>
-                </>
-              )}
+                </>}
               
-              {selectedCategory === 'mobile' && (
-                <>
+              {selectedCategory === 'mobile' && <>
                   <div className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
                     <img src="/src/assets/logos/cellcom-logo.svg" alt="סלקום" className="w-full h-12 object-contain" />
                   </div>
@@ -347,11 +290,9 @@ const AllPlans = ({
                   <div className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
                     <img src="/src/assets/logos/rami-levy-logo.png" alt="רמי לוי" className="w-full h-12 object-contain" />
                   </div>
-                </>
-              )}
+                </>}
               
-              {selectedCategory === 'tv' && (
-                <>
+              {selectedCategory === 'tv' && <>
                   <div className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
                     <img src="/src/assets/logos/yes-logo.png" alt="YES" className="w-full h-12 object-contain" />
                   </div>
@@ -367,15 +308,12 @@ const AllPlans = ({
                   <div className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
                     <img src="/src/assets/logos/hbo-logo.png" alt="HBO" className="w-full h-12 object-contain" />
                   </div>
-                </>
-              )}
+                </>}
             </div>
-          </div>
-        )}
+          </div>}
 
         {/* Current Spending and Savings Potential Section */}
-        {selectedCategory && (
-          <div className="mb-12">
+        {selectedCategory && <div className="mb-12">
             <Card className="border-2 border-gradient-to-r from-green-200 to-blue-200 bg-gradient-to-r from-green-50/80 via-white to-blue-50/80 shadow-xl backdrop-blur-sm">
               <CardContent className="p-8">
                 <div className="text-center mb-8">
@@ -403,25 +341,20 @@ const AllPlans = ({
                         <Label className="text-sm font-semibold text-gray-700 mb-2 block">
                           הספק הנוכחי
                         </Label>
-                        <Input
-                          placeholder="לדוגמה: חברת החשמל, בזק..."
-                          value={currentUserPlan.company}
-                          onChange={(e) => setCurrentUserPlan(prev => ({ ...prev, company: e.target.value }))}
-                          className="h-12 text-base"
-                        />
+                        <Input placeholder="לדוגמה: חברת החשמל, בזק..." value={currentUserPlan.company} onChange={e => setCurrentUserPlan(prev => ({
+                      ...prev,
+                      company: e.target.value
+                    }))} className="h-12 text-base" />
                       </div>
                       <div>
                         <Label className="text-sm font-semibold text-gray-700 mb-2 block">
                           סכום חודשי (₪)
                         </Label>
                         <div className="relative">
-                          <Input
-                            type="number"
-                            placeholder="0"
-                            value={currentUserPlan.price}
-                            onChange={(e) => setCurrentUserPlan(prev => ({ ...prev, price: e.target.value }))}
-                            className="h-12 text-base pr-8 text-center font-bold text-lg"
-                          />
+                          <Input type="number" placeholder="0" value={currentUserPlan.price} onChange={e => setCurrentUserPlan(prev => ({
+                        ...prev,
+                        price: e.target.value
+                      }))} className="h-12 text-base pr-8 text-center font-bold text-lg" />
                           <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">₪</span>
                         </div>
                       </div>
@@ -438,8 +371,7 @@ const AllPlans = ({
                         המסלול הזול ביותר
                       </h3>
                     </div>
-                    {cheapestPlan ? (
-                      <div className="space-y-4">
+                    {cheapestPlan ? <div className="space-y-4">
                         <div className="text-center">
                           <div className="text-2xl font-bold text-green-600 font-heebo">
                             ₪{cheapestPlan.regularPrice}
@@ -453,12 +385,9 @@ const AllPlans = ({
                             {cheapestPlan.planName}
                           </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="text-center text-gray-500 font-assistant">
+                      </div> : <div className="text-center text-gray-500 font-assistant">
                         בחרו קטגוריה לצפייה במסלולים
-                      </div>
-                    )}
+                      </div>}
                   </div>
 
                   {/* Potential Savings */}
@@ -471,8 +400,7 @@ const AllPlans = ({
                         החיסכון הפוטנציאלי
                       </h3>
                     </div>
-                    {currentUserPlan.price && cheapestPlan && parseFloat(currentUserPlan.price) > 0 ? (
-                      <div className="space-y-4">
+                    {currentUserPlan.price && cheapestPlan && parseFloat(currentUserPlan.price) > 0 ? <div className="space-y-4">
                         <div className="text-center">
                           <div className="text-2xl font-bold text-blue-600 font-heebo">
                             ₪{Math.max(0, parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice)}
@@ -486,39 +414,27 @@ const AllPlans = ({
                             ₪{Math.max(0, (parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) * 12)} חיסכון שנתי
                           </div>
                         </div>
-                        {parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && (
-                          <div className="text-center">
+                        {parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && <div className="text-center">
                             <Badge className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-4 py-2">
-                              חיסכון של {Math.round(((parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) / parseFloat(currentUserPlan.price)) * 100)}%
+                              חיסכון של {Math.round((parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) / parseFloat(currentUserPlan.price) * 100)}%
                             </Badge>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="text-center text-gray-500 font-assistant">
+                          </div>}
+                      </div> : <div className="text-center text-gray-500 font-assistant">
                         הזינו את התשלום הנוכחי לחישוב החיסכון
-                      </div>
-                    )}
+                      </div>}
                   </div>
                 </div>
 
                 {/* Action Button */}
-                {currentUserPlan.price && currentUserPlan.company && cheapestPlan && parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && (
-                  <div className="text-center mt-8">
-                    <Button 
-                      onClick={() => handlePlanSelect(cheapestPlan)}
-                      size="lg" 
-                      className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-4 text-lg font-heebo shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
+                {currentUserPlan.price && currentUserPlan.company && cheapestPlan && parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && <div className="text-center mt-8">
+                    <Button onClick={() => handlePlanSelect(cheapestPlan)} size="lg" className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-4 text-lg font-heebo shadow-lg hover:shadow-xl transition-all duration-300">
                       <ArrowLeft className="w-5 h-5 ml-2" />
                       עבור למסלול הזול ביותר וחסוך ₪{Math.max(0, parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice)} בחודש
                     </Button>
-                  </div>
-                )}
+                  </div>}
               </CardContent>
             </Card>
-          </div>
-        )}
+          </div>}
 
 
         {/* Enhanced Comparison Bar */}
@@ -904,13 +820,10 @@ const AllPlans = ({
       </Dialog>
 
       {/* Enhanced Personalized Recommendation Banner */}
-      {selectedCategory && !showPersonalizedWizard && !isAnalyzing && (
-        <PersonalizedRecommendationBanner onRecommendationClick={() => setShowPersonalizedWizard(true)} />
-      )}
+      {selectedCategory && !showPersonalizedWizard && !isAnalyzing && <PersonalizedRecommendationBanner onRecommendationClick={() => setShowPersonalizedWizard(true)} />}
 
       {/* Loading Animation */}
-      {isAnalyzing && (
-        <div className="fixed inset-0 bg-black/60 z-[110] flex items-center justify-center">
+      {isAnalyzing && <div className="fixed inset-0 bg-black/60 z-[110] flex items-center justify-center">
           <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center shadow-2xl">
             <div className="relative mb-6">
               <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mx-auto flex items-center justify-center">
@@ -929,31 +842,18 @@ const AllPlans = ({
               <span>מעבד נתונים...</span>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
 
       {/* Personalized Recommendation Wizard */}
-      {showPersonalizedWizard && (
-        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
+      {showPersonalizedWizard && <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            <PersonalizedRecommendationWizard
-              category={selectedCategory as any}
-              onComplete={handlePersonalizedRecommendation}
-              onClose={() => setShowPersonalizedWizard(false)}
-            />
+            <PersonalizedRecommendationWizard category={selectedCategory as any} onComplete={handlePersonalizedRecommendation} onClose={() => setShowPersonalizedWizard(false)} />
           </div>
-        </div>
-      )}
+        </div>}
 
       {/* Personalized Recommendation Results */}
-      <PersonalizedRecommendationResults
-        isOpen={showPersonalizedResults}
-        onClose={() => setShowPersonalizedResults(false)}
-        recommendations={personalizedRecommendations}
-        plans={filteredPlans}
-        onPlanSelect={handlePlanSelect}
-      />
+      <PersonalizedRecommendationResults isOpen={showPersonalizedResults} onClose={() => setShowPersonalizedResults(false)} recommendations={personalizedRecommendations} plans={filteredPlans} onPlanSelect={handlePlanSelect} />
 
       {/* Floating Help Button */}
       <FloatingHelpButton />
