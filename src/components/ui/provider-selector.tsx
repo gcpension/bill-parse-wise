@@ -92,7 +92,10 @@ export default function ProviderSelector({
           return (
             <button
               key={provider.id}
-              onClick={() => onSelect(provider.id)}
+              onClick={() => {
+                console.log('Provider selected:', provider.id, provider.name);
+                onSelect(provider.id);
+              }}
               className={cn(
                 "relative p-6 rounded-2xl border-2 transition-all duration-200 group hover:shadow-lg",
                 isSelected 

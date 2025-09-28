@@ -35,9 +35,9 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button className="ml-2 p-1 rounded-full hover:bg-slate-100 transition-colors">
+          <div className="ml-2 p-1 rounded-full hover:bg-slate-100 transition-colors cursor-help">
             <Info className="w-4 h-4 text-slate-500" />
-          </button>
+          </div>
         </TooltipTrigger>
         <TooltipContent side="top" className="max-w-xs">
           <p className="text-sm">{content}</p>
