@@ -33,6 +33,9 @@ import { ComparisonAnalyzer } from "@/lib/comparisonAnalyzer";
 import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecommendationWizard";
 import { PersonalizedRecommendationEngine, UserProfile } from "@/lib/personalizedRecommendations";
 import { PersonalizedRecommendationBanner } from "@/components/PersonalizedRecommendationBanner";
+import { PersonalizedRecommendationResults } from "@/components/PersonalizedRecommendationResults";
+import { EnhancedNavigation } from "@/components/ui/enhanced-navigation";
+import { FloatingHelpButton } from "@/components/ui/floating-help-button";
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -62,6 +65,8 @@ const AllPlans = ({
   const [showComparison, setShowComparison] = useState(false);
   const [showPersonalizedWizard, setShowPersonalizedWizard] = useState(false);
   const [personalizedRecommendations, setPersonalizedRecommendations] = useState<any[]>([]);
+  const [showPersonalizedResults, setShowPersonalizedResults] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [currentUserPlan, setCurrentUserPlan] = useState({
     name: '',
     price: '',
@@ -190,40 +195,30 @@ const AllPlans = ({
   const clearComparison = () => setComparedPlans([]);
 
 
-  const handlePersonalizedRecommendation = (userProfile: UserProfile) => {
-    const plansToAnalyze = comparedPlans.length >= 2 ? comparedPlans : filteredPlans.slice(0, 5);
-    const recommendations = PersonalizedRecommendationEngine.generatePersonalizedRecommendations(
-      plansToAnalyze,
-      userProfile,
-      selectedCategory as string
-    );
-    
-    setPersonalizedRecommendations(recommendations);
+  const handlePersonalizedRecommendation = async (userProfile: UserProfile) => {
+    setIsAnalyzing(true);
     setShowPersonalizedWizard(false);
     
-    // Show recommendations in alert with detailed results
-    setTimeout(() => {
-      if (recommendations.length > 0) {
-        const topRecommendation = recommendations[0];
-        const recommendedPlan = plansToAnalyze.find(p => p.id === topRecommendation.planId);
-        
-        if (recommendedPlan) {
-          alert(`🎯 המלצה אישית מותאמת:
-
-📈 המסלול הטוב ביותר עבורכם: ${recommendedPlan.planName} - ${recommendedPlan.company}
-💰 מחיר: ₪${recommendedPlan.regularPrice} לחודש
-⭐ ציון התאמה: ${Math.round(topRecommendation.matchScore * 100)}%
-
-🔍 סיבות להמלצה:
-${topRecommendation.reasonsForRecommendation.slice(0, 3).map(reason => `• ${reason}`).join('\n')}
-
-💡 חיסכון צפוי: ₪${topRecommendation.expectedSavings.monthly} לחודש
-📊 רמת ביטחון: ${Math.round(topRecommendation.confidenceLevel * 100)}%
-
-מעוניינים להמשיך עם המסלול הזה?`);
-        }
-      }
-    }, 500);
+    try {
+      // Simulate analysis time for better UX
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const plansToAnalyze = comparedPlans.length >= 2 ? comparedPlans : filteredPlans.slice(0, 5);
+      const recommendations = PersonalizedRecommendationEngine.generatePersonalizedRecommendations(
+        plansToAnalyze,
+        userProfile,
+        selectedCategory as string
+      );
+      
+      setPersonalizedRecommendations(recommendations);
+      setIsAnalyzing(false);
+      setShowPersonalizedResults(true);
+      
+    } catch (error) {
+      console.error('Error generating recommendations:', error);
+      setIsAnalyzing(false);
+      alert('אירעה שגיאה בעת יצירת ההמלצות. אנא נסו שוב.');
+    }
   };
 
   // Convert saved data to banner format
@@ -237,25 +232,8 @@ ${topRecommendation.reasonsForRecommendation.slice(0, 3).map(reason => `• ${re
     category: saving.category
   }));
   return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-sm border-b border-purple-200/30 py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 lg:px-6 max-w-7xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-purple-600 font-heebo">EasySwitch</h1>
-            </div>
-            <div className="flex items-center space-x-8">
-              <a href="/" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">דף הבית</a>
-              <a href="/all-plans" className="text-purple-600 font-medium hover:text-purple-700 transition-colors font-heebo">כל המסלולים</a>
-              <a href="/service-request" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">בקשת שירות</a>
-              <a href="/magazine" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">מגזין</a>
-              <a href="/tips" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">טיפים</a>
-              <a href="/about" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">אודות</a>
-              <a href="/contact" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">צור קשר</a>
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/* Enhanced Navigation */}
+      <EnhancedNavigation />
 
       <div className="container mx-auto px-4 lg:px-6 max-w-7xl py-8">
         {/* Breadcrumb Navigation */}
@@ -264,30 +242,60 @@ ${topRecommendation.reasonsForRecommendation.slice(0, 3).map(reason => `• ${re
         {/* Enhanced Page Header */}
         <div className="text-center mb-16 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-green-600/10 rounded-3xl blur-3xl -z-10"></div>
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent font-heebo mb-4">
+            כל המסלולים במקום אחד
+          </h1>
+          <p className="text-xl text-gray-600 font-assistant mb-8 max-w-3xl mx-auto">
+            השוו, בחרו והחליפו בקלות את הספק שלכם. גלו חבילות חדשות וחסכו כסף כל חודש
+          </p>
           
+          {/* Enhanced Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-100 hover:shadow-xl transition-all duration-300">
+              <div className="text-3xl font-bold text-purple-600 font-heebo">200+</div>
+              <div className="text-gray-600 font-assistant">מסלולים במערכת</div>
+            </div>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-blue-100 hover:shadow-xl transition-all duration-300">
+              <div className="text-3xl font-bold text-blue-600 font-heebo">₪500</div>
+              <div className="text-gray-600 font-assistant">חיסכון ממוצע לחודש</div>
+            </div>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-green-100 hover:shadow-xl transition-all duration-300">
+              <div className="text-3xl font-bold text-green-600 font-heebo">5 דק׳</div>
+              <div className="text-gray-600 font-assistant">זמן השוואה ממוצע</div>
+            </div>
+          </div>
         </div>
 
 
-        {/* Category Selection - Icons Only */}
+        {/* Category Selection - Enhanced Design */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-800 font-heebo mb-6 text-center">
+          <h2 className="text-3xl font-bold text-gray-800 font-heebo mb-2 text-center">
             בחרו קטגוריה לצפייה במסלולים
           </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <p className="text-lg text-gray-600 font-assistant mb-8 text-center">
+            לחצו על הקטגוריה המעניינת אתכם כדי לגלות את המסלולים הזמינים
+          </p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {Object.entries(categoryConfig).map(([key, config]) => (
               <Button 
                 key={key} 
                 variant={selectedCategory === key ? "default" : "outline"} 
                 className={cn(
-                  "h-24 flex-col gap-2 text-lg font-heebo transition-all duration-300", 
+                  "h-32 flex-col gap-3 text-lg font-heebo transition-all duration-300 group relative overflow-hidden", 
                   selectedCategory === key 
-                    ? "bg-purple-600 text-white shadow-lg scale-105" 
-                    : "border-purple-200 hover:border-purple-400 hover:bg-purple-50"
+                    ? "bg-gradient-to-br from-purple-600 to-blue-600 text-white shadow-2xl scale-105 border-0" 
+                    : "border-2 border-purple-200 hover:border-purple-400 hover:bg-gradient-to-br hover:from-purple-50 hover:to-blue-50 hover:scale-105 bg-white/80 backdrop-blur-sm"
                 )} 
                 onClick={() => setSelectedCategory(key as CategoryType)}
               >
-                {config.icon}
-                {config.label}
+                <div className={cn(
+                  "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                  selectedCategory === key ? "from-white/10 to-white/5" : "from-purple-100/50 to-blue-100/50"
+                )}></div>
+                <div className="relative z-10">
+                  {config.icon}
+                  <span className="font-bold">{config.label}</span>
+                </div>
               </Button>
             ))}
           </div>
@@ -749,8 +757,32 @@ ${topRecommendation.reasonsForRecommendation.slice(0, 3).map(reason => `• ${re
       </Dialog>
 
       {/* Enhanced Personalized Recommendation Banner */}
-      {selectedCategory && (
+      {selectedCategory && !showPersonalizedWizard && !isAnalyzing && (
         <PersonalizedRecommendationBanner onRecommendationClick={() => setShowPersonalizedWizard(true)} />
+      )}
+
+      {/* Loading Animation */}
+      {isAnalyzing && (
+        <div className="fixed inset-0 bg-black/60 z-[110] flex items-center justify-center">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center shadow-2xl">
+            <div className="relative mb-6">
+              <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mx-auto flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+              </div>
+              <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 font-heebo mb-2">
+              מנתח את הצרכים שלכם...
+            </h3>
+            <p className="text-gray-600 font-assistant mb-4">
+              הבינה המלאכותית בוחנת את המסלולים הטובים ביותר עבורכם
+            </p>
+            <div className="flex items-center justify-center gap-2 text-sm text-green-600">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span>מעבד נתונים...</span>
+            </div>
+          </div>
+        </div>
       )}
 
 
@@ -766,6 +798,18 @@ ${topRecommendation.reasonsForRecommendation.slice(0, 3).map(reason => `• ${re
           </div>
         </div>
       )}
+
+      {/* Personalized Recommendation Results */}
+      <PersonalizedRecommendationResults
+        isOpen={showPersonalizedResults}
+        onClose={() => setShowPersonalizedResults(false)}
+        recommendations={personalizedRecommendations}
+        plans={filteredPlans}
+        onPlanSelect={handlePlanSelect}
+      />
+
+      {/* Floating Help Button */}
+      <FloatingHelpButton />
     </div>;
 };
 export default AllPlans;
