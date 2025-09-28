@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-toast";
 import { 
   Zap, 
   Smartphone, 
@@ -30,13 +29,7 @@ import {
   Plus,
   Minus,
   Settings2,
-  RefreshCw,
-  Heart,
-  Share2,
-  Copy,
-  Clock,
-  TrendingDown,
-  Info
+  RefreshCw
 } from "lucide-react";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
@@ -63,7 +56,6 @@ interface AllPlansProps {
 type CategoryType = 'electricity' | 'internet' | 'mobile' | 'tv';
 
 const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlansProps) => {
-  const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
   const [selectedPlans, setSelectedPlans] = useState<ManualPlan[]>([]);
   const [comparedPlans, setComparedPlans] = useState<ManualPlan[]>([]);
@@ -74,9 +66,6 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
   const [sortBy, setSortBy] = useState<'price' | 'rating' | 'features' | 'ai'>('ai');
   const [searchTerm, setSearchTerm] = useState('');
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [searchHistory, setSearchHistory] = useState<string[]>([]);
-  const [showQuickStats, setShowQuickStats] = useState(true);
   const [currentUserPlan, setCurrentUserPlan] = useState({
     name: '',
     price: '',
@@ -97,9 +86,6 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
   // Load stored data on mount
   useEffect(() => {
     const storedData = localStorage.getItem('analysisData');
-    const storedFavorites = localStorage.getItem('planFavorites');
-    const storedSearchHistory = localStorage.getItem('searchHistory');
-    
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
@@ -113,22 +99,6 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
         }
       } catch (error) {
         console.error('Error parsing analysis data:', error);
-      }
-    }
-    
-    if (storedFavorites) {
-      try {
-        setFavorites(JSON.parse(storedFavorites));
-      } catch (error) {
-        console.error('Error parsing favorites:', error);
-      }
-    }
-    
-    if (storedSearchHistory) {
-      try {
-        setSearchHistory(JSON.parse(storedSearchHistory));
-      } catch (error) {
-        console.error('Error parsing search history:', error);
       }
     }
   }, []);
@@ -220,46 +190,6 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
 
   const clearComparison = () => setComparedPlans([]);
 
-  const toggleFavorite = (planId: string) => {
-    const updatedFavorites = favorites.includes(planId)
-      ? favorites.filter(id => id !== planId)
-      : [...favorites, planId];
-    setFavorites(updatedFavorites);
-    localStorage.setItem('planFavorites', JSON.stringify(updatedFavorites));
-  };
-
-  const addToSearchHistory = (term: string) => {
-    if (term.trim() && !searchHistory.includes(term)) {
-      const updatedHistory = [term, ...searchHistory.slice(0, 4)];
-      setSearchHistory(updatedHistory);
-      localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
-    }
-  };
-
-  const copyPlanDetails = (plan: ManualPlan) => {
-    const text = `${plan.company} - ${plan.planName}
-מחיר: ₪${plan.regularPrice} לחודש
-תכונות: ${plan.features?.join(', ') || 'לא צוינו'}`;
-    navigator.clipboard.writeText(text);
-    toast({
-      title: "פרטי המסלול הועתקו",
-      description: "פרטי המסלול הועתקו ללוח",
-    });
-  };
-
-  // Quick stats calculation
-  const categoryStats = useMemo(() => {
-    if (!selectedCategory || filteredPlans.length === 0) return null;
-    
-    const prices = filteredPlans.map(p => p.regularPrice);
-    const avgPrice = Math.round(prices.reduce((a, b) => a + b, 0) / prices.length);
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
-    const cheapPlansCount = prices.filter(p => p <= avgPrice * 0.8).length;
-    
-    return { avgPrice, minPrice, maxPrice, cheapPlansCount, total: filteredPlans.length };
-  }, [selectedCategory, filteredPlans]);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
       {/* Navigation */}
@@ -337,44 +267,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
           </div>
         </div>
 
-        {/* Quick Stats */}
-        {selectedCategory && showQuickStats && categoryStats && (
-          <Card className="mb-6 border border-blue-200 bg-gradient-to-r from-blue-50/50 to-white">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-blue-600" />
-                  <h3 className="font-bold text-blue-800 font-heebo">סטטיסטיקות מהירות</h3>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowQuickStats(false)}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">₪{categoryStats.avgPrice}</div>
-                  <div className="text-xs text-muted-foreground">ממוצע מחירים</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">₪{categoryStats.minPrice}</div>
-                  <div className="text-xs text-muted-foreground">הזול ביותר</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">{categoryStats.cheapPlansCount}</div>
-                  <div className="text-xs text-muted-foreground">מסלולים זולים</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-600">{categoryStats.total}</div>
-                  <div className="text-xs text-muted-foreground">סה"כ מסלולים</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {/* Enhanced Filters and Search */}
         {selectedCategory && (
           <Card className="mb-8 border-2 border-primary/10 bg-gradient-to-r from-white via-purple-50/30 to-white shadow-lg">
             <CardHeader>
@@ -403,53 +296,25 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                     <Search className="w-4 h-4" />
                     חיפוש חכם
                   </Label>
-                   <div className="relative">
-                     <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                     <Input
-                       placeholder="חפשו לפי שם מסלול, חברה או תכונה..."
-                       value={searchTerm}
-                       onChange={(e) => setSearchTerm(e.target.value)}
-                       onKeyDown={(e) => {
-                         if (e.key === 'Enter' && searchTerm.trim()) {
-                           addToSearchHistory(searchTerm);
-                         }
-                       }}
-                       className="pr-12 h-12 font-assistant text-lg"
-                     />
-                     {searchTerm && (
-                       <Button
-                         variant="ghost"
-                         size="sm"
-                         onClick={() => setSearchTerm('')}
-                         className="absolute left-2 top-1/2 transform -translate-y-1/2"
-                       >
-                         <X className="w-4 h-4" />
-                       </Button>
-                     )}
-                   </div>
-                   
-                   {/* Search History */}
-                   {searchHistory.length > 0 && !searchTerm && (
-                     <div className="mt-2">
-                       <div className="flex items-center gap-2 mb-2">
-                         <Clock className="w-3 h-3 text-muted-foreground" />
-                         <span className="text-xs text-muted-foreground">חיפושים אחרונים:</span>
-                       </div>
-                       <div className="flex flex-wrap gap-1">
-                         {searchHistory.map((term, idx) => (
-                           <Button
-                             key={idx}
-                             variant="outline"
-                             size="sm"
-                             className="text-xs h-6 px-2"
-                             onClick={() => setSearchTerm(term)}
-                           >
-                             {term}
-                           </Button>
-                         ))}
-                       </div>
-                     </div>
-                   )}
+                  <div className="relative">
+                    <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                    <Input
+                      placeholder="חפשו לפי שם מסלול, חברה או תכונה..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pr-12 h-12 font-assistant text-lg"
+                    />
+                    {searchTerm && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSearchTerm('')}
+                        className="absolute left-2 top-1/2 transform -translate-y-1/2"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Price Range */}
@@ -771,17 +636,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                       animationFillMode: 'forwards' 
                     }}
                   >
-                     {/* Favorite Badge */}
-                     {favorites.includes(plan.id) && (
-                       <div className="absolute top-3 left-3 z-10">
-                         <Badge className="bg-red-500 text-white px-2 py-1 shadow-lg">
-                           <Heart className="w-3 h-3 ml-1 fill-current" />
-                           מועדף
-                         </Badge>
-                       </div>
-                     )}
-
-                     {/* Best Deal Badge */}
+                    {/* Best Deal Badge */}
                     {isCheapest && (
                       <div className="absolute -top-3 -right-3 z-10">
                         <Badge className="bg-green-500 text-white px-3 py-1 shadow-lg">
@@ -842,42 +697,26 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                       )}
 
                       {/* Action Buttons */}
-                       <div className="flex gap-2 pt-4">
-                         <Button 
-                           onClick={() => handlePlanSelect(plan)}
-                           className="flex-1 font-assistant"
-                         >
-                           בחר מסלול
-                         </Button>
-                         <Button
-                           variant="outline"
-                           onClick={() => handleCompareToggle(plan)}
-                           disabled={!canAddToComparison && !inComparison}
-                           className="font-assistant"
-                         >
-                           {inComparison ? (
-                             <Minus className="w-4 h-4" />
-                           ) : (
-                             <Plus className="w-4 h-4" />
-                           )}
-                         </Button>
-                         <Button
-                           variant="ghost"
-                           size="sm"
-                           onClick={() => toggleFavorite(plan.id)}
-                           className={favorites.includes(plan.id) ? "text-red-500 hover:text-red-700" : "text-gray-400 hover:text-red-500"}
-                         >
-                           <Heart className={`w-4 h-4 ${favorites.includes(plan.id) ? 'fill-current' : ''}`} />
-                         </Button>
-                         <Button
-                           variant="ghost"
-                           size="sm"
-                           onClick={() => copyPlanDetails(plan)}
-                           className="text-gray-400 hover:text-blue-500"
-                         >
-                           <Copy className="w-4 h-4" />
-                         </Button>
-                       </div>
+                      <div className="flex gap-2 pt-4">
+                        <Button 
+                          onClick={() => handlePlanSelect(plan)}
+                          className="flex-1 font-assistant"
+                        >
+                          בחר מסלול
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => handleCompareToggle(plan)}
+                          disabled={!canAddToComparison && !inComparison}
+                          className="font-assistant"
+                        >
+                          {inComparison ? (
+                            <Minus className="w-4 h-4" />
+                          ) : (
+                            <Plus className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 );

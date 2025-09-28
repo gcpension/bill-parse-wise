@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MobileMenu } from './MobileMenu';
 
 const navigation = [
   { name: 'בית', href: '/', icon: Home, color: 'primary' },
@@ -107,7 +106,7 @@ export const Navigation = () => {
             </div>
           </div>
 
-          {/* Mobile menu and CTA */}
+          {/* Mobile menu button and CTA */}
           <div className="flex items-center space-x-4 rtl:space-x-reverse">
             <Button 
               className="hidden md:flex bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground shadow-elegant hover:shadow-lg hover:scale-105 transition-all duration-300 font-bold"
@@ -117,7 +116,7 @@ export const Navigation = () => {
               התחל לחסוך
             </Button>
             
-            <MobileMenu />
+            {/* Mobile menu would go here */}
           </div>
         </div>
       </div>
