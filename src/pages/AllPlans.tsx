@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Zap, Smartphone, Wifi, Tv, ArrowLeft, Building2, Crown, Award, CheckCircle, TrendingUp, Sparkles, Star, BarChart3, Filter, Search, Calculator, Brain, Target, Eye, X, Plus, Minus, Settings2, RefreshCw } from "lucide-react";
+import { Zap, Smartphone, Wifi, Tv, ArrowLeft, Building2, Crown, Award, CheckCircle, TrendingUp, Sparkles, Star, BarChart3, Filter, Search, Calculator, Brain, Target, Eye, X, Plus, Minus, Settings2, RefreshCw, User } from "lucide-react";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
 import DetailedAIComparison from "@/components/plans/DetailedAIComparison";
@@ -19,6 +19,8 @@ import { BreadcrumbNavigation } from "@/components/BreadcrumbNavigation";
 import { SmartPlanMatchingBanner } from "@/components/SmartPlanMatchingBanner";
 import { ComparisonAnalyzer } from "@/lib/comparisonAnalyzer";
 import { SmartComparisonTable } from "@/components/plans/advanced/SmartComparisonTable";
+import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecommendationWizard";
+import { PersonalizedRecommendationEngine, UserProfile } from "@/lib/personalizedRecommendations";
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -50,6 +52,8 @@ const AllPlans = ({
   const [sortBy, setSortBy] = useState<'price' | 'rating' | 'features' | 'ai'>('ai');
   const [showSmartComparison, setShowSmartComparison] = useState(false);
   const [smartComparisonMatrix, setSmartComparisonMatrix] = useState<any>(null);
+  const [showPersonalizedWizard, setShowPersonalizedWizard] = useState(false);
+  const [personalizedRecommendations, setPersonalizedRecommendations] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [priceRange, setPriceRange] = useState({
     min: 0,
@@ -219,6 +223,26 @@ const AllPlans = ({
       setSmartComparisonMatrix(matrix);
       setShowSmartComparison(true);
     }
+  };
+
+  const handlePersonalizedRecommendation = (userProfile: UserProfile) => {
+    const plansToAnalyze = comparedPlans.length >= 2 ? comparedPlans : filteredPlans.slice(0, 5);
+    const recommendations = PersonalizedRecommendationEngine.generatePersonalizedRecommendations(
+      plansToAnalyze,
+      userProfile,
+      selectedCategory as string
+    );
+    
+    setPersonalizedRecommendations(recommendations);
+    setShowPersonalizedWizard(false);
+    
+    // Show results in smart comparison with personalized insights
+    const matrix = ComparisonAnalyzer.analyzeComparison(plansToAnalyze);
+    setSmartComparisonMatrix({
+      ...matrix,
+      personalizedRecommendations: recommendations
+    });
+    setShowSmartComparison(true);
   };
 
   // Convert saved data to banner format
@@ -772,7 +796,17 @@ const AllPlans = ({
 
       {/* Smart Plan Matching Banner */}
       {selectedCategory && comparedPlans.length >= 0 && (
-        <SmartPlanMatchingBanner onMatchingClick={handleSmartComparison} />
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex gap-4">
+          <SmartPlanMatchingBanner onMatchingClick={handleSmartComparison} />
+          <Button
+            size="lg"
+            className="h-12 px-6 text-base font-heebo bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 rounded-2xl"
+            onClick={() => setShowPersonalizedWizard(true)}
+          >
+            <User className="w-5 h-5 ml-2" />
+            המלצה אישית
+          </Button>
+        </div>
       )}
 
       {/* Smart Comparison Dialog */}
@@ -800,6 +834,17 @@ const AllPlans = ({
               />
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Personalized Recommendation Wizard */}
+      <Dialog open={showPersonalizedWizard} onOpenChange={setShowPersonalizedWizard}>
+        <DialogContent className="max-w-none w-screen h-screen p-0 bg-transparent border-none shadow-none">
+          <PersonalizedRecommendationWizard
+            category={selectedCategory as any}
+            onComplete={handlePersonalizedRecommendation}
+            onClose={() => setShowPersonalizedWizard(false)}
+          />
         </DialogContent>
       </Dialog>
     </div>;
