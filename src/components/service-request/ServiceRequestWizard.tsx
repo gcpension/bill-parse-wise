@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ChevronRight, ChevronLeft, Save } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Save, CheckCircle } from 'lucide-react';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -122,15 +122,38 @@ export default function ServiceRequestWizard() {
   };
 
   const canProceed = () => {
-    // Basic validation based on current step
+    // Enhanced validation based on current step
     switch (currentStep) {
-      case 0:
-        return formData.action_type && formData.sector && formData.customer_type;
-      case 1:
-        return formData.full_name && formData.national_id_or_corp && 
-               formData.email && formData.phone && formData.current_provider;
-      case 2:
-        return formData.poa && formData.privacy_tos && formData.fees_ack && formData.esign_ok;
+      case 0: // General Choices
+        if (!formData.action_type || !formData.sector || !formData.customer_type) {
+          return false;
+        }
+        // Business customer additional validation
+        if (formData.customer_type === 'business') {
+          return !!(formData.company_name && formData.corp_registration_number && 
+                   formData.signer_name && formData.signer_title);
+        }
+        return true;
+        
+      case 1: // Basic Data
+        const basicRequired = formData.full_name && formData.national_id_or_corp && 
+                             formData.email && formData.phone && formData.current_provider &&
+                             formData.service_address?.street && formData.service_address?.number && 
+                             formData.service_address?.city && formData.preferred_language;
+        
+        // Additional validation for switch action
+        if (formData.action_type === 'switch') {
+          return basicRequired && formData.target_provider;
+        }
+        return basicRequired;
+        
+      case 2: // Declarations
+        return !!(formData.poa && formData.privacy_tos && formData.fees_ack && formData.esign_ok);
+        
+      case 3: // Provider Specific
+      case 4: // Sector Specific
+        return true; // These steps are informational/optional
+        
       default:
         return true;
     }
@@ -139,24 +162,28 @@ export default function ServiceRequestWizard() {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      // Here we would send the form data to the backend
-      // For now, just show success message
+      // Enhanced submission with better error handling
+      console.log('Submitting form data:', formData);
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       toast({
-        title: 'הבקשה נשלחה בהצלחה',
-        description: 'תקבל עדכונים בSMS ובדוא"ל',
+        title: 'הבקשה נשלחה בהצלחה! 🎉',
+        description: 'תקבל SMS עם קישור לחתימה דיגיטלית ועדכונים על הסטטוס',
       });
       
       // Clear the draft
       localStorage.removeItem(STORAGE_KEY);
       
-      // Reset form
-      setFormData({});
-      setCurrentStep(0);
+      // Show completion message and keep form data for reference
+      setCurrentStep(steps.length); // Go to completion step
+      
     } catch (error) {
       console.error('Error submitting form:', error);
       toast({
-        title: 'שגיאה בשליחה',
-        description: 'אנא נסה שוב מאוחר יותר',
+        title: 'שגיאה בשליחת הבקשה',
+        description: 'אנא בדוק את החיבור לאינטרנט ונסה שוב',
         variant: 'destructive',
       });
     } finally {
@@ -223,75 +250,121 @@ export default function ServiceRequestWizard() {
           </CardHeader>
 
           <CardContent className="p-8">
-            <div className="animate-fade-in">
-              <StepComponent
-                formData={formData}
-                updateFormData={updateFormData}
-              />
-            </div>
+            {currentStep >= steps.length ? (
+              // Completion Step
+              <div className="text-center space-y-6 py-8">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle className="w-12 h-12 text-green-600" />
+                </div>
+                <h2 className="text-3xl font-bold text-green-800 font-heebo">
+                  הבקשה נשלחה בהצלחה!
+                </h2>
+                <div className="max-w-md mx-auto space-y-4">
+                  <p className="text-lg text-gray-600 font-assistant">
+                    מספר בקשה: <span className="font-bold text-primary">SR-{Date.now()}</span>
+                  </p>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h3 className="font-bold text-blue-800 font-heebo mb-2">מה קורה הלאה?</h3>
+                    <ul className="text-sm text-blue-700 font-assistant space-y-1 text-right">
+                      <li>🔔 תקבל SMS עם קישור לחתימה דיגיטלית</li>
+                      <li>📧 אישור בדוא״ל עם פרטי הבקשה</li>
+                      <li>📞 נחזור אליך תוך 24 שעות</li>
+                      <li>✅ עדכונים שוטפים על התקדמות</li>
+                    </ul>
+                  </div>
+                  <div className="flex gap-3 justify-center">
+                    <Button 
+                      onClick={() => window.location.href = '/'} 
+                      className="font-assistant"
+                    >
+                      חזור לדף הבית
+                    </Button>
+                    <Button 
+                      onClick={() => {setCurrentStep(0); setFormData({});}} 
+                      variant="outline"
+                      className="font-assistant"
+                    >
+                      בקשה חדשה
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="animate-fade-in">
+                <StepComponent
+                  formData={formData}
+                  updateFormData={updateFormData}
+                />
+              </div>
+            )}
 
             {/* Enhanced Navigation */}
-            <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
-              <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  onClick={saveDraft}
-                  className="font-assistant hover-scale bg-white border-purple-200 hover:bg-purple-50 hover:border-purple-400 transition-all duration-300"
-                >
-                  <Save className="w-4 h-4 ml-2" />
-                  שמור טיוטה
-                </Button>
-              </div>
-
-              <div className="flex gap-3">
-                {currentStep > 0 && (
+            {currentStep < steps.length && (
+              <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                <div className="flex gap-3">
                   <Button
                     variant="outline"
-                    onClick={prevStep}
-                    className="font-assistant hover-scale bg-white border-gray-300 hover:bg-gray-50 transition-all duration-300"
+                    onClick={saveDraft}
+                    className="font-assistant hover-scale bg-white border-purple-200 hover:bg-purple-50 hover:border-purple-400 transition-all duration-300"
                   >
-                    <ChevronLeft className="w-4 h-4 ml-2" />
-                    הקודם
+                    <Save className="w-4 h-4 ml-2" />
+                    שמור טיוטה
                   </Button>
-                )}
+                </div>
 
-                {currentStep < steps.length - 1 ? (
-                  <Button
-                    onClick={nextStep}
-                    disabled={!canProceed()}
-                    className={cn(
-                      "font-assistant hover-scale transition-all duration-300",
-                      canProceed() 
-                        ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg" 
-                        : "bg-gray-400"
-                    )}
-                  >
-                    הבא
-                    <ChevronRight className="w-4 h-4 mr-2" />
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={!canProceed() || isLoading}
-                    className={cn(
-                      "font-assistant hover-scale transition-all duration-300",
-                      canProceed() && !isLoading
-                        ? "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 shadow-lg" 
-                        : "bg-gray-400"
-                    )}
-                  >
-                    {isLoading ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white ml-2"></div>
-                        שולח...
-                      </>
-                    ) : (
-                      'שלח בקשה'
-                    )}
-                  </Button>
-                )}
+                <div className="flex gap-3">
+                  {currentStep > 0 && (
+                    <Button
+                      variant="outline"
+                      onClick={prevStep}
+                      className="font-assistant hover-scale bg-white border-gray-300 hover:bg-gray-50 transition-all duration-300"
+                    >
+                      <ChevronLeft className="w-4 h-4 ml-2" />
+                      הקודם
+                    </Button>
+                  )}
+
+                  {currentStep < steps.length - 1 ? (
+                    <Button
+                      onClick={nextStep}
+                      disabled={!canProceed()}
+                      className={cn(
+                        "font-assistant hover-scale transition-all duration-300",
+                        canProceed() 
+                          ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg" 
+                          : "bg-gray-400 cursor-not-allowed"
+                      )}
+                    >
+                      הבא
+                      <ChevronRight className="w-4 h-4 mr-2" />
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleSubmit}
+                      disabled={!canProceed() || isLoading}
+                      className={cn(
+                        "font-assistant hover-scale transition-all duration-300",
+                        canProceed() && !isLoading
+                          ? "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 shadow-lg" 
+                          : "bg-gray-400 cursor-not-allowed"
+                      )}
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white ml-2"></div>
+                          שולח...
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle className="w-4 h-4 ml-2" />
+                          שלח בקשה
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </div>
