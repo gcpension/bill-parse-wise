@@ -54,59 +54,63 @@ export default function InternetISPFields({ formData, updateFormData }: Internet
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* ISP Account Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo flex items-center gap-2">
-            <Globe className="w-5 h-5" />
-            פרטי חשבון ספק האינטרנט
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
+              <Globe className="w-5 h-5 text-purple-600" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900">פרטי חשבון ספק האינטרנט</h3>
+          </div>
+        </div>
+        
+        <div className="p-6 space-y-6">
           <div className="space-y-2">
-            <Label className="font-assistant">
+            <Label className="text-sm font-medium text-gray-700">
               מספר חשבון ספק האינטרנט <span className="text-red-500">*</span>
             </Label>
             <Input
               value={internetISPData.isp_account_no}
               onChange={(e) => updateISPData({ isp_account_no: e.target.value })}
               placeholder="הזן מספר חשבון"
-              className="font-assistant"
+              className="h-11 border-gray-200 focus:border-purple-500 focus:ring-purple-500/20"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label className="font-assistant">שם משתמש PPPoE (אם קיים)</Label>
+              <Label className="text-sm font-medium text-gray-700">שם משתמש PPPoE (אם קיים)</Label>
               <Input
                 value={internetISPData.pppoe_user || ''}
                 onChange={(e) => updateISPData({ pppoe_user: e.target.value })}
                 placeholder="username@isp.co.il"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-purple-500 focus:ring-purple-500/20"
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="font-assistant">מספר סידורי ONT (אם ידוע)</Label>
+              <Label className="text-sm font-medium text-gray-700">מספר סידורי ONT (אם ידוע)</Label>
               <Input
                 value={internetISPData.ont_serial || ''}
                 onChange={(e) => updateISPData({ ont_serial: e.target.value })}
                 placeholder="הזן מספר סידורי"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-purple-500 focus:ring-purple-500/20"
               />
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Installation Address */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo">כתובת התקנה</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-2 space-x-reverse">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <h3 className="text-xl font-medium text-gray-900">כתובת התקנה</h3>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
             <Checkbox
               id="install_address_different"
               checked={internetISPData.install_address_different || false}
@@ -114,35 +118,38 @@ export default function InternetISPFields({ formData, updateFormData }: Internet
                 updateISPData({ install_address_different: checked as boolean })
               }
             />
-            <Label htmlFor="install_address_different" className="font-assistant">
+            <Label htmlFor="install_address_different" className="text-sm text-gray-700">
               כתובת התקנה שונה מכתובת השירות
             </Label>
           </div>
 
           {internetISPData.install_address_different && (
             <div className="space-y-2">
-              <Label className="font-assistant">כתובת התקנה</Label>
+              <Label className="text-sm font-medium text-gray-700">כתובת התקנה</Label>
               <Input
                 value={internetISPData.install_address || ''}
                 onChange={(e) => updateISPData({ install_address: e.target.value })}
                 placeholder="הזן כתובת התקנה המלאה"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-purple-500 focus:ring-purple-500/20"
               />
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Bundle Services */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo flex items-center gap-2">
-            <Package className="w-5 h-5" />
-            חבילת שירותים
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-2 space-x-reverse">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
+              <Package className="w-5 h-5 text-purple-600" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900">חבילת שירותים</h3>
+          </div>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
             <Checkbox
               id="is_bundle"
               checked={internetISPData.bundle.is_bundle}
@@ -152,41 +159,42 @@ export default function InternetISPFields({ formData, updateFormData }: Internet
                 })
               }
             />
-            <Label htmlFor="is_bundle" className="font-assistant">
+            <Label htmlFor="is_bundle" className="text-sm text-gray-700">
               השירות הוא חלק מחבילה
             </Label>
           </div>
 
           {internetISPData.bundle.is_bundle && (
-            <div className="space-y-3">
-              <Label className="font-assistant">רכיבי החבילה:</Label>
+            <div className="space-y-4">
+              <Label className="text-sm font-medium text-gray-700">רכיבי החבילה:</Label>
               {bundleComponents.map((component) => (
-                <div key={component} className="flex items-center space-x-2 space-x-reverse">
+                <div key={component} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                   <Checkbox
                     id={`bundle_${component}`}
                     checked={internetISPData.bundle.components.includes(component)}
                     onCheckedChange={(checked) => toggleBundleComponent(component, checked as boolean)}
                   />
-                  <Label htmlFor={`bundle_${component}`} className="font-assistant">
+                  <Label htmlFor={`bundle_${component}`} className="text-sm text-gray-700">
                     {component}
                   </Label>
                 </div>
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Equipment Return */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo">החזרת ציוד</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <Label className="font-assistant">ציוד להחזרה:</Label>
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <h3 className="text-xl font-medium text-gray-900">החזרת ציוד</h3>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="space-y-4">
+            <Label className="text-sm font-medium text-gray-700">ציוד להחזרה:</Label>
             {equipmentItems.map((item) => (
-              <div key={item} className="flex items-center space-x-2 space-x-reverse">
+              <div key={item} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                 <Checkbox
                   id={`equipment_${item}`}
                   checked={internetISPData.equipment_return.items.includes(item)}
@@ -200,7 +208,7 @@ export default function InternetISPFields({ formData, updateFormData }: Internet
                     });
                   }}
                 />
-                <Label htmlFor={`equipment_${item}`} className="font-assistant">
+                <Label htmlFor={`equipment_${item}`} className="text-sm text-gray-700">
                   {item}
                 </Label>
               </div>
@@ -208,7 +216,7 @@ export default function InternetISPFields({ formData, updateFormData }: Internet
           </div>
 
           <div className="space-y-2">
-            <Label className="font-assistant">שיטת החזרה</Label>
+            <Label className="text-sm font-medium text-gray-700">שיטת החזרה</Label>
             <Select
               value={internetISPData.equipment_return.method}
               onValueChange={(value) => 
@@ -217,19 +225,19 @@ export default function InternetISPFields({ formData, updateFormData }: Internet
                 })
               }
             >
-              <SelectTrigger className="font-assistant">
+              <SelectTrigger className="h-11 border-gray-200 focus:border-purple-500 focus:ring-purple-500/20">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="courier" className="font-assistant">איסוף בשליח</SelectItem>
-                <SelectItem value="dropoff" className="font-assistant">הגשה בנקודת שירות</SelectItem>
+                <SelectItem value="courier">איסוף בשליח</SelectItem>
+                <SelectItem value="dropoff">הגשה בנקודת שירות</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {internetISPData.equipment_return.method === 'courier' && (
             <div className="space-y-2">
-              <Label className="font-assistant">זמן מועדף לאיסוף</Label>
+              <Label className="text-sm font-medium text-gray-700">זמן מועדף לאיסוף</Label>
               <Input
                 value={internetISPData.equipment_return.slot || ''}
                 onChange={(e) => 
@@ -238,12 +246,12 @@ export default function InternetISPFields({ formData, updateFormData }: Internet
                   })
                 }
                 placeholder="לדוגמה: ראשון-חמישי 14:00-18:00"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-purple-500 focus:ring-purple-500/20"
               />
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

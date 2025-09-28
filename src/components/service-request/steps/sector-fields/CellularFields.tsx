@@ -49,81 +49,82 @@ export default function CellularFields({ formData, updateFormData }: CellularFie
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Phone Lines */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo flex items-center gap-2">
-            <Smartphone className="w-5 h-5" />
-            קווי טלפון סלולריים
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+              <Smartphone className="w-5 h-5 text-blue-600" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900">קווי טלפון סלולריים</h3>
+          </div>
+        </div>
+        
+        <div className="p-6 space-y-6">
           {cellularData.lines.map((line, index) => (
-            <div key={index} className="border rounded-lg p-4 space-y-4">
+            <div key={index} className="bg-gray-50 rounded-lg p-5 space-y-5">
               <div className="flex justify-between items-center">
-                <h4 className="font-heebo font-semibold">קו מספר {index + 1}</h4>
+                <h4 className="text-lg font-medium text-gray-800">קו מספר {index + 1}</h4>
                 {cellularData.lines.length > 1 && (
-                  <Button
+                  <button
                     type="button"
-                    variant="outline"
-                    size="sm"
                     onClick={() => removeLine(index)}
-                    className="text-red-600 hover:text-red-700"
+                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
-                  </Button>
+                  </button>
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <Label className="font-assistant">
+                  <Label className="text-sm font-medium text-gray-700">
                     מספר טלפון <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     value={line.msisdn}
                     onChange={(e) => updateLine(index, 'msisdn', e.target.value)}
                     placeholder="050-1234567"
-                    className="font-assistant"
+                    className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="font-assistant">סוג SIM</Label>
+                  <Label className="text-sm font-medium text-gray-700">סוג SIM</Label>
                   <Select
                     value={line.sim_type}
                     onValueChange={(value) => updateLine(index, 'sim_type', value)}
                   >
-                    <SelectTrigger className="font-assistant">
+                    <SelectTrigger className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="SIM" className="font-assistant">SIM פיזי</SelectItem>
-                      <SelectItem value="eSIM" className="font-assistant">eSIM דיגיטלי</SelectItem>
+                      <SelectItem value="SIM">SIM פיזי</SelectItem>
+                      <SelectItem value="eSIM">eSIM דיגיטלי</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="font-assistant">בעלים של הקו (אם שונה)</Label>
+                <Label className="text-sm font-medium text-gray-700">בעלים של הקו (אם שונה)</Label>
                 <Input
                   value={line.owner_id || ''}
                   onChange={(e) => updateLine(index, 'owner_id', e.target.value)}
                   placeholder="מספר זהות של בעל הקו"
-                  className="font-assistant"
+                  className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
 
               {formData.action_type === 'disconnect' && (
-                <div className="flex items-center space-x-2 space-x-reverse">
+                <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100">
                   <Checkbox
                     id={`port_out_${index}`}
                     checked={line.port_out || false}
                     onCheckedChange={(checked) => updateLine(index, 'port_out', checked)}
                   />
-                  <Label htmlFor={`port_out_${index}`} className="font-assistant">
+                  <Label htmlFor={`port_out_${index}`} className="text-sm text-gray-700">
                     העברת מספר לספק אחר (Port Out)
                   </Label>
                 </div>
@@ -131,123 +132,117 @@ export default function CellularFields({ formData, updateFormData }: CellularFie
 
               {formData.action_type === 'switch' && (
                 <div className="space-y-2">
-                  <Label className="font-assistant">ספק יעד להעברת המספר</Label>
+                  <Label className="text-sm font-medium text-gray-700">ספק יעד להעברת המספר</Label>
                   <Input
                     value={line.port_in_provider || ''}
                     onChange={(e) => updateLine(index, 'port_in_provider', e.target.value)}
                     placeholder="שם הספק החדש"
-                    className="font-assistant"
+                    className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
                   />
                 </div>
               )}
             </div>
           ))}
 
-          <Button
+          <button
             type="button"
-            variant="outline"
             onClick={addLine}
-            className="w-full font-assistant"
+            className="w-full h-12 border-2 border-dashed border-gray-200 rounded-lg text-gray-600 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50/50 transition-all flex items-center justify-center gap-2"
           >
-            <Plus className="w-4 h-4 ml-2" />
+            <Plus className="w-4 h-4" />
             הוסף קו נוסף
-          </Button>
-        </CardContent>
-      </Card>
+          </button>
+        </div>
+      </div>
 
       {/* OTP Code */}
       {(formData.action_type === 'switch' || formData.action_type === 'disconnect') && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-heebo">קוד OTP להעברת מספר</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label className="font-assistant">קוד OTP (אם התקבל מהספק)</Label>
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+          <div className="p-6 border-b border-gray-50">
+            <h3 className="text-xl font-medium text-gray-900">קוד OTP להעברת מספר</h3>
+          </div>
+          <div className="p-6">
+            <div className="space-y-3">
+              <Label className="text-sm font-medium text-gray-700">קוד OTP (אם התקבל מהספק)</Label>
               <Input
                 value={cellularData.porting_otp || ''}
                 onChange={(e) => updateCellularData({ porting_otp: e.target.value })}
                 placeholder="הזן קוד OTP"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
               />
-              <p className="text-sm text-muted-foreground font-assistant">
+              <p className="text-sm text-gray-500">
                 קוד OTP מתקבל בדרך כלל בהודעת SMS מהספק הנוכחי
               </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* Value Added Services */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo">ביטול שירותים נוספים</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <h3 className="text-xl font-medium text-gray-900">ביטול שירותים נוספים</h3>
+          <p className="text-sm text-gray-500 mt-1">בחר אילו שירותים נוספים ברצונך לבטל</p>
+        </div>
+        <div className="p-6">
           <div className="space-y-4">
-            <p className="text-sm text-muted-foreground font-assistant">
-              בחר אילו שירותים נוספים ברצונך לבטל:
-            </p>
-            
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2 space-x-reverse">
-                <Checkbox
-                  id="cancel_intl"
-                  checked={cellularData.cancel_vas.intl}
-                  onCheckedChange={(checked) => 
-                    updateCellularData({
-                      cancel_vas: { ...cellularData.cancel_vas, intl: checked as boolean }
-                    })
-                  }
-                />
-                <Label htmlFor="cancel_intl" className="font-assistant">
-                  שיחות בינלאומיות
-                </Label>
-              </div>
+            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <Checkbox
+                id="cancel_intl"
+                checked={cellularData.cancel_vas.intl}
+                onCheckedChange={(checked) => 
+                  updateCellularData({
+                    cancel_vas: { ...cellularData.cancel_vas, intl: checked as boolean }
+                  })
+                }
+              />
+              <Label htmlFor="cancel_intl" className="text-sm text-gray-700">
+                שיחות בינלאומיות
+              </Label>
+            </div>
 
-              <div className="flex items-center space-x-2 space-x-reverse">
-                <Checkbox
-                  id="cancel_premium"
-                  checked={cellularData.cancel_vas.premium}
-                  onCheckedChange={(checked) => 
-                    updateCellularData({
-                      cancel_vas: { ...cellularData.cancel_vas, premium: checked as boolean }
-                    })
-                  }
-                />
-                <Label htmlFor="cancel_premium" className="font-assistant">
-                  שירותי תוכן פרימיום
-                </Label>
-              </div>
+            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <Checkbox
+                id="cancel_premium"
+                checked={cellularData.cancel_vas.premium}
+                onCheckedChange={(checked) => 
+                  updateCellularData({
+                    cancel_vas: { ...cellularData.cancel_vas, premium: checked as boolean }
+                  })
+                }
+              />
+              <Label htmlFor="cancel_premium" className="text-sm text-gray-700">
+                שירותי תוכן פרימיום
+              </Label>
+            </div>
 
-              <div className="flex items-center space-x-2 space-x-reverse">
-                <Checkbox
-                  id="cancel_other"
-                  checked={cellularData.cancel_vas.other}
-                  onCheckedChange={(checked) => 
-                    updateCellularData({
-                      cancel_vas: { ...cellularData.cancel_vas, other: checked as boolean }
-                    })
-                  }
-                />
-                <Label htmlFor="cancel_other" className="font-assistant">
-                  שירותים נוספים אחרים
-                </Label>
-              </div>
+            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <Checkbox
+                id="cancel_other"
+                checked={cellularData.cancel_vas.other}
+                onCheckedChange={(checked) => 
+                  updateCellularData({
+                    cancel_vas: { ...cellularData.cancel_vas, other: checked as boolean }
+                  })
+                }
+              />
+              <Label htmlFor="cancel_other" className="text-sm text-gray-700">
+                שירותים נוספים אחרים
+              </Label>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Power of Attorney (if not uploaded globally) */}
       {formData.customer_type === 'private' && !formData.power_of_attorney_file && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-heebo">ייפוי כוח</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label className="font-assistant">ייפוי כוח (PDF)</Label>
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+          <div className="p-6 border-b border-gray-50">
+            <h3 className="text-xl font-medium text-gray-900">ייפוי כוח</h3>
+          </div>
+          <div className="p-6">
+            <div className="space-y-3">
+              <Label className="text-sm font-medium text-gray-700">ייפוי כוח (PDF)</Label>
               <FileUpload
                 accept=".pdf"
                 onFileUpload={(file) => updateCellularData({ power_of_attorney_file: file })}
@@ -255,8 +250,8 @@ export default function CellularFields({ formData, updateFormData }: CellularFie
                 helperText="העלה קובץ PDF של ייפוי הכוח (עד 10MB)"
               />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
     </div>
   );

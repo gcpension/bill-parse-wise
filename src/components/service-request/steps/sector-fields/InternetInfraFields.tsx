@@ -37,18 +37,21 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Infrastructure Provider */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo flex items-center gap-2">
-            <Router className="w-5 h-5" />
-            ספק תשתית
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center">
+              <Router className="w-5 h-5 text-indigo-600" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900">ספק תשתית</h3>
+          </div>
+        </div>
+        
+        <div className="p-6 space-y-6">
           <div className="space-y-2">
-            <Label className="font-assistant">
+            <Label className="text-sm font-medium text-gray-700">
               ספק התשתית <span className="text-red-500">*</span>
             </Label>
             <Select
@@ -57,70 +60,74 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
                 updateInfraData({ infra_provider: value as 'bezeq' | 'hot' })
               }
             >
-              <SelectTrigger className="font-assistant">
+              <SelectTrigger className="h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500/20">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="bezeq" className="font-assistant">בזק</SelectItem>
-                <SelectItem value="hot" className="font-assistant">HOT</SelectItem>
+                <SelectItem value="bezeq">בזק</SelectItem>
+                <SelectItem value="hot">HOT</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label className="font-assistant">
+            <Label className="text-sm font-medium text-gray-700">
               מספר חוזה <span className="text-red-500">*</span>
             </Label>
             <Input
               value={internetInfraData.contract_no}
               onChange={(e) => updateInfraData({ contract_no: e.target.value })}
               placeholder="הזן מספר חוזה"
-              className="font-assistant"
+              className="h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500/20"
             />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Equipment Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo">פרטי ציוד</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <h3 className="text-xl font-medium text-gray-900">פרטי ציוד</h3>
+        </div>
+        
+        <div className="p-6">
           {internetInfraData.infra_provider === 'bezeq' ? (
             <div className="space-y-2">
-              <Label className="font-assistant">מספר סידורי ONT או מודם</Label>
+              <Label className="text-sm font-medium text-gray-700">מספר סידורי ONT או מודם</Label>
               <Input
                 value={internetInfraData.ont_or_modem_serial || ''}
                 onChange={(e) => updateInfraData({ ont_or_modem_serial: e.target.value })}
                 placeholder="הזן מספר סידורי"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500/20"
               />
             </div>
           ) : (
             <div className="space-y-2">
-              <Label className="font-assistant">כתובת MAC של מודם כבלים</Label>
+              <Label className="text-sm font-medium text-gray-700">כתובת MAC של מודם כבלים</Label>
               <Input
                 value={internetInfraData.cm_mac || ''}
                 onChange={(e) => updateInfraData({ cm_mac: e.target.value })}
                 placeholder="XX:XX:XX:XX:XX:XX"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500/20"
               />
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Technical Visit */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo flex items-center gap-2">
-            <Settings className="w-5 h-5" />
-            ביקור טכנאי
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-2 space-x-reverse">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+              <Settings className="w-5 h-5 text-orange-600" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900">ביקור טכנאי</h3>
+          </div>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
             <Checkbox
               id="tech_visit_required"
               checked={internetInfraData.tech_visit.required}
@@ -130,14 +137,14 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
                 })
               }
             />
-            <Label htmlFor="tech_visit_required" className="font-assistant">
+            <Label htmlFor="tech_visit_required" className="text-sm text-gray-700">
               נדרש ביקור טכנאי לניתוק
             </Label>
           </div>
 
           {internetInfraData.tech_visit.required && (
             <div className="space-y-2">
-              <Label className="font-assistant">זמן מועדף לביקור</Label>
+              <Label className="text-sm font-medium text-gray-700">זמן מועדף לביקור</Label>
               <Input
                 value={internetInfraData.tech_visit.slot || ''}
                 onChange={(e) => 
@@ -146,23 +153,24 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
                   })
                 }
                 placeholder="לדוגמה: ראשון-חמישי 08:00-16:00"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-orange-500 focus:ring-orange-500/20"
               />
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Equipment Return */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo">החזרת ציוד</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <Label className="font-assistant">ציוד להחזרה:</Label>
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <h3 className="text-xl font-medium text-gray-900">החזרת ציוד</h3>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="space-y-4">
+            <Label className="text-sm font-medium text-gray-700">ציוד להחזרה:</Label>
             {equipmentItems.map((item) => (
-              <div key={item} className="flex items-center space-x-2 space-x-reverse">
+              <div key={item} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                 <Checkbox
                   id={`equipment_${item}`}
                   checked={internetInfraData.equipment_return.items.includes(item)}
@@ -176,7 +184,7 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
                     });
                   }}
                 />
-                <Label htmlFor={`equipment_${item}`} className="font-assistant">
+                <Label htmlFor={`equipment_${item}`} className="text-sm text-gray-700">
                   {item}
                 </Label>
               </div>
@@ -184,7 +192,7 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
           </div>
 
           <div className="space-y-2">
-            <Label className="font-assistant">שיטת החזרה</Label>
+            <Label className="text-sm font-medium text-gray-700">שיטת החזרה</Label>
             <Select
               value={internetInfraData.equipment_return.method}
               onValueChange={(value) => 
@@ -193,19 +201,19 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
                 })
               }
             >
-              <SelectTrigger className="font-assistant">
+              <SelectTrigger className="h-11 border-gray-200 focus:border-orange-500 focus:ring-orange-500/20">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="courier" className="font-assistant">איסוף בשליח</SelectItem>
-                <SelectItem value="dropoff" className="font-assistant">הגשה בנקודת שירות</SelectItem>
+                <SelectItem value="courier">איסוף בשליח</SelectItem>
+                <SelectItem value="dropoff">הגשה בנקודת שירות</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {internetInfraData.equipment_return.method === 'courier' && (
             <div className="space-y-2">
-              <Label className="font-assistant">זמן מועדף לאיסוף</Label>
+              <Label className="text-sm font-medium text-gray-700">זמן מועדף לאיסוף</Label>
               <Input
                 value={internetInfraData.equipment_return.slot || ''}
                 onChange={(e) => 
@@ -214,12 +222,12 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
                   })
                 }
                 placeholder="לדוגמה: ראשון-חמישי 14:00-18:00"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-orange-500 focus:ring-orange-500/20"
               />
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

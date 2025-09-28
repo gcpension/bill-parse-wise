@@ -38,31 +38,34 @@ export default function TVFields({ formData, updateFormData }: TVFieldsProps) {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* TV Account Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo flex items-center gap-2">
-            <Tv className="w-5 h-5" />
-            פרטי חשבון טלוויזיה
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-pink-50 rounded-lg flex items-center justify-center">
+              <Tv className="w-5 h-5 text-pink-600" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900">פרטי חשבון טלוויזיה</h3>
+          </div>
+        </div>
+        
+        <div className="p-6 space-y-6">
           <div className="space-y-2">
-            <Label className="font-assistant">
+            <Label className="text-sm font-medium text-gray-700">
               מספר חשבון טלוויזיה <span className="text-red-500">*</span>
             </Label>
             <Input
               value={tvData.tv_account_no}
               onChange={(e) => updateTVData({ tv_account_no: e.target.value })}
               placeholder="הזן מספר חשבון"
-              className="font-assistant"
+              className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500/20"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label className="font-assistant">
+              <Label className="text-sm font-medium text-gray-700">
                 מספר ממירים (דיקודרים) <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -70,35 +73,36 @@ export default function TVFields({ formData, updateFormData }: TVFieldsProps) {
                 min="1"
                 value={tvData.decoders}
                 onChange={(e) => updateTVData({ decoders: parseInt(e.target.value) || 1 })}
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500/20"
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="font-assistant">מספר פרופילי OTT</Label>
+              <Label className="text-sm font-medium text-gray-700">מספר פרופילי OTT</Label>
               <Input
                 type="number"
                 min="0"
                 value={tvData.ott_profiles}
                 onChange={(e) => updateTVData({ ott_profiles: parseInt(e.target.value) || 0 })}
                 placeholder="0"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500/20"
               />
-              <p className="text-xs text-muted-foreground font-assistant">
+              <p className="text-xs text-gray-500">
                 פרופילי Netflix, Disney+, וכו׳
               </p>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Installation Address */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo">כתובת התקנה</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-2 space-x-reverse">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <h3 className="text-xl font-medium text-gray-900">כתובת התקנה</h3>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
             <Checkbox
               id="install_address_different"
               checked={tvData.install_address_different || false}
@@ -106,38 +110,41 @@ export default function TVFields({ formData, updateFormData }: TVFieldsProps) {
                 updateTVData({ install_address_different: checked as boolean })
               }
             />
-            <Label htmlFor="install_address_different" className="font-assistant">
+            <Label htmlFor="install_address_different" className="text-sm text-gray-700">
               כתובת התקנה שונה מכתובת השירות
             </Label>
           </div>
 
           {tvData.install_address_different && (
             <div className="space-y-2">
-              <Label className="font-assistant">כתובת התקנה</Label>
+              <Label className="text-sm font-medium text-gray-700">כתובת התקנה</Label>
               <Input
                 value={tvData.install_address || ''}
                 onChange={(e) => updateTVData({ install_address: e.target.value })}
                 placeholder="הזן כתובת התקנה המלאה"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500/20"
               />
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Equipment Return */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo flex items-center gap-2">
-            <MonitorSpeaker className="w-5 h-5" />
-            החזרת ציוד
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <Label className="font-assistant">ציוד להחזרה:</Label>
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-pink-50 rounded-lg flex items-center justify-center">
+              <MonitorSpeaker className="w-5 h-5 text-pink-600" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900">החזרת ציוד</h3>
+          </div>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="space-y-4">
+            <Label className="text-sm font-medium text-gray-700">ציוד להחזרה:</Label>
             {equipmentItems.map((item) => (
-              <div key={item} className="flex items-center space-x-2 space-x-reverse">
+              <div key={item} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                 <Checkbox
                   id={`equipment_${item}`}
                   checked={tvData.equipment_return.items.includes(item)}
@@ -151,7 +158,7 @@ export default function TVFields({ formData, updateFormData }: TVFieldsProps) {
                     });
                   }}
                 />
-                <Label htmlFor={`equipment_${item}`} className="font-assistant">
+                <Label htmlFor={`equipment_${item}`} className="text-sm text-gray-700">
                   {item}
                 </Label>
               </div>
@@ -159,7 +166,7 @@ export default function TVFields({ formData, updateFormData }: TVFieldsProps) {
           </div>
 
           <div className="space-y-2">
-            <Label className="font-assistant">שיטת החזרה</Label>
+            <Label className="text-sm font-medium text-gray-700">שיטת החזרה</Label>
             <Select
               value={tvData.equipment_return.method}
               onValueChange={(value) => 
@@ -168,19 +175,19 @@ export default function TVFields({ formData, updateFormData }: TVFieldsProps) {
                 })
               }
             >
-              <SelectTrigger className="font-assistant">
+              <SelectTrigger className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500/20">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="courier" className="font-assistant">איסוף בשליח</SelectItem>
-                <SelectItem value="dropoff" className="font-assistant">הגשה בנקודת שירות</SelectItem>
+                <SelectItem value="courier">איסוף בשליח</SelectItem>
+                <SelectItem value="dropoff">הגשה בנקודת שירות</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {tvData.equipment_return.method === 'courier' && (
             <div className="space-y-2">
-              <Label className="font-assistant">זמן מועדף לאיסוף</Label>
+              <Label className="text-sm font-medium text-gray-700">זמן מועדף לאיסוף</Label>
               <Input
                 value={tvData.equipment_return.slot || ''}
                 onChange={(e) => 
@@ -189,12 +196,12 @@ export default function TVFields({ formData, updateFormData }: TVFieldsProps) {
                   })
                 }
                 placeholder="לדוגמה: ראשון-חמישי 14:00-18:00"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500/20"
               />
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

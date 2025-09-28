@@ -69,55 +69,58 @@ export default function ElectricityFields({ formData, updateFormData }: Electric
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Electricity Account Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo flex items-center gap-2">
-            <Zap className="w-5 h-5" />
-            פרטי חשבון חשמל
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-yellow-50 rounded-lg flex items-center justify-center">
+              <Zap className="w-5 h-5 text-yellow-600" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900">פרטי חשבון חשמל</h3>
+          </div>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label className="font-assistant">
+              <Label className="text-sm font-medium text-gray-700">
                 מספר חשבון חשמל <span className="text-red-500">*</span>
               </Label>
               <Input
                 value={electricityData.electricity_account_no}
                 onChange={(e) => updateElectricityData({ electricity_account_no: e.target.value })}
                 placeholder="הזן מספר חשבון"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-yellow-500 focus:ring-yellow-500/20"
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="font-assistant">
+              <Label className="text-sm font-medium text-gray-700">
                 מספר מונה עיקרי <span className="text-red-500">*</span>
               </Label>
               <Input
                 value={electricityData.meter_number}
                 onChange={(e) => updateElectricityData({ meter_number: e.target.value })}
                 placeholder="הזן מספר מונה"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-yellow-500 focus:ring-yellow-500/20"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label className="font-assistant">תעריף נוכחי</Label>
+              <Label className="text-sm font-medium text-gray-700">תעריף נוכחי</Label>
               <Select
                 value={electricityData.current_tariff || ''}
                 onValueChange={(value) => updateElectricityData({ current_tariff: value })}
               >
-                <SelectTrigger className="font-assistant">
+                <SelectTrigger className="h-11 border-gray-200 focus:border-yellow-500 focus:ring-yellow-500/20">
                   <SelectValue placeholder="בחר תעריף" />
                 </SelectTrigger>
                 <SelectContent>
                   {tariffTypes.map((tariff) => (
-                    <SelectItem key={tariff} value={tariff} className="font-assistant">
+                    <SelectItem key={tariff} value={tariff}>
                       {tariff}
                     </SelectItem>
                   ))}
@@ -126,70 +129,71 @@ export default function ElectricityFields({ formData, updateFormData }: Electric
             </div>
 
             <div className="space-y-2">
-              <Label className="font-assistant">צריכה חודשית ממוצעת (קוט״ש)</Label>
+              <Label className="text-sm font-medium text-gray-700">צריכה חודשית ממוצעת (קוט״ש)</Label>
               <Input
                 type="number"
                 value={electricityData.avg_monthly_kwh || ''}
                 onChange={(e) => updateElectricityData({ avg_monthly_kwh: parseInt(e.target.value) || undefined })}
                 placeholder="לדוגמה: 300"
-                className="font-assistant"
+                className="h-11 border-gray-200 focus:border-yellow-500 focus:ring-yellow-500/20"
               />
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Consumption Points */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-heebo flex items-center gap-2">
-            <BarChart3 className="w-5 h-5" />
-            נקודות צריכה
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-6 border-b border-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
+              <BarChart3 className="w-5 h-5 text-green-600" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900">נקודות צריכה</h3>
+          </div>
+        </div>
+        
+        <div className="p-6 space-y-6">
           {electricityData.consumption_points.map((point, index) => (
-            <div key={index} className="border rounded-lg p-4 space-y-4">
+            <div key={index} className="bg-gray-50 rounded-lg p-5 space-y-5">
               <div className="flex justify-between items-center">
-                <h4 className="font-heebo font-semibold">נקודת צריכה {index + 1}</h4>
+                <h4 className="text-lg font-medium text-gray-800">נקודת צריכה {index + 1}</h4>
                 {electricityData.consumption_points.length > 1 && (
-                  <Button
+                  <button
                     type="button"
-                    variant="outline"
-                    size="sm"
                     onClick={() => removeConsumptionPoint(index)}
-                    className="text-red-600 hover:text-red-700"
+                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
-                  </Button>
+                  </button>
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <Label className="font-assistant">
+                  <Label className="text-sm font-medium text-gray-700">
                     מזהה נקודה <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     value={point.point_id}
                     onChange={(e) => updateConsumptionPoint(index, 'point_id', e.target.value)}
                     placeholder="הזן מזהה נקודה"
-                    className="font-assistant"
+                    className="h-11 border-gray-200 focus:border-green-500 focus:ring-green-500/20"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="font-assistant">סוג מונה</Label>
+                  <Label className="text-sm font-medium text-gray-700">סוג מונה</Label>
                   <Select
                     value={point.meter_type}
                     onValueChange={(value) => updateConsumptionPoint(index, 'meter_type', value)}
                   >
-                    <SelectTrigger className="font-assistant">
+                    <SelectTrigger className="h-11 border-gray-200 focus:border-green-500 focus:ring-green-500/20">
                       <SelectValue placeholder="בחר סוג מונה" />
                     </SelectTrigger>
                     <SelectContent>
                       {meterTypes.map((type) => (
-                        <SelectItem key={type} value={type} className="font-assistant">
+                        <SelectItem key={type} value={type}>
                           {type}
                         </SelectItem>
                       ))}
@@ -199,30 +203,29 @@ export default function ElectricityFields({ formData, updateFormData }: Electric
               </div>
 
               <div className="space-y-2">
-                <Label className="font-assistant">
+                <Label className="text-sm font-medium text-gray-700">
                   כתובת נקודת הצריכה <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   value={point.address}
                   onChange={(e) => updateConsumptionPoint(index, 'address', e.target.value)}
                   placeholder="הזן כתובת מלאה"
-                  className="font-assistant"
+                  className="h-11 border-gray-200 focus:border-green-500 focus:ring-green-500/20"
                 />
               </div>
             </div>
           ))}
 
-          <Button
+          <button
             type="button"
-            variant="outline"
             onClick={addConsumptionPoint}
-            className="w-full font-assistant"
+            className="w-full h-12 border-2 border-dashed border-gray-200 rounded-lg text-gray-600 hover:border-green-300 hover:text-green-600 hover:bg-green-50/50 transition-all flex items-center justify-center gap-2"
           >
-            <Plus className="w-4 h-4 ml-2" />
+            <Plus className="w-4 h-4" />
             הוסף נקודת צריכה
-          </Button>
-        </CardContent>
-      </Card>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
