@@ -149,43 +149,6 @@ export default function ProviderSpecificStep({ formData, updateFormData }: Provi
         </Card>
       )}
 
-      {/* Target Provider Details */}
-      {targetConfig && formData.action_type === 'switch' && (
-        <Card className="border-2 border-green-200 bg-green-50/30">
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Shield className="w-5 h-5 text-green-600" />
-              </div>
-              <div>
-                <CardTitle className="text-xl text-green-900">פרטי הספק החדש</CardTitle>
-                <p className="text-sm text-green-700 mt-1">
-                  פרטים נדרשים לפתיחת שירות חדש אצל {targetProvider}
-                </p>
-              </div>
-              <Badge className="bg-green-600 mr-auto">{targetProvider}</Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {targetConfig.fields.map((field) => (
-                <div key={`target_${field}`} className="space-y-2">
-                  <Label className="font-assistant font-semibold">
-                    {targetConfig.labels[field as keyof typeof targetConfig.labels]}
-                    {field !== 'puk_code' && field !== 'last_reading' && ' (אופציונלי)'}
-                  </Label>
-                  <Input
-                    value={formData[`target_${field}` as keyof ServiceRequestFormData] as string || ''}
-                    onChange={(e) => updateFormData({ [`target_${field}`]: e.target.value })}
-                    placeholder={`הזן ${targetConfig.labels[field as keyof typeof targetConfig.labels]}`}
-                    className="font-assistant"
-                  />
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Generic Provider Information for unknown providers */}
       {!currentConfig && currentProvider && (

@@ -194,29 +194,84 @@ export default function ServiceRequestWizard() {
   const progress = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4" dir="rtl">
-      <div className="max-w-2xl mx-auto">
-        <Card className="rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <CardContent className="p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6" dir="rtl">
+      <div className="max-w-4xl mx-auto">
+        {/* Progress Header */}
+        <div className="mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-white/50 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-bold text-slate-900">בקשת שירות</h1>
+              <div className="text-sm font-medium text-slate-600">
+                שלב {currentStep + 1} מתוך {steps.length}
+              </div>
+            </div>
+            
+            {/* Progress Bar */}
+            <div className="relative">
+              <div className="flex justify-between mb-2">
+                {steps.map((step, index) => (
+                  <div key={index} className="flex flex-col items-center">
+                    <div className={cn(
+                      "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300",
+                      index <= currentStep 
+                        ? "bg-slate-900 text-white shadow-md" 
+                        : "bg-slate-200 text-slate-500"
+                    )}>
+                      {index < currentStep ? '✓' : index + 1}
+                    </div>
+                    <span className={cn(
+                      "text-xs mt-2 text-center max-w-20 leading-tight",
+                      index <= currentStep ? "text-slate-900 font-medium" : "text-slate-500"
+                    )}>
+                      {step.title}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-slate-700 to-slate-900 transition-all duration-500 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 overflow-hidden">
+          <div className="p-8 lg:p-12">
             {currentStep >= steps.length ? (
               // Completion Step
-              <div className="text-center space-y-6">
-                <div className="text-6xl mb-4">✅</div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              <div className="text-center space-y-8 py-12">
+                <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle className="w-12 h-12 text-green-600" />
+                </div>
+                <h2 className="text-3xl font-bold text-slate-900">
                   הבקשה נשלחה בהצלחה!
                 </h2>
-                <p className="text-gray-600 mb-6">
+                <p className="text-slate-600 text-lg max-w-md mx-auto">
                   תקבל SMS עם קישור לחתימה דיגיטלית ועדכונים על הסטטוס
                 </p>
-                <Button 
-                  onClick={() => window.location.href = '/'} 
-                  className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-lg"
-                >
-                  חזור לדף הבית
-                </Button>
+                <div className="pt-4">
+                  <Button 
+                    onClick={() => window.location.href = '/'} 
+                    size="lg"
+                    className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-xl shadow-md"
+                  >
+                    חזור לדף הבית
+                  </Button>
+                </div>
               </div>
             ) : (
-              <div>
+              <div className="space-y-8">
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                    {steps[currentStep].title}
+                  </h2>
+                  <div className="h-1 w-20 bg-gradient-to-r from-slate-700 to-slate-900 rounded-full"></div>
+                </div>
+                
                 <StepComponent
                   formData={formData}
                   updateFormData={updateFormData}
@@ -224,29 +279,27 @@ export default function ServiceRequestWizard() {
               </div>
             )}
 
-            {/* Enhanced Navigation */}
+            {/* Navigation */}
             {currentStep < steps.length && (
-              <div className="flex justify-between items-center mt-12 pt-8 border-t border-primary/10">
-                <div className="flex gap-4">
-                  <Button
-                    variant="outline"
-                    onClick={saveDraft}
-                    className="font-assistant hover-scale bg-white/50 backdrop-blur-sm border-primary/20 hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 px-6 py-3 rounded-xl"
-                  >
-                    <Save className="w-5 h-5 ml-2" />
-                    💾 שמור טיוטה
-                  </Button>
-                </div>
+              <div className="flex justify-between items-center mt-12 pt-8 border-t border-slate-200">
+                <Button
+                  variant="outline"
+                  onClick={saveDraft}
+                  className="bg-white/80 hover:bg-white border-slate-300 hover:border-slate-400 text-slate-700 px-6 py-3 rounded-xl transition-all duration-200"
+                >
+                  <Save className="w-4 h-4 ml-2" />
+                  שמור טיוטה
+                </Button>
 
-                <div className="flex gap-4">
+                <div className="flex gap-3">
                   {currentStep > 0 && (
                     <Button
                       variant="outline"
                       onClick={prevStep}
-                      className="font-assistant hover-scale bg-white/50 backdrop-blur-sm border-muted-foreground/20 hover:bg-muted hover:border-muted-foreground/40 transition-all duration-300 px-8 py-3 rounded-xl"
+                      className="bg-white/80 hover:bg-white border-slate-300 hover:border-slate-400 text-slate-700 px-8 py-3 rounded-xl transition-all duration-200"
                     >
-                      <ChevronLeft className="w-5 h-5 ml-2" />
-                      ⬅️ הקודם
+                      <ChevronLeft className="w-4 h-4 ml-2" />
+                      הקודם
                     </Button>
                   )}
 
@@ -254,36 +307,38 @@ export default function ServiceRequestWizard() {
                     <Button
                       onClick={nextStep}
                       disabled={!canProceed()}
+                      size="lg"
                       className={cn(
-                        "font-assistant hover-scale transition-all duration-300 px-8 py-3 rounded-xl",
+                        "px-8 py-3 rounded-xl transition-all duration-200",
                         canProceed() 
-                          ? "bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 shadow-lg text-white" 
-                          : "bg-muted text-muted-foreground cursor-not-allowed"
+                          ? "bg-slate-900 hover:bg-slate-800 text-white shadow-md" 
+                          : "bg-slate-200 text-slate-500 cursor-not-allowed"
                       )}
                     >
-                      ➡️ הבא
-                      <ChevronRight className="w-5 h-5 mr-2" />
+                      הבא
+                      <ChevronRight className="w-4 h-4 mr-2" />
                     </Button>
                   ) : (
                     <Button
                       onClick={handleSubmit}
                       disabled={!canProceed() || isLoading}
+                      size="lg"
                       className={cn(
-                        "font-assistant hover-scale transition-all duration-300 px-8 py-3 rounded-xl",
+                        "px-8 py-3 rounded-xl transition-all duration-200",
                         canProceed() && !isLoading
-                          ? "bg-gradient-to-r from-success to-success-glow hover:from-success/90 hover:to-success-glow/90 shadow-lg text-white" 
-                          : "bg-muted text-muted-foreground cursor-not-allowed"
+                          ? "bg-green-600 hover:bg-green-700 text-white shadow-md" 
+                          : "bg-slate-200 text-slate-500 cursor-not-allowed"
                       )}
                     >
                       {isLoading ? (
                         <>
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white ml-2"></div>
-                          ⏳ שולח...
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white ml-2"></div>
+                          שולח...
                         </>
                       ) : (
                         <>
-                          <CheckCircle className="w-5 h-5 ml-2" />
-                          🚀 שלח בקשה
+                          <CheckCircle className="w-4 h-4 ml-2" />
+                          שלח בקשה
                         </>
                       )}
                     </Button>
@@ -291,8 +346,8 @@ export default function ServiceRequestWizard() {
                 </div>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
