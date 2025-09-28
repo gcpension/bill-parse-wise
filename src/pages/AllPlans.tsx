@@ -1,4 +1,17 @@
 import { useEffect, useState, useMemo } from "react";
+import electricityLogo from "@/assets/logos/electricity-logo.png";
+import electraLogo from "@/assets/logos/electra-logo.png";
+import bezeqLogo from "@/assets/logos/bezeq-logo.png";
+import hotLogo from "@/assets/logos/hot-logo.svg";
+import cellcomLogo from "@/assets/logos/cellcom-logo.svg";
+import partnerLogo from "@/assets/logos/partner-logo.png";
+import pelephoneLogo from "@/assets/logos/pelephone-logo.png";
+import logo019 from "@/assets/logos/019-logo.png";
+import ramiLevyLogo from "@/assets/logos/rami-levy-logo.png";
+import yesLogo from "@/assets/logos/yes-logo.png";
+import netflixLogo from "@/assets/logos/netflix-logo.svg";
+import disneyLogo from "@/assets/logos/disney-logo.png";
+import hboLogo from "@/assets/logos/hbo-logo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -49,17 +62,10 @@ const AllPlans = ({
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<ManualPlan | null>(null);
   const [showComparison, setShowComparison] = useState(false);
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [sortBy, setSortBy] = useState<'price' | 'rating' | 'features' | 'ai'>('ai');
   const [showSmartComparison, setShowSmartComparison] = useState(false);
   const [smartComparisonMatrix, setSmartComparisonMatrix] = useState<any>(null);
   const [showPersonalizedWizard, setShowPersonalizedWizard] = useState(false);
   const [personalizedRecommendations, setPersonalizedRecommendations] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [priceRange, setPriceRange] = useState({
-    min: 0,
-    max: 1000
-  });
   const [currentUserPlan, setCurrentUserPlan] = useState({
     name: '',
     price: '',
@@ -109,7 +115,7 @@ const AllPlans = ({
     document.title = "כל המסלולים | EasySwitch";
   }, []);
 
-  // Get filtered and sorted plans grouped by company
+  // Get filtered plans grouped by company  
   const {
     filteredPlans,
     groupedByCompany
@@ -118,35 +124,13 @@ const AllPlans = ({
       filteredPlans: [],
       groupedByCompany: {}
     };
+    
     let filtered = manualPlans.filter(plan => {
-      // Filter by category
-      if (plan.category !== selectedCategory) return false;
-
-      // Filter by search term
-      if (searchTerm && !plan.planName.toLowerCase().includes(searchTerm.toLowerCase()) && !plan.company.toLowerCase().includes(searchTerm.toLowerCase())) {
-        return false;
-      }
-
-      // Filter by price range
-      if (plan.regularPrice < priceRange.min || plan.regularPrice > priceRange.max) {
-        return false;
-      }
-      return true;
+      return plan.category === selectedCategory;
     });
 
-    // Sort plans
-    switch (sortBy) {
-      case 'price':
-        filtered.sort((a, b) => a.regularPrice - b.regularPrice);
-        break;
-      case 'features':
-        filtered.sort((a, b) => (b.features?.length || 0) - (a.features?.length || 0));
-        break;
-      case 'rating':
-        // Random rating for demo
-        filtered.sort(() => Math.random() - 0.5);
-        break;
-    }
+    // Sort plans by price
+    filtered.sort((a, b) => a.regularPrice - b.regularPrice);
 
     // Group by company
     const grouped = filtered.reduce((acc, plan) => {
@@ -156,11 +140,12 @@ const AllPlans = ({
       acc[plan.company].push(plan);
       return acc;
     }, {} as Record<string, ManualPlan[]>);
+    
     return {
       filteredPlans: filtered,
       groupedByCompany: grouped
     };
-  }, [selectedCategory, searchTerm, priceRange, sortBy]);
+  }, [selectedCategory]);
   const categoryConfig = {
     electricity: {
       label: 'חשמל',
@@ -385,112 +370,6 @@ const AllPlans = ({
           </div>
         )}
 
-        {/* Enhanced Filters and Search */}
-        {selectedCategory && <Card className="mb-8 border-2 border-primary/10 bg-gradient-to-r from-white via-purple-50/30 to-white shadow-lg">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-2xl font-bold text-primary font-heebo flex items-center gap-3">
-                  <Filter className="w-6 h-6" />
-                  סינון וחיפוש מתקדם
-                </CardTitle>
-                <Button variant="outline" size="sm" onClick={() => setShowAdvancedFilters(!showAdvancedFilters)} className="font-assistant">
-                  <Settings2 className="w-4 h-4 ml-2" />
-                  {showAdvancedFilters ? 'הסתר מתקדם' : 'הצג מתקדם'}
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Basic Filters */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Search */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-bold text-foreground font-assistant flex items-center gap-2">
-                    <Search className="w-4 h-4" />
-                    חיפוש חכם
-                  </Label>
-                  <div className="relative">
-                    <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                    <Input placeholder="חפשו לפי שם מסלול, חברה או תכונה..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pr-12 h-12 font-assistant text-lg" />
-                    {searchTerm && <Button variant="ghost" size="sm" onClick={() => setSearchTerm('')} className="absolute left-2 top-1/2 transform -translate-y-1/2">
-                        <X className="w-4 h-4" />
-                      </Button>}
-                  </div>
-                </div>
-
-                {/* Price Range */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-bold text-foreground font-assistant flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4" />
-                    טווח מחירים (₪)
-                  </Label>
-                  <div className="flex gap-2">
-                    <Input type="number" placeholder="מחיר מינימום" value={priceRange.min} onChange={e => setPriceRange(prev => ({
-                  ...prev,
-                  min: parseInt(e.target.value) || 0
-                }))} className="font-assistant h-12" />
-                    <Input type="number" placeholder="מחיר מקסימום" value={priceRange.max} onChange={e => setPriceRange(prev => ({
-                  ...prev,
-                  max: parseInt(e.target.value) || 1000
-                }))} className="font-assistant h-12" />
-                  </div>
-                </div>
-
-                {/* Enhanced Sort */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-bold text-foreground font-assistant flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4" />
-                    סדר תצוגה
-                  </Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button variant={sortBy === 'ai' ? 'default' : 'outline'} size="sm" onClick={() => setSortBy('ai')} className="font-assistant h-12 flex-col gap-1">
-                      <Brain className="w-4 h-4" />
-                      AI המלצות
-                    </Button>
-                    <Button variant={sortBy === 'price' ? 'default' : 'outline'} size="sm" onClick={() => setSortBy('price')} className="font-assistant h-12 flex-col gap-1">
-                      <TrendingUp className="w-4 h-4" />
-                      מחיר
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Advanced Filters */}
-              {showAdvancedFilters && <div className="border-t border-primary/10 pt-6">
-                  <h3 className="text-lg font-bold text-primary font-heebo mb-4">הגדרות מתקדמות</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <Label className="font-assistant font-semibold">תקציב חודשי מועדף</Label>
-                      <Input type="number" value={200} onChange={e => {/* Will be handled later */}} placeholder="₪200" className="font-assistant" />
-                    </div>
-                    <div className="space-y-3">
-                      <Label className="font-assistant font-semibold">גודל משק בית</Label>
-                      <Input type="number" value={userContext.familySize} onChange={e => setUserContext(prev => ({
-                  ...prev,
-                  familySize: parseInt(e.target.value) || 2
-                }))} placeholder="2" className="font-assistant" />
-                    </div>
-                  </div>
-                </div>}
-              
-              {/* Quick Actions */}
-              <div className="flex items-center justify-between pt-4 border-t border-primary/10">
-                <div className="text-sm text-muted-foreground">
-                  {filteredPlans.length} מסלולים נמצאו • {Object.keys(groupedByCompany).length} חברות
-                </div>
-                <Button variant="outline" size="sm" onClick={() => {
-              setSearchTerm('');
-              setPriceRange({
-                min: 0,
-                max: 1000
-              });
-              setSortBy('ai');
-            }} className="font-assistant">
-                  <RefreshCw className="w-4 h-4 ml-2" />
-                  איפוס סינונים
-                </Button>
-              </div>
-            </CardContent>
-          </Card>}
 
         {/* Enhanced Comparison Bar */}
         {comparedPlans.length > 0 && <Card className="mb-8 border-2 border-blue-200 bg-gradient-to-r from-blue-50 via-white to-blue-50 shadow-xl animate-fade-in">
