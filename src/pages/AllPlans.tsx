@@ -5,32 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { 
-  Zap, 
-  Smartphone, 
-  Wifi, 
-  Tv, 
-  ArrowLeft, 
-  Building2, 
-  Crown, 
-  Award, 
-  CheckCircle, 
-  TrendingUp, 
-  Sparkles, 
-  Star,
-  BarChart3,
-  Filter,
-  Search,
-  Calculator,
-  Brain,
-  Target,
-  Eye,
-  X,
-  Plus,
-  Minus,
-  Settings2,
-  RefreshCw
-} from "lucide-react";
+import { Zap, Smartphone, Wifi, Tv, ArrowLeft, Building2, Crown, Award, CheckCircle, TrendingUp, Sparkles, Star, BarChart3, Filter, Search, Calculator, Brain, Target, Eye, X, Plus, Minus, Settings2, RefreshCw } from "lucide-react";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
 import DetailedAIComparison from "@/components/plans/DetailedAIComparison";
@@ -42,7 +17,6 @@ import { useSavingsData } from "@/hooks/useSavingsData";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { BreadcrumbNavigation } from "@/components/BreadcrumbNavigation";
 import { SmartPlanMatchingBanner } from "@/components/SmartPlanMatchingBanner";
-
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -52,16 +26,18 @@ interface SavingsData {
   recommendedProvider: string;
   category: string;
 }
-
 interface AllPlansProps {
   savingsData?: SavingsData[];
   initialSelectedCategories?: string[];
 }
-
 type CategoryType = 'electricity' | 'internet' | 'mobile' | 'tv';
-
-const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlansProps) => {
-  const { savingsData: persistedSavings } = useSavingsData();
+const AllPlans = ({
+  savingsData = [],
+  initialSelectedCategories = []
+}: AllPlansProps) => {
+  const {
+    savingsData: persistedSavings
+  } = useSavingsData();
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
   const [selectedPlans, setSelectedPlans] = useState<ManualPlan[]>([]);
   const [comparedPlans, setComparedPlans] = useState<ManualPlan[]>([]);
@@ -71,7 +47,10 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'price' | 'rating' | 'features' | 'ai'>('ai');
   const [searchTerm, setSearchTerm] = useState('');
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+  const [priceRange, setPriceRange] = useState({
+    min: 0,
+    max: 1000
+  });
   const [currentUserPlan, setCurrentUserPlan] = useState({
     name: '',
     price: '',
@@ -99,7 +78,10 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
           // Set the first category as selected
           const firstCategory = parsedData[0].category;
           const categoryMapping: Record<string, CategoryType> = {
-            'cellular': 'mobile', 'electricity': 'electricity', 'internet': 'internet', 'tv': 'tv'
+            'cellular': 'mobile',
+            'electricity': 'electricity',
+            'internet': 'internet',
+            'tv': 'tv'
           };
           setSelectedCategory(categoryMapping[firstCategory] || firstCategory as CategoryType);
         }
@@ -109,39 +91,40 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
     }
   }, []);
 
-  
   // Set page meta
   usePageMeta({
     title: 'כל המסלולים | EasySwitch',
     description: 'מרכז המסלולים החכם - השוואה מבוססת AI, המלצות מותאמות אישית וכל המסלולים הטובים ביותר במקום אחד.'
   });
-
   useEffect(() => {
     document.title = "כל המסלולים | EasySwitch";
   }, []);
 
   // Get filtered and sorted plans grouped by company
-  const { filteredPlans, groupedByCompany } = useMemo(() => {
-    if (!selectedCategory) return { filteredPlans: [], groupedByCompany: {} };
-    
+  const {
+    filteredPlans,
+    groupedByCompany
+  } = useMemo(() => {
+    if (!selectedCategory) return {
+      filteredPlans: [],
+      groupedByCompany: {}
+    };
     let filtered = manualPlans.filter(plan => {
       // Filter by category
       if (plan.category !== selectedCategory) return false;
-      
+
       // Filter by search term
-      if (searchTerm && !plan.planName.toLowerCase().includes(searchTerm.toLowerCase()) &&
-          !plan.company.toLowerCase().includes(searchTerm.toLowerCase())) {
+      if (searchTerm && !plan.planName.toLowerCase().includes(searchTerm.toLowerCase()) && !plan.company.toLowerCase().includes(searchTerm.toLowerCase())) {
         return false;
       }
-      
+
       // Filter by price range
       if (plan.regularPrice < priceRange.min || plan.regularPrice > priceRange.max) {
         return false;
       }
-      
       return true;
     });
-    
+
     // Sort plans
     switch (sortBy) {
       case 'price':
@@ -155,7 +138,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
         filtered.sort(() => Math.random() - 0.5);
         break;
     }
-    
+
     // Group by company
     const grouped = filtered.reduce((acc, plan) => {
       if (!acc[plan.company]) {
@@ -164,39 +147,36 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
       acc[plan.company].push(plan);
       return acc;
     }, {} as Record<string, ManualPlan[]>);
-    
-    return { filteredPlans: filtered, groupedByCompany: grouped };
+    return {
+      filteredPlans: filtered,
+      groupedByCompany: grouped
+    };
   }, [selectedCategory, searchTerm, priceRange, sortBy]);
-
   const categoryConfig = {
-    electricity: { 
-      label: 'חשמל', 
+    electricity: {
+      label: 'חשמל',
       icon: <Zap className="w-6 h-6" />,
       description: 'חברות חשמל וספקי אנרגיה'
     },
-    internet: { 
-      label: 'אינטרנט', 
+    internet: {
+      label: 'אינטרנט',
       icon: <Wifi className="w-6 h-6" />,
       description: 'ספקי אינטרנט וחבילות גלישה'
     },
-    mobile: { 
-      label: 'סלולר', 
+    mobile: {
+      label: 'סלולר',
       icon: <Smartphone className="w-6 h-6" />,
       description: 'חברות סלולר ומסלולי דקות וגלישה'
     },
-    tv: { 
-      label: 'טלוויזיה', 
+    tv: {
+      label: 'טלוויזיה',
       icon: <Tv className="w-6 h-6" />,
       description: 'חבילות טלוויזיה ושירותי סטרימינג'
     }
   };
-
   const isInComparison = (planId: string) => comparedPlans.some(p => p.id === planId);
   const canAddToComparison = comparedPlans.length < 3;
-
-  const cheapestPlan = filteredPlans.length > 0 ? 
-    filteredPlans.reduce((min, plan) => plan.regularPrice < min.regularPrice ? plan : min) : null;
-
+  const cheapestPlan = filteredPlans.length > 0 ? filteredPlans.reduce((min, plan) => plan.regularPrice < min.regularPrice ? plan : min) : null;
   const handleCompareToggle = (plan: ManualPlan) => {
     if (isInComparison(plan.id)) {
       setComparedPlans(prev => prev.filter(p => p.id !== plan.id));
@@ -204,7 +184,6 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
       setComparedPlans(prev => [...prev, plan]);
     }
   };
-
   const handlePlanSelect = (plan: ManualPlan) => {
     // Store selected plan data for service request
     localStorage.setItem('selectedPlanForSwitch', JSON.stringify({
@@ -214,11 +193,10 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
       category: plan.category,
       features: plan.features
     }));
-    
+
     // Navigate to service request page
     window.location.href = '/service-request';
   };
-
   const clearComparison = () => setComparedPlans([]);
 
   // Convert saved data to banner format
@@ -231,9 +209,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
     recommendedProvider: saving.recommendedProvider,
     category: saving.category
   }));
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
+  return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
       {/* Navigation */}
       <nav className="bg-white/80 backdrop-blur-sm border-b border-purple-200/30 py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 lg:px-6 max-w-7xl">
@@ -261,31 +237,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
         {/* Enhanced Page Header */}
         <div className="text-center mb-16 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-green-600/10 rounded-3xl blur-3xl -z-10"></div>
-          <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-purple-100">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <Brain className="w-12 h-12 text-purple-600" />
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent font-heebo">
-                מרכז המסלולים החכם
-              </h1>
-            </div>
-            <p className="text-xl text-muted-foreground font-assistant max-w-3xl mx-auto mb-6">
-              השוואה מבוססת AI, המלצות מותאמות אישית וכל המסלולים הטובים ביותר במקום אחד
-            </p>
-            <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-                <span>מעל 1000 מסלולים</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Brain className="w-4 h-4 text-purple-500" />
-                <span>המלצות AI</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-blue-500" />
-                <span>השוואה מפורטת</span>
-              </div>
-            </div>
-          </div>
+          
         </div>
 
 
@@ -295,80 +247,27 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
             בחרו קטגוריה לצפייה במסלולים
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {Object.entries(categoryConfig).map(([key, config]) => (
-              <Button
-                key={key}
-                variant={selectedCategory === key ? "default" : "outline"}
-                className={cn(
-                  "h-24 flex-col gap-2 text-lg font-heebo transition-all duration-300",
-                  selectedCategory === key 
-                    ? "bg-purple-600 text-white shadow-lg scale-105" 
-                    : "border-purple-200 hover:border-purple-400 hover:bg-purple-50"
-                )}
-                onClick={() => setSelectedCategory(key as CategoryType)}
-              >
+            {Object.entries(categoryConfig).map(([key, config]) => <Button key={key} variant={selectedCategory === key ? "default" : "outline"} className={cn("h-24 flex-col gap-2 text-lg font-heebo transition-all duration-300", selectedCategory === key ? "bg-purple-600 text-white shadow-lg scale-105" : "border-purple-200 hover:border-purple-400 hover:bg-purple-50")} onClick={() => setSelectedCategory(key as CategoryType)}>
                 {config.icon}
                 {config.label}
-              </Button>
-            ))}
+              </Button>)}
           </div>
         </div>
 
         {/* Amount Input Section */}
-        {selectedCategory && (
-          <Card className="mb-8 border-2 border-primary/20 bg-gradient-to-r from-purple-50 via-white to-blue-50 shadow-xl">
-            <CardContent className="p-8">
-              <div className="text-center mb-6">
-                <h2 className="text-3xl font-bold text-primary font-heebo mb-2 flex items-center justify-center gap-3">
-                  <Calculator className="w-8 h-8 text-purple-600" />
-                  הזינו את הסכום הנוכחי שלכם
-                </h2>
-                <p className="text-lg text-muted-foreground font-assistant">
-                  כדי לקבל המלצות מותאמות אישית וחישוב חיסכון מדויק
-                </p>
-              </div>
-              
-              <div className="max-w-md mx-auto">
-                <div className="relative">
-                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-purple-600 font-bold text-xl">
-                    ₪
-                  </div>
-                  <Input
-                    type="number"
-                    placeholder="200"
-                    value={userContext.currentAmount}
-                    onChange={(e) => setUserContext(prev => ({ ...prev, currentAmount: parseInt(e.target.value) || 0 }))}
-                    className="h-16 text-2xl font-bold text-center pr-12 pl-6 border-2 border-purple-200 bg-white/80 backdrop-blur-sm shadow-lg font-heebo focus:border-purple-400 focus:ring-purple-400"
-                  />
-                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground font-assistant">
-                    לחודש
-                  </div>
-                </div>
-                <div className="text-center mt-4">
-                  <p className="text-sm text-muted-foreground font-assistant">
-                    הסכום הממוצע למשק בית: ₪{selectedCategory === 'electricity' ? '300' : selectedCategory === 'internet' ? '100' : selectedCategory === 'mobile' ? '80' : '150'}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {selectedCategory && <Card className="mb-8 border-2 border-primary/20 bg-gradient-to-r from-purple-50 via-white to-blue-50 shadow-xl">
+            
+          </Card>}
 
         {/* Enhanced Filters and Search */}
-        {selectedCategory && (
-          <Card className="mb-8 border-2 border-primary/10 bg-gradient-to-r from-white via-purple-50/30 to-white shadow-lg">
+        {selectedCategory && <Card className="mb-8 border-2 border-primary/10 bg-gradient-to-r from-white via-purple-50/30 to-white shadow-lg">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-2xl font-bold text-primary font-heebo flex items-center gap-3">
                   <Filter className="w-6 h-6" />
                   סינון וחיפוש מתקדם
                 </CardTitle>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                  className="font-assistant"
-                >
+                <Button variant="outline" size="sm" onClick={() => setShowAdvancedFilters(!showAdvancedFilters)} className="font-assistant">
                   <Settings2 className="w-4 h-4 ml-2" />
                   {showAdvancedFilters ? 'הסתר מתקדם' : 'הצג מתקדם'}
                 </Button>
@@ -385,22 +284,10 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                   </Label>
                   <div className="relative">
                     <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                    <Input
-                      placeholder="חפשו לפי שם מסלול, חברה או תכונה..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pr-12 h-12 font-assistant text-lg"
-                    />
-                    {searchTerm && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setSearchTerm('')}
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2"
-                      >
+                    <Input placeholder="חפשו לפי שם מסלול, חברה או תכונה..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pr-12 h-12 font-assistant text-lg" />
+                    {searchTerm && <Button variant="ghost" size="sm" onClick={() => setSearchTerm('')} className="absolute left-2 top-1/2 transform -translate-y-1/2">
                         <X className="w-4 h-4" />
-                      </Button>
-                    )}
+                      </Button>}
                   </div>
                 </div>
 
@@ -411,20 +298,14 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                     טווח מחירים (₪)
                   </Label>
                   <div className="flex gap-2">
-                    <Input
-                      type="number"
-                      placeholder="מחיר מינימום"
-                      value={priceRange.min}
-                      onChange={(e) => setPriceRange(prev => ({ ...prev, min: parseInt(e.target.value) || 0 }))}
-                      className="font-assistant h-12"
-                    />
-                    <Input
-                      type="number"
-                      placeholder="מחיר מקסימום"
-                      value={priceRange.max}
-                      onChange={(e) => setPriceRange(prev => ({ ...prev, max: parseInt(e.target.value) || 1000 }))}
-                      className="font-assistant h-12"
-                    />
+                    <Input type="number" placeholder="מחיר מינימום" value={priceRange.min} onChange={e => setPriceRange(prev => ({
+                  ...prev,
+                  min: parseInt(e.target.value) || 0
+                }))} className="font-assistant h-12" />
+                    <Input type="number" placeholder="מחיר מקסימום" value={priceRange.max} onChange={e => setPriceRange(prev => ({
+                  ...prev,
+                  max: parseInt(e.target.value) || 1000
+                }))} className="font-assistant h-12" />
                   </div>
                 </div>
 
@@ -435,21 +316,11 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                     סדר תצוגה
                   </Label>
                   <div className="grid grid-cols-2 gap-2">
-                    <Button
-                      variant={sortBy === 'ai' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setSortBy('ai')}
-                      className="font-assistant h-12 flex-col gap-1"
-                    >
+                    <Button variant={sortBy === 'ai' ? 'default' : 'outline'} size="sm" onClick={() => setSortBy('ai')} className="font-assistant h-12 flex-col gap-1">
                       <Brain className="w-4 h-4" />
                       AI המלצות
                     </Button>
-                    <Button
-                      variant={sortBy === 'price' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setSortBy('price')}
-                      className="font-assistant h-12 flex-col gap-1"
-                    >
+                    <Button variant={sortBy === 'price' ? 'default' : 'outline'} size="sm" onClick={() => setSortBy('price')} className="font-assistant h-12 flex-col gap-1">
                       <TrendingUp className="w-4 h-4" />
                       מחיר
                     </Button>
@@ -458,60 +329,45 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
               </div>
 
               {/* Advanced Filters */}
-              {showAdvancedFilters && (
-                <div className="border-t border-primary/10 pt-6">
+              {showAdvancedFilters && <div className="border-t border-primary/10 pt-6">
                   <h3 className="text-lg font-bold text-primary font-heebo mb-4">הגדרות מתקדמות</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-3">
                       <Label className="font-assistant font-semibold">תקציב חודשי מועדף</Label>
-                      <Input
-                        type="number"
-                        value={200}
-                        onChange={(e) => {/* Will be handled later */}}
-                        placeholder="₪200"
-                        className="font-assistant"
-                      />
+                      <Input type="number" value={200} onChange={e => {/* Will be handled later */}} placeholder="₪200" className="font-assistant" />
                     </div>
                     <div className="space-y-3">
                       <Label className="font-assistant font-semibold">גודל משק בית</Label>
-                      <Input
-                        type="number"
-                        value={userContext.familySize}
-                        onChange={(e) => setUserContext(prev => ({ ...prev, familySize: parseInt(e.target.value) || 2 }))}
-                        placeholder="2"
-                        className="font-assistant"
-                      />
+                      <Input type="number" value={userContext.familySize} onChange={e => setUserContext(prev => ({
+                  ...prev,
+                  familySize: parseInt(e.target.value) || 2
+                }))} placeholder="2" className="font-assistant" />
                     </div>
                   </div>
-                </div>
-              )}
+                </div>}
               
               {/* Quick Actions */}
               <div className="flex items-center justify-between pt-4 border-t border-primary/10">
                 <div className="text-sm text-muted-foreground">
                   {filteredPlans.length} מסלולים נמצאו • {Object.keys(groupedByCompany).length} חברות
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setSearchTerm('');
-                    setPriceRange({ min: 0, max: 1000 });
-                    setSortBy('ai');
-                  }}
-                  className="font-assistant"
-                >
+                <Button variant="outline" size="sm" onClick={() => {
+              setSearchTerm('');
+              setPriceRange({
+                min: 0,
+                max: 1000
+              });
+              setSortBy('ai');
+            }} className="font-assistant">
                   <RefreshCw className="w-4 h-4 ml-2" />
                   איפוס סינונים
                 </Button>
               </div>
             </CardContent>
-          </Card>
-        )}
+          </Card>}
 
         {/* Enhanced Comparison Bar */}
-        {comparedPlans.length > 0 && (
-          <Card className="mb-8 border-2 border-blue-200 bg-gradient-to-r from-blue-50 via-white to-blue-50 shadow-xl animate-fade-in">
+        {comparedPlans.length > 0 && <Card className="mb-8 border-2 border-blue-200 bg-gradient-to-r from-blue-50 via-white to-blue-50 shadow-xl animate-fade-in">
             <CardContent className="p-8">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-6">
@@ -542,26 +398,12 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <DetailedAIComparison 
-                    plans={comparedPlans}
-                    userContext={userContext}
-                    category={selectedCategory as 'electricity' | 'internet' | 'mobile' | 'tv'}
-                  />
-                  <Button
-                    onClick={() => setShowComparison(!showComparison)}
-                    variant="outline"
-                    size="lg"
-                    className="font-assistant h-14 px-6"
-                  >
+                  <DetailedAIComparison plans={comparedPlans} userContext={userContext} category={selectedCategory as 'electricity' | 'internet' | 'mobile' | 'tv'} />
+                  <Button onClick={() => setShowComparison(!showComparison)} variant="outline" size="lg" className="font-assistant h-14 px-6">
                     <Eye className="w-5 h-5 ml-2" />
                     {showComparison ? 'הסתר טבלה' : 'הצג טבלה'}
                   </Button>
-                  <Button
-                    variant="destructive"
-                    size="lg"
-                    onClick={clearComparison}
-                    className="font-assistant h-14 px-6"
-                  >
+                  <Button variant="destructive" size="lg" onClick={clearComparison} className="font-assistant h-14 px-6">
                     <X className="w-5 h-5 ml-2" />
                     נקה הכל
                   </Button>
@@ -570,16 +412,11 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
               
               {/* Enhanced Comparison Cards Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {comparedPlans.map((plan, index) => (
-                  <Card key={plan.id} className="border-2 border-blue-200 bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                {comparedPlans.map((plan, index) => <Card key={plan.id} className="border-2 border-blue-200 bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${
-                            index === 0 ? 'bg-gradient-to-r from-blue-500 to-blue-600' :
-                            index === 1 ? 'bg-gradient-to-r from-purple-500 to-purple-600' :
-                            'bg-gradient-to-r from-green-500 to-green-600'
-                          }`}>
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${index === 0 ? 'bg-gradient-to-r from-blue-500 to-blue-600' : index === 1 ? 'bg-gradient-to-r from-purple-500 to-purple-600' : 'bg-gradient-to-r from-green-500 to-green-600'}`}>
                             {index + 1}
                           </div>
                           <div>
@@ -587,12 +424,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                             <p className="text-sm text-muted-foreground font-assistant">{plan.planName}</p>
                           </div>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setComparedPlans(prev => prev.filter(p => p.id !== plan.id))}
-                          className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                        >
+                        <Button variant="ghost" size="sm" onClick={() => setComparedPlans(prev => prev.filter(p => p.id !== plan.id))} className="text-red-500 hover:text-red-700 hover:bg-red-50">
                           <X className="w-4 h-4" />
                         </Button>
                       </div>
@@ -622,12 +454,10 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                         {(plan.features?.length || 0) > 2 && ` +${(plan.features?.length || 0) - 2} נוספות`}
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
                 
                 {/* Add More Plans Prompt */}
-                {comparedPlans.length < 3 && (
-                  <Card className="border-2 border-dashed border-blue-300 bg-blue-50/50 hover:bg-blue-50 transition-colors">
+                {comparedPlans.length < 3 && <Card className="border-2 border-dashed border-blue-300 bg-blue-50/50 hover:bg-blue-50 transition-colors">
                     <CardContent className="p-6 flex flex-col items-center justify-center text-center min-h-[200px]">
                       <div className="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center mb-4">
                         <Plus className="w-6 h-6 text-blue-600" />
@@ -639,47 +469,18 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                         לחצו על כפתור ה + ליד המסלולים למטה כדי להוסיף עד {3 - comparedPlans.length} מסלולים נוספים
                       </p>
                     </CardContent>
-                  </Card>
-                )}
+                  </Card>}
               </div>
             </CardContent>
-          </Card>
-        )}
+          </Card>}
 
         {/* Enhanced Call to Action for Comparison */}
-        {comparedPlans.length === 0 && selectedCategory && (
-          <Card className="mb-8 bg-gradient-to-r from-purple-100 via-blue-100 to-green-100 border-2 border-purple-200 shadow-lg">
-            <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                <BarChart3 className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-purple-800 font-heebo mb-4">
-                🚀 התחילו השוואה חכמה עכשיו!
-              </h3>
-              <p className="text-purple-600 font-assistant text-lg mb-6 max-w-2xl mx-auto">
-                בחרו עד 3 מסלולים ותקבלו ניתוח AI מתקדם עם המלצות אישיות וחישוב חיסכון מדויק
-              </p>
-              <div className="flex items-center justify-center gap-8 text-sm text-purple-700">
-                <div className="flex items-center gap-2">
-                  <Brain className="w-5 h-5" />
-                  <span>ניתוח מבוסס AI</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calculator className="w-5 h-5" />
-                  <span>חישוב חיסכון מדויק</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Target className="w-5 h-5" />
-                  <span>המלצות מותאמות אישית</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {comparedPlans.length === 0 && selectedCategory && <Card className="mb-8 bg-gradient-to-r from-purple-100 via-blue-100 to-green-100 border-2 border-purple-200 shadow-lg">
+            
+          </Card>}
 
         {/* Detailed Comparison */}
-        {showComparison && comparedPlans.length > 0 && (
-          <Card className="mb-8 border-2 border-purple-200">
+        {showComparison && comparedPlans.length > 0 && <Card className="mb-8 border-2 border-purple-200">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <BarChart3 className="w-6 h-6 text-purple-600" />
@@ -694,24 +495,18 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                   המסלול הנוכחי שלכם
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <Input
-                    placeholder="שם המסלול"
-                    value={currentUserPlan.name}
-                    onChange={(e) => setCurrentUserPlan(prev => ({ ...prev, name: e.target.value }))}
-                    className="font-assistant"
-                  />
-                  <Input
-                    placeholder="מחיר חודשי (₪)"
-                    value={currentUserPlan.price}
-                    onChange={(e) => setCurrentUserPlan(prev => ({ ...prev, price: e.target.value }))}
-                    className="font-assistant"
-                  />
-                  <Input
-                    placeholder="שם החברה"
-                    value={currentUserPlan.company}
-                    onChange={(e) => setCurrentUserPlan(prev => ({ ...prev, company: e.target.value }))}
-                    className="font-assistant"
-                  />
+                  <Input placeholder="שם המסלול" value={currentUserPlan.name} onChange={e => setCurrentUserPlan(prev => ({
+                ...prev,
+                name: e.target.value
+              }))} className="font-assistant" />
+                  <Input placeholder="מחיר חודשי (₪)" value={currentUserPlan.price} onChange={e => setCurrentUserPlan(prev => ({
+                ...prev,
+                price: e.target.value
+              }))} className="font-assistant" />
+                  <Input placeholder="שם החברה" value={currentUserPlan.company} onChange={e => setCurrentUserPlan(prev => ({
+                ...prev,
+                company: e.target.value
+              }))} className="font-assistant" />
                 </div>
               </div>
 
@@ -721,71 +516,53 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="p-4 text-right font-heebo font-semibold">פרט</th>
-                      {currentUserPlan.name && (
-                        <th className="p-4 text-center font-heebo font-semibold text-yellow-700 bg-yellow-50">
+                      {currentUserPlan.name && <th className="p-4 text-center font-heebo font-semibold text-yellow-700 bg-yellow-50">
                           {currentUserPlan.name}
                           <div className="text-xs text-yellow-600">(נוכחי)</div>
-                        </th>
-                      )}
-                      {comparedPlans.map(plan => (
-                        <th key={plan.id} className="p-4 text-center font-heebo font-semibold">
+                        </th>}
+                      {comparedPlans.map(plan => <th key={plan.id} className="p-4 text-center font-heebo font-semibold">
                           {plan.planName}
                           <div className="text-xs text-muted-foreground">{plan.company}</div>
-                        </th>
-                      ))}
+                        </th>)}
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="border-t">
                       <td className="p-4 font-semibold font-assistant">מחיר חודשי</td>
-                      {currentUserPlan.name && (
-                        <td className="p-4 text-center font-bold text-yellow-700 bg-yellow-50">
+                      {currentUserPlan.name && <td className="p-4 text-center font-bold text-yellow-700 bg-yellow-50">
                           ₪{currentUserPlan.price}
-                        </td>
-                      )}
-                      {comparedPlans.map(plan => (
-                        <td key={plan.id} className="p-4 text-center font-bold text-purple-600">
+                        </td>}
+                      {comparedPlans.map(plan => <td key={plan.id} className="p-4 text-center font-bold text-purple-600">
                           ₪{plan.regularPrice}
-                        </td>
-                      ))}
+                        </td>)}
                     </tr>
-                    {currentUserPlan.price && (
-                      <tr className="border-t bg-green-50">
+                    {currentUserPlan.price && <tr className="border-t bg-green-50">
                         <td className="p-4 font-semibold font-assistant">חיסכון חודשי</td>
                         <td className="p-4 text-center text-yellow-700 bg-yellow-50">-</td>
                         {comparedPlans.map(plan => {
-                          const savings = parseInt(currentUserPlan.price) - plan.regularPrice;
-                          return (
-                            <td key={plan.id} className={`p-4 text-center font-bold ${savings > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    const savings = parseInt(currentUserPlan.price) - plan.regularPrice;
+                    return <td key={plan.id} className={`p-4 text-center font-bold ${savings > 0 ? 'text-green-600' : 'text-red-600'}`}>
                               {savings > 0 ? `+₪${savings}` : `₪${Math.abs(savings)}-`}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    )}
+                            </td>;
+                  })}
+                      </tr>}
                     <tr className="border-t">
                       <td className="p-4 font-semibold font-assistant">תכונות</td>
-                      {currentUserPlan.name && (
-                        <td className="p-4 text-center text-yellow-700 bg-yellow-50">-</td>
-                      )}
-                      {comparedPlans.map(plan => (
-                        <td key={plan.id} className="p-4 text-center">
+                      {currentUserPlan.name && <td className="p-4 text-center text-yellow-700 bg-yellow-50">-</td>}
+                      {comparedPlans.map(plan => <td key={plan.id} className="p-4 text-center">
                           <Badge variant="outline" className="font-assistant">
                             {plan.features?.length || 0} תכונות
                           </Badge>
-                        </td>
-                      ))}
+                        </td>)}
                     </tr>
                   </tbody>
                 </table>
               </div>
             </CardContent>
-          </Card>
-        )}
+          </Card>}
 
         {/* Plans Grid - Organized by Company */}
-        {selectedCategory && Object.keys(groupedByCompany).length > 0 && (
-          <div>
+        {selectedCategory && Object.keys(groupedByCompany).length > 0 && <div>
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-gray-800 font-heebo">
                 מסלולי {categoryConfig[selectedCategory].label}
@@ -797,8 +574,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
 
             {/* Company Sections */}
             <div className="space-y-12">
-              {Object.entries(groupedByCompany).map(([companyName, companyPlans], companyIndex) => (
-                <div key={companyName} className="relative">
+              {Object.entries(groupedByCompany).map(([companyName, companyPlans], companyIndex) => <div key={companyName} className="relative">
                   {/* Company Header */}
                   <div className="bg-gradient-to-r from-purple-100 via-blue-50 to-purple-100 rounded-2xl p-6 mb-6 border-2 border-purple-200/50 shadow-lg">
                     <div className="flex items-center justify-between">
@@ -830,51 +606,32 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                     <div className="absolute -right-4 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-300 to-blue-300 rounded-full opacity-50 hidden lg:block"></div>
                     
                     {companyPlans.map((plan, index) => {
-                      const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
-                      const inComparison = isInComparison(plan.id);
-                      const isCompanyCheapest = plan.regularPrice === Math.min(...companyPlans.map(p => p.regularPrice));
-                      
-                      return (
-                        <Card 
-                          key={plan.id}
-                          className={cn(
-                            "group transition-all duration-300 hover:shadow-xl border-2 relative",
-                            "animate-fade-in opacity-0 hover:scale-105",
-                            isCheapest && "ring-2 ring-green-400/50 bg-green-50/30",
-                            isCompanyCheapest && !isCheapest && "ring-2 ring-blue-400/50 bg-blue-50/30",
-                            inComparison && "ring-2 ring-purple-400/50 bg-purple-50/30",
-                            "hover:border-purple-300"
-                          )}
-                          style={{ 
-                            animationDelay: `${(companyIndex * 3 + index) * 0.1}s`, 
-                            animationFillMode: 'forwards' 
-                          }}
-                        >
+                const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
+                const inComparison = isInComparison(plan.id);
+                const isCompanyCheapest = plan.regularPrice === Math.min(...companyPlans.map(p => p.regularPrice));
+                return <Card key={plan.id} className={cn("group transition-all duration-300 hover:shadow-xl border-2 relative", "animate-fade-in opacity-0 hover:scale-105", isCheapest && "ring-2 ring-green-400/50 bg-green-50/30", isCompanyCheapest && !isCheapest && "ring-2 ring-blue-400/50 bg-blue-50/30", inComparison && "ring-2 ring-purple-400/50 bg-purple-50/30", "hover:border-purple-300")} style={{
+                  animationDelay: `${(companyIndex * 3 + index) * 0.1}s`,
+                  animationFillMode: 'forwards'
+                }}>
                           {/* Badges */}
                           <div className="absolute -top-3 -right-3 z-10 flex flex-col gap-1">
-                            {isCheapest && (
-                              <Badge className="bg-green-500 text-white px-3 py-1 shadow-lg">
+                            {isCheapest && <Badge className="bg-green-500 text-white px-3 py-1 shadow-lg">
                                 <Crown className="w-4 h-4 ml-1" />
                                 הזול ביותר
-                              </Badge>
-                            )}
-                            {isCompanyCheapest && !isCheapest && (
-                              <Badge className="bg-blue-500 text-white px-3 py-1 shadow-lg">
+                              </Badge>}
+                            {isCompanyCheapest && !isCheapest && <Badge className="bg-blue-500 text-white px-3 py-1 shadow-lg">
                                 <Star className="w-4 h-4 ml-1" />
                                 הזול ב{companyName}
-                              </Badge>
-                            )}
+                              </Badge>}
                           </div>
 
                           {/* Comparison Badge */}
-                          {inComparison && (
-                            <div className="absolute -top-3 -left-3 z-10">
+                          {inComparison && <div className="absolute -top-3 -left-3 z-10">
                               <Badge className="bg-purple-500 text-white px-3 py-1 shadow-lg">
                                 <Eye className="w-4 h-4 ml-1" />
                                 בהשוואה
                               </Badge>
-                            </div>
-                          )}
+                            </div>}
 
                           <CardHeader className="pb-4">
                             <div className="flex justify-between items-start">
@@ -900,80 +657,43 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
 
                           <CardContent className="space-y-4">
                             {/* Price Comparison within Company */}
-                            {companyPlans.length > 1 && (
-                              <div className="bg-gray-50 rounded-lg p-3">
+                            {companyPlans.length > 1 && <div className="bg-gray-50 rounded-lg p-3">
                                 <div className="text-xs text-gray-600 font-assistant text-center">
-                                  {isCompanyCheapest ? (
-                                    <span className="text-blue-600 font-semibold">המחיר הטוב ביותר אצל {companyName}</span>
-                                  ) : (
-                                    <span>
+                                  {isCompanyCheapest ? <span className="text-blue-600 font-semibold">המחיר הטוב ביותר אצל {companyName}</span> : <span>
                                       ₪{plan.regularPrice - Math.min(...companyPlans.map(p => p.regularPrice))} יותר מהזול ביותר
-                                    </span>
-                                  )}
+                                    </span>}
                                 </div>
-                              </div>
-                            )}
+                              </div>}
 
                             {/* Features Preview */}
-                            {plan.features && plan.features.length > 0 && (
-                              <div>
+                            {plan.features && plan.features.length > 0 && <div>
                                 <h5 className="font-semibold text-gray-700 font-assistant mb-2">תכונות עיקריות:</h5>
                                 <div className="space-y-1">
-                                  {plan.features.slice(0, 3).map((feature, idx) => (
-                                    <div key={idx} className="flex items-center gap-2 text-sm">
+                                  {plan.features.slice(0, 3).map((feature, idx) => <div key={idx} className="flex items-center gap-2 text-sm">
                                       <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                                       <span className="text-gray-600 font-assistant">{feature}</span>
-                                    </div>
-                                  ))}
-                                  {plan.features.length > 3 && (
-                                    <p className="text-sm text-purple-600 font-assistant">
+                                    </div>)}
+                                  {plan.features.length > 3 && <p className="text-sm text-purple-600 font-assistant">
                                       +{plan.features.length - 3} תכונות נוספות
-                                    </p>
-                                  )}
+                                    </p>}
                                 </div>
-                              </div>
-                            )}
+                              </div>}
 
                             {/* Action Buttons with Enhanced UX */}
                             <div className="flex gap-2 pt-4">
-                              <Button 
-                                onClick={() => handlePlanSelect(plan)}
-                                className={cn(
-                                  "flex-1 font-assistant transition-all duration-300",
-                                  isCompanyCheapest ? "bg-blue-600 hover:bg-blue-700 shadow-lg" : ""
-                                )}
-                                variant={isCompanyCheapest ? "default" : "outline"}
-                              >
-                                {isCompanyCheapest ? (
-                                  <>
+                              <Button onClick={() => handlePlanSelect(plan)} className={cn("flex-1 font-assistant transition-all duration-300", isCompanyCheapest ? "bg-blue-600 hover:bg-blue-700 shadow-lg" : "")} variant={isCompanyCheapest ? "default" : "outline"}>
+                                {isCompanyCheapest ? <>
                                     <Star className="w-4 h-4 ml-2" />
                                     בחר מסלול מומלץ
-                                  </>
-                                ) : (
-                                  "בחר מסלול"
-                                )}
+                                  </> : "בחר מסלול"}
                               </Button>
-                              <Button
-                                variant={inComparison ? "default" : "outline"}
-                                onClick={() => handleCompareToggle(plan)}
-                                disabled={!canAddToComparison && !inComparison}
-                                className={cn(
-                                  "font-assistant transition-all duration-300",
-                                  inComparison ? "bg-purple-600 hover:bg-purple-700" : "hover:bg-purple-50 hover:border-purple-300"
-                                )}
-                                title={inComparison ? "הסר מהשוואה" : "הוסף להשוואה"}
-                              >
-                                {inComparison ? (
-                                  <Minus className="w-4 h-4" />
-                                ) : (
-                                  <Plus className="w-4 h-4" />
-                                )}
+                              <Button variant={inComparison ? "default" : "outline"} onClick={() => handleCompareToggle(plan)} disabled={!canAddToComparison && !inComparison} className={cn("font-assistant transition-all duration-300", inComparison ? "bg-purple-600 hover:bg-purple-700" : "hover:bg-purple-50 hover:border-purple-300")} title={inComparison ? "הסר מהשוואה" : "הוסף להשוואה"}>
+                                {inComparison ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                               </Button>
                             </div>
                           </CardContent>
-                        </Card>
-                      );
-                    })}
+                        </Card>;
+              })}
                   </div>
                   
                   {/* Company Summary */}
@@ -984,12 +704,10 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                       <span>חיסכון אפשרי: עד ₪{Math.max(...companyPlans.map(p => p.regularPrice)) - Math.min(...companyPlans.map(p => p.regularPrice))}</span>
                     </div>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
 
-            {filteredPlans.length === 0 && (
-              <div className="text-center py-12">
+            {filteredPlans.length === 0 && <div className="text-center py-12">
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="w-8 h-8 text-gray-400" />
                 </div>
@@ -999,13 +717,10 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
                 <p className="text-gray-500 font-assistant">
                   נסו לשנות את הפילטרים או את מילות החיפוש
                 </p>
-              </div>
-            )}
-          </div>
-        )}
+              </div>}
+          </div>}
 
-        {!selectedCategory && (
-          <div className="text-center py-12">
+        {!selectedCategory && <div className="text-center py-12">
             <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <Target className="w-10 h-10 text-purple-600" />
             </div>
@@ -1015,8 +730,7 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
             <p className="text-gray-600 font-assistant text-lg">
               בחרו את הקטגוריה המעניינת אתכם כדי לראות את כל המסלולים הזמינים
             </p>
-          </div>
-        )}
+          </div>}
       </div>
 
       {/* Form Dialog */}
@@ -1027,23 +741,15 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
               בקשת החלפת ספק
             </DialogTitle>
           </DialogHeader>
-          {selectedPlan && (
-            <EnhancedSwitchRequestForm 
-              selectedPlan={selectedPlan}
-              isOpen={isFormOpen}
-              onClose={() => {
-                setIsFormOpen(false);
-                setSelectedPlan(null);
-              }}
-            />
-          )}
+          {selectedPlan && <EnhancedSwitchRequestForm selectedPlan={selectedPlan} isOpen={isFormOpen} onClose={() => {
+          setIsFormOpen(false);
+          setSelectedPlan(null);
+        }} />}
         </DialogContent>
       </Dialog>
 
       {/* Smart Plan Matching Banner */}
       <SmartPlanMatchingBanner onMatchingClick={() => setShowComparison(true)} />
-    </div>
-  );
+    </div>;
 };
-
 export default AllPlans;
