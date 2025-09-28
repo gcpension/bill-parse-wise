@@ -200,6 +200,30 @@ const AllPlans = ({
     
     setPersonalizedRecommendations(recommendations);
     setShowPersonalizedWizard(false);
+    
+    // Show recommendations in alert with detailed results
+    setTimeout(() => {
+      if (recommendations.length > 0) {
+        const topRecommendation = recommendations[0];
+        const recommendedPlan = plansToAnalyze.find(p => p.id === topRecommendation.planId);
+        
+        if (recommendedPlan) {
+          alert(`🎯 המלצה אישית מותאמת:
+
+📈 המסלול הטוב ביותר עבורכם: ${recommendedPlan.planName} - ${recommendedPlan.company}
+💰 מחיר: ₪${recommendedPlan.regularPrice} לחודש
+⭐ ציון התאמה: ${Math.round(topRecommendation.matchScore * 100)}%
+
+🔍 סיבות להמלצה:
+${topRecommendation.reasonsForRecommendation.slice(0, 3).map(reason => `• ${reason}`).join('\n')}
+
+💡 חיסכון צפוי: ₪${topRecommendation.expectedSavings.monthly} לחודש
+📊 רמת ביטחון: ${Math.round(topRecommendation.confidenceLevel * 100)}%
+
+מעוניינים להמשיך עם המסלול הזה?`);
+        }
+      }
+    }, 500);
   };
 
   // Convert saved data to banner format
