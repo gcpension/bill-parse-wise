@@ -151,12 +151,12 @@ export const InteractiveProviderGrid = ({
       </div>
 
       {/* Provider Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
         {displayedProviders.map((provider) => (
           <div
             key={provider.name}
             className={cn(
-              "group cursor-pointer transition-all duration-300 hover:scale-105 p-6 rounded-2xl border-2 bg-white",
+              "group cursor-pointer transition-all duration-300 hover:scale-105 p-4 rounded-xl border-2 bg-white",
               value === provider.name 
                 ? "border-slate-600 shadow-xl bg-slate-50 scale-[1.02]" 
                 : "border-slate-200 hover:border-slate-400 hover:shadow-lg"
@@ -164,27 +164,27 @@ export const InteractiveProviderGrid = ({
             onClick={() => onValueChange(provider.name === value ? "" : provider.name)}
           >
             {/* Logo Section */}
-            <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center justify-center mb-3">
               <div className="relative">
                 <div className={cn(
-                  "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 border-2",
+                  "w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 border-2",
                   value === provider.name ? "border-slate-300 bg-white shadow-md" : "border-slate-200 bg-slate-50"
                 )}>
                   {provider.logoType === 'image' && providerLogos[provider.name] ? (
                     <img 
                       src={providerLogos[provider.name]} 
                       alt={`${provider.name} logo`}
-                      className="w-10 h-10 object-contain"
+                      className="w-8 h-8 object-contain"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         const parent = target.parentElement;
                         if (parent) {
-                          parent.innerHTML = `<div class="w-10 h-10 rounded-xl ${provider.color} flex items-center justify-center text-white font-bold text-lg">${provider.name.charAt(0)}</div>`;
+                          parent.innerHTML = `<div class="w-8 h-8 rounded-lg ${provider.color} flex items-center justify-center text-white font-bold text-sm">${provider.name.charAt(0)}</div>`;
                         }
                       }}
                     />
                   ) : (
-                    <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg", provider.color)}>
+                    <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm", provider.color)}>
                       {provider.logo || provider.name.charAt(0)}
                     </div>
                   )}
@@ -192,16 +192,16 @@ export const InteractiveProviderGrid = ({
                 
                 {/* Selection Indicator */}
                 {value === provider.name && (
-                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-slate-700 rounded-full flex items-center justify-center border-2 border-white">
-                    <Check className="h-3 w-3 text-white" />
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center border-2 border-white">
+                    <Check className="h-2.5 w-2.5 text-white" />
                   </div>
                 )}
                 
                 {/* Popular Badge */}
                 {provider.popular && (
                   <div className="absolute -top-2 -left-2">
-                    <Badge className="text-xs bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0 px-2 py-1 font-semibold">
-                      <Star className="h-3 w-3 mr-1 fill-current" />
+                    <Badge className="text-xs bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0 px-1.5 py-0.5 font-semibold">
+                      <Star className="h-2.5 w-2.5 mr-0.5 fill-current" />
                       פופולרי
                     </Badge>
                   </div>
@@ -210,29 +210,13 @@ export const InteractiveProviderGrid = ({
             </div>
 
             {/* Provider Info */}
-            <div className="text-center space-y-3">
+            <div className="text-center mt-3">
               <h4 className={cn(
-                "font-bold text-base leading-tight transition-colors duration-200",
+                "font-bold text-sm leading-tight transition-colors duration-200",
                 value === provider.name ? "text-slate-900" : "text-slate-800 group-hover:text-slate-900"
               )}>
                 {provider.name}
               </h4>
-              
-              <p className="text-xs text-slate-600 leading-relaxed px-2">
-                {provider.description}
-              </p>
-
-              {/* Stats */}
-              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-200">
-                <div className="flex items-center gap-1">
-                  <Star className="h-3 w-3 text-amber-500 fill-current" />
-                  <span className="font-semibold text-slate-700">{provider.rating}</span>
-                </div>
-                <div className="flex items-center gap-1 text-slate-500">
-                  <Building2 className="h-3 w-3" />
-                  <span className="font-medium">{provider.customers}</span>
-                </div>
-              </div>
             </div>
           </div>
         ))}
@@ -240,39 +224,34 @@ export const InteractiveProviderGrid = ({
         {/* Custom Provider Option */}
         <div
           className={cn(
-            "group cursor-pointer transition-all duration-300 hover:scale-105 p-6 rounded-2xl border-2 border-dashed bg-white",
+            "group cursor-pointer transition-all duration-300 hover:scale-105 p-4 rounded-xl border-2 border-dashed bg-white",
             value === "אחר" 
               ? "border-slate-600 shadow-xl bg-slate-50 scale-[1.02]" 
               : "border-slate-300 hover:border-slate-500 hover:shadow-lg"
           )}
           onClick={() => onValueChange(value === "אחר" ? "" : "אחר")}
         >
-          <div className="text-center space-y-4">
-            <div className="relative flex items-center justify-center">
+          <div className="text-center">
+            <div className="relative flex items-center justify-center mb-3">
               <div className={cn(
-                "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 border-2 border-dashed",
+                "w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 border-2 border-dashed",
                 value === "אחר" ? "border-slate-400 bg-white" : "border-slate-300 bg-slate-50"
               )}>
-                <Plus className="h-8 w-8 text-slate-500" />
+                <Plus className="h-6 w-6 text-slate-500" />
               </div>
               {value === "אחר" && (
-                <div className="absolute -top-1 -right-1 w-6 h-6 bg-slate-700 rounded-full flex items-center justify-center border-2 border-white">
-                  <Check className="h-3 w-3 text-white" />
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center border-2 border-white">
+                  <Check className="h-2.5 w-2.5 text-white" />
                 </div>
               )}
             </div>
             
-            <div>
-              <h4 className={cn(
-                "font-bold text-base transition-colors duration-200",
-                value === "אחר" ? "text-slate-900" : "text-slate-800 group-hover:text-slate-900"
-              )}>
-                ספק אחר
-              </h4>
-              <p className="text-xs text-slate-600 mt-2">
-                ספק שלא מופיע ברשימה
-              </p>
-            </div>
+            <h4 className={cn(
+              "font-bold text-sm transition-colors duration-200",
+              value === "אחר" ? "text-slate-900" : "text-slate-800 group-hover:text-slate-900"
+            )}>
+              ספק אחר
+            </h4>
           </div>
         </div>
       </div>
