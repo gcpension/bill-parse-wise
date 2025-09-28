@@ -37,6 +37,8 @@ import DetailedAIComparison from "@/components/plans/DetailedAIComparison";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { RecommendationContext } from "@/lib/recommendationEngine";
 import { cn } from "@/lib/utils";
+import { SavingsComparisonBanner } from "@/components/plans/SavingsComparisonBanner";
+import { useSavingsData } from "@/hooks/useSavingsData";
 
 interface SavingsData {
   currentMonthly: number;
@@ -56,6 +58,7 @@ interface AllPlansProps {
 type CategoryType = 'electricity' | 'internet' | 'mobile' | 'tv';
 
 const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlansProps) => {
+  const { savingsData: persistedSavings } = useSavingsData();
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
   const [selectedPlans, setSelectedPlans] = useState<ManualPlan[]>([]);
   const [comparedPlans, setComparedPlans] = useState<ManualPlan[]>([]);
@@ -190,6 +193,17 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
 
   const clearComparison = () => setComparedPlans([]);
 
+  // Convert saved data to banner format
+  const bannerSavingsData = persistedSavings.map(saving => ({
+    currentMonthly: saving.currentAmount,
+    recommendedMonthly: saving.recommendedAmount,
+    monthlySavings: saving.monthlySavings,
+    annualSavings: saving.annualSavings,
+    currentProvider: saving.currentProvider,
+    recommendedProvider: saving.recommendedProvider,
+    category: saving.category
+  }));
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
       {/* Navigation */}
@@ -241,6 +255,13 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
             </div>
           </div>
         </div>
+
+        {/* Savings Comparison Banner */}
+        {bannerSavingsData.length > 0 && (
+          <div className="mb-16">
+            <SavingsComparisonBanner savingsData={bannerSavingsData} />
+          </div>
+        )}
 
         {/* Category Selection */}
         <div className="mb-12">
