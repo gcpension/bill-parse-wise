@@ -41,6 +41,7 @@ import { SavingsComparisonBanner } from "@/components/plans/SavingsComparisonBan
 import { useSavingsData } from "@/hooks/useSavingsData";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { BreadcrumbNavigation } from "@/components/BreadcrumbNavigation";
+import { SmartPlanMatchingBanner } from "@/components/SmartPlanMatchingBanner";
 
 interface SavingsData {
   currentMonthly: number;
@@ -277,118 +278,6 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
           </div>
         </div>
 
-        {/* Enhanced Savings Overview */}
-        {bannerSavingsData.length > 0 && (
-          <div className="mb-16">
-            {/* Quick Savings Summary */}
-            <Card className="bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 border-2 border-green-200 shadow-xl mb-8">
-              <CardContent className="p-8">
-                <div className="text-center mb-6">
-                  <h2 className="text-3xl font-bold text-green-800 font-heebo mb-2">
-                    💰 החיסכון שלכם במספרים
-                  </h2>
-                  <p className="text-green-600 font-assistant text-lg">
-                    סיכום החיסכון לפי הניתוח שביצעתם
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                  <Card className="bg-white border-green-200 shadow-lg">
-                    <CardContent className="p-6 text-center">
-                      <TrendingUp className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                      <div className="text-3xl font-bold text-green-800 font-heebo mb-1">
-                        ₪{bannerSavingsData.reduce((sum, data) => sum + data.monthlySavings, 0)}
-                      </div>
-                      <div className="text-green-600 font-assistant">חיסכון חודשי כולל</div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="bg-white border-blue-200 shadow-lg">
-                    <CardContent className="p-6 text-center">
-                      <Calculator className="w-12 h-12 text-blue-600 mx-auto mb-3" />
-                      <div className="text-3xl font-bold text-blue-800 font-heebo mb-1">
-                        ₪{(bannerSavingsData.reduce((sum, data) => sum + data.monthlySavings, 0) * 12).toLocaleString()}
-                      </div>
-                      <div className="text-blue-600 font-assistant">חיסכון שנתי כולל</div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="bg-white border-purple-200 shadow-lg">
-                    <CardContent className="p-6 text-center">
-                      <Target className="w-12 h-12 text-purple-600 mx-auto mb-3" />
-                      <div className="text-3xl font-bold text-purple-800 font-heebo mb-1">
-                        {bannerSavingsData.length}
-                      </div>
-                      <div className="text-purple-600 font-assistant">קטגוריות נותחו</div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="bg-white border-orange-200 shadow-lg">
-                    <CardContent className="p-6 text-center">
-                      <Award className="w-12 h-12 text-orange-600 mx-auto mb-3" />
-                      <div className="text-3xl font-bold text-orange-800 font-heebo mb-1">
-                        {Math.round((bannerSavingsData.reduce((sum, data) => sum + data.monthlySavings, 0) / 
-                          bannerSavingsData.reduce((sum, data) => sum + data.currentMonthly, 0)) * 100)}%
-                      </div>
-                      <div className="text-orange-600 font-assistant">אחוז חיסכון ממוצע</div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <SavingsComparisonBanner savingsData={bannerSavingsData} />
-          </div>
-        )}
-
-        {/* Enhanced AI Comparison CTA */}
-        <Card className="mb-12 bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 text-white shadow-2xl">
-          <CardContent className="p-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6">
-                <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center backdrop-blur-sm">
-                  <Brain className="w-12 h-12 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-4xl font-bold font-heebo mb-2">
-                    השוואה חכמה מבוססת AI
-                  </h2>
-                  <p className="text-xl font-assistant opacity-90 mb-4">
-                    השוו עד 3 מסלולים עם ניתוח מתקדם, המלצות אישיות וחישוב חיסכון מדויק
-                  </p>
-                  <div className="flex items-center gap-6 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-5 h-5" />
-                      <span>ניתוח AI מתקדם</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5" />
-                      <span>חישוב חיסכון מדויק</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Target className="w-5 h-5" />
-                      <span>המלצות אישיות</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="text-center">
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  className="h-16 px-8 text-lg font-bold font-heebo bg-white text-purple-600 hover:bg-gray-100 shadow-lg"
-                  onClick={() => setShowComparison(true)}
-                >
-                  <BarChart3 className="w-6 h-6 ml-2" />
-                  התחל השוואה חכמה
-                </Button>
-                <div className="text-sm mt-2 opacity-75">
-                  {comparedPlans.length > 0 ? `${comparedPlans.length} מסלולים נבחרו` : 'בחרו מסלולים להשוואה'}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Category Selection */}
         <div className="mb-12">
@@ -1100,6 +989,9 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Smart Plan Matching Banner */}
+      <SmartPlanMatchingBanner onMatchingClick={() => setShowComparison(true)} />
     </div>
   );
 };
