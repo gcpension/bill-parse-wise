@@ -112,6 +112,11 @@ body {
   --gradient-button-hover: linear-gradient(135deg, #3B5BDB 0%, #8E44AD 100%);
     --shadow-card: 0 4px 20px -2px hsl(var(--foreground) / 0.1);
     --shadow-colorful: 0 8px 25px -5px hsl(var(--electric-blue) / 0.25);
+    
+    /* Touch-friendly spacing and sizing */
+    --touch-target-min: 44px;
+    --touch-spacing: 12px;
+    --touch-padding: 16px;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -341,6 +346,28 @@ body {
   .btn-gradient:active {
     transform: translateY(0);
     box-shadow: 0 4px 20px rgba(76, 110, 245, 0.3);
+  }
+  
+  /* Touch-friendly styles */
+  .touch-friendly {
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+    padding: var(--touch-spacing);
+  }
+  
+  .touch-grid {
+    gap: var(--touch-spacing);
+  }
+  
+  .touch-card {
+    padding: var(--touch-padding);
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .touch-card:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
 }
 

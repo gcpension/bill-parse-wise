@@ -224,8 +224,8 @@ const Home = () => {
             </p>
           </div>
           
-          {/* Category Cards Grid - Keep uniform layout */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {/* Category Cards Grid - Touch-friendly layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {Object.entries(categoryData).map(([category, data], index) => {
               const Icon = data.icon;
               const isSelected = selectedCategories[category].selected;
@@ -233,7 +233,7 @@ const Home = () => {
               return (
                 <Card 
                   key={category}
-                  className={`bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 transform hover:scale-105 hover:-translate-y-1 animate-fade-in opacity-0 ${
+                  className={`touch-card bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 transform hover:scale-105 hover:-translate-y-1 animate-fade-in opacity-0 min-h-[180px] ${
                     isSelected ? 'ring-2 ring-purple-500 shadow-lg' : ''
                   }`}
                   style={{ 
@@ -242,9 +242,9 @@ const Home = () => {
                   }}
                   onClick={() => handleCategorySelect(category)}
                 >
-                  <CardContent className="p-4 text-center">
+                  <CardContent className="p-6 text-center flex flex-col justify-between h-full">
                     {/* Image illustration - Enhanced with hover effects */}
-                    <div className="w-full h-16 mx-auto mb-3 overflow-hidden rounded-lg transform transition-transform duration-300 hover:scale-105">
+                    <div className="w-full h-20 mx-auto mb-4 overflow-hidden rounded-lg transform transition-transform duration-300 hover:scale-105">
                       <img 
                         src={data.image}
                         alt={`איור ${data.name}`}
@@ -253,13 +253,14 @@ const Home = () => {
                     </div>
                     
                     {/* Category title */}
-                    <h3 className="text-base font-heebo font-medium text-purple-700 mb-3 transition-colors duration-200">
+                    <h3 className="text-lg font-heebo font-medium text-purple-700 mb-4 transition-colors duration-200">
                       {data.name}
                     </h3>
                     
-                    {/* Enhanced button with better animations */}
+                    {/* Touch-friendly button */}
                     <Button 
-                      className={`w-full h-8 rounded-lg font-medium text-xs transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg ${
+                      size="touch"
+                      className={`w-full rounded-xl font-medium transition-all duration-300 transform active:scale-95 shadow-md hover:shadow-lg ${
                         isSelected 
                           ? 'bg-gradient-to-r from-green-500 to-green-600 text-white' 
                           : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white'
@@ -269,8 +270,8 @@ const Home = () => {
                         handleCategorySelect(category);
                       }}
                     >
-                      <span className="flex items-center justify-center gap-1.5">
-                        <Icon className="w-3 h-3" />
+                      <span className="flex items-center justify-center gap-2">
+                        <Icon className="w-5 h-5" />
                         {isSelected ? 'נבחר' : `בחר ${data.name}`}
                       </span>
                     </Button>
@@ -314,9 +315,9 @@ const Home = () => {
                         </div>
                         <Button
                           variant="outline"
-                          size="sm"
+                          size="touch"
                           onClick={() => handleCategorySelect(category)}
-                          className="text-red-600 border-red-200 hover:bg-red-50"
+                          className="text-red-600 border-red-200 hover:bg-red-50 min-h-[44px]"
                         >
                           ביטול
                         </Button>

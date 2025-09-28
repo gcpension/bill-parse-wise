@@ -62,8 +62,8 @@ export const Navigation = () => {
               </div>
             </Link>
             
-            {/* Enhanced Navigation */}
-            <div className="hidden lg:flex items-center space-x-1 rtl:space-x-reverse">
+            {/* Enhanced Navigation - Touch-friendly */}
+            <div className="hidden lg:flex items-center space-x-2 rtl:space-x-reverse">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href || 
                   (item.href !== '/' && location.pathname.startsWith(item.href));
@@ -74,19 +74,19 @@ export const Navigation = () => {
                     key={item.name}
                     to={item.href}
                     className={cn(
-                      'group relative flex items-center space-x-2 rtl:space-x-reverse px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105',
+                      'group relative flex items-center space-x-2 rtl:space-x-reverse px-6 py-4 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 min-h-[44px] touch-friendly',
                       isActive
                         ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-elegant transform scale-105'
                         : 'text-muted-foreground hover:text-foreground hover:bg-gradient-to-r hover:from-accent/10 hover:to-primary/10 hover:shadow-md'
                     )}
                   >
                     <div className={cn(
-                      'p-1.5 rounded-lg transition-all duration-300',
+                      'p-2 rounded-lg transition-all duration-300',
                       isActive 
                         ? 'bg-white/20' 
                         : 'group-hover:bg-accent/20'
                     )}>
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-5 w-5" />
                     </div>
                     <span className="font-medium">{item.name}</span>
                     
@@ -97,7 +97,7 @@ export const Navigation = () => {
                     
                     {/* Hover sparkle effect */}
                     <Sparkles className={cn(
-                      'absolute -top-1 -right-1 h-3 w-3 transition-all duration-300',
+                      'absolute -top-1 -right-1 h-4 w-4 transition-all duration-300',
                       isActive ? 'text-white opacity-100' : 'text-accent opacity-0 group-hover:opacity-100'
                     )} />
                   </Link>
@@ -109,10 +109,11 @@ export const Navigation = () => {
           {/* Mobile menu button and CTA */}
           <div className="flex items-center space-x-4 rtl:space-x-reverse">
             <Button 
+              size="touch"
               className="hidden md:flex bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground shadow-elegant hover:shadow-lg hover:scale-105 transition-all duration-300 font-bold"
               onClick={() => navigate('/analyze')}
             >
-              <Calculator className="w-4 h-4 mr-2" />
+              <Calculator className="w-5 h-5 mr-2" />
               התחל לחסוך
             </Button>
             
