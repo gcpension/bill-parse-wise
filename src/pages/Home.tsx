@@ -21,6 +21,9 @@ import savingsAnalysisIllustration from '@/assets/savings-analysis-illustration-
 import israeliCompaniesLogos from '@/assets/logos/israeli-companies-real-logos.png';
 import BackToTop from '@/components/BackToTop';
 import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
+import { usePageMeta } from '@/hooks/usePageMeta';
+import { QuickActions } from '@/components/QuickActions';
+import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -31,6 +34,13 @@ const Home = () => {
     tv: { provider: '', amount: '', selected: false }
   });
   const navigate = useNavigate();
+
+  // Set page meta
+  usePageMeta({
+    title: 'EasySwitch - דף הבית | מחשבון חיסכון חכם',
+    description: 'המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו. השוואת ספקים וחיסכון בחשבונות הבית.',
+    keywords: ['חיסכון', 'חשמל', 'אינטרנט', 'סלולר', 'טלוויזיה', 'השוואת מחירים', 'EasySwitch']
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -1012,6 +1022,13 @@ const Home = () => {
           </div>
         </div>
       </footer>
+
+      {/* Quick Actions Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+          <QuickActions />
+        </div>
+      </section>
       
       {/* Back to Top Button */}
       <BackToTop />

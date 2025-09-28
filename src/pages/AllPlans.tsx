@@ -39,6 +39,8 @@ import { RecommendationContext } from "@/lib/recommendationEngine";
 import { cn } from "@/lib/utils";
 import { SavingsComparisonBanner } from "@/components/plans/SavingsComparisonBanner";
 import { useSavingsData } from "@/hooks/useSavingsData";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { BreadcrumbNavigation } from "@/components/BreadcrumbNavigation";
 
 interface SavingsData {
   currentMonthly: number;
@@ -105,6 +107,13 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
       }
     }
   }, []);
+
+  
+  // Set page meta
+  usePageMeta({
+    title: 'כל המסלולים | EasySwitch',
+    description: 'מרכז המסלולים החכם - השוואה מבוססת AI, המלצות מותאמות אישית וכל המסלולים הטובים ביותר במקום אחד.'
+  });
 
   useEffect(() => {
     document.title = "כל המסלולים | EasySwitch";
@@ -226,6 +235,9 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
       </nav>
 
       <div className="container mx-auto px-4 lg:px-6 max-w-7xl py-8">
+        {/* Breadcrumb Navigation */}
+        <BreadcrumbNavigation />
+        
         {/* Enhanced Page Header */}
         <div className="text-center mb-16 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-green-600/10 rounded-3xl blur-3xl -z-10"></div>
