@@ -84,6 +84,13 @@ const providerConfigs = {
 };
 
 export default function ProviderSpecificStep({ formData, updateFormData }: ProviderSpecificStepProps) {
+  const sectorColors = {
+    cellular: 'from-purple-500 to-purple-600',
+    internet_isp: 'from-blue-500 to-blue-600', 
+    internet_infra: 'from-cyan-500 to-cyan-600',
+    tv: 'from-green-500 to-green-600',
+    electricity: 'from-yellow-500 to-yellow-600'
+  };
   const currentProvider = formData.current_provider;
   const targetProvider = formData.target_provider;
   const sector = formData.sector;

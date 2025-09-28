@@ -55,28 +55,30 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
     <div className="space-y-8">
       {/* Auto-Detection Banner */}
       {isAutoDetected && (
-        <Card className="border-green-200 bg-green-50 animate-scale-in">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600" />
-              <CardTitle className="text-lg text-green-800 font-heebo">
-                פרטי השירות זוהו אוטומטית
+        <Card className="border-success/30 bg-gradient-to-r from-success/10 to-success-glow/10 animate-scale-in glass-card">
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-center gap-4">
+              <div className="w-12 h-12 bg-success rounded-full flex items-center justify-center animate-bounce-gentle">
+                <CheckCircle className="w-7 h-7 text-white" />
+              </div>
+              <CardTitle className="text-xl text-success font-heebo">
+                🎯 פרטי השירות זוהו אוטומטית
               </CardTitle>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="text-center">
-                <Badge variant="secondary" className="mb-2">סוג פעולה</Badge>
-                <p className="font-semibold">{actionTypes.find(a => a.value === formData.action_type)?.label}</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-4 bg-white/50 rounded-xl hover-scale">
+                <Badge variant="secondary" className="mb-3 bg-primary/10 text-primary">סוג פעולה</Badge>
+                <p className="font-bold text-lg font-heebo">{actionTypes.find(a => a.value === formData.action_type)?.label}</p>
               </div>
-              <div className="text-center">
-                <Badge variant="secondary" className="mb-2">סקטור</Badge>
-                <p className="font-semibold">{sectors.find(s => s.value === formData.sector)?.label}</p>
+              <div className="text-center p-4 bg-white/50 rounded-xl hover-scale">
+                <Badge variant="secondary" className="mb-3 bg-primary/10 text-primary">סקטור</Badge>
+                <p className="font-bold text-lg font-heebo">{sectors.find(s => s.value === formData.sector)?.label}</p>
               </div>
-              <div className="text-center">
-                <Badge variant="secondary" className="mb-2">ספק יעד</Badge>
-                <p className="font-semibold">{formData.target_provider}</p>
+              <div className="text-center p-4 bg-white/50 rounded-xl hover-scale">
+                <Badge variant="secondary" className="mb-3 bg-primary/10 text-primary">ספק יעד</Badge>
+                <p className="font-bold text-lg font-heebo">{formData.target_provider}</p>
               </div>
             </div>
           </CardContent>
@@ -85,37 +87,47 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
 
       {/* Action Type Selection */}
       {!isAutoDetected && (
-        <Card className="animate-fade-in">
-          <CardHeader>
-            <CardTitle className="font-heebo text-xl">סוג הפעולה המבוקשת</CardTitle>
+        <Card className="animate-fade-in glass-card border-primary/10">
+          <CardHeader className="pb-6">
+            <CardTitle className="font-heebo text-2xl text-center bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              🎯 סוג הפעולה המבוקשת
+            </CardTitle>
+            <p className="text-center text-muted-foreground font-assistant mt-2">
+              בחר את סוג הפעולה שברצונך לבצע
+            </p>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {actionTypes.map((action) => (
                 <Button
                   key={action.value}
                   variant={formData.action_type === action.value ? "default" : "outline"}
                   className={cn(
-                    "h-auto p-4 flex flex-col items-start gap-3 transition-all duration-300 hover-scale",
+                    "h-auto p-6 flex flex-col items-start gap-4 transition-all duration-300 hover-scale relative overflow-hidden group",
                     formData.action_type === action.value 
-                      ? `${action.color} text-white shadow-lg` 
-                      : "border-2 hover:border-primary"
+                      ? "bg-gradient-to-r from-primary to-primary-glow text-white shadow-elegant border-0" 
+                      : "border-2 border-primary/20 hover:border-primary/50 bg-white/50 backdrop-blur-sm"
                   )}
                   onClick={() => updateFormData({ action_type: action.value as any })}
                 >
-                  <div className="flex items-center gap-3 w-full">
+                  {formData.action_type === action.value && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary-glow/10 animate-pulse"></div>
+                  )}
+                  <div className="flex items-center gap-4 w-full relative z-10">
                     <div className={cn(
-                      "p-2 rounded-lg",
-                      formData.action_type === action.value ? "bg-white/20" : action.color
+                      "p-3 rounded-xl",
+                      formData.action_type === action.value 
+                        ? "bg-white/20 backdrop-blur-sm" 
+                        : "bg-gradient-to-r from-primary to-primary-glow"
                     )}>
-                      <div className={formData.action_type === action.value ? "text-white" : "text-white"}>
+                      <div className="text-white text-lg">
                         {action.icon}
                       </div>
                     </div>
-                    <span className="font-heebo font-semibold">{action.label}</span>
+                    <span className="font-heebo font-bold text-lg">{action.label}</span>
                   </div>
                   <p className={cn(
-                    "text-sm text-right w-full",
+                    "text-sm text-right w-full relative z-10",
                     formData.action_type === action.value ? "text-white/90" : "text-muted-foreground"
                   )}>
                     {action.description}
@@ -129,33 +141,43 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
 
       {/* Sector Selection */}
       {!isAutoDetected && (
-        <Card className="animate-fade-in">
-          <CardHeader>
-            <CardTitle className="font-heebo text-xl">בחירת סקטור</CardTitle>
+        <Card className="animate-fade-in glass-card border-primary/10">
+          <CardHeader className="pb-6">
+            <CardTitle className="font-heebo text-2xl text-center bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              🏢 בחירת סקטור השירות
+            </CardTitle>
+            <p className="text-center text-muted-foreground font-assistant mt-2">
+              באיזה תחום אתה מעוניין לבצע את הפעולה?
+            </p>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
               {sectors.map((sector) => (
                 <Button
                   key={sector.value}
                   variant={formData.sector === sector.value ? "default" : "outline"}
                   className={cn(
-                    "h-20 flex flex-col gap-2 transition-all duration-300 hover-scale",
+                    "h-28 flex flex-col gap-3 transition-all duration-300 hover-scale relative overflow-hidden group",
                     formData.sector === sector.value 
-                      ? `${sector.color} text-white shadow-lg` 
-                      : "border-2 hover:border-primary"
+                      ? "bg-gradient-to-r from-primary to-primary-glow text-white shadow-elegant border-0" 
+                      : "border-2 border-primary/20 hover:border-primary/50 bg-white/50 backdrop-blur-sm"
                   )}
                   onClick={() => updateFormData({ sector: sector.value as any })}
                 >
+                  {formData.sector === sector.value && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary-glow/10 animate-pulse"></div>
+                  )}
                   <div className={cn(
-                    "p-2 rounded-lg",
-                    formData.sector === sector.value ? "bg-white/20" : sector.color
+                    "p-3 rounded-xl relative z-10",
+                    formData.sector === sector.value 
+                      ? "bg-white/20 backdrop-blur-sm" 
+                      : "bg-gradient-to-r from-primary to-primary-glow"
                   )}>
-                    <div className={formData.sector === sector.value ? "text-white" : "text-white"}>
+                    <div className="text-white text-xl">
                       {sector.icon}
                     </div>
                   </div>
-                  <span className="font-heebo font-semibold text-sm">{sector.label}</span>
+                  <span className="font-heebo font-bold text-sm relative z-10">{sector.label}</span>
                 </Button>
               ))}
             </div>
@@ -164,37 +186,47 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
       )}
 
       {/* Customer Type Selection */}
-      <Card className="animate-fade-in">
-        <CardHeader>
-          <CardTitle className="font-heebo text-xl">סוג לקוח</CardTitle>
+      <Card className="animate-fade-in glass-card border-primary/10">
+        <CardHeader className="pb-6">
+          <CardTitle className="font-heebo text-2xl text-center bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+            👤 סוג הלקוח
+          </CardTitle>
+          <p className="text-center text-muted-foreground font-assistant mt-2">
+            האם אתה לקוח פרטי או עסקי?
+          </p>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {customerTypes.map((type) => (
               <Button
                 key={type.value}
                 variant={formData.customer_type === type.value ? "default" : "outline"}
                 className={cn(
-                  "h-auto p-4 flex flex-col items-start gap-3 transition-all duration-300 hover-scale",
+                  "h-auto p-6 flex flex-col items-start gap-4 transition-all duration-300 hover-scale relative overflow-hidden group",
                   formData.customer_type === type.value 
-                    ? "bg-primary text-white shadow-lg" 
-                    : "border-2 hover:border-primary"
+                    ? "bg-gradient-to-r from-primary to-primary-glow text-white shadow-elegant border-0" 
+                    : "border-2 border-primary/20 hover:border-primary/50 bg-white/50 backdrop-blur-sm"
                 )}
                 onClick={() => updateFormData({ customer_type: type.value as any })}
               >
-                <div className="flex items-center gap-3 w-full">
+                {formData.customer_type === type.value && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary-glow/10 animate-pulse"></div>
+                )}
+                <div className="flex items-center gap-4 w-full relative z-10">
                   <div className={cn(
-                    "p-2 rounded-lg",
-                    formData.customer_type === type.value ? "bg-white/20" : "bg-primary"
+                    "p-3 rounded-xl",
+                    formData.customer_type === type.value 
+                      ? "bg-white/20 backdrop-blur-sm" 
+                      : "bg-gradient-to-r from-primary to-primary-glow"
                   )}>
-                    <div className="text-white">
+                    <div className="text-white text-lg">
                       {type.icon}
                     </div>
                   </div>
-                  <span className="font-heebo font-semibold">{type.label}</span>
+                  <span className="font-heebo font-bold text-lg">{type.label}</span>
                 </div>
                 <p className={cn(
-                  "text-sm text-right w-full",
+                  "text-sm text-right w-full relative z-10",
                   formData.customer_type === type.value ? "text-white/90" : "text-muted-foreground"
                 )}>
                   {type.description}
@@ -207,9 +239,14 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
 
       {/* Business-specific fields */}
       {formData.customer_type === 'business' && (
-        <Card className="border-orange-200 bg-orange-50 animate-scale-in">
-          <CardHeader>
-            <CardTitle className="font-heebo text-xl text-orange-800">פרטים עסקיים</CardTitle>
+        <Card className="border-primary/30 bg-gradient-to-r from-primary/5 to-primary-glow/5 animate-scale-in glass-card">
+          <CardHeader className="pb-6">
+            <CardTitle className="font-heebo text-2xl text-center bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              🏢 פרטים עסקיים נוספים
+            </CardTitle>
+            <p className="text-center text-muted-foreground font-assistant mt-2">
+              נדרש מידע נוסף עבור לקוחות עסקיים
+            </p>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

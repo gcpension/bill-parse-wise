@@ -195,102 +195,143 @@ export default function ServiceRequestWizard() {
   const progress = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-green-50 p-4 animate-fade-in" dir="rtl">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-primary-glow/5 to-accent/5 p-4 animate-fade-in" dir="rtl">
       <div className="max-w-4xl mx-auto">
         {/* Enhanced Header with Auto-Detection Info */}
         <div className="text-center mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-purple-100">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent font-heebo mb-2">
-              בקשת שירות חכמה
-            </h1>
-            {formData.selected_plan_name && (
-              <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 animate-scale-in">
-                <p className="text-lg font-semibold text-blue-800 font-assistant">
-                  מסלול נבחר: {formData.selected_plan_name}
-                </p>
-                <p className="text-sm text-blue-600">
-                  חברה: {formData.target_provider} | סקטור: {formData.sector === 'cellular' ? 'סלולר' : formData.sector}
-                </p>
-              </div>
-            )}
+          <div className="glass-card rounded-3xl p-8 shadow-elegant border border-primary/10 relative overflow-hidden">
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-5">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary-glow animate-gradient-x"></div>
+            </div>
+            <div className="relative z-10">
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent font-heebo mb-4 animate-shimmer-text">
+                בקשת שירות חכמה
+              </h1>
+              <p className="text-lg text-muted-foreground font-assistant mb-6">
+                מערכת מתקדמת למעבר ספקים ומתן שירותים
+              </p>
+              {formData.selected_plan_name && (
+                <div className="mt-6 p-6 bg-gradient-to-r from-primary/10 to-primary-glow/10 rounded-2xl border border-primary/20 animate-scale-in hover-scale">
+                  <div className="flex items-center justify-center gap-3 mb-3">
+                    <div className="w-3 h-3 bg-success rounded-full animate-pulse-glow"></div>
+                    <p className="text-lg font-semibold text-primary font-assistant">
+                      מסלול זוהה אוטומטית: {formData.selected_plan_name}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center gap-6 text-sm text-primary/80">
+                    <span>חברה: {formData.target_provider}</span>
+                    <span>•</span>
+                    <span>סקטור: {formData.sector === 'cellular' ? 'סלולר' : formData.sector}</span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 text-white relative overflow-hidden">
-            <div className="absolute inset-0 bg-black/10"></div>
+        <Card className="shadow-elegant border-0 glass-card overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-primary via-primary-glow to-primary text-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-glow/90"></div>
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.2),transparent_50%)]"></div>
+            </div>
             <div className="relative z-10">
-              <CardTitle className="text-2xl font-bold text-center font-heebo mb-4">
-                {formData.action_type === 'switch' ? 'מעבר ספק' : 'בקשת שירות'}
+              <CardTitle className="text-3xl font-bold text-center font-heebo mb-6">
+                {formData.action_type === 'switch' ? '🔄 מעבר ספק' : '📋 בקשת שירות'}
               </CardTitle>
               
               {/* Enhanced Progress Bar */}
-              <div className="space-y-4">
-                <div className="flex justify-between text-sm font-medium">
-                  <span className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                      {currentStep + 1}
+              <div className="space-y-6">
+                <div className="flex justify-between items-center text-sm font-medium">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 animate-pulse-glow">
+                      <span className="text-lg font-bold">{currentStep + 1}</span>
                     </div>
-                    שלב {currentStep + 1} מתוך {steps.length}
-                  </span>
-                  <span className="bg-white/20 px-3 py-1 rounded-full">
-                    {Math.round(progress)}%
-                  </span>
+                    <span className="text-lg font-assistant">שלב {currentStep + 1} מתוך {steps.length}</span>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+                    <span className="text-lg font-bold">{Math.round(progress)}%</span>
+                  </div>
                 </div>
                 <div className="relative">
-                  <Progress value={progress} className="w-full h-3 bg-white/20" />
-                  <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full transition-all duration-300" 
-                       style={{ width: `${progress}%` }}></div>
+                  <div className="w-full h-4 bg-white/20 rounded-full backdrop-blur-sm border border-white/30"></div>
+                  <div 
+                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-white/80 to-white/60 rounded-full transition-all duration-500 ease-out shadow-glow" 
+                    style={{ width: `${progress}%` }}
+                  ></div>
                 </div>
-                <p className="text-center text-sm bg-white/20 px-4 py-2 rounded-lg">
-                  {steps[currentStep].title}
-                </p>
+                <div className="text-center">
+                  <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-xl border border-white/30 inline-block">
+                    <p className="text-lg font-semibold font-heebo">{steps[currentStep].title}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </CardHeader>
 
-          <CardContent className="p-8">
+          <CardContent className="p-10">
             {currentStep >= steps.length ? (
               // Completion Step
-              <div className="text-center space-y-6 py-8">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="w-12 h-12 text-green-600" />
+              <div className="text-center space-y-8 py-12">
+                <div className="w-24 h-24 bg-gradient-to-r from-success to-success-glow rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce-gentle shadow-elegant">
+                  <CheckCircle className="w-14 h-14 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold text-green-800 font-heebo">
-                  הבקשה נשלחה בהצלחה!
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-success to-success-glow bg-clip-text text-transparent font-heebo">
+                  🎉 הבקשה נשלחה בהצלחה!
                 </h2>
-                <div className="max-w-md mx-auto space-y-4">
-                  <p className="text-lg text-gray-600 font-assistant">
-                    מספר בקשה: <span className="font-bold text-primary">SR-{Date.now()}</span>
-                  </p>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h3 className="font-bold text-blue-800 font-heebo mb-2">מה קורה הלאה?</h3>
-                    <ul className="text-sm text-blue-700 font-assistant space-y-1 text-right">
-                      <li>🔔 תקבל SMS עם קישור לחתימה דיגיטלית</li>
-                      <li>📧 אישור בדוא״ל עם פרטי הבקשה</li>
-                      <li>📞 נחזור אליך תוך 24 שעות</li>
-                      <li>✅ עדכונים שוטפים על התקדמות</li>
+                <div className="max-w-lg mx-auto space-y-6">
+                  <div className="p-4 bg-gradient-to-r from-primary/10 to-primary-glow/10 rounded-xl border border-primary/20">
+                    <p className="text-xl text-primary font-assistant">
+                      מספר בקשה: <span className="font-bold font-heebo">SR-{Date.now()}</span>
+                    </p>
+                  </div>
+                  <div className="glass-card border border-primary/20 rounded-2xl p-6">
+                    <h3 className="font-bold text-primary font-heebo mb-4 text-lg">🚀 מה קורה הלאה?</h3>
+                    <ul className="text-primary/80 font-assistant space-y-3 text-right">
+                      <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary/5 transition-colors">
+                        <span className="text-2xl">📱</span>
+                        <span>תקבל SMS עם קישור לחתימה דיגיטלית</span>
+                      </li>
+                      <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary/5 transition-colors">
+                        <span className="text-2xl">📧</span>
+                        <span>אישור בדוא״ל עם פרטי הבקשה</span>
+                      </li>
+                      <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary/5 transition-colors">
+                        <span className="text-2xl">📞</span>
+                        <span>נחזור אליך תוך 24 שעות</span>
+                      </li>
+                      <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary/5 transition-colors">
+                        <span className="text-2xl">✅</span>
+                        <span>עדכונים שוטפים על התקדמות</span>
+                      </li>
                     </ul>
                   </div>
-                  <div className="flex gap-3 justify-center">
+                  <div className="flex gap-4 justify-center">
                     <Button 
                       onClick={() => window.location.href = '/'} 
-                      className="font-assistant"
+                      className="font-assistant bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 text-white px-8 py-3 rounded-xl shadow-lg hover-scale"
                     >
-                      חזור לדף הבית
+                      🏠 חזור לדף הבית
                     </Button>
                     <Button 
                       onClick={() => {setCurrentStep(0); setFormData({});}} 
                       variant="outline"
-                      className="font-assistant"
+                      className="font-assistant border-primary text-primary hover:bg-primary hover:text-white px-8 py-3 rounded-xl hover-scale"
                     >
-                      בקשה חדשה
+                      ➕ בקשה חדשה
                     </Button>
                   </div>
                 </div>
               </div>
             ) : (
               <div className="animate-fade-in">
+                <div className="mb-8 p-4 bg-gradient-to-r from-primary/5 to-primary-glow/5 rounded-xl border border-primary/10">
+                  <div className="flex items-center justify-center gap-3 text-primary">
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                    <span className="font-assistant text-sm">מידע זה יישמר אוטומטית</span>
+                  </div>
+                </div>
                 <StepComponent
                   formData={formData}
                   updateFormData={updateFormData}
@@ -300,27 +341,27 @@ export default function ServiceRequestWizard() {
 
             {/* Enhanced Navigation */}
             {currentStep < steps.length && (
-              <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
-                <div className="flex gap-3">
+              <div className="flex justify-between items-center mt-12 pt-8 border-t border-primary/10">
+                <div className="flex gap-4">
                   <Button
                     variant="outline"
                     onClick={saveDraft}
-                    className="font-assistant hover-scale bg-white border-purple-200 hover:bg-purple-50 hover:border-purple-400 transition-all duration-300"
+                    className="font-assistant hover-scale bg-white/50 backdrop-blur-sm border-primary/20 hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 px-6 py-3 rounded-xl"
                   >
-                    <Save className="w-4 h-4 ml-2" />
-                    שמור טיוטה
+                    <Save className="w-5 h-5 ml-2" />
+                    💾 שמור טיוטה
                   </Button>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                   {currentStep > 0 && (
                     <Button
                       variant="outline"
                       onClick={prevStep}
-                      className="font-assistant hover-scale bg-white border-gray-300 hover:bg-gray-50 transition-all duration-300"
+                      className="font-assistant hover-scale bg-white/50 backdrop-blur-sm border-muted-foreground/20 hover:bg-muted hover:border-muted-foreground/40 transition-all duration-300 px-8 py-3 rounded-xl"
                     >
-                      <ChevronLeft className="w-4 h-4 ml-2" />
-                      הקודם
+                      <ChevronLeft className="w-5 h-5 ml-2" />
+                      ⬅️ הקודם
                     </Button>
                   )}
 
@@ -329,35 +370,35 @@ export default function ServiceRequestWizard() {
                       onClick={nextStep}
                       disabled={!canProceed()}
                       className={cn(
-                        "font-assistant hover-scale transition-all duration-300",
+                        "font-assistant hover-scale transition-all duration-300 px-8 py-3 rounded-xl",
                         canProceed() 
-                          ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg" 
-                          : "bg-gray-400 cursor-not-allowed"
+                          ? "bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 shadow-lg text-white" 
+                          : "bg-muted text-muted-foreground cursor-not-allowed"
                       )}
                     >
-                      הבא
-                      <ChevronRight className="w-4 h-4 mr-2" />
+                      ➡️ הבא
+                      <ChevronRight className="w-5 h-5 mr-2" />
                     </Button>
                   ) : (
                     <Button
                       onClick={handleSubmit}
                       disabled={!canProceed() || isLoading}
                       className={cn(
-                        "font-assistant hover-scale transition-all duration-300",
+                        "font-assistant hover-scale transition-all duration-300 px-8 py-3 rounded-xl",
                         canProceed() && !isLoading
-                          ? "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 shadow-lg" 
-                          : "bg-gray-400 cursor-not-allowed"
+                          ? "bg-gradient-to-r from-success to-success-glow hover:from-success/90 hover:to-success-glow/90 shadow-lg text-white" 
+                          : "bg-muted text-muted-foreground cursor-not-allowed"
                       )}
                     >
                       {isLoading ? (
                         <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white ml-2"></div>
-                          שולח...
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white ml-2"></div>
+                          ⏳ שולח...
                         </>
                       ) : (
                         <>
-                          <CheckCircle className="w-4 h-4 ml-2" />
-                          שלח בקשה
+                          <CheckCircle className="w-5 h-5 ml-2" />
+                          🚀 שלח בקשה
                         </>
                       )}
                     </Button>
