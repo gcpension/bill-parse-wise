@@ -314,6 +314,46 @@ const AllPlans = ({ savingsData = [], initialSelectedCategories = [] }: AllPlans
           </div>
         </div>
 
+        {/* Amount Input Section */}
+        {selectedCategory && (
+          <Card className="mb-8 border-2 border-primary/20 bg-gradient-to-r from-purple-50 via-white to-blue-50 shadow-xl">
+            <CardContent className="p-8">
+              <div className="text-center mb-6">
+                <h2 className="text-3xl font-bold text-primary font-heebo mb-2 flex items-center justify-center gap-3">
+                  <Calculator className="w-8 h-8 text-purple-600" />
+                  הזינו את הסכום הנוכחי שלכם
+                </h2>
+                <p className="text-lg text-muted-foreground font-assistant">
+                  כדי לקבל המלצות מותאמות אישית וחישוב חיסכון מדויק
+                </p>
+              </div>
+              
+              <div className="max-w-md mx-auto">
+                <div className="relative">
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-purple-600 font-bold text-xl">
+                    ₪
+                  </div>
+                  <Input
+                    type="number"
+                    placeholder="200"
+                    value={userContext.currentAmount}
+                    onChange={(e) => setUserContext(prev => ({ ...prev, currentAmount: parseInt(e.target.value) || 0 }))}
+                    className="h-16 text-2xl font-bold text-center pr-12 pl-6 border-2 border-purple-200 bg-white/80 backdrop-blur-sm shadow-lg font-heebo focus:border-purple-400 focus:ring-purple-400"
+                  />
+                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground font-assistant">
+                    לחודש
+                  </div>
+                </div>
+                <div className="text-center mt-4">
+                  <p className="text-sm text-muted-foreground font-assistant">
+                    הסכום הממוצע למשק בית: ₪{selectedCategory === 'electricity' ? '300' : selectedCategory === 'internet' ? '100' : selectedCategory === 'mobile' ? '80' : '150'}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Enhanced Filters and Search */}
         {selectedCategory && (
           <Card className="mb-8 border-2 border-primary/10 bg-gradient-to-r from-white via-purple-50/30 to-white shadow-lg">
