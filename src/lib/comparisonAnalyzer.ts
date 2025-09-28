@@ -388,6 +388,9 @@ export class ComparisonAnalyzer {
     const roiInsights = AdvancedInsights.generateROIInsights(plan, allPlans);
     insights.push(...roiInsights);
     
+    return insights;
+  }
+
   /**
    * Generate advanced performance insights
    */
