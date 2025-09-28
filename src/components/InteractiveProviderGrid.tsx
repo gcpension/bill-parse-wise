@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Search, Check, Star, Building2, Zap, Smartphone, Wifi, Tv, Plus } from 'lucide-react';
+import { Check, Star, Zap, Smartphone, Wifi, Tv, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Import logos
@@ -107,22 +105,16 @@ export const InteractiveProviderGrid = ({
   value, 
   onValueChange
 }: InteractiveProviderGridProps) => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
 
   const providers = categoryProviders[category] || [];
   const CategoryIcon = categoryIcons[category];
   
-  const filteredProviders = providers.filter(provider =>
-    provider.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    provider.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  
-  const popularProviders = filteredProviders.filter(p => p.popular);
-  const otherProviders = filteredProviders.filter(p => !p.popular);
+  const popularProviders = providers.filter(p => p.popular);
+  const otherProviders = providers.filter(p => !p.popular);
   
   const displayedProviders = showAll 
-    ? filteredProviders 
+    ? providers 
     : [...popularProviders, ...otherProviders.slice(0, 4)];
 
   return (
@@ -134,20 +126,9 @@ export const InteractiveProviderGrid = ({
           </div>
           בחר ספק נוכחי
           <Badge variant="secondary" className="text-xs bg-slate-100 text-slate-700 border border-slate-300">
-            {filteredProviders.length} ספקים
+            {providers.length} ספקים
           </Badge>
         </Label>
-      </div>
-      
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
-        <Input
-          placeholder="חפש ספק לפי שם או תיאור..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-4 pr-12 h-12 bg-white border-2 border-slate-200 focus:border-slate-400 focus:ring-0 rounded-xl text-right font-medium transition-all duration-200"
-        />
       </div>
 
       {/* Provider Grid */}
