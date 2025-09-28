@@ -15,6 +15,12 @@ import yesLogo from '@/assets/logos/yes-logo.png';
 import electricityLogo from '@/assets/logos/electricity-logo.png';
 import cellcomLogo from '@/assets/logos/cellcom-logo.svg';
 import hotLogo from '@/assets/logos/hot-logo.svg';
+import netflixLogo from '@/assets/logos/netflix-logo.svg';
+import electraLogo from '@/assets/logos/electra-logo.png';
+import ramiLevyLogo from '@/assets/logos/rami-levy-logo.png';
+import disneyLogo from '@/assets/logos/disney-logo.png';
+import hboLogo from '@/assets/logos/hbo-logo.png';
+import logo019 from '@/assets/logos/019-logo.png';
 
 type Category = 'electricity' | 'cellular' | 'internet' | 'tv';
 
@@ -48,46 +54,44 @@ interface InteractiveProviderGridProps {
 
 const categoryProviders: Record<Category, Provider[]> = {
   electricity: [
-    { name: 'חברת חשמל', logoType: 'image', popular: true, rating: 4.2, customers: '2.8M', color: 'bg-yellow-500', description: 'הספק הוותיק והמוביל' },
-    { name: 'פז אנרגיה', logo: '🔋', logoType: 'emoji', popular: true, rating: 4.5, customers: '850K', color: 'bg-blue-500', description: 'חדשנות ואמינות' },
-    { name: 'אלקטרה פאוור', logo: '⚡', logoType: 'emoji', popular: true, rating: 4.3, customers: '620K', color: 'bg-purple-500', description: 'שירות מותאם אישית' },
-    { name: 'דור אלון אנרגיה', logo: '🌟', logoType: 'emoji', popular: true, rating: 4.4, customers: '480K', color: 'bg-green-500', description: 'אנרגיה ירוקה' },
-    { name: 'סלקום אנרגיה', logo: '🔌', logoType: 'emoji', popular: false, rating: 4.1, customers: '320K', color: 'bg-red-500', description: 'חבילות משתלמות' },
-    { name: 'נקסט אנרגיה', logo: '⚡', logoType: 'emoji', popular: false, rating: 4.0, customers: '280K', color: 'bg-orange-500', description: 'טכנולוגיה חכמה' },
-    { name: 'אורמת אנרגיה', logo: '🌞', logoType: 'emoji', popular: false, rating: 4.2, customers: '190K', color: 'bg-yellow-600', description: 'אנרגיה סולארית' },
-    { name: 'גין אנרגיה', logo: '🍃', logoType: 'emoji', popular: false, rating: 4.1, customers: '150K', color: 'bg-green-600', description: 'ידידותית לסביבה' },
-    { name: 'בזק אנרגיה', logoType: 'image', popular: false, rating: 3.9, customers: '220K', color: 'bg-blue-600', description: 'חבילות משולבות' },
-    { name: 'אנרג\'יה ישראלית', logo: '🇮🇱', logoType: 'emoji', popular: false, rating: 4.0, customers: '180K', color: 'bg-blue-700', description: 'גאווה ישראלית' }
+    { name: 'חברת חשמל', logoType: 'image', popular: true, rating: 4.2, customers: '2.8M', color: 'bg-yellow-500', description: 'הספק הוותיק והמוביל בישראל' },
+    { name: 'פז אנרגיה', logoType: 'image', popular: true, rating: 4.5, customers: '850K', color: 'bg-blue-500', description: 'חדשנות ואמינות במגזר האנרגיה' },
+    { name: 'אלקטרה פאוור', logoType: 'image', popular: true, rating: 4.3, customers: '620K', color: 'bg-blue-600', description: 'שירות מותאם אישית ואיכותי' },
+    { name: 'דור אלון אנרגיה', logo: '🌟', logoType: 'emoji', popular: true, rating: 4.4, customers: '480K', color: 'bg-green-500', description: 'פתרונות אנרגיה ירוקה וחכמה' },
+    { name: 'סלקום אנרגיה', logoType: 'image', popular: false, rating: 4.1, customers: '320K', color: 'bg-red-500', description: 'חבילות משתלמות לבית' },
+    { name: 'בזק אנרגיה', logoType: 'image', popular: false, rating: 3.9, customers: '220K', color: 'bg-blue-600', description: 'חבילות משולבות עם תקשורת' },
+    { name: 'נקסט אנרגיה', logo: '⚡', logoType: 'emoji', popular: false, rating: 4.0, customers: '280K', color: 'bg-orange-500', description: 'טכנולוגיה חכמה למחר' },
+    { name: 'אורמת אנרגיה', logo: '🌞', logoType: 'emoji', popular: false, rating: 4.2, customers: '190K', color: 'bg-yellow-600', description: 'מובילים באנרגיה סולארית' }
   ],
   cellular: [
-    { name: 'פלאפון', logoType: 'image', popular: true, rating: 4.4, customers: '2.9M', color: 'bg-orange-500', description: 'הרשת הגדולה בישראל' },
-    { name: 'סלקום', logoType: 'image', popular: true, rating: 4.3, customers: '2.1M', color: 'bg-red-500', description: 'חדשנות וקישוריות' },
-    { name: 'פרטנר', logoType: 'image', popular: true, rating: 4.2, customers: '2.5M', color: 'bg-purple-500', description: 'שירות מעולה' },
-    { name: 'הוט מובייל', logo: '🔥', logoType: 'emoji', popular: true, rating: 4.1, customers: '1.2M', color: 'bg-red-600', description: 'חבילות חמות' },
-    { name: '019 מובייל', logo: '📞', logoType: 'emoji', popular: false, rating: 4.0, customers: '890K', color: 'bg-blue-500', description: 'מחירים אטרקטיביים' },
-    { name: 'רמי לוי תקשורת', logo: '🛒', logoType: 'emoji', popular: false, rating: 3.9, customers: '650K', color: 'bg-green-500', description: 'חיסכון משמעותי' },
-    { name: 'יס', logoType: 'image', popular: false, rating: 4.0, customers: '380K', color: 'bg-green-600', description: 'פשטות וחסכון' },
-    { name: 'גולן טלקום', logo: '📡', logoType: 'emoji', popular: false, rating: 3.7, customers: '180K', color: 'bg-blue-600', description: 'כיסוי מעולה בצפון' }
+    { name: 'פלאפון', logoType: 'image', popular: true, rating: 4.4, customers: '2.9M', color: 'bg-orange-500', description: 'הרשת הגדולה והמובילה בישראל' },
+    { name: 'סלקום', logoType: 'image', popular: true, rating: 4.3, customers: '2.1M', color: 'bg-red-500', description: 'חדשנות וקישוריות מתקדמת' },
+    { name: 'פרטנר', logoType: 'image', popular: true, rating: 4.2, customers: '2.5M', color: 'bg-purple-500', description: 'שירות לקוחות מעולה' },
+    { name: 'הוט מובייל', logoType: 'image', popular: true, rating: 4.1, customers: '1.2M', color: 'bg-red-600', description: 'חבילות חמות במחירים נוחים' },
+    { name: '019 מובייל', logoType: 'image', popular: false, rating: 4.0, customers: '890K', color: 'bg-blue-500', description: 'מחירים אטרקטיביים לכולם' },
+    { name: 'רמי לוי תקשורת', logoType: 'image', popular: false, rating: 3.9, customers: '650K', color: 'bg-green-500', description: 'חיסכון משמעותי בחשבון הנייד' },
+    { name: 'יס', logoType: 'image', popular: false, rating: 4.0, customers: '380K', color: 'bg-green-600', description: 'פשטות וחסכון בלי פשרות' },
+    { name: 'גולן טלקום', logo: '📡', logoType: 'emoji', popular: false, rating: 3.7, customers: '180K', color: 'bg-blue-600', description: 'כיסוי מעולה בצפון הארץ' }
   ],
   internet: [
-    { name: 'בזק', logoType: 'image', popular: true, rating: 4.1, customers: '1.8M', color: 'bg-blue-500', description: 'התשתית הלאומית' },
-    { name: 'הוט', logoType: 'image', popular: true, rating: 4.3, customers: '1.2M', color: 'bg-red-500', description: 'מהירות וחדשנות' },
-    { name: 'פרטנר', logoType: 'image', popular: true, rating: 4.2, customers: '950K', color: 'bg-purple-500', description: 'חבילות גמישות' },
-    { name: 'סלקום', logoType: 'image', popular: true, rating: 4.0, customers: '780K', color: 'bg-red-600', description: 'רשת אמינה' },
-    { name: 'יס', logoType: 'image', popular: false, rating: 4.1, customers: '320K', color: 'bg-green-500', description: 'פשוט וטוב' },
-    { name: 'גולד ליינס', logo: '🥇', logoType: 'emoji', popular: false, rating: 4.2, customers: '180K', color: 'bg-yellow-500', description: 'קווים זהובים' },
-    { name: 'נטוויזן', logo: '👁️', logoType: 'emoji', popular: false, rating: 3.8, customers: '140K', color: 'bg-blue-600', description: 'חזון רשתי' },
-    { name: '013 נטליין', logo: '☎️', logoType: 'emoji', popular: false, rating: 3.7, customers: '120K', color: 'bg-gray-500', description: 'קווים מהימנים' }
+    { name: 'בזק', logoType: 'image', popular: true, rating: 4.1, customers: '1.8M', color: 'bg-blue-500', description: 'התשתית הלאומית המובילה' },
+    { name: 'הוט', logoType: 'image', popular: true, rating: 4.3, customers: '1.2M', color: 'bg-red-500', description: 'מהירות וחדשנות בכל בית' },
+    { name: 'פרטנר', logoType: 'image', popular: true, rating: 4.2, customers: '950K', color: 'bg-purple-500', description: 'חבילות גמישות לכל משפחה' },
+    { name: 'סלקום', logoType: 'image', popular: true, rating: 4.0, customers: '780K', color: 'bg-red-600', description: 'רשת אמינה ויציבה' },
+    { name: 'יס', logoType: 'image', popular: false, rating: 4.1, customers: '320K', color: 'bg-green-500', description: 'פשוט, טוב ומהיר' },
+    { name: 'גולד ליינס', logo: '🥇', logoType: 'emoji', popular: false, rating: 4.2, customers: '180K', color: 'bg-yellow-500', description: 'קווי זהב למהירות מקסימלית' },
+    { name: 'נטוויזן', logo: '👁️', logoType: 'emoji', popular: false, rating: 3.8, customers: '140K', color: 'bg-blue-600', description: 'חזון רשתי מתקדם' },
+    { name: '013 נטליין', logo: '☎️', logoType: 'emoji', popular: false, rating: 3.7, customers: '120K', color: 'bg-gray-500', description: 'קווים מהימנים ויציבים' }
   ],
   tv: [
-    { name: 'יס', logoType: 'image', popular: true, rating: 4.4, customers: '1.1M', color: 'bg-green-500', description: 'בידור ללא הפסקה' },
-    { name: 'הוט', logoType: 'image', popular: true, rating: 4.2, customers: '890K', color: 'bg-red-500', description: 'קולנוע בבית' },
-    { name: 'סלקום TV', logo: '📡', logoType: 'emoji', popular: true, rating: 4.0, customers: '650K', color: 'bg-red-600', description: 'טלוויזיה דיגיטלית' },
-    { name: 'פרטנר TV', logo: '🎭', logoType: 'emoji', popular: true, rating: 3.9, customers: '520K', color: 'bg-purple-500', description: 'בידור משפחתי' },
-    { name: 'נטפליקס', logo: '🍿', logoType: 'emoji', popular: true, rating: 4.5, customers: '2.8M', color: 'bg-red-700', description: 'סטרימינג עולמי' },
-    { name: 'סטרימקס', logo: '📺', logoType: 'emoji', popular: false, rating: 4.1, customers: '380K', color: 'bg-blue-500', description: 'תוכן ישראלי מקורי' },
-    { name: 'Disney+', logo: '🏰', logoType: 'emoji', popular: false, rating: 4.3, customers: '420K', color: 'bg-blue-600', description: 'קסם דיסני' },
-    { name: 'אמזון פריים', logo: '📦', logoType: 'emoji', popular: false, rating: 4.2, customers: '290K', color: 'bg-orange-500', description: 'משלוחים ובידור' }
+    { name: 'יס', logoType: 'image', popular: true, rating: 4.4, customers: '1.1M', color: 'bg-green-500', description: 'בידור ללא הפסקה - הטוב בישראל' },
+    { name: 'הוט', logoType: 'image', popular: true, rating: 4.2, customers: '890K', color: 'bg-red-500', description: 'קולנוע וסדרות פרימיום בבית' },
+    { name: 'נטפליקס', logoType: 'image', popular: true, rating: 4.5, customers: '2.8M', color: 'bg-red-700', description: 'הסטרימינג הפופולרי בעולם' },
+    { name: 'סלקום TV', logoType: 'image', popular: true, rating: 4.0, customers: '650K', color: 'bg-red-600', description: 'טלוויזיה דיגיטלית מתקדמת' },
+    { name: 'Disney+', logoType: 'image', popular: false, rating: 4.3, customers: '420K', color: 'bg-blue-600', description: 'הקסם של דיסני לכל המשפחה' },
+    { name: 'HBO Max', logoType: 'image', popular: false, rating: 4.4, customers: '250K', color: 'bg-purple-700', description: 'סדרות איכות ברמה עולמית' },
+    { name: 'פרטנר TV', logo: '🎭', logoType: 'emoji', popular: false, rating: 3.9, customers: '520K', color: 'bg-purple-500', description: 'בידור משפחתי איכותי' },
+    { name: 'אמזון פריים', logo: '📦', logoType: 'emoji', popular: false, rating: 4.2, customers: '290K', color: 'bg-orange-500', description: 'משלוחים חינם ובידור מעולה' }
   ]
 };
 
@@ -122,134 +126,165 @@ export const InteractiveProviderGrid = ({
     : [...popularProviders, ...otherProviders.slice(0, 4)];
 
   return (
-    <div className="space-y-4">
-      <Label className="text-sm font-medium flex items-center gap-2">
-        <CategoryIcon className="h-4 w-4" />
-        ספק נוכחי
-        <Badge variant="secondary" className="text-xs">
-          {filteredProviders.length} ספקים זמינים
-        </Badge>
-      </Label>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <Label className="text-lg font-semibold flex items-center gap-3">
+          <div className="w-8 h-8 bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg flex items-center justify-center">
+            <CategoryIcon className="h-5 w-5 text-slate-600" />
+          </div>
+          בחר ספק נוכחי
+          <Badge variant="secondary" className="text-xs bg-slate-100 text-slate-700 border border-slate-300">
+            {filteredProviders.length} ספקים
+          </Badge>
+        </Label>
+      </div>
       
       {/* Search Bar */}
       <div className="relative">
-        <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
         <Input
           placeholder="חפש ספק לפי שם או תיאור..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-4 pr-10 h-11 bg-background border-border hover:border-primary/50 focus:border-primary transition-colors"
+          className="pl-4 pr-12 h-12 bg-white border-2 border-slate-200 focus:border-slate-400 focus:ring-0 rounded-xl text-right font-medium transition-all duration-200"
         />
       </div>
 
       {/* Provider Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[500px] overflow-y-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {displayedProviders.map((provider) => (
-          <Card
+          <div
             key={provider.name}
             className={cn(
-              "cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group",
+              "group cursor-pointer transition-all duration-300 hover:scale-105 p-6 rounded-2xl border-2 bg-white",
               value === provider.name 
-                ? "border-2 border-slate-400 bg-slate-50 shadow-md" 
-                : "border border-slate-200 hover:border-slate-300 bg-white"
+                ? "border-slate-600 shadow-xl bg-slate-50 scale-[1.02]" 
+                : "border-slate-200 hover:border-slate-400 hover:shadow-lg"
             )}
             onClick={() => onValueChange(provider.name === value ? "" : provider.name)}
           >
-            <CardContent className="p-4 space-y-3">
-              {/* Header with Logo */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-slate-50 border border-slate-200">
+            {/* Logo Section */}
+            <div className="flex items-center justify-center mb-4">
+              <div className="relative">
+                <div className={cn(
+                  "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 border-2",
+                  value === provider.name ? "border-slate-300 bg-white shadow-md" : "border-slate-200 bg-slate-50"
+                )}>
                   {provider.logoType === 'image' && providerLogos[provider.name] ? (
                     <img 
                       src={providerLogos[provider.name]} 
                       alt={`${provider.name} logo`}
-                      className="w-8 h-8 object-contain"
+                      className="w-10 h-10 object-contain"
                       onError={(e) => {
-                        // Fallback to colored circle if image fails
                         const target = e.target as HTMLImageElement;
                         const parent = target.parentElement;
                         if (parent) {
-                          parent.innerHTML = `<div class="w-8 h-8 rounded-lg ${provider.color} flex items-center justify-center text-white font-bold text-sm">${provider.name.charAt(0)}</div>`;
+                          parent.innerHTML = `<div class="w-10 h-10 rounded-xl ${provider.color} flex items-center justify-center text-white font-bold text-lg">${provider.name.charAt(0)}</div>`;
                         }
                       }}
                     />
                   ) : (
-                    <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm", provider.color)}>
+                    <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg", provider.color)}>
                       {provider.logo || provider.name.charAt(0)}
                     </div>
                   )}
                 </div>
-                <div className="flex items-center gap-1">
-                  {provider.popular && (
-                    <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-700 border-amber-300">
+                
+                {/* Selection Indicator */}
+                {value === provider.name && (
+                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-slate-700 rounded-full flex items-center justify-center border-2 border-white">
+                    <Check className="h-3 w-3 text-white" />
+                  </div>
+                )}
+                
+                {/* Popular Badge */}
+                {provider.popular && (
+                  <div className="absolute -top-2 -left-2">
+                    <Badge className="text-xs bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0 px-2 py-1 font-semibold">
                       <Star className="h-3 w-3 mr-1 fill-current" />
-                      פופולארי
+                      פופולרי
                     </Badge>
-                  )}
-                  {value === provider.name && (
-                    <div className="w-6 h-6 bg-slate-700 rounded-full flex items-center justify-center">
-                      <Check className="h-4 w-4 text-white" />
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
+            </div>
 
-              {/* Provider Name */}
-              <div>
-                <h4 className="font-semibold text-sm leading-tight">{provider.name}</h4>
-                <p className="text-xs text-muted-foreground mt-1">{provider.description}</p>
-              </div>
+            {/* Provider Info */}
+            <div className="text-center space-y-3">
+              <h4 className={cn(
+                "font-bold text-base leading-tight transition-colors duration-200",
+                value === provider.name ? "text-slate-900" : "text-slate-800 group-hover:text-slate-900"
+              )}>
+                {provider.name}
+              </h4>
+              
+              <p className="text-xs text-slate-600 leading-relaxed px-2">
+                {provider.description}
+              </p>
 
               {/* Stats */}
-              <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-200">
                 <div className="flex items-center gap-1">
-                  <Star className="h-3 w-3 text-yellow-500 fill-current" />
-                  <span className="font-medium">{provider.rating}</span>
+                  <Star className="h-3 w-3 text-amber-500 fill-current" />
+                  <span className="font-semibold text-slate-700">{provider.rating}</span>
                 </div>
-                <div className="flex items-center gap-1 text-muted-foreground">
+                <div className="flex items-center gap-1 text-slate-500">
                   <Building2 className="h-3 w-3" />
-                  <span>{provider.customers}</span>
+                  <span className="font-medium">{provider.customers}</span>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
 
         {/* Custom Provider Option */}
-        <Card
+        <div
           className={cn(
-            "cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group border-2 border-dashed",
+            "group cursor-pointer transition-all duration-300 hover:scale-105 p-6 rounded-2xl border-2 border-dashed bg-white",
             value === "אחר" 
-              ? "border-slate-400 bg-slate-50 shadow-md" 
-              : "border-slate-300 hover:border-slate-400"
+              ? "border-slate-600 shadow-xl bg-slate-50 scale-[1.02]" 
+              : "border-slate-300 hover:border-slate-500 hover:shadow-lg"
           )}
           onClick={() => onValueChange(value === "אחר" ? "" : "אחר")}
         >
-          <CardContent className="p-4 space-y-3 text-center">
-            <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center mx-auto border border-slate-200">
-              <Plus className="h-5 w-5 text-slate-500" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-sm">ספק אחר</h4>
-              <p className="text-xs text-slate-600">ספק שלא ברשימה</p>
-            </div>
-            {value === "אחר" && (
-              <div className="w-6 h-6 bg-slate-700 rounded-full flex items-center justify-center mx-auto">
-                <Check className="h-4 w-4 text-white" />
+          <div className="text-center space-y-4">
+            <div className="relative flex items-center justify-center">
+              <div className={cn(
+                "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 border-2 border-dashed",
+                value === "אחר" ? "border-slate-400 bg-white" : "border-slate-300 bg-slate-50"
+              )}>
+                <Plus className="h-8 w-8 text-slate-500" />
               </div>
-            )}
-          </CardContent>
-        </Card>
+              {value === "אחר" && (
+                <div className="absolute -top-1 -right-1 w-6 h-6 bg-slate-700 rounded-full flex items-center justify-center border-2 border-white">
+                  <Check className="h-3 w-3 text-white" />
+                </div>
+              )}
+            </div>
+            
+            <div>
+              <h4 className={cn(
+                "font-bold text-base transition-colors duration-200",
+                value === "אחר" ? "text-slate-900" : "text-slate-800 group-hover:text-slate-900"
+              )}>
+                ספק אחר
+              </h4>
+              <p className="text-xs text-slate-600 mt-2">
+                ספק שלא מופיע ברשימה
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Show More/Less Button */}
       {!showAll && otherProviders.length > 4 && (
-        <div className="text-center">
+        <div className="text-center pt-4">
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowAll(true)}
-            className="text-primary hover:text-primary-foreground hover:bg-primary"
+            className="bg-white hover:bg-slate-50 border-2 border-slate-300 hover:border-slate-400 text-slate-700 hover:text-slate-900 px-6 py-2 rounded-xl transition-all duration-200"
           >
             הצג עוד {otherProviders.length - 4} ספקים
           </Button>
@@ -257,12 +292,12 @@ export const InteractiveProviderGrid = ({
       )}
 
       {showAll && (
-        <div className="text-center">
+        <div className="text-center pt-4">
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowAll(false)}
-            className="text-primary hover:text-primary-foreground hover:bg-primary"
+            className="bg-white hover:bg-slate-50 border-2 border-slate-300 hover:border-slate-400 text-slate-700 hover:text-slate-900 px-6 py-2 rounded-xl transition-all duration-200"
           >
             הצג פחות
           </Button>
