@@ -730,57 +730,184 @@ const PersonalizedRecommendation = ({ isOpen, onClose, comparedPlans }: Personal
           )}
 
           {step === 2 && (
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold text-center">מה חשוב לכם במסלול?</h3>
-              
-              <div>
-                <Label className="text-base font-semibold mb-4 block">בחרו את העדיפויות שלכם (ניתן לבחור כמה אפשרויות)</Label>
-                <div className="grid md:grid-cols-2 gap-3">
-                  {[
-                    { id: 'price', label: 'מחיר נמוך', icon: DollarSign },
-                    { id: 'speed', label: 'מהירות גבוהה', icon: TrendingUp },
-                    { id: 'reliability', label: 'אמינות ויציבות', icon: CheckCircle },
-                    { id: 'support', label: 'שירות לקוחות מעולה', icon: Users },
-                    { id: 'flexibility', label: 'גמישות בחוזה', icon: Clock },
-                    { id: 'features', label: 'תכונות מתקדמות', icon: Star }
-                  ].map((priority) => (
-                    <div key={priority.id} className="flex items-center space-x-3 space-x-reverse">
-                      <Checkbox
-                        id={priority.id}
-                        checked={preferences.priorities.includes(priority.id)}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setPreferences(prev => ({ 
-                              ...prev, 
-                              priorities: [...prev.priorities, priority.id] 
-                            }));
-                          } else {
-                            setPreferences(prev => ({ 
-                              ...prev, 
-                              priorities: prev.priorities.filter(p => p !== priority.id) 
-                            }));
-                          }
-                        }}
-                      />
-                      <Label htmlFor={priority.id} className="flex items-center gap-2 cursor-pointer">
-                        <priority.icon className="w-4 h-4" />
-                        {priority.label}
-                      </Label>
-                    </div>
-                  ))}
+            <div className="space-y-8">
+              {/* Enhanced Header */}
+              <div className="text-center space-y-4 p-6 bg-gradient-to-br from-primary/5 via-background to-accent/5 rounded-3xl border border-primary/20">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-warning to-warning/80 rounded-full flex items-center justify-center animate-pulse shadow-glow">
+                    <Star className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    מה הכי חשוב לכם?
+                  </h3>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-lg text-muted-foreground font-medium">
+                    בחרו עד 3 דברים הכי חשובים לכם במסלול החדש
+                  </p>
+                  <div className="flex items-center justify-center gap-2 text-sm">
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                    <span className="text-primary font-medium">בחרתם {preferences.priorities.length}/3</span>
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                  </div>
                 </div>
               </div>
+              
+              {/* Priority Cards - Enhanced Design */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {[
+                  { 
+                    id: 'price', 
+                    label: 'מחיר נמוך', 
+                    icon: DollarSign, 
+                    description: 'החיסכון המקסימלי עבור המשפחה',
+                    color: 'from-green-500 to-emerald-600',
+                    bgColor: 'from-green-500/10 to-emerald-600/5'
+                  },
+                  { 
+                    id: 'quality', 
+                    label: 'איכות שירות', 
+                    icon: Star, 
+                    description: 'שירות מהימן ללא תקלות',
+                    color: 'from-yellow-500 to-orange-500',
+                    bgColor: 'from-yellow-500/10 to-orange-500/5'
+                  },
+                  { 
+                    id: 'support', 
+                    label: 'שירות לקוחות', 
+                    icon: Users, 
+                    description: 'זמינות 24/7 ומקצועיות גבוהה',
+                    color: 'from-blue-500 to-cyan-500',
+                    bgColor: 'from-blue-500/10 to-cyan-500/5'
+                  },
+                  { 
+                    id: 'speed', 
+                    label: 'מהירות וביצועים', 
+                    icon: Zap, 
+                    description: 'טכנולוגיה מתקדמת וביצועים מעולים',
+                    color: 'from-purple-500 to-violet-600',
+                    bgColor: 'from-purple-500/10 to-violet-600/5'
+                  },
+                  { 
+                    id: 'reliability', 
+                    label: 'אמינות ויציבות', 
+                    icon: ShieldCheck, 
+                    description: 'רשת יציבה עם זמינות גבוהה',
+                    color: 'from-indigo-500 to-blue-600',
+                    bgColor: 'from-indigo-500/10 to-blue-600/5'
+                  },
+                  { 
+                    id: 'features', 
+                    label: 'תכונות מתקדמות', 
+                    icon: Sparkles, 
+                    description: 'חדשנות וטכנולוגיות חכמות',
+                    color: 'from-pink-500 to-rose-600',
+                    bgColor: 'from-pink-500/10 to-rose-600/5'
+                  }
+                ].map((priority) => {
+                  const Icon = priority.icon;
+                  const isSelected = preferences.priorities.includes(priority.id);
+                  const canSelect = !isSelected && preferences.priorities.length < 3;
+                  const isDisabled = !isSelected && preferences.priorities.length >= 3;
+                  
+                  return (
+                    <Card 
+                      key={priority.id}
+                      className={cn(
+                        "cursor-pointer transition-all duration-500 border-2 group overflow-hidden relative",
+                        isSelected 
+                          ? `border-primary bg-gradient-to-br ${priority.bgColor} shadow-glow transform scale-105` 
+                          : isDisabled
+                          ? "border-border/50 bg-muted/30 opacity-50 cursor-not-allowed"
+                          : "border-border hover:border-primary/50 hover:bg-muted/50 hover:scale-102 hover:shadow-md"
+                      )}
+                      onClick={() => {
+                        if (isDisabled) return;
+                        const newPriorities = isSelected 
+                          ? preferences.priorities.filter(p => p !== priority.id)
+                          : [...preferences.priorities, priority.id];
+                        setPreferences(prev => ({ ...prev, priorities: newPriorities }));
+                      }}
+                    >
+                      {/* Background gradient effect */}
+                      {isSelected && (
+                        <div className={`absolute inset-0 bg-gradient-to-br ${priority.bgColor} opacity-20`}></div>
+                      )}
+                      
+                      <CardContent className="p-6 relative z-10 space-y-4">
+                        <div className="flex items-start gap-4">
+                          <div className={cn(
+                            "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-md",
+                            isSelected 
+                              ? `bg-gradient-to-r ${priority.color} text-white transform rotate-3 shadow-lg` 
+                              : isDisabled
+                              ? "bg-muted text-muted-foreground/50"
+                              : "bg-muted text-muted-foreground group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:text-white"
+                          )}>
+                            <Icon className="w-8 h-8" />
+                          </div>
+                          <div className="flex-1 space-y-2">
+                            <div className="flex items-center justify-between">
+                              <h4 className={cn(
+                                "font-bold text-xl transition-colors",
+                                isSelected ? "text-primary" : isDisabled ? "text-muted-foreground" : "text-foreground"
+                              )}>
+                                {priority.label}
+                              </h4>
+                              {isSelected && (
+                                <div className="w-8 h-8 bg-gradient-to-r from-success to-success/80 rounded-full flex items-center justify-center animate-scale-in shadow-md">
+                                  <CheckCircle className="w-5 h-5 text-white" />
+                                </div>
+                              )}
+                            </div>
+                            <p className={cn(
+                              "text-sm leading-relaxed",
+                              isSelected ? "text-foreground font-medium" : isDisabled ? "text-muted-foreground/70" : "text-muted-foreground"
+                            )}>
+                              {priority.description}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* Selection indicator */}
+                        {isSelected && (
+                          <div className="flex items-center justify-center pt-2 border-t border-primary/20">
+                            <div className="flex items-center gap-2 text-success font-medium text-sm">
+                              <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                              נבחר
+                              <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
 
-              <div>
-                <Label htmlFor="experience" className="text-base font-semibold">איך הייתה החוויה עם הספק הקודם? (אופציונלי)</Label>
+              {/* Enhanced Optional Section */}
+              <div className="space-y-6 p-6 bg-gradient-to-r from-muted/30 to-muted/20 rounded-2xl border border-border/50">
+                <div className="text-center space-y-2">
+                  <h4 className="text-xl font-bold text-foreground flex items-center justify-center gap-3">
+                    <Lightbulb className="w-6 h-6 text-warning" />
+                    רוצים לחלוק יותר? (אופציונלי)
+                  </h4>
+                  <p className="text-muted-foreground">
+                    ספרו לנו על הניסיון שלכם - זה יעזור לנו להמליץ טוב יותר
+                  </p>
+                </div>
+                
                 <Textarea
-                  id="experience"
-                  placeholder="למשל: שירות איטי, מחירים גבוהים, בעיות טכניות..."
+                  placeholder="למשל: 'הספק הנוכחי שלנו יקר מדי', 'יש לנו בעיות תקשורת', 'אנחנו מחפשים יותר תכונות'..."
                   value={preferences.previousExperience}
                   onChange={(e) => setPreferences(prev => ({ ...prev, previousExperience: e.target.value }))}
-                  className="mt-2"
-                  rows={3}
+                  className="min-h-[120px] resize-none bg-background/50 border-2 border-border/50 focus:border-primary/50 transition-colors"
                 />
+                
+                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>המידע שלכם מוגן ומוצפן</span>
+                </div>
               </div>
 
               <div className="flex gap-3">
