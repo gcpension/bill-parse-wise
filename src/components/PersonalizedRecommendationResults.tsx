@@ -78,172 +78,215 @@ export const PersonalizedRecommendationResults = ({
 
           {/* Elegant Main Recommendation Card */}
           <Card className="border border-border/20 bg-card shadow-xl rounded-3xl overflow-hidden max-w-4xl mx-auto">
-            <CardHeader className="bg-foreground/[0.02] p-12 text-center">
-              <div className="space-y-6">
-                <div className="w-24 h-24 bg-foreground/5 rounded-full flex items-center justify-center mx-auto">
-                  <Award className="w-12 h-12 text-foreground/60" />
+            {/* Interactive Plan Header */}
+            <div className="bg-gradient-primary text-white rounded-t-3xl p-12 text-center relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-mesh opacity-10"></div>
+              <div className="relative z-10 space-y-6">
+                <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto animate-bounce-gentle backdrop-blur-sm border border-white/30">
+                  <Award className="w-12 h-12 text-white animate-pulse-glow" />
                 </div>
-                <CardTitle className="text-5xl font-light text-foreground tracking-tight">
+                <CardTitle className="text-6xl font-bold text-white tracking-tight animate-shimmer-text bg-gradient-to-r from-white via-primary-glow to-white bg-clip-text">
                   {topPlan.planName}
                 </CardTitle>
-                <p className="text-2xl text-muted-foreground font-light">
+                <p className="text-2xl text-white/90 font-semibold">
                   {topPlan.company}
                 </p>
                 <div className="pt-6">
-                  <div className="text-6xl font-extralight text-foreground mb-2">
+                  <div className="text-8xl font-bold text-white mb-2 animate-pulse-glow">
                     ₪{topPlan.regularPrice}
                   </div>
-                  <div className="text-lg text-muted-foreground">לחודש</div>
+                  <div className="text-xl text-white/80">לחודש</div>
                   {topPlan.introPrice && topPlan.introPrice < topPlan.regularPrice && (
-                    <div className="mt-6 p-4 bg-foreground/5 rounded-2xl inline-block">
-                      <div className="text-sm text-muted-foreground mb-1">מחיר השקה</div>
-                      <div className="text-3xl font-light text-foreground">₪{topPlan.introPrice}</div>
+                    <div className="mt-6 p-6 bg-white/20 rounded-3xl inline-block backdrop-blur-sm border border-white/30 hover-scale">
+                      <div className="text-sm text-white/90 mb-1 font-semibold">מחיר השקה מיוחד</div>
+                      <div className="text-4xl font-bold text-white">₪{topPlan.introPrice}</div>
                     </div>
                   )}
                 </div>
               </div>
-            </CardHeader>
+            </div>
             
-            <CardContent className="p-12 space-y-10">
-              {/* Match Score - Minimal Design */}
-              <div className="text-center py-8 border-y border-border/20">
-                <div className="max-w-md mx-auto space-y-4">
-                  <div className="text-lg text-muted-foreground font-medium">דירוג התאמה אישי</div>
-                  <div className="text-5xl font-light text-foreground mb-4">
-                    {Math.round(topRecommendation.personalizedScore)}%
+            <CardContent className="p-12 space-y-12">
+              {/* Interactive Score Display */}
+              <div className="text-center py-8 bg-gradient-card rounded-3xl border border-border/20">
+                <div className="max-w-md mx-auto space-y-6">
+                  <div className="text-xl text-muted-foreground font-bold">דירוג התאמה אישי</div>
+                  <div className="relative">
+                    <div className="text-7xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4 animate-scale-in">
+                      {Math.round(topRecommendation.personalizedScore)}%
+                    </div>
+                    <div className="flex justify-center space-x-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star 
+                          key={i} 
+                          className={cn(
+                            "w-6 h-6 transition-all duration-300 hover-scale",
+                            i < Math.round(topRecommendation.personalizedScore / 20) 
+                              ? "text-primary fill-primary animate-bounce-gentle" 
+                              : "text-muted-foreground"
+                          )} 
+                          style={{ animationDelay: `${i * 0.1}s` }}
+                        />
+                      ))}
+                    </div>
                   </div>
-                  <div className="w-full bg-foreground/10 h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-muted h-4 rounded-full overflow-hidden">
                     <div 
-                      className="bg-foreground h-full rounded-full transition-all duration-1000 ease-out"
+                      className="bg-gradient-primary h-full rounded-full transition-all duration-2000 ease-out animate-pulse-glow"
                       style={{ width: `${topRecommendation.personalizedScore}%` }}
                     />
                   </div>
-                  <div className="text-sm text-muted-foreground">התאמה מעולה למשפחה שלכם</div>
+                  <div className="text-muted-foreground font-semibold">התאמה מעולה למשפחה שלכם</div>
                 </div>
               </div>
 
-              {/* Expected Savings - Minimal Design */}
+              {/* Savings Showcase */}
               {topRecommendation.expectedSavings.monthly > 0 && (
-                <div className="text-center py-8 space-y-6">
-                  <div className="text-lg text-muted-foreground font-medium">החיסכון הצפוי שלכם</div>
-                  <div className="grid grid-cols-2 gap-8 max-w-lg mx-auto">
-                    <div className="space-y-2">
-                      <div className="text-4xl font-light text-foreground">₪{topRecommendation.expectedSavings.monthly}</div>
-                      <div className="text-sm text-muted-foreground">חיסכון חודשי</div>
+                <div className="bg-success/5 rounded-3xl p-8 border border-success/20">
+                  <div className="text-center space-y-6">
+                    <div className="text-xl text-success font-bold flex items-center justify-center gap-2">
+                      <TrendingUp className="w-6 h-6" />
+                      החיסכון הצפוי שלכם
                     </div>
-                    <div className="space-y-2">
-                      <div className="text-4xl font-light text-foreground">₪{topRecommendation.expectedSavings.annual}</div>
-                      <div className="text-sm text-muted-foreground">חיסכון שנתי</div>
+                    <div className="grid grid-cols-2 gap-8 max-w-lg mx-auto">
+                      <div className="bg-white rounded-2xl p-6 shadow-card hover-scale transition-all duration-300">
+                        <div className="text-5xl font-bold text-success mb-2">₪{topRecommendation.expectedSavings.monthly}</div>
+                        <div className="text-muted-foreground font-semibold">חיסכון חודשי</div>
+                      </div>
+                      <div className="bg-white rounded-2xl p-6 shadow-card hover-scale transition-all duration-300">
+                        <div className="text-5xl font-bold text-success mb-2">₪{topRecommendation.expectedSavings.annual}</div>
+                        <div className="text-muted-foreground font-semibold">חיסכון שנתי</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* Trust Indicators - Minimal */}
-              <div className="grid grid-cols-2 gap-8 py-8 border-y border-border/20">
-                <div className="text-center space-y-3">
-                  <div className="text-2xl font-light text-foreground">{Math.round(topRecommendation.confidenceLevel * 100)}%</div>
-                  <div className="text-sm text-muted-foreground">רמת ביטחון</div>
-                  <div className="text-xs text-muted-foreground/60">מומלץ בביטחון רב</div>
+              {/* Trust Indicators */}
+              <div className="grid grid-cols-2 gap-8">
+                <div className="bg-primary/5 rounded-3xl p-8 text-center border border-primary/20 hover-scale transition-all duration-300">
+                  <Shield className="w-12 h-12 text-primary mx-auto mb-4 animate-bounce-gentle" />
+                  <div className="text-4xl font-bold text-primary mb-2">{Math.round(topRecommendation.confidenceLevel * 100)}%</div>
+                  <div className="text-muted-foreground font-semibold">רמת ביטחון</div>
+                  <div className="text-sm text-muted-foreground/60 mt-2">מומלץ בביטחון רב</div>
                 </div>
-                <div className="text-center space-y-3">
-                  <div className="text-2xl font-light text-foreground">
+                <div className="bg-warning/5 rounded-3xl p-8 text-center border border-warning/20 hover-scale transition-all duration-300">
+                  <Heart className="w-12 h-12 text-warning mx-auto mb-4 animate-bounce-gentle" />
+                  <div className="text-4xl font-bold text-warning mb-2">
                     {topRecommendation.riskLevel === 'low' ? 'נמוך' : 
                      topRecommendation.riskLevel === 'medium' ? 'בינוני' : 'גבוה'}
                   </div>
-                  <div className="text-sm text-muted-foreground">רמת סיכון</div>
-                  <div className="text-xs text-muted-foreground/60">בחירה בטוחה</div>
+                  <div className="text-muted-foreground font-semibold">רמת סיכון</div>
+                  <div className="text-sm text-muted-foreground/60 mt-2">בחירה בטוחה</div>
                 </div>
               </div>
 
-              {/* Reasons - Clean List */}
+              {/* Reasons - Interactive */}
               <div className="space-y-6">
-                <h4 className="text-2xl font-light text-foreground text-center">
+                <h4 className="text-3xl font-bold text-foreground text-center flex items-center justify-center gap-3">
+                  <Target className="w-8 h-8 text-primary animate-spin-slow" />
                   למה המסלול הזה מתאים לכם?
                 </h4>
-                <div className="space-y-4 max-w-2xl mx-auto">
+                <div className="space-y-4 max-w-3xl mx-auto">
                   {topRecommendation.reasonsForRecommendation.slice(0, 4).map((reason, index) => (
-                    <div key={index} className="flex items-start gap-4 py-3 border-b border-border/20 last:border-none">
-                      <div className="w-6 h-6 bg-foreground/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <CheckCircle className="w-3 h-3 text-foreground/60" />
+                    <div 
+                      key={index} 
+                      className="flex items-start gap-4 p-6 bg-card rounded-2xl border border-border/20 hover:shadow-glow transition-all duration-300 hover-scale animate-fade-in"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <CheckCircle className="w-5 h-5 text-primary" />
                       </div>
-                      <span className="text-foreground/80 leading-relaxed">{reason}</span>
+                      <span className="text-foreground font-medium leading-relaxed text-lg">{reason}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Insights - If Available */}
+              {/* Insights */}
               {topRecommendation.personalizedInsights && topRecommendation.personalizedInsights.length > 0 && (
                 <div className="space-y-6 pt-8 border-t border-border/20">
-                  <h4 className="text-2xl font-light text-foreground text-center">
+                  <h4 className="text-3xl font-bold text-foreground text-center flex items-center justify-center gap-3">
+                    <Zap className="w-8 h-8 text-primary animate-pulse-glow" />
                     תובנות נוספות
                   </h4>
-                  <div className="space-y-3 max-w-2xl mx-auto">
+                  <div className="space-y-4 max-w-3xl mx-auto">
                     {topRecommendation.personalizedInsights.slice(0, 3).map((insight, index) => (
-                      <div key={index} className="flex items-start gap-4 py-3">
-                        <div className="w-6 h-6 bg-foreground/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <Zap className="w-3 h-3 text-foreground/60" />
+                      <div 
+                        key={index} 
+                        className="flex items-start gap-4 p-4 bg-accent/10 rounded-2xl border border-accent/20 hover-scale transition-all duration-300"
+                      >
+                        <div className="w-6 h-6 bg-accent/30 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <Zap className="w-4 h-4 text-accent-foreground" />
                         </div>
-                        <span className="text-foreground/70 leading-relaxed text-sm">{insight}</span>
+                        <span className="text-foreground/80 leading-relaxed">{insight}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Action Buttons - Minimal */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-12">
+              {/* Interactive Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-6 pt-12">
                 <Button 
                   size="lg" 
-                  className="flex-1 h-14 text-lg font-medium bg-foreground text-background hover:bg-foreground/90 transition-colors duration-200 rounded-2xl"
+                  className="flex-1 h-16 text-xl font-bold bg-gradient-primary text-white hover:bg-gradient-primary/90 hover-scale transition-all duration-300 rounded-3xl shadow-glow"
                   onClick={() => onPlanSelect(topPlan)}
                 >
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  <ArrowRight className="w-6 h-6 ml-3" />
                   בחר את המסלול הזה
                 </Button>
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className="h-14 px-8 font-medium border-foreground/20 hover:bg-foreground/5 transition-colors duration-200 rounded-2xl"
+                  className="h-16 px-12 font-bold border-2 border-primary/30 hover:bg-primary/10 hover-scale transition-all duration-300 rounded-3xl"
                   onClick={onClose}
                 >
-                  <RefreshCw className="w-5 h-5 ml-2" />
+                  <RefreshCw className="w-6 h-6 ml-3" />
                   חזור לתוצאות
                 </Button>
               </div>
             </CardContent>
           </Card>
 
-          {/* Additional Recommendations - Minimal */}
+          {/* Interactive Additional Recommendations */}
           {recommendations.length > 1 && (
-            <div className="space-y-6 max-w-4xl mx-auto">
-              <h3 className="text-2xl font-light text-foreground text-center">חלופות נוספות שכדאי לשקול</h3>
+            <div className="space-y-8 max-w-5xl mx-auto">
+              <h3 className="text-3xl font-bold text-foreground text-center flex items-center justify-center gap-3">
+                <Users className="w-8 h-8 text-primary animate-bounce-gentle" />
+                חלופות נוספות שכדאי לשקול
+              </h3>
               <div className="grid gap-6">
                 {recommendations.slice(1, 3).map((rec, index) => {
                   const plan = plans.find(p => p.id === rec.planId);
                   if (!plan) return null;
                   
                   return (
-                    <Card key={rec.planId} className="border border-border/20 bg-card rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-200">
+                    <Card key={rec.planId} className="border-2 border-border/20 bg-gradient-card rounded-3xl overflow-hidden hover:shadow-glow hover-scale transition-all duration-300 group">
                       <CardContent className="p-8">
                         <div className="flex items-center justify-between">
-                          <div className="space-y-2">
-                            <h4 className="text-xl font-medium text-foreground">{plan.planName}</h4>
-                            <p className="text-muted-foreground">{plan.company}</p>
-                            <div className="text-sm text-muted-foreground">
-                              התאמה: {Math.round(rec.personalizedScore)}% • חיסכון: ₪{rec.expectedSavings.monthly}/חודש
+                          <div className="space-y-4">
+                            <h4 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">{plan.planName}</h4>
+                            <p className="text-lg text-muted-foreground font-semibold">{plan.company}</p>
+                            <div className="flex items-center gap-4 text-sm">
+                              <div className="bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                                <span className="text-primary font-bold">התאמה: {Math.round(rec.personalizedScore)}%</span>
+                              </div>
+                              <div className="bg-success/10 px-3 py-1 rounded-full border border-success/20">
+                                <span className="text-success font-bold">חיסכון: ₪{rec.expectedSavings.monthly}/חודש</span>
+                              </div>
                             </div>
                           </div>
-                          <div className="text-center space-y-2">
-                            <div className="text-3xl font-light text-foreground">₪{plan.regularPrice}</div>
-                            <div className="text-sm text-muted-foreground">לחודש</div>
+                          <div className="text-center space-y-4">
+                            <div className="text-5xl font-bold text-primary">₪{plan.regularPrice}</div>
+                            <div className="text-lg text-muted-foreground font-semibold">לחודש</div>
                             <Button 
                               variant="outline" 
-                              size="sm"
-                              className="mt-3 rounded-xl"
+                              size="lg"
+                              className="mt-4 rounded-2xl border-2 border-primary/30 hover:bg-primary/10 hover-scale transition-all duration-300 font-bold"
                               onClick={() => onPlanSelect(plan)}
                             >
+                              <Calculator className="w-5 h-5 ml-2" />
                               בחר מסלול זה
                             </Button>
                           </div>
