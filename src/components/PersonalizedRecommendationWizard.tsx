@@ -695,47 +695,202 @@ export const PersonalizedRecommendationWizard = ({
       case 'priorities':
         return (
           <div className="space-y-8">
-            <div className="text-center">
-              <Label className="text-lg font-semibold">מה הכי חשוב לכם?</Label>
-              <p className="text-sm text-muted-foreground mt-1">דרגו את החשיבות של כל קריטריון</p>
+            {/* Enhanced Header */}
+            <div className="text-center space-y-4 p-6 bg-gradient-to-br from-primary/5 via-background to-accent/5 rounded-3xl border border-primary/20">
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-16 h-16 bg-gradient-to-r from-warning to-warning/80 rounded-full flex items-center justify-center animate-pulse shadow-glow">
+                  <Star className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  מה הכי חשוב לכם?
+                </h3>
+              </div>
+              <div className="space-y-2">
+                <p className="text-lg text-muted-foreground font-medium">
+                  בחרו את הדברים הכי חשובים לכם במסלול החדש
+                </p>
+                <div className="flex items-center justify-center gap-2 text-sm text-primary font-medium">
+                  <Sparkles className="w-4 h-4" />
+                  <span>דרגו על פי החשיבות עבורכם</span>
+                  <Sparkles className="w-4 h-4" />
+                </div>
+              </div>
             </div>
             
-            <div className="space-y-6">
+            {/* Priority Cards - Enhanced Design */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
-                { key: 'price' as const, label: 'מחיר', icon: DollarSign, desc: 'המחיר הכי נמוך' },
-                { key: 'reliability' as const, label: 'אמינות', icon: Shield, desc: 'שירות יציב וחזק' },
-                { key: 'speed' as const, label: 'מהירות', icon: Zap, desc: 'ביצועים מהירים' },
-                { key: 'customerService' as const, label: 'שירות לקוחות', icon: Heart, desc: 'תמיכה איכותית' }
-              ].map(({ key, label, icon: Icon, desc }) => (
-                <div key={key} className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Icon className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-medium">{label}</div>
-                        <div className="text-sm text-muted-foreground">{desc}</div>
+                { 
+                  key: 'price' as const, 
+                  label: 'מחיר נמוך', 
+                  icon: DollarSign, 
+                  description: 'החיסכון המקסימלי עבור המשפחה',
+                  color: 'from-green-500 to-emerald-600',
+                  bgColor: 'from-green-500/10 to-emerald-600/5'
+                },
+                { 
+                  key: 'reliability' as const, 
+                  label: 'אמינות ויציבות', 
+                  icon: Shield, 
+                  description: 'רשת יציבה עם זמינות גבוהה',
+                  color: 'from-indigo-500 to-blue-600',
+                  bgColor: 'from-indigo-500/10 to-blue-600/5'
+                },
+                { 
+                  key: 'speed' as const, 
+                  label: 'מהירות וביצועים', 
+                  icon: Zap, 
+                  description: 'טכנולוגיה מתקדמת וביצועים מעולים',
+                  color: 'from-purple-500 to-violet-600',
+                  bgColor: 'from-purple-500/10 to-violet-600/5'
+                },
+                { 
+                  key: 'customerService' as const, 
+                  label: 'שירות לקוחות', 
+                  icon: Heart, 
+                  description: 'זמינות 24/7 ומקצועיות גבוהה',
+                  color: 'from-pink-500 to-rose-600',
+                  bgColor: 'from-pink-500/10 to-rose-600/5'
+                }
+              ].map((priority) => {
+                const Icon = priority.icon;
+                const currentValue = profile.priorities[priority.key];
+                const isHighPriority = currentValue >= 4;
+                
+                return (
+                  <Card 
+                    key={priority.key}
+                    className={cn(
+                      "transition-all duration-500 border-2 group overflow-hidden relative",
+                      isHighPriority 
+                        ? `border-primary bg-gradient-to-br ${priority.bgColor} shadow-glow transform scale-105` 
+                        : "border-border hover:border-primary/50 hover:bg-muted/50 hover:scale-102 hover:shadow-md"
+                    )}
+                  >
+                    {/* Background gradient effect */}
+                    {isHighPriority && (
+                      <div className={`absolute inset-0 bg-gradient-to-br ${priority.bgColor} opacity-20`}></div>
+                    )}
+                    
+                    <CardContent className="p-6 relative z-10 space-y-6">
+                      <div className="flex items-start gap-4">
+                        <div className={cn(
+                          "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-md",
+                          isHighPriority 
+                            ? `bg-gradient-to-r ${priority.color} text-white transform rotate-3 shadow-lg` 
+                            : "bg-muted text-muted-foreground group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:text-white"
+                        )}>
+                          <Icon className="w-8 h-8" />
+                        </div>
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <h4 className={cn(
+                              "font-bold text-xl transition-colors",
+                              isHighPriority ? "text-primary" : "text-foreground"
+                            )}>
+                              {priority.label}
+                            </h4>
+                            <Badge 
+                              variant={isHighPriority ? "default" : "outline"} 
+                              className={cn(
+                                "px-3 py-1 text-sm font-bold transition-all duration-300",
+                                isHighPriority && "bg-gradient-to-r from-primary to-accent text-white shadow-md"
+                              )}
+                            >
+                              {currentValue}/5
+                            </Badge>
+                          </div>
+                          <p className={cn(
+                            "text-sm leading-relaxed",
+                            isHighPriority ? "text-foreground font-medium" : "text-muted-foreground"
+                          )}>
+                            {priority.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <Badge variant="secondary" className="px-3 py-1">
-                      {profile.priorities[key]}/5
-                    </Badge>
-                  </div>
-                  
-                  <Slider
-                    value={[profile.priorities[key]]}
-                    onValueChange={([value]) => updatePriorities(key, value)}
-                    max={5}
-                    min={1}
-                    step={1}
-                    className="w-full"
-                  />
-                  
-                  <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>לא חשוב</span>
-                    <span>חשוב מאוד</span>
-                  </div>
+                      
+                      {/* Interactive Slider */}
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">לא חשוב</span>
+                          <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star 
+                                key={star}
+                                className={cn(
+                                  "w-4 h-4 transition-all duration-300",
+                                  star <= currentValue 
+                                    ? "text-warning fill-warning" 
+                                    : "text-muted-foreground/30"
+                                )}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-muted-foreground">חשוב מאוד</span>
+                        </div>
+                        
+                        <Slider
+                          value={[currentValue]}
+                          onValueChange={([value]) => updatePriorities(priority.key, value)}
+                          max={5}
+                          min={1}
+                          step={1}
+                          className={cn(
+                            "w-full [&_.relative]:h-4 [&_[role=slider]]:h-7 [&_[role=slider]]:w-7 [&_[role=slider]]:border-2",
+                            isHighPriority && "[&_[role=slider]]:border-primary [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-primary [&_[role=slider]]:to-accent"
+                          )}
+                        />
+                        
+                        {/* Value Labels */}
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>1</span>
+                          <span>2</span>
+                          <span>3</span>
+                          <span>4</span>
+                          <span>5</span>
+                        </div>
+                      </div>
+                      
+                      {/* High Priority Indicator */}
+                      {isHighPriority && (
+                        <div className="flex items-center justify-center pt-2 border-t border-primary/20">
+                          <div className="flex items-center gap-2 text-success font-medium text-sm">
+                            <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                            עדיפות גבוהה
+                            <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {/* Summary Section */}
+            <div className="p-6 bg-gradient-to-r from-muted/30 to-muted/20 rounded-2xl border border-border/50">
+              <div className="text-center space-y-4">
+                <h4 className="text-xl font-bold text-foreground flex items-center justify-center gap-3">
+                  <Lightbulb className="w-6 h-6 text-warning" />
+                  סיכום העדיפויות שלכם
+                </h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {Object.entries(profile.priorities).map(([key, value]) => {
+                    const priorityLabels: Record<string, string> = {
+                      price: 'מחיר',
+                      reliability: 'אמינות',
+                      speed: 'מהירות',
+                      customerService: 'שירות לקוחות'
+                    };
+                    return (
+                      <div key={key} className="text-center p-3 bg-card rounded-xl border border-border/30">
+                        <div className="font-bold text-lg text-primary">{value}/5</div>
+                        <div className="text-sm text-muted-foreground">{priorityLabels[key]}</div>
+                      </div>
+                    );
+                  })}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         );
