@@ -255,70 +255,176 @@ const PersonalizedRecommendation = ({ isOpen, onClose, comparedPlans }: Personal
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-6 relative z-10">
-                {/* Savings Highlight */}
-                {(enhancedRecommendations[0]?.savings?.monthlySavings || 0) > 0 && (
-                  <div className="p-6 bg-gradient-to-r from-success/10 via-success/5 to-success/10 rounded-2xl border-2 border-success/30 shadow-card">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-success rounded-2xl flex items-center justify-center shadow-md">
-                          <TrendingUp className="w-6 h-6 text-white" />
+              <CardContent className="space-y-8 relative z-10">
+                {/* Premium Features Section */}
+                <div className="grid md:grid-cols-3 gap-6">
+                  {/* Savings Highlight */}
+                  <div className="md:col-span-2">
+                    <div className="p-6 bg-gradient-to-br from-success/10 via-success/5 to-success/10 rounded-2xl border-2 border-success/30 shadow-card">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="w-14 h-14 bg-gradient-to-r from-success to-success/80 rounded-2xl flex items-center justify-center shadow-elegant">
+                          <TrendingUp className="w-7 h-7 text-white" />
                         </div>
                         <div>
-                          <div className="text-2xl font-bold text-success">
-                            💰 חוסכים ₪{Math.round(enhancedRecommendations[0]?.savings?.monthlySavings || 120)} לחודש!
+                          <div className="text-3xl font-black text-success">
+                            💰 חיסכון של ₪{Math.round(enhancedRecommendations[0]?.savings?.monthlySavings || 120)} לחודש!
                           </div>
-                          <div className="text-success/70 font-medium">
+                          <div className="text-success/80 font-bold text-lg">
                             זה ₪{Math.round((enhancedRecommendations[0]?.savings?.monthlySavings || 120) * 12)} בשנה! 
-                            ({(enhancedRecommendations[0]?.savings?.percentageSaving || 25).toFixed(1)}% חיסכון)
                           </div>
                         </div>
                       </div>
-                      <div className="text-6xl animate-bounce-gentle">🎯</div>
+                      <div className="bg-gradient-to-r from-success/20 to-success/10 p-4 rounded-xl">
+                        <div className="text-center">
+                          <div className="text-4xl font-black text-success">
+                            {(enhancedRecommendations[0]?.savings?.percentageSaving || 25).toFixed(1)}%
+                          </div>
+                          <div className="text-success/80 font-bold">חיסכון מהחשבון הנוכחי</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                )}
 
-                {/* Why This Plan */}
-                <div className="space-y-4">
-                  <h4 className="text-xl font-bold text-foreground flex items-center gap-3">
-                    <Lightbulb className="w-6 h-6 text-warning" />
-                    למה המסלול הזה מושלם עבורכם?
-                  </h4>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {(enhancedRecommendations[0]?.matchReasons || [
-                      'מתאים לתקציב שלכם',
-                      'מספק את כל הצרכים שלכם',
-                      'ספק אמין עם שירות מעולה',
-                      'יחס מחיר-ביצועים מצוין'
-                    ]).slice(0, 4).map((reason, index) => (
-                      <div key={index} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors">
-                        <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                          <CheckCircle className="w-4 h-4 text-primary" />
-                        </div>
-                        <span className="text-sm font-medium text-foreground">{reason}</span>
-                      </div>
-                    ))}
+                  {/* Trust Indicators */}
+                  <div className="space-y-4">
+                    <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30">
+                      <CardContent className="p-4 text-center">
+                        <ShieldCheck className="w-10 h-10 text-primary mx-auto mb-2" />
+                        <div className="text-lg font-bold text-primary">מוגן וביטחון</div>
+                        <div className="text-sm text-muted-foreground">SSL מוצפן</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-br from-warning/10 to-warning/5 border-warning/30">
+                      <CardContent className="p-4 text-center">
+                        <Zap className="w-10 h-10 text-warning mx-auto mb-2" />
+                        <div className="text-lg font-bold text-warning">מעבר מהיר</div>
+                        <div className="text-sm text-muted-foreground">תוך 24 שעות</div>
+                      </CardContent>
+                    </Card>
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-4 pt-6">
-                  <Button 
-                    size="lg"
-                    className="flex-1 bg-gradient-to-r from-success to-success/90 hover:from-success/90 hover:to-success/80 text-white font-bold text-lg py-6 shadow-elegant hover:shadow-glow transition-all duration-300 hover:scale-105"
-                  >
-                    <Crown className="w-6 h-6 mr-2" />
-                    🎉 כן! אני רוצה את המסלול הזה
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    size="lg" 
-                    className="px-8 py-6 border-2 border-primary/30 hover:bg-primary/5 transition-all duration-300"
-                  >
-                    <Clock className="w-5 h-5 mr-2" />
-                    רוצה לחשוב
-                  </Button>
+                {/* Detailed Plan Information */}
+                <div className="bg-gradient-to-r from-muted/30 to-muted/20 rounded-2xl p-6 border border-border/50">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                      <h4 className="text-xl font-bold text-foreground flex items-center gap-3">
+                        <Lightbulb className="w-6 h-6 text-warning" />
+                        למה המסלול הזה מושלם עבורכם?
+                      </h4>
+                      <div className="space-y-3">
+                        {(enhancedRecommendations[0]?.matchReasons || [
+                          'מתאים לתקציב שלכם בדיוק',
+                          'מספק את כל הצרכים שציינתם',
+                          'ספק אמין עם שירות לקוחות מעולה',
+                          'יחס מחיר-ביצועים הטוב ביותר בשוק',
+                          'הטבות מעבר מיוחדות ואטרקטיביות'
+                        ]).slice(0, 5).map((reason, index) => (
+                          <div key={index} className="flex items-center gap-3 p-3 bg-card rounded-xl border border-border/30 hover:bg-muted/50 transition-all duration-300 hover:scale-105">
+                            <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center shrink-0">
+                              <CheckCircle className="w-4 h-4 text-white" />
+                            </div>
+                            <span className="text-sm font-medium text-foreground">{reason}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h4 className="text-xl font-bold text-foreground flex items-center gap-3">
+                        <Star className="w-6 h-6 text-warning" />
+                        פרטי המסלול המקצועיים
+                      </h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center p-3 bg-card rounded-xl border border-border/30">
+                          <span className="text-sm font-medium text-muted-foreground">מחיר חודשי</span>
+                          <span className="text-lg font-bold text-primary">₪{getPlanPrice(enhancedRecommendations[0]?.plan || comparedPlans[0])}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-card rounded-xl border border-border/30">
+                          <span className="text-sm font-medium text-muted-foreground">תקופת התחייבות</span>
+                          <span className="text-sm font-bold text-foreground">12 חודשים</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-card rounded-xl border border-border/30">
+                          <span className="text-sm font-medium text-muted-foreground">הטבות מעבר</span>
+                          <span className="text-sm font-bold text-success">ללא עלות!</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-card rounded-xl border border-border/30">
+                          <span className="text-sm font-medium text-muted-foreground">זמן מעבר</span>
+                          <span className="text-sm font-bold text-warning">24 שעות</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-success/10 to-success/5 rounded-xl border border-success/30">
+                          <span className="text-sm font-medium text-success">ציון איכות שירות</span>
+                          <div className="flex items-center gap-1">
+                            <Star className="w-4 h-4 text-warning fill-warning" />
+                            <span className="text-sm font-bold text-success">4.8/5</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Limited Time Offer */}
+                <div className="bg-gradient-to-r from-warning/10 via-warning/5 to-warning/10 rounded-2xl p-6 border-2 border-warning/30 shadow-card">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-warning rounded-2xl flex items-center justify-center shadow-md animate-pulse">
+                        <AlertTriangle className="w-6 h-6 text-warning-foreground" />
+                      </div>
+                      <div>
+                        <div className="text-xl font-bold text-warning">🔥 מבצע מיוחד - זמן מוגבל!</div>
+                        <div className="text-warning/80 font-medium">המעבר עכשיו ללא עלות + מתנה מיוחדת</div>
+                      </div>
+                    </div>
+                    <div className="text-center bg-warning/20 rounded-xl p-3">
+                      <div className="text-sm font-bold text-warning">נותר</div>
+                      <div className="text-lg font-black text-warning">2 ימים</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Professional CTA Section */}
+                <div className="space-y-4">
+                  <div className="text-center space-y-2">
+                    <h3 className="text-2xl font-bold text-foreground">מוכנים להתחיל לחסוך?</h3>
+                    <p className="text-muted-foreground">תהליך המעבר פשוט, מהיר ובטוח - אנחנו מטפלים בהכל!</p>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <Button 
+                      size="lg"
+                      className="bg-gradient-to-r from-success via-success to-success/90 hover:from-success/90 hover:via-success/80 hover:to-success/70 text-white font-bold text-lg py-8 shadow-elegant hover:shadow-glow transition-all duration-300 hover:scale-105 border-2 border-success/30"
+                    >
+                      <div className="flex items-center justify-center gap-3">
+                        <Crown className="w-6 h-6" />
+                        <div className="text-center">
+                          <div className="text-lg">🎉 כן! אני רוצה את המסלול הזה</div>
+                          <div className="text-xs opacity-90">התחלת החיסכון היום</div>
+                        </div>
+                        <ArrowRight className="w-5 h-5" />
+                      </div>
+                    </Button>
+                    
+                    <Button 
+                      variant="outline"
+                      size="lg" 
+                      className="py-8 border-2 border-primary/30 hover:bg-primary/5 transition-all duration-300 hover:scale-105 font-bold text-lg"
+                    >
+                      <div className="flex items-center justify-center gap-3">
+                        <Clock className="w-5 h-5" />
+                        <div className="text-center">
+                          <div>💬 רוצה לדבר איתנו</div>
+                          <div className="text-xs text-muted-foreground">יעוץ חינם</div>
+                        </div>
+                      </div>
+                    </Button>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="text-sm text-muted-foreground">
+                      ✅ ללא עלויות נסתרות  |  ✅ ביטול בכל עת  |  ✅ שירות לקוחות 24/7
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
