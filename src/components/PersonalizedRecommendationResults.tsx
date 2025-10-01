@@ -114,35 +114,46 @@ export const PersonalizedRecommendationResults = ({
           const topRecommendation = topRec.recommendation;
 
           return (
-            <div key={category} className={cn("space-y-4", categoryIndex > 0 && "mt-8")}>
-              {/* Category Header */}
-              {hasMultipleCategories && (
-                <div className={cn(
-                  "bg-gradient-to-r rounded-xl p-5 border-2 shadow-lg",
-                  categoryColors[category] || 'from-gray-500 to-gray-600'
-                )}>
-                  <div className="flex items-center gap-3 text-white">
-                    <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                      {categoryIcons[category]}
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold font-heebo">
-                        המלצות ל{categoryLabels[category]}
-                      </h2>
-                      <p className="text-white/90 font-assistant">
-                        מצאנו {categoryRecs.length} מסלולים מתאימים עבורך
-                      </p>
+            <div key={category} className={cn("space-y-6", categoryIndex > 0 && "mt-12 pt-8 border-t-4 border-dashed")}>
+              {/* Category Header - Always visible */}
+              <div className={cn(
+                "bg-gradient-to-r rounded-2xl p-8 border-4 shadow-2xl relative overflow-hidden",
+                categoryColors[category] || 'from-gray-500 to-gray-600'
+              )}>
+                {/* Decorative pattern overlay */}
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-32 translate-x-32"></div>
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-24 -translate-x-24"></div>
+                </div>
+                
+                <div className="relative z-10 flex items-center gap-5 text-white">
+                  <div className="w-20 h-20 bg-white/25 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-xl border-2 border-white/30">
+                    {categoryIcons[category]}
+                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full flex items-center justify-center text-xs font-bold" style={{color: 'hsl(var(--primary))'}}>
+                      {categoryRecs.length}
                     </div>
                   </div>
+                  <div className="flex-1">
+                    <h2 className="text-4xl font-bold font-heebo mb-2 drop-shadow-lg">
+                      המלצות מותאמות אישית ל{categoryLabels[category]}
+                    </h2>
+                    <p className="text-white/95 font-assistant text-lg backdrop-blur-sm bg-white/10 rounded-lg px-4 py-2 inline-block">
+                      מצאנו {categoryRecs.length} מסלולים מתאימים עבורך בסקטור זה
+                    </p>
+                  </div>
                 </div>
-              )}
+              </div>
 
               {/* Top Recommendation for this category */}
-              <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 relative overflow-hidden">
-                <div className="absolute -top-3 -right-3">
-                  <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg">
-                    <Crown className="w-4 h-4 ml-1" />
-                    המלצה מובילה {hasMultipleCategories && `ל${categoryLabels[category]}`}
+              <Card className="border-4 border-primary/30 bg-gradient-to-br from-primary/5 via-white to-primary/10 relative overflow-hidden shadow-2xl">
+                {/* Category indicator badge on top-left */}
+                <div className="absolute top-4 right-4 z-10">
+                  <Badge className={cn(
+                    "text-white shadow-xl text-base px-4 py-2 bg-gradient-to-r",
+                    categoryColors[category]
+                  )}>
+                    <Crown className="w-5 h-5 ml-1" />
+                    ההמלצה הטובה ביותר ל{categoryLabels[category]}
                   </Badge>
                 </div>
                 

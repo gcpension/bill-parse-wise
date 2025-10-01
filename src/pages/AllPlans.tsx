@@ -65,7 +65,6 @@ const AllPlans = ({
   const [selectedPlan, setSelectedPlan] = useState<ManualPlan | null>(null);
   const [showComparison, setShowComparison] = useState(false);
   const [showPersonalizedWizard, setShowPersonalizedWizard] = useState(false);
-  const [showSectorSelection, setShowSectorSelection] = useState(false);
   const [personalizedRecommendations, setPersonalizedRecommendations] = useState<PersonalizedRecommendation[]>([]);
   const [showPersonalizedResults, setShowPersonalizedResults] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -250,30 +249,81 @@ const AllPlans = ({
             בחרו קטגוריה לצפייה במסלולים
           </h2>
           <p className="text-lg text-gray-600 font-assistant mb-8 text-center">
-            לחצו על הקטגוריה המעניינת אתכם כדי לגלות את המסלולים הזמינים
+            לחצו על הקטגוריה המעניינת אתכם • החזיקו Ctrl ללחוץ על מספר קטגוריות
           </p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {Object.entries(categoryConfig).map(([key, config]) => <Button key={key} variant={selectedCategory === key ? "default" : "outline"} className={cn("h-32 flex-col gap-3 text-lg font-heebo transition-all duration-300 group relative overflow-hidden", selectedCategory === key ? "bg-gradient-to-br from-purple-600 to-blue-600 text-white shadow-2xl scale-105 border-0" : "border-2 border-purple-200 hover:border-purple-400 hover:bg-gradient-to-br hover:from-purple-50 hover:to-blue-50 hover:scale-105 bg-white/80 backdrop-blur-sm")} onClick={() => setSelectedCategory(key as CategoryType)}>
-                <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300", selectedCategory === key ? "from-white/10 to-white/5" : "from-purple-100/50 to-blue-100/50")}></div>
-                <div className="relative z-10">
-                  {config.icon}
-                  <span className="font-bold">{config.label}</span>
-                </div>
-              </Button>)}
+            {Object.entries(categoryConfig).map(([key, config]) => {
+              const isSelected = selectedCategory === key;
+              const isInMultiSelect = selectedCategories.includes(key as CategoryType);
+              
+              return (
+                <Button 
+                  key={key} 
+                  variant={isSelected ? "default" : "outline"} 
+                  className={cn(
+                    "h-32 flex-col gap-3 text-lg font-heebo transition-all duration-300 group relative overflow-hidden",
+                    isSelected || isInMultiSelect
+                      ? "bg-gradient-to-br from-purple-600 to-blue-600 text-white shadow-2xl scale-105 border-0" 
+                      : "border-2 border-purple-200 hover:border-purple-400 hover:bg-gradient-to-br hover:from-purple-50 hover:to-blue-50 hover:scale-105 bg-white/80 backdrop-blur-sm"
+                  )} 
+                  onClick={(e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                      // Multi-select mode
+                      if (isInMultiSelect) {
+                        setSelectedCategories(prev => prev.filter(c => c !== key));
+                      } else {
+                        setSelectedCategories(prev => [...prev, key as CategoryType]);
+                      }
+                    } else {
+                      // Single select mode
+                      setSelectedCategory(key as CategoryType);
+                      setSelectedCategories([]);
+                    }
+                  }}
+                >
+                  <div className={cn(
+                    "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                    isSelected || isInMultiSelect ? "from-white/10 to-white/5" : "from-purple-100/50 to-blue-100/50"
+                  )}></div>
+                  <div className="relative z-10">
+                    {config.icon}
+                    <span className="font-bold">{config.label}</span>
+                    {isInMultiSelect && (
+                      <CheckCircle className="w-5 h-5 absolute -top-2 -left-2 text-white" />
+                    )}
+                  </div>
+                </Button>
+              );
+            })}
           </div>
           
-          {/* Multi-sector personalized recommendation button */}
-          <div className="mt-6 text-center">
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => setShowSectorSelection(true)}
-              className="border-2 border-primary/30 hover:border-primary hover:bg-primary/5 font-heebo"
-            >
-              <Brain className="w-5 h-5 ml-2" />
-              קבל המלצות מותאמות אישית למספר סקטורים
-            </Button>
-          </div>
+          {/* Show recommendation button when multiple categories are selected */}
+          {selectedCategories.length > 0 && (
+            <div className="mt-6 text-center animate-fade-in">
+              <Card className="max-w-2xl mx-auto border-2 border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1 text-right">
+                      <p className="text-lg font-bold text-foreground font-heebo mb-1">
+                        נבחרו {selectedCategories.length} סקטורים
+                      </p>
+                      <p className="text-sm text-muted-foreground font-assistant">
+                        {selectedCategories.map(cat => categoryConfig[cat].label).join(', ')}
+                      </p>
+                    </div>
+                    <Button
+                      onClick={() => setShowPersonalizedWizard(true)}
+                      size="lg"
+                      className="font-heebo bg-gradient-to-r from-primary to-primary/80"
+                    >
+                      <Brain className="w-5 h-5 ml-2" />
+                      קבל המלצות מותאמות אישית
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
 
         {/* Company Logos by Category */}
@@ -845,63 +895,6 @@ const AllPlans = ({
         </DialogContent>
       </Dialog>
 
-      {/* Sector Selection Dialog */}
-      <Dialog open={showSectorSelection} onOpenChange={setShowSectorSelection}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold font-heebo">
-              בחר סקטורים להמלצה מותאמת אישית
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <p className="text-muted-foreground font-assistant">
-              בחר את הסקטורים שמעניינים אותך - נמצא את המסלולים הטובים ביותר בכל אחד מהם
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              {Object.entries(categoryConfig).map(([key, config]) => {
-                const isSelected = selectedCategories.includes(key as CategoryType);
-                return (
-                  <Card
-                    key={key}
-                    className={cn(
-                      "cursor-pointer transition-all duration-300 hover:shadow-lg",
-                      isSelected ? "ring-2 ring-primary bg-primary/5" : "hover:bg-muted/50"
-                    )}
-                    onClick={() => {
-                      if (isSelected) {
-                        setSelectedCategories(prev => prev.filter(c => c !== key));
-                      } else {
-                        setSelectedCategories(prev => [...prev, key as CategoryType]);
-                      }
-                    }}
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div className="mb-3">{config.icon}</div>
-                      <h3 className="font-bold text-lg font-heebo">{config.label}</h3>
-                      {isSelected && <CheckCircle className="w-5 h-5 text-primary mx-auto mt-2" />}
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-            <Button
-              onClick={() => {
-                if (selectedCategories.length > 0) {
-                  setShowSectorSelection(false);
-                  setShowPersonalizedWizard(true);
-                }
-              }}
-              disabled={selectedCategories.length === 0}
-              className="w-full font-heebo"
-              size="lg"
-            >
-              <ArrowLeft className="w-5 h-5 ml-2" />
-              המשך עם {selectedCategories.length} סקטורים
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
       {/* Enhanced Personalized Recommendation Banner */}
       {selectedCategory && !showPersonalizedWizard && !isAnalyzing && (
         <PersonalizedRecommendationBanner 
@@ -947,7 +940,13 @@ const AllPlans = ({
         </div>}
 
       {/* Personalized Recommendation Results */}
-      <PersonalizedRecommendationResults isOpen={showPersonalizedResults} onClose={() => setShowPersonalizedResults(false)} recommendations={personalizedRecommendations} plans={filteredPlans} onPlanSelect={handlePlanSelect} />
+      <PersonalizedRecommendationResults 
+        isOpen={showPersonalizedResults} 
+        onClose={() => setShowPersonalizedResults(false)} 
+        recommendations={personalizedRecommendations} 
+        plans={manualPlans}
+        onPlanSelect={handlePlanSelect} 
+      />
 
       {/* Floating Help Button */}
       <FloatingHelpButton />
