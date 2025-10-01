@@ -528,61 +528,21 @@ const AllPlans = ({
                       <Calculator className="w-7 h-7 text-white" />
                     </div>
                     <h2 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent font-heebo animate-gradient">
-                      כמה אתם משלמים היום?
+                      כמה תוכלו לחסוך?
                     </h2>
                   </div>
                   <p className="text-lg text-muted-foreground font-assistant max-w-2xl mx-auto">
-                    ציינו את הספק הנוכחי שלכם כדי לראות <span className="font-bold text-primary">כמה תוכלו לחסוך</span> עם המערכת החכמה שלנו
+                    על בסיס התשלום החודשי שלכם ב<span className="font-bold text-primary">{selectedCategory === 'electricity' ? 'חשמל' : selectedCategory === 'internet' ? 'אינטרנט' : selectedCategory === 'mobile' ? 'סלולר' : 'טלוויזיה'}</span>, הנה החיסכון שתוכלו להשיג
                   </p>
                   
                   {/* Info Badge */}
                   <div className="mt-4 inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2">
                     <Sparkles className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-assistant text-primary">חישוב חיסכון בזמן אמת</span>
+                    <span className="text-sm font-assistant text-primary">חישוב חיסכון מבוסס נתונים</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto">
-                  {/* Current Provider - Enhanced */}
-                  <div className="bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-xl border-2 border-primary/20 hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group/card relative overflow-hidden">
-                    {/* Animated Border Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-orange-500/20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                    
-                    <div className="relative z-10">
-                      <div className="text-center mb-4">
-                        <div className="relative inline-block mb-3">
-                          <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center mx-auto shadow-lg group-hover/card:shadow-xl group-hover/card:scale-110 transition-all duration-500">
-                            <Calculator className="w-8 h-8 text-white" />
-                          </div>
-                          {/* Pulse Ring */}
-                          <div className="absolute inset-0 w-16 h-16 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl animate-ping opacity-20"></div>
-                        </div>
-                        <h3 className="text-xl font-bold text-foreground font-heebo mb-1">
-                          הספק הנוכחי
-                        </h3>
-                        <p className="text-xs text-muted-foreground font-assistant">
-                          מי הספק שלכם כרגע?
-                        </p>
-                      </div>
-                      
-                      <div className="group/input">
-                        <Label className="text-sm font-bold text-foreground mb-2 block flex items-center gap-2 font-assistant">
-                          <span className="w-5 h-5 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">1</span>
-                          הספק הנוכחי שלכם
-                        </Label>
-                        <Input 
-                          placeholder="לדוגמה: חברת החשמל, בזק, פרטנר..." 
-                          value={currentUserPlan.company} 
-                          onChange={e => setCurrentUserPlan(prev => ({
-                            ...prev,
-                            company: e.target.value
-                          }))} 
-                          className="h-11 text-sm border-2 border-border hover:border-primary/50 focus:border-primary transition-all duration-300 rounded-lg font-assistant"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                   {/* Cheapest Alternative - Enhanced */}
                   <div className="bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-xl border-2 border-primary/30 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group/card relative overflow-hidden">
                     {/* Success Glow */}
@@ -668,7 +628,7 @@ const AllPlans = ({
                           <div className="absolute inset-0 w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-xl animate-ping opacity-20"></div>
                         </div>
                         <h3 className="text-xl font-bold text-foreground font-heebo mb-1">
-                          החיסכון הפוטנציאלי
+                          החיסכון הפוטנציאלי שלכם
                         </h3>
                         <p className="text-xs text-muted-foreground font-assistant">
                           כמה תחסכו עם המסלול הזול ביותר
@@ -715,16 +675,30 @@ const AllPlans = ({
                       ) : (
                         <div className="text-center text-muted-foreground font-assistant bg-muted/30 rounded-xl p-6 border-2 border-dashed border-border">
                           <Calculator className="w-10 h-10 mx-auto mb-2 text-muted-foreground/50" />
-                          <p className="text-sm mb-1">הזינו את התשלום הנוכחי</p>
-                          <p className="text-xs">לחישוב החיסכון שלכם</p>
+                          <p className="text-sm mb-1">נתוני החיסכון יופיעו כאן</p>
+                          <p className="text-xs">לאחר בחירת קטגוריה בעמוד הבית</p>
                         </div>
                       )}
                     </div>
                   </div>
                 </div>
 
+                {/* Connection Message */}
+                <div className="mt-10 text-center">
+                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-2 border-primary/20 rounded-2xl px-8 py-4 shadow-lg">
+                    <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                    <p className="text-lg font-bold text-foreground font-heebo">
+                      גלול למטה כדי לראות את כל המסלולים הזמינים ולהשוות ביניהם
+                    </p>
+                    <div className="w-2 h-2 rounded-full bg-accent animate-pulse" style={{animationDelay: '0.5s'}}></div>
+                  </div>
+                  <div className="mt-4 flex justify-center animate-bounce">
+                    <ChevronDown className="w-8 h-8 text-primary" />
+                  </div>
+                </div>
+
                 {/* Enhanced Action Button */}
-                {currentUserPlan.price && currentUserPlan.company && cheapestPlan && parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && (
+                {currentUserPlan.price && cheapestPlan && parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && (
                   <div className="text-center mt-10 animate-fade-in">
                     <div className="inline-block relative group/btn">
                       {/* Glow Effect */}
