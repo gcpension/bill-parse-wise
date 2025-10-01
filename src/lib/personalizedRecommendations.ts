@@ -82,6 +82,7 @@ export interface UserProfile {
 
 export interface PersonalizedRecommendation {
   planId: string;
+  category: string;
   matchScore: number;
   personalizedScore: number;
   reasonsForRecommendation: string[];
@@ -178,6 +179,7 @@ export class PersonalizedRecommendationEngine {
     
     return {
       planId: plan.id,
+      category: plan.category,
       matchScore: matchScore,
       personalizedScore,
       reasonsForRecommendation: reasonsForRecommendation.filter(Boolean),

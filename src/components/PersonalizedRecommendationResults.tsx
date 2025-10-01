@@ -34,19 +34,27 @@ export const PersonalizedRecommendationResults = ({
     
     recommendations.forEach(rec => {
       const plan = plans.find(p => p.id === rec.planId);
-      if (!plan) return;
-      
-      if (!grouped[plan.category]) {
-        grouped[plan.category] = [];
+      if (!plan) {
+        console.warn(`Plan not found for recommendation:`, rec.planId);
+        return;
       }
       
-      grouped[plan.category].push({ plan, recommendation: rec });
+      // Use the category from the recommendation itself
+      const category = rec.category || plan.category;
+      
+      if (!grouped[category]) {
+        grouped[category] = [];
+      }
+      
+      grouped[category].push({ plan, recommendation: rec });
     });
     
     // Sort within each category by score
     Object.keys(grouped).forEach(category => {
       grouped[category].sort((a, b) => b.recommendation.personalizedScore - a.recommendation.personalizedScore);
     });
+    
+    console.log('Grouped recommendations by category:', Object.keys(grouped).map(cat => `${cat}: ${grouped[cat].length} plans`));
     
     return grouped;
   }, [recommendations, plans]);
