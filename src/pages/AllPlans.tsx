@@ -36,6 +36,8 @@ import { PersonalizedRecommendationBanner } from "@/components/PersonalizedRecom
 import { PersonalizedRecommendationResults } from "@/components/PersonalizedRecommendationResults";
 import { EnhancedNavigation } from "@/components/ui/enhanced-navigation";
 import { FloatingHelpButton } from "@/components/ui/floating-help-button";
+import { AdvancedPlanSearch } from "@/components/plans/AdvancedPlanSearch";
+import { EnhancedPlanDisplay } from "@/components/plans/EnhancedPlanDisplay";
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -68,6 +70,15 @@ const AllPlans = ({
   const [personalizedRecommendations, setPersonalizedRecommendations] = useState<PersonalizedRecommendation[]>([]);
   const [showPersonalizedResults, setShowPersonalizedResults] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  
+  // New state for enhanced features
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'name' | 'features'>('price-asc');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [viewedPlans, setViewedPlans] = useState<Set<string>>(new Set());
   const [currentUserPlan, setCurrentUserPlan] = useState({
     name: '',
     price: '',
@@ -117,7 +128,7 @@ const AllPlans = ({
     document.title = "כל המסלולים | EasySwitch";
   }, []);
 
-  // Get filtered plans grouped by company  
+  // Enhanced filtering and sorting
   const {
     filteredPlans,
     groupedByCompany
@@ -126,12 +137,45 @@ const AllPlans = ({
       filteredPlans: [],
       groupedByCompany: {}
     };
+    
     let filtered = manualPlans.filter(plan => {
-      return plan.category === selectedCategory;
+      if (plan.category !== selectedCategory) return false;
+      
+      // Search filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const matchesSearch = 
+          plan.company.toLowerCase().includes(query) ||
+          plan.planName.toLowerCase().includes(query) ||
+          plan.features.some(f => f.toLowerCase().includes(query));
+        if (!matchesSearch) return false;
+      }
+      
+      // Price range filter
+      if (plan.regularPrice > 0) {
+        if (plan.regularPrice < priceRange[0] || plan.regularPrice > priceRange[1]) {
+          return false;
+        }
+      }
+      
+      return true;
     });
 
-    // Sort plans by price
-    filtered.sort((a, b) => a.regularPrice - b.regularPrice);
+    // Sort plans
+    switch (sortBy) {
+      case 'price-asc':
+        filtered.sort((a, b) => (a.regularPrice || 0) - (b.regularPrice || 0));
+        break;
+      case 'price-desc':
+        filtered.sort((a, b) => (b.regularPrice || 0) - (a.regularPrice || 0));
+        break;
+      case 'name':
+        filtered.sort((a, b) => a.planName.localeCompare(b.planName, 'he'));
+        break;
+      case 'features':
+        filtered.sort((a, b) => b.features.length - a.features.length);
+        break;
+    }
 
     // Group by company
     const grouped = filtered.reduce((acc, plan) => {
@@ -141,11 +185,12 @@ const AllPlans = ({
       acc[plan.company].push(plan);
       return acc;
     }, {} as Record<string, ManualPlan[]>);
+    
     return {
       filteredPlans: filtered,
       groupedByCompany: grouped
     };
-  }, [selectedCategory]);
+  }, [selectedCategory, searchQuery, sortBy, priceRange]);
   const categoryConfig = {
     electricity: {
       label: 'חשמל',
@@ -179,6 +224,9 @@ const AllPlans = ({
     }
   };
   const handlePlanSelect = (plan: ManualPlan) => {
+    // Mark as viewed
+    setViewedPlans(prev => new Set(prev).add(plan.id));
+    
     // Store selected plan data for service request
     localStorage.setItem('selectedPlanForSwitch', JSON.stringify({
       planName: plan.planName,
@@ -190,6 +238,25 @@ const AllPlans = ({
 
     // Navigate to service request page
     window.location.href = '/service-request';
+  };
+  
+  const toggleFavorite = (planId: string) => {
+    setFavoriteIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(planId)) {
+        newSet.delete(planId);
+      } else {
+        newSet.add(planId);
+      }
+      return newSet;
+    });
+  };
+  
+  const getMaxPrice = () => {
+    const prices = manualPlans
+      .filter(p => p.category === selectedCategory && p.regularPrice > 0)
+      .map(p => p.regularPrice);
+    return prices.length > 0 ? Math.max(...prices) : 500;
   };
   const clearComparison = () => setComparedPlans([]);
   const handlePersonalizedRecommendation = async (userProfile: UserProfile, categories: CategoryType[]) => {
@@ -644,6 +711,28 @@ const AllPlans = ({
             </CardContent>
           </Card>}
 
+        {/* Advanced Search and Filters */}
+        {selectedCategory && (
+          <div className="mb-8">
+            <AdvancedPlanSearch
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              priceRange={priceRange}
+              onPriceRangeChange={setPriceRange}
+              maxPrice={getMaxPrice()}
+              showAdvancedFilters={showAdvancedFilters}
+              onToggleAdvancedFilters={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              resultsCount={filteredPlans.length}
+              favoritesCount={favoriteIds.size}
+              viewedCount={viewedPlans.size}
+            />
+          </div>
+        )}
+
         {/* Enhanced Call to Action for Comparison */}
         {comparedPlans.length === 0 && selectedCategory && <Card className="mb-8 bg-gradient-to-r from-purple-100 via-blue-100 to-green-100 border-2 border-purple-200 shadow-lg">
             
@@ -771,99 +860,60 @@ const AllPlans = ({
                   </div>
 
                   {/* Company Plans Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
+                  <div className={cn(
+                    "grid gap-6 relative",
+                    viewMode === 'grid' ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
+                  )}>
                     {/* Company accent line */}
-                    <div className="absolute -right-4 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-300 to-blue-300 rounded-full opacity-50 hidden lg:block"></div>
+                    {viewMode === 'grid' && (
+                      <div className="absolute -right-4 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-300 to-blue-300 rounded-full opacity-50 hidden lg:block"></div>
+                    )}
                     
                     {companyPlans.map((plan, index) => {
-                const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
-                const inComparison = isInComparison(plan.id);
-                const isCompanyCheapest = plan.regularPrice === Math.min(...companyPlans.map(p => p.regularPrice));
-                return <Card key={plan.id} className={cn("group transition-all duration-300 hover:shadow-xl border-2 relative", "animate-fade-in opacity-0 hover:scale-105", isCheapest && "ring-2 ring-green-400/50 bg-green-50/30", isCompanyCheapest && !isCheapest && "ring-2 ring-blue-400/50 bg-blue-50/30", inComparison && "ring-2 ring-purple-400/50 bg-purple-50/30", "hover:border-purple-300")} style={{
-                  animationDelay: `${(companyIndex * 3 + index) * 0.1}s`,
-                  animationFillMode: 'forwards'
-                }}>
-                          {/* Badges */}
-                          <div className="absolute -top-3 -right-3 z-10 flex flex-col gap-1">
-                            {isCheapest && <Badge className="bg-green-500 text-white px-3 py-1 shadow-lg">
-                                <Crown className="w-4 h-4 ml-1" />
-                                הזול ביותר
-                              </Badge>}
-                            {isCompanyCheapest && !isCheapest && <Badge className="bg-blue-500 text-white px-3 py-1 shadow-lg">
-                                <Star className="w-4 h-4 ml-1" />
-                                הזול ב{companyName}
-                              </Badge>}
-                          </div>
-
-                          {/* Comparison Badge */}
-                          {inComparison && <div className="absolute -top-3 -left-3 z-10">
-                              <Badge className="bg-purple-500 text-white px-3 py-1 shadow-lg">
-                                <Eye className="w-4 h-4 ml-1" />
-                                בהשוואה
-                              </Badge>
-                            </div>}
-
-                          <CardHeader className="pb-4">
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <div className="text-sm text-purple-600 font-assistant mb-1">
-                                  {companyName}
-                                </div>
-                                <h4 className="text-xl font-bold text-gray-800 font-heebo mb-1">
-                                  {plan.planName}
-                                </h4>
-                                <p className="text-sm text-gray-500 font-assistant">
-                                  מסלול #{index + 1} מתוך {companyPlans.length}
-                                </p>
-                              </div>
-                              <div className="text-left">
-                                <div className="text-3xl font-bold text-purple-600 font-heebo">
-                                  ₪{plan.regularPrice}
-                                </div>
-                                <div className="text-sm text-gray-500 font-assistant">לחודש</div>
-                              </div>
-                            </div>
-                          </CardHeader>
-
-                          <CardContent className="space-y-4">
-                            {/* Price Comparison within Company */}
-                            {companyPlans.length > 1 && <div className="bg-gray-50 rounded-lg p-3">
-                                <div className="text-xs text-gray-600 font-assistant text-center">
-                                  {isCompanyCheapest ? <span className="text-blue-600 font-semibold">המחיר הטוב ביותר אצל {companyName}</span> : <span>
-                                      ₪{plan.regularPrice - Math.min(...companyPlans.map(p => p.regularPrice))} יותר מהזול ביותר
-                                    </span>}
-                                </div>
-                              </div>}
-
-                            {/* Features Preview */}
-                            {plan.features && plan.features.length > 0 && <div>
-                                <h5 className="font-semibold text-gray-700 font-assistant mb-2">תכונות עיקריות:</h5>
-                                <div className="space-y-1">
-                                  {plan.features.slice(0, 3).map((feature, idx) => <div key={idx} className="flex items-center gap-2 text-sm">
-                                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                                      <span className="text-gray-600 font-assistant">{feature}</span>
-                                    </div>)}
-                                  {plan.features.length > 3 && <p className="text-sm text-purple-600 font-assistant">
-                                      +{plan.features.length - 3} תכונות נוספות
-                                    </p>}
-                                </div>
-                              </div>}
-
-                            {/* Action Buttons with Enhanced UX */}
-                            <div className="flex gap-2 pt-4">
-                              <Button onClick={() => handlePlanSelect(plan)} className={cn("flex-1 font-assistant transition-all duration-300", isCompanyCheapest ? "bg-blue-600 hover:bg-blue-700 shadow-lg" : "")} variant={isCompanyCheapest ? "default" : "outline"}>
-                                {isCompanyCheapest ? <>
-                                    <Star className="w-4 h-4 ml-2" />
-                                    בחר מסלול מומלץ
-                                  </> : "בחר מסלול"}
-                              </Button>
-                              <Button variant={inComparison ? "default" : "outline"} onClick={() => handleCompareToggle(plan)} disabled={!canAddToComparison && !inComparison} className={cn("font-assistant transition-all duration-300", inComparison ? "bg-purple-600 hover:bg-purple-700" : "hover:bg-purple-50 hover:border-purple-300")} title={inComparison ? "הסר מהשוואה" : "הוסף להשוואה"}>
-                                {inComparison ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>;
-              })}
+                      const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
+                      const inComparison = isInComparison(plan.id);
+                      const isCompanyCheapest = plan.regularPrice === Math.min(...companyPlans.map(p => p.regularPrice));
+                      
+                      return (
+                        <div 
+                          key={plan.id}
+                          className={cn(
+                            "animate-fade-in opacity-0 relative",
+                            isCheapest && viewMode === 'grid' && "order-first"
+                          )}
+                          style={{
+                            animationDelay: `${(companyIndex * 3 + index) * 0.1}s`,
+                            animationFillMode: 'forwards'
+                          }}
+                        >
+                          <EnhancedPlanDisplay
+                            plan={plan}
+                            viewMode={viewMode}
+                            isFavorite={favoriteIds.has(plan.id)}
+                            isViewed={viewedPlans.has(plan.id)}
+                            isInComparison={inComparison}
+                            canAddToComparison={canAddToComparison}
+                            onToggleFavorite={() => toggleFavorite(plan.id)}
+                            onToggleComparison={() => handleCompareToggle(plan)}
+                            onSelect={() => handlePlanSelect(plan)}
+                          />
+                          
+                          {/* Additional Badges */}
+                          {isCheapest && (
+                            <Badge className="absolute -top-2 -right-2 z-20 bg-green-500 text-white px-3 py-1 shadow-lg">
+                              <Crown className="w-4 h-4 ml-1" />
+                              הזול ביותר
+                            </Badge>
+                          )}
+                          {isCompanyCheapest && !isCheapest && (
+                            <Badge className="absolute -top-2 -right-2 z-20 bg-blue-500 text-white px-3 py-1 shadow-lg">
+                              <Star className="w-4 h-4 ml-1" />
+                              הזול ב{companyName}
+                            </Badge>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                   
                   {/* Company Summary */}

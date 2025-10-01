@@ -108,10 +108,28 @@ export class PersonalizedRecommendationEngine {
     userProfile: UserProfile,
     category: string
   ): PersonalizedRecommendation[] {
+    console.log(`🎯 PersonalizedRecommendationEngine: Generating recommendations for ${category}`, {
+      plansCount: plans.length,
+      profilePreview: {
+        familySize: userProfile.familySize,
+        budget: userProfile.monthlyBudget,
+        priorities: Object.entries(userProfile.priorities).filter(([, val]) => val > 3)
+      }
+    });
     
-    const recommendations = plans.map(plan => 
-      this.analyzePlanForUser(plan, userProfile, plans)
-    );
+    if (!plans || plans.length === 0) {
+      console.warn(`⚠️ No plans provided for category: ${category}`);
+      return [];
+    }
+    
+    const recommendations = plans.map(plan => {
+      const rec = this.analyzePlanForUser(plan, userProfile, plans);
+      console.log(`  - Analyzed plan ${plan.id} (${plan.company} - ${plan.planName}):`, {
+        score: rec.personalizedScore,
+        category: rec.category
+      });
+      return rec;
+    });
     
     // Sort by personalized score
     recommendations.sort((a, b) => b.personalizedScore - a.personalizedScore);
@@ -121,6 +139,8 @@ export class PersonalizedRecommendationEngine {
     recommendations.forEach(rec => {
       rec.confidenceLevel *= profileCompleteness;
     });
+    
+    console.log(`✅ Generated ${recommendations.length} recommendations for ${category}`);
     
     return recommendations;
   }
