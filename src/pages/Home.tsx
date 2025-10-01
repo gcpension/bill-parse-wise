@@ -334,119 +334,233 @@ const Home = () => {
             })}
           </div>
 
-          {/* Selected Category Details - Separate section below cards */}
+          {/* Selected Category Details - EXTREME Interactive Section */}
           {Object.entries(selectedCategories).some(([_, data]) => data.selected) && (
-            <div className="mt-8">
+            <div className="mt-12 space-y-6">
               {Object.entries(selectedCategories).map(([category, categoryData]) => {
                 if (!categoryData.selected) return null;
                 
                 const data = categoryData;
                 const categoryInfo = {
-                  'electricity': { name: 'חשמל', icon: Lightbulb },
-                  'cellular': { name: 'סלולר', icon: Smartphone },
-                  'internet': { name: 'אינטרנט', icon: Wifi },
-                  'tv': { name: 'טלוויזיה', icon: Tv }
+                  'electricity': { name: 'חשמל', icon: Lightbulb, color: 'from-yellow-500 via-orange-500 to-red-500', bgGradient: 'from-yellow-50 via-orange-50 to-red-50' },
+                  'cellular': { name: 'סלולר', icon: Smartphone, color: 'from-blue-500 via-purple-500 to-pink-500', bgGradient: 'from-blue-50 via-purple-50 to-pink-50' },
+                  'internet': { name: 'אינטרנט', icon: Wifi, color: 'from-cyan-500 via-blue-500 to-indigo-500', bgGradient: 'from-cyan-50 via-blue-50 to-indigo-50' },
+                  'tv': { name: 'טלוויזיה', icon: Tv, color: 'from-purple-500 via-fuchsia-500 to-pink-500', bgGradient: 'from-purple-50 via-fuchsia-50 to-pink-50' }
                 }[category];
                 
                 const Icon = categoryInfo?.icon || Lightbulb;
+                const currentAmount = parseFloat(categoryData.amount) || 0;
+                const estimatedSavings = currentAmount * 0.25; // 25% estimated savings
+                const annualSavings = estimatedSavings * 12;
                 
                 return (
-                  <Card key={category} className="bg-white/80 backdrop-blur-sm shadow-lg border border-purple-200 animate-fade-in">
-                    <CardContent className="p-6">
-                      {/* Category Header */}
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg">
-                          <Icon className="w-8 h-8 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                            {categoryInfo?.name}
-                          </h3>
-                          <p className="text-gray-600 text-sm">
-                            השווה ספקים וחסוך בחשבונות
-                          </p>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="touch"
-                          onClick={() => handleCategorySelect(category)}
-                          className="text-red-600 border-red-200 hover:bg-red-50 min-h-[44px]"
-                        >
-                          ביטול
-                        </Button>
+                  <div key={category} className="relative animate-fade-in">
+                    {/* Dramatic glow effect around entire card */}
+                    <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${categoryInfo?.color} blur-3xl opacity-20 animate-pulse`} style={{ animationDuration: '3s' }}></div>
+                    
+                    <Card className="relative bg-white shadow-2xl border-2 border-purple-200 overflow-hidden rounded-3xl transform hover:scale-[1.01] transition-all duration-700">
+                      {/* Animated background pattern */}
+                      <div className="absolute inset-0 opacity-5">
+                        <div className="absolute inset-0" style={{
+                          backgroundImage: `radial-gradient(circle at 20px 20px, currentColor 2px, transparent 0)`,
+                          backgroundSize: '40px 40px',
+                          animation: 'moveBackground 20s linear infinite'
+                        }}></div>
                       </div>
                       
-                      {/* Form fields */}
-                      <div className="space-y-6">
-                        <InteractiveProviderGrid
-                          category={category as 'electricity' | 'cellular' | 'internet' | 'tv'}
-                          value={categoryData.provider}
-                          onValueChange={(value) => handleProviderChange(category, value)}
-                        />
+                      {/* Top gradient bar */}
+                      <div className={`h-2 bg-gradient-to-r ${categoryInfo?.color} animate-gradient-x`}></div>
+                      
+                      <CardContent className="p-8 relative z-10">
+                        {/* Category Header - Enhanced */}
+                        <div className="flex items-center gap-6 mb-8 relative">
+                          {/* Animated icon container */}
+                          <div className="relative group/icon">
+                            <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${categoryInfo?.color} blur-2xl opacity-50 group-hover/icon:opacity-75 transition-opacity duration-500`}></div>
+                            <div className={`relative w-20 h-20 bg-gradient-to-br ${categoryInfo?.color} rounded-3xl flex items-center justify-center shadow-2xl transform group-hover/icon:rotate-12 group-hover/icon:scale-110 transition-all duration-500`}>
+                              <Icon className="w-10 h-10 text-white animate-pulse" style={{ animationDuration: '2s' }} />
+                            </div>
+                            {/* Orbiting particles */}
+                            <div className="absolute top-0 left-0 w-3 h-3 bg-gradient-to-br from-white to-purple-300 rounded-full animate-ping"></div>
+                            <div className="absolute bottom-0 right-0 w-2 h-2 bg-gradient-to-br from-white to-blue-300 rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
+                          </div>
+                          
+                          <div className="flex-1">
+                            <h3 className={`text-4xl font-bold bg-gradient-to-r ${categoryInfo?.color} bg-clip-text text-transparent mb-2 animate-gradient-x`}>
+                              {categoryInfo?.name}
+                            </h3>
+                            <p className="text-gray-600 text-base font-medium flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-500" />
+                              השווה ספקים וחסוך בחשבונות
+                            </p>
+                          </div>
+                          
+                          {/* Close button - Enhanced */}
+                          <Button
+                            variant="outline"
+                            size="touch"
+                            onClick={() => handleCategorySelect(category)}
+                            className="relative overflow-hidden group/close text-red-600 border-2 border-red-300 hover:border-red-500 hover:bg-red-50 min-h-[50px] min-w-[100px] rounded-2xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+                          >
+                            <span className="relative z-10 flex items-center gap-2">
+                              <span className="text-2xl">✕</span>
+                              ביטול
+                            </span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 opacity-0 group-hover/close:opacity-10 transition-opacity duration-300"></div>
+                          </Button>
+                        </div>
                         
-                        {/* Number of cellular lines - Only for cellular category */}
-                        {category === 'cellular' && categoryData.provider && (
-                          <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
-                            <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                              <Smartphone className="w-4 h-4" />
-                              כמה קווי סלולרי יש לכם?
-                            </Label>
-                            <div className="flex items-center gap-4">
-                              <div className="flex-1">
-                                <Input
-                                  type="range"
-                                  min="1"
-                                  max="10"
-                                  value={categoryData.lines || 1}
-                                  onChange={(e) => setSelectedCategories(prev => ({
-                                    ...prev,
-                                    [category]: { ...prev[category], lines: parseInt(e.target.value) }
-                                  }))}
-                                  className="w-full h-2 bg-gradient-to-r from-purple-200 to-blue-200 rounded-lg appearance-none cursor-pointer slider"
-                                />
-                                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                  <span>1</span>
-                                  <span>5</span>
-                                  <span>10</span>
+                        {/* Form fields */}
+                        <div className="space-y-8">
+                          <InteractiveProviderGrid
+                            category={category as 'electricity' | 'cellular' | 'internet' | 'tv'}
+                            value={categoryData.provider}
+                            onValueChange={(value) => handleProviderChange(category, value)}
+                          />
+                          
+                          {/* Number of cellular lines - Enhanced */}
+                          {category === 'cellular' && categoryData.provider && (
+                            <div className="relative group/lines animate-fade-in">
+                              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-3xl blur-xl opacity-20 group-hover/lines:opacity-30 transition-opacity duration-500"></div>
+                              <div className={`relative space-y-6 p-8 bg-gradient-to-br ${categoryInfo?.bgGradient} rounded-3xl border-2 border-purple-200 shadow-xl`}>
+                                <Label className="text-xl font-bold text-gray-800 flex items-center gap-3">
+                                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <Smartphone className="w-6 h-6 text-white" />
+                                  </div>
+                                  כמה קווי סלולר יש לכם?
+                                </Label>
+                                <div className="flex items-center gap-6">
+                                  <div className="flex-1 space-y-4">
+                                    <Input
+                                      type="range"
+                                      min="1"
+                                      max="10"
+                                      value={categoryData.lines || 1}
+                                      onChange={(e) => setSelectedCategories(prev => ({
+                                        ...prev,
+                                        [category]: { ...prev[category], lines: parseInt(e.target.value) }
+                                      }))}
+                                      className="w-full h-3 bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 rounded-full appearance-none cursor-pointer slider shadow-inner"
+                                    />
+                                    <div className="flex justify-between text-sm font-bold text-gray-600">
+                                      <span className="bg-white px-3 py-1 rounded-full shadow-md">1</span>
+                                      <span className="bg-white px-3 py-1 rounded-full shadow-md">5</span>
+                                      <span className="bg-white px-3 py-1 rounded-full shadow-md">10</span>
+                                    </div>
+                                  </div>
+                                  <div className="relative group/count">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl blur-lg opacity-50 group-hover/count:opacity-75 transition-opacity duration-300"></div>
+                                    <div className="relative bg-white px-8 py-5 rounded-2xl border-3 border-purple-300 shadow-2xl transform group-hover/count:scale-110 transition-all duration-300">
+                                      <span className="text-4xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                                        {categoryData.lines || 1}
+                                      </span>
+                                      <span className="text-lg text-gray-700 mr-2 font-bold">
+                                        {(categoryData.lines || 1) === 1 ? 'קו' : 'קווים'}
+                                      </span>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-                              <div className="bg-white px-4 py-2 rounded-lg border border-purple-300 shadow-sm">
-                                <span className="text-lg font-bold text-purple-700">
-                                  {categoryData.lines || 1}
-                                </span>
-                                <span className="text-sm text-gray-600 mr-1">
-                                  {(categoryData.lines || 1) === 1 ? 'קו' : 'קווים'}
-                                </span>
+                            </div>
+                          )}
+                          
+                          {/* Monthly Amount - EXTREME Interactive */}
+                          <div className="relative group/amount animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                            <div className={`absolute inset-0 bg-gradient-to-r ${categoryInfo?.color} rounded-3xl blur-2xl opacity-20 group-hover/amount:opacity-40 transition-opacity duration-500`}></div>
+                            <div className={`relative space-y-6 p-8 bg-gradient-to-br ${categoryInfo?.bgGradient} rounded-3xl border-2 border-purple-200 shadow-2xl`}>
+                              <label className="text-xl font-bold text-gray-800 flex items-center gap-3">
+                                <div className={`w-10 h-10 bg-gradient-to-br ${categoryInfo?.color} rounded-2xl flex items-center justify-center shadow-lg animate-pulse`}>
+                                  <span className="text-2xl text-white">₪</span>
+                                </div>
+                                כמה אתם משלמים היום?
+                              </label>
+                              
+                              {/* Dual input: Number + Slider */}
+                              <div className="space-y-6">
+                                {/* Number Input - Dramatic */}
+                                <div className="relative group/input">
+                                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 rounded-2xl blur-md opacity-0 group-hover/input:opacity-30 transition-opacity duration-300"></div>
+                                  <Input
+                                    type="number"
+                                    placeholder="0"
+                                    value={categoryData.amount}
+                                    onChange={(e) => handleAmountChange(category, e.target.value)}
+                                    className="relative h-20 pr-16 text-4xl font-black text-center bg-white/90 backdrop-blur-sm border-3 border-purple-300 hover:border-purple-500 focus:border-purple-600 transition-all duration-500 rounded-2xl shadow-xl hover:shadow-2xl focus:shadow-2xl transform hover:scale-[1.02] focus:scale-[1.02]"
+                                  />
+                                  <div className={`absolute left-6 top-1/2 transform -translate-y-1/2 text-5xl font-black bg-gradient-to-r ${categoryInfo?.color} bg-clip-text text-transparent`}>
+                                    ₪
+                                  </div>
+                                  {/* Shine effect */}
+                                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover/input:opacity-100 transition-opacity duration-700 pointer-events-none transform -translate-x-full group-hover/input:translate-x-full" style={{ transitionDuration: '1.5s' }}></div>
+                                </div>
+                                
+                                {/* Slider - Interactive */}
+                                <div className="space-y-3">
+                                  <Input
+                                    type="range"
+                                    min="0"
+                                    max="1000"
+                                    step="10"
+                                    value={categoryData.amount || 0}
+                                    onChange={(e) => handleAmountChange(category, e.target.value)}
+                                    className={`w-full h-4 bg-gradient-to-r ${categoryInfo?.color} rounded-full appearance-none cursor-pointer slider shadow-lg`}
+                                  />
+                                  <div className="flex justify-between text-sm font-bold text-gray-600">
+                                    <span className="bg-white px-3 py-1 rounded-full shadow-md">₪0</span>
+                                    <span className="bg-white px-3 py-1 rounded-full shadow-md">₪500</span>
+                                    <span className="bg-white px-3 py-1 rounded-full shadow-md">₪1000</span>
+                                  </div>
+                                </div>
+                                
+                                {/* Real-time Savings Preview - Dramatic */}
+                                {currentAmount > 0 && (
+                                  <div className="relative mt-8 animate-fade-in">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-3xl blur-xl opacity-30 animate-pulse" style={{ animationDuration: '2s' }}></div>
+                                    <div className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 p-8 rounded-3xl border-2 border-green-300 shadow-2xl">
+                                      <div className="text-center space-y-6">
+                                        <div className="flex items-center justify-center gap-3 mb-4">
+                                          <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg animate-bounce">
+                                            <CheckCircle className="w-7 h-7 text-white" />
+                                          </div>
+                                          <h4 className="text-2xl font-black text-gray-800">חיסכון משוער</h4>
+                                        </div>
+                                        
+                                        <div className="grid grid-cols-2 gap-6">
+                                          {/* Monthly savings */}
+                                          <div className="bg-white p-6 rounded-2xl shadow-xl border-2 border-green-200 transform hover:scale-105 transition-all duration-300">
+                                            <p className="text-sm font-bold text-gray-600 mb-2">חודשי</p>
+                                            <p className="text-5xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                                              ₪{Math.round(estimatedSavings)}
+                                            </p>
+                                          </div>
+                                          
+                                          {/* Annual savings */}
+                                          <div className="bg-white p-6 rounded-2xl shadow-xl border-2 border-emerald-200 transform hover:scale-105 transition-all duration-300">
+                                            <p className="text-sm font-bold text-gray-600 mb-2">שנתי</p>
+                                            <p className="text-5xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                                              ₪{Math.round(annualSavings)}
+                                            </p>
+                                          </div>
+                                        </div>
+                                        
+                                        <p className="text-sm text-gray-600 font-medium bg-white/70 px-4 py-2 rounded-full inline-block">
+                                          💡 חיסכון ממוצע של 25% לפי נתונים סטטיסטיים
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
-                        )}
-                        
-                         <div className="space-y-2">
-                           <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                             <span className="text-lg">₪</span>
-                             סכום חודשי
-                           </label>
-                           <div className="relative">
-                             <Input
-                               type="number"
-                               placeholder="הזינו סכום בשקלים"
-                               value={categoryData.amount}
-                               onChange={(e) => handleAmountChange(category, e.target.value)}
-                               className="h-12 pr-12 text-lg font-semibold bg-gray-50/80 border-gray-300 hover:border-purple-400 focus:border-purple-500 transition-all duration-300 rounded-xl"
-                             />
-                             <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold text-lg">
-                               ₪
-                             </div>
-                           </div>
-                         </div>
-                       </div>
-                     </CardContent>
-                   </Card>
-                 );
-               })}
-             </div>
-           )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Clean CTA Section - Enhanced animations */}
           <div className="text-center mt-16 space-y-6">
