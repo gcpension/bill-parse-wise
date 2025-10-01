@@ -44,16 +44,18 @@ import { UserProfile } from '@/lib/personalizedRecommendations';
 import { cn } from '@/lib/utils';
 
 interface PersonalizedRecommendationWizardProps {
-  onComplete: (profile: UserProfile) => void;
-  category: 'electricity' | 'internet' | 'mobile' | 'tv';
+  onComplete: (profile: UserProfile, categories: Array<'electricity' | 'internet' | 'mobile' | 'tv'>) => void;
+  categories: Array<'electricity' | 'internet' | 'mobile' | 'tv'>;
   onClose: () => void;
 }
 
 export const PersonalizedRecommendationWizard = ({ 
   onComplete, 
-  category, 
+  categories, 
   onClose 
 }: PersonalizedRecommendationWizardProps) => {
+  const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
+  const category = categories[currentCategoryIndex];
   const [currentStep, setCurrentStep] = useState(0);
   const [profile, setProfile] = useState<UserProfile>({
     familySize: 2,
@@ -124,8 +126,12 @@ export const PersonalizedRecommendationWizard = ({
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
+    } else if (currentCategoryIndex < categories.length - 1) {
+      // Move to next category
+      setCurrentCategoryIndex(currentCategoryIndex + 1);
+      setCurrentStep(0);
     } else {
-      onComplete(profile);
+      onComplete(profile, categories);
     }
   };
 
@@ -915,7 +921,11 @@ export const PersonalizedRecommendationWizard = ({
                   המלצה אישית ל{categoryConfig[category].label}
                 </h2>
                 <p className="text-muted-foreground">
-                  בואו נמצא את המסלול המושלם עבורכם
+                  {categories.length > 1 ? (
+                    <>סקטור {currentCategoryIndex + 1} מתוך {categories.length}</>
+                  ) : (
+                    <>בואו נמצא את המסלול המושלם עבורכם</>
+                  )}
                 </p>
               </div>
             </div>
@@ -1002,10 +1012,17 @@ export const PersonalizedRecommendationWizard = ({
               className="flex items-center gap-2 h-12 px-6 rounded-xl bg-gradient-to-r from-primary to-primary-glow hover:shadow-lg transition-all duration-300 hover:scale-105"
             >
               {currentStep === steps.length - 1 ? (
-                <>
-                  <Star className="h-4 w-4" />
-                  קבל המלצה
-                </>
+                currentCategoryIndex < categories.length - 1 ? (
+                  <>
+                    עבור לסקטור הבא
+                    <ArrowLeft className="h-4 w-4 rotate-180" />
+                  </>
+                ) : (
+                  <>
+                    <Star className="h-4 h-4" />
+                    קבל המלצות
+                  </>
+                )
               ) : (
                 <>
                   הבא

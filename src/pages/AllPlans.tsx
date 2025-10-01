@@ -58,12 +58,14 @@ const AllPlans = ({
     savingsData: persistedSavings
   } = useSavingsData();
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>([]);
   const [selectedPlans, setSelectedPlans] = useState<ManualPlan[]>([]);
   const [comparedPlans, setComparedPlans] = useState<ManualPlan[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<ManualPlan | null>(null);
   const [showComparison, setShowComparison] = useState(false);
   const [showPersonalizedWizard, setShowPersonalizedWizard] = useState(false);
+  const [showSectorSelection, setShowSectorSelection] = useState(false);
   const [personalizedRecommendations, setPersonalizedRecommendations] = useState<PersonalizedRecommendation[]>([]);
   const [showPersonalizedResults, setShowPersonalizedResults] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -191,15 +193,26 @@ const AllPlans = ({
     window.location.href = '/service-request';
   };
   const clearComparison = () => setComparedPlans([]);
-  const handlePersonalizedRecommendation = async (userProfile: UserProfile) => {
+  const handlePersonalizedRecommendation = async (userProfile: UserProfile, categories: CategoryType[]) => {
     setIsAnalyzing(true);
     setShowPersonalizedWizard(false);
     try {
       // Simulate analysis time for better UX
       await new Promise(resolve => setTimeout(resolve, 2000));
-      const plansToAnalyze = comparedPlans.length >= 2 ? comparedPlans : filteredPlans.slice(0, 5);
-      const recommendations = PersonalizedRecommendationEngine.generatePersonalizedRecommendations(plansToAnalyze, userProfile, selectedCategory as string);
-      setPersonalizedRecommendations(recommendations);
+      
+      // Generate recommendations for each category
+      const allRecommendations: PersonalizedRecommendation[] = [];
+      for (const category of categories) {
+        const categoryPlans = manualPlans.filter(p => p.category === category);
+        const recommendations = PersonalizedRecommendationEngine.generatePersonalizedRecommendations(
+          categoryPlans, 
+          userProfile, 
+          category as string
+        );
+        allRecommendations.push(...recommendations);
+      }
+      
+      setPersonalizedRecommendations(allRecommendations);
       setIsAnalyzing(false);
       setShowPersonalizedResults(true);
     } catch (error) {
@@ -247,6 +260,19 @@ const AllPlans = ({
                   <span className="font-bold">{config.label}</span>
                 </div>
               </Button>)}
+          </div>
+          
+          {/* Multi-sector personalized recommendation button */}
+          <div className="mt-6 text-center">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setShowSectorSelection(true)}
+              className="border-2 border-primary/30 hover:border-primary hover:bg-primary/5 font-heebo"
+            >
+              <Brain className="w-5 h-5 ml-2" />
+              קבל המלצות מותאמות אישית למספר סקטורים
+            </Button>
           </div>
         </div>
 
@@ -819,8 +845,72 @@ const AllPlans = ({
         </DialogContent>
       </Dialog>
 
+      {/* Sector Selection Dialog */}
+      <Dialog open={showSectorSelection} onOpenChange={setShowSectorSelection}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold font-heebo">
+              בחר סקטורים להמלצה מותאמת אישית
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-muted-foreground font-assistant">
+              בחר את הסקטורים שמעניינים אותך - נמצא את המסלולים הטובים ביותר בכל אחד מהם
+            </p>
+            <div className="grid grid-cols-2 gap-4">
+              {Object.entries(categoryConfig).map(([key, config]) => {
+                const isSelected = selectedCategories.includes(key as CategoryType);
+                return (
+                  <Card
+                    key={key}
+                    className={cn(
+                      "cursor-pointer transition-all duration-300 hover:shadow-lg",
+                      isSelected ? "ring-2 ring-primary bg-primary/5" : "hover:bg-muted/50"
+                    )}
+                    onClick={() => {
+                      if (isSelected) {
+                        setSelectedCategories(prev => prev.filter(c => c !== key));
+                      } else {
+                        setSelectedCategories(prev => [...prev, key as CategoryType]);
+                      }
+                    }}
+                  >
+                    <CardContent className="p-6 text-center">
+                      <div className="mb-3">{config.icon}</div>
+                      <h3 className="font-bold text-lg font-heebo">{config.label}</h3>
+                      {isSelected && <CheckCircle className="w-5 h-5 text-primary mx-auto mt-2" />}
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+            <Button
+              onClick={() => {
+                if (selectedCategories.length > 0) {
+                  setShowSectorSelection(false);
+                  setShowPersonalizedWizard(true);
+                }
+              }}
+              disabled={selectedCategories.length === 0}
+              className="w-full font-heebo"
+              size="lg"
+            >
+              <ArrowLeft className="w-5 h-5 ml-2" />
+              המשך עם {selectedCategories.length} סקטורים
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Enhanced Personalized Recommendation Banner */}
-      {selectedCategory && !showPersonalizedWizard && !isAnalyzing && <PersonalizedRecommendationBanner onRecommendationClick={() => setShowPersonalizedWizard(true)} />}
+      {selectedCategory && !showPersonalizedWizard && !isAnalyzing && (
+        <PersonalizedRecommendationBanner 
+          onRecommendationClick={() => {
+            setSelectedCategories([selectedCategory]);
+            setShowPersonalizedWizard(true);
+          }} 
+        />
+      )}
 
       {/* Loading Animation */}
       {isAnalyzing && <div className="fixed inset-0 bg-black/60 z-[110] flex items-center justify-center">
@@ -848,7 +938,11 @@ const AllPlans = ({
       {/* Personalized Recommendation Wizard */}
       {showPersonalizedWizard && <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            <PersonalizedRecommendationWizard category={selectedCategory as any} onComplete={handlePersonalizedRecommendation} onClose={() => setShowPersonalizedWizard(false)} />
+            <PersonalizedRecommendationWizard 
+              categories={selectedCategories} 
+              onComplete={handlePersonalizedRecommendation} 
+              onClose={() => setShowPersonalizedWizard(false)} 
+            />
           </div>
         </div>}
 
