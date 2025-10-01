@@ -82,7 +82,7 @@ export const EnhancedPlanCard = ({
       {/* Top AI Recommendation Badge */}
       {isTopRecommendation && (
         <div className="absolute -top-3 -right-3 z-10">
-          <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-2 shadow-xl animate-pulse">
+          <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-2 shadow-xl">
             <Brain className="w-4 h-4 ml-1" />
             בחירת AI #1
           </Badge>

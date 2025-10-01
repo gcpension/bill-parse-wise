@@ -61,7 +61,7 @@ export function PlanDetailsSheet({ plan, isOpen, onClose, onSelectForSwitch }: P
                 {plan.category}
               </Badge>
               {plan.introPrice && plan.introPrice < plan.regularPrice && (
-                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-assistant px-3 py-1 animate-pulse border-0">
+                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-assistant px-3 py-1 border-0">
                   <Crown className="w-3 h-3 ml-1" />
                   מבצע מיוחד
                 </Badge>

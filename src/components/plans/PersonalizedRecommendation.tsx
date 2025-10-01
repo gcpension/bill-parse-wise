@@ -226,7 +226,7 @@ const PersonalizedRecommendation = ({ isOpen, onClose, comparedPlans }: Personal
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <Badge className="bg-success text-white px-3 py-1 text-sm font-bold animate-pulse">
+                        <Badge className="bg-success text-white px-3 py-1 text-sm font-bold">
                           ⭐ המלצה #1
                         </Badge>
                         <Badge variant="outline" className="border-primary text-primary">

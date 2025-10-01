@@ -46,7 +46,7 @@ export const PlanCard = ({
       {/* Best Price Badge */}
       {isBestPrice && (
         <div className="absolute top-3 left-3 z-10 animate-scale-in">
-          <Badge className="bg-gradient-to-r from-yellow-500 via-yellow-400 to-orange-500 text-white font-assistant shadow-lg border-0 animate-pulse">
+          <Badge className="bg-gradient-to-r from-yellow-500 via-yellow-400 to-orange-500 text-white font-assistant shadow-lg border-0">
             <Crown className="w-3 h-3 ml-1" />
             מחיר מעולה
           </Badge>

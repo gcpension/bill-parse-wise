@@ -111,7 +111,7 @@ const InteractivePlanCard = ({
       {/* Floating Badges */}
       <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
         {isRecommended && (
-          <Badge className="bg-gradient-to-r from-primary to-accent text-primary-foreground border-0 shadow-lg animate-pulse">
+          <Badge className="bg-gradient-to-r from-primary to-accent text-primary-foreground border-0 shadow-lg">
             <Sparkles className="w-3 h-3 mr-1" />
             מומלץ AI
           </Badge>
