@@ -36,8 +36,8 @@ export interface UserProfile {
   technologyPreference: 'latest' | 'stable' | 'basic' | 'doesnt_matter';
   supportImportance: 'critical' | 'important' | 'nice_to_have' | 'not_important';
   
-  // Category Specific
-  categorySpecific?: {
+  // Category Specific - stored per category
+  categorySpecific?: Record<string, {
     // For electricity
     hasSmartMeter?: boolean;
     hasSolarPanels?: boolean;
@@ -77,7 +77,7 @@ export interface UserProfile {
     disney?: boolean;
     hbo?: boolean;
     local?: boolean;
-  };
+  }>;
 }
 
 export interface PersonalizedRecommendation {
@@ -375,7 +375,7 @@ export class PersonalizedRecommendationEngine {
     }
     
     // Category-specific matching
-    const categorySpecific = userProfile.categorySpecific;
+    const categorySpecific = userProfile.categorySpecific?.[plan.category];
     if (categorySpecific && plan.category === 'electricity') {
       if (categorySpecific.hasSmartMeter && plan.features.some(f => f.includes('מונה חכם'))) {
         score.score += 10;
@@ -478,7 +478,7 @@ export class PersonalizedRecommendationEngine {
     let completeness = 0.7; // Base completeness
     
     if (profile.currentMonthlySpend > 0) completeness += 0.1;
-    if (profile.categorySpecific) completeness += 0.1;
+    if (profile.categorySpecific && Object.keys(profile.categorySpecific).length > 0) completeness += 0.1;
     if (profile.location) completeness += 0.05;
     if (Object.values(profile.priorities).some(p => p > 0)) completeness += 0.05;
     
@@ -520,7 +520,7 @@ export class PersonalizedRecommendationEngine {
     
     if (userProfile.currentMonthlySpend > 0) confidence += 0.1;
     if (userProfile.currentProvider) confidence += 0.05;
-    if (userProfile.categorySpecific) confidence += 0.05;
+    if (userProfile.categorySpecific && Object.keys(userProfile.categorySpecific).length > 0) confidence += 0.05;
     
     return Math.min(1, confidence);
   }

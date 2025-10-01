@@ -145,6 +145,19 @@ export const PersonalizedRecommendationWizard = ({
     setProfile(prev => ({ ...prev, ...updates }));
   };
 
+  const updateCategorySpecific = (updates: any) => {
+    setProfile(prev => ({
+      ...prev,
+      categorySpecific: {
+        ...prev.categorySpecific,
+        [category]: {
+          ...(prev.categorySpecific?.[category] || {}),
+          ...updates
+        }
+      }
+    }));
+  };
+
   const updatePriorities = (key: keyof UserProfile['priorities'], value: number) => {
     setProfile(prev => ({
       ...prev,
@@ -175,32 +188,26 @@ export const PersonalizedRecommendationWizard = ({
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() => updateProfile({ 
-                    categorySpecific: { 
-                      ...profile.categorySpecific, 
-                      monthlyKWH: Math.max(100, (profile.categorySpecific?.monthlyKWH || 500) - 50) 
-                    } 
+                  onClick={() => updateCategorySpecific({ 
+                    monthlyKWH: Math.max(100, (profile.categorySpecific?.[category]?.monthlyKWH || 500) - 50) 
                   })}
                   className="h-12 w-12 rounded-full hover:scale-110 transition-transform"
                 >
                   -
                 </Button>
                 
-                <div className="flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-r from-primary/10 to-primary-glow/10 border-4 border-primary/20 shadow-lg">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-primary">{profile.categorySpecific?.monthlyKWH || 500}</div>
-                    <div className="text-sm text-muted-foreground">kWh</div>
+                  <div className="flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-r from-primary/10 to-primary-glow/10 border-4 border-primary/20 shadow-lg">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-primary">{profile.categorySpecific?.[category]?.monthlyKWH || 500}</div>
+                      <div className="text-sm text-muted-foreground">kWh</div>
+                    </div>
                   </div>
-                </div>
                 
                 <Button
                   variant="outline" 
                   size="icon"
-                  onClick={() => updateProfile({ 
-                    categorySpecific: { 
-                      ...profile.categorySpecific, 
-                      monthlyKWH: Math.min(2000, (profile.categorySpecific?.monthlyKWH || 500) + 50) 
-                    } 
+                  onClick={() => updateCategorySpecific({ 
+                    monthlyKWH: Math.min(2000, (profile.categorySpecific?.[category]?.monthlyKWH || 500) + 50) 
                   })}
                   className="h-12 w-12 rounded-full hover:scale-110 transition-transform"
                 >
@@ -227,15 +234,12 @@ export const PersonalizedRecommendationWizard = ({
                     key={key}
                     className={cn(
                       "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.categorySpecific?.[key] 
+                      profile.categorySpecific?.[category]?.[key] 
                         ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
                         : "hover:bg-muted/50"
                     )}
-                    onClick={() => updateProfile({ 
-                      categorySpecific: { 
-                        ...profile.categorySpecific, 
-                        [key]: !profile.categorySpecific?.[key] 
-                      } 
+                    onClick={() => updateCategorySpecific({ 
+                      [key]: !profile.categorySpecific?.[category]?.[key] 
                     })}
                   >
                     <CardContent className="p-4 text-center">
@@ -272,13 +276,11 @@ export const PersonalizedRecommendationWizard = ({
                     key={value}
                     className={cn(
                       "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.categorySpecific?.internetSpeed === value 
+                      profile.categorySpecific?.[category]?.internetSpeed === value 
                         ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
                         : "hover:bg-muted/50"
                     )}
-                    onClick={() => updateProfile({ 
-                      categorySpecific: { ...profile.categorySpecific, internetSpeed: value } 
-                    })}
+                    onClick={() => updateCategorySpecific({ internetSpeed: value })}
                   >
                     <CardContent className="p-4 text-center">
                       <div className="text-3xl mb-2">{emoji}</div>
@@ -308,15 +310,12 @@ export const PersonalizedRecommendationWizard = ({
                     key={key}
                     className={cn(
                       "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.categorySpecific?.[key] 
+                      profile.categorySpecific?.[category]?.[key] 
                         ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
                         : "hover:bg-muted/50"
                     )}
-                    onClick={() => updateProfile({ 
-                      categorySpecific: { 
-                        ...profile.categorySpecific, 
-                        [key]: !profile.categorySpecific?.[key] 
-                      } 
+                    onClick={() => updateCategorySpecific({ 
+                      [key]: !profile.categorySpecific?.[category]?.[key] 
                     })}
                   >
                     <CardContent className="p-4 text-center">
@@ -347,20 +346,17 @@ export const PersonalizedRecommendationWizard = ({
                 <div className="flex items-center justify-center">
                   <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-primary/20 to-primary-glow/20 border-2 border-primary/30">
                     <div className="text-center">
-                      <div className="text-xl font-bold text-primary">{profile.categorySpecific?.multipleLines || 1}</div>
-                      <div className="text-xs text-muted-foreground">{(profile.categorySpecific?.multipleLines || 1) === 1 ? 'קו' : 'קווים'}</div>
+                      <div className="text-xl font-bold text-primary">{profile.categorySpecific?.[category]?.multipleLines || 1}</div>
+                      <div className="text-xs text-muted-foreground">{(profile.categorySpecific?.[category]?.multipleLines || 1) === 1 ? 'קו' : 'קווים'}</div>
                     </div>
                   </div>
                 </div>
                 
                 <div className="px-4">
                   <Slider
-                    value={[profile.categorySpecific?.multipleLines || 1]}
-                    onValueChange={([value]) => updateProfile({ 
-                      categorySpecific: { 
-                        ...profile.categorySpecific, 
-                        multipleLines: value 
-                      } 
+                    value={[profile.categorySpecific?.[category]?.multipleLines || 1]}
+                    onValueChange={([value]) => updateCategorySpecific({ 
+                      multipleLines: value 
                     })}
                     max={10}
                     min={1}
@@ -393,15 +389,12 @@ export const PersonalizedRecommendationWizard = ({
                     key={key}
                     className={cn(
                       "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.categorySpecific?.[key] 
+                      profile.categorySpecific?.[category]?.[key] 
                         ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
                         : "hover:bg-muted/50"
                     )}
-                    onClick={() => updateProfile({ 
-                      categorySpecific: { 
-                        ...profile.categorySpecific, 
-                        [key]: !profile.categorySpecific?.[key] 
-                      } 
+                    onClick={() => updateCategorySpecific({ 
+                      [key]: !profile.categorySpecific?.[category]?.[key] 
                     })}
                   >
                     <CardContent className="p-4 text-center">
@@ -438,13 +431,11 @@ export const PersonalizedRecommendationWizard = ({
                     key={value}
                     className={cn(
                       "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.categorySpecific?.tvPackage === value 
+                      profile.categorySpecific?.[category]?.tvPackage === value 
                         ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
                         : "hover:bg-muted/50"
                     )}
-                    onClick={() => updateProfile({ 
-                      categorySpecific: { ...profile.categorySpecific, tvPackage: value } 
-                    })}
+                    onClick={() => updateCategorySpecific({ tvPackage: value })}
                   >
                     <CardContent className="p-4 text-center">
                       <div className="text-3xl mb-2">{emoji}</div>
@@ -474,15 +465,12 @@ export const PersonalizedRecommendationWizard = ({
                     key={key}
                     className={cn(
                       "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.categorySpecific?.[key] 
+                      profile.categorySpecific?.[category]?.[key] 
                         ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
                         : "hover:bg-muted/50"
                     )}
-                    onClick={() => updateProfile({ 
-                      categorySpecific: { 
-                        ...profile.categorySpecific, 
-                        [key]: !profile.categorySpecific?.[key] 
-                      } 
+                    onClick={() => updateCategorySpecific({ 
+                      [key]: !profile.categorySpecific?.[category]?.[key] 
                     })}
                   >
                     <CardContent className="p-4 text-center">
