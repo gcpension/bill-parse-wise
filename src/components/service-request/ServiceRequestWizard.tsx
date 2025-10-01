@@ -10,7 +10,6 @@ import { cn } from '@/lib/utils';
 import GeneralChoicesStep from './steps/GeneralChoicesStep';
 import BasicDataStep from './steps/BasicDataStep';
 import DeclarationsStep from './steps/DeclarationsStep';
-import SectorSpecificStep from './steps/SectorSpecificStep';
 import ProviderSpecificStep from './steps/ProviderSpecificStep';
 
 const STORAGE_KEY = 'service_request_draft';
@@ -19,8 +18,7 @@ const steps = [
   { title: 'בחירות כלליות', component: GeneralChoicesStep },
   { title: 'נתונים בסיסיים', component: BasicDataStep },
   { title: 'הצהרות', component: DeclarationsStep },
-  { title: 'פרטים ספציפיים לספק', component: ProviderSpecificStep },
-  { title: 'פרטים ייעודיים', component: SectorSpecificStep },
+  { title: 'פרטים ספציפיים', component: ProviderSpecificStep },
 ];
 
 export default function ServiceRequestWizard() {
@@ -150,8 +148,7 @@ export default function ServiceRequestWizard() {
         return !!(formData.poa && formData.privacy_tos && formData.fees_ack && formData.esign_ok);
         
       case 3: // Provider Specific
-      case 4: // Sector Specific
-        return true; // These steps are informational/optional
+        return true; // This step is informational/optional
         
       default:
         return true;
