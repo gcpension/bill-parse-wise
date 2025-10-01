@@ -38,7 +38,7 @@ import { FloatingHelpButton } from "@/components/ui/floating-help-button";
 import { PlanCard } from "@/components/plans/PlanCard";
 import { PlanFilters } from "@/components/plans/PlanFilters";
 import { ComparisonPanel } from "@/components/plans/ComparisonPanel";
-import { RecommendationWizard } from "@/components/plans/RecommendationWizard";
+import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecommendationWizard";
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -982,8 +982,8 @@ const AllPlans = ({
 
       {/* Personalized Recommendation Wizard */}
       {showPersonalizedWizard && <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
-          <div className="bg-background rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <RecommendationWizard 
+          <div className="bg-background rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <PersonalizedRecommendationWizard 
               categories={selectedCategories} 
               onComplete={handlePersonalizedRecommendation} 
               onClose={() => setShowPersonalizedWizard(false)} 
