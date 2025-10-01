@@ -104,42 +104,60 @@ export default function ProviderSpecificStep({ formData, updateFormData }: Provi
   const sectorColor = sectorColors[sector as keyof typeof sectorColors] || 'border-gray-200 bg-gray-50';
 
   return (
-    <div className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">פרטי ספקים</h2>
-        <p className="text-gray-600">פרטים ספציפיים הנדרשים לביצוע הבקשה</p>
+    <div className="space-y-8">
+      <div className="text-center mb-10 animate-fade-in">
+        <h2 className="text-3xl font-bold bg-gradient-to-l from-foreground to-foreground/80 bg-clip-text text-transparent mb-3">
+          פרטי ספקים
+        </h2>
+        <p className="text-muted-foreground text-lg">פרטים ספציפיים הנדרשים לביצוע הבקשה</p>
+        <div className="w-20 h-1.5 bg-gradient-to-l from-primary to-primary/70 rounded-full mx-auto mt-4 shadow-lg shadow-primary/30" />
       </div>
       
       {/* Current Provider Details */}
       {currentConfig && (
-        <Card className="border-2 border-blue-200 bg-blue-50/30">
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <FileText className="w-5 h-5 text-blue-600" />
+        <Card className="group border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-card to-primary/5 hover:shadow-2xl hover:border-primary/40 transition-all duration-500 animate-fade-in overflow-hidden relative">
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
+          
+          <CardHeader className="relative z-10">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-gradient-to-br from-primary to-primary/80 rounded-2xl shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform duration-300">
+                <FileText className="w-6 h-6 text-primary-foreground" />
               </div>
-              <div>
-                <CardTitle className="text-xl text-blue-900">פרטי הספק הנוכחי</CardTitle>
-                <p className="text-sm text-blue-700 mt-1">
+              <div className="flex-1">
+                <CardTitle className="text-2xl bg-gradient-to-l from-foreground to-foreground/80 bg-clip-text text-transparent">
+                  פרטי הספק הנוכחי
+                </CardTitle>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
                   פרטים נדרשים לביטול השירות הקיים אצל {currentProvider}
                 </p>
               </div>
-              <Badge className="bg-blue-600 mr-auto">{currentProvider}</Badge>
+              <Badge className="bg-gradient-to-l from-primary to-primary/80 text-primary-foreground px-4 py-2 text-sm shadow-lg shadow-primary/30">
+                {currentProvider}
+              </Badge>
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {currentConfig.fields.map((field) => (
-                <div key={`current_${field}`} className="space-y-2">
-                  <Label className="font-assistant font-semibold">
+          <CardContent className="relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {currentConfig.fields.map((field, idx) => (
+                <div 
+                  key={`current_${field}`} 
+                  className="space-y-3 animate-fade-in"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
+                >
+                  <Label className="font-semibold text-foreground flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                     {currentConfig.labels[field as keyof typeof currentConfig.labels]}
-                    {field !== 'puk_code' && field !== 'last_reading' && ' *'}
+                    {field !== 'puk_code' && field !== 'last_reading' && (
+                      <span className="text-destructive">*</span>
+                    )}
                   </Label>
                   <Input
                     value={formData[`current_${field}` as keyof ServiceRequestFormData] as string || ''}
                     onChange={(e) => updateFormData({ [`current_${field}`]: e.target.value })}
                     placeholder={`הזן ${currentConfig.labels[field as keyof typeof currentConfig.labels]}`}
-                    className="font-assistant"
+                    className="h-12 border-2 hover:border-primary/50 focus:border-primary transition-all duration-300"
                     required={field !== 'puk_code' && field !== 'last_reading'}
                   />
                 </div>
@@ -152,39 +170,46 @@ export default function ProviderSpecificStep({ formData, updateFormData }: Provi
 
       {/* Generic Provider Information for unknown providers */}
       {!currentConfig && currentProvider && (
-        <Card className="border-2 border-gray-200 bg-gray-50/30">
+        <Card className="group border-2 border-muted-foreground/20 bg-gradient-to-br from-muted/50 via-card to-muted/50 hover:shadow-xl hover:border-muted-foreground/40 transition-all duration-500 animate-fade-in">
           <CardHeader>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gray-100 rounded-lg">
-                <Info className="w-5 h-5 text-gray-600" />
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-gradient-to-br from-muted-foreground to-muted-foreground/80 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <Info className="w-6 h-6 text-background" />
               </div>
               <div>
-                <CardTitle className="text-xl text-gray-900">פרטי ספק כלליים</CardTitle>
-                <p className="text-sm text-gray-700 mt-1">
+                <CardTitle className="text-2xl">פרטי ספק כלליים</CardTitle>
+                <p className="text-sm text-muted-foreground mt-2">
                   פרטים בסיסיים עבור {currentProvider}
                 </p>
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label className="font-assistant font-semibold">מספר לקוח/מנוי *</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <Label className="font-semibold flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  מספר לקוח/מנוי
+                  <span className="text-destructive">*</span>
+                </Label>
                 <Input
                   value={formData.customer_number || ''}
                   onChange={(e) => updateFormData({ customer_number: e.target.value })}
                   placeholder="מספר זהות לקוח"
-                  className="font-assistant"
+                  className="h-12 border-2 hover:border-primary/50 focus:border-primary transition-all duration-300"
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <Label className="font-assistant font-semibold">מספר חוזה/חשבון</Label>
+              <div className="space-y-3">
+                <Label className="font-semibold flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-muted-foreground/50" />
+                  מספר חוזה/חשבון
+                </Label>
                 <Input
                   value={formData.account_number || ''}
                   onChange={(e) => updateFormData({ account_number: e.target.value })}
                   placeholder="מספר חוזה או חשבון"
-                  className="font-assistant"
+                  className="h-12 border-2 hover:border-primary/50 focus:border-primary transition-all duration-300"
                 />
               </div>
             </div>
@@ -193,26 +218,35 @@ export default function ProviderSpecificStep({ formData, updateFormData }: Provi
       )}
 
       {/* Additional Notes */}
-      <Card className="border-2 border-purple-200 bg-purple-50/30">
-        <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-purple-100 rounded-lg">
-              <MessageSquare className="w-5 h-5 text-purple-600" />
+      <Card className="group border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-card to-primary/10 hover:shadow-2xl hover:border-primary/40 transition-all duration-500 animate-fade-in overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-40 h-40 bg-primary/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700" />
+        
+        <CardHeader className="relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gradient-to-br from-primary to-primary/80 rounded-2xl shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform duration-300">
+              <MessageSquare className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <CardTitle className="text-xl text-purple-900">הערות נוספות</CardTitle>
-              <p className="text-sm text-purple-700 mt-1">מידע נוסף שיכול לסייע בטיפול</p>
+              <CardTitle className="text-2xl bg-gradient-to-l from-foreground to-foreground/80 bg-clip-text text-transparent">
+                הערות נוספות
+              </CardTitle>
+              <p className="text-sm text-muted-foreground mt-2">מידע נוסף שיכול לסייע בטיפול</p>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
-          <textarea
-            value={formData.additional_notes || ''}
-            onChange={(e) => updateFormData({ additional_notes: e.target.value })}
-            placeholder="פרטים נוספים, הערות מיוחדות או בקשות ספציפיות..."
-            className="w-full min-h-[120px] p-4 border-2 border-gray-200 rounded-xl font-assistant text-sm resize-none focus:border-purple-300 focus:ring-0 transition-colors"
-            rows={5}
-          />
+        <CardContent className="relative z-10">
+          <div className="relative">
+            <textarea
+              value={formData.additional_notes || ''}
+              onChange={(e) => updateFormData({ additional_notes: e.target.value })}
+              placeholder="פרטים נוספים, הערות מיוחדות או בקשות ספציפיות..."
+              className="w-full min-h-[140px] p-5 border-2 border-border hover:border-primary/50 focus:border-primary rounded-2xl text-sm resize-none transition-all duration-300 bg-card/50 backdrop-blur-sm"
+              rows={6}
+            />
+            <div className="absolute bottom-4 left-4 text-xs text-muted-foreground">
+              {formData.additional_notes?.length || 0} תווים
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

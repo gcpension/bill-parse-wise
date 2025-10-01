@@ -194,111 +194,142 @@ export default function ServiceRequestWizard() {
   const progress = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6" dir="rtl">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background p-6 relative overflow-hidden" dir="rtl">
+      {/* Animated background patterns */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      </div>
+      
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Progress Header */}
-        <div className="mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-white/50 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold text-slate-900">בקשת שירות</h1>
-              <div className="text-sm font-medium text-slate-600">
-                שלב {currentStep + 1} מתוך {steps.length}
+        <div className="mb-8 animate-fade-in">
+          <div className="bg-card/95 backdrop-blur-xl rounded-3xl shadow-lg border-2 border-border/50 p-8 hover:shadow-2xl transition-all duration-500">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-3xl font-bold bg-gradient-to-l from-primary to-primary/70 bg-clip-text text-transparent">
+                בקשת שירות
+              </h1>
+              <div className="flex items-center gap-3">
+                <div className="text-lg font-bold text-primary">
+                  {currentStep + 1}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  / {steps.length}
+                </div>
               </div>
             </div>
             
-            {/* Progress Bar */}
+            {/* Enhanced Progress Bar */}
             <div className="relative">
-              <div className="flex justify-between mb-2">
+              <div className="flex justify-between mb-4">
                 {steps.map((step, index) => (
-                  <div key={index} className="flex flex-col items-center">
+                  <div key={index} className="flex flex-col items-center group cursor-pointer">
                     <div className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300",
+                      "w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-bold transition-all duration-500 relative overflow-hidden",
                       index <= currentStep 
-                        ? "bg-slate-900 text-white shadow-md" 
-                        : "bg-slate-200 text-slate-500"
+                        ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/30 scale-110" 
+                        : "bg-muted text-muted-foreground scale-100",
+                      index === currentStep && "ring-4 ring-primary/20 animate-pulse"
                     )}>
-                      {index < currentStep ? '✓' : index + 1}
+                      {index < currentStep ? (
+                        <CheckCircle className="w-6 h-6" />
+                      ) : (
+                        <span>{index + 1}</span>
+                      )}
+                      {index <= currentStep && (
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 animate-shimmer" />
+                      )}
                     </div>
                     <span className={cn(
-                      "text-xs mt-2 text-center max-w-20 leading-tight",
-                      index <= currentStep ? "text-slate-900 font-medium" : "text-slate-500"
+                      "text-xs mt-3 text-center max-w-24 leading-tight transition-all duration-300",
+                      index <= currentStep ? "text-foreground font-bold scale-105" : "text-muted-foreground scale-100"
                     )}>
                       {step.title}
                     </span>
                   </div>
                 ))}
               </div>
-              <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
+              <div className="h-2 bg-muted rounded-full overflow-hidden shadow-inner">
                 <div 
-                  className="h-full bg-gradient-to-r from-slate-700 to-slate-900 transition-all duration-500 ease-out"
+                  className="h-full bg-gradient-to-l from-primary via-primary/90 to-primary/70 transition-all duration-700 ease-out relative overflow-hidden"
                   style={{ width: `${progress}%` }}
-                />
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 overflow-hidden">
-          <div className="p-8 lg:p-12">
+        <div className="bg-card/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-border/50 overflow-hidden animate-fade-in hover:shadow-3xl transition-all duration-500">
+          <div className="p-8 lg:p-12 relative">
+            {/* Decorative corner elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-primary/10 to-transparent rounded-tr-full" />
             {currentStep >= steps.length ? (
               // Completion Step
-              <div className="text-center space-y-8 py-12">
-                <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="w-12 h-12 text-green-600" />
+              <div className="text-center space-y-8 py-16 relative">
+                <div className="relative inline-block">
+                  <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-green-500/50 animate-scale-in">
+                    <CheckCircle className="w-16 h-16 text-white" strokeWidth={3} />
+                  </div>
+                  <div className="absolute inset-0 bg-green-400 rounded-3xl blur-2xl opacity-40 animate-pulse" />
                 </div>
-                <h2 className="text-3xl font-bold text-slate-900">
+                <h2 className="text-4xl font-bold bg-gradient-to-l from-green-600 to-green-500 bg-clip-text text-transparent animate-fade-in">
                   הבקשה נשלחה בהצלחה!
                 </h2>
-                <p className="text-slate-600 text-lg max-w-md mx-auto">
+                <p className="text-muted-foreground text-lg max-w-md mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
                   תקבל SMS עם קישור לחתימה דיגיטלית ועדכונים על הסטטוס
                 </p>
-                <div className="pt-4">
+                <div className="pt-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
                   <Button 
                     onClick={() => window.location.href = '/'} 
                     size="lg"
-                    className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-xl shadow-md"
+                    className="bg-gradient-to-l from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground px-12 py-6 rounded-2xl shadow-xl shadow-primary/30 text-lg font-bold hover:scale-105 transition-all duration-300"
                   >
                     חזור לדף הבית
                   </Button>
                 </div>
               </div>
             ) : (
-              <div className="space-y-8">
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-slate-900 mb-2">
+              <div className="space-y-8 relative z-10">
+                <div className="mb-8 animate-fade-in">
+                  <h2 className="text-3xl font-bold bg-gradient-to-l from-foreground to-foreground/80 bg-clip-text text-transparent mb-3">
                     {steps[currentStep].title}
                   </h2>
-                  <div className="h-1 w-20 bg-gradient-to-r from-slate-700 to-slate-900 rounded-full"></div>
+                  <div className="h-1.5 w-24 bg-gradient-to-l from-primary to-primary/70 rounded-full shadow-lg shadow-primary/30"></div>
                 </div>
                 
-                <StepComponent
-                  formData={formData}
-                  updateFormData={updateFormData}
-                />
+                <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                  <StepComponent
+                    formData={formData}
+                    updateFormData={updateFormData}
+                  />
+                </div>
               </div>
             )}
 
-            {/* Navigation */}
+            {/* Enhanced Navigation */}
             {currentStep < steps.length && (
-              <div className="flex justify-between items-center mt-12 pt-8 border-t border-slate-200">
+              <div className="flex justify-between items-center mt-12 pt-8 border-t-2 border-border/50 relative">
                 <Button
                   variant="outline"
                   onClick={saveDraft}
-                  className="bg-white/80 hover:bg-white border-slate-300 hover:border-slate-400 text-slate-700 px-6 py-3 rounded-xl transition-all duration-200"
+                  className="group bg-card/80 hover:bg-card border-2 hover:border-primary/50 px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 >
-                  <Save className="w-4 h-4 ml-2" />
+                  <Save className="w-4 h-4 ml-2 group-hover:animate-pulse" />
                   שמור טיוטה
                 </Button>
 
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                   {currentStep > 0 && (
                     <Button
                       variant="outline"
                       onClick={prevStep}
-                      className="bg-white/80 hover:bg-white border-slate-300 hover:border-slate-400 text-slate-700 px-8 py-3 rounded-xl transition-all duration-200"
+                      className="group bg-card/80 hover:bg-card border-2 hover:border-primary/50 px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg"
                     >
-                      <ChevronLeft className="w-4 h-4 ml-2" />
+                      <ChevronLeft className="w-5 h-5 ml-2 group-hover:-translate-x-1 transition-transform" />
                       הקודם
                     </Button>
                   )}
@@ -309,14 +340,19 @@ export default function ServiceRequestWizard() {
                       disabled={!canProceed()}
                       size="lg"
                       className={cn(
-                        "px-8 py-3 rounded-xl transition-all duration-200",
+                        "group px-10 py-3 rounded-xl font-bold text-lg transition-all duration-300 relative overflow-hidden",
                         canProceed() 
-                          ? "bg-slate-900 hover:bg-slate-800 text-white shadow-md" 
-                          : "bg-slate-200 text-slate-500 cursor-not-allowed"
+                          ? "bg-gradient-to-l from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-xl shadow-primary/30 hover:scale-105 hover:shadow-2xl" 
+                          : "bg-muted text-muted-foreground cursor-not-allowed"
                       )}
                     >
-                      הבא
-                      <ChevronRight className="w-4 h-4 mr-2" />
+                      {canProceed() && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
+                      )}
+                      <span className="relative flex items-center">
+                        הבא
+                        <ChevronRight className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
+                      </span>
                     </Button>
                   ) : (
                     <Button
@@ -324,22 +360,25 @@ export default function ServiceRequestWizard() {
                       disabled={!canProceed() || isLoading}
                       size="lg"
                       className={cn(
-                        "px-8 py-3 rounded-xl transition-all duration-200",
+                        "group px-10 py-3 rounded-xl font-bold text-lg transition-all duration-300 relative overflow-hidden",
                         canProceed() && !isLoading
-                          ? "bg-green-600 hover:bg-green-700 text-white shadow-md" 
-                          : "bg-slate-200 text-slate-500 cursor-not-allowed"
+                          ? "bg-gradient-to-l from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl shadow-green-500/30 hover:scale-105 hover:shadow-2xl" 
+                          : "bg-muted text-muted-foreground cursor-not-allowed"
                       )}
                     >
+                      {canProceed() && !isLoading && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
+                      )}
                       {isLoading ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white ml-2"></div>
+                        <span className="relative flex items-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent ml-2"></div>
                           שולח...
-                        </>
+                        </span>
                       ) : (
-                        <>
-                          <CheckCircle className="w-4 h-4 ml-2" />
+                        <span className="relative flex items-center">
+                          <CheckCircle className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
                           שלח בקשה
-                        </>
+                        </span>
                       )}
                     </Button>
                   )}
