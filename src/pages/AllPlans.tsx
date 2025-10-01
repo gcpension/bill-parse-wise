@@ -532,7 +532,7 @@ const AllPlans = ({
                     </h2>
                   </div>
                   <p className="text-lg text-muted-foreground font-assistant max-w-2xl mx-auto">
-                    הזינו את הפרטים הנוכחיים שלכם כדי לראות <span className="font-bold text-primary">כמה תוכלו לחסוך</span> עם המערכת החכמה שלנו
+                    ציינו את הספק הנוכחי שלכם כדי לראות <span className="font-bold text-primary">כמה תוכלו לחסוך</span> עם המערכת החכמה שלנו
                   </p>
                   
                   {/* Info Badge */}
@@ -542,83 +542,56 @@ const AllPlans = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
-                  {/* Current Monthly Payment - Enhanced */}
-                  <div className="bg-white/90 backdrop-blur-md rounded-3xl p-7 shadow-xl border-2 border-primary/20 hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group/card relative overflow-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto">
+                  {/* Current Provider - Enhanced */}
+                  <div className="bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-xl border-2 border-primary/20 hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group/card relative overflow-hidden">
                     {/* Animated Border Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-orange-500/20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-orange-500/20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
                     
                     <div className="relative z-10">
-                      <div className="text-center mb-6">
-                        <div className="relative inline-block mb-4">
-                          <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto shadow-xl group-hover/card:shadow-2xl group-hover/card:scale-110 transition-all duration-500">
-                            <Calculator className="w-10 h-10 text-white" />
+                      <div className="text-center mb-4">
+                        <div className="relative inline-block mb-3">
+                          <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center mx-auto shadow-lg group-hover/card:shadow-xl group-hover/card:scale-110 transition-all duration-500">
+                            <Calculator className="w-8 h-8 text-white" />
                           </div>
                           {/* Pulse Ring */}
-                          <div className="absolute inset-0 w-20 h-20 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl animate-ping opacity-20"></div>
+                          <div className="absolute inset-0 w-16 h-16 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl animate-ping opacity-20"></div>
                         </div>
-                        <h3 className="text-2xl font-bold text-foreground font-heebo mb-2">
-                          המשלום החודשי הנוכחי
+                        <h3 className="text-xl font-bold text-foreground font-heebo mb-1">
+                          הספק הנוכחי
                         </h3>
-                        <p className="text-sm text-muted-foreground font-assistant">
-                          מה אתם משלמים עכשיו?
+                        <p className="text-xs text-muted-foreground font-assistant">
+                          מי הספק שלכם כרגע?
                         </p>
                       </div>
                       
-                      <div className="space-y-5">
-                        <div className="group/input">
-                          <Label className="text-sm font-bold text-foreground mb-2 block flex items-center gap-2 font-assistant">
-                            <span className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">1</span>
-                            הספק הנוכחי שלכם
-                          </Label>
-                          <Input 
-                            placeholder="לדוגמה: חברת החשמל, בזק, פרטנר..." 
-                            value={currentUserPlan.company} 
-                            onChange={e => setCurrentUserPlan(prev => ({
-                              ...prev,
-                              company: e.target.value
-                            }))} 
-                            className="h-14 text-base border-2 border-border hover:border-primary/50 focus:border-primary transition-all duration-300 rounded-xl font-assistant"
-                          />
-                        </div>
-                        
-                        <div className="group/input">
-                          <Label className="text-sm font-bold text-foreground mb-2 block flex items-center gap-2 font-assistant">
-                            <span className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">2</span>
-                            כמה אתם משלמים בחודש?
-                          </Label>
-                          <div className="relative">
-                            <Input 
-                              type="number" 
-                              placeholder="0" 
-                              value={currentUserPlan.price} 
-                              onChange={e => setCurrentUserPlan(prev => ({
-                                ...prev,
-                                price: e.target.value
-                              }))} 
-                              className="h-16 text-center font-bold text-2xl border-2 border-border hover:border-primary/50 focus:border-primary transition-all duration-300 rounded-xl pr-12 font-heebo"
-                            />
-                            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground font-bold text-xl">₪</span>
-                            {currentUserPlan.price && parseFloat(currentUserPlan.price) > 0 && (
-                              <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center animate-bounce">
-                                <span className="text-white text-xs font-bold">✓</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
+                      <div className="group/input">
+                        <Label className="text-sm font-bold text-foreground mb-2 block flex items-center gap-2 font-assistant">
+                          <span className="w-5 h-5 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">1</span>
+                          הספק הנוכחי שלכם
+                        </Label>
+                        <Input 
+                          placeholder="לדוגמה: חברת החשמל, בזק, פרטנר..." 
+                          value={currentUserPlan.company} 
+                          onChange={e => setCurrentUserPlan(prev => ({
+                            ...prev,
+                            company: e.target.value
+                          }))} 
+                          className="h-11 text-sm border-2 border-border hover:border-primary/50 focus:border-primary transition-all duration-300 rounded-lg font-assistant"
+                        />
                       </div>
                     </div>
                   </div>
 
                   {/* Cheapest Alternative - Enhanced */}
-                  <div className="bg-white/90 backdrop-blur-md rounded-3xl p-7 shadow-xl border-2 border-primary/30 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group/card relative overflow-hidden">
+                  <div className="bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-xl border-2 border-primary/30 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group/card relative overflow-hidden">
                     {/* Success Glow */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
                     
                     {/* Top Badge */}
                     {cheapestPlan && (
-                      <div className="absolute top-4 right-4 z-20">
-                        <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 shadow-lg px-3 py-1">
+                      <div className="absolute top-3 right-3 z-20">
+                        <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 shadow-lg px-2 py-0.5 text-xs">
                           <TrendingUp className="w-3 h-3 ml-1" />
                           הכי משתלם!
                         </Badge>
@@ -626,106 +599,106 @@ const AllPlans = ({
                     )}
                     
                     <div className="relative z-10">
-                      <div className="text-center mb-6">
-                        <div className="relative inline-block mb-4">
-                          <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto shadow-xl group-hover/card:shadow-2xl group-hover/card:scale-110 transition-all duration-500">
-                            <TrendingUp className="w-10 h-10 text-white" />
+                      <div className="text-center mb-4">
+                        <div className="relative inline-block mb-3">
+                          <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto shadow-lg group-hover/card:shadow-xl group-hover/card:scale-110 transition-all duration-500">
+                            <TrendingUp className="w-8 h-8 text-white" />
                           </div>
                           {/* Pulse Ring */}
-                          <div className="absolute inset-0 w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl animate-ping opacity-20"></div>
+                          <div className="absolute inset-0 w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl animate-ping opacity-20"></div>
                         </div>
-                        <h3 className="text-2xl font-bold text-foreground font-heebo mb-2">
+                        <h3 className="text-xl font-bold text-foreground font-heebo mb-1">
                           המסלול הזול ביותר
                         </h3>
-                        <p className="text-sm text-muted-foreground font-assistant">
+                        <p className="text-xs text-muted-foreground font-assistant">
                           האופציה החסכונית ביותר עבורכם
                         </p>
                       </div>
                       
                       {cheapestPlan ? (
-                        <div className="space-y-5">
-                          <div className="text-center bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200">
-                            <div className="flex items-center justify-center gap-2 mb-2">
-                              <span className="text-sm text-green-700 font-assistant">רק</span>
+                        <div className="space-y-3">
+                          <div className="text-center bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border-2 border-green-200">
+                            <div className="flex items-center justify-center gap-2 mb-1">
+                              <span className="text-xs text-green-700 font-assistant">רק</span>
                             </div>
-                            <div className="text-5xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-heebo">
+                            <div className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-heebo">
                               ₪{cheapestPlan.regularPrice}
                             </div>
-                            <div className="text-sm text-green-700 font-assistant mt-1">
+                            <div className="text-xs text-green-700 font-assistant mt-1">
                               לחודש
                             </div>
                           </div>
                           
-                          <div className="space-y-3">
-                            <div className="bg-white border-2 border-green-200 rounded-xl p-4 text-center group-hover/card:border-green-300 transition-colors">
-                              <div className="text-sm text-muted-foreground font-assistant mb-1">חברה</div>
-                              <div className="text-lg font-bold text-foreground font-heebo">
+                          <div className="space-y-2">
+                            <div className="bg-white border-2 border-green-200 rounded-lg p-3 text-center group-hover/card:border-green-300 transition-colors">
+                              <div className="text-xs text-muted-foreground font-assistant mb-1">חברה</div>
+                              <div className="text-base font-bold text-foreground font-heebo">
                                 {cheapestPlan.company}
                               </div>
                             </div>
                             
-                            <div className="bg-green-50 rounded-xl p-4 text-center border border-green-200">
-                              <div className="text-sm text-green-700 font-assistant line-clamp-2">
+                            <div className="bg-green-50 rounded-lg p-3 text-center border border-green-200">
+                              <div className="text-xs text-green-700 font-assistant line-clamp-2">
                                 {cheapestPlan.planName}
                               </div>
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <div className="text-center text-muted-foreground font-assistant bg-muted/30 rounded-2xl p-8 border-2 border-dashed border-border">
-                          <TrendingUp className="w-12 h-12 mx-auto mb-3 text-muted-foreground/50" />
-                          <p>בחרו קטגוריה לצפייה במסלולים</p>
+                        <div className="text-center text-muted-foreground font-assistant bg-muted/30 rounded-xl p-6 border-2 border-dashed border-border">
+                          <TrendingUp className="w-10 h-10 mx-auto mb-2 text-muted-foreground/50" />
+                          <p className="text-sm">בחרו קטגוריה לצפייה במסלולים</p>
                         </div>
                       )}
                     </div>
                   </div>
 
                   {/* Potential Savings - Enhanced */}
-                  <div className="bg-white/90 backdrop-blur-md rounded-3xl p-7 shadow-xl border-2 border-primary/30 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group/card relative overflow-hidden">
+                  <div className="bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-xl border-2 border-primary/30 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group/card relative overflow-hidden">
                     {/* Magic Glow */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
                     
                     <div className="relative z-10">
-                      <div className="text-center mb-6">
-                        <div className="relative inline-block mb-4">
-                          <div className="w-20 h-20 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center mx-auto shadow-xl group-hover/card:shadow-2xl group-hover/card:scale-110 transition-all duration-500">
-                            <Sparkles className="w-10 h-10 text-white" />
+                      <div className="text-center mb-4">
+                        <div className="relative inline-block mb-3">
+                          <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-xl flex items-center justify-center mx-auto shadow-lg group-hover/card:shadow-xl group-hover/card:scale-110 transition-all duration-500">
+                            <Sparkles className="w-8 h-8 text-white" />
                           </div>
                           {/* Pulse Ring */}
-                          <div className="absolute inset-0 w-20 h-20 bg-gradient-to-r from-primary to-accent rounded-2xl animate-ping opacity-20"></div>
+                          <div className="absolute inset-0 w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-xl animate-ping opacity-20"></div>
                         </div>
-                        <h3 className="text-2xl font-bold text-foreground font-heebo mb-2">
+                        <h3 className="text-xl font-bold text-foreground font-heebo mb-1">
                           החיסכון הפוטנציאלי
                         </h3>
-                        <p className="text-sm text-muted-foreground font-assistant">
+                        <p className="text-xs text-muted-foreground font-assistant">
                           כמה תחסכו עם המסלול הזול ביותר
                         </p>
                       </div>
                       
                       {currentUserPlan.price && cheapestPlan && parseFloat(currentUserPlan.price) > 0 ? (
-                        <div className="space-y-5">
+                        <div className="space-y-3">
                           {/* Monthly Savings */}
-                          <div className="text-center bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 border-2 border-primary/20 relative overflow-hidden">
+                          <div className="text-center bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl p-4 border-2 border-primary/20 relative overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 animate-pulse"></div>
                             <div className="relative z-10">
-                              <div className="flex items-center justify-center gap-2 mb-2">
-                                <Sparkles className="w-4 h-4 text-primary" />
-                                <span className="text-sm text-primary font-assistant font-bold">חיסכון חודשי</span>
-                                <Sparkles className="w-4 h-4 text-primary" />
+                              <div className="flex items-center justify-center gap-1 mb-1">
+                                <Sparkles className="w-3 h-3 text-primary" />
+                                <span className="text-xs text-primary font-assistant font-bold">חיסכון חודשי</span>
+                                <Sparkles className="w-3 h-3 text-primary" />
                               </div>
-                              <div className="text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-heebo">
+                              <div className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-heebo">
                                 ₪{Math.max(0, parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice)}
                               </div>
-                              <div className="text-sm text-muted-foreground font-assistant mt-1">
+                              <div className="text-xs text-muted-foreground font-assistant mt-1">
                                 כל חודש בכיס שלכם
                               </div>
                             </div>
                           </div>
                           
                           {/* Annual Savings */}
-                          <div className="bg-white border-2 border-primary/20 rounded-xl p-4 text-center hover:border-primary/40 transition-colors">
-                            <div className="text-sm text-muted-foreground font-assistant mb-1">חיסכון שנתי</div>
-                            <div className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-heebo">
+                          <div className="bg-white border-2 border-primary/20 rounded-lg p-3 text-center hover:border-primary/40 transition-colors">
+                            <div className="text-xs text-muted-foreground font-assistant mb-1">חיסכון שנתי</div>
+                            <div className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-heebo">
                               ₪{Math.max(0, (parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) * 12)}
                             </div>
                           </div>
@@ -733,16 +706,16 @@ const AllPlans = ({
                           {/* Percentage Badge */}
                           {parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && (
                             <div className="text-center animate-bounce">
-                              <Badge className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white px-6 py-3 text-base border-0 shadow-lg">
+                              <Badge className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white px-4 py-2 text-sm border-0 shadow-lg">
                                 💰 חיסכון של {Math.round((parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) / parseFloat(currentUserPlan.price) * 100)}%
                               </Badge>
                             </div>
                           )}
                         </div>
                       ) : (
-                        <div className="text-center text-muted-foreground font-assistant bg-muted/30 rounded-2xl p-8 border-2 border-dashed border-border">
-                          <Calculator className="w-12 h-12 mx-auto mb-3 text-muted-foreground/50" />
-                          <p className="mb-2">הזינו את התשלום הנוכחי</p>
+                        <div className="text-center text-muted-foreground font-assistant bg-muted/30 rounded-xl p-6 border-2 border-dashed border-border">
+                          <Calculator className="w-10 h-10 mx-auto mb-2 text-muted-foreground/50" />
+                          <p className="text-sm mb-1">הזינו את התשלום הנוכחי</p>
                           <p className="text-xs">לחישוב החיסכון שלכם</p>
                         </div>
                       )}
