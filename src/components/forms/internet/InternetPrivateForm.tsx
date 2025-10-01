@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { validateCommonFields, validateFutureDate, validateFile } from "@/lib/formValidations";
 import { getPowerOfAttorneyText, getChecklistItems } from "@/lib/powerOfAttorneyTexts";
 import { createHebrewPDF } from "@/lib/pdfUtils";
+import { FieldInfoTooltip, fieldInfo } from "@/components/ui/field-info-tooltip";
 
 interface InternetPrivateFormProps {
   selectedPlan: ManualPlan;
@@ -111,7 +112,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
         <CardHeader><CardTitle>פרטים אישיים</CardTitle></CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
           <div>
-            <Label>שם מלא</Label>
+            <Label className="flex items-center gap-2">
+              שם מלא *
+              <FieldInfoTooltip content={fieldInfo.fullName} />
+            </Label>
             <Input 
               placeholder="שם פרטי ושם משפחה"
               value={formData.fullName} 
@@ -120,7 +124,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
             />
           </div>
           <div>
-            <Label>מס׳ תעודת זהות</Label>
+            <Label className="flex items-center gap-2">
+              מס׳ תעודת זהות *
+              <FieldInfoTooltip content={fieldInfo.idNumber} />
+            </Label>
             <Input 
               placeholder="9 ספרות"
               value={formData.idNumber} 
@@ -130,7 +137,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
             />
           </div>
           <div>
-            <Label>טלפון נייד</Label>
+            <Label className="flex items-center gap-2">
+              טלפון נייד *
+              <FieldInfoTooltip content={fieldInfo.phone} />
+            </Label>
             <Input 
               placeholder="05X-XXXXXXX"
               value={formData.phone} 
@@ -139,7 +149,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
             />
           </div>
           <div>
-            <Label>דוא״ל</Label>
+            <Label className="flex items-center gap-2">
+              דוא״ל *
+              <FieldInfoTooltip content={fieldInfo.email} />
+            </Label>
             <Input 
               type="email" 
               placeholder="name@example.com"
@@ -155,7 +168,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
         <CardHeader><CardTitle>פרטי השירות</CardTitle></CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
           <div>
-            <Label>ספק תשתית נוכחי</Label>
+            <Label className="flex items-center gap-2">
+              ספק תשתית נוכחי *
+              <FieldInfoTooltip content={fieldInfo.infrastructureProvider} />
+            </Label>
             <Select onValueChange={(value) => updateFormData("infrastructureProvider", value)}>
               <SelectTrigger><SelectValue placeholder="בחר/י ספק תשתית" /></SelectTrigger>
               <SelectContent>
@@ -167,7 +183,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
             </Select>
           </div>
           <div>
-            <Label>ספק אינטרנט (ISP) נוכחי</Label>
+            <Label className="flex items-center gap-2">
+              ספק אינטרנט (ISP) נוכחי *
+              <FieldInfoTooltip content={fieldInfo.currentISP} />
+            </Label>
             <Input 
               placeholder="בחר/י או כתוב/י"
               value={formData.currentISP} 
@@ -176,7 +195,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
             />
           </div>
           <div>
-            <Label>מזהה קו/מנוי/ONT</Label>
+            <Label className="flex items-center gap-2">
+              מזהה קו/מנוי/ONT *
+              <FieldInfoTooltip content={fieldInfo.lineIdentifier} />
+            </Label>
             <Input 
               placeholder="מספר או מזהה ציוד"
               value={formData.lineIdentifier} 
@@ -185,7 +207,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
             />
           </div>
           <div>
-            <Label>ספק יעד + חבילה</Label>
+            <Label className="flex items-center gap-2">
+              ספק יעד + חבילה *
+              <FieldInfoTooltip content={fieldInfo.requestedPackage} />
+            </Label>
             <Input 
               placeholder="בחר/י חבילה"
               value={formData.requestedPackage} 
@@ -194,7 +219,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
             />
           </div>
           <div>
-            <Label>תוקף ייפוי כוח</Label>
+            <Label className="flex items-center gap-2">
+              תוקף ייפוי כוח *
+              <FieldInfoTooltip content={fieldInfo.powerOfAttorneyExpiry} />
+            </Label>
             <Input 
               type="date" 
               value={formData.powerOfAttorneyExpiry} 
@@ -210,8 +238,9 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
                 checked={formData.isBundleService}
                 onCheckedChange={(checked) => updateFormData("isBundleService", checked as boolean)}
               />
-              <Label htmlFor="bundleService" className="text-sm">
+              <Label htmlFor="bundleService" className="text-sm flex items-start gap-2">
                 התשתית וה-ISP באותה חבילה (דורש שתי בקשות)
+                <FieldInfoTooltip content={fieldInfo.isBundleService} />
               </Label>
             </div>
           </div>
@@ -223,7 +252,8 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
         <CardContent>
           <Label className="flex items-center gap-2">
             <Upload className="h-4 w-4" />
-            צילום ת״ז (חובה)
+            צילום ת״ז (חובה) *
+            <FieldInfoTooltip content={fieldInfo.subscriberIdCopy} />
           </Label>
           <Input 
             type="file" 

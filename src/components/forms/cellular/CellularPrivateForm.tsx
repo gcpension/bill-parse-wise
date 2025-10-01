@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { validateCommonFields, validateIsraeliMobile, validateFutureDate, validateFile } from "@/lib/formValidations";
 import { getPowerOfAttorneyText, getChecklistItems } from "@/lib/powerOfAttorneyTexts";
 import { createHebrewPDF } from "@/lib/pdfUtils";
+import { FieldInfoTooltip, fieldInfo } from "@/components/ui/field-info-tooltip";
 
 interface CellularPrivateFormProps {
   selectedPlan: ManualPlan;
@@ -268,7 +269,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="fullName">שם מלא *</Label>
+            <Label htmlFor="fullName" className="flex items-center gap-2">
+              שם מלא *
+              <FieldInfoTooltip content={fieldInfo.fullName} />
+            </Label>
             <Input
               id="fullName"
               placeholder="הקלד/י שם מלא"
@@ -278,7 +282,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             />
           </div>
           <div>
-            <Label htmlFor="idNumber">ת.ז. *</Label>
+            <Label htmlFor="idNumber" className="flex items-center gap-2">
+              ת.ז. *
+              <FieldInfoTooltip content={fieldInfo.idNumber} />
+            </Label>
             <Input
               id="idNumber"
               placeholder="9 ספרות"
@@ -289,7 +296,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             />
           </div>
           <div>
-            <Label htmlFor="phone">נייד ליצירת קשר *</Label>
+            <Label htmlFor="phone" className="flex items-center gap-2">
+              נייד ליצירת קשר *
+              <FieldInfoTooltip content={fieldInfo.phone} />
+            </Label>
             <Input
               id="phone"
               placeholder="05X-XXXXXXX"
@@ -299,7 +309,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             />
           </div>
           <div>
-            <Label htmlFor="email">אימייל *</Label>
+            <Label htmlFor="email" className="flex items-center gap-2">
+              אימייל *
+              <FieldInfoTooltip content={fieldInfo.email} />
+            </Label>
             <Input
               id="email"
               type="email"
@@ -319,7 +332,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="currentProvider">ספק נוכחי *</Label>
+            <Label htmlFor="currentProvider" className="flex items-center gap-2">
+              ספק נוכחי *
+              <FieldInfoTooltip content={fieldInfo.currentProvider} />
+            </Label>
             <Select onValueChange={handleProviderChange}>
               <SelectTrigger>
                 <SelectValue placeholder="בחר/י ספק" />
@@ -332,7 +348,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             </Select>
           </div>
           <div>
-            <Label htmlFor="targetProvider">ספק יעד *</Label>
+            <Label htmlFor="targetProvider" className="flex items-center gap-2">
+              ספק יעד *
+              <FieldInfoTooltip content={fieldInfo.targetProvider} />
+            </Label>
             <Input
               id="targetProvider"
               value={formData.targetProvider}
@@ -342,7 +361,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             />
           </div>
           <div>
-            <Label htmlFor="powerOfAttorneyExpiry">תוקף ייפוי כוח *</Label>
+            <Label htmlFor="powerOfAttorneyExpiry" className="flex items-center gap-2">
+              תוקף ייפוי כוח *
+              <FieldInfoTooltip content={fieldInfo.powerOfAttorneyExpiry} />
+            </Label>
             <Input
               id="powerOfAttorneyExpiry"
               type="date"
@@ -374,7 +396,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
           {formData.phoneNumbers.map((phone, index) => (
             <div key={index} className="flex gap-4 items-end">
               <div className="flex-1">
-                <Label htmlFor={`phone-${index}`}>מספר טלפון {index + 1} *</Label>
+                <Label htmlFor={`phone-${index}`} className="flex items-center gap-2">
+                  מספר טלפון {index + 1} *
+                  {index === 0 && <FieldInfoTooltip content={fieldInfo.phoneNumbers} />}
+                </Label>
                 <Input
                   id={`phone-${index}`}
                   placeholder="05X-XXXXXXX"
@@ -410,8 +435,9 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
               checked={formData.acceptOtpConfirmation}
               onCheckedChange={(checked) => updateFormData("acceptOtpConfirmation", checked as boolean)}
             />
-            <label htmlFor="acceptOtpConfirmation" className="text-sm">
+            <label htmlFor="acceptOtpConfirmation" className="text-sm flex items-start gap-2">
               אני מצהיר/ה שיש ברשותי את כרטיס ה-SIM הנוכחי ואוכל לקבל ולאשר הודעות OTP *
+              <FieldInfoTooltip content={fieldInfo.acceptOtpConfirmation} />
             </label>
           </div>
         </CardContent>
@@ -444,6 +470,7 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             <Label className="flex items-center gap-2">
               <Upload className="h-4 w-4" />
               צילום ת.ז. בעל המנוי *
+              <FieldInfoTooltip content={fieldInfo.subscriberIdCopy} />
             </Label>
             <Input
               type="file"
@@ -459,6 +486,7 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             <Label className="flex items-center gap-2">
               <Upload className="h-4 w-4" />
               חשבונית אחרונה (אופציונלי)
+              <FieldInfoTooltip content={fieldInfo.lastBill} />
             </Label>
             <Input
               type="file"

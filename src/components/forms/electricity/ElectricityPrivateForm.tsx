@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { validateCommonFields, validateFutureDate, validateFile } from "@/lib/formValidations";
 import { getPowerOfAttorneyText, getChecklistItems } from "@/lib/powerOfAttorneyTexts";
 import { createHebrewPDF } from "@/lib/pdfUtils";
+import { FieldInfoTooltip, fieldInfo } from "@/components/ui/field-info-tooltip";
 
 interface ElectricityPrivateFormProps {
   selectedPlan: ManualPlan;
@@ -223,7 +224,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="fullName">שם מלא</Label>
+            <Label htmlFor="fullName" className="flex items-center gap-2">
+              שם מלא *
+              <FieldInfoTooltip content={fieldInfo.fullName} />
+            </Label>
             <Input
               id="fullName"
               placeholder="שם פרטי ושם משפחה"
@@ -233,7 +237,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div>
-            <Label htmlFor="idNumber">מס׳ תעודת זהות</Label>
+            <Label htmlFor="idNumber" className="flex items-center gap-2">
+              מס׳ תעודת זהות *
+              <FieldInfoTooltip content={fieldInfo.idNumber} />
+            </Label>
             <Input
               id="idNumber"
               placeholder="9 ספרות"
@@ -244,7 +251,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div>
-            <Label htmlFor="phone">טלפון נייד</Label>
+            <Label htmlFor="phone" className="flex items-center gap-2">
+              טלפון נייד *
+              <FieldInfoTooltip content={fieldInfo.phone} />
+            </Label>
             <Input
               id="phone"
               placeholder="05X-XXXXXXX"
@@ -254,7 +264,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div>
-            <Label htmlFor="email">דוא״ל</Label>
+            <Label htmlFor="email" className="flex items-center gap-2">
+              דוא״ל *
+              <FieldInfoTooltip content={fieldInfo.email} />
+            </Label>
             <Input
               id="email"
               type="email"
@@ -274,7 +287,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="currentProvider">ספק נוכחי *</Label>
+            <Label htmlFor="currentProvider" className="flex items-center gap-2">
+              ספק נוכחי *
+              <FieldInfoTooltip content={fieldInfo.currentProvider} />
+            </Label>
             <Select onValueChange={(value) => updateFormData("currentProvider", value)}>
               <SelectTrigger>
                 <SelectValue placeholder="בחר/י ספק" />
@@ -287,7 +303,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             </Select>
           </div>
           <div>
-            <Label htmlFor="targetProvider">ספק יעד *</Label>
+            <Label htmlFor="targetProvider" className="flex items-center gap-2">
+              ספק יעד *
+              <FieldInfoTooltip content={fieldInfo.targetProvider} />
+            </Label>
             <Input
               id="targetProvider"
               value={formData.targetProvider}
@@ -297,7 +316,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div>
-            <Label htmlFor="contractNumber">מס׳ חוזה (אם ידוע)</Label>
+            <Label htmlFor="contractNumber" className="flex items-center gap-2">
+              מס׳ חוזה (אם ידוע)
+              <FieldInfoTooltip content={fieldInfo.contractNumber} />
+            </Label>
             <Input
               id="contractNumber"
               placeholder="מספר"
@@ -306,7 +328,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div>
-            <Label htmlFor="meterNumber">מס׳ מונה (אם ידוע)</Label>
+            <Label htmlFor="meterNumber" className="flex items-center gap-2">
+              מס׳ מונה (אם ידוע)
+              <FieldInfoTooltip content={fieldInfo.meterNumber} />
+            </Label>
             <Input
               id="meterNumber"
               placeholder="מספר"
@@ -315,7 +340,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div className="md:col-span-2">
-            <Label htmlFor="consumptionAddress">כתובת אתר צריכה</Label>
+            <Label htmlFor="consumptionAddress" className="flex items-center gap-2">
+              כתובת אתר צריכה *
+              <FieldInfoTooltip content={fieldInfo.consumptionAddress} />
+            </Label>
             <Input
               id="consumptionAddress"
               placeholder="רחוב, מספר, עיר"
@@ -325,7 +353,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             />
           </div>
           <div>
-            <Label htmlFor="powerOfAttorneyExpiry">תוקף ייפוי כוח</Label>
+            <Label htmlFor="powerOfAttorneyExpiry" className="flex items-center gap-2">
+              תוקף ייפוי כוח *
+              <FieldInfoTooltip content={fieldInfo.powerOfAttorneyExpiry} />
+            </Label>
             <Input
               id="powerOfAttorneyExpiry"
               type="date"
@@ -347,7 +378,8 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
           <div>
             <Label className="flex items-center gap-2">
               <Upload className="h-4 w-4" />
-              צילום ת״ז לקוח (חובה)
+              צילום ת״ז לקוח (חובה) *
+              <FieldInfoTooltip content={fieldInfo.subscriberIdCopy} />
             </Label>
             <Input
               type="file"
@@ -363,6 +395,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
             <Label className="flex items-center gap-2">
               <Upload className="h-4 w-4" />
               צילום ת״ז מיופה כוח (אם צד ג׳)
+              <FieldInfoTooltip content={fieldInfo.attorneyIdCopy} />
             </Label>
             <Input
               type="file"
@@ -385,7 +418,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="creditCardLast4">4 ספרות אחרונות של כרטיס אשראי</Label>
+              <Label htmlFor="creditCardLast4" className="flex items-center gap-2">
+                4 ספרות אחרונות של כרטיס אשראי
+                <FieldInfoTooltip content={fieldInfo.creditCardLast4} />
+              </Label>
               <Input
                 id="creditCardLast4"
                 placeholder="XXXX"
@@ -398,7 +434,10 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               <p className="text-xs text-muted-foreground mt-1">לצורך זיהוי בלבד - לא נשמרים פרטים מלאים</p>
             </div>
             <div>
-              <Label htmlFor="bankName">שם הבנק (לחיוב עתידי)</Label>
+              <Label htmlFor="bankName" className="flex items-center gap-2">
+                שם הבנק (לחיוב עתידי)
+                <FieldInfoTooltip content={fieldInfo.bankName} />
+              </Label>
               <Select>
                 <SelectTrigger>
                   <SelectValue placeholder="בחר בנק" />
