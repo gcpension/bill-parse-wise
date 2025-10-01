@@ -39,6 +39,9 @@ import { PlanCard } from "@/components/plans/PlanCard";
 import { PlanFilters } from "@/components/plans/PlanFilters";
 import { ComparisonPanel } from "@/components/plans/ComparisonPanel";
 import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecommendationWizard";
+import { PlanDetailsSheet } from "@/components/plans/PlanDetailsSheet";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -80,6 +83,8 @@ const AllPlans = ({
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [viewedPlans, setViewedPlans] = useState<Set<string>>(new Set());
+  const [selectedPlanForDetails, setSelectedPlanForDetails] = useState<ManualPlan | null>(null);
+  const [openCompanies, setOpenCompanies] = useState<Set<string>>(new Set());
   const [currentUserPlan, setCurrentUserPlan] = useState({
     name: '',
     price: '',
@@ -128,6 +133,16 @@ const AllPlans = ({
   useEffect(() => {
     document.title = "כל המסלולים | EasySwitch";
   }, []);
+
+  // Open all companies by default when category changes
+  useEffect(() => {
+    if (selectedCategory) {
+      const companies = manualPlans
+        .filter(p => p.category === selectedCategory)
+        .map(p => p.company);
+      setOpenCompanies(new Set(companies));
+    }
+  }, [selectedCategory]);
 
   // Enhanced filtering and sorting
   const {
@@ -228,6 +243,11 @@ const AllPlans = ({
     // Mark as viewed
     setViewedPlans(prev => new Set(prev).add(plan.id));
     
+    // Open details sheet
+    setSelectedPlanForDetails(plan);
+  };
+  
+  const handleSelectForSwitch = (plan: ManualPlan) => {
     // Store selected plan data for service request
     localStorage.setItem('selectedPlanForSwitch', JSON.stringify({
       planName: plan.planName,
@@ -239,6 +259,18 @@ const AllPlans = ({
 
     // Navigate to service request page
     window.location.href = '/service-request';
+  };
+  
+  const toggleCompany = (companyName: string) => {
+    setOpenCompanies(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(companyName)) {
+        newSet.delete(companyName);
+      } else {
+        newSet.add(companyName);
+      }
+      return newSet;
+    });
   };
   
   const toggleFavorite = (planId: string) => {
@@ -838,72 +870,109 @@ const AllPlans = ({
             </div>
 
             {/* Company Sections */}
-            <div className="space-y-12">
-              {Object.entries(groupedByCompany).map(([companyName, companyPlans], companyIndex) => <div key={companyName} className="relative">
-                  {/* Company Header */}
-                  <div className="bg-gradient-to-r from-purple-100 via-blue-50 to-purple-100 rounded-2xl p-6 mb-6 border-2 border-purple-200/50 shadow-lg">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-                          <Building2 className="w-8 h-8 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-3xl font-bold text-purple-800 font-heebo mb-1">
-                            {companyName}
-                          </h3>
-                          <p className="text-purple-600 font-assistant text-lg">
-                            {companyPlans.length} מסלולים זמינים • קטגוריית {categoryConfig[selectedCategory].label}
-                          </p>
+            <div className="space-y-8">
+              {Object.entries(groupedByCompany).map(([companyName, companyPlans], companyIndex) => {
+                const isOpen = openCompanies.has(companyName);
+                const cheapestInCompany = Math.min(...companyPlans.map(p => p.regularPrice));
+                const avgPriceInCompany = Math.round(companyPlans.reduce((sum, p) => sum + p.regularPrice, 0) / companyPlans.length);
+                
+                return (
+                  <Collapsible
+                    key={companyName}
+                    open={isOpen}
+                    onOpenChange={() => toggleCompany(companyName)}
+                    className="border-2 border-primary/20 rounded-2xl overflow-hidden bg-gradient-to-br from-background to-muted/20"
+                  >
+                    <CollapsibleTrigger asChild>
+                      <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 p-6 cursor-pointer hover:from-primary/15 hover:via-primary/10 hover:to-primary/15 transition-all">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className={cn(
+                              "w-14 h-14 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center shadow-lg transition-transform",
+                              isOpen && "scale-110"
+                            )}>
+                              <Building2 className="w-7 h-7 text-primary-foreground" />
+                            </div>
+                            <div>
+                              <h3 className="text-2xl font-bold text-foreground font-heebo mb-1">
+                                {companyName}
+                              </h3>
+                              <p className="text-muted-foreground font-assistant text-base flex items-center gap-2">
+                                <Badge variant="outline" className="font-assistant">
+                                  {companyPlans.length} מסלולים
+                                </Badge>
+                                <span>•</span>
+                                <span>החל מ-₪{cheapestInCompany}</span>
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-6">
+                            <div className="text-left">
+                              <div className="text-sm text-muted-foreground font-assistant mb-1">
+                                מחיר ממוצע
+                              </div>
+                              <div className="text-xl font-bold text-foreground font-heebo">
+                                ₪{avgPriceInCompany}
+                              </div>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-10 w-10 rounded-full"
+                            >
+                              <ChevronDown className={cn(
+                                "h-6 w-6 transition-transform duration-300",
+                                isOpen && "rotate-180"
+                              )} />
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-purple-800 font-heebo">
-                          מ-₪{Math.min(...companyPlans.map(p => p.regularPrice))}
-                        </div>
-                        <div className="text-purple-600 font-assistant">החל מ</div>
-                      </div>
-                    </div>
-                  </div>
+                    </CollapsibleTrigger>
 
-                  {/* Company Plans Grid */}
-                  <div className={cn(
-                    "grid gap-6",
-                    viewMode === 'grid' ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
-                  )}>
-                    {companyPlans.map((plan) => {
-                      const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
-                      const isCompanyCheapest = plan.regularPrice === Math.min(...companyPlans.map(p => p.regularPrice));
-                      const savingsAmount = currentUserPlan.price 
-                        ? Math.max(0, parseFloat(currentUserPlan.price) - plan.regularPrice)
-                        : undefined;
+                    <CollapsibleContent className="p-6">
+                      {/* Company Plans Grid */}
+                      <div className={cn(
+                        "grid gap-6",
+                        viewMode === 'grid' ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
+                      )}>
+                        {companyPlans.map((plan) => {
+                          const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
+                          const isCompanyCheapest = plan.regularPrice === cheapestInCompany;
+                          const savingsAmount = currentUserPlan.price 
+                            ? Math.max(0, parseFloat(currentUserPlan.price) - plan.regularPrice)
+                            : undefined;
+                          
+                          return (
+                            <PlanCard
+                              key={plan.id}
+                              plan={plan}
+                              isFavorite={favoriteIds.has(plan.id)}
+                              isViewed={viewedPlans.has(plan.id)}
+                              isComparing={isInComparison(plan.id)}
+                              isBestPrice={isCheapest || isCompanyCheapest}
+                              onToggleFavorite={() => toggleFavorite(plan.id)}
+                              onToggleCompare={() => handleCompareToggle(plan)}
+                              onSelect={() => handlePlanSelect(plan)}
+                              comparisonDisabled={!canAddToComparison && !isInComparison(plan.id)}
+                              savingsAmount={savingsAmount}
+                            />
+                          );
+                        })}
+                      </div>
                       
-                      return (
-                        <PlanCard
-                          key={plan.id}
-                          plan={plan}
-                          isFavorite={favoriteIds.has(plan.id)}
-                          isViewed={viewedPlans.has(plan.id)}
-                          isComparing={isInComparison(plan.id)}
-                          isBestPrice={isCheapest || isCompanyCheapest}
-                          onToggleFavorite={() => toggleFavorite(plan.id)}
-                          onToggleCompare={() => handleCompareToggle(plan)}
-                          onSelect={() => handlePlanSelect(plan)}
-                          comparisonDisabled={!canAddToComparison && !isInComparison(plan.id)}
-                          savingsAmount={savingsAmount}
-                        />
-                      );
-                    })}
-                  </div>
-                  
-                  {/* Company Summary */}
-                  <div className="mt-6 bg-white/50 rounded-lg p-4 border border-purple-100">
-                    <div className="flex items-center justify-between text-sm text-gray-600 font-assistant">
-                      <span>סה"כ {companyPlans.length} מסלולים</span>
-                      <span>טווח מחירים: ₪{Math.min(...companyPlans.map(p => p.regularPrice))} - ₪{Math.max(...companyPlans.map(p => p.regularPrice))}</span>
-                      <span>חיסכון אפשרי: עד ₪{Math.max(...companyPlans.map(p => p.regularPrice)) - Math.min(...companyPlans.map(p => p.regularPrice))}</span>
-                    </div>
-                  </div>
-                </div>)}
+                      {/* Company Summary */}
+                      <div className="mt-6 bg-muted/30 rounded-lg p-4 border border-border">
+                        <div className="flex items-center justify-between text-sm text-muted-foreground font-assistant">
+                          <span>סה"כ {companyPlans.length} מסלולים</span>
+                          <span>טווח מחירים: ₪{cheapestInCompany} - ₪{Math.max(...companyPlans.map(p => p.regularPrice))}</span>
+                          <span>חיסכון אפשרי: עד ₪{Math.max(...companyPlans.map(p => p.regularPrice)) - cheapestInCompany}</span>
+                        </div>
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                );
+              })}
             </div>
 
             {filteredPlans.length === 0 && <div className="text-center py-12">
@@ -997,7 +1066,15 @@ const AllPlans = ({
         onClose={() => setShowPersonalizedResults(false)} 
         recommendations={personalizedRecommendations} 
         plans={manualPlans}
-        onPlanSelect={handlePlanSelect} 
+        onPlanSelect={handlePlanSelect}
+      />
+
+      {/* Plan Details Sheet */}
+      <PlanDetailsSheet
+        plan={selectedPlanForDetails}
+        isOpen={!!selectedPlanForDetails}
+        onClose={() => setSelectedPlanForDetails(null)}
+        onSelectForSwitch={handleSelectForSwitch}
       />
 
       {/* Floating Help Button */}
