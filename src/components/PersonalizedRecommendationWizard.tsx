@@ -94,10 +94,11 @@ export const PersonalizedRecommendationWizard = ({
 
   // שלבים ספציפיים לכל סקטור
   const getSectorSteps = () => {
-    const baseSteps = [
+    // Base steps only for first category
+    const baseSteps = currentCategoryIndex === 0 ? [
       { id: 'basic', title: 'פרטים בסיסיים', icon: <User className="w-4 h-4" /> },
       { id: 'budget', title: 'תקציב', icon: <DollarSign className="w-4 h-4" /> }
-    ];
+    ] : [];
 
     const sectorSpecificSteps = {
       electricity: [
@@ -128,9 +129,14 @@ export const PersonalizedRecommendationWizard = ({
       setCurrentStep(currentStep + 1);
     } else if (currentCategoryIndex < categories.length - 1) {
       // Move to next category
+      console.log(`✅ Completed category: ${category}, moving to next...`);
+      console.log(`Current profile categorySpecific:`, profile.categorySpecific);
       setCurrentCategoryIndex(currentCategoryIndex + 1);
       setCurrentStep(0);
     } else {
+      console.log('🎉 Wizard completed! Final profile:', profile);
+      console.log('Categories:', categories);
+      console.log('CategorySpecific data:', profile.categorySpecific);
       onComplete(profile, categories);
     }
   };

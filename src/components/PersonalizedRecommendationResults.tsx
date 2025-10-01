@@ -24,6 +24,12 @@ export const PersonalizedRecommendationResults = ({
   plans,
   onPlanSelect
 }: PersonalizedRecommendationResultsProps) => {
+  console.log('📊 PersonalizedRecommendationResults rendering with:', {
+    recommendationsCount: recommendations.length,
+    plansCount: plans.length,
+    uniqueCategories: [...new Set(recommendations.map(r => r.category))]
+  });
+
   if (!recommendations || recommendations.length === 0) {
     return null;
   }

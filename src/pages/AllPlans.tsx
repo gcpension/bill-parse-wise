@@ -196,20 +196,43 @@ const AllPlans = ({
     setIsAnalyzing(true);
     setShowPersonalizedWizard(false);
     try {
+      console.log('🔍 Starting personalized recommendations for categories:', categories);
+      console.log('📦 Total plans in manualPlans:', manualPlans.length);
+      console.log('📂 Unique categories in manualPlans:', [...new Set(manualPlans.map(p => p.category))]);
+      
       // Simulate analysis time for better UX
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Generate recommendations for each category
       const allRecommendations: PersonalizedRecommendation[] = [];
       for (const category of categories) {
+        console.log(`📊 Processing category: ${category}`);
         const categoryPlans = manualPlans.filter(p => p.category === category);
+        console.log(`  - Found ${categoryPlans.length} plans for ${category}`);
+        
+        if (categoryPlans.length === 0) {
+          console.warn(`⚠️ No plans found for category: ${category}`);
+          continue;
+        }
+        
         const recommendations = PersonalizedRecommendationEngine.generatePersonalizedRecommendations(
           categoryPlans, 
           userProfile, 
           category as string
         );
+        console.log(`  - Generated ${recommendations.length} recommendations for ${category}`);
+        console.log(`  - Recommendations IDs:`, recommendations.map(r => r.planId));
+        console.log(`  - Recommendations categories:`, recommendations.map(r => r.category));
         allRecommendations.push(...recommendations);
       }
+      
+      console.log(`✅ Total recommendations generated: ${allRecommendations.length}`);
+      console.log('Recommendations by category:', 
+        allRecommendations.reduce((acc, rec) => {
+          acc[rec.category] = (acc[rec.category] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>)
+      );
       
       setPersonalizedRecommendations(allRecommendations);
       setIsAnalyzing(false);
