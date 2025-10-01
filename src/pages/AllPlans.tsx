@@ -30,14 +30,15 @@ import { useSavingsData } from "@/hooks/useSavingsData";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { BreadcrumbNavigation } from "@/components/BreadcrumbNavigation";
 import { ComparisonAnalyzer } from "@/lib/comparisonAnalyzer";
-import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecommendationWizard";
 import { PersonalizedRecommendationEngine, UserProfile, PersonalizedRecommendation } from "@/lib/personalizedRecommendations";
 import { PersonalizedRecommendationBanner } from "@/components/PersonalizedRecommendationBanner";
-import { PersonalizedRecommendationResults } from "@/components/PersonalizedRecommendationResults";
+import { RecommendationResults } from "@/components/plans/RecommendationResults";
 import { EnhancedNavigation } from "@/components/ui/enhanced-navigation";
 import { FloatingHelpButton } from "@/components/ui/floating-help-button";
-import { AdvancedPlanSearch } from "@/components/plans/AdvancedPlanSearch";
-import { EnhancedPlanDisplay } from "@/components/plans/EnhancedPlanDisplay";
+import { PlanCard } from "@/components/plans/PlanCard";
+import { PlanFilters } from "@/components/plans/PlanFilters";
+import { ComparisonPanel } from "@/components/plans/ComparisonPanel";
+import { RecommendationWizard } from "@/components/plans/RecommendationWizard";
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -714,7 +715,7 @@ const AllPlans = ({
         {/* Advanced Search and Filters */}
         {selectedCategory && (
           <div className="mb-8">
-            <AdvancedPlanSearch
+            <PlanFilters
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
               sortBy={sortBy}
@@ -724,19 +725,24 @@ const AllPlans = ({
               priceRange={priceRange}
               onPriceRangeChange={setPriceRange}
               maxPrice={getMaxPrice()}
-              showAdvancedFilters={showAdvancedFilters}
-              onToggleAdvancedFilters={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              showFilters={showAdvancedFilters}
+              onToggleFilters={() => setShowAdvancedFilters(!showAdvancedFilters)}
               resultsCount={filteredPlans.length}
-              favoritesCount={favoriteIds.size}
-              viewedCount={viewedPlans.size}
             />
           </div>
         )}
 
-        {/* Enhanced Call to Action for Comparison */}
-        {comparedPlans.length === 0 && selectedCategory && <Card className="mb-8 bg-gradient-to-r from-purple-100 via-blue-100 to-green-100 border-2 border-purple-200 shadow-lg">
-            
-          </Card>}
+        {/* Comparison Panel */}
+        {comparedPlans.length > 0 && (
+          <div className="mb-8">
+            <ComparisonPanel
+              plans={comparedPlans}
+              onRemove={(id) => setComparedPlans(prev => prev.filter(p => p.id !== id))}
+              onClear={clearComparison}
+              maxPlans={3}
+            />
+          </div>
+        )}
 
         {/* Detailed Comparison */}
         {showComparison && comparedPlans.length > 0 && <Card className="mb-8 border-2 border-purple-200">
@@ -861,57 +867,30 @@ const AllPlans = ({
 
                   {/* Company Plans Grid */}
                   <div className={cn(
-                    "grid gap-6 relative",
+                    "grid gap-6",
                     viewMode === 'grid' ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
                   )}>
-                    {/* Company accent line */}
-                    {viewMode === 'grid' && (
-                      <div className="absolute -right-4 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-300 to-blue-300 rounded-full opacity-50 hidden lg:block"></div>
-                    )}
-                    
-                    {companyPlans.map((plan, index) => {
+                    {companyPlans.map((plan) => {
                       const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
-                      const inComparison = isInComparison(plan.id);
                       const isCompanyCheapest = plan.regularPrice === Math.min(...companyPlans.map(p => p.regularPrice));
+                      const savingsAmount = currentUserPlan.price 
+                        ? Math.max(0, parseFloat(currentUserPlan.price) - plan.regularPrice)
+                        : undefined;
                       
                       return (
-                        <div 
+                        <PlanCard
                           key={plan.id}
-                          className={cn(
-                            "animate-fade-in opacity-0 relative",
-                            isCheapest && viewMode === 'grid' && "order-first"
-                          )}
-                          style={{
-                            animationDelay: `${(companyIndex * 3 + index) * 0.1}s`,
-                            animationFillMode: 'forwards'
-                          }}
-                        >
-                          <EnhancedPlanDisplay
-                            plan={plan}
-                            viewMode={viewMode}
-                            isFavorite={favoriteIds.has(plan.id)}
-                            isViewed={viewedPlans.has(plan.id)}
-                            isInComparison={inComparison}
-                            canAddToComparison={canAddToComparison}
-                            onToggleFavorite={() => toggleFavorite(plan.id)}
-                            onToggleComparison={() => handleCompareToggle(plan)}
-                            onSelect={() => handlePlanSelect(plan)}
-                          />
-                          
-                          {/* Additional Badges */}
-                          {isCheapest && (
-                            <Badge className="absolute -top-2 -right-2 z-20 bg-green-500 text-white px-3 py-1 shadow-lg">
-                              <Crown className="w-4 h-4 ml-1" />
-                              הזול ביותר
-                            </Badge>
-                          )}
-                          {isCompanyCheapest && !isCheapest && (
-                            <Badge className="absolute -top-2 -right-2 z-20 bg-blue-500 text-white px-3 py-1 shadow-lg">
-                              <Star className="w-4 h-4 ml-1" />
-                              הזול ב{companyName}
-                            </Badge>
-                          )}
-                        </div>
+                          plan={plan}
+                          isFavorite={favoriteIds.has(plan.id)}
+                          isViewed={viewedPlans.has(plan.id)}
+                          isComparing={isInComparison(plan.id)}
+                          isBestPrice={isCheapest || isCompanyCheapest}
+                          onToggleFavorite={() => toggleFavorite(plan.id)}
+                          onToggleCompare={() => handleCompareToggle(plan)}
+                          onSelect={() => handlePlanSelect(plan)}
+                          comparisonDisabled={!canAddToComparison && !isInComparison(plan.id)}
+                          savingsAmount={savingsAmount}
+                        />
                       );
                     })}
                   </div>
@@ -1003,8 +982,8 @@ const AllPlans = ({
 
       {/* Personalized Recommendation Wizard */}
       {showPersonalizedWizard && <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            <PersonalizedRecommendationWizard 
+          <div className="bg-background rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <RecommendationWizard 
               categories={selectedCategories} 
               onComplete={handlePersonalizedRecommendation} 
               onClose={() => setShowPersonalizedWizard(false)} 
@@ -1013,7 +992,7 @@ const AllPlans = ({
         </div>}
 
       {/* Personalized Recommendation Results */}
-      <PersonalizedRecommendationResults 
+      <RecommendationResults 
         isOpen={showPersonalizedResults} 
         onClose={() => setShowPersonalizedResults(false)} 
         recommendations={personalizedRecommendations} 

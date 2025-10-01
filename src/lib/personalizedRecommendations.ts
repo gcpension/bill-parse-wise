@@ -123,7 +123,7 @@ export class PersonalizedRecommendationEngine {
     }
     
     const recommendations = plans.map(plan => {
-      const rec = this.analyzePlanForUser(plan, userProfile, plans);
+      const rec = this.analyzePlanForUser(plan, userProfile, plans, category);
       console.log(`  - Analyzed plan ${plan.id} (${plan.company} - ${plan.planName}):`, {
         score: rec.personalizedScore,
         category: rec.category
@@ -151,7 +151,8 @@ export class PersonalizedRecommendationEngine {
   private static analyzePlanForUser(
     plan: ManualPlan, 
     userProfile: UserProfile, 
-    allPlans: ManualPlan[]
+    allPlans: ManualPlan[],
+    category: string
   ): PersonalizedRecommendation {
     
     let matchScore = 0;
@@ -199,7 +200,7 @@ export class PersonalizedRecommendationEngine {
     
     return {
       planId: plan.id,
-      category: plan.category,
+      category: category, // Use the passed category parameter
       matchScore: matchScore,
       personalizedScore,
       reasonsForRecommendation: reasonsForRecommendation.filter(Boolean),
