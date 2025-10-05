@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite } from 'lucide-react';
+import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import { InteractiveProviderGrid } from '@/components/InteractiveProviderGrid';
@@ -25,9 +25,11 @@ import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnim
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { QuickActions } from '@/components/QuickActions';
 import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
+import { QuickStartModal } from '@/components/QuickStartModal';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
+  const [isQuickStartOpen, setIsQuickStartOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<Record<string, { provider: string; amount: string; selected: boolean; lines?: number }>>({
     electricity: { provider: '', amount: '', selected: false },
     cellular: { provider: '', amount: '', selected: false, lines: 1 },
@@ -213,13 +215,28 @@ const Home = () => {
       <section id="services" className="py-16 bg-gray-50 relative scroll-mt-20">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           
+          {/* GIANT CTA BUTTON */}
+          <div className="mb-16 text-center animate-fade-in opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+            <Button
+              onClick={() => setIsQuickStartOpen(true)}
+              className="h-24 px-16 text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-green-500 hover:from-purple-700 hover:via-pink-600 hover:to-green-600 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105 animate-pulse rounded-2xl"
+              style={{ animationDuration: '3s' }}
+            >
+              <Sparkles className="ml-3 h-10 w-10" />
+              תנו לנו למצוא את החיסכון שלכם!
+            </Button>
+            <p className="text-lg text-gray-600 mt-6 font-semibold">
+              ⚡ תוצאות תוך 30 שניות בלבד
+            </p>
+          </div>
+
           <div className="text-center mb-12">
             <h2 className="text-3xl font-heebo font-medium text-royal-purple mb-4 animate-fade-in opacity-0"
-                style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-              בחרו את הקטגוריה שלכם
+                style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+              או בחרו את הקטגוריה שלכם
             </h2>
             <p className="text-lg text-purple-600 font-assistant animate-fade-in opacity-0"
-               style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+               style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
               קבלו המלצות מותאמות אישית והשוו מחירים בכל הקטגוריות
             </p>
           </div>
@@ -1214,6 +1231,12 @@ const Home = () => {
       
       {/* Back to Top Button */}
       <BackToTop />
+
+      {/* Quick Start Modal */}
+      <QuickStartModal 
+        isOpen={isQuickStartOpen} 
+        onClose={() => setIsQuickStartOpen(false)} 
+      />
     </div>
   );
 };

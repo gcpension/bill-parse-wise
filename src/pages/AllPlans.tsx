@@ -21,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { Zap, Smartphone, Wifi, Tv, ArrowLeft, Building2, Crown, Award, CheckCircle, TrendingUp, Sparkles, Star, BarChart3, Filter, Search, Calculator, Brain, Target, Eye, X, Plus, Minus, Settings2, RefreshCw, User, Package } from "lucide-react";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
+import { ExpressForm } from "@/components/ExpressForm";
 import DetailedAIComparison from "@/components/plans/DetailedAIComparison";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { RecommendationContext } from "@/lib/recommendationEngine";
@@ -778,6 +779,152 @@ const AllPlans = ({
             </Card>
           </div>}
 
+        {/* Top 3 Cheapest Plans Section - New Simplified View */}
+        {selectedCategory && filteredPlans.length > 0 && (() => {
+          const top3Cheapest = filteredPlans
+            .filter(p => p.regularPrice > 0)
+            .sort((a, b) => a.regularPrice - b.regularPrice)
+            .slice(0, 3);
+          
+          if (top3Cheapest.length === 0) return null;
+          
+          return (
+            <div className="mb-12 animate-fade-in">
+              <Card className="border-4 border-green-300 bg-gradient-to-br from-green-50 via-white to-emerald-50 shadow-2xl">
+                <CardContent className="p-8 md:p-12">
+                  {/* Header */}
+                  <div className="text-center mb-10">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <Crown className="w-12 h-12 text-yellow-500" />
+                      <h2 className="text-4xl md:text-5xl font-bold text-green-800 font-heebo">
+                        3 המסלולים הזולים ביותר
+                      </h2>
+                      <Crown className="w-12 h-12 text-yellow-500" />
+                    </div>
+                    <p className="text-xl text-gray-700 font-assistant">
+                      חסכו עד ₪{currentUserPlan.price && parseFloat(currentUserPlan.price) > 0 ? Math.max(0, (parseFloat(currentUserPlan.price) - top3Cheapest[0].regularPrice) * 12).toLocaleString() : top3Cheapest[0].regularPrice * 12} בשנה!
+                    </p>
+                  </div>
+
+                  {/* Top 3 Plans Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                    {top3Cheapest.map((plan, index) => {
+                      const savingsAmount = currentUserPlan.price && parseFloat(currentUserPlan.price) > 0
+                        ? Math.max(0, parseFloat(currentUserPlan.price) - plan.regularPrice)
+                        : 0;
+                      
+                      return (
+                        <Card 
+                          key={plan.id}
+                          className={`relative overflow-hidden border-4 ${
+                            index === 0 
+                              ? 'border-yellow-400 bg-gradient-to-br from-yellow-50 to-amber-50' 
+                              : index === 1
+                              ? 'border-gray-300 bg-gradient-to-br from-gray-50 to-slate-50'
+                              : 'border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50'
+                          } shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105`}
+                        >
+                          {/* Rank Badge */}
+                          <div className={`absolute top-4 left-4 w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg ${
+                            index === 0 
+                              ? 'bg-gradient-to-r from-yellow-500 to-amber-500' 
+                              : index === 1
+                              ? 'bg-gradient-to-r from-gray-400 to-slate-500'
+                              : 'bg-gradient-to-r from-orange-400 to-amber-500'
+                          }`}>
+                            {index + 1}
+                          </div>
+
+                          {/* Best Choice Badge */}
+                          {index === 0 && (
+                            <div className="absolute top-4 right-4">
+                              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 shadow-lg px-3 py-1">
+                                <Star className="w-4 h-4 ml-1 fill-white" />
+                                הכי משתלם!
+                              </Badge>
+                            </div>
+                          )}
+
+                          <CardContent className="p-8 pt-20">
+                            {/* Company & Plan Name */}
+                            <div className="text-center mb-6">
+                              <h3 className="text-2xl font-bold text-gray-900 font-heebo mb-2">
+                                {plan.company}
+                              </h3>
+                              <p className="text-base text-gray-600 font-assistant">
+                                {plan.planName}
+                              </p>
+                            </div>
+
+                            {/* Price */}
+                            <div className="text-center mb-6 bg-white rounded-xl p-6 border-2 border-gray-200">
+                              <div className="text-5xl font-bold text-green-600 font-heebo mb-2">
+                                ₪{plan.regularPrice}
+                              </div>
+                              <div className="text-base text-gray-600 font-assistant">
+                                לחודש
+                              </div>
+                              
+                              {savingsAmount > 0 && (
+                                <div className="mt-4 pt-4 border-t-2 border-dashed border-green-200">
+                                  <Badge className="bg-green-100 text-green-800 text-sm px-3 py-1">
+                                    <TrendingUp className="w-4 h-4 ml-1" />
+                                    חיסכון חודשי: ₪{savingsAmount}
+                                  </Badge>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Key Features */}
+                            <div className="space-y-2 mb-6">
+                              {plan.features.slice(0, 2).map((feature, idx) => (
+                                <div key={idx} className="flex items-start gap-2">
+                                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                                  <span className="text-sm text-gray-700 font-assistant">{feature}</span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* CTA Button */}
+                            <Button
+                              onClick={() => handlePlanSelect(plan)}
+                              className={`w-full h-14 text-xl font-bold text-white shadow-xl hover:shadow-2xl transition-all duration-300 ${
+                                index === 0
+                                  ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700'
+                                  : 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
+                              }`}
+                            >
+                              <Sparkles className="w-6 h-6 ml-2" />
+                              רוצה לעבור - לחץ כאן
+                              <ArrowLeft className="w-6 h-6 mr-2" />
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+
+                  {/* Trust Indicators */}
+                  <div className="flex flex-wrap items-center justify-center gap-6 pt-6 border-t-2 border-green-200">
+                    <div className="flex items-center gap-2 text-base text-gray-700 font-assistant">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      תהליך מהיר ופשוט
+                    </div>
+                    <div className="flex items-center gap-2 text-base text-gray-700 font-assistant">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      ללא עלויות נסתרות
+                    </div>
+                    <div className="flex items-center gap-2 text-base text-gray-700 font-assistant">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      שירות אמין ומאובטח
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          );
+        })()}
+
 
         {/* Enhanced Comparison Bar */}
         {comparedPlans.length > 0 && <Card className="mb-8 border-2 border-blue-200 bg-gradient-to-r from-blue-50 via-white to-blue-50 shadow-xl animate-fade-in">
@@ -1201,20 +1348,17 @@ const AllPlans = ({
           </div>}
       </div>
 
-      {/* Form Dialog */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-purple-800 font-heebo">
-              בקשת החלפת ספק
-            </DialogTitle>
-          </DialogHeader>
-          {selectedPlan && <EnhancedSwitchRequestForm selectedPlan={selectedPlan} isOpen={isFormOpen} onClose={() => {
-          setIsFormOpen(false);
-          setSelectedPlan(null);
-        }} />}
-        </DialogContent>
-      </Dialog>
+      {/* Form Dialog - Updated to Express Form */}
+      {selectedPlan && (
+        <ExpressForm
+          isOpen={isFormOpen}
+          onClose={() => {
+            setIsFormOpen(false);
+            setSelectedPlan(null);
+          }}
+          selectedPlan={selectedPlan}
+        />
+      )}
 
       {/* Enhanced Personalized Recommendation Banner */}
       {selectedCategory && !showPersonalizedWizard && !isAnalyzing && (
@@ -1279,6 +1423,27 @@ const AllPlans = ({
 
       {/* Floating Help Button */}
       <FloatingHelpButton />
+
+      {/* Sticky CTA for Mobile */}
+      {selectedCategory && cheapestPlan && currentUserPlan.price && parseFloat(currentUserPlan.price) > 0 && (
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-green-500 to-emerald-600 shadow-2xl border-t-4 border-green-400 p-4 animate-slide-in-bottom">
+          <div className="flex items-center justify-between gap-4">
+            <div className="text-white">
+              <div className="text-xs font-assistant">חסכו עכשיו</div>
+              <div className="text-xl font-bold font-heebo">
+                ₪{Math.max(0, (parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) * 12).toLocaleString()}/שנה
+              </div>
+            </div>
+            <Button
+              onClick={() => handlePlanSelect(cheapestPlan)}
+              className="bg-white text-green-600 hover:bg-gray-100 font-bold px-6 py-6 text-base shadow-xl"
+            >
+              <Sparkles className="w-5 h-5 ml-2" />
+              עברו עכשיו!
+            </Button>
+          </div>
+        </div>
+      )}
     </div>;
 };
 export default AllPlans;
