@@ -399,7 +399,80 @@ const AllPlans = ({
       {/* Enhanced Navigation */}
       <EnhancedNavigation />
 
-      <div className="container mx-auto px-4 lg:px-6 max-w-7xl py-8">
+      <div className="flex w-full">
+        {/* Desktop Sidebar - Fixed on Right */}
+        {selectedCategory && (
+          <aside className="hidden xl:flex xl:w-96 xl:flex-shrink-0 xl:fixed xl:left-0 xl:top-16 xl:bottom-0 xl:overflow-y-auto border-l bg-white/80 backdrop-blur-xl shadow-2xl z-30">
+            <div className="p-8 w-full space-y-6">
+              {/* Annual Savings Hero Card */}
+              <Card className="glass-card border-0 overflow-hidden">
+                <CardContent className="p-8">
+                  <div className="text-center space-y-4">
+                    <Sparkles className="w-16 h-16 mx-auto text-purple-600 animate-pulse" />
+                    <h3 className="text-xl font-bold text-gray-800">החיסכון השנתי שלכם</h3>
+                    {currentUserPlan.price && cheapestPlan && (
+                      <>
+                        <div className="text-6xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent animate-shimmer-text">
+                          ₪{((parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) * 12).toLocaleString()}
+                        </div>
+                        <p className="text-sm text-gray-600">חיסכון בשנה הראשונה</p>
+                      </>
+                    )}
+                    <Button 
+                      onClick={() => cheapestPlan && handleSelectForSwitch(cheapestPlan)}
+                      className="w-full h-16 text-xl font-bold btn-gradient group relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <TrendingUp className="mr-2 h-6 w-6 relative z-10" />
+                      <span className="relative z-10">עברו עכשיו!</span>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Top 3 Plans Sidebar */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                  <Crown className="h-5 w-5 text-yellow-500" />
+                  המסלולים המומלצים
+                </h3>
+                {filteredPlans.slice(0, 3).map((plan, idx) => (
+                  <Card 
+                    key={plan.id}
+                    className="glass-card hover:shadow-elegant transition-all duration-300 cursor-pointer group border-0"
+                    onClick={() => handleSelectForSwitch(plan)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        {idx === 0 && <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />}
+                        <Badge variant={idx === 0 ? "default" : "outline"} className="text-xs">
+                          #{idx + 1}
+                        </Badge>
+                      </div>
+                      <h4 className="font-bold text-sm mb-2">{plan.planName}</h4>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-black text-purple-600">₪{plan.regularPrice}</span>
+                        <span className="text-xs text-gray-500">/חודש</span>
+                      </div>
+                      {currentUserPlan.price && (
+                        <p className="text-xs text-green-600 font-semibold mt-2">
+                          חיסכון: ₪{((parseFloat(currentUserPlan.price) - plan.regularPrice) * 12).toLocaleString()} בשנה
+                        </p>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </aside>
+        )}
+
+        {/* Main Content */}
+        <div className={cn(
+          "flex-1 transition-all duration-300",
+          selectedCategory ? "xl:mr-96" : ""
+        )}>
+          <div className="container mx-auto px-4 lg:px-6 max-w-7xl py-8">
         {/* Breadcrumb Navigation */}
         <BreadcrumbNavigation />
         
@@ -1444,6 +1517,7 @@ const AllPlans = ({
           </div>
         </div>
       )}
-    </div>;
+    </div>
+  );
 };
 export default AllPlans;
