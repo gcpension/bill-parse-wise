@@ -395,7 +395,8 @@ const AllPlans = ({
     recommendedProvider: saving.recommendedProvider,
     category: saving.category
   }));
-  return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
       {/* Enhanced Navigation */}
       <EnhancedNavigation />
 
@@ -1517,10 +1518,11 @@ const AllPlans = ({
           </div>
         </div>
       )}
-          </div>
         </div>
       </div>
     </div>
+  </div>
   );
 };
+
 export default AllPlans;
