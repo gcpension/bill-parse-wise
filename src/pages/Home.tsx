@@ -630,53 +630,14 @@ const Home = () => {
           
           <div className="max-w-5xl mx-auto">
             {/* Main Mission Card */}
-            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
-              <CardContent className="p-0">
-                {/* Header Section with Gradient Background */}
-                <div className="bg-gradient-to-br from-royal-purple via-purple-600 to-purple-700 p-12 text-white relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/10"></div>
-                  <div className="relative z-10 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-heebo font-bold mb-6 tracking-tight">
-                      השליחות שלנו
-                    </h2>
-                    <p className="text-xl lg:text-2xl max-w-4xl mx-auto font-assistant leading-relaxed text-purple-50">
-                      אנחנו מאמינים שכל משפחה ישראלית זכאית לחסוך כסף על חשבונות הבית. 
-                      <br className="hidden lg:block" />
-                      המטרה שלנו היא להפוך את התהליך המסובך של השוואת ספקים לפשוט, מהיר ויעיל.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Content Section */}
-                
-              </CardContent>
-            </Card>
+            
           </div>
         </div>
       </section>
 
       {/* Partners Section */}
       <section className="py-16 bg-gray-50 relative">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-4">
-              השותפים שלנו
-            </h2>
-            <p className="text-lg text-gray-600 font-assistant max-w-3xl mx-auto">
-              אנחנו עובדים עם הספקים המובילים בישראל כדי להבטיח לכם את המחירים הטובים ביותר
-            </p>
-          </div>
-
-          <div className="flex justify-center mb-12">
-            <div className="bg-white/80 backdrop-blur-sm p-12 rounded-3xl border border-gray-100 max-w-6xl w-full shadow-lg hover:shadow-xl transition-all duration-300">
-              <img src={israeliCompaniesLogos} alt="לוגואים רשמיים של חברות הטלקום והחשמל הישראליות - בזק, הוט, פרטנר, סלקום, פלאפון, יס, חברת חשמל, אלקטרה" className="w-full h-auto max-w-full hover:scale-105 transition-transform duration-500" />
-            </div>
-          </div>
-
-          <div className="text-center mt-8">
-            <p className="text-gray-500 font-assistant">ועוד עשרות ספקים נוספים</p>
-          </div>
-        </div>
+        
       </section>
 
       {/* FAQ Section */}
