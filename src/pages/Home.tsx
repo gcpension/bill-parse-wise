@@ -6,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
-import { InteractiveProviderGrid } from '@/components/InteractiveProviderGrid';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
@@ -81,13 +80,6 @@ const Home = () => {
     }));
   };
 
-  const handleProviderChange = (category: string, provider: string) => {
-    setSelectedCategories(prev => ({
-      ...prev,
-      [category]: { ...prev[category], provider }
-    }));
-  };
-
   const handleAmountChange = (category: string, amount: string) => {
     setSelectedCategories(prev => ({
       ...prev,
@@ -97,13 +89,13 @@ const Home = () => {
 
   const handleStartAnalysis = () => {
     const selectedData = Object.entries(selectedCategories)
-      .filter(([_, data]) => data.selected && data.provider && data.amount)
+      .filter(([_, data]) => data.selected && data.amount)
       .map(([category, data]) => ({ category, ...data }));
 
     if (selectedData.length === 0) {
       enhancedToast.warning({
         title: 'בחרו קטגוריה',
-        description: 'יש לבחור לפחות קטגוריה אחת עם פרטי ספק וסכום'
+        description: 'יש לבחור לפחות קטגוריה אחת עם סכום'
       });
       return;
     }
@@ -263,55 +255,47 @@ const Home = () => {
                     
                     <CardContent className="p-6 text-center flex flex-col justify-between h-full relative z-10">
                       {/* Icon with interactive background */}
-                      <div className={`relative mx-auto mb-4 w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 ${
+                      <div className={`relative mx-auto mb-4 w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-300 ${
                         isSelected 
-                          ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-300/50 scale-110' 
-                          : 'bg-gradient-to-br from-purple-500 to-indigo-600 shadow-md group-hover:shadow-xl group-hover:shadow-purple-300/50 group-hover:scale-110'
+                          ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg' 
+                          : 'bg-gradient-to-br from-purple-500 to-indigo-600 shadow-md'
                       }`}>
-                        <Icon className="w-10 h-10 text-white transition-transform duration-300 group-hover:rotate-12" />
-                        
-                        {/* Glow effect */}
-                        <div className={`absolute inset-0 rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500 ${
-                          isSelected ? 'bg-green-400' : 'bg-purple-400'
-                        }`}></div>
+                        <Icon className="w-10 h-10 text-white" />
                       </div>
                       
-                      {/* Image illustration - Enhanced */}
-                      <div className="w-full h-16 mx-auto mb-4 overflow-hidden rounded-xl shadow-sm transform transition-all duration-500 group-hover:scale-105 group-hover:shadow-md">
+                      {/* Image illustration */}
+                      <div className="w-full h-16 mx-auto mb-4 overflow-hidden rounded-xl shadow-sm">
                         <img 
                           src={data.image}
                           alt={`איור ${data.name}`}
-                          className="w-full h-full object-cover transition-all duration-500 group-hover:brightness-110 group-hover:scale-110"
+                          className="w-full h-full object-cover"
                         />
                       </div>
                       
-                      {/* Category title with dynamic color */}
-                      <h3 className={`text-xl font-heebo font-bold mb-4 transition-all duration-300 ${
+                      {/* Category title */}
+                      <h3 className={`text-xl font-heebo font-bold mb-4 ${
                         isSelected 
-                          ? 'text-green-700 scale-105' 
-                          : 'text-purple-700 group-hover:text-purple-900 group-hover:scale-105'
+                          ? 'text-green-700' 
+                          : 'text-purple-700'
                       }`}>
                         {data.name}
                       </h3>
                       
-                      {/* Interactive button with enhanced effects */}
+                      {/* Interactive button */}
                       <Button 
                         size="touch"
-                        className={`w-full rounded-xl font-medium transition-all duration-500 transform active:scale-95 shadow-lg relative overflow-hidden group/btn ${
+                        className={`w-full rounded-xl font-medium transition-all duration-300 shadow-lg ${
                           isSelected 
-                            ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-green-300/50 hover:shadow-green-400/60' 
-                            : 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-purple-700 text-white shadow-purple-300/50 hover:shadow-purple-400/60'
+                            ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 text-white' 
+                            : 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-purple-700 text-white'
                         }`}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleCategorySelect(category);
                         }}
                       >
-                        {/* Button shine effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
-                        
-                        <span className="flex items-center justify-center gap-2 relative z-10">
-                          <Icon className="w-5 h-5 transition-transform duration-300 group-hover/btn:scale-110" />
+                        <span className="flex items-center justify-center gap-2">
+                          <Icon className="w-5 h-5" />
                           <span className="font-bold">{isSelected ? '✓ נבחר' : `בחר ${data.name}`}</span>
                         </span>
                       </Button>
@@ -380,15 +364,8 @@ const Home = () => {
                       </div>
                       
                       <div className="space-y-8">
-                        {/* Provider Selection */}
-                        <InteractiveProviderGrid
-                          category={category as 'electricity' | 'cellular' | 'internet' | 'tv'}
-                          value={categoryData.provider}
-                          onValueChange={(value) => handleProviderChange(category, value)}
-                        />
-                        
                         {/* Cellular Lines Counter */}
-                        {category === 'cellular' && categoryData.provider && (
+                        {category === 'cellular' && (
                           <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
                             <Label className="text-base font-semibold text-gray-900 mb-4 block">
                               כמה קווי סלולר יש לכם?
