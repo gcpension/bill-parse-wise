@@ -192,10 +192,15 @@ const Tips = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+      <div className="min-h-screen bg-background relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="fixed inset-0 pointer-events-none">
+          <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        </div>
+
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-primary to-accent text-primary-foreground py-20 overflow-hidden">
-          <div className="absolute inset-0 bg-grid-white/[0.05] bg-grid-16"></div>
+        <section className="relative py-24 overflow-hidden">
           <div 
             ref={heroRef}
             className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${
@@ -203,16 +208,16 @@ const Tips = () => {
             }`}
           >
             <div className="flex items-center justify-center gap-3 mb-6">
-              <Lightbulb className="w-8 h-8 text-accent-foreground animate-pulse" />
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-accent-foreground bg-clip-text text-transparent">
+              <Lightbulb className="w-8 h-8 text-primary animate-pulse" />
+              <h1 className="text-5xl md:text-6xl font-bold gradient-primary bg-clip-text text-transparent">
                 טיפים לחיסכון חכם
               </h1>
-              <Sparkles className="w-8 h-8 text-accent-foreground animate-pulse" />
+              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
             </div>
-            <p className="text-xl max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               טיפים מעשיים שיעזרו לכם לחסוך כסף על חשבונות הבית
               <br />
-              <span className="font-semibold text-accent-foreground">מהפשוטים שאפשר ליישם מיד ועד לשיפורים מתקדמים יותר</span>
+              <span className="font-semibold text-primary">מהפשוטים שאפשר ליישם מיד ועד לשיפורים מתקדמים יותר</span>
             </p>
           </div>
         </section>
@@ -337,13 +342,17 @@ const Tips = () => {
           </Tabs>
 
           {/* CTA Section */}
-          <section className="mt-16 text-center bg-gradient-to-r from-green-600 to-green-800 rounded-2xl p-12 text-white">
-            <h2 className="text-3xl font-bold mb-4">רוצים לחסוך עוד יותר?</h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto">
+          <section className="mt-16 text-center glass-card-strong rounded-2xl p-12 shadow-purple-lg">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
+              <h2 className="text-3xl font-bold gradient-primary bg-clip-text text-transparent">רוצים לחסוך עוד יותר?</h2>
+              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
+            </div>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               השתמשו בפלטפורמה שלנו למציאת העסקאות הטובות ביותר בשוק
             </p>
             <Button 
-              className="group bg-white text-primary hover:bg-gray-100 hover:scale-105 font-bold text-lg px-8 py-4 rounded-xl transition-all duration-300"
+              className="group gradient-primary hover:gradient-primary-hover text-primary-foreground font-bold text-lg px-8 py-4 rounded-xl shadow-purple hover-lift"
               onClick={() => navigate('/')}
             >
               התחילו השוואה עכשיו
