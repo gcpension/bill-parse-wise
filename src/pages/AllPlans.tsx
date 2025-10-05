@@ -118,12 +118,52 @@ const AllPlans = ({
             'tv': 'tv'
           };
           setSelectedCategory(categoryMapping[firstCategory] || firstCategory as CategoryType);
+          
+          // Update currentUserPlan with the data from the first category
+          setCurrentUserPlan({
+            name: '',
+            price: parsedData[0].amount || '',
+            company: parsedData[0].provider || '',
+            usage: 'medium'
+          });
         }
       } catch (error) {
         console.error('Error parsing analysis data:', error);
       }
     }
   }, []);
+  
+  // Update currentUserPlan when selectedCategory changes
+  useEffect(() => {
+    if (selectedCategory) {
+      const storedData = localStorage.getItem('analysisData');
+      if (storedData) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          const categoryMapping: Record<CategoryType, string> = {
+            'mobile': 'cellular',
+            'electricity': 'electricity',
+            'internet': 'internet',
+            'tv': 'tv'
+          };
+          const categoryData = parsedData.find((item: any) => 
+            item.category === categoryMapping[selectedCategory] || item.category === selectedCategory
+          );
+          
+          if (categoryData) {
+            setCurrentUserPlan({
+              name: '',
+              price: categoryData.amount || '',
+              company: categoryData.provider || '',
+              usage: 'medium'
+            });
+          }
+        } catch (error) {
+          console.error('Error parsing analysis data:', error);
+        }
+      }
+    }
+  }, [selectedCategory]);
 
   // Set page meta
   usePageMeta({
