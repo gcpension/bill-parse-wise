@@ -578,53 +578,153 @@ const Home = () => {
         </div>
 
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
-          {/* New Analysis Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-            {/* Illustration Side */}
-            <div className="flex justify-center">
-              <div className="w-full max-w-lg bg-white/70 backdrop-blur-sm rounded-3xl p-8 border border-gray-100 shadow-lg">
-                <img src={savingsAnalysisIllustration} alt="איור של אדם מנתח חשבונות וחיסכון" className="w-full h-auto rounded-2xl" />
-              </div>
-            </div>
-            
-            {/* Content Side */}
-            <div>
-              <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-6">
-                ניתוח חכם ומדויק
+          {/* Before & After Comparison Section - 2024 vs 2025 */}
+          <div className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-4">
+                איך זה נראה היום לעומת 2025?
               </h2>
-              <p className="text-xl text-gray-700 mb-8 font-assistant leading-relaxed">
-                המערכת שלנו מנתחת את הצרכים שלכם ומוצאת את ההצעות הטובות ביותר בשוק
+              <p className="text-lg text-gray-600 font-assistant">
+                השוואה בין המצב הנוכחי לבין העתיד הקרוב
               </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <CheckCircle className="w-5 h-5 text-white" />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+              {/* Today / 2024 Card */}
+              <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-300 shadow-lg relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-400 to-gray-500"></div>
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
+                      <Zap className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-heebo font-bold text-gray-800">
+                        היום
+                      </h3>
+                      <p className="text-sm text-gray-600">המצב הנוכחי</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-heebo font-semibold text-royal-purple mb-2">
-                      השוואה אוטומטית
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed font-assistant">
-                      המערכת סורקת מאות חבילות ומוצאת את הכי משתלמות עבורכם
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-white text-xs">✗</span>
+                      </div>
+                      <p className="text-gray-700 font-assistant">
+                        תהליך מורכב ומתיש של מעבר בין ספקים
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-white text-xs">✗</span>
+                      </div>
+                      <p className="text-gray-700 font-assistant">
+                        שעות של טלפונים ובירוקרטיה
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-white text-xs">✗</span>
+                      </div>
+                      <p className="text-gray-700 font-assistant">
+                        קשה להשוות מחירים ולדעת מה באמת משתלם
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-white text-xs">✗</span>
+                      </div>
+                      <p className="text-gray-700 font-assistant">
+                        תשלום יתר על חבילות ושירותים
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-8 p-4 bg-gray-200 rounded-xl">
+                    <p className="text-center text-gray-800 font-heebo font-semibold">
+                      משפחה ממוצעת משלמת ₪800-1,200/חודש
                     </p>
                   </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <CheckCircle className="w-5 h-5 text-white" />
+                </CardContent>
+              </Card>
+
+              {/* 2025 Card */}
+              <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-400 shadow-xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full flex items-center justify-center">
+                      <Zap className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-heebo font-bold text-purple-700">
+                        2025
+                      </h3>
+                      <p className="text-sm text-purple-600">העתיד כבר כאן</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-heebo font-semibold text-royal-purple mb-2">
-                      חיסכון מיידי
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed font-assistant">
-                      רואים כמה כסף תחסכו כבר בניתוח הראשוני
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-purple-900 font-assistant">
+                        מעבר מלא אוטומטי בלחיצת כפתור
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-purple-900 font-assistant">
+                        ללא שיחות טלפון או מילוי טפסים
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-purple-900 font-assistant">
+                        השוואה חכמה של כל ההצעות בשוק
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-purple-900 font-assistant">
+                        חיסכון ממוצע של ₪2,400 בשנה
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-8 p-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg">
+                    <p className="text-center text-white font-heebo font-bold text-lg">
+                      חיסכון של ₪200/חודש בממוצע! 🎉
                     </p>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Call to Action */}
+            <div className="text-center mt-12">
+              <Button 
+                size="lg"
+                className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-heebo text-lg px-8 py-6 shadow-xl"
+                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                התחילו לחסוך עוד היום
+                <ArrowRight className="mr-2 h-5 w-5" />
+              </Button>
             </div>
           </div>
           
