@@ -241,7 +241,7 @@ const Home = () => {
           </div>
           
           {/* Category Cards Grid - Enhanced Interactive Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {Object.entries(categoryData).map(([category, data], index) => {
             const Icon = data.icon;
             const isSelected = selectedCategories[category].selected;
@@ -249,46 +249,46 @@ const Home = () => {
               animationDelay: `${0.6 + index * 0.1}s`,
               animationFillMode: 'forwards'
             }}>
-                  <Card className={`touch-card relative overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer border-2 transform hover:scale-[1.03] hover:-translate-y-2 min-h-[200px] ${isSelected ? 'border-green-500 bg-gradient-to-br from-green-50 via-white to-emerald-50 shadow-green-200' : 'border-purple-200 hover:border-purple-400 bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/20'}`} onClick={() => handleCategorySelect(category)}>
+                  <Card className={`touch-card relative overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border-2 transform hover:scale-[1.02] hover:-translate-y-1 min-h-[160px] ${isSelected ? 'border-green-500 bg-gradient-to-br from-green-50 via-white to-emerald-50 shadow-green-200' : 'border-purple-200 hover:border-purple-400 bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/20'}`} onClick={() => handleCategorySelect(category)}>
                     {/* Decorative gradient overlay */}
                     <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none ${isSelected ? 'from-green-400 to-emerald-600' : 'from-purple-400 to-indigo-600'}`}></div>
                     
                     {/* Selected badge */}
-                    {isSelected && <div className="absolute top-3 right-3 z-10">
-                        <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full p-1.5 shadow-lg animate-scale-in">
-                          <CheckCircle className="w-5 h-5" />
+                    {isSelected && <div className="absolute top-2 right-2 z-10">
+                        <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full p-1 shadow-lg animate-scale-in">
+                          <CheckCircle className="w-4 h-4" />
                         </div>
                       </div>}
                     
-                    <CardContent className="p-6 text-center flex flex-col justify-between h-full relative z-10">
+                    <CardContent className="p-4 text-center flex flex-col justify-between h-full relative z-10">
                       {/* Icon with interactive background */}
-                      <div className={`relative mx-auto mb-4 w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-300 ${isSelected ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg' : 'bg-gradient-to-br from-purple-500 to-indigo-600 shadow-md'}`}>
-                        <Icon className="w-10 h-10 text-white" />
+                      <div className={`relative mx-auto mb-2 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isSelected ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg' : 'bg-gradient-to-br from-purple-500 to-indigo-600 shadow-md'}`}>
+                        <Icon className="w-6 h-6 text-white" />
                       </div>
                       
                       {/* Image illustration */}
-                      <div className="w-full h-16 mx-auto mb-4 overflow-hidden rounded-xl shadow-sm">
+                      <div className="w-full h-12 mx-auto mb-2 overflow-hidden rounded-lg shadow-sm">
                         <img src={data.image} alt={`איור ${data.name}`} className="w-full h-full object-cover" />
                       </div>
                       
                       {/* Category title */}
-                      <h3 className={`text-xl font-heebo font-bold mb-4 ${isSelected ? 'text-green-700' : 'text-purple-700'}`}>
+                      <h3 className={`text-lg font-heebo font-bold mb-2 ${isSelected ? 'text-green-700' : 'text-purple-700'}`}>
                         {data.name}
                       </h3>
                       
                       {/* Interactive button */}
-                      <Button size="touch" className={`w-full rounded-xl font-medium transition-all duration-300 shadow-lg ${isSelected ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 text-white' : 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-purple-700 text-white'}`} onClick={e => {
+                      <Button size="sm" className={`w-full rounded-lg font-medium transition-all duration-300 shadow-md ${isSelected ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 text-white' : 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-purple-700 text-white'}`} onClick={e => {
                     e.stopPropagation();
                     handleCategorySelect(category);
                   }}>
-                        <span className="flex items-center justify-center gap-2">
-                          <Icon className="w-5 h-5" />
+                        <span className="flex items-center justify-center gap-1 text-sm">
+                          <Icon className="w-4 h-4" />
                           <span className="font-bold">{isSelected ? '✓ נבחר' : `בחר ${data.name}`}</span>
                         </span>
                       </Button>
                       
                       {/* Provider count hint */}
-                      <p className={`text-xs mt-3 font-medium transition-all duration-300 ${isSelected ? 'text-green-600' : 'text-purple-600/70 group-hover:text-purple-700'}`}>
+                      <p className={`text-xs mt-2 font-medium transition-all duration-300 ${isSelected ? 'text-green-600' : 'text-purple-600/70 group-hover:text-purple-700'}`}>
                         {data.providers.length} ספקים זמינים
                       </p>
                     </CardContent>

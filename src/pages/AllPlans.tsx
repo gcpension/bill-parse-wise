@@ -512,62 +512,62 @@ const AllPlans = ({
         </div>
 
         {/* Company Logos by Category */}
-        {selectedCategory && <div className="mb-4">
-            <h3 className="text-sm font-bold text-gray-700 font-heebo mb-2 text-center">
+        {selectedCategory && <div className="mb-3">
+            <h3 className="text-xs font-bold text-gray-700 font-heebo mb-1.5 text-center">
               החברות הזמינות
             </h3>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-2 max-w-3xl mx-auto">
+            <div className="grid grid-cols-4 md:grid-cols-8 gap-1.5 max-w-2xl mx-auto">
               {selectedCategory === 'electricity' && <>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/electra-logo.png" alt="אלקטרה" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/electra-logo.png" alt="אלקטרה" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/electricity-logo.png" alt="חברת החשמל" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/electricity-logo.png" alt="חברת החשמל" className="w-full h-5 object-contain" />
                   </div>
                 </>}
               
               {selectedCategory === 'internet' && <>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/bezeq-logo.png" alt="בזק" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/bezeq-logo.png" alt="בזק" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/hot-logo.svg" alt="HOT" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/hot-logo.svg" alt="HOT" className="w-full h-5 object-contain" />
                   </div>
                 </>}
               
               {selectedCategory === 'mobile' && <>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/cellcom-logo.svg" alt="סלקום" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/cellcom-logo.svg" alt="סלקום" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/partner-logo.png" alt="פרטנר" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/partner-logo.png" alt="פרטנר" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/pelephone-logo.png" alt="פלאפון" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/pelephone-logo.png" alt="פלאפון" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/019-logo.png" alt="019" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/019-logo.png" alt="019" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/rami-levy-logo.png" alt="רמי לוי" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/rami-levy-logo.png" alt="רמי לוי" className="w-full h-5 object-contain" />
                   </div>
                 </>}
               
               {selectedCategory === 'tv' && <>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/yes-logo.png" alt="YES" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/yes-logo.png" alt="YES" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/hot-logo.svg" alt="HOT" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/hot-logo.svg" alt="HOT" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/netflix-logo.svg" alt="Netflix" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/netflix-logo.svg" alt="Netflix" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/disney-logo.png" alt="Disney" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/disney-logo.png" alt="Disney" className="w-full h-5 object-contain" />
                   </div>
-                  <div className="bg-white rounded-lg p-2 shadow-sm border hover:shadow-md transition-shadow">
-                    <img src="/src/assets/logos/hbo-logo.png" alt="HBO" className="w-full h-8 object-contain" />
+                  <div className="bg-white rounded p-1.5 shadow-sm border hover:shadow-md transition-shadow">
+                    <img src="/src/assets/logos/hbo-logo.png" alt="HBO" className="w-full h-5 object-contain" />
                   </div>
                 </>}
             </div>
