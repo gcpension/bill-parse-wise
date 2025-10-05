@@ -74,6 +74,8 @@ const AllPlans = ({
   const [personalizedRecommendations, setPersonalizedRecommendations] = useState<PersonalizedRecommendation[]>([]);
   const [showPersonalizedResults, setShowPersonalizedResults] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showSwitchTypeDialog, setShowSwitchTypeDialog] = useState(false);
+  const [selectedSwitchType, setSelectedSwitchType] = useState<'switch' | 'disconnect-new' | null>(null);
   
   // New state for enhanced features
   const [searchQuery, setSearchQuery] = useState('');
@@ -288,13 +290,23 @@ const AllPlans = ({
   };
   
   const handleSelectForSwitch = (plan: ManualPlan) => {
-    // Store selected plan data for service request
+    setSelectedPlan(plan);
+    setShowSwitchTypeDialog(true);
+  };
+  
+  const handleSwitchTypeSelection = (type: 'switch' | 'disconnect-new') => {
+    if (!selectedPlan) return;
+    
+    setSelectedSwitchType(type);
+    
+    // Store selected plan data and switch type for service request
     localStorage.setItem('selectedPlanForSwitch', JSON.stringify({
-      planName: plan.planName,
-      company: plan.company,
-      price: plan.regularPrice,
-      category: plan.category,
-      features: plan.features
+      planName: selectedPlan.planName,
+      company: selectedPlan.company,
+      price: selectedPlan.regularPrice,
+      category: selectedPlan.category,
+      features: selectedPlan.features,
+      switchType: type
     }));
 
     // Navigate to service request page
@@ -1015,7 +1027,7 @@ const AllPlans = ({
                     <CollapsibleTrigger asChild>
                       <div className="relative bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 p-8 cursor-pointer hover:from-primary/15 hover:via-primary/10 hover:to-primary/15 transition-all duration-500 group-hover:scale-[1.01] overflow-hidden">
                         {/* Animated Background Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                         
                         <div className="relative flex items-center justify-between">
                           <div className="flex items-center gap-5">
@@ -1033,7 +1045,7 @@ const AllPlans = ({
                               
                               {/* Sparkle Effect */}
                               {isOpen && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-ping" />
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full" />
                               )}
                             </div>
                             
@@ -1218,7 +1230,6 @@ const AllPlans = ({
               <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mx-auto flex items-center justify-center">
                 <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
               </div>
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
             </div>
             <h3 className="text-2xl font-bold text-gray-800 font-heebo mb-2">
               מנתח את הצרכים שלכם...
@@ -1227,7 +1238,7 @@ const AllPlans = ({
               הבינה המלאכותית בוחנת את המסלולים הטובים ביותר עבורכם
             </p>
             <div className="flex items-center justify-center gap-2 text-sm text-green-600">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <span>מעבד נתונים...</span>
             </div>
           </div>
@@ -1261,6 +1272,87 @@ const AllPlans = ({
         onClose={() => setSelectedPlanForDetails(null)}
         onSelectForSwitch={handleSelectForSwitch}
       />
+
+      {/* Switch Type Selection Dialog */}
+      <Dialog open={showSwitchTypeDialog} onOpenChange={setShowSwitchTypeDialog}>
+        <DialogContent className="max-w-2xl" dir="rtl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-foreground font-heebo text-center mb-2">
+              בחרו את סוג הפעולה המתאימה לכם
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
+            {/* Switch Option */}
+            <Card 
+              className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-primary"
+              onClick={() => handleSwitchTypeSelection('switch')}
+            >
+              <CardContent className="p-8 text-center space-y-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full mx-auto flex items-center justify-center">
+                  <RefreshCw className="w-10 h-10 text-primary-foreground" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground font-heebo">
+                  מעבר ספק
+                </h3>
+                <p className="text-muted-foreground font-assistant text-sm leading-relaxed">
+                  מעבר ישיר מהספק הנוכחי למסלול החדש. אנחנו נדאג לכל התהליך עבורכם.
+                </p>
+                <div className="pt-4 space-y-2 text-right">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>תהליך מהיר ופשוט</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>ללא הפסקת שירות</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>ניהול מלא של התהליך</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Disconnect + New Option */}
+            <Card 
+              className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-accent"
+              onClick={() => handleSwitchTypeSelection('disconnect-new')}
+            >
+              <CardContent className="p-8 text-center space-y-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-accent to-primary rounded-full mx-auto flex items-center justify-center">
+                  <Plus className="w-10 h-10 text-primary-foreground" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground font-heebo">
+                  ניתוק + הצטרפות חדשה
+                </h3>
+                <p className="text-muted-foreground font-assistant text-sm leading-relaxed">
+                  ניתוק מהספק הקודם והצטרפות כלקוח חדש למסלול. מתאים למי שרוצה לנצל הטבות ללקוחות חדשים.
+                </p>
+                <div className="pt-4 space-y-2 text-right">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>הטבות ללקוחות חדשים</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>התחלה רעננה</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>סיוע בניתוק מהספק הקודם</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center text-sm text-muted-foreground font-assistant">
+            בחרו את האפשרות המתאימה לכם • נלווה אתכם לאורך כל התהליך
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Floating Help Button */}
       <FloatingHelpButton />
