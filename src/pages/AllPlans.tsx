@@ -74,8 +74,6 @@ const AllPlans = ({
   const [personalizedRecommendations, setPersonalizedRecommendations] = useState<PersonalizedRecommendation[]>([]);
   const [showPersonalizedResults, setShowPersonalizedResults] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [showSwitchTypeDialog, setShowSwitchTypeDialog] = useState(false);
-  const [selectedSwitchType, setSelectedSwitchType] = useState<'switch' | 'disconnect-new' | null>(null);
   
   // New state for enhanced features
   const [searchQuery, setSearchQuery] = useState('');
@@ -291,22 +289,15 @@ const AllPlans = ({
   
   const handleSelectForSwitch = (plan: ManualPlan) => {
     setSelectedPlan(plan);
-    setShowSwitchTypeDialog(true);
-  };
-  
-  const handleSwitchTypeSelection = (type: 'switch' | 'disconnect-new') => {
-    if (!selectedPlan) return;
     
-    setSelectedSwitchType(type);
-    
-    // Store selected plan data and switch type for service request
+    // Store selected plan data for service request
     localStorage.setItem('selectedPlanForSwitch', JSON.stringify({
-      planName: selectedPlan.planName,
-      company: selectedPlan.company,
-      price: selectedPlan.regularPrice,
-      category: selectedPlan.category,
-      features: selectedPlan.features,
-      switchType: type
+      planName: plan.planName,
+      company: plan.company,
+      price: plan.regularPrice,
+      category: plan.category,
+      features: plan.features,
+      switchType: 'switch'
     }));
 
     // Navigate to service request page
@@ -1273,86 +1264,6 @@ const AllPlans = ({
         onSelectForSwitch={handleSelectForSwitch}
       />
 
-      {/* Switch Type Selection Dialog */}
-      <Dialog open={showSwitchTypeDialog} onOpenChange={setShowSwitchTypeDialog}>
-        <DialogContent className="max-w-2xl" dir="rtl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-foreground font-heebo text-center mb-2">
-              בחרו את סוג הפעולה המתאימה לכם
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
-            {/* Switch Option */}
-            <Card 
-              className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-primary"
-              onClick={() => handleSwitchTypeSelection('switch')}
-            >
-              <CardContent className="p-8 text-center space-y-4">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full mx-auto flex items-center justify-center">
-                  <RefreshCw className="w-10 h-10 text-primary-foreground" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground font-heebo">
-                  מעבר ספק
-                </h3>
-                <p className="text-muted-foreground font-assistant text-sm leading-relaxed">
-                  מעבר ישיר מהספק הנוכחי למסלול החדש. אנחנו נדאג לכל התהליך עבורכם.
-                </p>
-                <div className="pt-4 space-y-2 text-right">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span>תהליך מהיר ופשוט</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span>ללא הפסקת שירות</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span>ניהול מלא של התהליך</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Disconnect + New Option */}
-            <Card 
-              className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-accent"
-              onClick={() => handleSwitchTypeSelection('disconnect-new')}
-            >
-              <CardContent className="p-8 text-center space-y-4">
-                <div className="w-20 h-20 bg-gradient-to-br from-accent to-primary rounded-full mx-auto flex items-center justify-center">
-                  <Plus className="w-10 h-10 text-primary-foreground" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground font-heebo">
-                  ניתוק + הצטרפות חדשה
-                </h3>
-                <p className="text-muted-foreground font-assistant text-sm leading-relaxed">
-                  ניתוק מהספק הקודם והצטרפות כלקוח חדש למסלול. מתאים למי שרוצה לנצל הטבות ללקוחות חדשים.
-                </p>
-                <div className="pt-4 space-y-2 text-right">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span>הטבות ללקוחות חדשים</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span>התחלה רעננה</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span>סיוע בניתוק מהספק הקודם</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="text-center text-sm text-muted-foreground font-assistant">
-            בחרו את האפשרות המתאימה לכם • נלווה אתכם לאורך כל התהליך
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Floating Help Button */}
       <FloatingHelpButton />
