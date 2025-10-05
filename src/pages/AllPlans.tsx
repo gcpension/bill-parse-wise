@@ -1022,7 +1022,7 @@ const AllPlans = ({
         {selectedCategory && Object.keys(groupedByCompany).length > 0 && <div>
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-gray-800 font-heebo">
-                מסלולי {categoryConfig[selectedCategory].label}
+                בחרו חברה לצפייה במסלולים
               </h2>
               <Badge variant="secondary" className="text-lg px-4 py-2 font-assistant">
                 {filteredPlans.length} מסלולים • {Object.keys(groupedByCompany).length} חברות
@@ -1030,7 +1030,7 @@ const AllPlans = ({
             </div>
 
             {/* Company Logos Grid */}
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-12">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mb-12">
               {Object.entries(groupedByCompany).map(([companyName, companyPlans]) => {
                 const isOpen = openCompanies.has(companyName);
                 const cheapestInCompany = Math.min(...companyPlans.map(p => p.regularPrice));
@@ -1041,7 +1041,7 @@ const AllPlans = ({
                     key={companyName}
                     className={cn(
                       "group relative aspect-square cursor-pointer transition-all duration-300 hover:shadow-2xl border-2",
-                      isOpen ? "border-primary shadow-xl scale-105" : "border-border hover:border-primary/50"
+                      isOpen ? "border-primary shadow-xl ring-4 ring-primary/20" : "border-border hover:border-primary/50"
                     )}
                     onClick={() => toggleCompany(companyName)}
                   >
@@ -1049,7 +1049,7 @@ const AllPlans = ({
                       {/* Background gradient on hover */}
                       <div className={cn(
                         "absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-                        isOpen && "opacity-100"
+                        isOpen && "opacity-100 from-primary/10 to-accent/10"
                       )} />
                       
                       {/* Logo */}
@@ -1058,11 +1058,17 @@ const AllPlans = ({
                           <img 
                             src={companyLogo} 
                             alt={`${companyName} לוגו`}
-                            className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                            className={cn(
+                              "w-full h-full object-contain transition-all duration-300",
+                              isOpen ? "scale-110" : "group-hover:scale-110"
+                            )}
                           />
                         ) : (
                           <div className="text-center">
-                            <Building2 className="w-12 h-12 mx-auto text-primary mb-2 transition-transform duration-300 group-hover:scale-110" />
+                            <Building2 className={cn(
+                              "w-12 h-12 mx-auto text-primary mb-2 transition-transform duration-300",
+                              isOpen ? "scale-110" : "group-hover:scale-110"
+                            )} />
                             <span className="text-xs font-heebo text-muted-foreground">{companyName}</span>
                           </div>
                         )}
@@ -1071,7 +1077,7 @@ const AllPlans = ({
                       {/* Badge with plans count */}
                       <div className="absolute top-2 right-2 z-20">
                         <Badge 
-                          variant="secondary" 
+                          variant={isOpen ? "default" : "secondary"}
                           className="text-xs font-assistant shadow-lg"
                         >
                           {companyPlans.length}
@@ -1080,8 +1086,14 @@ const AllPlans = ({
                       
                       {/* Best price indicator */}
                       <div className="absolute bottom-2 left-2 right-2 z-20">
-                        <div className="text-center bg-background/90 backdrop-blur-sm rounded-lg p-1">
-                          <span className="text-xs font-heebo text-primary font-semibold">
+                        <div className={cn(
+                          "text-center rounded-lg p-1.5 backdrop-blur-sm transition-colors",
+                          isOpen ? "bg-primary/20" : "bg-background/90"
+                        )}>
+                          <span className={cn(
+                            "text-xs font-heebo font-semibold",
+                            isOpen ? "text-primary-foreground" : "text-primary"
+                          )}>
                             מ-₪{cheapestInCompany}
                           </span>
                         </div>
@@ -1089,8 +1101,8 @@ const AllPlans = ({
                       
                       {/* Selected indicator */}
                       {isOpen && (
-                        <div className="absolute top-2 left-2 z-20">
-                          <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg animate-scale-in">
+                        <div className="absolute top-2 left-2 z-20 animate-scale-in">
+                          <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg">
                             <CheckCircle className="w-4 h-4 text-primary-foreground" />
                           </div>
                         </div>
@@ -1101,87 +1113,108 @@ const AllPlans = ({
               })}
             </div>
 
-            {/* Selected Company Plans */}
-            {Array.from(openCompanies).map(companyName => {
-              const companyPlans = groupedByCompany[companyName];
-              if (!companyPlans) return null;
-              
-              const cheapestInCompany = Math.min(...companyPlans.map(p => p.regularPrice));
-              
-              return (
-                <Card key={companyName} className="mb-8 border-2 border-primary/30 shadow-xl animate-fade-in">
-                  <CardHeader className="bg-gradient-to-r from-primary/10 to-accent/10 border-b">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        {getCompanyLogo(companyName) && (
-                          <div className="w-16 h-16 bg-white rounded-lg p-2 shadow-md">
-                            <img 
-                              src={getCompanyLogo(companyName)!} 
-                              alt={`${companyName} לוגו`}
-                              className="w-full h-full object-contain"
-                            />
-                          </div>
-                        )}
-                        <div>
-                          <h3 className="text-2xl font-bold text-foreground font-heebo">
-                            {companyName}
-                          </h3>
-                          <p className="text-muted-foreground font-assistant">
-                            {companyPlans.length} מסלולים זמינים
-                          </p>
-                        </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => toggleCompany(companyName)}
-                        className="rounded-full"
-                      >
-                        <X className="w-5 h-5" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="p-6">
-                    <div className={cn(
-                      "grid gap-6",
-                      viewMode === 'grid' ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
-                    )}>
-                      {companyPlans.map((plan, planIndex) => {
-                        const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
-                        const isCompanyCheapest = plan.regularPrice === cheapestInCompany;
-                        const savingsAmount = currentUserPlan.price 
-                          ? Math.max(0, parseFloat(currentUserPlan.price) - plan.regularPrice)
-                          : undefined;
-                        
-                        return (
-                          <div 
-                            key={plan.id}
-                            style={{ animationDelay: `${planIndex * 50}ms` }}
-                            className="animate-fade-in"
-                          >
-                            <PlanCard
-                              plan={plan}
-                              isFavorite={favoriteIds.has(plan.id)}
-                              isViewed={viewedPlans.has(plan.id)}
-                              isComparing={isInComparison(plan.id)}
-                              isBestPrice={isCheapest || isCompanyCheapest}
-                              onToggleFavorite={() => toggleFavorite(plan.id)}
-                              onToggleCompare={() => handleCompareToggle(plan)}
-                              onSelect={() => handlePlanSelect(plan)}
-                              comparisonDisabled={!canAddToComparison && !isInComparison(plan.id)}
-                              savingsAmount={savingsAmount}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+            {/* Selected Companies Plans - Only show if any company is selected */}
+            {openCompanies.size > 0 && (
+              <div className="space-y-8">
+                <Separator className="my-8" />
+                
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold text-foreground font-heebo">
+                    המסלולים שבחרתם
+                  </h3>
+                  <Button
+                    variant="outline"
+                    onClick={() => setOpenCompanies(new Set())}
+                    className="font-assistant"
+                  >
+                    <X className="w-4 h-4 ml-2" />
+                    נקה בחירה
+                  </Button>
+                </div>
 
-            {filteredPlans.length === 0 && <div className="text-center py-12">
+                {Array.from(openCompanies).map(companyName => {
+                  const companyPlans = groupedByCompany[companyName];
+                  if (!companyPlans) return null;
+                  
+                  const cheapestInCompany = Math.min(...companyPlans.map(p => p.regularPrice));
+                  
+                  return (
+                    <Card key={companyName} className="border-2 border-primary/30 shadow-xl animate-fade-in">
+                      <CardHeader className="bg-gradient-to-r from-primary/10 to-accent/10 border-b">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            {getCompanyLogo(companyName) && (
+                              <div className="w-16 h-16 bg-white rounded-lg p-2 shadow-md">
+                                <img 
+                                  src={getCompanyLogo(companyName)!} 
+                                  alt={`${companyName} לוגו`}
+                                  className="w-full h-full object-contain"
+                                />
+                              </div>
+                            )}
+                            <div>
+                              <h3 className="text-2xl font-bold text-foreground font-heebo">
+                                {companyName}
+                              </h3>
+                              <p className="text-muted-foreground font-assistant">
+                                {companyPlans.length} מסלולים זמינים • החל מ-₪{cheapestInCompany}
+                              </p>
+                            </div>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => toggleCompany(companyName)}
+                            className="rounded-full hover:bg-destructive/10 hover:text-destructive"
+                          >
+                            <X className="w-5 h-5" />
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      
+                      <CardContent className="p-6">
+                        <div className={cn(
+                          "grid gap-6",
+                          viewMode === 'grid' ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
+                        )}>
+                          {companyPlans.map((plan, planIndex) => {
+                            const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
+                            const isCompanyCheapest = plan.regularPrice === cheapestInCompany;
+                            const savingsAmount = currentUserPlan.price 
+                              ? Math.max(0, parseFloat(currentUserPlan.price) - plan.regularPrice)
+                              : undefined;
+                            
+                            return (
+                              <div 
+                                key={plan.id}
+                                style={{ animationDelay: `${planIndex * 50}ms` }}
+                                className="animate-fade-in"
+                              >
+                                <PlanCard
+                                  plan={plan}
+                                  isFavorite={favoriteIds.has(plan.id)}
+                                  isViewed={viewedPlans.has(plan.id)}
+                                  isComparing={isInComparison(plan.id)}
+                                  isBestPrice={isCheapest || isCompanyCheapest}
+                                  onToggleFavorite={() => toggleFavorite(plan.id)}
+                                  onToggleCompare={() => handleCompareToggle(plan)}
+                                  onSelect={() => handlePlanSelect(plan)}
+                                  comparisonDisabled={!canAddToComparison && !isInComparison(plan.id)}
+                                  savingsAmount={savingsAmount}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </div>}
+
+        {filteredPlans.length === 0 && selectedCategory && <div className="text-center py-12">
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="w-8 h-8 text-gray-400" />
                 </div>
@@ -1189,10 +1222,9 @@ const AllPlans = ({
                   לא נמצאו מסלולים
                 </h3>
                 <p className="text-gray-500 font-assistant">
-                  נסו לשנות את הפילטרים או את מילות החיפוש
-                </p>
-              </div>}
-          </div>}
+                נסו לשנות את הפילטרים או את מילות החיפוש
+              </p>
+            </div>}
 
         {!selectedCategory && <div className="text-center py-12">
             <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
