@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, ArrowRight, Zap, Smartphone, Wifi, Tv, FileText, Upload, CheckCircle2, Clock } from "lucide-react";
+import { Check, ArrowRight, Zap, Smartphone, Wifi, Tv, FileText, Upload, CheckCircle2, Clock, Sparkles, TrendingDown, Award } from "lucide-react";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
 import { cn } from "@/lib/utils";
 import { EnhancedNavigation } from "@/components/ui/enhanced-navigation";
@@ -151,31 +151,46 @@ export const CleanAllPlans = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1.5s' }} />
+      </div>
+
       <EnhancedNavigation />
 
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
+      <div className="container mx-auto px-4 py-16 max-w-7xl relative z-10">
         {/* Category Selection */}
         {!selectedCategory && (
-          <div className="text-center mb-16 animate-fade-in">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
-              באיזה שירות תרצו לחסוך?
+          <div className="text-center mb-20 animate-fade-in">
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-primary/10 text-primary">
+              <Sparkles className="w-4 h-4" />
+              <span className="text-sm font-medium">מערכת חכמה להשוואת מסלולים</span>
+            </div>
+            
+            <h1 className="text-6xl md:text-7xl font-bold text-foreground mb-6 leading-tight">
+              באיזה שירות תרצו<br />
+              <span className="text-primary">לחסוך כסף?</span>
             </h1>
-            <p className="text-xl text-muted-foreground mb-12">
-              בחרו קטגוריה ונראה לכם את 3 המסלולים הזולים ביותר
+            <p className="text-xl md:text-2xl text-muted-foreground mb-16 max-w-2xl mx-auto">
+              בחרו קטגוריה ונראה לכם מיד את 3 המסלולים הזולים והמשתלמים ביותר
             </p>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
               {Object.entries(categoryConfig).map(([key, config]) => (
-                <Button
+                <Card
                   key={key}
                   onClick={() => setSelectedCategory(key as CategoryType)}
-                  variant="outline"
-                  className="h-40 flex-col gap-4 text-lg font-semibold hover-lift border-2"
+                  className="group cursor-pointer hover-lift hover-glow transition-all duration-300 border-2 hover:border-primary/50"
                 >
-                  {config.icon}
-                  {config.label}
-                </Button>
+                  <CardContent className="h-48 flex flex-col items-center justify-center gap-4 p-6">
+                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                      {config.icon}
+                    </div>
+                    <span className="text-xl font-bold">{config.label}</span>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
@@ -185,29 +200,39 @@ export const CleanAllPlans = () => {
         {selectedCategory && (
           <div className="animate-fade-in">
             {/* Header */}
-            <div className="text-center mb-12">
-              <Badge className="mb-4 text-base px-6 py-2" variant="outline">
-                {categoryConfig[selectedCategory].label}
+            <div className="text-center mb-16">
+              <Badge className="mb-6 text-base px-6 py-3 rounded-full" variant="secondary">
+                <span className="flex items-center gap-2">
+                  {categoryConfig[selectedCategory].icon}
+                  {categoryConfig[selectedCategory].label}
+                </span>
               </Badge>
               
-              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
-                3 המסלולים הזולים ביותר
+              <h1 className="text-6xl md:text-7xl font-bold text-foreground mb-8 leading-tight">
+                <span className="text-primary">3 המסלולים</span><br />
+                הזולים ביותר עבורכם
               </h1>
 
               {currentUserPrice && parseFloat(currentUserPrice) > 0 && top3Plans[0] && (
-                <Card className="inline-block max-w-md">
-                  <CardContent className="p-8">
-                    <p className="text-sm text-muted-foreground mb-2">החיסכון השנתי שלכם</p>
-                    <div className="text-6xl font-bold text-primary">
-                      ₪{calculateSavings(top3Plans[0].regularPrice).toLocaleString()}
-                    </div>
-                  </CardContent>
-                </Card>
+                <div className="inline-block animate-scale-in">
+                  <Card className="glass-card-strong border-2 border-primary/20 shadow-purple-lg">
+                    <CardContent className="p-10">
+                      <div className="flex items-center justify-center gap-2 mb-3">
+                        <TrendingDown className="w-6 h-6 text-primary" />
+                        <p className="text-sm font-medium text-muted-foreground">החיסכון השנתי המשוער שלכם</p>
+                      </div>
+                      <div className="text-7xl font-bold gradient-primary bg-clip-text text-transparent mb-2">
+                        ₪{calculateSavings(top3Plans[0].regularPrice).toLocaleString()}
+                      </div>
+                      <p className="text-sm text-muted-foreground">במעבר למסלול הזול ביותר</p>
+                    </CardContent>
+                  </Card>
+                </div>
               )}
             </div>
 
             {/* Plans Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
               {top3Plans.map((plan, index) => {
                 const savings = calculateSavings(plan.regularPrice);
                 const isTop = index === 0;
@@ -216,41 +241,54 @@ export const CleanAllPlans = () => {
                   <Card
                     key={plan.id}
                     className={cn(
-                      "hover-lift",
-                      isTop ? "border-2 border-primary shadow-xl" : ""
+                      "group hover-lift hover-glow transition-all duration-500 relative overflow-hidden",
+                      isTop ? "border-4 border-primary shadow-purple-lg scale-105 md:scale-110" : "border-2"
                     )}
                   >
-                    <CardContent className="p-8">
+                    {isTop && (
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary-dark to-primary" />
+                    )}
+                    
+                    <CardContent className="p-8 relative">
                       {/* Badge */}
-                      <Badge className="mb-6" variant={isTop ? "default" : "outline"}>
-                        {isTop ? 'הזול ביותר' : `#${index + 1}`}
-                      </Badge>
+                      <div className="flex items-center gap-2 mb-6">
+                        <Badge className={cn(
+                          "text-base px-4 py-1",
+                          isTop ? "gradient-primary text-white" : ""
+                        )} variant={isTop ? "default" : "outline"}>
+                          {isTop && <Award className="w-4 h-4 mr-1" />}
+                          {isTop ? 'המומלץ ביותר' : `מקום #${index + 1}`}
+                        </Badge>
+                      </div>
 
                       {/* Plan Info */}
-                      <h3 className="text-2xl font-bold mb-2">{plan.planName}</h3>
-                      <p className="text-muted-foreground mb-6">{plan.company}</p>
+                      <h3 className="text-3xl font-bold mb-2 group-hover:text-primary transition-colors">{plan.planName}</h3>
+                      <p className="text-muted-foreground mb-8 text-lg">{plan.company}</p>
 
                       {/* Price */}
-                      <div className="mb-6">
-                        <div className="flex items-baseline gap-2 mb-2">
-                          <span className="text-5xl font-bold text-primary">
+                      <div className="mb-8 p-6 rounded-2xl bg-muted/50">
+                        <div className="flex items-baseline gap-3 mb-3">
+                          <span className="text-6xl font-bold text-primary">
                             ₪{plan.regularPrice}
                           </span>
-                          <span className="text-muted-foreground">/חודש</span>
+                          <span className="text-xl text-muted-foreground">/חודש</span>
                         </div>
                         {savings > 0 && (
-                          <p className="text-sm font-medium text-primary">
-                            חיסכון: ₪{savings.toLocaleString()} בשנה
-                          </p>
+                          <div className="flex items-center gap-2 text-primary font-medium">
+                            <TrendingDown className="w-5 h-5" />
+                            <span className="text-lg">חיסכון: ₪{savings.toLocaleString()} בשנה</span>
+                          </div>
                         )}
                       </div>
 
                       {/* Features */}
-                      <div className="space-y-2 mb-6">
+                      <div className="space-y-3 mb-8">
                         {plan.features.slice(0, 3).map((feature, i) => (
-                          <div key={i} className="flex items-start gap-2 text-sm">
-                            <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                            <span>{feature}</span>
+                          <div key={i} className="flex items-start gap-3 text-base">
+                            <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <Check className="w-3 h-3 text-primary" />
+                            </div>
+                            <span className="text-foreground/80">{feature}</span>
                           </div>
                         ))}
                       </div>
@@ -258,11 +296,14 @@ export const CleanAllPlans = () => {
                       {/* CTA */}
                       <Button
                         onClick={() => handleStartSwitch(plan)}
-                        className="w-full"
+                        className={cn(
+                          "w-full h-14 text-lg font-semibold group-hover:shadow-lg transition-all",
+                          isTop ? "gradient-primary hover:gradient-primary-hover" : ""
+                        )}
                         size="lg"
                       >
-                        בצע מעבר
-                        <ArrowRight className="mr-2 h-4 w-4" />
+                        בצע מעבר עכשיו
+                        <ArrowRight className="mr-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </CardContent>
                   </Card>
@@ -271,14 +312,27 @@ export const CleanAllPlans = () => {
             </div>
 
             {/* Bottom CTA */}
-            <div className="text-center">
-              <Button
-                onClick={() => top3Plans[0] && handleStartSwitch(top3Plans[0])}
-                size="lg"
-                className="h-16 px-12 text-xl"
-              >
-                עברו למסלול הזול ביותר
-              </Button>
+            <div className="text-center mt-20">
+              <Card className="glass-card-strong max-w-4xl mx-auto border-2 border-primary/20 shadow-purple-lg">
+                <CardContent className="p-12">
+                  <div className="flex items-center justify-center gap-3 mb-6">
+                    <Sparkles className="w-8 h-8 text-primary animate-pulse-slow" />
+                    <h2 className="text-4xl font-bold">מוכנים להתחיל לחסוך?</h2>
+                  </div>
+                  <p className="text-xl text-muted-foreground mb-8">
+                    המעבר פשוט, מהיר ובחינם. אנחנו נדאג לכל השאר
+                  </p>
+                  <Button
+                    onClick={() => top3Plans[0] && handleStartSwitch(top3Plans[0])}
+                    size="lg"
+                    className="h-16 px-16 text-xl gradient-primary hover:gradient-primary-hover shadow-purple group"
+                  >
+                    <Sparkles className="w-5 h-5 ml-2 group-hover:rotate-12 transition-transform" />
+                    עברו למסלול הזול ביותר
+                    <ArrowRight className="mr-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
         )}

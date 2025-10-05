@@ -55,13 +55,19 @@ body {
     --success: 0 0% 20%;
     --success-foreground: 0 0% 100%;
     
-    --radius: 0.5rem;
+    --radius: 0.75rem;
     
-    /* Clean shadows */
+    /* Clean shadows with purple tint */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-purple: 0 10px 40px -10px hsl(270 60% 50% / 0.3);
+    --shadow-purple-lg: 0 20px 60px -15px hsl(270 60% 50% / 0.4);
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(270 60% 50%), hsl(270 60% 60%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 0 0% 10%;
@@ -126,28 +132,60 @@ body {
 @layer components {
   /* Clean animations */
   .animate-fade-in {
-    animation: fade-in 0.4s ease-out;
+    animation: fade-in 0.5s ease-out;
   }
   
   .animate-slide-up {
-    animation: slide-up 0.4s ease-out;
+    animation: slide-up 0.5s ease-out;
   }
   
   .animate-scale-in {
-    animation: scale-in 0.3s ease-out;
+    animation: scale-in 0.4s ease-out;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  /* Glass effect - subtle */
+  /* Glass effect - enhanced */
   .glass-card {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .glass-card-strong {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 0, 0, 0.05);
   }
 
-  /* Clean hover states */
+  /* Enhanced hover states */
   .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-xl;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 30px hsl(270 60% 50% / 0.3);
+  }
+  
+  /* Gradient backgrounds */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(270 60% 50%), hsl(270 60% 60%));
+  }
+  
+  .gradient-primary-hover {
+    background: linear-gradient(135deg, hsl(270 60% 45%), hsl(270 60% 55%));
   }
 }
 
