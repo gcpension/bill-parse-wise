@@ -19,16 +19,23 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'heebo': ['Heebo', 'sans-serif'],
-				'assistant': ['Assistant', 'sans-serif'],
-				'rubik': ['Rubik', 'sans-serif'], 
-				'inter': ['Inter', 'sans-serif'],
-				'playfair': ['Playfair Display', 'serif'],
-				'montserrat': ['Montserrat', 'sans-serif'],
-				'brand': ['Playfair Display', 'Montserrat', 'Heebo', 'serif'],
-				'sans': ['Heebo', 'Assistant', 'ui-sans-serif', 'system-ui'],
-				'display': ['Montserrat', 'Heebo', 'Assistant', 'sans-serif'],
-				'body': ['Assistant', 'Heebo', 'sans-serif'],
+				'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+				'display': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+				'body': ['Inter', 'system-ui', 'sans-serif'],
+			},
+			letterSpacing: {
+				'tighter': '-0.05em',
+				'tight': '-0.025em',
+				'normal': '0em',
+				'wide': '0.025em',
+				'wider': '0.05em',
+			},
+			lineHeight: {
+				'tight': '1.25',
+				'snug': '1.375',
+				'normal': '1.5',
+				'relaxed': '1.625',
+				'loose': '1.75',
 			},
 			colors: {
 				border: 'hsl(var(--border))',
