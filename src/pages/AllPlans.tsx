@@ -304,6 +304,35 @@ const AllPlans = ({
     window.location.href = '/service-request';
   };
   
+  // Company Logo Mapping
+  const companyLogos: Record<string, string> = {
+    'חברת החשמל': electricityLogo,
+    'חשמל': electricityLogo,
+    'אלקטרה': electraLogo,
+    'בזק': bezeqLogo,
+    'hot': hotLogo,
+    'HOT': hotLogo,
+    'סלקום': cellcomLogo,
+    'Cellcom': cellcomLogo,
+    'פרטנר': partnerLogo,
+    'Partner': partnerLogo,
+    'פלאפון': pelephoneLogo,
+    'Pelephone': pelephoneLogo,
+    '019': logo019,
+    'רמי לוי': ramiLevyLogo,
+    'yes': yesLogo,
+    'YES': yesLogo,
+    'נטפליקס': netflixLogo,
+    'Netflix': netflixLogo,
+    'דיסני': disneyLogo,
+    'Disney': disneyLogo,
+    'HBO': hboLogo,
+  };
+  
+  const getCompanyLogo = (companyName: string): string | null => {
+    return companyLogos[companyName] || null;
+  };
+
   const toggleCompany = (companyName: string) => {
     setOpenCompanies(prev => {
       const newSet = new Set(prev);
@@ -995,9 +1024,25 @@ const AllPlans = ({
               <h2 className="text-3xl font-bold text-gray-800 font-heebo">
                 מסלולי {categoryConfig[selectedCategory].label}
               </h2>
-              <Badge variant="secondary" className="text-lg px-4 py-2 font-assistant">
-                {filteredPlans.length} מסלולים • {Object.keys(groupedByCompany).length} חברות
-              </Badge>
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    const allCompanies = Object.keys(groupedByCompany);
+                    if (openCompanies.size === allCompanies.length) {
+                      setOpenCompanies(new Set());
+                    } else {
+                      setOpenCompanies(new Set(allCompanies));
+                    }
+                  }}
+                  className="font-assistant"
+                >
+                  {openCompanies.size === Object.keys(groupedByCompany).length ? 'סגור הכל' : 'פתח הכל'}
+                </Button>
+                <Badge variant="secondary" className="text-lg px-4 py-2 font-assistant">
+                  {filteredPlans.length} מסלולים • {Object.keys(groupedByCompany).length} חברות
+                </Badge>
+              </div>
             </div>
 
             {/* Company Sections */}
@@ -1022,21 +1067,27 @@ const AllPlans = ({
                         
                         <div className="relative flex items-center justify-between">
                           <div className="flex items-center gap-5">
-                            {/* Company Icon with Animation */}
+                            {/* Company Logo with Animation */}
                             <div className={cn(
-                              "relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl transition-all duration-500 group-hover:shadow-2xl",
-                              "bg-gradient-to-br from-primary via-primary/90 to-primary/70",
-                              "before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/20 before:to-transparent",
-                              isOpen ? "scale-110 rotate-6" : "group-hover:scale-110 group-hover:rotate-3"
+                              "relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-xl transition-all duration-500 group-hover:shadow-2xl bg-white p-2",
+                              isOpen ? "scale-110" : "group-hover:scale-105"
                             )}>
-                              <Building2 className={cn(
-                                "w-8 h-8 text-primary-foreground transition-transform duration-500",
-                                isOpen && "scale-110"
-                              )} />
+                              {getCompanyLogo(companyName) ? (
+                                <img 
+                                  src={getCompanyLogo(companyName)!} 
+                                  alt={`${companyName} לוגו`}
+                                  className="w-full h-full object-contain transition-transform duration-500"
+                                />
+                              ) : (
+                                <Building2 className={cn(
+                                  "w-10 h-10 text-primary transition-transform duration-500",
+                                  isOpen && "scale-110"
+                                )} />
+                              )}
                               
                               {/* Sparkle Effect */}
                               {isOpen && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full" />
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-ping" />
                               )}
                             </div>
                             
