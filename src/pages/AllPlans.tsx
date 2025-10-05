@@ -1517,6 +1517,7 @@ const AllPlans = ({
           </div>
         </div>
       )}
+          </div>
         </div>
       </div>
     </div>
