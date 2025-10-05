@@ -38,6 +38,9 @@ export interface UserProfile {
   
   // Category Specific - stored per category
   categorySpecific?: Record<string, {
+    // General priorities
+    topPriority?: 'price' | 'reliability' | 'speed' | 'service';
+    
     // For electricity
     hasSmartMeter?: boolean;
     hasSolarPanels?: boolean;
@@ -47,6 +50,7 @@ export interface UserProfile {
     waterHeater?: boolean;
     washer?: boolean;
     dishwasher?: boolean;
+    commitmentWillingness?: 'yes' | 'no';
     
     // For internet
     requiredSpeed?: number;
@@ -57,6 +61,7 @@ export interface UserProfile {
     workFromHome?: boolean;
     gaming?: boolean;
     videoConf?: boolean;
+    internetPreference?: 'speed' | 'stability' | 'price';
     
     // For mobile
     internationalCalls?: boolean;
@@ -66,6 +71,7 @@ export interface UserProfile {
     dataHeavy?: boolean;
     international?: boolean;
     roaming?: boolean;
+    travelFrequency?: 'often' | 'sometimes' | 'rarely';
     
     // For TV
     sportsImportant?: boolean;
@@ -77,6 +83,7 @@ export interface UserProfile {
     disney?: boolean;
     hbo?: boolean;
     local?: boolean;
+    watchingHours?: 'low' | 'medium' | 'high';
   }>;
 }
 
