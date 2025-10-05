@@ -58,38 +58,38 @@ export const QuickStartModal = ({ isOpen, onClose }: QuickStartModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-purple-50 to-pink-50">
+      <DialogContent className="sm:max-w-[600px] glass-card-strong border-2 border-primary/20 shadow-purple-lg">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center text-purple-900 flex items-center justify-center gap-2">
-            <Sparkles className="h-6 w-6 text-purple-600" />
+          <DialogTitle className="text-3xl font-bold text-center flex items-center justify-center gap-3 mb-4">
+            <Sparkles className="h-8 w-8 text-primary" />
             בואו נמצא לכם חיסכון!
           </DialogTitle>
-          <p className="text-center text-gray-600 mt-2">
-            רק 2 פרטים ואנחנו מוצאים לכם את ההצעה הזולה ביותר
+          <p className="text-center text-lg text-muted-foreground">
+            רק 2 פרטים ואנחנו מוצאים לכם את המסלול הזול ביותר
           </p>
         </DialogHeader>
 
-        <div className="space-y-6 mt-6">
+        <div className="space-y-6 mt-8">
           {/* Category Selection */}
-          <div className="space-y-2">
-            <Label htmlFor="category" className="text-lg font-semibold text-purple-900">
+          <div className="space-y-3">
+            <Label htmlFor="category" className="text-xl font-semibold">
               איזה שירות?
             </Label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="h-14 text-lg border-2 border-purple-200 bg-white hover:border-purple-400 transition-colors">
+              <SelectTrigger className="h-16 text-xl border-2 hover:border-primary transition-all">
                 <SelectValue placeholder="בחרו שירות..." />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent>
                 {categories.map((cat) => {
                   const Icon = cat.icon;
                   return (
                     <SelectItem 
                       key={cat.value} 
                       value={cat.value}
-                      className="text-lg py-3 cursor-pointer hover:bg-purple-50"
+                      className="text-xl py-4 cursor-pointer"
                     >
-                      <div className="flex items-center gap-2">
-                        <Icon className="h-5 w-5 text-purple-600" />
+                      <div className="flex items-center gap-3">
+                        <Icon className="h-6 w-6 text-primary" />
                         {cat.label}
                       </div>
                     </SelectItem>
@@ -100,8 +100,8 @@ export const QuickStartModal = ({ isOpen, onClose }: QuickStartModalProps) => {
           </div>
 
           {/* Amount Input */}
-          <div className="space-y-2">
-            <Label htmlFor="amount" className="text-lg font-semibold text-purple-900">
+          <div className="space-y-3">
+            <Label htmlFor="amount" className="text-xl font-semibold">
               כמה אתם משלמים היום? (חודשי)
             </Label>
             <div className="relative">
@@ -111,9 +111,9 @@ export const QuickStartModal = ({ isOpen, onClose }: QuickStartModalProps) => {
                 placeholder="לדוגמה: 150"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="h-14 text-lg pl-12 border-2 border-purple-200 bg-white hover:border-purple-400 focus:border-purple-500 transition-colors"
+                className="h-16 text-xl pl-16 border-2 hover:border-primary transition-all"
               />
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold text-purple-600">
+              <span className="absolute left-6 top-1/2 -translate-y-1/2 text-xl font-bold text-primary">
                 ₪
               </span>
             </div>
@@ -122,14 +122,14 @@ export const QuickStartModal = ({ isOpen, onClose }: QuickStartModalProps) => {
           {/* Submit Button */}
           <Button
             onClick={handleSubmit}
-            className="w-full h-16 text-xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+            className="w-full h-16 text-xl font-bold gradient-primary hover:gradient-primary-hover shadow-purple group mt-8"
           >
-            <Sparkles className="ml-2 h-6 w-6" />
+            <Sparkles className="ml-2 h-6 w-6 group-hover:rotate-12 transition-transform" />
             מצאו לי את הזול ביותר!
           </Button>
 
-          <p className="text-center text-sm text-gray-500 mt-4">
-            ⚡ תוצאות מיידיות תוך שניות
+          <p className="text-center text-sm text-muted-foreground mt-4">
+            ⚡ תוצאות מיידיות • ללא עלות • ללא התחייבות
           </p>
         </div>
       </DialogContent>
