@@ -1,7 +1,7 @@
-import { SimplifiedAllPlans } from "@/components/SimplifiedAllPlans";
+import { CleanAllPlans } from "@/components/CleanAllPlans";
 
 const AllPlans = () => {
-  return <SimplifiedAllPlans />;
+  return <CleanAllPlans />;
 };
 
 export default AllPlans;
