@@ -14,15 +14,11 @@ const About = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-background relative overflow-hidden">
-        {/* Animated Background */}
-        <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-        </div>
-
+      <div className="min-h-screen bg-gradient-to-b from-primary/5 to-background">
         {/* Hero Section */}
-        <section className="relative py-24 overflow-hidden">
+        <section className="relative bg-gradient-to-r from-primary to-primary-foreground text-primary-foreground py-20 overflow-hidden">
+          <div className="absolute inset-0 bg-grid-white/[0.05] bg-grid-16"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-foreground/90"></div>
           <div 
             ref={heroRef}
             className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${
@@ -30,19 +26,19 @@ const About = () => {
             }`}
           >
             <div className="flex items-center justify-center gap-3 mb-6">
-              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-              <h1 className="text-5xl md:text-6xl font-bold gradient-primary bg-clip-text text-transparent">
+              <Sparkles className="w-8 h-8 text-accent animate-pulse" />
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-accent bg-clip-text text-transparent">
                 אודות EasySwitch
               </h1>
-              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
+              <Sparkles className="w-8 h-8 text-accent animate-pulse" />
             </div>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="text-xl max-w-3xl mx-auto leading-relaxed mb-8">
               אנחנו מאמינים שכל משפחה בישראל זכאית לחסוך כסף על החשבונות הבסיסיים שלה.
               <br />
-              <span className="font-semibold text-primary">EasySwitch</span> הוא הפתרון הפשוט והמהיר לחיסכון אמיתי.
+              <span className="font-semibold text-accent">EasySwitch</span> הוא הפתרון הפשוט והמהיר לחיסכון אמיתי.
             </p>
-            <Badge className="bg-primary/10 text-primary border-primary/20 text-lg px-6 py-2 hover-glow">
-              מובילים בחדשנות פיננסית ב-2025
+            <Badge className="bg-accent/20 text-accent border-accent/30 text-lg px-4 py-2">
+              מובילים בחדשנות פיננסית ב-2024
             </Badge>
           </div>
         </section>
@@ -57,14 +53,14 @@ const About = () => {
           >
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-foreground mb-6">המשימה שלנו</h2>
-              <div className="w-24 h-1 gradient-primary mx-auto mb-6 rounded-full"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto mb-6"></div>
               <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
                 לעזור למשפחות ישראליות לחסוך אלפי שקלים בשנה על חשבונות החשמל, הסלולר, האינטרנט והטלוויזיה
               </p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="group text-center glass-card-strong hover-lift hover-glow border-0 shadow-lg">
+              <Card className="group text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-gradient-to-br from-primary/5 to-accent/5">
                 <CardHeader>
                   <div className="relative mb-4">
                     <div className="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -83,26 +79,26 @@ const About = () => {
                 </CardContent>
               </Card>
 
-              <Card className="group text-center glass-card-strong hover-lift hover-glow border-0 shadow-lg">
+              <Card className="group text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-gradient-to-br from-accent/5 to-primary/5">
                 <CardHeader>
                   <div className="relative mb-4">
-                    <div className="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Shield className="w-12 h-12 text-primary" />
+                    <div className="w-20 h-20 mx-auto bg-accent/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <Shield className="w-12 h-12 text-accent" />
                     </div>
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-purple">
-                      <CheckCircle className="w-3 h-3 text-primary-foreground" />
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-3 h-3 text-white" />
                     </div>
                   </div>
-                  <CardTitle className="text-xl text-foreground group-hover:text-primary transition-colors">שירות מהימן</CardTitle>
+                  <CardTitle className="text-xl text-foreground group-hover:text-accent transition-colors">שירות מהימן</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed">
-                    אנחנו עובדים רק עם ספקים מורשים ומבצעים את כל התהליך בבטחה ו<span className="font-bold text-primary">שקיפות מלאה</span>
+                    אנחנו עובדים רק עם ספקים מורשים ומבצעים את כל התהליך בבטחה ו<span className="font-bold text-accent">שקיפות מלאה</span>
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="group text-center glass-card-strong hover-lift hover-glow border-0 shadow-lg">
+              <Card className="group text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-gradient-to-br from-primary/5 to-accent/5">
                 <CardHeader>
                   <div className="relative mb-4">
                     <div className="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -126,31 +122,31 @@ const About = () => {
           {/* Statistics */}
           <section 
             ref={statsRef}
-            className={`mb-16 glass-card-strong rounded-3xl p-12 shadow-purple-lg transition-all duration-1000 ${
+            className={`mb-16 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 rounded-3xl p-12 transition-all duration-1000 ${
               statsVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
           >
             <h2 className="text-3xl font-bold text-center text-foreground mb-12">המספרים מדברים בעד עצמם</h2>
             <div className="grid md:grid-cols-4 gap-8 text-center">
               <div className="group">
-                <div className="text-5xl font-bold gradient-primary bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform duration-300">50,000+</div>
+                <div className="text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform duration-300">50,000+</div>
                 <div className="text-muted-foreground font-medium">משפחות שחסכו</div>
-                <div className="w-12 h-1 gradient-primary mx-auto mt-2 group-hover:w-16 transition-all duration-300 rounded-full"></div>
+                <div className="w-12 h-1 bg-gradient-to-r from-primary to-accent mx-auto mt-2 group-hover:w-16 transition-all duration-300"></div>
               </div>
               <div className="group">
-                <div className="text-5xl font-bold gradient-primary bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform duration-300">₪120M+</div>
+                <div className="text-5xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform duration-300">₪120M+</div>
                 <div className="text-muted-foreground font-medium">סך החיסכון השנתי</div>
-                <div className="w-12 h-1 gradient-primary mx-auto mt-2 group-hover:w-16 transition-all duration-300 rounded-full"></div>
+                <div className="w-12 h-1 bg-gradient-to-r from-accent to-primary mx-auto mt-2 group-hover:w-16 transition-all duration-300"></div>
               </div>
               <div className="group">
-                <div className="text-5xl font-bold gradient-primary bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform duration-300">15</div>
+                <div className="text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform duration-300">15</div>
                 <div className="text-muted-foreground font-medium">דקות ממוצעות להשוואה</div>
-                <div className="w-12 h-1 gradient-primary mx-auto mt-2 group-hover:w-16 transition-all duration-300 rounded-full"></div>
+                <div className="w-12 h-1 bg-gradient-to-r from-primary to-accent mx-auto mt-2 group-hover:w-16 transition-all duration-300"></div>
               </div>
               <div className="group">
-                <div className="text-5xl font-bold gradient-primary bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform duration-300">98%</div>
+                <div className="text-5xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform duration-300">98%</div>
                 <div className="text-muted-foreground font-medium">שביעות רצון לקוחות</div>
-                <div className="w-12 h-1 gradient-primary mx-auto mt-2 group-hover:w-16 transition-all duration-300 rounded-full"></div>
+                <div className="w-12 h-1 bg-gradient-to-r from-accent to-primary mx-auto mt-2 group-hover:w-16 transition-all duration-300"></div>
               </div>
             </div>
           </section>
@@ -159,8 +155,8 @@ const About = () => {
           <section className="mb-16">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl font-bold text-foreground mb-6">הסיפור שלנו</h2>
-                <div className="space-y-4 text-muted-foreground">
+                <h2 className="text-3xl font-bold text-gray-800 mb-6">הסיפור שלנו</h2>
+                <div className="space-y-4 text-gray-600">
                   <p>
                     EasySwitch נוסד בשנת 2023 מתוך הבנה פשוטה - משפחות ישראליות משלמות יותר מדי 
                     על שירותים בסיסיים כמו חשמל, טלפון ואינטרנט.
@@ -175,23 +171,23 @@ const About = () => {
                   </p>
                 </div>
               </div>
-              <div className="glass-card-strong p-8 rounded-2xl shadow-purple-lg">
+              <div className="bg-gradient-to-br from-purple-100 to-purple-200 p-8 rounded-2xl">
                 <div className="space-y-6">
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="w-6 h-6 text-primary" />
-                    <span className="text-foreground font-medium">השוואת מחירים מקיפה</span>
+                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                    <span className="text-gray-800">השוואת מחירים מקיפה</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="w-6 h-6 text-primary" />
-                    <span className="text-foreground font-medium">ביצוע מעבר מלא</span>
+                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                    <span className="text-gray-800">ביצוע מעבר מלא</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="w-6 h-6 text-primary" />
-                    <span className="text-foreground font-medium">שירות לקוחות מעולה</span>
+                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                    <span className="text-gray-800">שירות לקוחות מעולה</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="w-6 h-6 text-primary" />
-                    <span className="text-foreground font-medium">שקיפות מלאה בתהליך</span>
+                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                    <span className="text-gray-800">שקיפות מלאה בתהליך</span>
                   </div>
                 </div>
               </div>
@@ -200,39 +196,39 @@ const About = () => {
 
           {/* Values */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold text-center text-foreground mb-12">הערכים שלנו</h2>
+            <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">הערכים שלנו</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Card className="glass-card-strong hover-lift hover-glow border-0 shadow-lg">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <Heart className="w-12 h-12 text-primary mb-4" />
-                  <CardTitle className="text-xl text-foreground">אכפתיות אמיתית</CardTitle>
+                  <Heart className="w-12 h-12 text-purple-600 mb-4" />
+                  <CardTitle className="text-xl text-gray-800">אכפתיות אמיתית</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-gray-600">
                     אנחנו באמת דואגים לחיסכון שלכם ועובדים קשה למצוא לכם את העסקה הטובה ביותר
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="glass-card-strong hover-lift hover-glow border-0 shadow-lg">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <Shield className="w-12 h-12 text-primary mb-4" />
-                  <CardTitle className="text-xl text-foreground">שקיפות מוחלטת</CardTitle>
+                  <Shield className="w-12 h-12 text-purple-600 mb-4" />
+                  <CardTitle className="text-xl text-gray-800">שקיפות מוחלטת</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-gray-600">
                     אין עמלות נסתרות, אין הפתעות - אתם יודעים בדיוק מה קורה בכל שלב
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="glass-card-strong hover-lift hover-glow border-0 shadow-lg">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <TrendingUp className="w-12 h-12 text-primary mb-4" />
-                  <CardTitle className="text-xl text-foreground">חדשנות מתמדת</CardTitle>
+                  <TrendingUp className="w-12 h-12 text-purple-600 mb-4" />
+                  <CardTitle className="text-xl text-gray-800">חדשנות מתמדת</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-gray-600">
                     אנחנו כל הזמן משפרים את הפלטפורמה ומוסיפים תכונות שיעזרו לכם לחסוך עוד יותר
                   </p>
                 </CardContent>
@@ -241,17 +237,13 @@ const About = () => {
           </section>
 
           {/* CTA */}
-          <section className="text-center glass-card-strong rounded-2xl p-12 shadow-purple-lg">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-              <h2 className="text-3xl font-bold gradient-primary bg-clip-text text-transparent">מוכנים להצטרף למהפכת החיסכון?</h2>
-              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-            </div>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <section className="text-center bg-gradient-to-r from-purple-600 to-purple-800 rounded-2xl p-12 text-white">
+            <h2 className="text-3xl font-bold mb-4">מוכנים להצטרף למהפכת החיסכון?</h2>
+            <p className="text-xl mb-8 max-w-2xl mx-auto">
               גלו כמה אתם יכולים לחסוך על חשבונות הבית שלכם כבר היום
             </p>
             <Button 
-              className="gradient-primary hover:gradient-primary-hover text-primary-foreground font-bold text-lg px-8 py-4 rounded-xl shadow-purple hover-lift group"
+              className="bg-white text-primary hover:bg-gray-100 hover:scale-105 font-bold text-lg px-8 py-4 rounded-xl transition-all duration-300 group"
               onClick={() => navigate('/')}
             >
               התחילו לחסוך עכשיו

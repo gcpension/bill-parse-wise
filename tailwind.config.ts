@@ -19,23 +19,16 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-				'display': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
-				'body': ['Inter', 'system-ui', 'sans-serif'],
-			},
-			letterSpacing: {
-				'tighter': '-0.05em',
-				'tight': '-0.025em',
-				'normal': '0em',
-				'wide': '0.025em',
-				'wider': '0.05em',
-			},
-			lineHeight: {
-				'tight': '1.25',
-				'snug': '1.375',
-				'normal': '1.5',
-				'relaxed': '1.625',
-				'loose': '1.75',
+				'heebo': ['Heebo', 'sans-serif'],
+				'assistant': ['Assistant', 'sans-serif'],
+				'rubik': ['Rubik', 'sans-serif'], 
+				'inter': ['Inter', 'sans-serif'],
+				'playfair': ['Playfair Display', 'serif'],
+				'montserrat': ['Montserrat', 'sans-serif'],
+				'brand': ['Playfair Display', 'Montserrat', 'Heebo', 'serif'],
+				'sans': ['Heebo', 'Assistant', 'ui-sans-serif', 'system-ui'],
+				'display': ['Montserrat', 'Heebo', 'Assistant', 'sans-serif'],
+				'body': ['Assistant', 'Heebo', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -210,16 +203,6 @@ export default {
 					'50%': {
 						backgroundPosition: '100% 50%',
 					}
-				},
-				'slide-in-bottom': {
-					'0%': {
-						transform: 'translateY(100%)',
-						opacity: '0'
-					},
-					'100%': {
-						transform: 'translateY(0)',
-						opacity: '1'
-					}
 				}
 			},
 			animation: {
@@ -233,8 +216,7 @@ export default {
 				'float': 'float 3s ease-in-out infinite',
 				'shimmer-text': 'shimmer-text 3s ease-in-out infinite',
 				'spin-slow': 'spin 3s linear infinite',
-				'gradient-x': 'gradient-x 3s ease infinite',
-				'slide-in-bottom': 'slide-in-bottom 0.3s ease-out'
+				'gradient-x': 'gradient-x 3s ease infinite'
 			}
 		}
 	},
