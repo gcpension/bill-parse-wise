@@ -174,16 +174,6 @@ const AllPlans = ({
     document.title = "כל המסלולים | EasySwitch";
   }, []);
 
-  // Open all companies by default when category changes
-  useEffect(() => {
-    if (selectedCategory) {
-      const companies = manualPlans
-        .filter(p => p.category === selectedCategory)
-        .map(p => p.company);
-      setOpenCompanies(new Set(companies));
-    }
-  }, [selectedCategory]);
-
   // Enhanced filtering and sorting
   const {
     filteredPlans,
