@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { TrendingDown, Star, Check, AlertCircle, ArrowRight } from "lucide-react";
 import { PersonalizedRecommendation } from "@/lib/personalizedRecommendations";
 import { ManualPlan } from "@/data/manual-plans";
+import { CoverageIndicator } from "@/components/CoverageIndicator";
 import { cn } from "@/lib/utils";
 
 interface RecommendationResultsProps {
@@ -15,6 +16,7 @@ interface RecommendationResultsProps {
   recommendations: PersonalizedRecommendation[];
   plans: ManualPlan[];
   onPlanSelect: (plan: ManualPlan) => void;
+  userLocation?: string;
 }
 
 const categoryLabels: Record<string, string> = {
@@ -29,7 +31,8 @@ export const RecommendationResults = ({
   onClose,
   recommendations,
   plans,
-  onPlanSelect
+  onPlanSelect,
+  userLocation
 }: RecommendationResultsProps) => {
   const groupedRecommendations = useMemo(() => {
     const grouped: Record<string, { plan: ManualPlan; recommendation: PersonalizedRecommendation }[]> = {};
@@ -157,6 +160,17 @@ export const RecommendationResults = ({
                             ))}
                           </div>
                         </div>
+
+                        {/* Coverage Indicator */}
+                        {userLocation && (category === 'mobile' || category === 'internet') && (
+                          <div className="pt-2">
+                            <CoverageIndicator 
+                              location={userLocation} 
+                              category={category as 'mobile' | 'internet'}
+                              provider={topRec.plan.company}
+                            />
+                          </div>
+                        )}
 
                         {/* Concerns */}
                         {topRec.recommendation.potentialConcerns.length > 0 && (

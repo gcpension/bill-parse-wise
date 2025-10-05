@@ -83,6 +83,7 @@ export const PersonalizedRecommendationWizard = ({
     contractFlexibility: 'doesnt_matter',
     technologyPreference: 'stable',
     supportImportance: 'important',
+    location: '',
     categorySpecific: {}
   });
 
@@ -98,6 +99,7 @@ export const PersonalizedRecommendationWizard = ({
     // Base steps only for first category
     const baseSteps = currentCategoryIndex === 0 ? [
       { id: 'basic', title: 'פרטים בסיסיים', icon: <User className="w-4 h-4" /> },
+      { id: 'location', title: 'מיקום', icon: <Globe className="w-4 h-4" /> },
       { id: 'budget', title: 'תקציב', icon: <DollarSign className="w-4 h-4" /> }
     ] : [];
 
@@ -604,6 +606,92 @@ export const PersonalizedRecommendationWizard = ({
                 )}
               </div>
             </div>
+          </div>
+        );
+
+      case 'location':
+        return (
+          <div className="space-y-8">
+            {/* Location Input */}
+            <div className="text-center space-y-3">
+              <div className="flex items-center justify-center gap-3">
+                <Globe className="w-8 h-8 text-primary" />
+                <h3 className="text-2xl font-bold text-foreground">
+                  איפה אתם גרים?
+                </h3>
+              </div>
+              <p className="text-muted-foreground max-w-lg mx-auto">
+                המיקום שלכם משפיע על זמינות הסיבים האופטיים וכיסוי הרשתות הסלולריות
+              </p>
+            </div>
+
+            <Card className="border-2 border-primary/20">
+              <CardContent className="p-6 space-y-6">
+                {/* City/Area Input */}
+                <div className="space-y-4">
+                  <Label className="text-base font-semibold">עיר או אזור מגורים</Label>
+                  <div className="relative">
+                    <Input
+                      value={profile.location}
+                      onChange={(e) => updateProfile({ location: e.target.value })}
+                      placeholder="לדוגמה: תל אביב, חיפה, ירושלים..."
+                      className="h-14 text-lg pr-12 rounded-xl border-2 transition-all duration-300 focus:scale-105"
+                    />
+                    <Globe className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    {profile.location && (
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                        <CheckCircle className="w-5 h-5 text-success animate-scale-in" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Quick Location Buttons */}
+                <div className="space-y-3">
+                  <Label className="text-sm text-muted-foreground">או בחרו אזור:</Label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { value: 'תל אביב', emoji: '🏙️', region: 'מרכז' },
+                      { value: 'חיפה', emoji: '⛰️', region: 'צפון' },
+                      { value: 'ירושלים', emoji: '🕌', region: 'ירושלים' },
+                      { value: 'באר שבע', emoji: '🏜️', region: 'דרום' }
+                    ].map(({ value, emoji, region }) => (
+                      <Button
+                        key={value}
+                        variant={profile.location === value ? "default" : "outline"}
+                        onClick={() => updateProfile({ location: value })}
+                        className={cn(
+                          "h-auto p-4 flex flex-col items-center gap-2 transition-all duration-300",
+                          profile.location === value && "ring-2 ring-primary shadow-lg"
+                        )}
+                      >
+                        <span className="text-3xl">{emoji}</span>
+                        <div className="text-center">
+                          <div className="font-semibold text-sm">{value}</div>
+                          <div className="text-xs text-muted-foreground">{region}</div>
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Info Box */}
+                {profile.location && (
+                  <div className="mt-4 p-4 bg-primary/5 border border-primary/20 rounded-xl animate-fade-in">
+                    <div className="flex items-start gap-3">
+                      <Lightbulb className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <div className="text-sm text-foreground">
+                        <p className="font-medium mb-1">💡 למה זה חשוב?</p>
+                        <p className="text-muted-foreground">
+                          המיקום שלכם יעזור לנו להמליץ על ספקים עם כיסוי מעולה באזור שלכם,
+                          ולהתאים את מהירות האינטרנט לזמינות הסיבים האופטיים.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
         );
 

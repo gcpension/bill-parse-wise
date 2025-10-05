@@ -74,6 +74,7 @@ const AllPlans = ({
   const [personalizedRecommendations, setPersonalizedRecommendations] = useState<PersonalizedRecommendation[]>([]);
   const [showPersonalizedResults, setShowPersonalizedResults] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [savedUserProfile, setSavedUserProfile] = useState<UserProfile | null>(null);
   
   // New state for enhanced features
   const [searchQuery, setSearchQuery] = useState('');
@@ -357,8 +358,10 @@ const AllPlans = ({
   const handlePersonalizedRecommendation = async (userProfile: UserProfile, categories: CategoryType[]) => {
     setIsAnalyzing(true);
     setShowPersonalizedWizard(false);
+    setSavedUserProfile(userProfile); // Save user profile for coverage info
     try {
       console.log('🔍 Starting personalized recommendations for categories:', categories);
+      console.log('📍 User location:', userProfile.location);
       console.log('📦 Total plans in manualPlans:', manualPlans.length);
       console.log('📂 Unique categories in manualPlans:', [...new Set(manualPlans.map(p => p.category))]);
       
@@ -1161,6 +1164,7 @@ const AllPlans = ({
         recommendations={personalizedRecommendations} 
         plans={manualPlans}
         onPlanSelect={handlePlanSelect}
+        userLocation={savedUserProfile?.location}
       />
 
       {/* Plan Details Sheet */}

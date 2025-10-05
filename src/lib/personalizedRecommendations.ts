@@ -1,10 +1,11 @@
 import { ManualPlan } from '@/data/manual-plans';
+import { getCoverageForLocation, getProviderCoverageScore, getFiberCoverageScore } from './coverageData';
 
 export interface UserProfile {
   // Basic Demographics
   familySize: number;
   homeType: 'apartment' | 'house' | 'student' | 'business';
-  location?: 'north' | 'center' | 'south' | 'jerusalem';
+  location?: string;
   
   // Financial Preferences
   monthlyBudget: number;
@@ -167,6 +168,57 @@ export class PersonalizedRecommendationEngine {
     const potentialConcerns: string[] = [];
     const personalizedInsights: string[] = [];
     const actionRecommendations: string[] = [];
+    
+    // Location & Coverage Analysis (New!)
+    if (userProfile.location) {
+      const coverageData = getCoverageForLocation(userProfile.location);
+      
+      // For cellular plans
+      if (category === 'mobile') {
+        const coverageScore = getProviderCoverageScore(plan.company, coverageData);
+        matchScore += coverageScore * 3; // Weight coverage heavily for mobile
+        
+        if (coverageScore >= 4.5) {
+          reasonsForRecommendation.push(`כיסוי מצוין ב${coverageData.city || userProfile.location}`);
+          personalizedInsights.push(`${plan.company} מספקת כיסוי מעולה באזור המגורים שלכם`);
+        } else if (coverageScore >= 3.5) {
+          reasonsForRecommendation.push(`כיסוי טוב ב${coverageData.city || userProfile.location}`);
+        } else if (coverageScore < 3) {
+          potentialConcerns.push(`כיסוי מוגבל ב${coverageData.city || userProfile.location} - כדאי לבדוק זמינות`);
+          matchScore -= 5; // Penalty for poor coverage
+        }
+        
+        if (coverageData.recommended5G && plan.features?.includes('5G')) {
+          matchScore += 3;
+          reasonsForRecommendation.push('5G זמין באזורכם');
+        }
+      }
+      
+      // For internet plans
+      if (category === 'internet') {
+        const fiberScore = getFiberCoverageScore(coverageData);
+        const requestedSpeed = userProfile.categorySpecific?.[category]?.internetSpeed || 200;
+        
+        if (fiberScore >= 4 && requestedSpeed >= 500) {
+          matchScore += 4;
+          reasonsForRecommendation.push('סיבים אופטיים זמינים באזורכם');
+          personalizedInsights.push('באזורכם יש תשתית סיבים מלאה - תוכלו ליהנות ממהירויות גבוהות');
+        } else if (fiberScore < 3 && requestedSpeed >= 500) {
+          potentialConcerns.push('כיסוי סיבים חלקי באזור - המהירות המקסימלית עשויה להיות מוגבלת');
+          matchScore -= 3;
+        }
+        
+        // Adjust speed expectations based on coverage
+        if (coverageData.maxInternetSpeed < requestedSpeed) {
+          potentialConcerns.push(`המהירות המקסימלית באזורכם היא ${coverageData.maxInternetSpeed} Mbps`);
+          actionRecommendations.push('כדאי לבדוק זמינות בכתובת המדויקת שלכם');
+        }
+      }
+      
+      if (coverageData.notes) {
+        personalizedInsights.push(coverageData.notes);
+      }
+    }
     
     // Budget Analysis
     const budgetAnalysis = this.analyzeBudgetFit(plan, userProfile);
