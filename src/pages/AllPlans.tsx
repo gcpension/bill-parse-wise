@@ -1024,195 +1024,162 @@ const AllPlans = ({
               <h2 className="text-3xl font-bold text-gray-800 font-heebo">
                 מסלולי {categoryConfig[selectedCategory].label}
               </h2>
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    const allCompanies = Object.keys(groupedByCompany);
-                    if (openCompanies.size === allCompanies.length) {
-                      setOpenCompanies(new Set());
-                    } else {
-                      setOpenCompanies(new Set(allCompanies));
-                    }
-                  }}
-                  className="font-assistant"
-                >
-                  {openCompanies.size === Object.keys(groupedByCompany).length ? 'סגור הכל' : 'פתח הכל'}
-                </Button>
-                <Badge variant="secondary" className="text-lg px-4 py-2 font-assistant">
-                  {filteredPlans.length} מסלולים • {Object.keys(groupedByCompany).length} חברות
-                </Badge>
-              </div>
+              <Badge variant="secondary" className="text-lg px-4 py-2 font-assistant">
+                {filteredPlans.length} מסלולים • {Object.keys(groupedByCompany).length} חברות
+              </Badge>
             </div>
 
-            {/* Company Sections */}
-            <div className="space-y-8">
-              {Object.entries(groupedByCompany).map(([companyName, companyPlans], companyIndex) => {
+            {/* Company Logos Grid */}
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-12">
+              {Object.entries(groupedByCompany).map(([companyName, companyPlans]) => {
                 const isOpen = openCompanies.has(companyName);
                 const cheapestInCompany = Math.min(...companyPlans.map(p => p.regularPrice));
-                const avgPriceInCompany = Math.round(companyPlans.reduce((sum, p) => sum + p.regularPrice, 0) / companyPlans.length);
+                const companyLogo = getCompanyLogo(companyName);
                 
                 return (
-                  <Collapsible
+                  <Card
                     key={companyName}
-                    open={isOpen}
-                    onOpenChange={() => toggleCompany(companyName)}
-                    className="group border-2 border-primary/20 rounded-3xl overflow-hidden bg-gradient-to-br from-background via-background to-primary/5 shadow-lg hover:shadow-2xl transition-all duration-300 animate-fade-in"
-                    style={{ animationDelay: `${companyIndex * 100}ms` }}
+                    className={cn(
+                      "group relative aspect-square cursor-pointer transition-all duration-300 hover:shadow-2xl border-2",
+                      isOpen ? "border-primary shadow-xl scale-105" : "border-border hover:border-primary/50"
+                    )}
+                    onClick={() => toggleCompany(companyName)}
                   >
-                    <CollapsibleTrigger asChild>
-                      <div className="relative bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 p-8 cursor-pointer hover:from-primary/15 hover:via-primary/10 hover:to-primary/15 transition-all duration-500 group-hover:scale-[1.01] overflow-hidden">
-                        {/* Animated Background Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                        
-                        <div className="relative flex items-center justify-between">
-                          <div className="flex items-center gap-5">
-                            {/* Company Logo with Animation */}
-                            <div className={cn(
-                              "relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-xl transition-all duration-500 group-hover:shadow-2xl bg-white p-2",
-                              isOpen ? "scale-110" : "group-hover:scale-105"
-                            )}>
-                              {getCompanyLogo(companyName) ? (
-                                <img 
-                                  src={getCompanyLogo(companyName)!} 
-                                  alt={`${companyName} לוגו`}
-                                  className="w-full h-full object-contain transition-transform duration-500"
-                                />
-                              ) : (
-                                <Building2 className={cn(
-                                  "w-10 h-10 text-primary transition-transform duration-500",
-                                  isOpen && "scale-110"
-                                )} />
-                              )}
-                              
-                              {/* Sparkle Effect */}
-                              {isOpen && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-ping" />
-                              )}
-                            </div>
-                            
-                            <div>
-                              <h3 className="text-3xl font-bold text-foreground font-heebo mb-2 transition-colors group-hover:text-primary">
-                                {companyName}
-                              </h3>
-                              <div className="flex items-center gap-3 text-muted-foreground font-assistant text-base">
-                                <Badge 
-                                  variant="outline" 
-                                  className="font-assistant border-primary/30 bg-primary/5 group-hover:bg-primary/10 transition-colors"
-                                >
-                                  <Package className="w-3 h-3 ml-1" />
-                                  {companyPlans.length} מסלולים
-                                </Badge>
-                                <span className="text-primary">•</span>
-                                <span className="flex items-center gap-1 group-hover:text-foreground transition-colors">
-                                  <Award className="w-4 h-4" />
-                                  החל מ-₪{cheapestInCompany}
-                                </span>
-                              </div>
-                            </div>
+                    <CardContent className="p-0 h-full flex items-center justify-center relative overflow-hidden">
+                      {/* Background gradient on hover */}
+                      <div className={cn(
+                        "absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                        isOpen && "opacity-100"
+                      )} />
+                      
+                      {/* Logo */}
+                      <div className="relative z-10 w-full h-full p-6 flex items-center justify-center">
+                        {companyLogo ? (
+                          <img 
+                            src={companyLogo} 
+                            alt={`${companyName} לוגו`}
+                            className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                          />
+                        ) : (
+                          <div className="text-center">
+                            <Building2 className="w-12 h-12 mx-auto text-primary mb-2 transition-transform duration-300 group-hover:scale-110" />
+                            <span className="text-xs font-heebo text-muted-foreground">{companyName}</span>
                           </div>
-                          
-                          {/* Stats Section */}
-                          <div className="flex items-center gap-8">
-                            <div className="text-center p-4 rounded-xl bg-background/50 backdrop-blur-sm border border-primary/10 group-hover:border-primary/30 transition-all">
-                              <div className="text-xs text-muted-foreground font-assistant mb-1 uppercase tracking-wide">
-                                מחיר ממוצע
-                              </div>
-                              <div className="text-2xl font-bold text-primary font-heebo">
-                                ₪{avgPriceInCompany}
-                              </div>
-                            </div>
-                            
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-12 w-12 rounded-full bg-primary/10 hover:bg-primary/20 transition-all duration-300"
-                            >
-                              <ChevronDown className={cn(
-                                "h-6 w-6 transition-all duration-500 text-primary",
-                                isOpen && "rotate-180 scale-110"
-                              )} />
-                            </Button>
-                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Badge with plans count */}
+                      <div className="absolute top-2 right-2 z-20">
+                        <Badge 
+                          variant="secondary" 
+                          className="text-xs font-assistant shadow-lg"
+                        >
+                          {companyPlans.length}
+                        </Badge>
+                      </div>
+                      
+                      {/* Best price indicator */}
+                      <div className="absolute bottom-2 left-2 right-2 z-20">
+                        <div className="text-center bg-background/90 backdrop-blur-sm rounded-lg p-1">
+                          <span className="text-xs font-heebo text-primary font-semibold">
+                            מ-₪{cheapestInCompany}
+                          </span>
                         </div>
                       </div>
-                    </CollapsibleTrigger>
-
-                    <CollapsibleContent className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-                      <div className="p-8 bg-gradient-to-b from-background to-muted/10">
-                        {/* Company Plans Grid */}
-                        <div className={cn(
-                          "grid gap-6 mb-6",
-                          viewMode === 'grid' ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
-                        )}>
-                          {companyPlans.map((plan, planIndex) => {
-                            const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
-                            const isCompanyCheapest = plan.regularPrice === cheapestInCompany;
-                            const savingsAmount = currentUserPlan.price 
-                              ? Math.max(0, parseFloat(currentUserPlan.price) - plan.regularPrice)
-                              : undefined;
-                            
-                            return (
-                              <div 
-                                key={plan.id}
-                                className="animate-fade-in"
-                                style={{ animationDelay: `${planIndex * 50}ms` }}
-                              >
-                                <PlanCard
-                                  plan={plan}
-                                  isFavorite={favoriteIds.has(plan.id)}
-                                  isViewed={viewedPlans.has(plan.id)}
-                                  isComparing={isInComparison(plan.id)}
-                                  isBestPrice={isCheapest || isCompanyCheapest}
-                                  onToggleFavorite={() => toggleFavorite(plan.id)}
-                                  onToggleCompare={() => handleCompareToggle(plan)}
-                                  onSelect={() => handlePlanSelect(plan)}
-                                  comparisonDisabled={!canAddToComparison && !isInComparison(plan.id)}
-                                  savingsAmount={savingsAmount}
-                                />
-                              </div>
-                            );
-                          })}
-                        </div>
-                        
-                        {/* Enhanced Company Summary */}
-                        <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-2xl p-6 border-2 border-primary/20 shadow-inner">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                            <div className="flex flex-col items-center gap-2">
-                              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                                <Package className="w-5 h-5 text-primary" />
-                              </div>
-                              <div className="text-sm text-muted-foreground font-assistant">סה"כ מסלולים</div>
-                              <div className="text-2xl font-bold text-foreground font-heebo">{companyPlans.length}</div>
-                            </div>
-                            
-                            <div className="flex flex-col items-center gap-2">
-                              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                                <TrendingUp className="w-5 h-5 text-primary" />
-                              </div>
-                              <div className="text-sm text-muted-foreground font-assistant">טווח מחירים</div>
-                              <div className="text-lg font-bold text-foreground font-heebo">
-                                ₪{cheapestInCompany} - ₪{Math.max(...companyPlans.map(p => p.regularPrice))}
-                              </div>
-                            </div>
-                            
-                            <div className="flex flex-col items-center gap-2">
-                              <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-                                <Sparkles className="w-5 h-5 text-green-600" />
-                              </div>
-                              <div className="text-sm text-muted-foreground font-assistant">חיסכון מקסימלי</div>
-                              <div className="text-2xl font-bold text-green-600 font-heebo">
-                                ₪{Math.max(...companyPlans.map(p => p.regularPrice)) - cheapestInCompany}
-                              </div>
-                            </div>
+                      
+                      {/* Selected indicator */}
+                      {isOpen && (
+                        <div className="absolute top-2 left-2 z-20">
+                          <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg animate-scale-in">
+                            <CheckCircle className="w-4 h-4 text-primary-foreground" />
                           </div>
                         </div>
-                      </div>
-                    </CollapsibleContent>
-                  </Collapsible>
+                      )}
+                    </CardContent>
+                  </Card>
                 );
               })}
             </div>
+
+            {/* Selected Company Plans */}
+            {Array.from(openCompanies).map(companyName => {
+              const companyPlans = groupedByCompany[companyName];
+              if (!companyPlans) return null;
+              
+              const cheapestInCompany = Math.min(...companyPlans.map(p => p.regularPrice));
+              
+              return (
+                <Card key={companyName} className="mb-8 border-2 border-primary/30 shadow-xl animate-fade-in">
+                  <CardHeader className="bg-gradient-to-r from-primary/10 to-accent/10 border-b">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        {getCompanyLogo(companyName) && (
+                          <div className="w-16 h-16 bg-white rounded-lg p-2 shadow-md">
+                            <img 
+                              src={getCompanyLogo(companyName)!} 
+                              alt={`${companyName} לוגו`}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                        )}
+                        <div>
+                          <h3 className="text-2xl font-bold text-foreground font-heebo">
+                            {companyName}
+                          </h3>
+                          <p className="text-muted-foreground font-assistant">
+                            {companyPlans.length} מסלולים זמינים
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleCompany(companyName)}
+                        className="rounded-full"
+                      >
+                        <X className="w-5 h-5" />
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="p-6">
+                    <div className={cn(
+                      "grid gap-6",
+                      viewMode === 'grid' ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
+                    )}>
+                      {companyPlans.map((plan, planIndex) => {
+                        const isCheapest = cheapestPlan && plan.id === cheapestPlan.id;
+                        const isCompanyCheapest = plan.regularPrice === cheapestInCompany;
+                        const savingsAmount = currentUserPlan.price 
+                          ? Math.max(0, parseFloat(currentUserPlan.price) - plan.regularPrice)
+                          : undefined;
+                        
+                        return (
+                          <div 
+                            key={plan.id}
+                            style={{ animationDelay: `${planIndex * 50}ms` }}
+                            className="animate-fade-in"
+                          >
+                            <PlanCard
+                              plan={plan}
+                              isFavorite={favoriteIds.has(plan.id)}
+                              isViewed={viewedPlans.has(plan.id)}
+                              isComparing={isInComparison(plan.id)}
+                              isBestPrice={isCheapest || isCompanyCheapest}
+                              onToggleFavorite={() => toggleFavorite(plan.id)}
+                              onToggleCompare={() => handleCompareToggle(plan)}
+                              onSelect={() => handlePlanSelect(plan)}
+                              comparisonDisabled={!canAddToComparison && !isInComparison(plan.id)}
+                              savingsAmount={savingsAmount}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
 
             {filteredPlans.length === 0 && <div className="text-center py-12">
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
