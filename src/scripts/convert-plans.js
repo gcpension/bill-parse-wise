@@ -1,26 +1,17 @@
-// Manual plans data - converted from israeli_telecom_plans_hebrew.json
-import { rawPlans, type RawPlan } from './raw-plans-import';
+// Node.js script to convert JSON plans to TypeScript format
+const fs = require('fs');
+const path = require('path');
 
-export interface ManualPlan {
-  id: string;
-  company: string;
-  planName: string;
-  speed: string;
-  introPrice: number;
-  introMonths: number;
-  regularPrice: number;
-  uploadSpeed: string;
-  downloadSpeed: string;
-  features: string[];
-  color: string;
-  category: 'electricity' | 'internet' | 'mobile' | 'tv';
-  dataAmount?: string;
-  smsAmount?: string;
-  callMinutes?: string;
-}
+// Read the JSON file
+const rawPlans = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, '../data/israeli_telecom_plans_hebrew.json'),
+    'utf8'
+  )
+);
 
 // Map category names from Hebrew to English
-const categoryMap: Record<string, 'electricity' | 'internet' | 'mobile' | 'tv'> = {
+const categoryMap = {
   'חשמל': 'electricity',
   'אינטרנט': 'internet',
   'סלולר': 'mobile',
@@ -28,8 +19,8 @@ const categoryMap: Record<string, 'electricity' | 'internet' | 'mobile' | 'tv'> 
 };
 
 // Get color based on category
-function getCategoryColor(category: string): string {
-  const colors: Record<string, string> = {
+function getCategoryColor(category) {
+  const colors = {
     electricity: 'bg-gradient-to-br from-blue-400 to-blue-600',
     internet: 'bg-gradient-to-br from-green-400 to-green-600',
     mobile: 'bg-gradient-to-br from-purple-400 to-purple-600',
@@ -39,34 +30,33 @@ function getCategoryColor(category: string): string {
 }
 
 // Parse price from Hebrew text
-function parsePrice(priceText: string): number {
-  if (!priceText) return 0;
+function parsePrice(priceText) {
   const match = priceText.match(/(\d+(?:\.\d+)?)/);
   return match ? parseFloat(match[1]) : 0;
 }
 
 // Generate unique ID
-function generateId(company: string, planName: string, index: number): string {
-  const combined = `${company}-${planName}-${index}`;
-  const normalized = combined
+function generateId(company, planName) {
+  const combined = `${company}-${planName}`;
+  return combined
     .replace(/\s+/g, '-')
     .replace(/[^\w\u0590-\u05FF-]/g, '')
     .toLowerCase()
-    .substring(0, 100);
-  return normalized || `plan-${index}`;
+    .substring(0, 100); // Limit length
 }
 
 // Convert raw plan to ManualPlan format
-function convertRawPlan(raw: RawPlan, index: number): ManualPlan | null {
+function convertRawPlan(raw, index) {
   const category = categoryMap[raw.קטגוריה];
   if (!category) {
+    console.warn(`Unknown category: ${raw.קטגוריה}`);
     return null;
   }
 
   const price = parsePrice(raw.מחיר);
   
   // Build features array
-  const features: string[] = [];
+  const features = [];
   
   if (raw.הערות && raw.הערות !== 'לא רלוונטי') {
     features.push(raw.הערות);
@@ -89,7 +79,7 @@ function convertRawPlan(raw: RawPlan, index: number): ManualPlan | null {
   }
 
   // Extract data amount for mobile
-  let dataAmount: string | undefined = undefined;
+  let dataAmount = undefined;
   if (category === 'mobile' && raw['נפח/מהירות'] !== 'לא רלוונטי' && raw['נפח/מהירות'] !== 'ללא הגבלה') {
     dataAmount = raw['נפח/מהירות'];
   }
@@ -102,7 +92,7 @@ function convertRawPlan(raw: RawPlan, index: number): ManualPlan | null {
   }
 
   return {
-    id: generateId(raw.שם_חברה, raw.שם_המסלול, index),
+    id: generateId(raw.שם_חברה, raw.שם_המסלול) || `plan-${index}`,
     company: raw.שם_חברה,
     planName: raw.שם_המסלול,
     speed: raw['נפח/מהירות'] !== 'לא רלוונטי' ? raw['נפח/מהירות'] : '',
@@ -119,7 +109,30 @@ function convertRawPlan(raw: RawPlan, index: number): ManualPlan | null {
   };
 }
 
-// Convert all raw plans
-export const manualPlans: ManualPlan[] = rawPlans
+// Convert all plans
+const convertedPlans = rawPlans
   .map((raw, index) => convertRawPlan(raw, index))
-  .filter((plan): plan is ManualPlan => plan !== null);
+  .filter(plan => plan !== null);
+
+console.log(`Converted ${convertedPlans.length} plans successfully`);
+
+// Generate TypeScript file content
+const tsContent = `// Auto-generated file - converted from israeli_telecom_plans_hebrew.json
+// DO NOT EDIT MANUALLY - regenerate using: node src/scripts/convert-plans.js
+
+import type { ManualPlan } from './manual-plans';
+
+export const convertedPlans: ManualPlan[] = ${JSON.stringify(convertedPlans, null, 2)};
+`;
+
+// Write to file
+const outputPath = path.join(__dirname, '../data/converted-plans.ts');
+fs.writeFileSync(outputPath, tsContent, 'utf8');
+
+console.log(`Successfully wrote ${convertedPlans.length} plans to ${outputPath}`);
+console.log('Plans by category:');
+const categoryCounts = convertedPlans.reduce((acc, plan) => {
+  acc[plan.category] = (acc[plan.category] || 0) + 1;
+  return acc;
+}, {});
+console.log(categoryCounts);
