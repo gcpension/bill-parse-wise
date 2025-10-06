@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, X, Sparkles, TrendingUp, Star } from 'lucide-react';
+import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, X, Sparkles, TrendingUp, Star, Target, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import { QuickRecommendationFlow, QuickFlowData } from '@/components/QuickRecommendationFlow';
@@ -209,61 +209,67 @@ const Home = () => {
         <Wifi className="absolute bottom-[80%] left-[50%] w-6 h-6 text-purple-600 opacity-15" />
       </div>
 
-      {/* Optimized Hero Section - Single CTA */}
-      <section className="bg-gray-50 py-16 lg:py-24 relative overflow-hidden">
-        {/* Background illustration */}
-        <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" style={{
-        backgroundImage: `url(${heroBackgroundIllustration})`
-      }}>
-        </div>
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
-          <div className="text-center">
-            
-            {/* Clean subtitle */}
-            <p className="text-lg text-purple-600 mb-8 font-assistant">
-              המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
-            </p>
-            
-            {/* Clean main title */}
-            <h1 className="text-4xl lg:text-6xl font-heebo font-light text-royal-purple mb-4 leading-tight">
-              חסכו בחשבונות הבית
-              <br />
-              <span className="font-medium text-purple-700">בקלות ובמהירות</span>
-            </h1>
-            
-            <p className="text-xl text-purple-600 mt-6 font-assistant max-w-3xl mx-auto">
-              אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
-            </p>
+      {/* Hero Section */}
+      <section className="relative min-h-[85vh] flex items-center justify-center bg-background">
+        {/* Content */}
+        <div className="container relative z-10 mx-auto px-4 py-20">
+          <div className="max-w-5xl mx-auto text-center space-y-12">
+            {/* Main heading */}
+            <div className="space-y-6">
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-heading font-bold leading-[1.1] tracking-tight">
+                <span className="text-foreground">
+                  חסכו עד 
+                </span>
+                <span className="text-primary"> ₪500 </span>
+                <span className="text-foreground">
+                  בחודש
+                </span>
+                <br />
+                <span className="text-foreground/80 text-5xl md:text-6xl lg:text-7xl">
+                  על החשבונות שלכם
+                </span>
+              </h1>
 
-            {/* Single Prominent CTA */}
-            <div className="mt-12 flex flex-col items-center gap-4">
+              {/* Subtitle */}
+              <p className="text-2xl md:text-3xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
+                השוואת מחירים חכמה לחשמל, סלולר, אינטרנט וטלוויזיה
+              </p>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col items-center gap-8">
               <Button
                 size="lg"
                 onClick={() => setShowQuickFlow(true)}
-                className="bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white px-12 py-8 text-xl font-heebo font-bold rounded-2xl shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
+                className="text-2xl px-16 py-10 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] bg-primary hover:bg-primary/90 font-heading font-semibold"
               >
-                <Sparkles className="w-6 h-6 ml-3" />
-                מצא לי את התכנית הטובה ביותר
+                <Sparkles className="ml-3 w-6 h-6" />
+                מצא לי את התוכנית הטובה ביותר
+                <ArrowRight className="mr-3 w-6 h-6" />
               </Button>
-              
-              <div className="flex gap-4 text-sm">
+
+              {/* Secondary options */}
+              <div className="flex flex-wrap justify-center gap-6 text-muted-foreground">
                 <Button
-                  variant="outline"
-                  onClick={() => {
-                    setShowQuickFlow(true);
-                  }}
-                  className="font-assistant hover:border-purple-400"
+                  variant="ghost"
+                  size="lg"
+                  onClick={() => setShowQuickFlow(true)}
+                  className="gap-3 hover:text-primary transition-colors text-base font-medium"
                 >
-                  ⚡ מהיר (30 שניות)
+                  <Zap className="w-5 h-5" />
+                  <span>השוואה מהירה (30 שניות)</span>
                 </Button>
+                
+                <span className="text-muted-foreground/30 text-lg">|</span>
+                
                 <Button
-                  variant="outline"
-                  onClick={() => {
-                    setShowPersonalizedWizard(true);
-                  }}
-                  className="font-assistant hover:border-purple-400"
+                  variant="ghost"
+                  size="lg"
+                  onClick={() => setShowPersonalizedWizard(true)}
+                  className="gap-3 hover:text-primary transition-colors text-base font-medium"
                 >
-                  🎯 מפורט (2 דקות)
+                  <Target className="w-5 h-5" />
+                  <span>אשף מפורט (2 דקות)</span>
                 </Button>
               </div>
             </div>

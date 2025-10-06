@@ -23,11 +23,16 @@ export const QuickComparisonCard = ({
   const topThree = plans.slice(0, 3);
 
   return (
-    <Card className="mt-6">
-      <CardContent className="p-6">
-        <h4 className="text-lg font-bold font-heebo mb-4">השוואה מהירה - 3 המסלולים המובילים</h4>
+    <Card className="p-8 border border-border/50 shadow-sm bg-card/50 backdrop-blur-sm">
+      <div className="space-y-6">
+        <div className="flex items-center gap-3 pb-4 border-b border-border/50">
+          <div className="p-2 rounded-lg bg-primary/10">
+            <Star className="w-5 h-5 text-primary" />
+          </div>
+          <h3 className="text-2xl font-heading font-semibold text-foreground">השוואה מהירה</h3>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-3 gap-6">
           {topThree.map((plan, idx) => {
             const isTop = plan.id === topPlanId;
             const savings = expectedSavings[idx];
@@ -36,50 +41,47 @@ export const QuickComparisonCard = ({
               <div
                 key={plan.id}
                 className={cn(
-                  "relative border-2 rounded-lg p-4 transition-all duration-200",
+                  "relative p-6 rounded-xl border transition-all hover:shadow-lg group",
                   isTop 
-                    ? "border-primary bg-primary/5 shadow-lg" 
-                    : "border-border hover:border-primary/50"
+                    ? "border-primary/50 bg-primary/5 shadow-md" 
+                    : "border-border/50 bg-card/80 hover:border-primary/30"
                 )}
               >
                 {isTop && (
-                  <Badge className="absolute -top-2 right-4 bg-gradient-to-r from-primary to-primary-glow">
-                    <Star className="w-3 h-3 ml-1 fill-current" />
-                    מומלץ ביותר
+                  <Badge className="absolute -top-3 right-4 bg-primary text-primary-foreground shadow-md px-3 py-1">
+                    המומלץ ביותר
                   </Badge>
                 )}
                 
-                <div className="mt-2 space-y-3">
+                <div className="space-y-4 mt-2">
                   <div>
-                    <div className="font-bold font-heebo text-lg">{plan.company}</div>
-                    <div className="text-sm text-muted-foreground font-assistant line-clamp-1">
-                      {plan.planName}
-                    </div>
+                    <h4 className="font-heading font-semibold text-xl text-foreground mb-1">{plan.company}</h4>
+                    <p className="text-sm text-muted-foreground line-clamp-1">{plan.planName}</p>
                   </div>
 
                   {plan.regularPrice > 0 && (
-                    <div className="text-center py-2">
-                      <div className="text-2xl font-bold font-heebo text-primary">
-                        ₪{plan.regularPrice}
+                    <div className="pt-4 border-t border-border/50">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-heading font-bold text-primary">₪{plan.regularPrice}</span>
+                        <span className="text-sm font-normal text-muted-foreground">/חודש</span>
                       </div>
-                      <div className="text-xs text-muted-foreground">לחודש</div>
                     </div>
                   )}
 
                   {savings && savings.monthly > 0 && (
-                    <div className="bg-green-50 dark:bg-green-950/20 rounded p-2 text-center">
-                      <div className="flex items-center justify-center gap-1 text-green-700 dark:text-green-400 text-sm font-bold">
+                    <div className="bg-green-50 dark:bg-green-950/20 rounded-lg p-3 border border-green-200/50 dark:border-green-800/50">
+                      <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
                         <TrendingDown className="w-4 h-4" />
-                        חיסכון: ₪{savings.monthly}/חודש
+                        <span className="text-sm font-semibold">חיסכון ₪{savings.monthly}/חודש</span>
                       </div>
                     </div>
                   )}
 
-                  <div className="space-y-1">
+                  <div className="space-y-2">
                     {plan.features.slice(0, 3).map((feature, fIdx) => (
-                      <div key={fIdx} className="flex items-start gap-1 text-xs font-assistant">
-                        <Check className="w-3 h-3 shrink-0 mt-0.5 text-primary" />
-                        <span className="line-clamp-1">{feature}</span>
+                      <div key={fIdx} className="flex items-start gap-2 text-sm">
+                        <Check className="w-4 h-4 shrink-0 mt-0.5 text-primary" />
+                        <span className="line-clamp-2">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -88,16 +90,16 @@ export const QuickComparisonCard = ({
                     size="sm"
                     variant={isTop ? "default" : "outline"}
                     onClick={() => onSelectPlan(plan)}
-                    className="w-full font-heebo"
+                    className="w-full font-heading"
                   >
-                    {isTop ? 'בחר מסלול זה' : 'פרטים נוספים'}
+                    {isTop ? 'בחר תוכנית זו' : 'פרטים נוספים'}
                   </Button>
                 </div>
               </div>
             );
           })}
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };
