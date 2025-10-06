@@ -103,7 +103,41 @@ const AllPlans = ({
     homeType: 'apartment'
   });
 
-  // Load stored data on mount
+  // Load Quick Flow data if available
+  useEffect(() => {
+    const quickFlowData = localStorage.getItem('quickFlowData');
+    if (quickFlowData) {
+      try {
+        const data = JSON.parse(quickFlowData);
+        
+        // Auto-set category based on detected category
+        if (data.detectedCategory) {
+          const categoryMapping: Record<string, CategoryType> = {
+            'cellular': 'mobile',
+            'electricity': 'electricity',
+            'internet': 'internet',
+            'tv': 'tv'
+          };
+          setSelectedCategory(categoryMapping[data.detectedCategory] || data.detectedCategory as CategoryType);
+        }
+        
+        // Set user context from Quick Flow
+        setCurrentUserPlan({
+          name: '',
+          price: data.currentBill?.toString() || '',
+          company: '',
+          usage: 'medium'
+        });
+        
+        // Clear Quick Flow data after loading
+        localStorage.removeItem('quickFlowData');
+      } catch (error) {
+        console.error('Error loading Quick Flow data:', error);
+      }
+    }
+  }, []);
+
+  // Load stored analysis data
   useEffect(() => {
     const storedData = localStorage.getItem('analysisData');
     if (storedData) {

@@ -1058,6 +1058,20 @@ const Home = () => {
       
       {/* Back to Top Button */}
       <BackToTop />
+
+      {/* Quick Flow Dialog */}
+      <QuickRecommendationFlow
+        isOpen={showQuickFlow}
+        onClose={() => setShowQuickFlow(false)}
+        onComplete={handleQuickFlowComplete}
+      />
+
+      {/* Personalized Wizard Dialog */}
+      <PersonalizedRecommendationWizard
+        onClose={() => setShowPersonalizedWizard(false)}
+        onComplete={handlePersonalizedComplete}
+        categories={['electricity', 'internet', 'mobile', 'tv']}
+      />
     </div>;
 };
 export default Home;

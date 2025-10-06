@@ -8,6 +8,7 @@ import { TrendingDown, Star, Check, AlertCircle, ArrowRight } from "lucide-react
 import { PersonalizedRecommendation } from "@/lib/personalizedRecommendations";
 import { ManualPlan } from "@/data/manual-plans";
 import { CoverageIndicator } from "@/components/CoverageIndicator";
+import { QuickComparisonCard } from "@/components/QuickComparisonCard";
 import { cn } from "@/lib/utils";
 
 interface RecommendationResultsProps {
@@ -94,17 +95,17 @@ export const RecommendationResults = ({
                   </p>
                 </div>
 
-                {/* Top Recommendation */}
-                <Card className="mb-4 border-2">
+                {/* Top Recommendation - Enhanced */}
+                <Card className="mb-4 border-2 border-primary shadow-xl">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between gap-6">
                       <div className="flex-1 space-y-4">
                         <div className="flex items-start justify-between">
                           <div>
                             <div className="flex items-center gap-2 mb-2">
-                              <Badge className="gap-1">
+                              <Badge className="gap-1 bg-gradient-to-r from-primary to-primary-glow">
                                 <Star className="w-3 h-3 fill-current" />
-                                המלצה ראשונה
+                                ההמלצה שלנו בשבילך
                               </Badge>
                               <Badge variant="outline">
                                 {Math.round(topRec.recommendation.personalizedScore)}% התאמה
@@ -116,7 +117,7 @@ export const RecommendationResults = ({
                           
                           {topRec.plan.regularPrice > 0 && (
                             <div className="text-left">
-                              <div className="text-3xl font-bold font-heebo">
+                              <div className="text-3xl font-bold font-heebo text-primary">
                                 ₪{topRec.plan.regularPrice}
                               </div>
                               <div className="text-sm text-muted-foreground">לחודש</div>
@@ -124,23 +125,23 @@ export const RecommendationResults = ({
                           )}
                         </div>
 
-                        {/* Savings */}
+                        {/* Savings - Enhanced */}
                         {topRec.recommendation.expectedSavings.monthly > 0 && (
-                          <div className="bg-muted rounded-lg p-4">
+                          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
                             <div className="flex items-center gap-2 mb-2">
-                              <TrendingDown className="w-5 h-5" />
-                              <span className="font-bold font-heebo">חיסכון צפוי</span>
+                              <TrendingDown className="w-5 h-5 text-green-600" />
+                              <span className="font-bold font-heebo text-green-700 dark:text-green-400">💰 חיסכון משמעותי!</span>
                             </div>
                             <div className="grid grid-cols-2 gap-4 text-sm">
                               <div>
-                                <div className="text-muted-foreground font-assistant">חודשי</div>
-                                <div className="text-lg font-bold font-heebo">
+                                <div className="text-muted-foreground font-assistant">חיסכון חודשי</div>
+                                <div className="text-xl font-bold font-heebo text-green-700 dark:text-green-400">
                                   ₪{topRec.recommendation.expectedSavings.monthly}
                                 </div>
                               </div>
                               <div>
-                                <div className="text-muted-foreground font-assistant">שנתי</div>
-                                <div className="text-lg font-bold font-heebo">
+                                <div className="text-muted-foreground font-assistant">חיסכון שנתי</div>
+                                <div className="text-xl font-bold font-heebo text-green-700 dark:text-green-400">
                                   ₪{topRec.recommendation.expectedSavings.annual}
                                 </div>
                               </div>
@@ -192,14 +193,27 @@ export const RecommendationResults = ({
                         <Button onClick={() => {
                           localStorage.setItem('selectedPlanForSwitch', JSON.stringify(topRec.plan));
                           onPlanSelect(topRec.plan);
-                        }} className="w-full font-heebo">
+                        }} className="w-full font-heebo bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary">
                           <ArrowRight className="w-4 h-4 ml-2" />
-                          בחר מסלול זה
+                          המשך לבקשת מעבר
                         </Button>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Quick Comparison */}
+                {categoryRecs.length > 1 && (
+                  <QuickComparisonCard
+                    plans={categoryRecs.slice(0, 3).map(r => r.plan)}
+                    topPlanId={topRec.plan.id}
+                    onSelectPlan={(plan) => {
+                      localStorage.setItem('selectedPlanForSwitch', JSON.stringify(plan));
+                      onPlanSelect(plan);
+                    }}
+                    expectedSavings={categoryRecs.slice(0, 3).map(r => r.recommendation.expectedSavings)}
+                  />
+                )}
 
                 {/* Additional Recommendations */}
                 {categoryRecs.length > 1 && (
