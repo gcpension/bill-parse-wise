@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -94,31 +94,29 @@ export const PersonalizedRecommendationWizard = ({
     tv: { icon: <Tv className="w-4 h-4" />, label: 'טלוויזיה' }
   };
 
-  // שלבים ספציפיים לכל סקטור
+  // שלבים ספציפיים לכל סקטור - עכשיו יותר קצרים וממוקדים
   const getSectorSteps = () => {
-    // Base steps only for first category
+    // Base step only for first category - merged all basic info
     const baseSteps = currentCategoryIndex === 0 ? [
-      { id: 'basic', title: 'פרטים בסיסיים', icon: <User className="w-4 h-4" /> },
-      { id: 'location', title: 'מיקום', icon: <Globe className="w-4 h-4" /> },
-      { id: 'budget', title: 'תקציב', icon: <DollarSign className="w-4 h-4" /> }
+      { id: 'overview', title: 'בואו נכיר', icon: <Users className="w-4 h-4" /> }
     ] : [];
 
     const sectorSpecificSteps = {
       electricity: [
-        { id: 'usage', title: 'צריכת חשמל', icon: <Zap className="w-4 h-4" /> },
-        { id: 'priorities', title: 'עדיפויות', icon: <Star className="w-4 h-4" /> }
+        { id: 'usage', title: `שימוש ב${categoryConfig[category].label}`, icon: <Zap className="w-4 h-4" /> },
+        { id: 'priorities', title: 'מה חשוב לך', icon: <Star className="w-4 h-4" /> }
       ],
       internet: [
-        { id: 'usage', title: 'שימוש באינטרנט', icon: <Router className="w-4 h-4" /> },
-        { id: 'priorities', title: 'עדיפויות', icon: <Star className="w-4 h-4" /> }
+        { id: 'usage', title: `שימוש ב${categoryConfig[category].label}`, icon: <Router className="w-4 h-4" /> },
+        { id: 'priorities', title: 'מה חשוב לך', icon: <Star className="w-4 h-4" /> }
       ],
       mobile: [
-        { id: 'usage', title: 'שימוש בסלולר', icon: <Signal className="w-4 h-4" /> },
-        { id: 'priorities', title: 'עדיפויות', icon: <Star className="w-4 h-4" /> }
+        { id: 'usage', title: `שימוש ב${categoryConfig[category].label}`, icon: <Signal className="w-4 h-4" /> },
+        { id: 'priorities', title: 'מה חשוב לך', icon: <Star className="w-4 h-4" /> }
       ],
       tv: [
-        { id: 'usage', title: 'צפייה בטלוויזיה', icon: <MonitorSpeaker className="w-4 h-4" /> },
-        { id: 'priorities', title: 'עדיפויות', icon: <Star className="w-4 h-4" /> }
+        { id: 'usage', title: `שימוש ב${categoryConfig[category].label}`, icon: <MonitorSpeaker className="w-4 h-4" /> },
+        { id: 'priorities', title: 'מה חשוב לך', icon: <Star className="w-4 h-4" /> }
       ]
     };
 
@@ -126,6 +124,38 @@ export const PersonalizedRecommendationWizard = ({
   };
 
   const steps = getSectorSteps();
+
+  // Load saved data on mount
+  useEffect(() => {
+    const savedProfile = localStorage.getItem('wizardProfile');
+    const savedStep = localStorage.getItem('wizardStep');
+    const savedCategory = localStorage.getItem('wizardCategory');
+    
+    if (savedProfile) {
+      try {
+        setProfile(JSON.parse(savedProfile));
+      } catch (e) {
+        console.error('Failed to load saved profile', e);
+      }
+    }
+    if (savedStep) {
+      setCurrentStep(parseInt(savedStep));
+    }
+    if (savedCategory) {
+      setCurrentCategoryIndex(parseInt(savedCategory));
+    }
+  }, []);
+
+  // Auto-save progress to localStorage whenever profile changes
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      localStorage.setItem('wizardProfile', JSON.stringify(profile));
+      localStorage.setItem('wizardStep', currentStep.toString());
+      localStorage.setItem('wizardCategory', currentCategoryIndex.toString());
+    }, 500); // Debounce saves by 500ms
+
+    return () => clearTimeout(timeout);
+  }, [profile, currentStep, currentCategoryIndex]);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -502,278 +532,125 @@ export const PersonalizedRecommendationWizard = ({
     const step = steps[currentStep];
 
     switch (step.id) {
-      case 'basic':
+      case 'overview':
         return (
-          <div className="space-y-8">
-            {/* Family Size - Interactive Counter */}
-            <div className="space-y-4">
-              <div className="text-center">
-                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <Users className="w-5 h-5 text-primary" />
-                  גודל משק הבית
-                </Label>
-                <p className="text-sm text-muted-foreground mt-1">כמה אנשים גרים בבית?</p>
-              </div>
-              
-              <div className="flex items-center justify-center gap-4">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => updateProfile({ familySize: Math.max(1, profile.familySize - 1) })}
-                  disabled={profile.familySize <= 1}
-                  className="h-12 w-12 rounded-full hover:scale-110 transition-transform"
-                >
-                  -
-                </Button>
-                
-                <div className="flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 border-2 border-primary/20 animate-pulse">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">{profile.familySize}</div>
-                    <div className="text-xs text-muted-foreground">{profile.familySize === 1 ? 'אדם' : 'אנשים'}</div>
-                  </div>
-                </div>
-                
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => updateProfile({ familySize: Math.min(8, profile.familySize + 1) })}
-                  disabled={profile.familySize >= 8}
-                  className="h-12 w-12 rounded-full hover:scale-110 transition-transform"
-                >
-                  +
-                </Button>
-              </div>
-            </div>
-
-            {/* Home Type - Card Selection */}
-            <div className="space-y-4">
-              <div className="text-center">
-                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <Home className="w-5 h-5 text-primary" />
-                  סוג הדיור
-                </Label>
-                <p className="text-sm text-muted-foreground mt-1">איפה אתם גרים?</p>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { value: 'apartment', label: 'דירה', icon: Building, emoji: '🏠' },
-                  { value: 'house', label: 'בית פרטי', icon: Home, emoji: '🏡' },
-                  { value: 'student', label: 'דיור סטודנטים', icon: GraduationCap, emoji: '🎓' },
-                  { value: 'business', label: 'עסק', icon: Briefcase, emoji: '🏢' }
-                ].map(({ value, label, icon: Icon, emoji }) => (
-                  <Card 
-                    key={value}
-                    className={cn(
-                      "cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md",
-                      profile.homeType === value 
-                        ? "ring-2 ring-primary bg-primary/5 shadow-lg" 
-                        : "hover:bg-muted/50"
-                    )}
-                    onClick={() => updateProfile({ homeType: value as any })}
-                  >
-                    <CardContent className="p-4 text-center">
-                      <div className="text-3xl mb-2">{emoji}</div>
-                      <Icon className="w-5 h-5 mx-auto mb-2 text-primary" />
-                      <div className="font-medium text-sm">{label}</div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Current Provider - Interactive Input */}
-            <div className="space-y-4">
-              <div className="text-center">
-                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                  {categoryConfig[category].icon}
-                  הספק הנוכחי ל{categoryConfig[category].label}
-                </Label>
-                <p className="text-sm text-muted-foreground mt-1">איזה חברה משרתת אתכם היום?</p>
-              </div>
-              
-              <div className="relative">
-                <Input
-                  value={profile.currentProvider}
-                  onChange={(e) => updateProfile({ currentProvider: e.target.value })}
-                  placeholder="לדוגמה: בזק, פרטנר, סלקום..."
-                  className="h-14 text-center text-lg font-medium rounded-xl border-2 transition-all duration-300 focus:scale-105"
-                />
-                {profile.currentProvider && (
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <CheckCircle className="w-5 h-5 text-success animate-scale-in" />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'location':
-        return (
-          <div className="space-y-8">
-            {/* Location Input */}
-            <div className="text-center space-y-3">
-              <div className="flex items-center justify-center gap-3">
-                <Globe className="w-8 h-8 text-primary" />
-                <h3 className="text-2xl font-bold text-foreground">
-                  איפה אתם גרים?
-                </h3>
-              </div>
-              <p className="text-muted-foreground max-w-lg mx-auto">
-                המיקום שלכם משפיע על זמינות הסיבים האופטיים וכיסוי הרשתות הסלולריות
+          <div className="space-y-6 animate-fade-in">
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
+              <p className="text-sm text-muted-foreground text-right">
+                💡 כל השאלות אופציונליות - ככל שתענה על יותר, ההמלצות יהיו מדויקות יותר
               </p>
             </div>
 
-            <Card className="border-2 border-primary/20">
-              <CardContent className="p-6 space-y-6">
-                {/* City/Area Input */}
-                <div className="space-y-4">
-                  <Label className="text-base font-semibold">עיר או אזור מגורים</Label>
-                  <div className="relative">
-                    <Input
-                      value={profile.location}
-                      onChange={(e) => updateProfile({ location: e.target.value })}
-                      placeholder="לדוגמה: תל אביב, חיפה, ירושלים..."
-                      className="h-14 text-lg pr-12 rounded-xl border-2 transition-all duration-300 focus:scale-105"
-                    />
-                    <Globe className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    {profile.location && (
-                      <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                        <CheckCircle className="w-5 h-5 text-success animate-scale-in" />
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Quick Location Buttons */}
-                <div className="space-y-3">
-                  <Label className="text-sm text-muted-foreground">או בחרו אזור:</Label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { value: 'תל אביב', emoji: '🏙️', region: 'מרכז' },
-                      { value: 'חיפה', emoji: '⛰️', region: 'צפון' },
-                      { value: 'ירושלים', emoji: '🕌', region: 'ירושלים' },
-                      { value: 'באר שבע', emoji: '🏜️', region: 'דרום' }
-                    ].map(({ value, emoji, region }) => (
-                      <Button
-                        key={value}
-                        variant={profile.location === value ? "default" : "outline"}
-                        onClick={() => updateProfile({ location: value })}
-                        className={cn(
-                          "h-auto p-4 flex flex-col items-center gap-2 transition-all duration-300",
-                          profile.location === value && "ring-2 ring-primary shadow-lg"
-                        )}
-                      >
-                        <span className="text-3xl">{emoji}</span>
-                        <div className="text-center">
-                          <div className="font-semibold text-sm">{value}</div>
-                          <div className="text-xs text-muted-foreground">{region}</div>
-                        </div>
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Info Box */}
-                {profile.location && (
-                  <div className="mt-4 p-4 bg-primary/5 border border-primary/20 rounded-xl animate-fade-in">
-                    <div className="flex items-start gap-3">
-                      <Lightbulb className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <div className="text-sm text-foreground">
-                        <p className="font-medium mb-1">💡 למה זה חשוב?</p>
-                        <p className="text-muted-foreground">
-                          המיקום שלכם יעזור לנו להמליץ על ספקים עם כיסוי מעולה באזור שלכם,
-                          ולהתאים את מהירות האינטרנט לזמינות הסיבים האופטיים.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        );
-
-      case 'budget':
-        return (
-          <div className="space-y-8">
-            {/* Monthly Budget - Interactive Input */}
-            <div className="space-y-6">
-              <div className="text-center">
-                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <DollarSign className="w-5 h-5 text-primary" />
-                  תקציב חודshי מקסימלי
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="familySize" className="text-lg font-semibold flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  כמה נפשות במשפחה?
                 </Label>
-                <p className="text-sm text-muted-foreground mt-1">כמה אתם מוכנים להשקיע בחודש?</p>
+                <Input
+                  id="familySize"
+                  type="number"
+                  min="1"
+                  max="20"
+                  value={profile.familySize}
+                  onChange={(e) => updateProfile({ familySize: parseInt(e.target.value) || 1 })}
+                  className="text-right text-lg h-12"
+                  placeholder="4"
+                />
               </div>
-              
-              <div className="relative">
-                <div className="flex items-center justify-center gap-4 mb-6">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => updateProfile({ monthlyBudget: Math.max(50, profile.monthlyBudget - 10) })}
-                    className="h-12 w-12 rounded-full hover:scale-110 transition-transform"
-                  >
-                    -
-                  </Button>
-                  
-                  <div className="flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-r from-primary/10 to-primary-glow/10 border-4 border-primary/20 shadow-lg">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">{profile.monthlyBudget}</div>
-                      <div className="text-sm text-muted-foreground">₪ בחודש</div>
-                    </div>
-                  </div>
-                  
-                  <Button
-                    variant="outline" 
-                    size="icon"
-                    onClick={() => updateProfile({ monthlyBudget: Math.min(1000, profile.monthlyBudget + 10) })}
-                    className="h-12 w-12 rounded-full hover:scale-110 transition-transform"
-                  >
-                    +
-                  </Button>
-                </div>
-                
-                <div className="px-4">
-                  <Slider
-                    value={[profile.monthlyBudget]}
-                    onValueChange={([value]) => updateProfile({ monthlyBudget: value })}
-                    max={500}
-                    min={50}
-                    step={10}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-sm text-muted-foreground mt-2">
-                    <span>50₪</span>
-                    <span>500₪</span>
-                  </div>
-                </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="homeType" className="text-lg font-semibold flex items-center gap-2">
+                  <Home className="w-5 h-5" />
+                  סוג הדיור
+                </Label>
+                <Select
+                  value={profile.homeType}
+                  onValueChange={(value: 'apartment' | 'house' | 'student' | 'business') => 
+                    updateProfile({ homeType: value })
+                  }
+                >
+                  <SelectTrigger id="homeType" className="text-right text-lg h-12">
+                    <SelectValue placeholder="בחר סוג דיור" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="apartment">דירה</SelectItem>
+                    <SelectItem value="house">בית פרטי</SelectItem>
+                    <SelectItem value="student">דיור סטודנטים</SelectItem>
+                    <SelectItem value="business">עסק</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
-            {/* Current Spending */}
-            <div className="space-y-6">
-              <div className="text-center">
-                <Label className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-primary" />
-                  התשלום החודשי הנוכחי
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="location" className="text-lg font-semibold flex items-center gap-2">
+                  <Globe className="w-5 h-5" />
+                  איזור מגורים (אופציונלי)
                 </Label>
-                <p className="text-sm text-muted-foreground mt-1">כמה אתם משלמים היום?</p>
+                <div className="flex gap-2">
+                  <Input
+                    id="location"
+                    value={profile.location}
+                    onChange={(e) => updateProfile({ location: e.target.value })}
+                    placeholder="עיר או אזור"
+                    className="text-right text-lg h-12 flex-1"
+                  />
+                </div>
+                <div className="flex gap-2 mt-2">
+                  {['מרכז', 'צפון', 'דרום', 'ירושלים'].map(region => (
+                    <Button
+                      key={region}
+                      type="button"
+                      variant={profile.location === region ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => updateProfile({ location: region })}
+                      className="flex-1"
+                    >
+                      {region}
+                    </Button>
+                  ))}
+                </div>
               </div>
-              
-              <div className="relative">
+
+              <div className="space-y-2">
+                <Label htmlFor="monthlyBudget" className="text-lg font-semibold flex items-center gap-2">
+                  <DollarSign className="w-5 h-5" />
+                  כמה אתם משלמים היום?
+                </Label>
                 <Input
+                  id="monthlyBudget"
                   type="number"
-                  value={profile.currentMonthlySpend}
-                  onChange={(e) => updateProfile({ currentMonthlySpend: parseInt(e.target.value) || 0 })}
-                  placeholder="0"
-                  className="h-16 text-center text-2xl font-bold rounded-xl border-2 transition-all duration-300 focus:scale-105"
                   min="0"
+                  value={profile.monthlyBudget}
+                  onChange={(e) => updateProfile({ monthlyBudget: parseFloat(e.target.value) || 0 })}
+                  className="text-right text-lg h-12"
+                  placeholder="למשל: 250"
                 />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">₪</div>
+                <p className="text-sm text-muted-foreground text-right">
+                  ₪ לחודש עבור {categoryConfig[category].label}
+                </p>
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="currentProvider" className="text-lg font-semibold flex items-center gap-2">
+                {categoryConfig[category].icon}
+                מי הספק הנוכחי? (אופציונלי)
+              </Label>
+              <Input
+                id="currentProvider"
+                value={profile.currentProvider}
+                onChange={(e) => updateProfile({ currentProvider: e.target.value })}
+                placeholder={
+                  category === 'electricity' ? 'לדוגמה: חברת החשמל' :
+                  category === 'internet' ? 'לדוגמה: בזק בינלאומי' :
+                  category === 'mobile' ? 'לדוגמה: פרטנר' :
+                  'לדוגמה: yes'
+                }
+                className="text-right text-lg h-12"
+              />
             </div>
           </div>
         );

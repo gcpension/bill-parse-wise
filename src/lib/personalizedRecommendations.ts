@@ -173,43 +173,55 @@ export class PersonalizedRecommendationEngine {
     if (userProfile.location) {
       const coverageData = getCoverageForLocation(userProfile.location);
       
-      // For cellular plans
-      if (category === 'mobile') {
-        const coverageScore = getProviderCoverageScore(plan.company, coverageData);
-        matchScore += coverageScore * 3; // Weight coverage heavily for mobile
+      // For cellular/mobile plans - smart coverage filtering
+      if (category === 'mobile' || category === 'cellular') {
+        const providerCoverage = getProviderCoverageScore(plan.company, coverageData);
         
-        if (coverageScore >= 4.5) {
-          reasonsForRecommendation.push(`כיסוי מצוין ב${coverageData.city || userProfile.location}`);
-          personalizedInsights.push(`${plan.company} מספקת כיסוי מעולה באזור המגורים שלכם`);
-        } else if (coverageScore >= 3.5) {
-          reasonsForRecommendation.push(`כיסוי טוב ב${coverageData.city || userProfile.location}`);
-        } else if (coverageScore < 3) {
-          potentialConcerns.push(`כיסוי מוגבל ב${coverageData.city || userProfile.location} - כדאי לבדוק זמינות`);
-          matchScore -= 5; // Penalty for poor coverage
+        if (providerCoverage < 50) {
+          // Poor coverage - significantly reduce score
+          matchScore -= 15;
+          potentialConcerns.push(`⚠️ כיסוי חלש באזור ${userProfile.location} - מומלץ לבדוק ספק אחר`);
+        } else if (providerCoverage < 70) {
+          // Fair coverage - reduce score moderately
+          matchScore -= 5;
+          potentialConcerns.push(`כיסוי סביר באזור ${userProfile.location}`);
+        } else if (providerCoverage >= 90) {
+          // Excellent coverage - boost score
+          matchScore += 10;
+          reasonsForRecommendation.push(`📶 כיסוי מעולה באזור ${userProfile.location}`);
+          personalizedInsights.push(`${plan.company} מספקת כיסוי מצוין באזור המגורים שלכם`);
+        } else {
+          reasonsForRecommendation.push(`כיסוי טוב באזור ${userProfile.location}`);
         }
         
-        if (coverageData.recommended5G && plan.features?.includes('5G')) {
-          matchScore += 3;
-          reasonsForRecommendation.push('5G זמין באזורכם');
+        if (coverageData.recommended5G && plan.features?.some(f => f.includes('5G'))) {
+          matchScore += 5;
+          reasonsForRecommendation.push('🚀 5G זמין באזורכם');
         }
       }
       
-      // For internet plans
+      // For internet plans - fiber availability matters
       if (category === 'internet') {
-        const fiberScore = getFiberCoverageScore(coverageData);
-        const requestedSpeed = userProfile.categorySpecific?.[category]?.internetSpeed || 200;
+        const hasFiber = plan.features?.some(f => 
+          f.toLowerCase().includes('fiber') || 
+          f.toLowerCase().includes('סיב') ||
+          f.toLowerCase().includes('אופטי')
+        );
         
-        if (fiberScore >= 4 && requestedSpeed >= 500) {
-          matchScore += 4;
-          reasonsForRecommendation.push('סיבים אופטיים זמינים באזורכם');
-          personalizedInsights.push('באזורכם יש תשתית סיבים מלאה - תוכלו ליהנות ממהירויות גבוהות');
-        } else if (fiberScore < 3 && requestedSpeed >= 500) {
-          potentialConcerns.push('כיסוי סיבים חלקי באזור - המהירות המקסימלית עשויה להיות מוגבלת');
-          matchScore -= 3;
+        if (hasFiber) {
+          const fiberScore = getFiberCoverageScore(coverageData);
+          if (fiberScore < 30) {
+            matchScore -= 10;
+            potentialConcerns.push(`⚠️ סיבים אופטיים לא זמינים באזור ${userProfile.location} - שקול תוכנית רגילה`);
+          } else if (fiberScore >= 70) {
+            matchScore += 8;
+            reasonsForRecommendation.push(`🌐 סיבים אופטיים זמינים באזור ${userProfile.location}`);
+            personalizedInsights.push('באזורכם יש תשתית סיבים מלאה - תוכלו ליהנות ממהירויות גבוהות');
+          }
         }
         
-        // Adjust speed expectations based on coverage
-        if (coverageData.maxInternetSpeed < requestedSpeed) {
+        const requestedSpeed = userProfile.categorySpecific?.[category]?.internetSpeed || 200;
+        if (coverageData.maxInternetSpeed && coverageData.maxInternetSpeed < requestedSpeed) {
           potentialConcerns.push(`המהירות המקסימלית באזורכם היא ${coverageData.maxInternetSpeed} Mbps`);
           actionRecommendations.push('כדאי לבדוק זמינות בכתובת המדויקת שלכם');
         }
@@ -273,7 +285,7 @@ export class PersonalizedRecommendationEngine {
   }
   
   /**
-   * Analyze budget fit
+   * Analyze budget fit with smart estimation
    */
   private static analyzeBudgetFit(plan: ManualPlan, userProfile: UserProfile) {
     const score = { score: 0, reasons: [] as string[], concerns: [] as string[] };
@@ -291,38 +303,67 @@ export class PersonalizedRecommendationEngine {
       return score;
     }
     
-    // Budget flexibility analysis
-    const budgetRatio = planPrice / userProfile.monthlyBudget;
-    
-    if (budgetRatio <= 0.7) {
-      score.score += 30;
-      score.reasons.push(`💵 המחיר נמוך מהתקציב שלכם ב-${Math.round((1 - budgetRatio) * 100)}%`);
-    } else if (budgetRatio <= 0.9) {
+    // If user provided current spending, compare to that. Otherwise use budget or estimate
+    const referencePrice = userProfile.currentMonthlySpend > 0 
+      ? userProfile.currentMonthlySpend 
+      : userProfile.monthlyBudget > 0 
+        ? userProfile.monthlyBudget
+        : this.estimateReasonableBudget(plan.category, userProfile);
+
+    const priceRatio = planPrice / referencePrice;
+    const savings = referencePrice - planPrice;
+
+    // Calculate score based on savings/price ratio
+    if (savings > 0) {
+      const savingsPercent = (savings / referencePrice) * 100;
+      score.score += Math.min(30, savings / 5);
+      score.reasons.push(`💰 חוסך ₪${Math.round(savings)} לחודש (${Math.round(savingsPercent)}%)`);
+    } else if (priceRatio <= 1.05) {
       score.score += 20;
-      score.reasons.push(`✅ המחיר מתאים לתקציב שלכם`);
-    } else if (budgetRatio <= 1.1) {
-      if (userProfile.priceFlexibility !== 'strict') {
-        score.score += 10;
-        score.reasons.push(`⚠️ המחיר מעט מעל התקציב אבל עדיין סביר`);
-      } else {
-        score.concerns.push(`💸 המחיר מעל התקציב שהגדרתם`);
-      }
+      score.reasons.push(`✅ מחיר דומה למה שאתם משלמים היום`);
+    } else if (priceRatio <= 1.15) {
+      const extra = planPrice - referencePrice;
+      score.score += 10;
+      score.concerns.push(`💸 דורש ₪${Math.round(extra)} נוספים לחודש`);
     } else {
-      score.concerns.push(`❌ המחיר גבוה משמעותית מהתקציב שלכם`);
-    }
-    
-    // Current spending comparison
-    if (userProfile.currentMonthlySpend > 0) {
-      const savings = userProfile.currentMonthlySpend - planPrice;
-      if (savings > 0) {
-        score.score += Math.min(20, savings / 10);
-        score.reasons.push(`📉 חיסכון של ₪${savings} לחודש לעומת המחיר הנוכחי`);
-      } else if (savings < -50) {
-        score.concerns.push(`📈 יעלה לכם ₪${Math.abs(savings)} לחודש לעומת מה שאתם משלמים היום`);
-      }
+      const extra = planPrice - referencePrice;
+      score.concerns.push(`❌ יותר יקר ב-₪${Math.round(extra)} לחודש`);
     }
     
     return score;
+  }
+
+  /**
+   * Estimate reasonable budget based on category and family size
+   */
+  private static estimateReasonableBudget(category: string, userProfile: UserProfile): number {
+    const familySize = userProfile.familySize;
+    const homeType = userProfile.homeType;
+
+    switch (category) {
+      case 'electricity':
+        // Base consumption per person + home type multiplier
+        const baseElectricity = 100;
+        const perPerson = 50;
+        const homeMultiplier = homeType === 'house' ? 1.3 : 1;
+        return (baseElectricity + (perPerson * familySize)) * homeMultiplier;
+      
+      case 'internet':
+        // Internet doesn't scale much with family size
+        return homeType === 'house' ? 120 : 100;
+      
+      case 'mobile':
+      case 'cellular':
+        // Scales with family size
+        return 70 * familySize;
+      
+      case 'tv':
+        // Base package for household
+        return 150;
+      
+      default:
+        return 200;
+    }
   }
   
   /**
