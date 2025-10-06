@@ -189,7 +189,10 @@ export const RecommendationResults = ({
                           </div>
                         )}
 
-                        <Button onClick={() => onPlanSelect(topRec.plan)} className="w-full font-heebo">
+                        <Button onClick={() => {
+                          localStorage.setItem('selectedPlanForSwitch', JSON.stringify(topRec.plan));
+                          onPlanSelect(topRec.plan);
+                        }} className="w-full font-heebo">
                           <ArrowRight className="w-4 h-4 ml-2" />
                           בחר מסלול זה
                         </Button>

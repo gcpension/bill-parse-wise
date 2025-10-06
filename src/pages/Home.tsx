@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, X, Sparkles, TrendingUp, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
+import { QuickRecommendationFlow, QuickFlowData } from '@/components/QuickRecommendationFlow';
+import { PersonalizedRecommendationWizard } from '@/components/PersonalizedRecommendationWizard';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
@@ -27,6 +29,8 @@ import { QuickActions } from '@/components/QuickActions';
 import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
 const Home = () => {
   const [mounted, setMounted] = useState(false);
+  const [showQuickFlow, setShowQuickFlow] = useState(false);
+  const [showPersonalizedWizard, setShowPersonalizedWizard] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<Record<string, {
     provider: string;
     amount: string;
@@ -131,6 +135,18 @@ const Home = () => {
     localStorage.setItem('selectedCategories', JSON.stringify(categories));
     navigate('/all-plans');
   };
+
+  const handleQuickFlowComplete = (data: QuickFlowData) => {
+    setShowQuickFlow(false);
+    // Navigate to all plans with quick flow data
+    localStorage.setItem('quickFlowData', JSON.stringify(data));
+    navigate('/all-plans');
+  };
+
+  const handlePersonalizedComplete = () => {
+    setShowPersonalizedWizard(false);
+    navigate('/all-plans');
+  };
   return <div className="min-h-screen bg-gray-50 relative overflow-hidden">
       {/* Top Navigation Bar */}
       <nav className="bg-gray-50 border-b border-gray-200 py-4">
@@ -193,7 +209,7 @@ const Home = () => {
         <Wifi className="absolute bottom-[80%] left-[50%] w-6 h-6 text-purple-600 opacity-15" />
       </div>
 
-      {/* Clean Header Section */}
+      {/* Optimized Hero Section - Single CTA */}
       <section className="bg-gray-50 py-16 lg:py-24 relative overflow-hidden">
         {/* Background illustration */}
         <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" style={{
@@ -218,6 +234,39 @@ const Home = () => {
             <p className="text-xl text-purple-600 mt-6 font-assistant max-w-3xl mx-auto">
               אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
             </p>
+
+            {/* Single Prominent CTA */}
+            <div className="mt-12 flex flex-col items-center gap-4">
+              <Button
+                size="lg"
+                onClick={() => setShowQuickFlow(true)}
+                className="bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white px-12 py-8 text-xl font-heebo font-bold rounded-2xl shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
+              >
+                <Sparkles className="w-6 h-6 ml-3" />
+                מצא לי את התכנית הטובה ביותר
+              </Button>
+              
+              <div className="flex gap-4 text-sm">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowQuickFlow(true);
+                  }}
+                  className="font-assistant hover:border-purple-400"
+                >
+                  ⚡ מהיר (30 שניות)
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowPersonalizedWizard(true);
+                  }}
+                  className="font-assistant hover:border-purple-400"
+                >
+                  🎯 מפורט (2 דקות)
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
