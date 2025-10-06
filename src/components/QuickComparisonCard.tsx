@@ -23,83 +23,92 @@ export const QuickComparisonCard = ({
   const topThree = plans.slice(0, 3);
 
   return (
-    <Card className="p-8 border border-border/50 shadow-sm bg-card/50 backdrop-blur-sm">
-      <div className="space-y-6">
-        <div className="flex items-center gap-3 pb-4 border-b border-border/50">
-          <div className="p-2 rounded-lg bg-primary/10">
-            <Star className="w-5 h-5 text-primary" />
+    <Card className="glass-effect border-2 border-slate-200 shadow-2xl overflow-hidden">
+      <CardContent className="p-10">
+        <div className="space-y-8">
+          <div className="flex items-center gap-4">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-primary to-purple-600">
+              <Star className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="text-3xl font-bold text-slate-900">השוואה מהירה</h3>
           </div>
-          <h3 className="text-2xl font-heading font-semibold text-foreground">השוואה מהירה</h3>
-        </div>
         
-        <div className="grid md:grid-cols-3 gap-6">
-          {topThree.map((plan, idx) => {
-            const isTop = plan.id === topPlanId;
-            const savings = expectedSavings[idx];
-            
-            return (
-              <div
-                key={plan.id}
-                className={cn(
-                  "relative p-6 rounded-xl border transition-all hover:shadow-lg group",
-                  isTop 
-                    ? "border-primary/50 bg-primary/5 shadow-md" 
-                    : "border-border/50 bg-card/80 hover:border-primary/30"
-                )}
-              >
-                {isTop && (
-                  <Badge className="absolute -top-3 right-4 bg-primary text-primary-foreground shadow-md px-3 py-1">
-                    המומלץ ביותר
-                  </Badge>
-                )}
-                
-                <div className="space-y-4 mt-2">
-                  <div>
-                    <h4 className="font-heading font-semibold text-xl text-foreground mb-1">{plan.company}</h4>
-                    <p className="text-sm text-muted-foreground line-clamp-1">{plan.planName}</p>
-                  </div>
-
-                  {plan.regularPrice > 0 && (
-                    <div className="pt-4 border-t border-border/50">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-heading font-bold text-primary">₪{plan.regularPrice}</span>
-                        <span className="text-sm font-normal text-muted-foreground">/חודש</span>
-                      </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {topThree.map((plan, idx) => {
+              const isTop = plan.id === topPlanId;
+              const savings = expectedSavings[idx];
+              
+              return (
+                <div
+                  key={plan.id}
+                  className={cn(
+                    "relative p-8 rounded-2xl border-2 transition-all duration-300 hover-lift",
+                    isTop 
+                      ? "border-primary bg-gradient-to-br from-primary/5 to-purple-500/5 shadow-xl" 
+                      : "border-slate-200 bg-white hover:border-primary/40"
+                  )}
+                >
+                  {isTop && (
+                    <div className="absolute -top-4 right-6">
+                      <Badge className="bg-gradient-to-r from-primary to-purple-600 text-white shadow-lg px-4 py-1.5 text-sm font-bold">
+                        ⭐ המומלץ ביותר
+                      </Badge>
                     </div>
                   )}
-
-                  {savings && savings.monthly > 0 && (
-                    <div className="bg-green-50 dark:bg-green-950/20 rounded-lg p-3 border border-green-200/50 dark:border-green-800/50">
-                      <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
-                        <TrendingDown className="w-4 h-4" />
-                        <span className="text-sm font-semibold">חיסכון ₪{savings.monthly}/חודש</span>
-                      </div>
+                  
+                  <div className="space-y-6 mt-2">
+                    <div>
+                      <h4 className="text-2xl font-bold text-slate-900 mb-2">{plan.company}</h4>
+                      <p className="text-slate-600 line-clamp-2 text-sm">{plan.planName}</p>
                     </div>
-                  )}
 
-                  <div className="space-y-2">
-                    {plan.features.slice(0, 3).map((feature, fIdx) => (
-                      <div key={fIdx} className="flex items-start gap-2 text-sm">
-                        <Check className="w-4 h-4 shrink-0 mt-0.5 text-primary" />
-                        <span className="line-clamp-2">{feature}</span>
+                    {plan.regularPrice > 0 && (
+                      <div className="pt-6 border-t-2 border-slate-100">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                            ₪{plan.regularPrice}
+                          </span>
+                          <span className="text-slate-500">/חודש</span>
+                        </div>
                       </div>
-                    ))}
-                  </div>
+                    )}
 
-                  <Button
-                    size="sm"
-                    variant={isTop ? "default" : "outline"}
-                    onClick={() => onSelectPlan(plan)}
-                    className="w-full font-heading"
-                  >
-                    {isTop ? 'בחר תוכנית זו' : 'פרטים נוספים'}
-                  </Button>
+                    {savings && savings.monthly > 0 && (
+                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border-2 border-green-200">
+                        <div className="flex items-center gap-2 text-green-700 font-bold">
+                          <TrendingDown className="w-5 h-5" />
+                          <span>חיסכון ₪{savings.monthly}/חודש</span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="space-y-3">
+                      {plan.features.slice(0, 3).map((feature, fIdx) => (
+                        <div key={fIdx} className="flex items-start gap-3">
+                          <Check className="w-5 h-5 shrink-0 mt-0.5 text-primary" />
+                          <span className="text-slate-700 text-sm leading-relaxed">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button
+                      size="lg"
+                      variant={isTop ? "default" : "outline"}
+                      onClick={() => onSelectPlan(plan)}
+                      className={cn(
+                        "w-full rounded-xl font-bold text-base h-12",
+                        isTop && "bg-gradient-to-r from-primary to-purple-600 hover:scale-105 transition-transform shadow-lg"
+                      )}
+                    >
+                      {isTop ? 'בחר תוכנית זו ✓' : 'פרטים נוספים'}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      </CardContent>
     </Card>
   );
 };

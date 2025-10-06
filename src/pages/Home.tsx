@@ -209,67 +209,79 @@ const Home = () => {
         <Wifi className="absolute bottom-[80%] left-[50%] w-6 h-6 text-purple-600 opacity-15" />
       </div>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center justify-center bg-background">
+      {/* Hero Section - Modern Design */}
+      <section className="relative min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50/30 overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+        </div>
+
         {/* Content */}
         <div className="container relative z-10 mx-auto px-4 py-20">
           <div className="max-w-5xl mx-auto text-center space-y-12">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-6 py-3 glass-effect rounded-full border-2 border-white/50 shadow-xl">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <span className="text-base font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                חסכון ממוצע של ₪2,400 לשנה
+              </span>
+            </div>
+
             {/* Main heading */}
             <div className="space-y-6">
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-heading font-bold leading-[1.1] tracking-tight">
-                <span className="text-foreground">
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.1] tracking-tight">
+                <span className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">
                   חסכו עד 
                 </span>
-                <span className="text-primary"> ₪500 </span>
-                <span className="text-foreground">
+                <span className="bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent"> ₪500 </span>
+                <span className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">
                   בחודש
                 </span>
                 <br />
-                <span className="text-foreground/80 text-5xl md:text-6xl lg:text-7xl">
+                <span className="text-5xl md:text-6xl lg:text-7xl text-slate-600">
                   על החשבונות שלכם
                 </span>
               </h1>
 
               {/* Subtitle */}
-              <p className="text-2xl md:text-3xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
+              <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-light">
                 השוואת מחירים חכמה לחשמל, סלולר, אינטרנט וטלוויזיה
               </p>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col items-center gap-8">
+            <div className="flex flex-col items-center gap-8 pt-8">
               <Button
                 size="lg"
                 onClick={() => setShowQuickFlow(true)}
-                className="text-2xl px-16 py-10 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] bg-primary hover:bg-primary/90 font-heading font-semibold"
+                className="group relative text-2xl px-20 py-10 rounded-2xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-primary via-purple-600 to-primary hover:from-primary hover:via-purple-500 hover:to-primary"
               >
-                <Sparkles className="ml-3 w-6 h-6" />
+                <Sparkles className="ml-3 w-7 h-7 group-hover:rotate-12 transition-transform" />
                 מצא לי את התוכנית הטובה ביותר
-                <ArrowRight className="mr-3 w-6 h-6" />
+                <ArrowRight className="mr-3 w-7 h-7 group-hover:translate-x-2 transition-transform" />
               </Button>
 
               {/* Secondary options */}
-              <div className="flex flex-wrap justify-center gap-6 text-muted-foreground">
+              <div className="flex flex-wrap justify-center gap-6">
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="lg"
                   onClick={() => setShowQuickFlow(true)}
-                  className="gap-3 hover:text-primary transition-colors text-base font-medium"
+                  className="group gap-3 hover:border-primary/60 transition-all hover:scale-105 glass-effect border-2 px-8 py-6 rounded-xl text-base"
                 >
-                  <Zap className="w-5 h-5" />
-                  <span>השוואה מהירה (30 שניות)</span>
+                  <Zap className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                  <span className="font-semibold">השוואה מהירה (30 שניות)</span>
                 </Button>
                 
-                <span className="text-muted-foreground/30 text-lg">|</span>
-                
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="lg"
                   onClick={() => setShowPersonalizedWizard(true)}
-                  className="gap-3 hover:text-primary transition-colors text-base font-medium"
+                  className="group gap-3 hover:border-primary/60 transition-all hover:scale-105 glass-effect border-2 px-8 py-6 rounded-xl text-base"
                 >
-                  <Target className="w-5 h-5" />
-                  <span>אשף מפורט (2 דקות)</span>
+                  <Target className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                  <span className="font-semibold">אשף מפורט (2 דקות)</span>
                 </Button>
               </div>
             </div>
