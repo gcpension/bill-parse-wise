@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { 
   Home, 
@@ -12,54 +11,22 @@ import {
   MessageCircle,
   Menu,
   X,
-  Sparkles
+  Zap
 } from "lucide-react";
 
 interface NavigationItem {
   label: string;
   href: string;
-  icon: React.ReactNode;
-  isActive?: boolean;
-  badge?: string;
+  icon: React.ElementType;
 }
 
 const navigationItems: NavigationItem[] = [
-  {
-    label: "דף הבית",
-    href: "/",
-    icon: <Home className="w-4 h-4" />
-  },
-  {
-    label: "כל המסלולים",
-    href: "/all-plans",
-    icon: <List className="w-4 h-4" />,
-    badge: "חדש"
-  },
-  {
-    label: "בקשת שירות",
-    href: "/service-request",
-    icon: <Settings className="w-4 h-4" />
-  },
-  {
-    label: "מגזין",
-    href: "/magazine",
-    icon: <BookOpen className="w-4 h-4" />
-  },
-  {
-    label: "טיפים",
-    href: "/tips",
-    icon: <Lightbulb className="w-4 h-4" />
-  },
-  {
-    label: "אודות",
-    href: "/about",
-    icon: <Info className="w-4 h-4" />
-  },
-  {
-    label: "צור קשר",
-    href: "/contact",
-    icon: <MessageCircle className="w-4 h-4" />
-  }
+  { label: "דף הבית", href: "/", icon: Home },
+  { label: "מגזין", href: "/magazine", icon: BookOpen },
+  { label: "טיפים", href: "/tips", icon: Lightbulb },
+  { label: "כל המסלולים", href: "/all-plans", icon: List },
+  { label: "אודות", href: "/about", icon: Info },
+  { label: "צור קשר", href: "/contact", icon: MessageCircle }
 ];
 
 export const EnhancedNavigation = () => {
@@ -67,93 +34,83 @@ export const EnhancedNavigation = () => {
   const currentPath = window.location.pathname;
 
   return (
-    <nav className="bg-white/90 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
+    <nav className="bg-gray-50 border-b border-gray-200 py-4 sticky top-0 z-50">
       <div className="container mx-auto px-4 lg:px-6 max-w-7xl">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-heebo">
-                EasySwitch
-              </h1>
-            </div>
-          </div>
-
+          <a href="/" className="flex items-center group">
+            <h1 className="text-3xl font-bold text-purple-600 font-heebo transition-all duration-200 group-hover:text-purple-700">
+              EasySwitch
+            </h1>
+          </a>
+          
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-8 rtl:space-x-reverse">
             {navigationItems.map((item) => {
-              const isActive = currentPath === item.href;
+              const Icon = item.icon;
+              const isActive = currentPath === item.href || 
+                (item.href !== '/' && currentPath.startsWith(item.href));
+              
               return (
                 <a
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 font-heebo",
+                    "relative text-base font-medium font-heebo transition-all duration-200 group",
                     isActive
-                      ? "bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 shadow-sm"
-                      : "text-gray-600 hover:text-purple-600 hover:bg-gray-50"
+                      ? "text-purple-600"
+                      : "text-gray-600 hover:text-purple-600"
                   )}
                 >
-                  {item.icon}
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-2 py-0 h-5">
-                      {item.badge}
-                    </Badge>
-                  )}
-                  {isActive && (
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full"></div>
-                  )}
+                  <span className="relative">
+                    {item.label}
+                    {/* Underline animation */}
+                    <span className={cn(
+                      "absolute -bottom-1 left-0 h-0.5 bg-purple-600 transition-all duration-200",
+                      isActive ? "w-full" : "w-0 group-hover:w-full"
+                    )} />
+                  </span>
                 </a>
               );
             })}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-600 hover:text-purple-600"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
-            </Button>
-          </div>
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 text-gray-600 hover:text-purple-600 transition-colors"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
         </div>
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200/50 py-4 bg-white/95 backdrop-blur-sm">
-            <div className="grid grid-cols-2 gap-2">
+          <div className="lg:hidden mt-4 pt-4 border-t border-gray-200 animate-fade-in">
+            <div className="flex flex-col space-y-3">
               {navigationItems.map((item) => {
-                const isActive = currentPath === item.href;
+                const Icon = item.icon;
+                const isActive = currentPath === item.href ||
+                  (item.href !== '/' && currentPath.startsWith(item.href));
+                
                 return (
                   <a
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-heebo transition-all duration-200",
+                      "flex items-center gap-3 px-4 py-3 rounded-lg font-medium font-heebo transition-all duration-200",
                       isActive
-                        ? "bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700"
-                        : "text-gray-600 hover:text-purple-600 hover:bg-gray-50"
+                        ? "bg-purple-100 text-purple-700"
+                        : "text-gray-600 hover:text-purple-600 hover:bg-gray-100"
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {item.icon}
+                    <Icon className="w-5 h-5" />
                     <span>{item.label}</span>
-                    {item.badge && (
-                      <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-1 py-0 h-4 text-[10px]">
-                        {item.badge}
-                      </Badge>
-                    )}
                   </a>
                 );
               })}
