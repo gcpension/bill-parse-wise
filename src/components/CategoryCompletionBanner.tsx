@@ -182,118 +182,92 @@ export const CategoryCompletionBanner = ({
                   ))}
                 </div>
 
-                {/* Horizontal Layout with Circle */}
+                {/* Compact Grid Layout */}
                 <AnimatePresence mode="wait">
                   {hasAmount ? (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="flex gap-4 items-center"
+                      className="space-y-3"
                     >
-                      {/* Circular Progress - Compact */}
-                      <motion.div 
-                        className="relative w-32 h-32 flex-shrink-0"
-                        initial={{ scale: 0, rotate: -90 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ duration: 0.6, type: "spring" }}
+                      {/* Savings Summary Bar */}
+                      <motion.div
+                        initial={{ scale: 0.9 }}
+                        animate={{ scale: 1 }}
+                        className="bg-gradient-to-l from-primary to-primary/80 rounded-xl p-4 text-primary-foreground shadow-lg"
                       >
-                        {/* Static glow */}
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 to-accent/30 blur-lg" />
-                        
-                        {/* Main circle */}
-                        <svg className="relative w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          {/* Background circle */}
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="42"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="6"
-                            className="text-muted/20"
-                          />
-                          
-                          {/* Progress circle */}
-                          <motion.circle
-                            cx="50"
-                            cy="50"
-                            r="42"
-                            fill="none"
-                            stroke="url(#gradient)"
-                            strokeWidth="6"
-                            strokeLinecap="round"
-                            strokeDasharray={`${2 * Math.PI * 42}`}
-                            initial={{ strokeDashoffset: 2 * Math.PI * 42 }}
-                            animate={{ strokeDashoffset: 0 }}
-                            transition={{ duration: 1.2, ease: "easeOut" }}
-                          />
-                          
-                          <defs>
-                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" stopColor="hsl(var(--primary))" />
-                              <stop offset="100%" stopColor="hsl(var(--accent))" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                        
-                        {/* Center content */}
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                          <Sparkles className="w-5 h-5 text-primary mb-1" />
-                          <div className="text-xs text-muted-foreground">שנתי</div>
-                          <div className="text-xl font-black text-primary">
-                            ₪{savings.yearlyGain.toLocaleString()}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="relative">
+                              {/* Animated circle background */}
+                              <svg className="w-14 h-14 transform -rotate-90" viewBox="0 0 100 100">
+                                <circle
+                                  cx="50"
+                                  cy="50"
+                                  r="45"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="8"
+                                  className="text-primary-foreground/20"
+                                />
+                                <motion.circle
+                                  cx="50"
+                                  cy="50"
+                                  r="45"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="8"
+                                  strokeLinecap="round"
+                                  strokeDasharray={`${2 * Math.PI * 45}`}
+                                  className="text-primary-foreground"
+                                  initial={{ strokeDashoffset: 2 * Math.PI * 45 }}
+                                  animate={{ strokeDashoffset: 2 * Math.PI * 45 * 0.3 }}
+                                  transition={{ duration: 1, ease: "easeOut" }}
+                                />
+                              </svg>
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <Sparkles className="w-5 h-5" />
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-xs text-primary-foreground/80 mb-1">חיסכון שנתי פוטנציאלי</div>
+                              <div className="text-2xl font-black">₪{savings.yearlyGain.toLocaleString()}</div>
+                            </div>
+                          </div>
+                          <div className="text-left">
+                            <div className="text-xs text-primary-foreground/80 mb-1">חודשי</div>
+                            <div className="text-xl font-black">₪{savings.monthlyGain}</div>
                           </div>
                         </div>
                       </motion.div>
 
-                      {/* Info Cards - Vertical Stack */}
-                      <div className="flex-1 space-y-2">
-                        {[
-                          { 
-                            label: 'אחוז חיסכון ממוצע', 
-                            value: '30%', 
-                            icon: TrendingUp,
-                            bgColor: 'bg-green-500/10',
-                            iconColor: 'text-green-600',
-                            textColor: 'text-green-700'
-                          },
-                          { 
-                            label: 'חיסכון חודשי', 
-                            value: `₪${savings.monthlyGain}`, 
-                            icon: Calendar,
-                            bgColor: 'bg-blue-500/10',
-                            iconColor: 'text-blue-600',
-                            textColor: 'text-blue-700'
-                          }
-                        ].map((item, index) => {
-                          const Icon = item.icon;
-                          return (
-                            <motion.div
-                              key={item.label}
-                              initial={{ opacity: 0, x: 20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.3 + index * 0.1 }}
-                              className={cn(
-                                "rounded-xl p-3 border border-border flex items-center gap-3",
-                                item.bgColor
-                              )}
-                            >
-                              <div className={cn(
-                                "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
-                                item.bgColor
-                              )}>
-                                <Icon className={cn("w-5 h-5", item.iconColor)} />
-                              </div>
-                              <div className="flex-1">
-                                <div className="text-xs text-muted-foreground mb-0.5">{item.label}</div>
-                                <div className={cn("text-xl font-black", item.textColor)}>
-                                  {item.value}
-                                </div>
-                              </div>
-                            </motion.div>
-                          );
-                        })}
+                      {/* Quick Stats */}
+                      <div className="grid grid-cols-2 gap-2">
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="bg-green-50 dark:bg-green-950/20 rounded-lg p-2 flex items-center gap-2 border border-green-200 dark:border-green-800"
+                        >
+                          <TrendingUp className="w-4 h-4 text-green-600" />
+                          <div>
+                            <div className="text-xs text-green-700 dark:text-green-400">אחוז חיסכון</div>
+                            <div className="text-sm font-black text-green-600">30%</div>
+                          </div>
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, x: 10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.3 }}
+                          className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-2 flex items-center gap-2 border border-blue-200 dark:border-blue-800"
+                        >
+                          <Zap className="w-4 h-4 text-blue-600" />
+                          <div>
+                            <div className="text-xs text-blue-700 dark:text-blue-400">החזר ב</div>
+                            <div className="text-sm font-black text-blue-600">2 חודשים</div>
+                          </div>
+                        </motion.div>
                       </div>
 
                       {/* Actions */}
