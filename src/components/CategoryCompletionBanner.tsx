@@ -73,7 +73,7 @@ export const CategoryCompletionBanner = ({
             onClick={onClose}
           />
 
-          {/* Compact Circular Banner */}
+          {/* Circular Banner */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -81,7 +81,7 @@ export const CategoryCompletionBanner = ({
               exit={{ opacity: 0, scale: 0.9 }}
               className="pointer-events-auto w-full max-w-sm"
             >
-              <Card className="p-5 bg-card border-border shadow-2xl overflow-hidden rounded-3xl">
+              <Card className="p-5 bg-card border-border shadow-2xl overflow-hidden rounded-[2.5rem] aspect-square flex flex-col justify-center">
                 {/* Header with Image */}
                 <div className="flex items-start justify-between mb-5">
                   <div className="flex items-start gap-3 flex-1">
