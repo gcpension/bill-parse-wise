@@ -247,20 +247,24 @@ export const CategoryCompletionBanner = ({
                         </div>
                       </motion.div>
 
-                      {/* Info Cards Grid */}
-                      <div className="flex-1 grid grid-cols-2 gap-2">
+                      {/* Info Cards - Vertical Stack */}
+                      <div className="flex-1 space-y-2">
                         {[
                           { 
-                            label: 'חיסכון', 
+                            label: 'אחוז חיסכון ממוצע', 
                             value: '30%', 
-                            icon: Percent,
-                            iconColor: 'text-green-500'
+                            icon: TrendingUp,
+                            bgColor: 'bg-green-500/10',
+                            iconColor: 'text-green-600',
+                            textColor: 'text-green-700'
                           },
                           { 
-                            label: 'זמן החזר', 
-                            value: '2 חודשים', 
-                            icon: Zap,
-                            iconColor: 'text-amber-500'
+                            label: 'חיסכון חודשי', 
+                            value: `₪${savings.monthlyGain}`, 
+                            icon: Calendar,
+                            bgColor: 'bg-blue-500/10',
+                            iconColor: 'text-blue-600',
+                            textColor: 'text-blue-700'
                           }
                         ].map((item, index) => {
                           const Icon = item.icon;
@@ -270,14 +274,22 @@ export const CategoryCompletionBanner = ({
                               initial={{ opacity: 0, x: 20 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 0.3 + index * 0.1 }}
-                              className="bg-muted rounded-xl p-3 border border-border"
+                              className={cn(
+                                "rounded-xl p-3 border border-border flex items-center gap-3",
+                                item.bgColor
+                              )}
                             >
-                              <div className="flex items-center gap-2 mb-1">
-                                <Icon className={cn("w-4 h-4", item.iconColor)} />
-                                <span className="text-xs text-muted-foreground">{item.label}</span>
+                              <div className={cn(
+                                "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
+                                item.bgColor
+                              )}>
+                                <Icon className={cn("w-5 h-5", item.iconColor)} />
                               </div>
-                              <div className="text-lg font-black text-foreground">
-                                {item.value}
+                              <div className="flex-1">
+                                <div className="text-xs text-muted-foreground mb-0.5">{item.label}</div>
+                                <div className={cn("text-xl font-black", item.textColor)}>
+                                  {item.value}
+                                </div>
                               </div>
                             </motion.div>
                           );
