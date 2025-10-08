@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { X, ArrowLeft, PiggyBank, ChevronLeft, Info } from 'lucide-react';
+import { X, ArrowLeft, TrendingUp, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import savingsBanner from '@/assets/savings-banner-illustration.png';
 
 interface CategoryCompletionBannerProps {
   isVisible: boolean;
@@ -155,83 +156,76 @@ export const CategoryCompletionBanner = ({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
                         transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+                        className="space-y-6"
                       >
-                        {/* Main Savings Card */}
-                        <div className={`relative rounded-3xl bg-gradient-to-br ${category.gradient} p-6 mb-6 overflow-hidden`}>
-                          <div className="absolute inset-0 bg-black/10" />
-                          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
-                          
-                          <div className="relative z-10">
-                            {/* Header */}
-                            <div className="flex items-center gap-3 mb-5">
-                              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                                <PiggyBank className="w-6 h-6 text-white" />
-                              </div>
-                              <div>
-                                <div className="text-white text-lg font-bold">פוטנציאל החיסכון שלך</div>
-                                <div className="text-white/70 text-xs">מבוסס על ממוצע של 30%</div>
-                              </div>
+                        {/* Savings Header with Image */}
+                        <div className="flex items-center justify-between gap-6">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-3">
+                              <TrendingUp className="w-5 h-5 text-primary" />
+                              <h3 className="text-xl font-bold text-foreground">פוטנציאל החיסכון שלך</h3>
                             </div>
-
-                            {/* Compact Savings Display */}
-                            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                              <div className="flex items-center justify-between gap-4">
-                                <motion.div
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ delay: 0.5 }}
-                                  className="flex-1 text-center"
-                                >
-                                  <div className="text-white/60 text-[10px] uppercase tracking-wide mb-1 font-semibold">חודש</div>
-                                  <div className="text-white text-lg font-bold">₪{savings.monthlyGain}</div>
-                                </motion.div>
-
-                                <div className="w-px h-10 bg-white/20" />
-
-                                <motion.div
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ delay: 0.6 }}
-                                  className="flex-1 text-center"
-                                >
-                                  <div className="text-white/60 text-[10px] uppercase tracking-wide mb-1 font-semibold">רבעון</div>
-                                  <div className="text-white text-lg font-bold">₪{savings.quarterlyGain}</div>
-                                </motion.div>
-
-                                <div className="w-px h-10 bg-white/20" />
-
-                                <motion.div
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ delay: 0.7 }}
-                                  className="flex-1 text-center"
-                                >
-                                  <div className="text-white/60 text-[10px] uppercase tracking-wide mb-1 font-semibold">שנה</div>
-                                  <div className="text-white text-lg font-bold">₪{savings.yearlyGain}</div>
-                                </motion.div>
-
-                                <div className="w-px h-10 bg-white/20" />
-
-                                <motion.div
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ delay: 0.8 }}
-                                  className="flex-1 text-center"
-                                >
-                                  <div className="text-white/90 text-[10px] uppercase tracking-wide mb-1 font-bold">שנתיים</div>
-                                  <div className="text-white text-xl font-bold">₪{savings.twoYearGain}</div>
-                                </motion.div>
-                              </div>
-                            </div>
+                            <p className="text-xs text-muted-foreground">מבוסס על ממוצע חיסכון של 30%</p>
                           </div>
+                          <motion.img
+                            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                            transition={{ delay: 0.2, type: "spring" }}
+                            src={savingsBanner}
+                            alt="savings illustration"
+                            className="w-24 h-24 object-contain"
+                          />
+                        </div>
+
+                        {/* Clean Savings Grid */}
+                        <div className="grid grid-cols-4 gap-3">
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 }}
+                            className="bg-muted/50 rounded-xl p-4 border border-border hover:border-primary/50 transition-all hover:shadow-md"
+                          >
+                            <div className="text-xs text-muted-foreground mb-2 font-medium">חודש</div>
+                            <div className="text-xl font-bold text-foreground">₪{savings.monthlyGain}</div>
+                          </motion.div>
+
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.6 }}
+                            className="bg-muted/50 rounded-xl p-4 border border-border hover:border-primary/50 transition-all hover:shadow-md"
+                          >
+                            <div className="text-xs text-muted-foreground mb-2 font-medium">רבעון</div>
+                            <div className="text-xl font-bold text-foreground">₪{savings.quarterlyGain}</div>
+                          </motion.div>
+
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.7 }}
+                            className="bg-muted/50 rounded-xl p-4 border border-border hover:border-primary/50 transition-all hover:shadow-md"
+                          >
+                            <div className="text-xs text-muted-foreground mb-2 font-medium">שנה</div>
+                            <div className="text-xl font-bold text-foreground">₪{savings.yearlyGain}</div>
+                          </motion.div>
+
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.8 }}
+                            className="bg-primary/10 rounded-xl p-4 border-2 border-primary hover:bg-primary/20 transition-all hover:shadow-lg"
+                          >
+                            <div className="text-xs text-primary mb-2 font-bold">שנתיים!</div>
+                            <div className="text-xl font-bold text-primary">₪{savings.twoYearGain}</div>
+                          </motion.div>
                         </div>
 
                         {/* Action Buttons */}
                         <motion.div
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 1 }}
-                          className="space-y-3"
+                          transition={{ delay: 0.9 }}
+                          className="space-y-3 pt-2"
                         >
                           <Button
                             onClick={onProceedToPlans}
@@ -264,10 +258,15 @@ export const CategoryCompletionBanner = ({
                       animate={{ opacity: 1 }}
                       className="text-center py-12"
                     >
-                      <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
-                        <PiggyBank className="w-10 h-10 text-muted-foreground" />
-                      </div>
-                      <p className="text-muted-foreground text-sm">
+                      <motion.img
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ type: "spring" }}
+                        src={savingsBanner}
+                        alt="savings illustration"
+                        className="w-32 h-32 mx-auto mb-6 object-contain opacity-60"
+                      />
+                      <p className="text-muted-foreground text-sm font-medium">
                         הזן סכום כדי לראות את פוטנציאל החיסכון שלך
                       </p>
                     </motion.div>
