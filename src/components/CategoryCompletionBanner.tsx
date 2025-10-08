@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { X, ArrowLeft, TrendingUp, ChevronLeft } from 'lucide-react';
+import { X, ArrowLeft, TrendingUp, ChevronLeft, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import savingsBanner from '@/assets/savings-tech-illustration.png';
+import happyCustomer from '@/assets/happy-customer.jpg';
 
 interface CategoryCompletionBannerProps {
   isVisible: boolean;
@@ -69,15 +69,22 @@ export const CategoryCompletionBanner = ({
               exit={{ opacity: 0, scale: 0.95 }}
               className="pointer-events-auto w-full max-w-md"
             >
-              <Card className="p-6 bg-card border-border shadow-2xl">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${category.gradient} flex items-center justify-center`}>
-                      <span className="text-2xl">{category.icon}</span>
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-bold text-foreground">{category.name}</h2>
+              <Card className="p-6 bg-card border-border shadow-2xl overflow-hidden">
+                {/* Header with Image */}
+                <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-start gap-4 flex-1">
+                    <img 
+                      src={happyCustomer} 
+                      alt="customer" 
+                      className="w-16 h-16 rounded-full object-cover border-2 border-border"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${category.gradient} flex items-center justify-center`}>
+                          <span className="text-lg">{category.icon}</span>
+                        </div>
+                        <h2 className="text-lg font-bold text-foreground">{category.name}</h2>
+                      </div>
                       <p className="text-xs text-muted-foreground">כמה אתה משלם היום?</p>
                     </div>
                   </div>
@@ -85,23 +92,24 @@ export const CategoryCompletionBanner = ({
                     variant="ghost"
                     size="icon"
                     onClick={onClose}
-                    className="h-8 w-8"
+                    className="h-8 w-8 -mt-1"
                   >
                     <X className="w-4 h-4" />
                   </Button>
                 </div>
 
-                {/* Input */}
+                {/* Input - New Style */}
                 <div className="relative mb-3">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-lg" />
                   <Input
                     type="number"
                     value={currentAmount}
                     onChange={(e) => onAmountChange(e.target.value)}
-                    placeholder="הכנס סכום..."
-                    className="h-12 text-lg font-bold pr-10 text-right"
+                    placeholder="0"
+                    className="relative h-14 text-2xl font-bold pr-12 text-right bg-transparent border-2 border-primary/20 focus:border-primary/40 rounded-lg"
                   />
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    <span className="text-lg font-bold text-muted-foreground">₪</span>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                    <span className="text-xl font-bold text-primary">₪</span>
                   </div>
                 </div>
 
@@ -120,7 +128,7 @@ export const CategoryCompletionBanner = ({
                   ))}
                 </div>
 
-                {/* Savings Display */}
+                {/* Savings Display - Minimal Style */}
                 <AnimatePresence mode="wait">
                   {hasAmount ? (
                     <motion.div
@@ -128,25 +136,26 @@ export const CategoryCompletionBanner = ({
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                     >
-                      <div className="bg-muted/50 rounded-lg p-4 mb-4">
-                        <div className="flex items-center gap-2 mb-3">
-                          <TrendingUp className="w-4 h-4 text-primary" />
-                          <p className="text-xs text-muted-foreground">חיסכון פוטנציאלי (30%)</p>
+                      <div className="bg-background border border-border rounded-lg p-4 mb-4">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Sparkles className="w-4 h-4 text-primary" />
+                          <p className="text-sm font-medium text-foreground">חיסכון פוטנציאלי</p>
+                          <span className="text-xs text-muted-foreground">(30%)</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-2 mb-2">
-                          <div>
-                            <div className="text-xs text-muted-foreground">חודש</div>
-                            <div className="text-lg font-bold">₪{savings.monthlyGain}</div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-muted-foreground">שנה</div>
-                            <div className="text-lg font-bold">₪{savings.yearlyGain}</div>
-                          </div>
-                        </div>
-                        <div className="pt-2 border-t border-border">
+                        <div className="space-y-3">
                           <div className="flex items-center justify-between">
-                            <span className="text-xs text-primary font-bold">שנתיים!</span>
-                            <span className="text-xl font-bold text-primary">₪{savings.twoYearGain}</span>
+                            <span className="text-sm text-muted-foreground">לחודש</span>
+                            <span className="text-lg font-bold text-foreground">₪{savings.monthlyGain}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-muted-foreground">לשנה</span>
+                            <span className="text-lg font-bold text-foreground">₪{savings.yearlyGain}</span>
+                          </div>
+                          <div className="pt-3 border-t border-primary/20">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-medium text-primary">לשנתיים</span>
+                              <span className="text-2xl font-bold text-primary">₪{savings.twoYearGain}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
