@@ -73,29 +73,29 @@ export const CategoryCompletionBanner = ({
             onClick={onClose}
           />
 
-          {/* Compact Banner */}
+          {/* Compact Circular Banner */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="pointer-events-auto w-full max-w-md"
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="pointer-events-auto w-full max-w-sm"
             >
-              <Card className="p-6 bg-card border-border shadow-2xl overflow-hidden">
+              <Card className="p-5 bg-card border-border shadow-2xl overflow-hidden rounded-3xl">
                 {/* Header with Image */}
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-start gap-4 flex-1">
+                <div className="flex items-start justify-between mb-5">
+                  <div className="flex items-start gap-3 flex-1">
                     <img 
                       src={happyCustomer} 
                       alt="customer" 
-                      className="w-16 h-16 rounded-full object-cover border-2 border-border"
+                      className="w-14 h-14 rounded-full object-cover border-2 border-border shadow-sm"
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${category.gradient} flex items-center justify-center`}>
-                          <span className="text-lg">{category.icon}</span>
+                        <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-sm`}>
+                          <span className="text-base">{category.icon}</span>
                         </div>
-                        <h2 className="text-lg font-bold text-foreground">{category.name}</h2>
+                        <h2 className="text-base font-bold text-foreground">{category.name}</h2>
                       </div>
                       <p className="text-xs text-muted-foreground">כמה אתה משלם היום?</p>
                     </div>
@@ -104,23 +104,23 @@ export const CategoryCompletionBanner = ({
                     variant="ghost"
                     size="icon"
                     onClick={onClose}
-                    className="h-8 w-8 -mt-1"
+                    className="h-7 w-7 rounded-full -mt-1"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5" />
                   </Button>
                 </div>
 
                 {/* Slider Input */}
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-muted-foreground">גרור להגדרת סכום</span>
+                <div className="mb-5">
+                  <div className="flex items-center justify-between mb-2.5">
+                    <span className="text-xs text-muted-foreground">גרור להגדרת סכום</span>
                     <motion.div 
-                      className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full"
+                      className="flex items-center gap-1.5 bg-primary/10 px-3 py-1.5 rounded-full"
                       animate={{ scale: hasAmount ? [1, 1.05, 1] : 1 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <span className="text-2xl font-black text-primary">₪{amount.toFixed(0)}</span>
-                      <Wallet className="w-5 h-5 text-primary" />
+                      <span className="text-xl font-black text-primary">₪{amount.toFixed(0)}</span>
+                      <Wallet className="w-4 h-4 text-primary" />
                     </motion.div>
                   </div>
                   
@@ -129,24 +129,24 @@ export const CategoryCompletionBanner = ({
                     onValueChange={(values) => onAmountChange(values[0].toString())}
                     max={800}
                     step={10}
-                    className="mb-3"
+                    className="mb-2.5"
                   />
                   
-                  <div className="flex justify-between text-xs text-muted-foreground">
+                  <div className="flex justify-between text-[10px] text-muted-foreground">
                     <span>₪0</span>
                     <span>₪800</span>
                   </div>
                 </div>
 
                 {/* Quick Presets */}
-                <div className="flex flex-wrap gap-2 mb-5">
+                <div className="flex flex-wrap gap-1.5 mb-4">
                   {[100, 200, 350, 500].map((preset) => (
                     <Button
                       key={preset}
                       variant={amount === preset ? "default" : "outline"}
                       size="sm"
                       onClick={() => onAmountChange(preset.toString())}
-                      className="flex-1 text-xs"
+                      className="flex-1 text-xs h-8 rounded-full"
                     >
                       {preset}₪
                     </Button>
@@ -160,7 +160,7 @@ export const CategoryCompletionBanner = ({
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 20 }}
-                      className="space-y-3"
+                      className="space-y-2"
                     >
                       {/* Timeline Items */}
                       {[
@@ -178,29 +178,30 @@ export const CategoryCompletionBanner = ({
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: item.delay }}
-                            className={`relative ${item.highlight ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-lg p-3 overflow-hidden`}
+                            className={`relative ${item.highlight ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-2xl p-2.5 overflow-hidden`}
                           >
                             {/* Progress Bar Background */}
                             <motion.div
-                              className={`absolute inset-0 ${item.highlight ? 'bg-primary-foreground/20' : 'bg-primary/10'}`}
+                              className={`absolute inset-0 rounded-2xl ${item.highlight ? 'bg-primary-foreground/20' : 'bg-primary/10'}`}
                               initial={{ width: 0 }}
                               animate={{ width: `${progress}%` }}
                               transition={{ duration: 1, delay: item.delay + 0.2 }}
                             />
                             
                             <div className="relative flex items-center justify-between">
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2">
                                 <motion.div
                                   animate={{ rotate: item.highlight ? [0, 360] : 0 }}
                                   transition={{ duration: 2, repeat: Infinity }}
+                                  className={`w-7 h-7 rounded-full flex items-center justify-center ${item.highlight ? 'bg-primary-foreground/20' : 'bg-primary/10'}`}
                                 >
-                                  <Icon className={`w-4 h-4 ${item.highlight ? 'text-primary-foreground' : 'text-primary'}`} />
+                                  <Icon className={`w-3.5 h-3.5 ${item.highlight ? 'text-primary-foreground' : 'text-primary'}`} />
                                 </motion.div>
                                 <div>
-                                  <div className={`text-xs ${item.highlight ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
+                                  <div className={`text-[10px] ${item.highlight ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
                                     חיסכון ב{item.period}
                                   </div>
-                                  <div className={`text-lg font-black ${item.highlight ? 'text-primary-foreground' : 'text-foreground'}`}>
+                                  <div className={`text-base font-black ${item.highlight ? 'text-primary-foreground' : 'text-foreground'}`}>
                                     ₪{useAnimatedCounter({ end: item.amount, duration: 800, start: 0 }).toFixed(0)}
                                   </div>
                                 </div>
@@ -210,7 +211,7 @@ export const CategoryCompletionBanner = ({
                                   initial={{ scale: 0 }}
                                   animate={{ scale: 1 }}
                                   transition={{ delay: 0.5, type: "spring" }}
-                                  className="bg-primary-foreground text-primary px-2 py-1 rounded-full text-xs font-bold"
+                                  className="bg-primary-foreground text-primary px-2 py-0.5 rounded-full text-[10px] font-bold"
                                 >
                                   מומלץ!
                                 </motion.div>
@@ -222,15 +223,15 @@ export const CategoryCompletionBanner = ({
 
                       {/* Actions */}
                       <motion.div 
-                        className="flex flex-col gap-2 pt-2"
+                        className="flex flex-col gap-1.5 pt-2"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
                       >
                         <Button
                           onClick={onProceedToPlans}
-                          size="lg"
-                          className="w-full"
+                          size="default"
+                          className="w-full rounded-full h-10"
                         >
                           בואו נתחיל לחסוך
                           <ChevronLeft className="w-4 h-4 mr-2" />
@@ -239,6 +240,7 @@ export const CategoryCompletionBanner = ({
                           onClick={onCheckAnother}
                           variant="outline"
                           size="sm"
+                          className="rounded-full h-8"
                         >
                           בדוק סקטור נוסף
                         </Button>
@@ -249,15 +251,15 @@ export const CategoryCompletionBanner = ({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="text-center py-8"
+                      className="text-center py-6"
                     >
                       <motion.div
                         animate={{ scale: [1, 1.1, 1] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       >
-                        <Wallet className="w-12 h-12 mx-auto mb-3 text-muted-foreground/50" />
+                        <Wallet className="w-10 h-10 mx-auto mb-2 text-muted-foreground/50" />
                       </motion.div>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         גרור את הסליידר לחישוב החיסכון
                       </p>
                     </motion.div>
