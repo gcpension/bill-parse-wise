@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { X, ArrowLeft, TrendingUp, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import savingsBanner from '@/assets/savings-banner-illustration.png';
+import savingsBanner from '@/assets/savings-banner-modern.png';
 
 interface CategoryCompletionBannerProps {
   isVisible: boolean;
