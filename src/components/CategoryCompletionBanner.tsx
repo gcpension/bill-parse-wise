@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { X, ArrowLeft, TrendingUp, ChevronLeft, Sparkles } from 'lucide-react';
+import { X, ArrowLeft, TrendingUp, ChevronLeft, Sparkles, Zap, TrendingDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import happyCustomer from '@/assets/happy-customer.jpg';
+import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 
 interface CategoryCompletionBannerProps {
   isVisible: boolean;
@@ -14,6 +15,17 @@ interface CategoryCompletionBannerProps {
   onProceedToPlans: () => void;
   onClose: () => void;
 }
+
+// Animated Savings Component
+const AnimatedSavings = ({ amount }: { amount: number }) => {
+  const displayAmount = useAnimatedCounter({ end: amount, duration: 1000 });
+  
+  return (
+    <div className="text-4xl font-black text-primary-foreground">
+      ₪{Math.round(displayAmount).toLocaleString()}
+    </div>
+  );
+};
 
 export const CategoryCompletionBanner = ({
   isVisible,
@@ -128,7 +140,7 @@ export const CategoryCompletionBanner = ({
                   ))}
                 </div>
 
-                {/* Savings Display - Minimal Style */}
+                {/* Savings Display - Interactive & Sales Style */}
                 <AnimatePresence mode="wait">
                   {hasAmount ? (
                     <motion.div
@@ -136,28 +148,54 @@ export const CategoryCompletionBanner = ({
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                     >
-                      <div className="bg-background border border-border rounded-lg p-4 mb-4">
-                        <div className="flex items-center gap-2 mb-4">
-                          <Sparkles className="w-4 h-4 text-primary" />
-                          <p className="text-sm font-medium text-foreground">חיסכון פוטנציאלי</p>
-                          <span className="text-xs text-muted-foreground">(30%)</span>
+                      {/* Main Highlight */}
+                      <motion.div 
+                        initial={{ scale: 0.95 }}
+                        animate={{ scale: 1 }}
+                        className="relative bg-gradient-to-br from-primary via-primary to-accent p-5 rounded-xl mb-3 overflow-hidden"
+                      >
+                        <motion.div 
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                          animate={{ x: ['-100%', '200%'] }}
+                          transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+                        />
+                        <div className="relative">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Zap className="w-5 h-5 text-primary-foreground animate-pulse" />
+                            <p className="text-sm font-bold text-primary-foreground">תחסוך בשנתיים הקרובות</p>
+                          </div>
+                          <AnimatedSavings amount={savings.twoYearGain} />
+                          <p className="text-xs text-primary-foreground/80 mt-1">זה הזמן להתחיל לחסוך!</p>
                         </div>
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">לחודש</span>
-                            <span className="text-lg font-bold text-foreground">₪{savings.monthlyGain}</span>
+                      </motion.div>
+
+                      {/* Breakdown */}
+                      <div className="grid grid-cols-2 gap-2 mb-4">
+                        <motion.div 
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: 0.1 }}
+                          className="bg-background border border-border rounded-lg p-3 hover:border-primary/50 transition-colors"
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <TrendingDown className="w-3 h-3 text-primary" />
+                            <span className="text-xs text-muted-foreground">חיסכון חודשי</span>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">לשנה</span>
-                            <span className="text-lg font-bold text-foreground">₪{savings.yearlyGain}</span>
+                          <div className="text-xl font-bold text-foreground">₪{savings.monthlyGain}</div>
+                        </motion.div>
+
+                        <motion.div 
+                          initial={{ x: 20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: 0.2 }}
+                          className="bg-background border border-border rounded-lg p-3 hover:border-primary/50 transition-colors"
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <Sparkles className="w-3 h-3 text-primary" />
+                            <span className="text-xs text-muted-foreground">חיסכון שנתי</span>
                           </div>
-                          <div className="pt-3 border-t border-primary/20">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-medium text-primary">לשנתיים</span>
-                              <span className="text-2xl font-bold text-primary">₪{savings.twoYearGain}</span>
-                            </div>
-                          </div>
-                        </div>
+                          <div className="text-xl font-bold text-foreground">₪{savings.yearlyGain}</div>
+                        </motion.div>
                       </div>
 
                       {/* Actions */}
