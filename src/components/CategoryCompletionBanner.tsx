@@ -150,22 +150,38 @@ export const CategoryCompletionBanner = ({
                     >
                       {/* Main Highlight */}
                       <motion.div 
-                        initial={{ scale: 0.95 }}
-                        animate={{ scale: 1 }}
-                        className="relative bg-gradient-to-br from-primary via-primary to-accent p-5 rounded-xl mb-3 overflow-hidden"
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="relative bg-gradient-to-br from-primary via-primary to-accent p-5 rounded-xl mb-3 overflow-hidden group"
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ type: "spring", stiffness: 300 }}
                       >
-                        <motion.div 
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                          animate={{ x: ['-100%', '200%'] }}
-                          transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-                        />
                         <div className="relative">
                           <div className="flex items-center gap-2 mb-2">
-                            <Zap className="w-5 h-5 text-primary-foreground animate-pulse" />
+                            <motion.div
+                              animate={{ 
+                                rotate: [0, 10, -10, 0],
+                                scale: [1, 1.2, 1.2, 1]
+                              }}
+                              transition={{ 
+                                duration: 2, 
+                                repeat: Infinity,
+                                repeatDelay: 3
+                              }}
+                            >
+                              <Zap className="w-5 h-5 text-primary-foreground" />
+                            </motion.div>
                             <p className="text-sm font-bold text-primary-foreground">תחסוך בשנתיים הקרובות</p>
                           </div>
                           <AnimatedSavings amount={savings.twoYearGain} />
-                          <p className="text-xs text-primary-foreground/80 mt-1">זה הזמן להתחיל לחסוך!</p>
+                          <motion.p 
+                            className="text-xs text-primary-foreground/80 mt-1"
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                          >
+                            זה הזמן להתחיל לחסוך!
+                          </motion.p>
                         </div>
                       </motion.div>
 
@@ -175,26 +191,42 @@ export const CategoryCompletionBanner = ({
                           initial={{ x: -20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.1 }}
-                          className="bg-background border border-border rounded-lg p-3 hover:border-primary/50 transition-colors"
+                          whileHover={{ scale: 1.05, borderColor: 'hsl(var(--primary))' }}
+                          className="bg-background border border-border rounded-lg p-3 cursor-pointer"
                         >
                           <div className="flex items-center gap-2 mb-1">
-                            <TrendingDown className="w-3 h-3 text-primary" />
+                            <motion.div
+                              animate={{ y: [0, -3, 0] }}
+                              transition={{ duration: 1.5, repeat: Infinity }}
+                            >
+                              <TrendingDown className="w-3 h-3 text-primary" />
+                            </motion.div>
                             <span className="text-xs text-muted-foreground">חיסכון חודשי</span>
                           </div>
-                          <div className="text-xl font-bold text-foreground">₪{savings.monthlyGain}</div>
+                          <div className="text-xl font-bold text-foreground">
+                            ₪{useAnimatedCounter({ end: savings.monthlyGain, duration: 800 }).toFixed(0)}
+                          </div>
                         </motion.div>
 
                         <motion.div 
                           initial={{ x: 20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.2 }}
-                          className="bg-background border border-border rounded-lg p-3 hover:border-primary/50 transition-colors"
+                          whileHover={{ scale: 1.05, borderColor: 'hsl(var(--primary))' }}
+                          className="bg-background border border-border rounded-lg p-3 cursor-pointer"
                         >
                           <div className="flex items-center gap-2 mb-1">
-                            <Sparkles className="w-3 h-3 text-primary" />
+                            <motion.div
+                              animate={{ rotate: [0, 360] }}
+                              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                            >
+                              <Sparkles className="w-3 h-3 text-primary" />
+                            </motion.div>
                             <span className="text-xs text-muted-foreground">חיסכון שנתי</span>
                           </div>
-                          <div className="text-xl font-bold text-foreground">₪{savings.yearlyGain}</div>
+                          <div className="text-xl font-bold text-foreground">
+                            ₪{useAnimatedCounter({ end: savings.yearlyGain, duration: 1000 }).toFixed(0)}
+                          </div>
                         </motion.div>
                       </div>
 
