@@ -52,228 +52,203 @@ export const CategoryCompletionBanner = ({
     <AnimatePresence>
       {isVisible && (
         <>
-          {/* Backdrop with tech gradient */}
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-gradient-to-br from-primary/20 via-background/95 to-accent/20 backdrop-blur-2xl z-50"
+            className="fixed inset-0 bg-background/80 backdrop-blur-xl z-50"
             onClick={onClose}
           />
 
-          {/* Minimalist Modern Modal */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 30, scale: 0.95 }}
-              transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-              className="pointer-events-auto w-full max-w-xl"
-            >
-              <Card className="relative bg-gradient-to-br from-background via-background to-primary/5 backdrop-blur-3xl border border-primary/20 shadow-2xl overflow-hidden">
-                {/* Animated glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-50" />
-                <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-                
-                {/* Close Button */}
+          {/* Floating Cards Layout */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none overflow-y-auto">
+            <div className="pointer-events-auto w-full max-w-5xl py-8">
+              {/* Close Button - Floating */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.1 }}
+                className="flex justify-start mb-4"
+              >
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={onClose}
-                  className="absolute left-3 top-3 h-10 w-10 rounded-full bg-background/80 hover:bg-background border border-primary/20 text-muted-foreground hover:text-foreground z-20 backdrop-blur-sm shadow-lg"
+                  className="h-12 w-12 rounded-full bg-card hover:bg-muted border border-border shadow-lg"
                 >
                   <X className="w-5 h-5" />
                 </Button>
+              </motion.div>
 
-                {/* Tech gradient top bar with animation */}
-                <div className="relative h-1.5 overflow-hidden">
-                  <motion.div 
-                    className={`h-full bg-gradient-to-r ${category.gradient}`}
-                    initial={{ x: '-100%' }}
-                    animate={{ x: '100%' }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  />
-                </div>
-
-                {/* Main Content */}
-                <div className="relative p-10 z-10">
-                  {/* Header Section */}
-                  <div className="flex items-center gap-4 mb-8">
-                    <motion.div
-                      initial={{ scale: 0, rotate: -90 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      transition={{ delay: 0.2, type: "spring", stiffness: 150, damping: 12 }}
-                      className="relative"
-                    >
-                      <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} rounded-2xl blur-xl opacity-60 animate-pulse`} />
-                      <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-2xl border border-white/20`}>
-                        <span className="text-3xl">{category.icon}</span>
+              {/* Floating Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                {/* Category Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20, rotate: -2 }}
+                  animate={{ opacity: 1, y: 0, rotate: 0 }}
+                  transition={{ delay: 0.2, type: "spring" }}
+                  className="md:col-span-1"
+                >
+                  <Card className="p-6 bg-card border-border shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
+                    <div className="flex flex-col items-center text-center gap-4">
+                      <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-lg`}>
+                        <span className="text-4xl">{category.icon}</span>
                       </div>
-                    </motion.div>
-                    <div>
-                      <h2 className="text-3xl font-bold text-foreground mb-1">
-                        {category.name}
-                      </h2>
-                      <p className="text-sm text-muted-foreground">
-                        כמה אתה משלם היום?
-                      </p>
+                      <div>
+                        <h2 className="text-2xl font-bold text-foreground mb-1">
+                          {category.name}
+                        </h2>
+                        <p className="text-sm text-muted-foreground">
+                          הסקטור שבחרת
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </Card>
+                </motion.div>
 
-                  {/* Amount Input */}
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="mb-6"
-                  >
-                    <div className="relative">
+                {/* Amount Input Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, type: "spring" }}
+                  className="md:col-span-2"
+                >
+                  <Card className="p-6 bg-card border-border shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
+                    <h3 className="text-lg font-bold text-foreground mb-4">כמה אתה משלם היום?</h3>
+                    <div className="relative mb-4">
                       <Input
                         type="number"
                         value={currentAmount}
                         onChange={(e) => onAmountChange(e.target.value)}
                         placeholder="הכנס סכום..."
-                        className="h-16 text-2xl font-bold pr-12 text-right border-2 border-primary/30 focus:border-primary rounded-2xl bg-background/50 backdrop-blur-sm transition-all duration-300 placeholder:text-muted-foreground/40 shadow-lg focus:shadow-primary/20"
+                        className="h-14 text-xl font-bold pr-12 text-right border-2 border-border focus:border-primary rounded-xl"
                       />
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                        <span className="text-2xl font-bold text-muted-foreground">₪</span>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                        <span className="text-xl font-bold text-muted-foreground">₪</span>
                       </div>
                     </div>
-
+                    
                     {/* Quick amounts */}
-                    <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+                    <div className="flex flex-wrap gap-2">
                       {[80, 120, 180, 250, 350, 500].map((preset, idx) => (
                         <motion.div
                           key={preset}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.4 + idx * 0.05 }}
                         >
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={() => onAmountChange(preset.toString())}
-                            className="whitespace-nowrap rounded-full hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all font-semibold border-primary/30 bg-background/50 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/20"
+                            className="rounded-full hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all font-semibold"
                           >
                             {preset}₪
                           </Button>
                         </motion.div>
                       ))}
                     </div>
-                  </motion.div>
+                  </Card>
+                </motion.div>
+              </div>
 
-                  {/* Dynamic Savings Display */}
-                  <AnimatePresence mode="wait">
-                    {hasAmount && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-                        className="space-y-6"
-                      >
-                        {/* Tech Savings Header with Image */}
-                        <div className="relative flex items-center justify-between gap-6 p-6 rounded-2xl bg-gradient-to-br from-primary/10 via-background/50 to-accent/10 border border-primary/20 backdrop-blur-sm overflow-hidden">
-                          {/* Animated background effect */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 animate-pulse" />
-                          
-                          <div className="flex-1 relative z-10">
-                            <div className="flex items-center gap-3 mb-3">
-                              <div className="p-2 rounded-lg bg-primary/20 backdrop-blur-sm">
-                                <TrendingUp className="w-5 h-5 text-primary" />
-                              </div>
+              {/* Savings Cards */}
+              <AnimatePresence mode="wait">
+                {hasAmount && (
+                  <>
+                    {/* Header Card */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      transition={{ delay: 0.5 }}
+                      className="mb-4"
+                    >
+                      <Card className="p-6 bg-card border-border shadow-xl">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="p-3 rounded-xl bg-primary/10">
+                              <TrendingUp className="w-6 h-6 text-primary" />
+                            </div>
+                            <div>
                               <h3 className="text-xl font-bold text-foreground">פוטנציאל החיסכון שלך</h3>
+                              <p className="text-sm text-muted-foreground">מבוסס על ממוצע חיסכון של 30%</p>
                             </div>
-                            <p className="text-xs text-muted-foreground font-medium">מבוסס על ממוצע חיסכון של 30%</p>
                           </div>
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-                            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                            transition={{ delay: 0.2, type: "spring" }}
-                            className="relative"
-                          >
-                            <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl animate-pulse" />
-                            <img
-                              src={savingsBanner}
-                              alt="savings illustration"
-                              className="relative w-24 h-24 object-contain drop-shadow-2xl"
-                            />
-                          </motion.div>
+                          <img
+                            src={savingsBanner}
+                            alt="savings"
+                            className="w-20 h-20 object-contain"
+                          />
                         </div>
+                      </Card>
+                    </motion.div>
 
-                        {/* Clean Savings Grid */}
-                        <div className="grid grid-cols-4 gap-3">
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5 }}
-                            className="relative group"
-                          >
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all" />
-                            <div className="relative bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-primary/20 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
-                              <div className="text-xs text-muted-foreground mb-2 font-medium">חודש</div>
-                              <div className="text-xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">₪{savings.monthlyGain}</div>
-                            </div>
-                          </motion.div>
+                    {/* Savings Cards Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20, rotate: -1 }}
+                        animate={{ opacity: 1, y: 0, rotate: 0 }}
+                        transition={{ delay: 0.6, type: "spring" }}
+                      >
+                        <Card className="p-5 bg-card border-border shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                          <div className="text-xs text-muted-foreground mb-2 font-medium">חודש</div>
+                          <div className="text-2xl font-bold text-foreground">₪{savings.monthlyGain}</div>
+                        </Card>
+                      </motion.div>
 
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.6 }}
-                            className="relative group"
-                          >
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all" />
-                            <div className="relative bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-primary/20 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
-                              <div className="text-xs text-muted-foreground mb-2 font-medium">רבעון</div>
-                              <div className="text-xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">₪{savings.quarterlyGain}</div>
-                            </div>
-                          </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20, rotate: 1 }}
+                        animate={{ opacity: 1, y: 0, rotate: 0 }}
+                        transition={{ delay: 0.7, type: "spring" }}
+                      >
+                        <Card className="p-5 bg-card border-border shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                          <div className="text-xs text-muted-foreground mb-2 font-medium">רבעון</div>
+                          <div className="text-2xl font-bold text-foreground">₪{savings.quarterlyGain}</div>
+                        </Card>
+                      </motion.div>
 
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.7 }}
-                            className="relative group"
-                          >
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all" />
-                            <div className="relative bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-primary/20 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
-                              <div className="text-xs text-muted-foreground mb-2 font-medium">שנה</div>
-                              <div className="text-xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">₪{savings.yearlyGain}</div>
-                            </div>
-                          </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20, rotate: -1 }}
+                        animate={{ opacity: 1, y: 0, rotate: 0 }}
+                        transition={{ delay: 0.8, type: "spring" }}
+                      >
+                        <Card className="p-5 bg-card border-border shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                          <div className="text-xs text-muted-foreground mb-2 font-medium">שנה</div>
+                          <div className="text-2xl font-bold text-foreground">₪{savings.yearlyGain}</div>
+                        </Card>
+                      </motion.div>
 
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.8 }}
-                            className="relative group"
-                          >
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-xl blur-xl opacity-60 group-hover:opacity-100 transition-all animate-pulse" />
-                            <div className="relative bg-gradient-to-br from-primary/20 via-primary/10 to-accent/20 backdrop-blur-sm rounded-xl p-4 border-2 border-primary hover:border-accent transition-all hover:shadow-xl hover:shadow-primary/30">
-                              <div className="text-xs text-primary mb-2 font-bold flex items-center gap-1">
-                                <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse" />
-                                שנתיים!
-                              </div>
-                              <div className="text-xl font-bold text-primary">₪{savings.twoYearGain}</div>
-                            </div>
-                          </motion.div>
-                        </div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20, rotate: 1 }}
+                        animate={{ opacity: 1, y: 0, rotate: 0 }}
+                        transition={{ delay: 0.9, type: "spring" }}
+                      >
+                        <Card className="p-5 bg-gradient-to-br from-primary/20 to-accent/20 border-2 border-primary shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2">
+                          <div className="text-xs text-primary mb-2 font-bold flex items-center gap-1">
+                            <span className="inline-block w-2 h-2 rounded-full bg-primary" />
+                            שנתיים!
+                          </div>
+                          <div className="text-2xl font-bold text-primary">₪{savings.twoYearGain}</div>
+                        </Card>
+                      </motion.div>
+                    </div>
 
-                        {/* Action Buttons */}
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.9 }}
-                          className="space-y-3 pt-2"
-                        >
+                    {/* Action Buttons Card */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1 }}
+                    >
+                      <Card className="p-6 bg-card border-border shadow-xl">
+                        <div className="flex flex-col sm:flex-row gap-3">
                           <Button
                             onClick={onProceedToPlans}
                             size="lg"
-                            className="relative w-full h-14 text-lg font-bold rounded-2xl bg-gradient-to-r from-primary via-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] overflow-hidden group"
+                            className="flex-1 h-14 text-lg font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
                           >
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                            <span className="relative flex items-center justify-center gap-2">
+                            <span className="flex items-center justify-center gap-2">
                               בואו נתחיל לחסוך
                               <ChevronLeft className="w-5 h-5" />
                             </span>
@@ -281,40 +256,39 @@ export const CategoryCompletionBanner = ({
 
                           <Button
                             onClick={onCheckAnother}
-                            variant="ghost"
+                            variant="outline"
                             size="lg"
-                            className="w-full h-12 text-base font-semibold rounded-2xl hover:bg-primary/10 border border-primary/20 backdrop-blur-sm transition-all hover:border-primary/40"
+                            className="flex-1 h-14 text-lg font-semibold rounded-xl"
                           >
                             בדוק סקטור נוסף
                           </Button>
-                        </motion.div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Empty State */}
-                  {!hasAmount && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-center py-12"
-                    >
-                      <motion.img
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ type: "spring" }}
-                        src={savingsBanner}
-                        alt="savings illustration"
-                        className="w-32 h-32 mx-auto mb-6 object-contain opacity-60"
-                      />
-                      <p className="text-muted-foreground text-sm font-medium">
-                        הזן סכום כדי לראות את פוטנציאל החיסכון שלך
-                      </p>
+                        </div>
+                      </Card>
                     </motion.div>
-                  )}
-                </div>
-              </Card>
-            </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+
+              {/* Empty State */}
+              {!hasAmount && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <Card className="p-12 bg-card border-border shadow-xl text-center">
+                    <img
+                      src={savingsBanner}
+                      alt="savings"
+                      className="w-32 h-32 mx-auto mb-6 object-contain opacity-60"
+                    />
+                    <p className="text-muted-foreground text-base font-medium">
+                      הזן סכום כדי לראות את פוטנציאל החיסכון שלך
+                    </p>
+                  </Card>
+                </motion.div>
+              )}
+            </div>
           </div>
         </>
       )}
