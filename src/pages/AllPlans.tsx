@@ -880,13 +880,18 @@ const AllPlans = ({
 
         {/* Plans Grid - Organized by Company */}
         {selectedCategory && Object.keys(groupedByCompany).length > 0 && <div>
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 font-heebo">
-                בחרו חברה לצפייה במסלולים
-              </h2>
-              <Badge variant="secondary" className="text-lg px-4 py-2 font-assistant">
-                {filteredPlans.length} מסלולים • {Object.keys(groupedByCompany).length} חברות
-              </Badge>
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-3xl font-bold text-gray-800 font-heebo">
+                  בחרו חברה לצפייה במסלולים
+                </h2>
+                <Badge variant="secondary" className="text-lg px-4 py-2 font-assistant">
+                  {filteredPlans.length} מסלולים • {Object.keys(groupedByCompany).length} חברות
+                </Badge>
+              </div>
+              <p className="text-base text-muted-foreground font-assistant">
+                לחצו על לוגו של החברה כדי לצפות במסלולים שלה • בחרו מסלול להשוואה או מעבר ישיר
+              </p>
             </div>
 
             {/* Company Logos Grid */}
@@ -913,20 +918,20 @@ const AllPlans = ({
                       )} />
                       
                       {/* Logo */}
-                      <div className="relative z-10 w-full h-full p-6 flex items-center justify-center">
+                      <div className="relative z-10 w-full h-full p-4 flex items-center justify-center">
                         {companyLogo ? (
                           <img 
                             src={companyLogo} 
                             alt={`${companyName} לוגו`}
                             className={cn(
-                              "w-full h-full object-contain transition-all duration-300",
+                              "max-w-[70%] max-h-[70%] object-contain transition-all duration-300",
                               isOpen ? "scale-110" : "group-hover:scale-110"
                             )}
                           />
                         ) : (
                           <div className="text-center">
                             <Building2 className={cn(
-                              "w-12 h-12 mx-auto text-primary mb-2 transition-transform duration-300",
+                              "w-10 h-10 mx-auto text-primary mb-2 transition-transform duration-300",
                               isOpen ? "scale-110" : "group-hover:scale-110"
                             )} />
                             <span className="text-xs font-heebo text-muted-foreground">{companyName}</span>
