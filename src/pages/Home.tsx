@@ -147,33 +147,34 @@ const Home = () => {
     setShowPersonalizedWizard(false);
     navigate('/all-plans');
   };
-  return <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+  return <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Top Navigation Bar */}
-      <nav className="bg-gray-50 border-b border-gray-200 py-4">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+      <nav className="bg-background border-b border-border py-4 sticky top-0 z-50 backdrop-blur-sm bg-background/80">
+        <div className="container mx-auto px-4 lg:px-6 max-w-7xl">
           <div className="flex items-center justify-between">
             {/* Logo on the left */}
-            <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-purple-600 font-heebo">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-8 h-8 text-primary" />
+              <h1 className="text-2xl font-bold text-foreground">
                 EasySwitch
               </h1>
             </div>
             
             {/* Navigation Links on the right */}
-            <div className="flex items-center space-x-8">
-              <a href="/" className="text-purple-600 font-medium hover:text-purple-700 transition-colors font-heebo">
+            <div className="hidden md:flex items-center gap-8">
+              <a href="/" className="text-foreground font-medium hover:text-primary transition-colors">
                 דף הבית
               </a>
-              <a href="/magazine" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
+              <a href="/magazine" className="text-muted-foreground hover:text-foreground transition-colors">
                 מגזין
               </a>
-              <a href="/tips" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
+              <a href="/tips" className="text-muted-foreground hover:text-foreground transition-colors">
                 טיפים
               </a>
-              <a href="/about" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
+              <a href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                 אודות
               </a>
-              <a href="/contact" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
+              <a href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
                 צור קשר
               </a>
             </div>
@@ -181,361 +182,306 @@ const Home = () => {
         </div>
       </nav>
 
-      {/* Background decorative elements */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        {/* Subtle background icons scattered across the page */}
-        <Lightbulb className="absolute top-[15%] left-[8%] w-8 h-8 text-purple-500 opacity-20" />
-        <Smartphone className="absolute top-[25%] right-[12%] w-8 h-8 text-purple-600 opacity-20" />
-        <Wifi className="absolute top-[45%] left-[15%] w-7 h-7 text-royal-purple opacity-20" />
-        <Tv className="absolute bottom-[35%] right-[7%] w-7 h-7 text-purple-500 opacity-20" />
-        
-        {/* Additional scattered elements */}
-        <Phone className="absolute top-[60%] left-[5%] w-6 h-6 text-purple-400 opacity-15" />
-        <Router className="absolute top-[35%] right-[20%] w-6 h-6 text-purple-600 opacity-15" />
-        <Cable className="absolute bottom-[60%] left-[25%] w-5 h-5 text-gray-500 opacity-15" />
-        <Plug className="absolute top-[80%] right-[8%] w-5 h-5 text-gray-500 opacity-15" />
-        <WifiOff className="absolute bottom-[45%] right-[30%] w-5 h-5 text-purple-400 opacity-12" />
-        <Battery className="absolute top-[70%] left-[35%] w-5 h-5 text-purple-500 opacity-12" />
-        <Monitor className="absolute bottom-[25%] left-[40%] w-6 h-6 text-gray-500 opacity-15" />
-        <Tablet className="absolute top-[50%] right-[40%] w-5 h-5 text-purple-400 opacity-12" />
-        <Headphones className="absolute bottom-[70%] right-[15%] w-5 h-5 text-gray-500 opacity-15" />
-        <Radio className="absolute top-[85%] left-[20%] w-5 h-5 text-purple-400 opacity-12" />
-        <Satellite className="absolute bottom-[15%] right-[35%] w-6 h-6 text-purple-600 opacity-15" />
-        
-        {/* Additional elements for better distribution */}
-        <Zap className="absolute top-[30%] left-[30%] w-6 h-6 text-purple-500 opacity-15" />
-        <Phone className="absolute bottom-[50%] left-[60%] w-5 h-5 text-purple-400 opacity-12" />
-        <Lightbulb className="absolute top-[65%] right-[25%] w-5 h-5 text-gray-500 opacity-15" />
-        <Wifi className="absolute bottom-[80%] left-[50%] w-6 h-6 text-purple-600 opacity-15" />
-      </div>
-
-      {/* Hero Section - Modern Design */}
-      <section className="relative min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50/30 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
-        </div>
-
-        {/* Content */}
-        <div className="container relative z-10 mx-auto px-4 py-20">
-          <div className="max-w-5xl mx-auto text-center space-y-12">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-6 py-3 glass-effect rounded-full border-2 border-white/50 shadow-xl">
-              <Sparkles className="w-5 h-5 text-primary" />
-              <span className="text-base font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                חסכון ממוצע של ₪2,400 לשנה
+      {/* Hero Section - Who we are */}
+      <section className="relative py-24 bg-gradient-to-b from-background to-secondary/30">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+          <div className="text-center space-y-8 animate-fade-in">
+            {/* Trust badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+              <Star className="w-4 h-4 text-primary fill-primary" />
+              <span className="text-sm font-semibold text-primary">
+                למעלה מ-10,000 משפחות חוסכות איתנו כל חודש
               </span>
             </div>
 
-            {/* Main heading */}
-            <div className="space-y-6">
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.1] tracking-tight">
-                <span className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">
-                  חסכו עד 
-                </span>
-                <span className="bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent"> ₪500 </span>
-                <span className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">
-                  בחודש
-                </span>
-                <br />
-                <span className="text-5xl md:text-6xl lg:text-7xl text-slate-600">
-                  על החשבונות שלכם
-                </span>
-              </h1>
+            {/* Main headline */}
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+              <span className="text-foreground">חסכו עד </span>
+              <span className="text-primary">₪3,000 בשנה</span>
+              <br />
+              <span className="text-foreground">על חשבונות הבית</span>
+            </h1>
 
-              {/* Subtitle */}
-              <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-light">
-                השוואת מחירים חכמה לחשמל, סלולר, אינטרנט וטלוויזיה
-              </p>
-            </div>
+            {/* Subtitle */}
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              אנחנו משווים עבורכם את כל התוכניות של חשמל, סלולר, אינטרנט וטלוויזיה
+              <br />
+              ומוצאים את החיסכון הכי גדול - בחינם!
+            </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col items-center gap-8 pt-8">
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
               <Button
                 size="lg"
                 onClick={() => setShowQuickFlow(true)}
-                className="group relative text-2xl px-20 py-10 rounded-2xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-primary via-purple-600 to-primary hover:from-primary hover:via-purple-500 hover:to-primary"
+                className="text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
-                <Sparkles className="ml-3 w-7 h-7 group-hover:rotate-12 transition-transform" />
-                מצא לי את התוכנית הטובה ביותר
-                <ArrowRight className="mr-3 w-7 h-7 group-hover:translate-x-2 transition-transform" />
+                התחל לחסוך עכשיו
+                <ArrowRight className="mr-2 w-5 h-5" />
               </Button>
+              
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => {
+                  const element = document.getElementById('how-it-works');
+                  element?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-lg px-8 py-6 rounded-xl"
+              >
+                איך זה עובד?
+              </Button>
+            </div>
 
-              {/* Secondary options */}
-              <div className="flex flex-wrap justify-center gap-6">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => setShowQuickFlow(true)}
-                  className="group gap-3 hover:border-primary/60 transition-all hover:scale-105 glass-effect border-2 px-8 py-6 rounded-xl text-base"
-                >
-                  <Zap className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
-                  <span className="font-semibold">השוואה מהירה (30 שניות)</span>
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => setShowPersonalizedWizard(true)}
-                  className="group gap-3 hover:border-primary/60 transition-all hover:scale-105 glass-effect border-2 px-8 py-6 rounded-xl text-base"
-                >
-                  <Target className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
-                  <span className="font-semibold">אשף מפורט (2 דקות)</span>
-                </Button>
+            {/* Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-16 max-w-4xl mx-auto">
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">₪2,400</div>
+                <div className="text-sm text-muted-foreground">חיסכון ממוצע בשנה</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">2 דקות</div>
+                <div className="text-sm text-muted-foreground">זמן ממוצע להשוואה</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">100%</div>
+                <div className="text-sm text-muted-foreground">שירות חינמי</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Clean Categories Section - Enhanced with animations */}
-      <section id="services" className="py-16 bg-gray-50 relative scroll-mt-20">
+      {/* Who we are section */}
+      <section className="py-24 bg-background">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
-          
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-heebo font-medium text-royal-purple mb-4 animate-fade-in opacity-0" style={{
-            animationDelay: '0.2s',
-            animationFillMode: 'forwards'
-          }}>
-              בחרו את הקטגוריה שלכם
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10">
+                <Target className="w-4 h-4 text-primary" />
+                <span className="text-sm font-semibold text-primary">מי אנחנו</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+                השירות המוביל להשוואת מחירים בישראל
+              </h2>
+              
+              <div className="space-y-4 text-lg text-muted-foreground">
+                <p>
+                  <strong className="text-foreground">EasySwitch</strong> היא פלטפורמה חכמה שעוזרת למשפחות ישראליות לחסוך אלפי שקלים בשנה על חשבונות הבית.
+                </p>
+                <p>
+                  אנחנו משווים עבורכם מאות תוכניות של כל הספקים הגדולים בישראל - חשמל, סלולר, אינטרנט וטלוויזיה - ומוצאים את ההצעה הכי משתלמת בדיוק בשבילכם.
+                </p>
+                <p>
+                  <strong className="text-foreground">בחינם. מהר. פשוט.</strong>
+                </p>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 p-8 flex items-center justify-center">
+                <div className="grid grid-cols-2 gap-4 w-full">
+                  <div className="aspect-square rounded-xl bg-background shadow-lg p-4 flex items-center justify-center">
+                    <Zap className="w-12 h-12 text-primary" />
+                  </div>
+                  <div className="aspect-square rounded-xl bg-background shadow-lg p-4 flex items-center justify-center">
+                    <Smartphone className="w-12 h-12 text-primary" />
+                  </div>
+                  <div className="aspect-square rounded-xl bg-background shadow-lg p-4 flex items-center justify-center">
+                    <Wifi className="w-12 h-12 text-primary" />
+                  </div>
+                  <div className="aspect-square rounded-xl bg-background shadow-lg p-4 flex items-center justify-center">
+                    <Tv className="w-12 h-12 text-primary" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section id="how-it-works" className="py-24 bg-secondary/30">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+          <div className="text-center space-y-4 mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10">
+              <Clock className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold text-primary">איך זה עובד</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+              3 צעדים פשוטים לחיסכון
             </h2>
-            <p className="text-lg text-purple-600 font-assistant animate-fade-in opacity-0" style={{
-            animationDelay: '0.4s',
-            animationFillMode: 'forwards'
-          }}>
-              קבלו המלצות מותאמות אישית והשוו מחירים בכל הקטגוריות
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              תוך פחות מ-2 דקות תגלו כמה אתם יכולים לחסוך
             </p>
           </div>
-          
-          {/* Category Cards Grid - Enhanced Interactive Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {Object.entries(categoryData).map(([category, data], index) => {
-            const Icon = data.icon;
-            const isSelected = selectedCategories[category].selected;
-            return <div key={category} className="group relative animate-fade-in opacity-0" style={{
-              animationDelay: `${0.6 + index * 0.1}s`,
-              animationFillMode: 'forwards'
-            }}>
-                  <Card className={`touch-card relative overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border-2 transform hover:scale-[1.02] hover:-translate-y-1 min-h-[160px] ${isSelected ? 'border-green-500 bg-gradient-to-br from-green-50 via-white to-emerald-50 shadow-green-200' : 'border-purple-200 hover:border-purple-400 bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/20'}`} onClick={() => handleCategorySelect(category)}>
-                    {/* Decorative gradient overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none ${isSelected ? 'from-green-400 to-emerald-600' : 'from-purple-400 to-indigo-600'}`}></div>
-                    
-                    {/* Selected badge */}
-                    {isSelected && <div className="absolute top-2 right-2 z-10">
-                        <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full p-1 shadow-lg animate-scale-in">
-                          <CheckCircle className="w-4 h-4" />
-                        </div>
-                      </div>}
-                    
-                    <CardContent className="p-4 text-center flex flex-col justify-between h-full relative z-10">
-                      {/* Icon with interactive background */}
-                      <div className={`relative mx-auto mb-2 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isSelected ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg' : 'bg-gradient-to-br from-purple-500 to-indigo-600 shadow-md'}`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      
-                      {/* Image illustration */}
-                      <div className="w-full h-12 mx-auto mb-2 overflow-hidden rounded-lg shadow-sm">
-                        <img src={data.image} alt={`איור ${data.name}`} className="w-full h-full object-cover" />
-                      </div>
-                      
-                      {/* Category title */}
-                      <h3 className={`text-lg font-heebo font-bold mb-2 ${isSelected ? 'text-green-700' : 'text-purple-700'}`}>
-                        {data.name}
-                      </h3>
-                      
-                      {/* Interactive button */}
-                      <Button size="sm" className={`w-full rounded-lg font-medium transition-all duration-300 shadow-md ${isSelected ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 text-white' : 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-purple-700 text-white'}`} onClick={e => {
-                    e.stopPropagation();
-                    handleCategorySelect(category);
-                  }}>
-                        <span className="flex items-center justify-center gap-1 text-sm">
-                          <Icon className="w-4 h-4" />
-                          <span className="font-bold">{isSelected ? '✓ נבחר' : `בחר ${data.name}`}</span>
-                        </span>
-                      </Button>
-                      
-                      {/* Provider count hint */}
-                      <p className={`text-xs mt-2 font-medium transition-all duration-300 ${isSelected ? 'text-green-600' : 'text-purple-600/70 group-hover:text-purple-700'}`}>
-                        {data.providers.length} ספקים זמינים
-                      </p>
-                    </CardContent>
-                  </Card>
-                  
-                  {/* Hover glow effect around card */}
-                  <div className={`absolute inset-0 rounded-lg blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none -z-10 ${isSelected ? 'bg-green-400' : 'bg-purple-500'}`}></div>
-                </div>;
-          })}
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Step 1 */}
+            <Card className="relative overflow-hidden border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+              <div className="absolute top-0 right-0 w-16 h-16 bg-primary/10 rounded-bl-full" />
+              <CardContent className="p-8 space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-primary">1</span>
+                </div>
+                <h3 className="text-2xl font-bold text-foreground">ספרו לנו על עצמכם</h3>
+                <p className="text-muted-foreground">
+                  בחרו את הקטגוריות (חשמל, סלולר, אינטרנט, טלוויזיה) ותספרו לנו כמה אתם משלמים היום
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Step 2 */}
+            <Card className="relative overflow-hidden border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+              <div className="absolute top-0 right-0 w-16 h-16 bg-primary/10 rounded-bl-full" />
+              <CardContent className="p-8 space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-primary">2</span>
+                </div>
+                <h3 className="text-2xl font-bold text-foreground">אנחנו משווים עבורכם</h3>
+                <p className="text-muted-foreground">
+                  המערכת שלנו משווה מאות תוכניות מכל הספקים ומוצאת את ההצעות הכי משתלמות בדיוק בשבילכם
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Step 3 */}
+            <Card className="relative overflow-hidden border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+              <div className="absolute top-0 right-0 w-16 h-16 bg-primary/10 rounded-bl-full" />
+              <CardContent className="p-8 space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-primary">3</span>
+                </div>
+                <h3 className="text-2xl font-bold text-foreground">תתחילו לחסוך</h3>
+                <p className="text-muted-foreground">
+                  קבלו המלצות מותאמות אישית והתחילו לחסוך כסף כבר החודש - פשוט וללא מאמץ
+                </p>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Selected Category Details - Clean & User-Friendly Design */}
-          {Object.entries(selectedCategories).some(([_, data]) => data.selected) && <div className="mt-10 space-y-6">
-              {Object.entries(selectedCategories).map(([category, categoryData]) => {
-            if (!categoryData.selected) return null;
-            const data = categoryData;
-            const categoryInfo = {
-              'electricity': {
-                name: 'חשמל',
-                icon: Lightbulb
-              },
-              'cellular': {
-                name: 'סלולר',
-                icon: Smartphone
-              },
-              'internet': {
-                name: 'אינטרנט',
-                icon: Wifi
-              },
-              'tv': {
-                name: 'טלוויזיה',
-                icon: Tv
-              }
-            }[category];
-            const Icon = categoryInfo?.icon || Lightbulb;
-            const currentAmount = parseFloat(categoryData.amount) || 0;
-            return <Card key={category} className="bg-white shadow-lg border-2 border-gray-200 hover:border-purple-300 transition-all duration-300 animate-fade-in">
-                    <CardContent className="p-8">
-                      {/* Header with close button */}
-                      <div className="flex items-center justify-between mb-8 pb-6 border-b-2 border-gray-100">
-                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center">
-                            <Icon className="w-7 h-7 text-purple-600" />
-                          </div>
-                          <div>
-                            <h3 className="text-2xl font-bold text-gray-900">
-                              {categoryInfo?.name}
-                            </h3>
-                            <p className="text-sm text-gray-600 mt-1">
-                              השלימו את הפרטים כדי לקבל המלצות
-                            </p>
-                          </div>
-                        </div>
-                        <Button variant="outline" size="sm" onClick={() => handleCategorySelect(category)} className="text-gray-600 hover:text-red-600 hover:border-red-300 transition-colors">
-                          ✕ סגור
-                        </Button>
-                      </div>
-                      
-                      <div className="space-y-8">
-                        {/* Cellular Lines Counter */}
-                        {category === 'cellular' && <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                            <Label className="text-base font-semibold text-gray-900 mb-4 block">
-                              כמה קווי סלולר יש לכם?
-                            </Label>
-                            <div className="flex items-center gap-6">
-                              <div className="flex-1">
-                                <Input type="range" min="1" max="10" value={categoryData.lines || 1} onChange={e => setSelectedCategories(prev => ({
-                          ...prev,
-                          [category]: {
-                            ...prev[category],
-                            lines: parseInt(e.target.value)
-                          }
-                        }))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider" />
-                                <div className="flex justify-between text-xs text-gray-500 mt-2 px-1">
-                                  <span>1 קו</span>
-                                  <span>5 קווים</span>
-                                  <span>10 קווים</span>
-                                </div>
-                              </div>
-                              <div className="bg-white px-6 py-3 rounded-lg border-2 border-purple-200 min-w-[100px] text-center">
-                                <span className="text-3xl font-bold text-purple-600">
-                                  {categoryData.lines || 1}
-                                </span>
-                                <span className="text-sm text-gray-600 block mt-1">
-                                  {(categoryData.lines || 1) === 1 ? 'קו' : 'קווים'}
-                                </span>
-                              </div>
-                            </div>
-                          </div>}
-                        
-                        {/* Monthly Payment Amount */}
-                        <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                          <Label className="text-base font-semibold text-gray-900 mb-4 block">
-                            כמה אתם משלמים היום? (חודשי)
-                          </Label>
-                          
-                          <div className="space-y-6">
-                            {/* Main number input */}
-                            <div className="relative">
-                              <Input type="number" placeholder="הזינו סכום" value={categoryData.amount} onChange={e => handleAmountChange(category, e.target.value)} className="h-16 pr-14 text-2xl font-bold text-gray-900 bg-white border-2 border-gray-300 focus:border-purple-500 rounded-xl text-center" />
-                              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-2xl font-bold text-gray-400">
-                                ₪
-                              </div>
-                            </div>
-                            
-                            {/* Quick amount buttons */}
-                            <div className="flex flex-wrap gap-2">
-                              <span className="text-sm text-gray-600 w-full mb-1">סכומים נפוצים:</span>
-                              {[50, 100, 150, 200, 300, 500].map(amount => <Button key={amount} type="button" variant="outline" size="sm" onClick={() => handleAmountChange(category, amount.toString())} className="text-sm hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700">
-                                  ₪{amount}
-                                </Button>)}
-                            </div>
-                            
-                            {/* Range slider */}
-                            <div className="pt-2">
-                              <Input type="range" min="0" max="1000" step="10" value={categoryData.amount || 0} onChange={e => handleAmountChange(category, e.target.value)} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider" />
-                              <div className="flex justify-between text-xs text-gray-500 mt-2 px-1">
-                                <span>₪0</span>
-                                <span>₪500</span>
-                                <span>₪1000</span>
-                              </div>
-                            </div>
-                            
-                            {/* Savings estimate - Simple */}
-                            {currentAmount > 0 && <div className="mt-6 pt-6 border-t-2 border-gray-200">
-                                <div className="flex items-center justify-between text-sm">
-                                  <span className="text-gray-600 font-medium">חיסכון משוער (25%):</span>
-                                  <div className="text-right">
-                                    <div className="text-xl font-bold text-green-600">
-                                      ₪{Math.round(currentAmount * 0.25)} לחודש
-                                    </div>
-                                    <div className="text-sm text-gray-500">
-                                      (₪{Math.round(currentAmount * 0.25 * 12)} לשנה)
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>;
-          })}
-            </div>}
-
-          {/* Clean CTA Section - Enhanced animations */}
-          <div className="text-center mt-16 space-y-6">
-            <Button onClick={handleStartAnalysis} className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
-              <span className="flex items-center gap-3">
-                <span>התחל ניתוח חיסכון</span>
-                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-              </span>
+          {/* CTA */}
+          <div className="text-center pt-12">
+            <Button
+              size="lg"
+              onClick={() => setShowQuickFlow(true)}
+              className="text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              בואו נתחיל - זה לוקח 2 דקות
+              <ArrowRight className="mr-2 w-5 h-5" />
             </Button>
-            
-            {/* New Service Request Button */}
-            <div className="pt-4">
-              <p className="text-gray-600 text-sm mb-4">או</p>
-              <Button onClick={() => navigate('/service-request')} variant="outline" className="border-slate-400 text-slate-700 hover:bg-slate-50 px-8 py-3 text-base font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="flex items-center gap-3">
-                  <span>בקש שירות ישירות</span>
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </Button>
-              <p className="text-gray-500 text-xs mt-2">עם בחירת ספקים מהירה ויפה ✨</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits section */}
+      <section className="py-24 bg-background">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+              למה לבחור ב-EasySwitch?
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+              <CardContent className="p-6 space-y-3 text-center">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto">
+                  <Sparkles className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground">חינמי לגמרי</h3>
+                <p className="text-sm text-muted-foreground">
+                  השירות שלנו חינמי 100%. ללא עלויות נסתרות
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+              <CardContent className="p-6 space-y-3 text-center">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto">
+                  <Clock className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground">מהיר וקל</h3>
+                <p className="text-sm text-muted-foreground">
+                  ההשוואה לוקחת פחות מ-2 דקות
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+              <CardContent className="p-6 space-y-3 text-center">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto">
+                  <TrendingUp className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground">חיסכון מובטח</h3>
+                <p className="text-sm text-muted-foreground">
+                  המשפחה הממוצעת חוסכת ₪2,400 בשנה
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+              <CardContent className="p-6 space-y-3 text-center">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto">
+                  <CheckCircle className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground">מהימן ובטוח</h3>
+                <p className="text-sm text-muted-foreground">
+                  כל הספקים המובילים במקום אחד
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Section - Companies Logos */}
+      <section className="py-16 bg-secondary/20">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+          <div className="text-center space-y-4 mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10">
+              <CheckCircle className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold text-primary">שותפים מהימנים</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              אנחנו משווים עבורכם את כל הספקים המובילים
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              גישה למאות תוכניות מכל החברות הגדולות בישראל
+            </p>
+          </div>
+
+          {/* Logos Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center">
+            <div className="flex items-center justify-center p-6 bg-background rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <img src={israeliCompaniesLogos} alt="לוגו חברות" className="max-h-12 w-auto opacity-70 hover:opacity-100 transition-opacity" />
+            </div>
+            <div className="flex items-center justify-center p-6 bg-background rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <Zap className="w-12 h-12 text-primary" />
+            </div>
+            <div className="flex items-center justify-center p-6 bg-background rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <Smartphone className="w-12 h-12 text-primary" />
+            </div>
+            <div className="flex items-center justify-center p-6 bg-background rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <Wifi className="w-12 h-12 text-primary" />
+            </div>
+            <div className="flex items-center justify-center p-6 bg-background rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <Tv className="w-12 h-12 text-primary" />
             </div>
           </div>
 
-          {/* Clean info section */}
-          <div className="text-center mt-12 max-w-4xl mx-auto">
-            <p className="text-gray-600 text-lg font-assistant leading-relaxed mb-8">
-              אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר.
-              <br />
-              <span className="font-medium text-royal-purple">השירות חינם לחלוטין</span> - המשפחה הממוצעת חוסכת ₪2,400 בשנה.
-            </p>
-          </div>
-
-          {/* Minimalist How It Works Section */}
-          <div className="max-w-6xl mx-auto mt-32">
-            
+          {/* CTA */}
+          <div className="text-center pt-12">
+            <p className="text-muted-foreground mb-6">מוכנים להתחיל לחסוך?</p>
+            <Button
+              size="lg"
+              onClick={() => setShowQuickFlow(true)}
+              className="text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              התחל השוואת מחירים
+              <ArrowRight className="mr-2 w-5 h-5" />
+            </Button>
           </div>
         </div>
       </section>
