@@ -153,73 +153,53 @@ export const CategoryCompletionBanner = ({
                   ))}
                 </div>
 
-                {/* Savings Timeline */}
+                {/* Compact Savings Display */}
                 <AnimatePresence mode="wait">
                   {hasAmount ? (
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }}
+                      exit={{ opacity: 0, y: 10 }}
                       className="space-y-3"
                     >
-                      {/* Timeline Items */}
-                      {[
-                        { period: 'חודש', amount: savings.monthlyGain, icon: Calendar, delay: 0 },
-                        { period: '3 חודשים', amount: savings.quarterlyGain, icon: TrendingDown, delay: 0.1 },
-                        { period: 'שנה', amount: savings.yearlyGain, icon: Sparkles, delay: 0.2 },
-                        { period: 'שנתיים', amount: savings.twoYearGain, icon: Zap, delay: 0.3, highlight: true }
-                      ].map((item, index) => {
-                        const Icon = item.icon;
-                        const progress = (item.amount / savings.twoYearGain) * 100;
-                        
-                        return (
+                      {/* Main Savings Grid - 2 items only */}
+                      <div className="grid grid-cols-2 gap-2">
+                        <motion.div
+                          initial={{ scale: 0.9, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ delay: 0.1 }}
+                          className="bg-muted rounded-xl p-3"
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <Calendar className="w-4 h-4 text-primary" />
+                            <span className="text-xs text-muted-foreground">חודשי</span>
+                          </div>
+                          <div className="text-xl font-black text-foreground">
+                            ₪{savings.monthlyGain.toLocaleString()}
+                          </div>
+                        </motion.div>
+
+                        <motion.div
+                          initial={{ scale: 0.9, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ delay: 0.2 }}
+                          className="bg-primary text-primary-foreground rounded-xl p-3 relative overflow-hidden"
+                        >
                           <motion.div
-                            key={item.period}
-                            initial={{ x: -20, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: item.delay }}
-                            className={`relative ${item.highlight ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-xl p-3 overflow-hidden`}
-                          >
-                            {/* Progress Bar Background */}
-                            <motion.div
-                              className={`absolute inset-0 rounded-xl ${item.highlight ? 'bg-primary-foreground/20' : 'bg-primary/10'}`}
-                              initial={{ width: 0 }}
-                              animate={{ width: `${progress}%` }}
-                              transition={{ duration: 1, delay: item.delay + 0.2 }}
-                            />
-                            
-                            <div className="relative flex items-center justify-between">
-                              <div className="flex items-center gap-3">
-                                <motion.div
-                                  animate={{ rotate: item.highlight ? [0, 360] : 0 }}
-                                  transition={{ duration: 2, repeat: Infinity }}
-                                  className={`w-9 h-9 rounded-xl flex items-center justify-center ${item.highlight ? 'bg-primary-foreground/20' : 'bg-primary/10'}`}
-                                >
-                                  <Icon className={`w-4 h-4 ${item.highlight ? 'text-primary-foreground' : 'text-primary'}`} />
-                                </motion.div>
-                                <div>
-                                  <div className={`text-xs ${item.highlight ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
-                                    חיסכון ב{item.period}
-                                  </div>
-                                  <div className={`text-lg font-black ${item.highlight ? 'text-primary-foreground' : 'text-foreground'}`}>
-                                    ₪{useAnimatedCounter({ end: item.amount, duration: 800, start: 0 }).toFixed(0)}
-                                  </div>
-                                </div>
-                              </div>
-                              {item.highlight && (
-                                <motion.div
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                  transition={{ delay: 0.5, type: "spring" }}
-                                  className="bg-primary-foreground text-primary px-2 py-1 rounded-lg text-xs font-bold"
-                                >
-                                  מומלץ!
-                                </motion.div>
-                              )}
-                            </div>
-                          </motion.div>
-                        );
-                      })}
+                            className="absolute inset-0 bg-primary-foreground/10"
+                            initial={{ x: '-100%' }}
+                            animate={{ x: '100%' }}
+                            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
+                          />
+                          <div className="relative flex items-center gap-2 mb-1">
+                            <Sparkles className="w-4 h-4" />
+                            <span className="text-xs text-primary-foreground/80">שנתי</span>
+                          </div>
+                          <div className="relative text-xl font-black">
+                            ₪{savings.yearlyGain.toLocaleString()}
+                          </div>
+                        </motion.div>
+                      </div>
 
                       {/* Actions */}
                       <motion.div 
