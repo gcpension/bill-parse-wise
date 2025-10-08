@@ -18,25 +18,18 @@ export default {
 			}
 		},
 		extend: {
-		fontFamily: {
-			sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-			display: ['Inter', 'sans-serif'],
-			mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'monospace'],
-		},
-		fontSize: {
-			'xs': ['0.8125rem', { lineHeight: '1.25rem', letterSpacing: '-0.01em' }],
-			'sm': ['0.9375rem', { lineHeight: '1.5rem', letterSpacing: '-0.01em' }],
-			'base': ['1.0625rem', { lineHeight: '1.75rem', letterSpacing: '-0.02em' }],
-			'lg': ['1.1875rem', { lineHeight: '1.875rem', letterSpacing: '-0.02em' }],
-			'xl': ['1.375rem', { lineHeight: '2rem', letterSpacing: '-0.03em' }],
-			'2xl': ['1.75rem', { lineHeight: '2.25rem', letterSpacing: '-0.03em' }],
-			'3xl': ['2.125rem', { lineHeight: '2.5rem', letterSpacing: '-0.04em' }],
-			'4xl': ['2.75rem', { lineHeight: '3rem', letterSpacing: '-0.04em' }],
-			'5xl': ['3.5rem', { lineHeight: '3.75rem', letterSpacing: '-0.05em' }],
-			'6xl': ['4.5rem', { lineHeight: '4.75rem', letterSpacing: '-0.05em' }],
-			'7xl': ['5.5rem', { lineHeight: '5.75rem', letterSpacing: '-0.06em' }],
-			'8xl': ['7rem', { lineHeight: '7.25rem', letterSpacing: '-0.06em' }],
-		},
+			fontFamily: {
+				'heebo': ['Heebo', 'sans-serif'],
+				'assistant': ['Assistant', 'sans-serif'],
+				'rubik': ['Rubik', 'sans-serif'], 
+				'inter': ['Inter', 'sans-serif'],
+				'playfair': ['Playfair Display', 'serif'],
+				'montserrat': ['Montserrat', 'sans-serif'],
+				'brand': ['Playfair Display', 'Montserrat', 'Heebo', 'serif'],
+				'sans': ['Heebo', 'Assistant', 'ui-sans-serif', 'system-ui'],
+				'display': ['Montserrat', 'Heebo', 'Assistant', 'sans-serif'],
+				'body': ['Assistant', 'Heebo', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

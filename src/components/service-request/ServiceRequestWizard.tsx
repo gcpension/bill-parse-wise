@@ -27,54 +27,8 @@ export default function ServiceRequestWizard() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Load draft and pre-filled data from localStorage on mount
+  // Load draft and selected plan from localStorage on mount
   useEffect(() => {
-    // Check for Quick Flow data
-    const quickFlowData = localStorage.getItem('quickFlowData');
-    if (quickFlowData) {
-      try {
-        const data = JSON.parse(quickFlowData);
-        setFormData(prev => ({
-          ...prev,
-          // Pre-fill from Quick Flow
-          preferred_language: 'he',
-          service_address: {
-            city: data.location || '',
-            street: '',
-            number: '',
-            apt: '',
-            zip: ''
-          }
-        }));
-      } catch (error) {
-        console.error('Error loading Quick Flow data:', error);
-      }
-    }
-
-    // Check for user profile from personalized wizard
-    const wizardProfile = localStorage.getItem('userProfile');
-    if (wizardProfile) {
-      try {
-        const profile = JSON.parse(wizardProfile);
-        setFormData(prev => ({
-          ...prev,
-          full_name: profile.name || '',
-          email: profile.email || '',
-          phone: profile.phone || '',
-          service_address: {
-            ...prev.service_address,
-            city: profile.location || prev.service_address?.city || '',
-            street: profile.address?.street || '',
-            number: profile.address?.number || '',
-            apt: profile.address?.apt || '',
-            zip: profile.address?.zip || ''
-          }
-        }));
-      } catch (error) {
-        console.error('Error loading user profile:', error);
-      }
-    }
-
     // Load selected plan data
     const selectedPlan = localStorage.getItem('selectedPlanForSwitch');
     if (selectedPlan) {

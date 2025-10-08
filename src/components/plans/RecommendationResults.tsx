@@ -8,7 +8,6 @@ import { TrendingDown, Star, Check, AlertCircle, ArrowRight } from "lucide-react
 import { PersonalizedRecommendation } from "@/lib/personalizedRecommendations";
 import { ManualPlan } from "@/data/manual-plans";
 import { CoverageIndicator } from "@/components/CoverageIndicator";
-import { QuickComparisonCard } from "@/components/QuickComparisonCard";
 import { cn } from "@/lib/utils";
 
 interface RecommendationResultsProps {
@@ -64,18 +63,18 @@ export const RecommendationResults = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="space-y-3 pb-6">
-          <DialogTitle className="text-4xl font-heading font-bold text-foreground">
-            התוכניות המומלצות בשבילך
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-heebo">
+            המלצות מותאמות אישית
           </DialogTitle>
           {categories.length > 1 && (
-            <p className="text-lg text-muted-foreground">
-              מצאנו המלצות עבור {categories.length} קטגוריות: {categories.map(c => categoryLabels[c]).join(', ')}
+            <p className="text-sm text-muted-foreground font-assistant">
+              נמצאו המלצות עבור {categories.length} סקטורים: {categories.map(c => categoryLabels[c]).join(', ')}
             </p>
           )}
         </DialogHeader>
 
-        <Separator className="my-6" />
+        <Separator />
 
         {/* Results by Category */}
         <div className="space-y-8">
@@ -86,58 +85,62 @@ export const RecommendationResults = ({
             return (
               <div key={category}>
                 {/* Category Header */}
-                <div className="mb-8 space-y-2">
-                  <h3 className="text-3xl font-heading font-bold text-foreground">
-                    {categoryLabels[category]}
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold font-heebo mb-1">
+                    המלצות ל{categoryLabels[category]}
                   </h3>
-                  <p className="text-lg text-muted-foreground">
-                    {categoryRecs.length} תוכניות מומלצות
+                  <p className="text-sm text-muted-foreground font-assistant">
+                    {categoryRecs.length} מסלולים מומלצים
                   </p>
                 </div>
 
-                {/* Top Recommendation - Enhanced */}
-                <Card className="mb-6 border border-primary/50 shadow-xl bg-gradient-to-br from-card via-primary/5 to-transparent">
-                  <CardContent className="p-10">
-                    <div className="space-y-8">
-                      <div className="flex items-start justify-between gap-8">
-                        <div className="space-y-4 flex-1">
-                          <Badge className="bg-primary text-primary-foreground text-base px-4 py-1.5 shadow-md font-medium">
-                            ⭐ ההמלצה שלנו בשבילך
-                          </Badge>
-                          <div className="space-y-2">
-                            <h4 className="text-4xl font-heading font-bold text-foreground leading-tight">
-                              {topRec.plan.company}
-                            </h4>
-                            <p className="text-xl text-muted-foreground">{topRec.plan.planName}</p>
-                          </div>
-                        </div>
-                        
-                        <div className="text-left bg-card/50 rounded-xl p-6 border border-border/50">
-                          <p className="text-sm text-muted-foreground mb-2 font-medium">מחיר חודשי</p>
-                          <div className="flex items-baseline gap-1">
-                            <span className="text-5xl font-heading font-bold text-primary">₪{topRec.plan.regularPrice}</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-1">לחודש</p>
-                        </div>
-                      </div>
-
-                        {/* Savings - Enhanced */}
-                        {topRec.recommendation.expectedSavings.monthly > 0 && (
-                          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+                {/* Top Recommendation */}
+                <Card className="mb-4 border-2">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between gap-6">
+                      <div className="flex-1 space-y-4">
+                        <div className="flex items-start justify-between">
+                          <div>
                             <div className="flex items-center gap-2 mb-2">
-                              <TrendingDown className="w-5 h-5 text-green-600" />
-                              <span className="font-bold font-heading text-green-700 dark:text-green-400">💰 חיסכון משמעותי!</span>
+                              <Badge className="gap-1">
+                                <Star className="w-3 h-3 fill-current" />
+                                המלצה ראשונה
+                              </Badge>
+                              <Badge variant="outline">
+                                {Math.round(topRec.recommendation.personalizedScore)}% התאמה
+                              </Badge>
+                            </div>
+                            <h4 className="text-2xl font-bold font-heebo">{topRec.plan.company}</h4>
+                            <p className="text-muted-foreground font-assistant">{topRec.plan.planName}</p>
+                          </div>
+                          
+                          {topRec.plan.regularPrice > 0 && (
+                            <div className="text-left">
+                              <div className="text-3xl font-bold font-heebo">
+                                ₪{topRec.plan.regularPrice}
+                              </div>
+                              <div className="text-sm text-muted-foreground">לחודש</div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Savings */}
+                        {topRec.recommendation.expectedSavings.monthly > 0 && (
+                          <div className="bg-muted rounded-lg p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <TrendingDown className="w-5 h-5" />
+                              <span className="font-bold font-heebo">חיסכון צפוי</span>
                             </div>
                             <div className="grid grid-cols-2 gap-4 text-sm">
                               <div>
-                                <div className="text-muted-foreground">חיסכון חודשי</div>
-                                <div className="text-xl font-bold font-heading text-green-700 dark:text-green-400">
+                                <div className="text-muted-foreground font-assistant">חודשי</div>
+                                <div className="text-lg font-bold font-heebo">
                                   ₪{topRec.recommendation.expectedSavings.monthly}
                                 </div>
                               </div>
                               <div>
-                                <div className="text-muted-foreground">חיסכון שנתי</div>
-                                <div className="text-xl font-bold font-heading text-green-700 dark:text-green-400">
+                                <div className="text-muted-foreground font-assistant">שנתי</div>
+                                <div className="text-lg font-bold font-heebo">
                                   ₪{topRec.recommendation.expectedSavings.annual}
                                 </div>
                               </div>
@@ -147,12 +150,12 @@ export const RecommendationResults = ({
 
                         {/* Reasons */}
                         <div className="space-y-2">
-                          <h5 className="font-bold font-heading">למה זה מתאים לך?</h5>
+                          <h5 className="font-bold font-heebo">למה זה מתאים לך?</h5>
                           <div className="space-y-2">
                             {topRec.recommendation.reasonsForRecommendation.slice(0, 3).map((reason, idx) => (
                               <div key={idx} className="flex items-start gap-2">
                                 <Check className="w-4 h-4 mt-0.5 shrink-0" />
-                                <span className="text-sm">{reason}</span>
+                                <span className="text-sm font-assistant">{reason}</span>
                               </div>
                             ))}
                           </div>
@@ -172,13 +175,13 @@ export const RecommendationResults = ({
                         {/* Concerns */}
                         {topRec.recommendation.potentialConcerns.length > 0 && (
                           <div className="space-y-2">
-                            <h5 className="font-bold font-heading flex items-center gap-2">
+                            <h5 className="font-bold font-heebo flex items-center gap-2">
                               <AlertCircle className="w-4 h-4" />
                               נקודות לשים לב
                             </h5>
                             <div className="space-y-2">
                               {topRec.recommendation.potentialConcerns.slice(0, 2).map((concern, idx) => (
-                                <div key={idx} className="text-sm text-muted-foreground">
+                                <div key={idx} className="text-sm text-muted-foreground font-assistant">
                                   • {concern}
                                 </div>
                               ))}
@@ -186,29 +189,14 @@ export const RecommendationResults = ({
                           </div>
                         )}
 
-                        <Button onClick={() => {
-                          localStorage.setItem('selectedPlanForSwitch', JSON.stringify(topRec.plan));
-                          onPlanSelect(topRec.plan);
-                        }} className="w-full font-heading bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary">
+                        <Button onClick={() => onPlanSelect(topRec.plan)} className="w-full font-heebo">
                           <ArrowRight className="w-4 h-4 ml-2" />
-                          המשך לבקשת מעבר
+                          בחר מסלול זה
                         </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
-
-                {/* Quick Comparison */}
-                {categoryRecs.length > 1 && (
-                  <QuickComparisonCard
-                    plans={categoryRecs.slice(0, 3).map(r => r.plan)}
-                    topPlanId={topRec.plan.id}
-                    onSelectPlan={(plan) => {
-                      localStorage.setItem('selectedPlanForSwitch', JSON.stringify(plan));
-                      onPlanSelect(plan);
-                    }}
-                    expectedSavings={categoryRecs.slice(0, 3).map(r => r.recommendation.expectedSavings)}
-                  />
-                )}
 
                 {/* Additional Recommendations */}
                 {categoryRecs.length > 1 && (
