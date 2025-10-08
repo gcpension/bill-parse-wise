@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { X, ArrowLeft, TrendingUp, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import savingsBanner from '@/assets/savings-banner-modern.png';
+import savingsBanner from '@/assets/savings-tech-illustration.png';
 
 interface CategoryCompletionBannerProps {
   isVisible: boolean;
@@ -52,12 +52,12 @@ export const CategoryCompletionBanner = ({
     <AnimatePresence>
       {isVisible && (
         <>
-          {/* Backdrop with gradient */}
+          {/* Backdrop with tech gradient */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70 backdrop-blur-lg z-50"
+            className="fixed inset-0 bg-gradient-to-br from-primary/20 via-background/95 to-accent/20 backdrop-blur-2xl z-50"
             onClick={onClose}
           />
 
@@ -70,31 +70,46 @@ export const CategoryCompletionBanner = ({
               transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
               className="pointer-events-auto w-full max-w-xl"
             >
-              <Card className="relative bg-background/95 backdrop-blur-2xl border-0 shadow-2xl overflow-hidden">
+              <Card className="relative bg-gradient-to-br from-background via-background to-primary/5 backdrop-blur-3xl border border-primary/20 shadow-2xl overflow-hidden">
+                {/* Animated glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-50" />
+                <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+                
                 {/* Close Button */}
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={onClose}
-                  className="absolute left-3 top-3 h-10 w-10 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground z-20 backdrop-blur-sm"
+                  className="absolute left-3 top-3 h-10 w-10 rounded-full bg-background/80 hover:bg-background border border-primary/20 text-muted-foreground hover:text-foreground z-20 backdrop-blur-sm shadow-lg"
                 >
                   <X className="w-5 h-5" />
                 </Button>
 
-                {/* Gradient Top Bar */}
-                <div className={`h-1.5 bg-gradient-to-r ${category.gradient}`} />
+                {/* Tech gradient top bar with animation */}
+                <div className="relative h-1.5 overflow-hidden">
+                  <motion.div 
+                    className={`h-full bg-gradient-to-r ${category.gradient}`}
+                    initial={{ x: '-100%' }}
+                    animate={{ x: '100%' }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  />
+                </div>
 
                 {/* Main Content */}
-                <div className="p-10">
+                <div className="relative p-10 z-10">
                   {/* Header Section */}
                   <div className="flex items-center gap-4 mb-8">
                     <motion.div
                       initial={{ scale: 0, rotate: -90 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ delay: 0.2, type: "spring", stiffness: 150, damping: 12 }}
-                      className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-lg`}
+                      className="relative"
                     >
-                      <span className="text-3xl">{category.icon}</span>
+                      <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} rounded-2xl blur-xl opacity-60 animate-pulse`} />
+                      <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-2xl border border-white/20`}>
+                        <span className="text-3xl">{category.icon}</span>
+                      </div>
                     </motion.div>
                     <div>
                       <h2 className="text-3xl font-bold text-foreground mb-1">
@@ -119,7 +134,7 @@ export const CategoryCompletionBanner = ({
                         value={currentAmount}
                         onChange={(e) => onAmountChange(e.target.value)}
                         placeholder="הכנס סכום..."
-                        className="h-16 text-2xl font-bold pr-12 text-right border-2 border-border focus:border-primary rounded-2xl bg-muted/30 transition-all duration-300 placeholder:text-muted-foreground/40"
+                        className="h-16 text-2xl font-bold pr-12 text-right border-2 border-primary/30 focus:border-primary rounded-2xl bg-background/50 backdrop-blur-sm transition-all duration-300 placeholder:text-muted-foreground/40 shadow-lg focus:shadow-primary/20"
                       />
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
                         <span className="text-2xl font-bold text-muted-foreground">₪</span>
@@ -139,7 +154,7 @@ export const CategoryCompletionBanner = ({
                             variant="outline"
                             size="sm"
                             onClick={() => onAmountChange(preset.toString())}
-                            className="whitespace-nowrap rounded-full hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all font-semibold"
+                            className="whitespace-nowrap rounded-full hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all font-semibold border-primary/30 bg-background/50 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/20"
                           >
                             {preset}₪
                           </Button>
@@ -158,23 +173,33 @@ export const CategoryCompletionBanner = ({
                         transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
                         className="space-y-6"
                       >
-                        {/* Savings Header with Image */}
-                        <div className="flex items-center justify-between gap-6">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-3">
-                              <TrendingUp className="w-5 h-5 text-primary" />
+                        {/* Tech Savings Header with Image */}
+                        <div className="relative flex items-center justify-between gap-6 p-6 rounded-2xl bg-gradient-to-br from-primary/10 via-background/50 to-accent/10 border border-primary/20 backdrop-blur-sm overflow-hidden">
+                          {/* Animated background effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 animate-pulse" />
+                          
+                          <div className="flex-1 relative z-10">
+                            <div className="flex items-center gap-3 mb-3">
+                              <div className="p-2 rounded-lg bg-primary/20 backdrop-blur-sm">
+                                <TrendingUp className="w-5 h-5 text-primary" />
+                              </div>
                               <h3 className="text-xl font-bold text-foreground">פוטנציאל החיסכון שלך</h3>
                             </div>
-                            <p className="text-xs text-muted-foreground">מבוסס על ממוצע חיסכון של 30%</p>
+                            <p className="text-xs text-muted-foreground font-medium">מבוסס על ממוצע חיסכון של 30%</p>
                           </div>
-                          <motion.img
+                          <motion.div
                             initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
                             animate={{ opacity: 1, scale: 1, rotate: 0 }}
                             transition={{ delay: 0.2, type: "spring" }}
-                            src={savingsBanner}
-                            alt="savings illustration"
-                            className="w-24 h-24 object-contain"
-                          />
+                            className="relative"
+                          >
+                            <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl animate-pulse" />
+                            <img
+                              src={savingsBanner}
+                              alt="savings illustration"
+                              className="relative w-24 h-24 object-contain drop-shadow-2xl"
+                            />
+                          </motion.div>
                         </div>
 
                         {/* Clean Savings Grid */}
@@ -183,40 +208,55 @@ export const CategoryCompletionBanner = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5 }}
-                            className="bg-muted/50 rounded-xl p-4 border border-border hover:border-primary/50 transition-all hover:shadow-md"
+                            className="relative group"
                           >
-                            <div className="text-xs text-muted-foreground mb-2 font-medium">חודש</div>
-                            <div className="text-xl font-bold text-foreground">₪{savings.monthlyGain}</div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all" />
+                            <div className="relative bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-primary/20 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
+                              <div className="text-xs text-muted-foreground mb-2 font-medium">חודש</div>
+                              <div className="text-xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">₪{savings.monthlyGain}</div>
+                            </div>
                           </motion.div>
 
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.6 }}
-                            className="bg-muted/50 rounded-xl p-4 border border-border hover:border-primary/50 transition-all hover:shadow-md"
+                            className="relative group"
                           >
-                            <div className="text-xs text-muted-foreground mb-2 font-medium">רבעון</div>
-                            <div className="text-xl font-bold text-foreground">₪{savings.quarterlyGain}</div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all" />
+                            <div className="relative bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-primary/20 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
+                              <div className="text-xs text-muted-foreground mb-2 font-medium">רבעון</div>
+                              <div className="text-xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">₪{savings.quarterlyGain}</div>
+                            </div>
                           </motion.div>
 
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.7 }}
-                            className="bg-muted/50 rounded-xl p-4 border border-border hover:border-primary/50 transition-all hover:shadow-md"
+                            className="relative group"
                           >
-                            <div className="text-xs text-muted-foreground mb-2 font-medium">שנה</div>
-                            <div className="text-xl font-bold text-foreground">₪{savings.yearlyGain}</div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all" />
+                            <div className="relative bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-primary/20 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
+                              <div className="text-xs text-muted-foreground mb-2 font-medium">שנה</div>
+                              <div className="text-xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">₪{savings.yearlyGain}</div>
+                            </div>
                           </motion.div>
 
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.8 }}
-                            className="bg-primary/10 rounded-xl p-4 border-2 border-primary hover:bg-primary/20 transition-all hover:shadow-lg"
+                            className="relative group"
                           >
-                            <div className="text-xs text-primary mb-2 font-bold">שנתיים!</div>
-                            <div className="text-xl font-bold text-primary">₪{savings.twoYearGain}</div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-xl blur-xl opacity-60 group-hover:opacity-100 transition-all animate-pulse" />
+                            <div className="relative bg-gradient-to-br from-primary/20 via-primary/10 to-accent/20 backdrop-blur-sm rounded-xl p-4 border-2 border-primary hover:border-accent transition-all hover:shadow-xl hover:shadow-primary/30">
+                              <div className="text-xs text-primary mb-2 font-bold flex items-center gap-1">
+                                <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse" />
+                                שנתיים!
+                              </div>
+                              <div className="text-xl font-bold text-primary">₪{savings.twoYearGain}</div>
+                            </div>
                           </motion.div>
                         </div>
 
@@ -230,9 +270,10 @@ export const CategoryCompletionBanner = ({
                           <Button
                             onClick={onProceedToPlans}
                             size="lg"
-                            className="w-full h-14 text-lg font-bold rounded-2xl bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+                            className="relative w-full h-14 text-lg font-bold rounded-2xl bg-gradient-to-r from-primary via-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] overflow-hidden group"
                           >
-                            <span className="flex items-center justify-center gap-2">
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                            <span className="relative flex items-center justify-center gap-2">
                               בואו נתחיל לחסוך
                               <ChevronLeft className="w-5 h-5" />
                             </span>
@@ -242,7 +283,7 @@ export const CategoryCompletionBanner = ({
                             onClick={onCheckAnother}
                             variant="ghost"
                             size="lg"
-                            className="w-full h-12 text-base font-semibold rounded-2xl hover:bg-muted"
+                            className="w-full h-12 text-base font-semibold rounded-2xl hover:bg-primary/10 border border-primary/20 backdrop-blur-sm transition-all hover:border-primary/40"
                           >
                             בדוק סקטור נוסף
                           </Button>
