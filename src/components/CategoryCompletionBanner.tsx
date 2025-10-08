@@ -182,103 +182,35 @@ export const CategoryCompletionBanner = ({
                   ))}
                 </div>
 
-                {/* Impressive Savings Display */}
+                {/* Compact Savings Display */}
                 <AnimatePresence mode="wait">
                   {hasAmount ? (
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      className="space-y-4"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="space-y-3"
                     >
-                      {/* Circular Progress with Yearly Savings */}
-                      <motion.div 
-                        className="relative mx-auto w-48 h-48 mb-4"
-                        initial={{ rotate: -90, opacity: 0 }}
-                        animate={{ rotate: 0, opacity: 1 }}
-                        transition={{ duration: 0.8, type: "spring" }}
-                      >
-                        {/* Outer glow ring */}
-                        <motion.div
-                          className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary/80 to-accent blur-xl"
-                          animate={{ 
-                            scale: [1, 1.1, 1],
-                            opacity: [0.3, 0.5, 0.3]
-                          }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        />
-                        
-                        {/* Main circle */}
-                        <svg className="relative w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          {/* Background circle */}
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="45"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="8"
-                            className="text-muted/30"
-                          />
-                          
-                          {/* Animated progress circle */}
-                          <motion.circle
-                            cx="50"
-                            cy="50"
-                            r="45"
-                            fill="none"
-                            stroke="url(#gradient)"
-                            strokeWidth="8"
-                            strokeLinecap="round"
-                            strokeDasharray={`${2 * Math.PI * 45}`}
-                            initial={{ strokeDashoffset: 2 * Math.PI * 45 }}
-                            animate={{ strokeDashoffset: 0 }}
-                            transition={{ duration: 1.5, ease: "easeOut" }}
-                          />
-                          
-                          <defs>
-                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" stopColor="hsl(var(--primary))" />
-                              <stop offset="100%" stopColor="hsl(var(--accent))" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                        
-                        {/* Center content */}
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.5, type: "spring" }}
-                          >
-                            <Sparkles className="w-8 h-8 text-primary mb-2" />
-                            <div className="text-xs text-muted-foreground mb-1">חיסכון שנתי</div>
-                            <div className="text-3xl font-black text-primary">
-                              ₪{savings.yearlyGain.toLocaleString()}
-                            </div>
-                            <div className="flex items-center justify-center gap-1 mt-1">
-                              <TrendingUp className="w-4 h-4 text-green-500" />
-                              <span className="text-xs font-bold text-green-500">30% חיסכון</span>
-                            </div>
-                          </motion.div>
-                        </div>
-                      </motion.div>
-
-                      {/* Breakdown Cards Grid */}
-                      <div className="grid grid-cols-2 gap-3">
+                      {/* Main Savings Cards - Side by Side */}
+                      <div className="grid grid-cols-3 gap-2">
                         {[
                           { 
                             label: 'חודש', 
                             amount: savings.monthlyGain, 
                             icon: Calendar,
-                            gradient: 'from-blue-500/20 to-cyan-500/20',
                             iconColor: 'text-blue-500'
+                          },
+                          { 
+                            label: 'שנה', 
+                            amount: savings.yearlyGain, 
+                            icon: Sparkles,
+                            iconColor: 'text-primary',
+                            highlight: true
                           },
                           { 
                             label: 'רבעון', 
                             amount: savings.quarterlyGain, 
                             icon: TrendingDown,
-                            gradient: 'from-purple-500/20 to-pink-500/20',
                             iconColor: 'text-purple-500'
                           }
                         ].map((item, index) => {
@@ -286,26 +218,22 @@ export const CategoryCompletionBanner = ({
                           return (
                             <motion.div
                               key={item.label}
-                              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.6 + index * 0.1 }}
-                              className={`relative bg-gradient-to-br ${item.gradient} backdrop-blur-sm rounded-2xl p-4 border border-border/50 overflow-hidden group hover:scale-105 transition-transform`}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: index * 0.1 }}
+                              className={cn(
+                                "relative rounded-xl p-3 border transition-all",
+                                item.highlight 
+                                  ? "bg-primary text-primary-foreground border-primary shadow-lg" 
+                                  : "bg-muted border-border hover:border-primary/50"
+                              )}
                             >
-                              {/* Shimmer effect */}
-                              <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                                initial={{ x: '-100%' }}
-                                animate={{ x: '200%' }}
-                                transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-                              />
-                              
-                              <div className="relative">
-                                <div className="flex items-center justify-between mb-2">
-                                  <Icon className={`w-5 h-5 ${item.iconColor}`} />
-                                  <Percent className="w-4 h-4 text-muted-foreground/50" />
+                              <div className="flex flex-col items-center text-center">
+                                <Icon className={cn("w-5 h-5 mb-1", item.highlight ? "text-primary-foreground" : item.iconColor)} />
+                                <div className={cn("text-xs mb-1", item.highlight ? "text-primary-foreground/80" : "text-muted-foreground")}>
+                                  {item.label}
                                 </div>
-                                <div className="text-xs text-muted-foreground mb-1">{item.label}</div>
-                                <div className="text-xl font-black text-foreground">
+                                <div className={cn("text-lg font-black", item.highlight ? "text-primary-foreground" : "text-foreground")}>
                                   ₪{item.amount.toLocaleString()}
                                 </div>
                               </div>
