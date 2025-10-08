@@ -146,7 +146,7 @@ export const SavingsComparisonBanner = ({ savingsData, className = '' }: Savings
                   החיסכון הכולל שלכם
                 </h2>
                 
-                <div className="grid md:grid-cols-2 gap-12 mb-8">
+                <div className="grid md:grid-cols-2 gap-12 mb-8 items-center">
                   {/* Monthly Savings */}
                   <div className="text-center">
                     <div className="bg-white/20 rounded-3xl p-8 backdrop-blur-sm">
@@ -158,14 +158,25 @@ export const SavingsComparisonBanner = ({ savingsData, className = '' }: Savings
                     </div>
                   </div>
                   
-                  {/* Annual Savings - The Big Number */}
+                  {/* Annual Savings - Circular Display */}
                   <div className="text-center">
-                    <div className="bg-white/30 rounded-3xl p-8 backdrop-blur-sm border-2 border-white/50">
-                      <div className="text-7xl lg:text-8xl font-black text-white mb-3">
-                        ₪{animatedAnnualSavings.toLocaleString()}
+                    <div className="relative w-72 h-72 mx-auto">
+                      {/* Outer glow ring */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-amber-300 via-yellow-400 to-orange-400 rounded-full animate-pulse opacity-40 blur-xl"></div>
+                      
+                      {/* Main circle */}
+                      <div className="absolute inset-4 bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 rounded-full shadow-2xl border-4 border-yellow-300/50 flex items-center justify-center">
+                        <div className="text-center px-4">
+                          <div className="text-6xl lg:text-7xl font-black text-white mb-2 drop-shadow-lg">
+                            ₪{animatedAnnualSavings.toLocaleString()}
+                          </div>
+                          <div className="text-2xl text-yellow-50 font-bold mb-1">בשנה!</div>
+                          <div className="text-yellow-100 text-sm font-medium">חיסכון משמעותי</div>
+                        </div>
                       </div>
-                      <div className="text-2xl text-green-100 font-bold">בשנה השלמה</div>
-                      <div className="text-green-200 mt-2">חיסכון אמיתי לכל המשפחה!</div>
+                      
+                      {/* Inner shine effect */}
+                      <div className="absolute inset-8 bg-gradient-to-tr from-white/30 to-transparent rounded-full"></div>
                     </div>
                   </div>
                 </div>
@@ -192,16 +203,19 @@ export const SavingsComparisonBanner = ({ savingsData, className = '' }: Savings
                   </div>
                 </div>
 
-                {/* Strong CTA */}
-                <Button 
-                  size="lg"
-                  className="bg-white text-success hover:bg-green-50 font-black text-2xl lg:text-3xl px-16 py-8 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 border-4 border-white/40 group relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  <Crown className="w-8 h-8 mr-3 animate-bounce" />
-                  בואו נתחיל לחסוך עכשיו!
-                  <ArrowRight className="w-8 h-8 ml-3 group-hover:translate-x-2 transition-transform" />
-                </Button>
+                {/* Strong CTA - Extra Large */}
+                <div className="relative group">
+                  <div className="absolute -inset-2 bg-gradient-to-r from-white via-green-100 to-white rounded-full blur-xl opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
+                  <Button 
+                    size="lg"
+                    className="relative bg-white text-success hover:bg-green-50 font-black text-3xl lg:text-4xl px-20 py-10 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 border-[6px] border-green-200 overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-200/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <Crown className="w-10 h-10 mr-4 animate-bounce" />
+                    בואו נתחיל לחסוך עכשיו!
+                    <ArrowRight className="w-10 h-10 ml-4 group-hover:translate-x-2 transition-transform" />
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
