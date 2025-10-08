@@ -162,72 +162,67 @@ export const CategoryCompletionBanner = ({
                           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
                           
                           <div className="relative z-10">
-                            <div className="flex items-center justify-between mb-6">
-                              <div className="flex items-center gap-2">
-                                <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                                  <PiggyBank className="w-5 h-5 text-white" />
-                                </div>
-                                <div>
-                                  <div className="text-white/80 text-xs font-medium">החיסכון שלך</div>
-                                  <div className="text-white text-sm font-bold">לפי תקופות</div>
-                                </div>
+                            {/* Header */}
+                            <div className="flex items-center gap-3 mb-5">
+                              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                <PiggyBank className="w-6 h-6 text-white" />
                               </div>
-                              <div className="w-8 h-8 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                                <Info className="w-4 h-4 text-white" />
+                              <div>
+                                <div className="text-white text-lg font-bold">פוטנציאל החיסכון שלך</div>
+                                <div className="text-white/70 text-xs">מבוסס על ממוצע של 30%</div>
                               </div>
                             </div>
 
-                            {/* Savings Timeline */}
-                            <div className="grid grid-cols-2 gap-3">
-                              <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.5 }}
-                                className="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20"
-                              >
-                                <div className="text-white/70 text-xs mb-1 font-medium">חודש ראשון</div>
-                                <div className="text-white text-2xl font-bold">₪{savings.monthlyGain}</div>
-                              </motion.div>
+                            {/* Compact Savings Display */}
+                            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                              <div className="flex items-center justify-between gap-4">
+                                <motion.div
+                                  initial={{ opacity: 0, scale: 0.8 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: 0.5 }}
+                                  className="flex-1 text-center"
+                                >
+                                  <div className="text-white/60 text-[10px] uppercase tracking-wide mb-1 font-semibold">חודש</div>
+                                  <div className="text-white text-lg font-bold">₪{savings.monthlyGain}</div>
+                                </motion.div>
 
-                              <motion.div
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.6 }}
-                                className="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20"
-                              >
-                                <div className="text-white/70 text-xs mb-1 font-medium">רבעון</div>
-                                <div className="text-white text-2xl font-bold">₪{savings.quarterlyGain}</div>
-                              </motion.div>
+                                <div className="w-px h-10 bg-white/20" />
 
-                              <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.7 }}
-                                className="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20"
-                              >
-                                <div className="text-white/70 text-xs mb-1 font-medium">שנה</div>
-                                <div className="text-white text-2xl font-bold">₪{savings.yearlyGain}</div>
-                              </motion.div>
+                                <motion.div
+                                  initial={{ opacity: 0, scale: 0.8 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: 0.6 }}
+                                  className="flex-1 text-center"
+                                >
+                                  <div className="text-white/60 text-[10px] uppercase tracking-wide mb-1 font-semibold">רבעון</div>
+                                  <div className="text-white text-lg font-bold">₪{savings.quarterlyGain}</div>
+                                </motion.div>
 
-                              <motion.div
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.8 }}
-                                className="bg-white/25 backdrop-blur-md rounded-2xl p-4 border-2 border-white/30 shadow-lg"
-                              >
-                                <div className="text-white/90 text-xs mb-1 font-bold">שנתיים!</div>
-                                <div className="text-white text-2xl font-bold">₪{savings.twoYearGain}</div>
-                              </motion.div>
+                                <div className="w-px h-10 bg-white/20" />
+
+                                <motion.div
+                                  initial={{ opacity: 0, scale: 0.8 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: 0.7 }}
+                                  className="flex-1 text-center"
+                                >
+                                  <div className="text-white/60 text-[10px] uppercase tracking-wide mb-1 font-semibold">שנה</div>
+                                  <div className="text-white text-lg font-bold">₪{savings.yearlyGain}</div>
+                                </motion.div>
+
+                                <div className="w-px h-10 bg-white/20" />
+
+                                <motion.div
+                                  initial={{ opacity: 0, scale: 0.8 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: 0.8 }}
+                                  className="flex-1 text-center"
+                                >
+                                  <div className="text-white/90 text-[10px] uppercase tracking-wide mb-1 font-bold">שנתיים</div>
+                                  <div className="text-white text-xl font-bold">₪{savings.twoYearGain}</div>
+                                </motion.div>
+                              </div>
                             </div>
-
-                            <motion.div
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: 0.9 }}
-                              className="mt-4 text-center text-white/60 text-xs font-medium bg-white/10 backdrop-blur-sm rounded-lg py-2 px-3"
-                            >
-                              💡 חיסכון מבוסס על ממוצע שוק של 30%
-                            </motion.div>
                           </div>
                         </div>
 
