@@ -25,8 +25,11 @@ import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnim
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { QuickActions } from '@/components/QuickActions';
 import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
+import { CategoryCompletionBanner } from '@/components/CategoryCompletionBanner';
 const Home = () => {
   const [mounted, setMounted] = useState(false);
+  const [showBanner, setShowBanner] = useState(false);
+  const [completedCategory, setCompletedCategory] = useState<string>('');
   const [selectedCategories, setSelectedCategories] = useState<Record<string, {
     provider: string;
     amount: string;
@@ -109,6 +112,12 @@ const Home = () => {
         amount
       }
     }));
+
+    // Show banner when amount is entered and category is selected
+    if (amount && parseFloat(amount) > 0 && selectedCategories[category].selected) {
+      setCompletedCategory(category);
+      setShowBanner(true);
+    }
   };
   const handleStartAnalysis = () => {
     const selectedData = Object.entries(selectedCategories).filter(([_, data]) => data.selected && data.amount).map(([category, data]) => ({
@@ -130,6 +139,18 @@ const Home = () => {
     const categories = selectedData.map(item => item.category);
     localStorage.setItem('selectedCategories', JSON.stringify(categories));
     navigate('/all-plans');
+  };
+
+  const handleCheckAnother = () => {
+    setShowBanner(false);
+    // Scroll to categories section
+    const servicesSection = document.getElementById('services');
+    servicesSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleProceedToPlans = () => {
+    setShowBanner(false);
+    handleStartAnalysis();
   };
   return <div className="min-h-screen bg-gray-50 relative overflow-hidden">
       {/* Top Navigation Bar */}
@@ -435,27 +456,29 @@ const Home = () => {
           })}
             </div>}
 
-          {/* Clean CTA Section - Enhanced animations */}
-          <div className="text-center mt-16 space-y-6">
-            <Button onClick={handleStartAnalysis} className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
-              <span className="flex items-center gap-3">
-                <span>התחל ניתוח חיסכון</span>
-                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-              </span>
-            </Button>
-            
-            {/* New Service Request Button */}
-            <div className="pt-4">
-              <p className="text-gray-600 text-sm mb-4">או</p>
-              <Button onClick={() => navigate('/service-request')} variant="outline" className="border-slate-400 text-slate-700 hover:bg-slate-50 px-8 py-3 text-base font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+          {/* Clean CTA Section - Hidden when banner is visible */}
+          {!showBanner && (
+            <div className="text-center mt-16 space-y-6">
+              <Button onClick={handleStartAnalysis} className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
                 <span className="flex items-center gap-3">
-                  <span>בקש שירות ישירות</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <span>התחל ניתוח חיסכון</span>
+                  <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
               </Button>
-              <p className="text-gray-500 text-xs mt-2">עם בחירת ספקים מהירה ויפה ✨</p>
+              
+              {/* New Service Request Button */}
+              <div className="pt-4">
+                <p className="text-gray-600 text-sm mb-4">או</p>
+                <Button onClick={() => navigate('/service-request')} variant="outline" className="border-slate-400 text-slate-700 hover:bg-slate-50 px-8 py-3 text-base font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+                  <span className="flex items-center gap-3">
+                    <span>בקש שירות ישירות</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                </Button>
+                <p className="text-gray-500 text-xs mt-2">עם בחירת ספקים מהירה ויפה ✨</p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Clean info section */}
           <div className="text-center mt-12 max-w-4xl mx-auto">
@@ -1007,6 +1030,14 @@ const Home = () => {
       {/* Quick Actions Section */}
       
       
+      {/* Category Completion Banner */}
+      <CategoryCompletionBanner
+        isVisible={showBanner}
+        completedCategory={completedCategory}
+        onCheckAnother={handleCheckAnother}
+        onProceedToPlans={handleProceedToPlans}
+      />
+
       {/* Back to Top Button */}
       <BackToTop />
     </div>;
