@@ -29,7 +29,7 @@ import { CategoryCompletionBanner } from '@/components/CategoryCompletionBanner'
 const Home = () => {
   const [mounted, setMounted] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
-  const [completedCategory, setCompletedCategory] = useState<string>('');
+  const [bannerCategory, setBannerCategory] = useState<string>('');
   const [selectedCategories, setSelectedCategories] = useState<Record<string, {
     provider: string;
     amount: string;
@@ -96,27 +96,40 @@ const Home = () => {
     }
   };
   const handleCategorySelect = (category: string) => {
-    setSelectedCategories(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        selected: !prev[category].selected
-      }
-    }));
-  };
-  const handleAmountChange = (category: string, amount: string) => {
-    setSelectedCategories(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        amount
-      }
-    }));
-
-    // Show banner when amount is entered and category is selected
-    if (amount && parseFloat(amount) > 0 && selectedCategories[category].selected) {
-      setCompletedCategory(category);
+    const isCurrentlySelected = selectedCategories[category].selected;
+    
+    if (!isCurrentlySelected) {
+      // Show banner when selecting a category
+      setBannerCategory(category);
       setShowBanner(true);
+      setSelectedCategories(prev => ({
+        ...prev,
+        [category]: {
+          ...prev[category],
+          selected: true
+        }
+      }));
+    } else {
+      // Deselect category
+      setSelectedCategories(prev => ({
+        ...prev,
+        [category]: {
+          ...prev[category],
+          selected: false,
+          amount: ''
+        }
+      }));
+    }
+  };
+  const handleAmountChange = (amount: string) => {
+    if (bannerCategory) {
+      setSelectedCategories(prev => ({
+        ...prev,
+        [bannerCategory]: {
+          ...prev[bannerCategory],
+          amount
+        }
+      }));
     }
   };
   const handleStartAnalysis = () => {
@@ -143,6 +156,7 @@ const Home = () => {
 
   const handleCheckAnother = () => {
     setShowBanner(false);
+    setBannerCategory('');
     // Scroll to categories section
     const servicesSection = document.getElementById('services');
     servicesSection?.scrollIntoView({ behavior: 'smooth' });
@@ -150,7 +164,23 @@ const Home = () => {
 
   const handleProceedToPlans = () => {
     setShowBanner(false);
+    setBannerCategory('');
     handleStartAnalysis();
+  };
+
+  const handleCloseBanner = () => {
+    // Deselect the category if closing without entering amount
+    if (bannerCategory && !selectedCategories[bannerCategory].amount) {
+      setSelectedCategories(prev => ({
+        ...prev,
+        [bannerCategory]: {
+          ...prev[bannerCategory],
+          selected: false
+        }
+      }));
+    }
+    setShowBanner(false);
+    setBannerCategory('');
   };
   return <div className="min-h-screen bg-gray-50 relative overflow-hidden">
       {/* Top Navigation Bar */}
@@ -321,140 +351,6 @@ const Home = () => {
                 </div>;
           })}
           </div>
-
-          {/* Selected Category Details - Clean & User-Friendly Design */}
-          {Object.entries(selectedCategories).some(([_, data]) => data.selected) && <div className="mt-10 space-y-6">
-              {Object.entries(selectedCategories).map(([category, categoryData]) => {
-            if (!categoryData.selected) return null;
-            const data = categoryData;
-            const categoryInfo = {
-              'electricity': {
-                name: 'חשמל',
-                icon: Lightbulb
-              },
-              'cellular': {
-                name: 'סלולר',
-                icon: Smartphone
-              },
-              'internet': {
-                name: 'אינטרנט',
-                icon: Wifi
-              },
-              'tv': {
-                name: 'טלוויזיה',
-                icon: Tv
-              }
-            }[category];
-            const Icon = categoryInfo?.icon || Lightbulb;
-            const currentAmount = parseFloat(categoryData.amount) || 0;
-            return <Card key={category} className="bg-white shadow-lg border-2 border-gray-200 hover:border-purple-300 transition-all duration-300 animate-fade-in">
-                    <CardContent className="p-8">
-                      {/* Header with close button */}
-                      <div className="flex items-center justify-between mb-8 pb-6 border-b-2 border-gray-100">
-                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center">
-                            <Icon className="w-7 h-7 text-purple-600" />
-                          </div>
-                          <div>
-                            <h3 className="text-2xl font-bold text-gray-900">
-                              {categoryInfo?.name}
-                            </h3>
-                            <p className="text-sm text-gray-600 mt-1">
-                              השלימו את הפרטים כדי לקבל המלצות
-                            </p>
-                          </div>
-                        </div>
-                        <Button variant="outline" size="sm" onClick={() => handleCategorySelect(category)} className="text-gray-600 hover:text-red-600 hover:border-red-300 transition-colors">
-                          ✕ סגור
-                        </Button>
-                      </div>
-                      
-                      <div className="space-y-8">
-                        {/* Cellular Lines Counter */}
-                        {category === 'cellular' && <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                            <Label className="text-base font-semibold text-gray-900 mb-4 block">
-                              כמה קווי סלולר יש לכם?
-                            </Label>
-                            <div className="flex items-center gap-6">
-                              <div className="flex-1">
-                                <Input type="range" min="1" max="10" value={categoryData.lines || 1} onChange={e => setSelectedCategories(prev => ({
-                          ...prev,
-                          [category]: {
-                            ...prev[category],
-                            lines: parseInt(e.target.value)
-                          }
-                        }))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider" />
-                                <div className="flex justify-between text-xs text-gray-500 mt-2 px-1">
-                                  <span>1 קו</span>
-                                  <span>5 קווים</span>
-                                  <span>10 קווים</span>
-                                </div>
-                              </div>
-                              <div className="bg-white px-6 py-3 rounded-lg border-2 border-purple-200 min-w-[100px] text-center">
-                                <span className="text-3xl font-bold text-purple-600">
-                                  {categoryData.lines || 1}
-                                </span>
-                                <span className="text-sm text-gray-600 block mt-1">
-                                  {(categoryData.lines || 1) === 1 ? 'קו' : 'קווים'}
-                                </span>
-                              </div>
-                            </div>
-                          </div>}
-                        
-                        {/* Monthly Payment Amount */}
-                        <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                          <Label className="text-base font-semibold text-gray-900 mb-4 block">
-                            כמה אתם משלמים היום? (חודשי)
-                          </Label>
-                          
-                          <div className="space-y-6">
-                            {/* Main number input */}
-                            <div className="relative">
-                              <Input type="number" placeholder="הזינו סכום" value={categoryData.amount} onChange={e => handleAmountChange(category, e.target.value)} className="h-16 pr-14 text-2xl font-bold text-gray-900 bg-white border-2 border-gray-300 focus:border-purple-500 rounded-xl text-center" />
-                              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-2xl font-bold text-gray-400">
-                                ₪
-                              </div>
-                            </div>
-                            
-                            {/* Quick amount buttons */}
-                            <div className="flex flex-wrap gap-2">
-                              <span className="text-sm text-gray-600 w-full mb-1">סכומים נפוצים:</span>
-                              {[50, 100, 150, 200, 300, 500].map(amount => <Button key={amount} type="button" variant="outline" size="sm" onClick={() => handleAmountChange(category, amount.toString())} className="text-sm hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700">
-                                  ₪{amount}
-                                </Button>)}
-                            </div>
-                            
-                            {/* Range slider */}
-                            <div className="pt-2">
-                              <Input type="range" min="0" max="1000" step="10" value={categoryData.amount || 0} onChange={e => handleAmountChange(category, e.target.value)} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider" />
-                              <div className="flex justify-between text-xs text-gray-500 mt-2 px-1">
-                                <span>₪0</span>
-                                <span>₪500</span>
-                                <span>₪1000</span>
-                              </div>
-                            </div>
-                            
-                            {/* Savings estimate - Simple */}
-                            {currentAmount > 0 && <div className="mt-6 pt-6 border-t-2 border-gray-200">
-                                <div className="flex items-center justify-between text-sm">
-                                  <span className="text-gray-600 font-medium">חיסכון משוער (25%):</span>
-                                  <div className="text-right">
-                                    <div className="text-xl font-bold text-green-600">
-                                      ₪{Math.round(currentAmount * 0.25)} לחודש
-                                    </div>
-                                    <div className="text-sm text-gray-500">
-                                      (₪{Math.round(currentAmount * 0.25 * 12)} לשנה)
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>;
-          })}
-            </div>}
 
           {/* Clean CTA Section - Hidden when banner is visible */}
           {!showBanner && (
@@ -1033,9 +929,12 @@ const Home = () => {
       {/* Category Completion Banner */}
       <CategoryCompletionBanner
         isVisible={showBanner}
-        completedCategory={completedCategory}
+        selectedCategory={bannerCategory}
+        currentAmount={selectedCategories[bannerCategory]?.amount || ''}
+        onAmountChange={handleAmountChange}
         onCheckAnother={handleCheckAnother}
         onProceedToPlans={handleProceedToPlans}
+        onClose={handleCloseBanner}
       />
 
       {/* Back to Top Button */}
