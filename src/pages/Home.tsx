@@ -385,9 +385,107 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Minimalist How It Works Section */}
+          {/* How It Works - Clear & Large Section */}
           <div className="max-w-6xl mx-auto mt-32">
-            
+            <div className="text-center mb-16">
+              <Badge variant="outline" className="mb-4 border-primary text-primary bg-white/80 backdrop-blur-sm text-base px-6 py-2">
+                איך זה עובד?
+              </Badge>
+              <h2 className="text-4xl lg:text-5xl font-heebo font-bold text-royal-purple mb-6">
+                3 שלבים פשוטים לחיסכון גדול
+              </h2>
+              <p className="text-xl text-gray-700 font-assistant max-w-3xl mx-auto leading-relaxed">
+                תהליך פשוט, מהיר ושקוף שחוסך לכם זמן וכסף
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Step 1 */}
+              <div className="relative">
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-purple-100 hover:border-purple-300 h-full">
+                  {/* Step Number */}
+                  <div className="absolute -top-6 right-6 w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-2xl font-black text-white">1</span>
+                  </div>
+                  
+                  {/* Icon */}
+                  <div className="mb-6 mt-4">
+                    <div className="w-20 h-20 mx-auto bg-purple-100 rounded-2xl flex items-center justify-center">
+                      <Zap className="w-10 h-10 text-purple-600" />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-2xl font-heebo font-bold text-royal-purple mb-4 text-center">
+                    בחרו קטגוריות
+                  </h3>
+                  <p className="text-gray-600 font-assistant text-lg leading-relaxed text-center">
+                    בחרו מה מעניין אתכם - חשמל, סלולר, אינטרנט או טלוויזיה. אפשר לבחור מספר קטגוריות ביחד.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="relative">
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-100 hover:border-blue-300 h-full">
+                  {/* Step Number */}
+                  <div className="absolute -top-6 right-6 w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-2xl font-black text-white">2</span>
+                  </div>
+                  
+                  {/* Icon */}
+                  <div className="mb-6 mt-4">
+                    <div className="w-20 h-20 mx-auto bg-blue-100 rounded-2xl flex items-center justify-center">
+                      <TrendingUp className="w-10 h-10 text-blue-600" />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-2xl font-heebo font-bold text-royal-purple mb-4 text-center">
+                    הזינו פרטים
+                  </h3>
+                  <p className="text-gray-600 font-assistant text-lg leading-relaxed text-center">
+                    ספרו לנו כמה אתם משלמים היום ומה הספק הנוכחי שלכם. זה לוקח רק דקה.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="relative">
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-green-100 hover:border-green-300 h-full">
+                  {/* Step Number */}
+                  <div className="absolute -top-6 right-6 w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-2xl font-black text-white">3</span>
+                  </div>
+                  
+                  {/* Icon */}
+                  <div className="mb-6 mt-4">
+                    <div className="w-20 h-20 mx-auto bg-green-100 rounded-2xl flex items-center justify-center">
+                      <Star className="w-10 h-10 text-green-600" />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-2xl font-heebo font-bold text-royal-purple mb-4 text-center">
+                    קבלו המלצות
+                  </h3>
+                  <p className="text-gray-600 font-assistant text-lg leading-relaxed text-center">
+                    המערכת מציגה לכם את כל האפשרויות הזולות יותר והחיסכון הצפוי. אתם בוחרים מה מתאים לכם.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom CTA */}
+            <div className="text-center mt-16">
+              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-100 to-blue-100 px-8 py-4 rounded-2xl border-2 border-purple-200">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+                <p className="text-lg font-heebo font-bold text-royal-purple">
+                  זה הכל! פשוט כמו שזה נשמע
+                </p>
+                <Sparkles className="w-6 h-6 text-purple-600" />
+              </div>
+            </div>
           </div>
         </div>
       </section>

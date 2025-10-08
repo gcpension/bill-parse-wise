@@ -182,18 +182,18 @@ export const CategoryCompletionBanner = ({
                   ))}
                 </div>
 
-                {/* Balanced Layout with Large Circle */}
+                {/* Compact Circle with Key Info */}
                 <AnimatePresence mode="wait">
                   {hasAmount ? (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="flex gap-4 items-center"
+                      className="flex justify-center mb-4"
                     >
-                      {/* Large Circular Progress */}
+                      {/* Single Large Circular Progress */}
                       <motion.div 
-                        className="relative w-36 h-36 flex-shrink-0"
+                        className="relative w-40 h-40"
                         initial={{ scale: 0, rotate: -90 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ duration: 0.7, type: "spring" }}
@@ -244,55 +244,21 @@ export const CategoryCompletionBanner = ({
                             animate={{ scale: 1 }}
                             transition={{ delay: 0.4, type: "spring" }}
                           >
-                            <Sparkles className="w-6 h-6 text-primary mb-1" />
-                            <div className="text-xs text-muted-foreground">חיסכון שנתי</div>
-                            <div className="text-2xl font-black text-primary">
+                            <Sparkles className="w-7 h-7 text-primary mb-2" />
+                            <div className="text-xs text-muted-foreground mb-1">חיסכון שנתי</div>
+                            <div className="text-3xl font-black text-primary">
                               ₪{savings.yearlyGain.toLocaleString()}
                             </div>
-                            <div className="flex items-center justify-center gap-1 mt-1">
-                              <TrendingUp className="w-3 h-3 text-green-500" />
-                              <span className="text-xs font-bold text-green-600">30%</span>
+                            <div className="flex items-center justify-center gap-1 mt-2">
+                              <TrendingUp className="w-4 h-4 text-green-500" />
+                              <span className="text-sm font-bold text-green-600">30% חיסכון</span>
+                            </div>
+                            <div className="text-xs text-muted-foreground mt-1">
+                              ₪{savings.monthlyGain} לחודש
                             </div>
                           </motion.div>
                         </div>
                       </motion.div>
-
-                      {/* Stats Cards */}
-                      <div className="flex-1 space-y-2">
-                        <motion.div
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.3 }}
-                          className="bg-gradient-to-l from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 rounded-xl p-3 border border-blue-200 dark:border-blue-800"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                              <Calendar className="w-5 h-5 text-blue-600" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="text-xs text-blue-700 dark:text-blue-400">חיסכון חודשי</div>
-                              <div className="text-xl font-black text-blue-600">₪{savings.monthlyGain}</div>
-                            </div>
-                          </div>
-                        </motion.div>
-
-                        <motion.div
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.4 }}
-                          className="bg-gradient-to-l from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 rounded-xl p-3 border border-purple-200 dark:border-purple-800"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
-                              <Zap className="w-5 h-5 text-purple-600" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="text-xs text-purple-700 dark:text-purple-400">החזר השקעה</div>
-                              <div className="text-xl font-black text-purple-600">2 חודשים</div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      </div>
 
                       {/* Actions */}
                       <motion.div 
