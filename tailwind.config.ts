@@ -23,6 +23,7 @@ export default {
 				'assistant': ['Assistant', 'sans-serif'],
 				'rubik': ['Rubik', 'sans-serif'], 
 				'inter': ['Inter', 'sans-serif'],
+				'poppins': ['Poppins', 'sans-serif'],
 				'playfair': ['Playfair Display', 'serif'],
 				'montserrat': ['Montserrat', 'sans-serif'],
 				'brand': ['Playfair Display', 'Montserrat', 'Heebo', 'serif'],
