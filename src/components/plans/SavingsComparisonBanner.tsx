@@ -195,10 +195,12 @@ export const SavingsComparisonBanner = ({ savingsData, className = '' }: Savings
                 {/* Strong CTA */}
                 <Button 
                   size="lg"
-                  className="bg-white text-success hover:bg-green-50 font-black text-xl px-12 py-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 border-2 border-white/30"
+                  className="bg-white text-success hover:bg-green-50 font-black text-2xl lg:text-3xl px-16 py-8 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 border-4 border-white/40 group relative overflow-hidden"
                 >
-                  <Crown className="w-6 h-6 mr-3" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                  <Crown className="w-8 h-8 mr-3 animate-bounce" />
                   בואו נתחיל לחסוך עכשיו!
+                  <ArrowRight className="w-8 h-8 ml-3 group-hover:translate-x-2 transition-transform" />
                 </Button>
               </CardContent>
             </Card>
