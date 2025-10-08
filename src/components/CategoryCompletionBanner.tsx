@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { X, ArrowLeft, TrendingUp, ChevronLeft, Sparkles, Zap, TrendingDown } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { X, ChevronLeft, Sparkles, Zap, TrendingDown, Calendar, Wallet } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import happyCustomer from '@/assets/happy-customer.jpg';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
@@ -110,128 +110,123 @@ export const CategoryCompletionBanner = ({
                   </Button>
                 </div>
 
-                {/* Input - New Style */}
-                <div className="relative mb-3">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-lg" />
-                  <Input
-                    type="number"
-                    value={currentAmount}
-                    onChange={(e) => onAmountChange(e.target.value)}
-                    placeholder="0"
-                    className="relative h-14 text-2xl font-bold pr-12 text-right bg-transparent border-2 border-primary/20 focus:border-primary/40 rounded-lg"
+                {/* Slider Input */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm text-muted-foreground">גרור להגדרת סכום</span>
+                    <motion.div 
+                      className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full"
+                      animate={{ scale: hasAmount ? [1, 1.05, 1] : 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <span className="text-2xl font-black text-primary">₪{amount.toFixed(0)}</span>
+                      <Wallet className="w-5 h-5 text-primary" />
+                    </motion.div>
+                  </div>
+                  
+                  <Slider
+                    value={[amount]}
+                    onValueChange={(values) => onAmountChange(values[0].toString())}
+                    max={800}
+                    step={10}
+                    className="mb-3"
                   />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                    <span className="text-xl font-bold text-primary">₪</span>
+                  
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>₪0</span>
+                    <span>₪800</span>
                   </div>
                 </div>
 
-                {/* Quick amounts */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {[80, 120, 180, 250, 350, 500].map((preset) => (
+                {/* Quick Presets */}
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {[100, 200, 350, 500].map((preset) => (
                     <Button
                       key={preset}
-                      variant="outline"
+                      variant={amount === preset ? "default" : "outline"}
                       size="sm"
                       onClick={() => onAmountChange(preset.toString())}
-                      className="text-xs"
+                      className="flex-1 text-xs"
                     >
                       {preset}₪
                     </Button>
                   ))}
                 </div>
 
-                {/* Savings Display - Interactive & Sales Style */}
+                {/* Savings Timeline */}
                 <AnimatePresence mode="wait">
                   {hasAmount ? (
                     <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      className="space-y-3"
                     >
-                      {/* Main Highlight */}
-                      <motion.div 
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className="relative bg-gradient-to-br from-primary via-primary to-accent p-5 rounded-xl mb-3 overflow-hidden group"
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 300 }}
-                      >
-                        <div className="relative">
-                          <div className="flex items-center gap-2 mb-2">
-                            <motion.div
-                              animate={{ 
-                                rotate: [0, 10, -10, 0],
-                                scale: [1, 1.2, 1.2, 1]
-                              }}
-                              transition={{ 
-                                duration: 2, 
-                                repeat: Infinity,
-                                repeatDelay: 3
-                              }}
-                            >
-                              <Zap className="w-5 h-5 text-primary-foreground" />
-                            </motion.div>
-                            <p className="text-sm font-bold text-primary-foreground">תחסוך בשנתיים הקרובות</p>
-                          </div>
-                          <AnimatedSavings amount={savings.twoYearGain} />
-                          <motion.p 
-                            className="text-xs text-primary-foreground/80 mt-1"
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
+                      {/* Timeline Items */}
+                      {[
+                        { period: 'חודש', amount: savings.monthlyGain, icon: Calendar, delay: 0 },
+                        { period: '3 חודשים', amount: savings.quarterlyGain, icon: TrendingDown, delay: 0.1 },
+                        { period: 'שנה', amount: savings.yearlyGain, icon: Sparkles, delay: 0.2 },
+                        { period: 'שנתיים', amount: savings.twoYearGain, icon: Zap, delay: 0.3, highlight: true }
+                      ].map((item, index) => {
+                        const Icon = item.icon;
+                        const progress = (item.amount / savings.twoYearGain) * 100;
+                        
+                        return (
+                          <motion.div
+                            key={item.period}
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: item.delay }}
+                            className={`relative ${item.highlight ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-lg p-3 overflow-hidden`}
                           >
-                            זה הזמן להתחיל לחסוך!
-                          </motion.p>
-                        </div>
-                      </motion.div>
-
-                      {/* Breakdown */}
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        <motion.div 
-                          initial={{ x: -20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{ delay: 0.1 }}
-                          whileHover={{ scale: 1.05, borderColor: 'hsl(var(--primary))' }}
-                          className="bg-background border border-border rounded-lg p-3 cursor-pointer"
-                        >
-                          <div className="flex items-center gap-2 mb-1">
+                            {/* Progress Bar Background */}
                             <motion.div
-                              animate={{ y: [0, -3, 0] }}
-                              transition={{ duration: 1.5, repeat: Infinity }}
-                            >
-                              <TrendingDown className="w-3 h-3 text-primary" />
-                            </motion.div>
-                            <span className="text-xs text-muted-foreground">חיסכון חודשי</span>
-                          </div>
-                          <div className="text-xl font-bold text-foreground">
-                            ₪{useAnimatedCounter({ end: savings.monthlyGain, duration: 800 }).toFixed(0)}
-                          </div>
-                        </motion.div>
-
-                        <motion.div 
-                          initial={{ x: 20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{ delay: 0.2 }}
-                          whileHover={{ scale: 1.05, borderColor: 'hsl(var(--primary))' }}
-                          className="bg-background border border-border rounded-lg p-3 cursor-pointer"
-                        >
-                          <div className="flex items-center gap-2 mb-1">
-                            <motion.div
-                              animate={{ rotate: [0, 360] }}
-                              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                            >
-                              <Sparkles className="w-3 h-3 text-primary" />
-                            </motion.div>
-                            <span className="text-xs text-muted-foreground">חיסכון שנתי</span>
-                          </div>
-                          <div className="text-xl font-bold text-foreground">
-                            ₪{useAnimatedCounter({ end: savings.yearlyGain, duration: 1000 }).toFixed(0)}
-                          </div>
-                        </motion.div>
-                      </div>
+                              className={`absolute inset-0 ${item.highlight ? 'bg-primary-foreground/20' : 'bg-primary/10'}`}
+                              initial={{ width: 0 }}
+                              animate={{ width: `${progress}%` }}
+                              transition={{ duration: 1, delay: item.delay + 0.2 }}
+                            />
+                            
+                            <div className="relative flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <motion.div
+                                  animate={{ rotate: item.highlight ? [0, 360] : 0 }}
+                                  transition={{ duration: 2, repeat: Infinity }}
+                                >
+                                  <Icon className={`w-4 h-4 ${item.highlight ? 'text-primary-foreground' : 'text-primary'}`} />
+                                </motion.div>
+                                <div>
+                                  <div className={`text-xs ${item.highlight ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
+                                    חיסכון ב{item.period}
+                                  </div>
+                                  <div className={`text-lg font-black ${item.highlight ? 'text-primary-foreground' : 'text-foreground'}`}>
+                                    ₪{useAnimatedCounter({ end: item.amount, duration: 800, start: 0 }).toFixed(0)}
+                                  </div>
+                                </div>
+                              </div>
+                              {item.highlight && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  transition={{ delay: 0.5, type: "spring" }}
+                                  className="bg-primary-foreground text-primary px-2 py-1 rounded-full text-xs font-bold"
+                                >
+                                  מומלץ!
+                                </motion.div>
+                              )}
+                            </div>
+                          </motion.div>
+                        );
+                      })}
 
                       {/* Actions */}
-                      <div className="flex flex-col gap-2">
+                      <motion.div 
+                        className="flex flex-col gap-2 pt-2"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                      >
                         <Button
                           onClick={onProceedToPlans}
                           size="lg"
@@ -247,17 +242,23 @@ export const CategoryCompletionBanner = ({
                         >
                           בדוק סקטור נוסף
                         </Button>
-                      </div>
+                      </motion.div>
                     </motion.div>
                   ) : (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="text-center py-4"
+                      className="text-center py-8"
                     >
+                      <motion.div
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <Wallet className="w-12 h-12 mx-auto mb-3 text-muted-foreground/50" />
+                      </motion.div>
                       <p className="text-sm text-muted-foreground">
-                        הזן סכום לחישוב החיסכון
+                        גרור את הסליידר לחישוב החיסכון
                       </p>
                     </motion.div>
                   )}
