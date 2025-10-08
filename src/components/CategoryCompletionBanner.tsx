@@ -1,10 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { X, ChevronLeft, Sparkles, Zap, TrendingDown, Calendar, Wallet } from 'lucide-react';
+import { X, ChevronLeft, Sparkles, Zap, TrendingDown, Calendar, Wallet, TrendingUp, DollarSign, Percent } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import happyCustomer from '@/assets/happy-customer.jpg';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
+import { cn } from '@/lib/utils';
 
 interface CategoryCompletionBannerProps {
   isVisible: boolean;
@@ -110,95 +111,207 @@ export const CategoryCompletionBanner = ({
                   </Button>
                 </div>
 
-                {/* Slider Input */}
+                {/* Interactive Slider with Visual Feedback */}
                 <div className="mb-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-muted-foreground">גרור להגדרת סכום</span>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-sm text-muted-foreground font-medium">סכום נוכחי</span>
                     <motion.div 
-                      className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-xl"
-                      animate={{ scale: hasAmount ? [1, 1.05, 1] : 1 }}
-                      transition={{ duration: 0.3 }}
+                      className="relative"
+                      animate={{ scale: hasAmount ? [1, 1.1, 1] : 1 }}
+                      transition={{ duration: 0.5 }}
                     >
-                      <span className="text-2xl font-black text-primary">₪{amount.toFixed(0)}</span>
-                      <Wallet className="w-5 h-5 text-primary" />
+                      {/* Glow effect behind amount */}
+                      <motion.div
+                        className={`absolute inset-0 rounded-2xl blur-xl ${hasAmount ? 'bg-primary/30' : 'bg-muted/30'}`}
+                        animate={{ 
+                          scale: hasAmount ? [1, 1.2, 1] : 1,
+                          opacity: hasAmount ? [0.5, 0.8, 0.5] : 0.3
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                      <div className="relative flex items-baseline gap-2 bg-gradient-to-br from-primary to-primary/80 px-6 py-3 rounded-2xl shadow-lg">
+                        <span className="text-3xl font-black text-primary-foreground">₪{amount.toFixed(0)}</span>
+                        <Wallet className="w-6 h-6 text-primary-foreground/80" />
+                      </div>
                     </motion.div>
                   </div>
                   
-                  <Slider
-                    value={[amount]}
-                    onValueChange={(values) => onAmountChange(values[0].toString())}
-                    max={800}
-                    step={10}
-                    className="mb-3"
-                  />
+                  {/* Custom Styled Slider */}
+                  <div className="relative mb-4">
+                    {/* Progress bar background */}
+                    <div className="absolute top-1/2 -translate-y-1/2 w-full h-3 bg-gradient-to-r from-muted via-primary/20 to-primary/40 rounded-full" />
+                    
+                    <Slider
+                      value={[amount]}
+                      onValueChange={(values) => onAmountChange(values[0].toString())}
+                      max={800}
+                      step={10}
+                      className="relative z-10 [&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:border-4 [&_[role=slider]]:border-primary-foreground [&_[role=slider]]:shadow-xl"
+                    />
+                  </div>
                   
-                  <div className="flex justify-between text-xs text-muted-foreground">
+                  <div className="flex justify-between text-xs text-muted-foreground font-medium">
                     <span>₪0</span>
+                    <span className="text-primary font-bold">גרור לבחירת סכום</span>
                     <span>₪800</span>
                   </div>
                 </div>
 
-                {/* Quick Presets */}
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {[100, 200, 350, 500].map((preset) => (
-                    <Button
+                {/* Quick Presets with animations */}
+                <div className="flex gap-2 mb-6">
+                  {[100, 200, 350, 500].map((preset, index) => (
+                    <motion.div
                       key={preset}
-                      variant={amount === preset ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => onAmountChange(preset.toString())}
-                      className="flex-1 text-sm h-9 rounded-lg"
+                      className="flex-1"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
                     >
-                      {preset}₪
-                    </Button>
+                      <Button
+                        variant={amount === preset ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => onAmountChange(preset.toString())}
+                        className={cn(
+                          "w-full h-10 rounded-xl font-bold transition-all",
+                          amount === preset && "shadow-lg shadow-primary/50 scale-105"
+                        )}
+                      >
+                        ₪{preset}
+                      </Button>
+                    </motion.div>
                   ))}
                 </div>
 
-                {/* Compact Savings Display */}
+                {/* Impressive Savings Display */}
                 <AnimatePresence mode="wait">
                   {hasAmount ? (
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="space-y-3"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      className="space-y-4"
                     >
-                      {/* Main Savings Grid - 2 items only */}
-                      <div className="grid grid-cols-2 gap-2">
+                      {/* Circular Progress with Yearly Savings */}
+                      <motion.div 
+                        className="relative mx-auto w-48 h-48 mb-4"
+                        initial={{ rotate: -90, opacity: 0 }}
+                        animate={{ rotate: 0, opacity: 1 }}
+                        transition={{ duration: 0.8, type: "spring" }}
+                      >
+                        {/* Outer glow ring */}
                         <motion.div
-                          initial={{ scale: 0.9, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ delay: 0.1 }}
-                          className="bg-muted rounded-xl p-3"
-                        >
-                          <div className="flex items-center gap-2 mb-1">
-                            <Calendar className="w-4 h-4 text-primary" />
-                            <span className="text-xs text-muted-foreground">חודשי</span>
-                          </div>
-                          <div className="text-xl font-black text-foreground">
-                            ₪{savings.monthlyGain.toLocaleString()}
-                          </div>
-                        </motion.div>
-
-                        <motion.div
-                          initial={{ scale: 0.9, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ delay: 0.2 }}
-                          className="bg-primary text-primary-foreground rounded-xl p-3 relative overflow-hidden"
-                        >
-                          <motion.div
-                            className="absolute inset-0 bg-primary-foreground/10"
-                            initial={{ x: '-100%' }}
-                            animate={{ x: '100%' }}
-                            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
+                          className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-primary/80 to-accent blur-xl"
+                          animate={{ 
+                            scale: [1, 1.1, 1],
+                            opacity: [0.3, 0.5, 0.3]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                        
+                        {/* Main circle */}
+                        <svg className="relative w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                          {/* Background circle */}
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="45"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="8"
+                            className="text-muted/30"
                           />
-                          <div className="relative flex items-center gap-2 mb-1">
-                            <Sparkles className="w-4 h-4" />
-                            <span className="text-xs text-primary-foreground/80">שנתי</span>
-                          </div>
-                          <div className="relative text-xl font-black">
-                            ₪{savings.yearlyGain.toLocaleString()}
-                          </div>
-                        </motion.div>
+                          
+                          {/* Animated progress circle */}
+                          <motion.circle
+                            cx="50"
+                            cy="50"
+                            r="45"
+                            fill="none"
+                            stroke="url(#gradient)"
+                            strokeWidth="8"
+                            strokeLinecap="round"
+                            strokeDasharray={`${2 * Math.PI * 45}`}
+                            initial={{ strokeDashoffset: 2 * Math.PI * 45 }}
+                            animate={{ strokeDashoffset: 0 }}
+                            transition={{ duration: 1.5, ease: "easeOut" }}
+                          />
+                          
+                          <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stopColor="hsl(var(--primary))" />
+                              <stop offset="100%" stopColor="hsl(var(--accent))" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                        
+                        {/* Center content */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.5, type: "spring" }}
+                          >
+                            <Sparkles className="w-8 h-8 text-primary mb-2" />
+                            <div className="text-xs text-muted-foreground mb-1">חיסכון שנתי</div>
+                            <div className="text-3xl font-black text-primary">
+                              ₪{savings.yearlyGain.toLocaleString()}
+                            </div>
+                            <div className="flex items-center justify-center gap-1 mt-1">
+                              <TrendingUp className="w-4 h-4 text-green-500" />
+                              <span className="text-xs font-bold text-green-500">30% חיסכון</span>
+                            </div>
+                          </motion.div>
+                        </div>
+                      </motion.div>
+
+                      {/* Breakdown Cards Grid */}
+                      <div className="grid grid-cols-2 gap-3">
+                        {[
+                          { 
+                            label: 'חודש', 
+                            amount: savings.monthlyGain, 
+                            icon: Calendar,
+                            gradient: 'from-blue-500/20 to-cyan-500/20',
+                            iconColor: 'text-blue-500'
+                          },
+                          { 
+                            label: 'רבעון', 
+                            amount: savings.quarterlyGain, 
+                            icon: TrendingDown,
+                            gradient: 'from-purple-500/20 to-pink-500/20',
+                            iconColor: 'text-purple-500'
+                          }
+                        ].map((item, index) => {
+                          const Icon = item.icon;
+                          return (
+                            <motion.div
+                              key={item.label}
+                              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.6 + index * 0.1 }}
+                              className={`relative bg-gradient-to-br ${item.gradient} backdrop-blur-sm rounded-2xl p-4 border border-border/50 overflow-hidden group hover:scale-105 transition-transform`}
+                            >
+                              {/* Shimmer effect */}
+                              <motion.div
+                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                                initial={{ x: '-100%' }}
+                                animate={{ x: '200%' }}
+                                transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+                              />
+                              
+                              <div className="relative">
+                                <div className="flex items-center justify-between mb-2">
+                                  <Icon className={`w-5 h-5 ${item.iconColor}`} />
+                                  <Percent className="w-4 h-4 text-muted-foreground/50" />
+                                </div>
+                                <div className="text-xs text-muted-foreground mb-1">{item.label}</div>
+                                <div className="text-xl font-black text-foreground">
+                                  ₪{item.amount.toLocaleString()}
+                                </div>
+                              </div>
+                            </motion.div>
+                          );
+                        })}
                       </div>
 
                       {/* Actions */}
