@@ -576,112 +576,46 @@ const AllPlans = ({
             </div>
           </div>}
 
-        {/* Current Spending and Savings Potential Section - Enhanced */}
-        {selectedCategory && <div className="mb-4 animate-fade-in">
-            <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-white to-accent/5 shadow-lg backdrop-blur-sm relative overflow-hidden">
-              <CardContent className="p-3 relative z-10">
-                {/* Header Section */}
-                <div className="text-center mb-3">
-                  <h2 className="text-lg font-bold text-foreground font-heebo">
-                    כמה תוכלו לחסוך?
-                  </h2>
-                  <p className="text-xs text-muted-foreground font-assistant">
-                    חיסכון מבוסס נתונים
-                  </p>
-                </div>
+        {/* Compact Savings Bar with Big CTA */}
+        {selectedCategory && <div className="mb-6 animate-fade-in">
+            {/* Big CTA Message */}
+            <div className="text-center mb-4">
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground font-heebo mb-2">
+                מצא את המסלול המושלם עבורך
+              </h2>
+              <p className="text-lg text-muted-foreground font-assistant">
+                בחר חברה מהרשימה מטה ולחץ על המסלול שמעניין אותך
+              </p>
+            </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-4xl mx-auto">
-                  {/* Current Annual Payment - Right Card */}
-                  <div className="bg-white/90 backdrop-blur-md rounded-lg p-3 shadow-md border border-blue-300 transition-all">
-                    <div className="text-center mb-2">
-                      <h3 className="text-sm font-bold text-foreground font-heebo mb-1">
-                        המסלול הזול ביותר
-                      </h3>
+            {/* Compact Savings Info */}
+            {currentUserPlan.price && cheapestPlan && parseFloat(currentUserPlan.price) > 0 && (
+              <div className="max-w-2xl mx-auto">
+                <div className="bg-gradient-to-l from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-4 shadow-md">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
+                        <TrendingUp className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-green-700 font-assistant">חיסכון פוטנציאלי</p>
+                        <p className="text-2xl font-black text-green-600 font-heebo">
+                          ₪{Math.max(0, (parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) * 12).toLocaleString()}/שנה
+                        </p>
+                      </div>
                     </div>
-                      
-                      {currentUserPlan.price && parseFloat(currentUserPlan.price) > 0 ? (
-                        <div className="space-y-2">
-                          <div className="text-center bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-2 border border-blue-200">
-                            <div className="text-xs text-blue-700 font-assistant mb-1">אתה משלם היום</div>
-                            <div className="text-2xl font-bold text-blue-600 font-heebo">
-                              ₪{(parseFloat(currentUserPlan.price) * 12).toLocaleString()}
-                            </div>
-                            <div className="text-xs text-blue-700 font-assistant">בשנה</div>
-                          </div>
-                          
-                          <div className="bg-white border border-blue-200 rounded-lg p-2 text-center">
-                            <div className="text-xs text-muted-foreground font-assistant">תשלום חודשי נוכחי</div>
-                            <div className="text-sm font-bold text-foreground font-heebo">
-                              ₪{currentUserPlan.price}
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-center text-muted-foreground font-assistant bg-muted/30 rounded-lg p-3 border border-dashed border-border">
-                          <Calculator className="w-6 h-6 mx-auto mb-1 text-muted-foreground/50" />
-                          <p className="text-xs">נתוני התשלום יופיעו כאן</p>
-                        </div>
-                      )}
-                  </div>
-
-                  {/* Annual Savings Potential - Left Card */}
-                  <div className="bg-white rounded-lg p-3 shadow-md border border-green-300 transition-all">
-                    <div className="text-center mb-2">
-                      <h3 className="text-sm font-bold text-foreground font-heebo mb-1">
-                        פוטנציאל החיסכון השנתי
-                      </h3>
-                    </div>
-                      
-                      {currentUserPlan.price && cheapestPlan && parseFloat(currentUserPlan.price) > 0 ? (
-                        <div className="space-y-2">
-                          {/* Annual Savings - Main Focus */}
-                          <div className="text-center bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-2 border border-green-200">
-                            <div className="text-xs text-green-700 font-assistant mb-1">חיסכון שנתי</div>
-                            <div className="text-2xl font-bold text-green-600 font-heebo">
-                              ₪{Math.max(0, (parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) * 12).toLocaleString()}
-                            </div>
-                            <div className="text-xs text-green-700 font-assistant">בשנה</div>
-                          </div>
-                          
-                          <div className="bg-white border border-green-200 rounded-lg p-2 text-center">
-                            <div className="text-xs text-muted-foreground font-assistant mb-1">זה אומר</div>
-                            <div className="text-sm font-bold text-green-600 font-heebo">
-                              ₪{Math.max(0, parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice)}
-                            </div>
-                            <div className="text-xs text-green-700 font-assistant">כל חודש</div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-center text-muted-foreground font-assistant bg-muted/30 rounded-lg p-3 border border-dashed border-border">
-                          <Sparkles className="w-6 h-6 mx-auto mb-1 text-muted-foreground/50" />
-                          <p className="text-xs">פוטנציאל החיסכון יופיע כאן</p>
-                        </div>
-                      )}
-                  </div>
-                </div>
-
-                {/* Connection Message */}
-                <div className="mt-4 text-center">
-                  <p className="text-xs text-muted-foreground font-assistant">
-                    גלול למטה כדי לראות את כל המסלולים הזמינים
-                  </p>
-                </div>
-
-                {/* Enhanced Action Button */}
-                {currentUserPlan.price && cheapestPlan && parseFloat(currentUserPlan.price) > cheapestPlan.regularPrice && (
-                  <div className="text-center mt-3">
                     <Button 
                       onClick={() => handlePlanSelect(cheapestPlan)} 
                       size="sm" 
-                      className="bg-gradient-to-r from-primary to-accent text-white font-heebo"
+                      className="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-heebo shadow-lg hover:shadow-xl"
                     >
                       <Sparkles className="w-4 h-4 ml-1" />
-                      עבור למסלול החסכוני
+                      עבור למסלול
                     </Button>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                </div>
+              </div>
+            )}
           </div>}
 
 
