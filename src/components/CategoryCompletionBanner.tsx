@@ -182,60 +182,102 @@ export const CategoryCompletionBanner = ({
                   ))}
                 </div>
 
-                {/* Compact Savings Display */}
+                {/* Horizontal Layout with Circle */}
                 <AnimatePresence mode="wait">
                   {hasAmount ? (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="space-y-3"
+                      className="flex gap-4 items-center"
                     >
-                      {/* Main Savings Cards - Side by Side */}
-                      <div className="grid grid-cols-3 gap-2">
+                      {/* Circular Progress - Compact */}
+                      <motion.div 
+                        className="relative w-32 h-32 flex-shrink-0"
+                        initial={{ scale: 0, rotate: -90 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ duration: 0.6, type: "spring" }}
+                      >
+                        {/* Static glow */}
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 to-accent/30 blur-lg" />
+                        
+                        {/* Main circle */}
+                        <svg className="relative w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                          {/* Background circle */}
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="42"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="6"
+                            className="text-muted/20"
+                          />
+                          
+                          {/* Progress circle */}
+                          <motion.circle
+                            cx="50"
+                            cy="50"
+                            r="42"
+                            fill="none"
+                            stroke="url(#gradient)"
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                            strokeDasharray={`${2 * Math.PI * 42}`}
+                            initial={{ strokeDashoffset: 2 * Math.PI * 42 }}
+                            animate={{ strokeDashoffset: 0 }}
+                            transition={{ duration: 1.2, ease: "easeOut" }}
+                          />
+                          
+                          <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stopColor="hsl(var(--primary))" />
+                              <stop offset="100%" stopColor="hsl(var(--accent))" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                        
+                        {/* Center content */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                          <Sparkles className="w-5 h-5 text-primary mb-1" />
+                          <div className="text-xs text-muted-foreground">שנתי</div>
+                          <div className="text-xl font-black text-primary">
+                            ₪{savings.yearlyGain.toLocaleString()}
+                          </div>
+                        </div>
+                      </motion.div>
+
+                      {/* Info Cards Grid */}
+                      <div className="flex-1 grid grid-cols-2 gap-2">
                         {[
                           { 
-                            label: 'חודש', 
-                            amount: savings.monthlyGain, 
-                            icon: Calendar,
-                            iconColor: 'text-blue-500'
+                            label: 'חיסכון', 
+                            value: '30%', 
+                            icon: Percent,
+                            iconColor: 'text-green-500'
                           },
                           { 
-                            label: 'שנה', 
-                            amount: savings.yearlyGain, 
-                            icon: Sparkles,
-                            iconColor: 'text-primary',
-                            highlight: true
-                          },
-                          { 
-                            label: 'רבעון', 
-                            amount: savings.quarterlyGain, 
-                            icon: TrendingDown,
-                            iconColor: 'text-purple-500'
+                            label: 'זמן החזר', 
+                            value: '2 חודשים', 
+                            icon: Zap,
+                            iconColor: 'text-amber-500'
                           }
                         ].map((item, index) => {
                           const Icon = item.icon;
                           return (
                             <motion.div
                               key={item.label}
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: index * 0.1 }}
-                              className={cn(
-                                "relative rounded-xl p-3 border transition-all",
-                                item.highlight 
-                                  ? "bg-primary text-primary-foreground border-primary shadow-lg" 
-                                  : "bg-muted border-border hover:border-primary/50"
-                              )}
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.3 + index * 0.1 }}
+                              className="bg-muted rounded-xl p-3 border border-border"
                             >
-                              <div className="flex flex-col items-center text-center">
-                                <Icon className={cn("w-5 h-5 mb-1", item.highlight ? "text-primary-foreground" : item.iconColor)} />
-                                <div className={cn("text-xs mb-1", item.highlight ? "text-primary-foreground/80" : "text-muted-foreground")}>
-                                  {item.label}
-                                </div>
-                                <div className={cn("text-lg font-black", item.highlight ? "text-primary-foreground" : "text-foreground")}>
-                                  ₪{item.amount.toLocaleString()}
-                                </div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <Icon className={cn("w-4 h-4", item.iconColor)} />
+                                <span className="text-xs text-muted-foreground">{item.label}</span>
+                              </div>
+                              <div className="text-lg font-black text-foreground">
+                                {item.value}
                               </div>
                             </motion.div>
                           );
