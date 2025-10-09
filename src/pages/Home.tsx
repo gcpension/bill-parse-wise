@@ -185,6 +185,9 @@ const Home = () => {
     setBannerCategory('');
   };
   return <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+      {/* Floating Steps Banner */}
+      <SimpleStepsBanner />
+
       {/* Top Navigation Bar */}
       <nav className="bg-gray-50 border-b border-gray-200 py-4">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
@@ -293,9 +296,6 @@ const Home = () => {
               קבלו המלצות מותאמות אישית והשוו מחירים בכל הקטגוריות
             </p>
           </div>
-
-          {/* Steps Banner */}
-          <SimpleStepsBanner />
           
           
           {/* Category Cards Grid - Enhanced Interactive Layout */}
