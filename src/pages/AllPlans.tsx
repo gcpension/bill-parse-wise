@@ -422,9 +422,6 @@ const AllPlans = ({
     category: saving.category
   }));
   return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
-      {/* Floating Steps Banner */}
-      <SimpleStepsBanner />
-
       {/* Enhanced Navigation */}
       <EnhancedNavigation />
 
@@ -444,6 +441,10 @@ const AllPlans = ({
           <p className="text-lg text-gray-600 font-assistant mb-8 text-center">
             לחצו על הקטגוריה המעניינת אתכם • החזיקו Ctrl ללחוץ על מספר קטגוריות
           </p>
+
+          {/* Steps Banner */}
+          <SimpleStepsBanner />
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {Object.entries(categoryConfig).map(([key, config]) => {
               const isSelected = selectedCategory === key;
