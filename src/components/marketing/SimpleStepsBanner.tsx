@@ -1,82 +1,81 @@
-import { CheckCircle, Users, Shield, Zap, Brain, FileCheck } from 'lucide-react';
+import { Brain, FileCheck, Users, Shield, Zap, X } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+
 const SimpleStepsBanner = () => {
-  return <div className="mb-6">
-      <div className="relative max-w-3xl mx-auto">
-        {/* Compact elegant banner */}
-        <div className="bg-gradient-to-br from-white/95 via-slate-50/90 to-white/95 dark:from-slate-800/95 dark:via-slate-700/90 dark:to-slate-800/95 backdrop-blur-md rounded-3xl border border-slate-200/60 dark:border-slate-600/50 shadow-2xl p-6 hover:shadow-3xl transition-all duration-500">
-          
-          {/* Compact Header */}
-          <div className="text-center mb-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-100/80 to-indigo-100/80 dark:from-blue-900/40 dark:to-indigo-900/40 text-blue-700 dark:text-blue-300 rounded-full text-xs font-display font-semibold mb-3 shadow-sm">
-              <Brain className="w-3.5 h-3.5" />
-              המערכת החכמה שלנו
-            </div>
-            <h3 className="text-lg font-display font-bold bg-gradient-to-l from-slate-800 via-blue-700 to-indigo-700 dark:from-slate-100 dark:via-blue-300 dark:to-indigo-300 bg-clip-text text-transparent mb-2">
-              איך אנחנו עוזרים לכם לחסוך אלפי שקלים
-            </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 max-w-lg mx-auto leading-relaxed font-body">
-              המערכת מנתחת את החשבונות שלכם, מוצאת ספקים זולים יותר ומבצעת עבורכם את המעבר המלא - כולל הסדרת הניתוק מהספק הישן
-            </p>
-          </div>
+  const [isVisible, setIsVisible] = useState(true);
 
-          {/* Compact Steps */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-            
-            {/* Step 1 */}
-            <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-orange-50/70 to-amber-50/70 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl border border-orange-200/40 dark:border-orange-700/30 hover:shadow-lg transition-all duration-300">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-sm">
-                <span className="text-white font-bold text-sm">1</span>
-              </div>
-              <div className="flex-1">
-                <h4 className="font-display font-bold text-sm text-orange-700 dark:text-orange-300 mb-1">הזנת נתונים</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-body">הזנה של סכום החשבון הנוכחי</p>
-              </div>
-            </div>
-            
-            {/* Step 2 */}
-            <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-blue-50/70 to-indigo-50/70 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl border border-blue-200/40 dark:border-blue-700/30 hover:shadow-lg transition-all duration-300">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
-                <Brain className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-display font-bold text-sm text-blue-700 dark:text-blue-300 mb-1">ניתוח מתקדם</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-body">
-                  המערכת בודקת כל הספקים וחושבת את החיסכון
-                </p>
-              </div>
-            </div>
-            
-            {/* Step 3 */}
-            <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-green-50/70 to-emerald-50/70 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl border border-green-200/40 dark:border-green-700/30 hover:shadow-lg transition-all duration-300">
-              <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-sm">
-                <FileCheck className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-display font-bold text-sm text-green-700 dark:text-green-300 mb-1">מעבר מלא</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-body">
-                  אנחנו מסדרים החלפת ספק + ביטול הישן
-                </p>
-              </div>
-            </div>
-          </div>
+  if (!isVisible) return null;
 
-          {/* Compact Bottom Benefits */}
-          <div className="flex justify-center gap-4 text-xs p-3 bg-gradient-to-r from-slate-50/70 via-white/50 to-slate-50/70 dark:from-slate-800/50 dark:via-slate-700/50 dark:to-slate-800/50 rounded-xl border border-slate-200/30 dark:border-slate-600/30">
-            <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
-              <Users className="w-3.5 h-3.5" />
-              <span className="font-display font-semibold">50K+ חסכו</span>
+  return (
+    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl animate-fade-in">
+      <div className="bg-gradient-to-l from-purple-600 via-indigo-600 to-blue-600 rounded-2xl shadow-2xl border-2 border-white/20 backdrop-blur-sm">
+        <div className="relative px-4 py-3">
+          {/* Close button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute left-2 top-1/2 -translate-y-1/2 h-7 w-7 p-0 hover:bg-white/20 text-white"
+            onClick={() => setIsVisible(false)}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+
+          {/* Content in single row */}
+          <div className="flex items-center justify-center gap-6 text-white pr-8">
+            {/* Title */}
+            <div className="flex items-center gap-2 shrink-0">
+              <Brain className="w-5 h-5" />
+              <span className="font-bold text-sm">3 שלבים פשוטים לחיסכון גדול:</span>
             </div>
-            <div className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400">
-              <Shield className="w-3.5 h-3.5" />
-              <span className="font-display font-semibold">חינם לחלוטין</span>
+
+            {/* Steps - Horizontal */}
+            <div className="flex items-center gap-4">
+              {/* Step 1 */}
+              <div className="flex items-center gap-2 bg-white/15 rounded-full px-3 py-1.5 backdrop-blur-sm">
+                <div className="w-6 h-6 bg-gradient-to-br from-orange-400 to-amber-500 rounded-full flex items-center justify-center text-xs font-bold shrink-0">
+                  1
+                </div>
+                <span className="text-xs font-medium whitespace-nowrap">הזנת נתונים</span>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex items-center gap-2 bg-white/15 rounded-full px-3 py-1.5 backdrop-blur-sm">
+                <div className="w-6 h-6 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shrink-0">
+                  <Brain className="w-3.5 h-3.5" />
+                </div>
+                <span className="text-xs font-medium whitespace-nowrap">ניתוח מתקדם</span>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex items-center gap-2 bg-white/15 rounded-full px-3 py-1.5 backdrop-blur-sm">
+                <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shrink-0">
+                  <FileCheck className="w-3.5 h-3.5" />
+                </div>
+                <span className="text-xs font-medium whitespace-nowrap">מעבר מלא</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1.5 text-purple-600 dark:text-purple-400">
-              <Zap className="w-3.5 h-3.5" />
-              <span className="font-display font-semibold">35% חיסכון</span>
+
+            {/* Benefits */}
+            <div className="flex items-center gap-3 border-r border-white/30 pr-4">
+              <div className="flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5" />
+                <span className="text-xs font-semibold whitespace-nowrap">50K+</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5" />
+                <span className="text-xs font-semibold whitespace-nowrap">חינם</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5" />
+                <span className="text-xs font-semibold whitespace-nowrap">35%↓</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default SimpleStepsBanner;

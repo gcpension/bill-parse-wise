@@ -42,6 +42,8 @@ import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecom
 import { PlanDetailsSheet } from "@/components/plans/PlanDetailsSheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
+import SimpleStepsBanner from "@/components/marketing/SimpleStepsBanner";
+
 interface SavingsData {
   currentMonthly: number;
   recommendedMonthly: number;
@@ -420,6 +422,9 @@ const AllPlans = ({
     category: saving.category
   }));
   return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
+      {/* Floating Steps Banner */}
+      <SimpleStepsBanner />
+
       {/* Enhanced Navigation */}
       <EnhancedNavigation />
 

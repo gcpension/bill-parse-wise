@@ -26,6 +26,8 @@ import { usePageMeta } from '@/hooks/usePageMeta';
 import { QuickActions } from '@/components/QuickActions';
 import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
 import { CategoryCompletionBanner } from '@/components/CategoryCompletionBanner';
+import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
+
 const Home = () => {
   const [mounted, setMounted] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
@@ -183,6 +185,9 @@ const Home = () => {
     setBannerCategory('');
   };
   return <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+      {/* Floating Steps Banner */}
+      <SimpleStepsBanner />
+
       {/* Top Navigation Bar */}
       <nav className="bg-gray-50 border-b border-gray-200 py-4">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
