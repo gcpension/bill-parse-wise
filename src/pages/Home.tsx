@@ -230,30 +230,27 @@ const Home = () => {
         {/* Asymmetric starburst shape with text */}
         <div className="absolute -top-32 -left-32 w-[450px] h-[450px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Asymmetric rounded organic shape with flowing arms */}
-            <path
-              d="M 100,25 
-                 Q 108,50 112,65 Q 125,55 138,38 Q 118,60 116,72 
-                 Q 135,65 155,60 Q 128,78 122,88 
-                 Q 145,90 165,98 Q 132,98 126,102 
-                 Q 155,115 175,128 Q 138,118 132,116 
-                 Q 150,140 160,158 Q 128,135 122,132 
-                 Q 130,155 135,178 Q 115,142 110,136 
-                 Q 108,165 106,186 Q 98,148 96,142 
-                 Q 85,168 78,182 Q 88,143 86,137 
-                 Q 62,160 52,172 Q 78,132 76,126 
-                 Q 45,145 32,157 Q 72,122 71,117 
-                 Q 28,135 18,132 Q 68,108 66,102 
-                 Q 32,108 22,102 Q 72,92 71,87 
-                 Q 42,78 32,72 Q 82,82 81,77 
-                 Q 52,55 42,47 Q 88,70 90,66 
-                 Q 68,38 58,28 Q 96,58 100,55 Z"
-              fill="url(#starburstGradient)"
-              opacity="0.92"
-              style={{
-                filter: 'drop-shadow(0 8px 30px rgba(168, 85, 247, 0.45))'
-              }}
-            />
+            {/* Connected organic blobs shape - Nickelodeon style */}
+            <g>
+              {/* Left blob */}
+              <ellipse cx="50" cy="100" rx="42" ry="45" fill="url(#starburstGradient)" opacity="0.92"/>
+              
+              {/* Center-left blob */}
+              <ellipse cx="95" cy="95" rx="38" ry="42" fill="url(#starburstGradient)" opacity="0.92"/>
+              
+              {/* Center-right blob */}
+              <ellipse cx="138" cy="98" rx="40" ry="44" fill="url(#starburstGradient)" opacity="0.92"/>
+              
+              {/* Right blob */}
+              <ellipse cx="175" cy="105" rx="35" ry="38" fill="url(#starburstGradient)" opacity="0.92"/>
+              
+              {/* Overall shadow effect */}
+              <ellipse cx="115" cy="100" rx="80" ry="50" fill="none" 
+                style={{
+                  filter: 'drop-shadow(0 8px 30px rgba(168, 85, 247, 0.5))'
+                }}
+              />
+            </g>
             
             {/* EASYSWITCH text - clear and readable */}
             <g transform="translate(100, 105)">
