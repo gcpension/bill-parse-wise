@@ -301,103 +301,98 @@ const Home = () => {
           </svg>
         </div>
         
-        {/* Modern geometric badge shape */}
-        <div className="absolute -top-20 -left-20 w-[320px] h-[320px] pointer-events-none">
-          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Rounded square with cut corners - modern badge style */}
-            <g>
-              {/* Main badge shape */}
-              <path
-                d="M 60,40 
-                   L 120,40 
-                   L 140,50
-                   L 150,70
-                   L 150,120
-                   L 140,140
-                   L 120,150
-                   L 70,150
-                   L 50,140
-                   L 40,120
-                   L 40,60
-                   L 50,50
-                   Z"
-                fill="url(#starburstGradient)"
-                opacity="0.95"
-              />
+        {/* Hand-drawn time/speed sketch - left side */}
+        <div className="absolute top-12 left-12 w-[180px] h-[180px] pointer-events-none opacity-70">
+          <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            {/* Clock/Speed symbol */}
+            <g transform="translate(70, 50)">
+              {/* Clock circle */}
+              <circle cx="0" cy="0" r="28" fill="none" stroke="#2d3748" strokeWidth="2.5"/>
+              <circle cx="0" cy="0" r="22" fill="none" stroke="#2d3748" strokeWidth="1.5" strokeDasharray="2,3"/>
               
-              {/* Decorative corner accents */}
-              <circle cx="145" cy="55" r="3" fill="white" opacity="0.4"/>
-              <circle cx="55" cy="145" r="3" fill="white" opacity="0.4"/>
-              <circle cx="145" cy="135" r="2.5" fill="white" opacity="0.3"/>
-              <circle cx="45" cy="65" r="2.5" fill="white" opacity="0.3"/>
+              {/* Clock hands showing speed */}
+              <line x1="0" y1="0" x2="0" y2="-18" stroke="#2d3748" strokeWidth="3" strokeLinecap="round"/>
+              <line x1="0" y1="0" x2="12" y2="8" stroke="#2d3748" strokeWidth="2.5" strokeLinecap="round"/>
               
-              {/* Inner decorative lines */}
+              {/* Center dot */}
+              <circle cx="0" cy="0" r="3" fill="#2d3748"/>
+              
+              {/* Speed lines around clock */}
+              <g stroke="#2d3748" strokeWidth="2" strokeLinecap="round">
+                <line x1="32" y1="-8" x2="38" y2="-12"/>
+                <line x1="32" y1="0" x2="40" y2="0"/>
+                <line x1="32" y1="8" x2="38" y2="12"/>
+              </g>
+            </g>
+            
+            {/* Lightning bolt - fast action */}
+            <g transform="translate(35, 95)">
               <path
-                d="M 55,55 L 135,55"
-                stroke="white"
-                strokeWidth="1"
-                opacity="0.2"
+                d="M 0,-15 L 8,-2 L 3,-2 L 6,12 L -6,0 L -1,0 Z"
                 fill="none"
-              />
-              <path
-                d="M 55,135 L 135,135"
-                stroke="white"
-                strokeWidth="1"
-                opacity="0.2"
-                fill="none"
+                stroke="#2d3748"
+                strokeWidth="2"
+                strokeLinejoin="round"
               />
             </g>
             
-            {/* EASYSWITCH text - modern distorted style */}
-            <g transform="translate(92, 95)">
-              {/* Main EASY text with distortion */}
-              <text
-                x="0"
-                y="0"
-                textAnchor="middle"
-                fill="white"
-                fontSize="17"
-                fontWeight="700"
-                fontFamily="'Montserrat', 'Poppins', 'Inter', sans-serif"
-                letterSpacing="2"
-                style={{ 
-                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4))',
-                  textTransform: 'uppercase'
-                }}
-                transform="skewX(-3) rotate(-2)"
-              >
-                EASY
-              </text>
-              
-              {/* Main SWITCH text with opposite distortion */}
-              <text
-                x="0"
-                y="18"
-                textAnchor="middle"
-                fill="white"
-                fontSize="17"
-                fontWeight="700"
-                fontFamily="'Montserrat', 'Poppins', 'Inter', sans-serif"
-                letterSpacing="2"
-                style={{ 
-                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4))',
-                  textTransform: 'uppercase'
-                }}
-                transform="skewX(2) rotate(1)"
-              >
-                SWITCH
-              </text>
+            {/* Checkmark - completion */}
+            <g transform="translate(105, 95)">
+              <circle cx="0" cy="0" r="12" fill="none" stroke="#2d3748" strokeWidth="2"/>
+              <path
+                d="M -5,0 L -2,4 L 6,-6"
+                stroke="#2d3748"
+                strokeWidth="2.5"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </g>
             
-            {/* Gradient definition - Deep Rich Purple */}
-            <defs>
-              <linearGradient id="starburstGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#581c87', stopOpacity: 1 }} />
-                <stop offset="33%" style={{ stopColor: '#6b21a8', stopOpacity: 1 }} />
-                <stop offset="66%" style={{ stopColor: '#7e22ce', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
-              </linearGradient>
-            </defs>
+            {/* Curved arrow showing process flow */}
+            <path
+              d="M 50,80 Q 70,75 90,80"
+              stroke="#2d3748"
+              strokeWidth="2"
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray="4,3"
+            />
+            <path
+              d="M 90,80 L 85,77 M 90,80 L 87,85"
+              stroke="#2d3748"
+              strokeWidth="2"
+              fill="none"
+              strokeLinecap="round"
+            />
+            
+            {/* Text elements in Hebrew style */}
+            <g transform="translate(70, 125)">
+              <path
+                d="M -25,0 L -10,0"
+                stroke="#2d3748"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <path
+                d="M -5,0 L 5,0"
+                stroke="#2d3748"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 10,0 L 25,0"
+                stroke="#2d3748"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </g>
+            
+            {/* Decorative stars */}
+            <g stroke="#2d3748" fill="none" strokeWidth="2" strokeLinecap="round">
+              <path d="M 25,30 L 25,33 M 23,31.5 L 27,31.5"/>
+              <path d="M 115,25 L 115,28 M 113,26.5 L 117,26.5"/>
+            </g>
           </svg>
         </div>
         
