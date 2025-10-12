@@ -329,17 +329,7 @@ const Home = () => {
           <SimpleStepsBanner />
 
           {/* Clean CTA Section - Hidden when banner is visible */}
-          {!showBanner && <div className="text-center mt-16 space-y-6">
-              <Button onClick={handleStartAnalysis} className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
-                <span className="flex items-center gap-3">
-                  <span>התחל ניתוח חיסכון</span>
-                  <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </Button>
-              
-              {/* New Service Request Button */}
-              
-            </div>}
+          {!showBanner}
 
           {/* Clean info section */}
           <div className="text-center mt-12 max-w-4xl mx-auto">
