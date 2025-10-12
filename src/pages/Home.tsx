@@ -227,44 +227,44 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Asymmetric starburst shape with text */}
-        <div className="absolute -top-32 -left-32 w-[450px] h-[450px] pointer-events-none">
+        {/* Compact connected blobs shape */}
+        <div className="absolute -top-16 -left-16 w-[200px] h-[200px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
             {/* Connected organic blobs shape - Nickelodeon style */}
             <g>
               {/* Left blob */}
-              <ellipse cx="50" cy="100" rx="42" ry="45" fill="url(#starburstGradient)" opacity="0.92"/>
+              <ellipse cx="50" cy="100" rx="42" ry="45" fill="url(#starburstGradient)" opacity="0.95"/>
               
               {/* Center-left blob */}
-              <ellipse cx="95" cy="95" rx="38" ry="42" fill="url(#starburstGradient)" opacity="0.92"/>
+              <ellipse cx="95" cy="95" rx="38" ry="42" fill="url(#starburstGradient)" opacity="0.95"/>
               
               {/* Center-right blob */}
-              <ellipse cx="138" cy="98" rx="40" ry="44" fill="url(#starburstGradient)" opacity="0.92"/>
+              <ellipse cx="138" cy="98" rx="40" ry="44" fill="url(#starburstGradient)" opacity="0.95"/>
               
               {/* Right blob */}
-              <ellipse cx="175" cy="105" rx="35" ry="38" fill="url(#starburstGradient)" opacity="0.92"/>
+              <ellipse cx="175" cy="105" rx="35" ry="38" fill="url(#starburstGradient)" opacity="0.95"/>
               
               {/* Overall shadow effect */}
               <ellipse cx="115" cy="100" rx="80" ry="50" fill="none" 
                 style={{
-                  filter: 'drop-shadow(0 8px 30px rgba(168, 85, 247, 0.5))'
+                  filter: 'drop-shadow(0 6px 20px rgba(109, 40, 217, 0.6))'
                 }}
               />
             </g>
             
-            {/* EASYSWITCH text - clear and readable */}
-            <g transform="translate(100, 105)">
+            {/* EASYSWITCH text - compact and readable */}
+            <g transform="translate(112, 100)">
               <text
                 x="0"
-                y="0"
+                y="-2"
                 textAnchor="middle"
                 fill="white"
-                fontSize="22"
+                fontSize="14"
                 fontWeight="700"
                 fontFamily="'Rubik', 'Heebo', 'Inter', sans-serif"
-                letterSpacing="4"
+                letterSpacing="2"
                 style={{ 
-                  filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6))',
+                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))',
                   textTransform: 'uppercase'
                 }}
               >
@@ -272,40 +272,29 @@ const Home = () => {
               </text>
               <text
                 x="0"
-                y="24"
+                y="12"
                 textAnchor="middle"
                 fill="white"
-                fontSize="22"
+                fontSize="14"
                 fontWeight="700"
                 fontFamily="'Rubik', 'Heebo', 'Inter', sans-serif"
-                letterSpacing="4"
+                letterSpacing="2"
                 style={{ 
-                  filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6))',
+                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))',
                   textTransform: 'uppercase'
                 }}
               >
                 SWITCH
               </text>
-              
-              {/* Decorative sparkles */}
-              <circle cx="-60" cy="-8" r="2.5" fill="white" opacity="0.85">
-                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-              </circle>
-              <circle cx="65" cy="4" r="2" fill="white" opacity="0.8">
-                <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.3s" repeatCount="indefinite"/>
-              </circle>
-              <circle cx="-55" cy="20" r="2.2" fill="white" opacity="0.75">
-                <animate attributeName="opacity" values="0.45;0.95;0.45" dur="1.8s" repeatCount="indefinite"/>
-              </circle>
             </g>
             
-            {/* Gradient definition - Purple-Pink starburst */}
+            {/* Gradient definition - Deep Purple */}
             <defs>
               <linearGradient id="starburstGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
-                <stop offset="33%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
-                <stop offset="66%" style={{ stopColor: '#e879f9', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: '#f0abfc', stopOpacity: 1 }} />
+                <stop offset="0%" style={{ stopColor: '#6d28d9', stopOpacity: 1 }} />
+                <stop offset="33%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
+                <stop offset="66%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: '#a78bfa', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
           </svg>
