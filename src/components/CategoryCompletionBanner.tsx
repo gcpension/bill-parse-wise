@@ -1,9 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { X, ChevronLeft, Sparkles, Zap, TrendingDown, Calendar, Wallet, TrendingUp, DollarSign, Percent } from 'lucide-react';
+import { X, ChevronLeft, Sparkles, Wallet, TrendingUp, ArrowLeft, CheckCircle2, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import happyCustomer from '@/assets/happy-customer.jpg';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 import { cn } from '@/lib/utils';
 
@@ -37,14 +36,39 @@ export const CategoryCompletionBanner = ({
   onProceedToPlans,
   onClose
 }: CategoryCompletionBannerProps) => {
-  const categoryData: Record<string, { name: string; icon: string; gradient: string }> = {
-    electricity: { name: 'חשמל', icon: '⚡', gradient: 'from-amber-400 to-orange-500' },
-    cellular: { name: 'סלולר', icon: '📱', gradient: 'from-blue-400 to-cyan-500' },
-    internet: { name: 'אינטרנט', icon: '🌐', gradient: 'from-violet-400 to-purple-500' },
-    tv: { name: 'טלוויזיה', icon: '📺', gradient: 'from-rose-400 to-pink-500' }
+  const categoryData: Record<string, { name: string; icon: string; gradient: string; bgGradient: string }> = {
+    electricity: { 
+      name: 'חשמל', 
+      icon: '⚡', 
+      gradient: 'from-amber-400 via-orange-400 to-orange-500',
+      bgGradient: 'from-amber-50/50 via-orange-50/30 to-transparent'
+    },
+    cellular: { 
+      name: 'סלולר', 
+      icon: '📱', 
+      gradient: 'from-blue-400 via-cyan-400 to-cyan-500',
+      bgGradient: 'from-blue-50/50 via-cyan-50/30 to-transparent'
+    },
+    internet: { 
+      name: 'אינטרנט', 
+      icon: '🌐', 
+      gradient: 'from-violet-400 via-purple-400 to-purple-500',
+      bgGradient: 'from-violet-50/50 via-purple-50/30 to-transparent'
+    },
+    tv: { 
+      name: 'טלוויזיה', 
+      icon: '📺', 
+      gradient: 'from-rose-400 via-pink-400 to-pink-500',
+      bgGradient: 'from-rose-50/50 via-pink-50/30 to-transparent'
+    }
   };
 
-  const category = categoryData[selectedCategory] || { name: '', icon: '💡', gradient: 'from-gray-400 to-gray-500' };
+  const category = categoryData[selectedCategory] || { 
+    name: '', 
+    icon: '💡', 
+    gradient: 'from-gray-400 to-gray-500',
+    bgGradient: 'from-gray-50/50 to-transparent'
+  };
   const amount = parseFloat(currentAmount) || 0;
   const hasAmount = amount > 0;
   
@@ -70,240 +94,297 @@ export const CategoryCompletionBanner = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/60 backdrop-blur-md z-50"
             onClick={onClose}
           />
 
-          {/* Clean Banner */}
+          {/* Modern Banner */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="pointer-events-auto w-full max-w-md"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="pointer-events-auto w-full max-w-lg"
             >
-              <Card className="p-6 bg-card border-border shadow-2xl overflow-hidden rounded-2xl">
-                {/* Header with Image */}
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-start gap-4 flex-1">
-                    <img 
-                      src={happyCustomer} 
-                      alt="customer" 
-                      className="w-16 h-16 rounded-full object-cover border-2 border-border shadow-md"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className={`w-8 h-8 rounded-xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-sm`}>
-                          <span className="text-lg">{category.icon}</span>
-                        </div>
-                        <h2 className="text-lg font-bold text-foreground">{category.name}</h2>
-                      </div>
-                      <p className="text-sm text-muted-foreground">כמה אתה משלם היום?</p>
-                    </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={onClose}
-                    className="h-8 w-8 rounded-lg"
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
+              <Card className="relative overflow-hidden border-0 shadow-2xl">
+                {/* Animated Gradient Background */}
+                <motion.div 
+                  className={`absolute inset-0 bg-gradient-to-br ${category.bgGradient} dark:opacity-20`}
+                  animate={{ 
+                    backgroundPosition: ['0% 0%', '100% 100%'],
+                  }}
+                  transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
+                />
+                
+                {/* Close Button */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onClose}
+                  className="absolute top-4 left-4 z-10 h-9 w-9 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background shadow-md"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
 
-                {/* Interactive Slider with Visual Feedback */}
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm text-muted-foreground font-medium">סכום נוכחי</span>
-                    <motion.div 
-                      className="relative"
-                      animate={{ scale: hasAmount ? [1, 1.1, 1] : 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {/* Glow effect behind amount */}
-                      <motion.div
-                        className={`absolute inset-0 rounded-2xl blur-xl ${hasAmount ? 'bg-primary/30' : 'bg-muted/30'}`}
-                        animate={{ 
-                          scale: hasAmount ? [1, 1.2, 1] : 1,
-                          opacity: hasAmount ? [0.5, 0.8, 0.5] : 0.3
-                        }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      />
-                      <div className="relative flex items-baseline gap-2 bg-gradient-to-br from-primary to-primary/80 px-6 py-3 rounded-2xl shadow-lg">
-                        <span className="text-3xl font-black text-primary-foreground">₪{amount.toFixed(0)}</span>
-                        <Wallet className="w-6 h-6 text-primary-foreground/80" />
-                      </div>
-                    </motion.div>
-                  </div>
-                  
-                  {/* Custom Styled Slider */}
-                  <div className="relative mb-4">
-                    {/* Progress bar background */}
-                    <div className="absolute top-1/2 -translate-y-1/2 w-full h-3 bg-gradient-to-r from-muted via-primary/20 to-primary/40 rounded-full" />
-                    
-                    <Slider
-                      value={[amount]}
-                      onValueChange={(values) => onAmountChange(values[0].toString())}
-                      max={800}
-                      step={10}
-                      className="relative z-10 [&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:border-4 [&_[role=slider]]:border-primary-foreground [&_[role=slider]]:shadow-xl"
-                    />
-                  </div>
-                  
-                  <div className="flex justify-between text-xs text-muted-foreground font-medium">
-                    <span>₪0</span>
-                    <span className="text-primary font-bold">גרור לבחירת סכום</span>
-                    <span>₪800</span>
-                  </div>
-                </div>
-
-                {/* Quick Presets with animations */}
-                <div className="flex gap-2 mb-6">
-                  {[100, 200, 350, 500].map((preset, index) => (
+                <div className="relative p-8">
+                  {/* Header */}
+                  <div className="text-center mb-8">
                     <motion.div
-                      key={preset}
-                      className="flex-1"
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", duration: 0.8 }}
+                      className={`inline-flex w-20 h-20 rounded-3xl bg-gradient-to-br ${category.gradient} items-center justify-center shadow-xl mb-4`}
+                    >
+                      <span className="text-4xl">{category.icon}</span>
+                    </motion.div>
+                    <motion.h2 
+                      className="text-3xl font-black text-foreground mb-2"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: 0.2 }}
                     >
-                      <Button
-                        variant={amount === preset ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => onAmountChange(preset.toString())}
-                        className={cn(
-                          "w-full h-10 rounded-xl font-bold transition-all",
-                          amount === preset && "shadow-lg shadow-primary/50 scale-105"
-                        )}
-                      >
-                        ₪{preset}
-                      </Button>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Compact Circle with Key Info */}
-                <AnimatePresence mode="wait">
-                  {hasAmount ? (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="flex justify-center mb-4"
-                    >
-                      {/* Single Large Circular Progress */}
-                      <motion.div 
-                        className="relative w-40 h-40"
-                        initial={{ scale: 0, rotate: -90 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ duration: 0.7, type: "spring" }}
-                      >
-                        {/* Subtle glow */}
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-xl" />
-                        
-                        {/* Main circle SVG */}
-                        <svg className="relative w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          {/* Background circle */}
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="42"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="7"
-                            className="text-muted/20"
-                          />
-                          
-                          {/* Animated progress circle */}
-                          <motion.circle
-                            cx="50"
-                            cy="50"
-                            r="42"
-                            fill="none"
-                            stroke="url(#gradient)"
-                            strokeWidth="7"
-                            strokeLinecap="round"
-                            strokeDasharray={`${2 * Math.PI * 42}`}
-                            initial={{ strokeDashoffset: 2 * Math.PI * 42 }}
-                            animate={{ strokeDashoffset: 0 }}
-                            transition={{ duration: 1.5, ease: "easeOut" }}
-                          />
-                          
-                          <defs>
-                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" stopColor="hsl(var(--primary))" />
-                              <stop offset="100%" stopColor="hsl(var(--accent))" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                        
-                        {/* Center content */}
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.4, type: "spring" }}
-                          >
-                            <Sparkles className="w-7 h-7 text-primary mb-2" />
-                            <div className="text-xs text-muted-foreground mb-1">חיסכון שנתי</div>
-                            <div className="text-3xl font-black text-primary">
-                              ₪{savings.yearlyGain.toLocaleString()}
-                            </div>
-                            <div className="flex items-center justify-center gap-1 mt-2">
-                              <TrendingUp className="w-4 h-4 text-green-500" />
-                              <span className="text-sm font-bold text-green-600">30% חיסכון</span>
-                            </div>
-                            <div className="text-xs text-muted-foreground mt-1">
-                              ₪{savings.monthlyGain} לחודש
-                            </div>
-                          </motion.div>
-                        </div>
-                      </motion.div>
-
-                      {/* Actions */}
-                      <motion.div 
-                        className="flex flex-col gap-2 pt-3"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                      >
-                        <Button
-                          onClick={onProceedToPlans}
-                          size="lg"
-                          className="w-full rounded-xl"
-                        >
-                          בואו נתחיל לחסוך
-                          <ChevronLeft className="w-5 h-5 mr-2" />
-                        </Button>
-                        <Button
-                          onClick={onCheckAnother}
-                          variant="outline"
-                          size="default"
-                          className="rounded-xl"
-                        >
-                          בדוק סקטור נוסף
-                        </Button>
-                      </motion.div>
-                    </motion.div>
-                  ) : (
-                    <motion.div
+                      {category.name}
+                    </motion.h2>
+                    <motion.p 
+                      className="text-muted-foreground"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="text-center py-8"
+                      transition={{ delay: 0.3 }}
                     >
+                      כמה אתם משלמים כרגע?
+                    </motion.p>
+                  </div>
+
+                  {/* Amount Display */}
+                  <motion.div 
+                    className="mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <div className="text-center mb-6">
                       <motion.div
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        animate={{ 
+                          scale: hasAmount ? [1, 1.05, 1] : 1,
+                        }}
+                        transition={{ duration: 0.6 }}
+                        className="inline-block"
                       >
-                        <Wallet className="w-12 h-12 mx-auto mb-3 text-muted-foreground/50" />
+                        <div className="relative">
+                          {/* Glow effect */}
+                          {hasAmount && (
+                            <motion.div
+                              className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${category.gradient} blur-2xl`}
+                              animate={{ 
+                                opacity: [0.3, 0.6, 0.3],
+                                scale: [1, 1.1, 1]
+                              }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                            />
+                          )}
+                          <div className={cn(
+                            "relative px-8 py-6 rounded-3xl border-2 transition-all duration-500",
+                            hasAmount 
+                              ? `bg-gradient-to-br ${category.gradient} border-transparent shadow-2xl` 
+                              : "bg-card border-border shadow-lg"
+                          )}>
+                            <div className="flex items-center justify-center gap-3">
+                              <Wallet className={cn(
+                                "w-8 h-8 transition-colors",
+                                hasAmount ? "text-white" : "text-muted-foreground"
+                              )} />
+                              <span className={cn(
+                                "text-5xl font-black transition-colors",
+                                hasAmount ? "text-white" : "text-foreground"
+                              )}>
+                                ₪{amount.toFixed(0)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
                       </motion.div>
-                      <p className="text-sm text-muted-foreground">
-                        גרור את הסליידר לחישוב החיסכון
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      <p className="text-sm text-muted-foreground mt-3">התשלום החודשי הנוכחי שלכם</p>
+                    </div>
+                    
+                    {/* Modern Slider */}
+                    <div className="space-y-4">
+                      <Slider
+                        value={[amount]}
+                        onValueChange={(values) => onAmountChange(values[0].toString())}
+                        max={800}
+                        step={10}
+                        className="[&_[role=slider]]:h-7 [&_[role=slider]]:w-7 [&_[role=slider]]:border-4 [&_[role=slider]]:border-background [&_[role=slider]]:shadow-xl [&_[role=slider]]:transition-transform [&_[role=slider]]:hover:scale-110"
+                      />
+                      
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <span>₪0</span>
+                        <span className="text-primary font-semibold">← גררו לבחירת סכום →</span>
+                        <span>₪800</span>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Quick Presets */}
+                  <motion.div 
+                    className="grid grid-cols-4 gap-3 mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    {[100, 200, 350, 500].map((preset, index) => (
+                      <motion.div
+                        key={preset}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                      >
+                        <Button
+                          variant={amount === preset ? "default" : "outline"}
+                          size="lg"
+                          onClick={() => onAmountChange(preset.toString())}
+                          className={cn(
+                            "w-full h-14 rounded-2xl font-bold text-base transition-all duration-300",
+                            amount === preset 
+                              ? "shadow-lg scale-105 ring-2 ring-primary/50 ring-offset-2" 
+                              : "hover:scale-105 hover:border-primary/50"
+                          )}
+                        >
+                          ₪{preset}
+                        </Button>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+
+                  {/* Savings Display & Actions */}
+                  <AnimatePresence mode="wait">
+                    {hasAmount ? (
+                      <motion.div
+                        key="savings"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ delay: 0.6 }}
+                        className="space-y-6"
+                      >
+                        {/* Savings Cards Grid */}
+                        <div className="grid grid-cols-2 gap-4">
+                          {/* Monthly Savings */}
+                          <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.7 }}
+                            className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-2xl p-4 border border-green-200 dark:border-green-800"
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center">
+                                <TrendingUp className="w-4 h-4 text-white" />
+                              </div>
+                              <span className="text-xs font-medium text-muted-foreground">חודשי</span>
+                            </div>
+                            <div className="text-2xl font-black text-green-600 dark:text-green-400">
+                              ₪{savings.monthlyGain}
+                            </div>
+                            <div className="text-xs text-muted-foreground mt-1">חיסכון לחודש</div>
+                          </motion.div>
+
+                          {/* Yearly Savings */}
+                          <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.8 }}
+                            className={`bg-gradient-to-br ${category.gradient} rounded-2xl p-4 border-0 shadow-lg`}
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                <Sparkles className="w-4 h-4 text-white" />
+                              </div>
+                              <span className="text-xs font-medium text-white/80">שנתי</span>
+                            </div>
+                            <div className="text-2xl font-black text-white">
+                              ₪{savings.yearlyGain.toLocaleString()}
+                            </div>
+                            <div className="text-xs text-white/80 mt-1">חיסכון לשנה</div>
+                          </motion.div>
+                        </div>
+
+                        {/* Benefits List */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.9 }}
+                          className="bg-muted/30 rounded-2xl p-4 space-y-2"
+                        >
+                          {[
+                            { icon: CheckCircle2, text: 'ללא עמלות החלפה' },
+                            { icon: Zap, text: 'תהליך מהיר ופשוט' },
+                            { icon: CheckCircle2, text: 'שירות לקוחות מעולה' }
+                          ].map((benefit, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 1 + index * 0.1 }}
+                              className="flex items-center gap-3"
+                            >
+                              <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${category.gradient} flex items-center justify-center flex-shrink-0`}>
+                                <benefit.icon className="w-3.5 h-3.5 text-white" />
+                              </div>
+                              <span className="text-sm font-medium text-foreground">{benefit.text}</span>
+                            </motion.div>
+                          ))}
+                        </motion.div>
+
+                        {/* Action Buttons */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.2 }}
+                          className="space-y-3"
+                        >
+                          <Button
+                            onClick={onProceedToPlans}
+                            size="lg"
+                            className="w-full h-14 rounded-2xl text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                          >
+                            בואו נתחיל לחסוך
+                            <ArrowLeft className="w-5 h-5 mr-2" />
+                          </Button>
+                          <Button
+                            onClick={onCheckAnother}
+                            variant="outline"
+                            size="lg"
+                            className="w-full h-12 rounded-2xl font-medium hover:scale-105 transition-all duration-300"
+                          >
+                            בדקו סקטור נוסף
+                          </Button>
+                        </motion.div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="empty"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="text-center py-12"
+                      >
+                        <motion.div
+                          animate={{ 
+                            scale: [1, 1.1, 1],
+                            rotate: [0, 5, -5, 0]
+                          }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                          className={`inline-flex w-24 h-24 rounded-3xl bg-gradient-to-br ${category.gradient} items-center justify-center mb-4 shadow-xl`}
+                        >
+                          <Wallet className="w-12 h-12 text-white" />
+                        </motion.div>
+                        <p className="text-muted-foreground font-medium">
+                          בחרו סכום כדי לראות את החיסכון הפוטנציאלי
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </Card>
             </motion.div>
           </div>
