@@ -243,53 +243,41 @@ const Home = () => {
               opacity="0.85"
             />
             
-            {/* EXTREME Glitch Style EASYSWITCH - Compact and Visible */}
-            <g transform="translate(85, 90) rotate(-12)">
-              {/* EASY - Extreme glitch with multiple offset layers */}
-              <text x="-4" y="-2" textAnchor="middle" fill="#ff00ff" fontSize="16" fontWeight="900" fontFamily="Impact, Arial Black, sans-serif" letterSpacing="3" opacity="0.7">EASY</text>
-              <text x="3" y="2" textAnchor="middle" fill="#00ff00" fontSize="16" fontWeight="900" fontFamily="Impact, Arial Black, sans-serif" letterSpacing="3" opacity="0.7">EASY</text>
-              <text x="-2" y="3" textAnchor="middle" fill="#00ffff" fontSize="16" fontWeight="900" fontFamily="Impact, Arial Black, sans-serif" letterSpacing="3" opacity="0.5">EASY</text>
-              
-              {/* EASY - Main with intense glow */}
+            {/* Clean Modern Typography EASYSWITCH */}
+            <g transform="translate(100, 95)">
+              {/* EASY */}
               <text
-                x="0" y="0" textAnchor="middle" fill="white" fontSize="16" fontWeight="900"
-                fontFamily="Impact, Arial Black, sans-serif" letterSpacing="3"
-                style={{ filter: 'drop-shadow(0 0 15px #ff00ff) drop-shadow(0 0 25px #00ffff) drop-shadow(2px 2px 0 #000)' }}
-              >EASY</text>
+                x="0"
+                y="0"
+                textAnchor="middle"
+                fill="white"
+                fontSize="28"
+                fontWeight="800"
+                fontFamily="Poppins, Nunito, Quicksand, Rounded, sans-serif"
+                letterSpacing="-1"
+                style={{ 
+                  filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
+                }}
+              >
+                easy
+              </text>
               
-              {/* SWITCH - Extreme glitch layers */}
-              <text x="-3" y="18" textAnchor="middle" fill="#ff0000" fontSize="16" fontWeight="900" fontFamily="Impact, Arial Black, sans-serif" letterSpacing="3" opacity="0.7">SWITCH</text>
-              <text x="4" y="22" textAnchor="middle" fill="#00ff00" fontSize="16" fontWeight="900" fontFamily="Impact, Arial Black, sans-serif" letterSpacing="3" opacity="0.6">SWITCH</text>
-              <text x="-2" y="23" textAnchor="middle" fill="#ffff00" fontSize="16" fontWeight="900" fontFamily="Impact, Arial Black, sans-serif" letterSpacing="3" opacity="0.5">SWITCH</text>
-              
-              {/* SWITCH - Main with intense effects */}
+              {/* SWITCH */}
               <text
-                x="0" y="20" textAnchor="middle" fill="white" fontSize="16" fontWeight="900"
-                fontFamily="Impact, Arial Black, sans-serif" letterSpacing="3"
-                style={{ filter: 'drop-shadow(0 0 15px #00ff00) drop-shadow(0 0 25px #ff00ff) drop-shadow(2px 2px 0 #000)' }}
-              >SWITCH</text>
-              
-              {/* Extreme broken lines */}
-              <line x1="-35" y1="28" x2="-22" y2="29" stroke="#ff00ff" strokeWidth="3" opacity="0.9"/>
-              <line x1="-18" y1="28" x2="-5" y2="29" stroke="#00ffff" strokeWidth="3" opacity="0.9"/>
-              <line x1="5" y1="28" x2="18" y2="29" stroke="#00ff00" strokeWidth="3" opacity="0.9"/>
-              <line x1="22" y1="28" x2="35" y2="29" stroke="white" strokeWidth="3" opacity="0.9"/>
-              
-              {/* Chaotic glitch rectangles scattered */}
-              <rect x="-38" y="-6" width="4" height="2" fill="#ff00ff" opacity="0.8"/>
-              <rect x="-32" y="-3" width="3" height="2" fill="#00ffff" opacity="0.7"/>
-              <rect x="30" y="-5" width="5" height="2" fill="#00ff00" opacity="0.8"/>
-              <rect x="36" y="-2" width="3" height="2" fill="white" opacity="0.9"/>
-              <rect x="-36" y="24" width="4" height="2" fill="#ffff00" opacity="0.8"/>
-              <rect x="-30" y="26" width="3" height="2" fill="#ff0000" opacity="0.7"/>
-              <rect x="32" y="23" width="4" height="2" fill="#00ffff" opacity="0.8"/>
-              <rect x="28" y="26" width="3" height="2" fill="white" opacity="0.9"/>
-              
-              {/* Diagonal chaos lines */}
-              <line x1="-35" y1="-8" x2="-28" y2="2" stroke="white" strokeWidth="1" opacity="0.4"/>
-              <line x1="28" y1="-6" x2="35" y2="4" stroke="#ff00ff" strokeWidth="1" opacity="0.4"/>
-              <line x1="-33" y1="22" x2="-26" y2="30" stroke="#00ffff" strokeWidth="1" opacity="0.4"/>
-              <line x1="26" y1="20" x2="33" y2="30" stroke="#00ff00" strokeWidth="1" opacity="0.4"/>
+                x="0"
+                y="32"
+                textAnchor="middle"
+                fill="white"
+                fontSize="28"
+                fontWeight="800"
+                fontFamily="Poppins, Nunito, Quicksand, Rounded, sans-serif"
+                letterSpacing="-1"
+                style={{ 
+                  filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
+                }}
+              >
+                switch
+              </text>
             </g>
             
             {/* Gradient definition */}
