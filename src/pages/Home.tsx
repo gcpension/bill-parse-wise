@@ -222,11 +222,11 @@ const Home = () => {
       {/* Hero Section with Clean Background */}
       <section className="relative py-16 lg:py-20 overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 opacity-10">
           <img 
-            src={middleSectionIllustration} 
+            src={savingsAnalysisIllustration} 
             alt="" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain object-center"
           />
         </div>
         
@@ -239,19 +239,12 @@ const Home = () => {
               animationFillMode: 'forwards'
             }}>
               <h1 className="relative">
-                {/* Glow Effect Behind Text */}
-                <div className="absolute inset-0 blur-2xl opacity-30">
-                  <span className="block text-4xl lg:text-5xl xl:text-6xl font-black font-assistant bg-gradient-to-r from-accent via-royal-purple to-accent bg-clip-text text-transparent">
-                    באיזה תחום תרצו להתחיל לחסוך היום?
-                  </span>
-                </div>
-                
                 {/* Main Text */}
-                <span className="relative block text-4xl lg:text-5xl xl:text-6xl font-black font-assistant leading-tight">
-                  <span className="block bg-gradient-to-r from-accent via-royal-purple to-accent bg-clip-text text-transparent animate-gradient-x bg-300%">
+                <span className="relative block text-4xl lg:text-5xl xl:text-6xl font-light font-assistant leading-tight text-foreground">
+                  <span className="block">
                     באיזה תחום תרצו
                   </span>
-                  <span className="block bg-gradient-to-r from-royal-purple via-accent to-royal-purple bg-clip-text text-transparent mt-2 animate-gradient-x bg-300%">
+                  <span className="block mt-2">
                     להתחיל לחסוך היום?
                   </span>
                 </span>
