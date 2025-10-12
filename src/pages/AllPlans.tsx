@@ -85,9 +85,24 @@ const AllPlans = () => {
   const { filteredPlans, recommendedPlans, cheapestPlans } = useMemo(() => {
     let filtered = allPlans;
     
-    // Filter by category
+    // Filter by category - map UI categories to data categories
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(plan => plan.service === selectedCategory);
+      filtered = filtered.filter(plan => {
+        const service = plan.service;
+        
+        // Map categories
+        if (selectedCategory === 'סלולר') {
+          return service === 'סלולר';
+        } else if (selectedCategory === 'אינטרנט') {
+          return service.includes('אינטרנט') || service.includes('טריפל');
+        } else if (selectedCategory === 'טלוויזיה') {
+          return service.includes('טלוויזיה') || service.includes('טריפל');
+        } else if (selectedCategory === 'חשמל') {
+          return service === 'חשמל';
+        }
+        
+        return false;
+      });
     }
     
     // Filter by search query
