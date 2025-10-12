@@ -274,7 +274,7 @@ const Home = () => {
               animationDelay: `${0.6 + index * 0.1}s`,
               animationFillMode: 'forwards'
             }}>
-                  <Card className={`touch-card relative overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border-2 transform hover:scale-[1.02] hover:-translate-y-1 min-h-[160px] ${isSelected ? 'border-green-500 bg-gradient-to-br from-green-50 via-white to-emerald-50 shadow-green-200' : 'border-cyan-200 hover:border-cyan-400 bg-gradient-to-br from-cyan-50/30 via-white to-blue-50/20'}`} onClick={() => handleCategorySelect(category)}>
+                  <Card className={`touch-card relative overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border-0 transform hover:scale-[1.02] hover:-translate-y-1 min-h-[160px] ${isSelected ? 'bg-gradient-to-br from-green-50 via-white to-emerald-50 shadow-green-200' : 'bg-gradient-to-br from-cyan-50/30 via-white to-blue-50/20'}`} onClick={() => handleCategorySelect(category)}>
                     {/* Decorative gradient overlay */}
                     <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none ${isSelected ? 'from-green-400 to-emerald-600' : 'from-cyan-400 to-blue-600'}`}></div>
                     
