@@ -228,61 +228,70 @@ const Home = () => {
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
         {/* Purple Decorative Shape on Left Top Corner with Brand */}
-        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] pointer-events-none">
+        <div className="absolute -top-20 -left-20 w-[350px] h-[350px] pointer-events-none">
           <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Beautiful flowing shape */}
+            {/* Wavy flowing shape with curves */}
             <path
-              d="M 0,150 
-                 C 0,100 20,60 60,40
-                 C 100,20 140,30 170,50
-                 C 200,70 220,100 230,140
-                 C 240,180 230,220 210,250
-                 C 190,280 160,290 120,280
-                 C 80,270 40,240 20,200
-                 C 5,170 0,160 0,150
+              d="M 0,120 
+                 Q 10,100 25,85
+                 Q 40,70 60,62
+                 Q 80,54 100,55
+                 Q 120,56 135,65
+                 Q 150,74 160,88
+                 Q 170,102 175,120
+                 Q 180,138 178,155
+                 Q 176,172 168,185
+                 Q 160,198 147,206
+                 Q 134,214 118,217
+                 Q 102,220 85,216
+                 Q 68,212 54,202
+                 Q 40,192 28,177
+                 Q 16,162 8,145
+                 Q 0,133 0,120
                  L 0,0
                  L 150,0
-                 C 120,20 100,50 90,90
-                 C 80,130 85,170 100,200
-                 Q 50,180 20,150
-                 L 0,150 Z"
+                 Q 140,15 130,32
+                 Q 120,49 112,68
+                 Q 104,87 100,107
+                 Q 96,127 96,145
+                 Q 60,135 35,115
+                 Q 15,100 5,120
+                 L 0,120 Z"
               fill="url(#purpleGradient)"
-              opacity="0.9"
+              opacity="0.92"
             />
             
             {/* Gradient definition */}
             <defs>
               <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
+                <stop offset="0%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
             
             {/* Brand Text */}
-            <g transform="translate(100, 120)">
+            <g transform="translate(90, 100)">
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="22"
-                fontWeight="900"
-                fontFamily="Montserrat, sans-serif"
-                letterSpacing="2"
-                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}
+                fontSize="20"
+                fontWeight="700"
+                fontFamily="Poppins, sans-serif"
+                letterSpacing="1.5"
               >
                 EASY
               </text>
               <text
                 x="0"
-                y="26"
+                y="24"
                 textAnchor="middle"
                 fill="white"
-                fontSize="22"
-                fontWeight="900"
-                fontFamily="Montserrat, sans-serif"
-                letterSpacing="2"
-                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}
+                fontSize="20"
+                fontWeight="700"
+                fontFamily="Poppins, sans-serif"
+                letterSpacing="1.5"
               >
                 SWITCH
               </text>
