@@ -440,16 +440,16 @@ const AllPlans = ({
 
 
         {/* Category Selection - Enhanced Design */}
-        <div className="mb-16">
-          <div className="text-center mb-10">
-            <h2 className="text-4xl lg:text-5xl font-black text-foreground font-heebo mb-4">
+        <div className="mb-8">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground font-heebo mb-2">
               בחר קטגוריה לצפייה במסלולים
             </h2>
-            <p className="text-xl text-muted-foreground font-assistant max-w-3xl mx-auto">
+            <p className="text-base text-muted-foreground font-assistant max-w-2xl mx-auto">
               לחצו על הקטגוריה המעניינת אתכם • החזיקו Ctrl ללחוץ על מספר קטגוריות
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
             {Object.entries(categoryConfig).map(([key, config]) => {
               const isSelected = selectedCategory === key;
               const isInMultiSelect = selectedCategories.includes(key as CategoryType);
@@ -458,10 +458,10 @@ const AllPlans = ({
                 <Card 
                   key={key}
                   className={cn(
-                    "group relative cursor-pointer transition-all duration-500 border-3 overflow-hidden",
-                    "hover:shadow-2xl hover:-translate-y-2",
+                    "group relative cursor-pointer transition-all duration-300 border-2 overflow-hidden",
+                    "hover:shadow-xl hover:-translate-y-1",
                     isSelected || isInMultiSelect
-                      ? "ring-4 ring-primary/50 shadow-2xl border-primary scale-105" 
+                      ? "ring-2 ring-primary/50 shadow-xl border-primary scale-105" 
                       : "border-border hover:border-primary/60"
                   )} 
                   onClick={(e) => {
@@ -479,7 +479,7 @@ const AllPlans = ({
                 >
                   {/* Background gradient animation */}
                   <div className={cn(
-                    "absolute inset-0 transition-all duration-500",
+                    "absolute inset-0 transition-all duration-300",
                     isSelected || isInMultiSelect
                       ? "bg-gradient-to-br from-primary via-primary/90 to-accent opacity-100"
                       : "bg-gradient-to-br from-background via-muted/30 to-background opacity-100 group-hover:from-primary/10 group-hover:to-accent/10"
@@ -487,17 +487,17 @@ const AllPlans = ({
                   
                   {/* Selected indicator */}
                   {(isSelected || isInMultiSelect) && (
-                    <div className="absolute top-3 left-3 z-20 animate-scale-in">
-                      <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl">
-                        <CheckCircle className="w-5 h-5 text-white" />
+                    <div className="absolute top-2 left-2 z-20 animate-scale-in">
+                      <div className="w-6 h-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+                        <CheckCircle className="w-4 h-4 text-white" />
                       </div>
                     </div>
                   )}
                   
-                  <CardContent className="relative z-10 p-8 flex flex-col items-center justify-center h-40 text-center">
+                  <CardContent className="relative z-10 p-5 flex flex-col items-center justify-center h-32 text-center">
                     <div className={cn(
-                      "w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-all duration-500",
-                      "shadow-lg group-hover:scale-110 group-hover:rotate-3",
+                      "w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-all duration-300",
+                      "shadow-md group-hover:scale-110",
                       isSelected || isInMultiSelect
                         ? "bg-white/20 backdrop-blur-sm"
                         : "bg-gradient-to-br from-primary/10 to-accent/10 group-hover:from-primary/20 group-hover:to-accent/20"
@@ -510,13 +510,13 @@ const AllPlans = ({
                       </div>
                     </div>
                     <h3 className={cn(
-                      "text-2xl font-black font-heebo mb-2 transition-colors duration-300",
+                      "text-lg font-bold font-heebo mb-1 transition-colors duration-300",
                       isSelected || isInMultiSelect ? "text-white" : "text-foreground"
                     )}>
                       {config.label}
                     </h3>
                     <p className={cn(
-                      "text-sm font-assistant transition-colors duration-300",
+                      "text-xs font-assistant transition-colors duration-300",
                       isSelected || isInMultiSelect ? "text-white/90" : "text-muted-foreground"
                     )}>
                       {config.description}
@@ -557,65 +557,65 @@ const AllPlans = ({
         </div>
 
         {/* Company Logos by Category */}
-        {selectedCategory && <div className="mb-12 animate-fade-in">
-            <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 via-background to-accent/5 shadow-lg">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-bold text-foreground font-heebo mb-4 text-center flex items-center justify-center gap-2">
-                  <Building2 className="w-5 h-5 text-primary" />
+        {selectedCategory && <div className="mb-6 animate-fade-in">
+            <Card className="border border-primary/20 bg-gradient-to-r from-primary/5 via-background to-accent/5">
+              <CardContent className="p-4">
+                <h3 className="text-sm font-semibold text-foreground font-heebo mb-3 text-center flex items-center justify-center gap-2">
+                  <Building2 className="w-4 h-4 text-primary" />
                   החברות הזמינות
                 </h3>
-                <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-10 gap-3 max-w-5xl mx-auto">
+                <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-10 gap-2 max-w-4xl mx-auto">
               {selectedCategory === 'electricity' && <>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/electra-logo.png" alt="אלקטרה" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/electra-logo.png" alt="אלקטרה" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/electricity-logo.png" alt="חברת החשמל" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/electricity-logo.png" alt="חברת החשמל" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
                 </>}
               
               {selectedCategory === 'internet' && <>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/bezeq-logo.png" alt="בזק" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/bezeq-logo.png" alt="בזק" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/hot-logo.svg" alt="HOT" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/hot-logo.svg" alt="HOT" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
                 </>}
               
               {selectedCategory === 'mobile' && <>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/cellcom-logo.svg" alt="סלקום" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/cellcom-logo.svg" alt="סלקום" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/partner-logo.png" alt="פרטנר" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/partner-logo.png" alt="פרטנר" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/pelephone-logo.png" alt="פלאפון" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/pelephone-logo.png" alt="פלאפון" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/019-logo.png" alt="019" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/019-logo.png" alt="019" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/rami-levy-logo.png" alt="רמי לוי" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/rami-levy-logo.png" alt="רמי לוי" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
                 </>}
               
               {selectedCategory === 'tv' && <>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/yes-logo.png" alt="YES" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/yes-logo.png" alt="YES" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/hot-logo.svg" alt="HOT" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/hot-logo.svg" alt="HOT" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/netflix-logo.svg" alt="Netflix" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/netflix-logo.svg" alt="Netflix" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/disney-logo.png" alt="Disney" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/disney-logo.png" alt="Disney" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
-                  <div className="group bg-white rounded-xl p-3 shadow-md border-2 border-border hover:border-primary hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <img src="/src/assets/logos/hbo-logo.png" alt="HBO" className="w-full h-6 object-contain group-hover:scale-110 transition-transform" />
+                  <div className="group bg-white rounded-lg p-2 shadow-sm border border-border hover:border-primary hover:shadow-md transition-all duration-200 hover:scale-105">
+                    <img src="/src/assets/logos/hbo-logo.png" alt="HBO" className="w-full h-5 object-contain group-hover:scale-110 transition-transform" />
                   </div>
                 </>}
                 </div>
@@ -624,48 +624,47 @@ const AllPlans = ({
           </div>}
 
         {/* Enhanced CTA Section */}
-        {selectedCategory && <div className="mb-10 animate-fade-in">
-            {/* Big CTA Message with Icon */}
-            <Card className="border-3 border-primary/30 bg-gradient-to-br from-background via-primary/5 to-accent/5 shadow-2xl overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-accent to-primary animate-pulse" />
-              <CardContent className="p-10 text-center">
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-accent mb-6 shadow-xl">
-                  <Target className="w-10 h-10 text-white" />
+        {selectedCategory && <div className="mb-6 animate-fade-in">
+            {/* CTA Message with Icon */}
+            <Card className="border-2 border-primary/20 bg-gradient-to-br from-background via-primary/5 to-accent/5 shadow-lg overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-pulse" />
+              <CardContent className="p-6 text-center">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-primary to-accent mb-4 shadow-lg">
+                  <Target className="w-7 h-7 text-white" />
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-black text-foreground font-heebo mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <h2 className="text-2xl lg:text-3xl font-bold text-foreground font-heebo mb-2">
                   מצא את המסלול המושלם עבורך
                 </h2>
-                <p className="text-xl text-muted-foreground font-assistant max-w-2xl mx-auto">
+                <p className="text-base text-muted-foreground font-assistant max-w-xl mx-auto">
                   בחר חברה מהרשימה מטה ולחץ על המסלול שמעניין אותך
                 </p>
               </CardContent>
             </Card>
 
-            {/* Enhanced Savings Info */}
+            {/* Savings Info */}
             {currentUserPlan.price && cheapestPlan && parseFloat(currentUserPlan.price) > 0 && (
-              <div className="max-w-3xl mx-auto mt-8 animate-slide-up">
-                <Card className="border-3 border-green-500/30 bg-gradient-to-l from-green-50 via-emerald-50 to-green-50 shadow-xl overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-emerald-500" />
-                  <CardContent className="p-8">
-                    <div className="flex items-center justify-between gap-6">
-                      <div className="flex items-center gap-5">
-                        <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg animate-bounce-slow">
-                          <TrendingUp className="w-8 h-8 text-white" />
+              <div className="max-w-2xl mx-auto mt-4 animate-fade-in">
+                <Card className="border-2 border-green-500/20 bg-gradient-to-l from-green-50 via-emerald-50 to-green-50 shadow-md overflow-hidden">
+                  <CardContent className="p-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-md">
+                          <TrendingUp className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-green-700 font-assistant mb-1">חיסכון פוטנציאלי</p>
-                          <p className="text-4xl font-black text-green-600 font-heebo">
+                          <p className="text-xs font-medium text-green-700 font-assistant">חיסכון פוטנציאלי</p>
+                          <p className="text-2xl font-black text-green-600 font-heebo">
                             ₪{Math.max(0, (parseFloat(currentUserPlan.price) - cheapestPlan.regularPrice) * 12).toLocaleString()}
                           </p>
-                          <p className="text-sm text-green-600 font-assistant mt-1">לשנה</p>
+                          <p className="text-xs text-green-600 font-assistant">לשנה</p>
                         </div>
                       </div>
                       <Button 
                         onClick={() => handlePlanSelect(cheapestPlan)} 
-                        size="lg" 
-                        className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-heebo shadow-xl hover:shadow-2xl text-lg px-8 py-6 transform hover:scale-105 transition-all"
+                        size="default" 
+                        className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-heebo shadow-lg hover:shadow-xl"
                       >
-                        <Sparkles className="w-5 h-5 ml-2" />
+                        <Sparkles className="w-4 h-4 ml-2" />
                         עבור למסלול
                       </Button>
                     </div>
@@ -871,23 +870,23 @@ const AllPlans = ({
 
         {/* Plans Grid - Organized by Company */}
         {selectedCategory && Object.keys(groupedByCompany).length > 0 && <div>
-            <Card className="mb-10 border-2 border-primary/20 bg-gradient-to-r from-background via-muted/30 to-background shadow-lg">
-              <CardContent className="p-8">
-                <div className="flex items-center justify-between mb-4">
+            <Card className="mb-6 border border-primary/20 bg-gradient-to-r from-background via-muted/20 to-background shadow-md">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md">
-                      <Package className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                      <Package className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-3xl font-black text-foreground font-heebo">
+                      <h2 className="text-xl font-bold text-foreground font-heebo">
                         בחרו חברה לצפייה במסלולים
                       </h2>
-                      <p className="text-base text-muted-foreground font-assistant mt-1">
+                      <p className="text-sm text-muted-foreground font-assistant">
                         לחצו על לוגו של החברה כדי לצפות במסלולים שלה
                       </p>
                     </div>
                   </div>
-                  <Badge variant="secondary" className="text-xl px-6 py-3 font-assistant shadow-md">
+                  <Badge variant="secondary" className="text-base px-4 py-2 font-assistant">
                     {filteredPlans.length} מסלולים • {Object.keys(groupedByCompany).length} חברות
                   </Badge>
                 </div>
