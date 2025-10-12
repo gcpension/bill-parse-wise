@@ -261,13 +261,13 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
   const checklistItems = getChecklistItems('cellular', 'private');
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-2" dir="rtl">
       {/* Personal Details */}
       <Card>
-        <CardHeader className="py-2 px-3">
-          <CardTitle className="text-sm">פרטים אישיים</CardTitle>
+        <CardHeader className="py-1.5 px-2.5">
+          <CardTitle className="text-xs font-semibold">פרטים אישיים</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2 py-2 px-3">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
           <div>
             <Label htmlFor="fullName" className="flex items-center gap-2">
               שם מלא *
@@ -327,10 +327,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
 
       {/* Service Details */}
       <Card>
-        <CardHeader className="py-2 px-3">
-          <CardTitle className="text-sm">פרטי השירות</CardTitle>
+        <CardHeader className="py-1.5 px-2.5">
+          <CardTitle className="text-xs font-semibold">פרטי השירות</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2 py-2 px-3">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
           <div>
             <Label htmlFor="currentProvider" className="flex items-center gap-2">
               ספק נוכחי *
@@ -378,17 +378,18 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
 
       {/* Phone Numbers */}
       <Card>
-        <CardHeader className="py-2 px-3">
-          <CardTitle className="flex items-center justify-between text-sm">
+        <CardHeader className="py-1.5 px-2.5">
+          <CardTitle className="flex items-center justify-between text-xs font-semibold">
             מספרי קווים להעברה
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={addPhoneNumber}
+              className="h-6 text-xs"
             >
-              <Plus className="h-4 w-4 ml-1" />
-              הוסף מספר
+              <Plus className="h-3 w-3 ml-1" />
+              הוסף
             </Button>
           </CardTitle>
         </CardHeader>

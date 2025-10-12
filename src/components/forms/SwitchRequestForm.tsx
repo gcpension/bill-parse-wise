@@ -71,20 +71,20 @@ export const SwitchRequestForm = ({ isOpen, onClose, selectedPlan }: SwitchReque
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-4" dir="rtl">
-        <DialogHeader className="pb-2">
-          <DialogTitle className="flex items-center gap-2 text-base">
-            <FileText className="h-4 w-4" />
+      <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto p-2" dir="rtl">
+        <DialogHeader className="pb-1">
+          <DialogTitle className="flex items-center gap-1.5 text-sm">
+            <FileText className="h-3.5 w-3.5" />
             טופס מעבר ספק - {selectedPlan.company}
           </DialogTitle>
         </DialogHeader>
 
         {/* Plan Details Card */}
-        <Card className="mb-2">
-          <CardHeader className="py-2 px-3">
-            <CardTitle className="text-sm">המסלול שנבחר</CardTitle>
+        <Card className="mb-1.5">
+          <CardHeader className="py-1.5 px-2.5">
+            <CardTitle className="text-xs">המסלול שנבחר</CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-2 text-xs py-2 px-3">
+          <CardContent className="grid grid-cols-2 gap-1.5 text-xs py-1.5 px-2.5">
             <div><strong>חברה:</strong> {selectedPlan.company}</div>
             <div><strong>מסלול:</strong> {selectedPlan.planName}</div>
             <div><strong>קטגוריה:</strong> {selectedPlan.category}</div>
@@ -104,7 +104,7 @@ export const SwitchRequestForm = ({ isOpen, onClose, selectedPlan }: SwitchReque
         </Card>
 
         {/* Dynamic Form Component */}
-        <div className="mt-2">
+        <div className="mt-1">
           {renderFormComponent()}
         </div>
       </DialogContent>

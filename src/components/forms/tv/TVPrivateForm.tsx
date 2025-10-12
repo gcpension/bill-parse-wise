@@ -190,13 +190,13 @@ export const TVPrivateForm = ({ selectedPlan, onClose }: TVPrivateFormProps) => 
   const checklistItems = getChecklistItems('tv', 'private');
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-2" dir="rtl">
       {/* Personal Details */}
       <Card>
-        <CardHeader className="py-2 px-3">
-          <CardTitle className="text-sm">פרטים אישיים</CardTitle>
+        <CardHeader className="py-1.5 px-2.5">
+          <CardTitle className="text-xs font-semibold">פרטים אישיים</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2 py-2 px-3">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
           <div>
             <Label htmlFor="fullName" className="text-xs">שם מלא *</Label>
             <Input
@@ -245,10 +245,10 @@ export const TVPrivateForm = ({ selectedPlan, onClose }: TVPrivateFormProps) => 
 
       {/* Service Details */}
       <Card>
-        <CardHeader className="py-2 px-3">
-          <CardTitle className="text-sm">פרטי השירות</CardTitle>
+        <CardHeader className="py-1.5 px-2.5">
+          <CardTitle className="text-xs font-semibold">פרטי השירות</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2 py-2 px-3">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
           <div>
             <Label htmlFor="currentProvider">ספק נוכחי *</Label>
             <Select onValueChange={(value) => updateFormData("currentProvider", value)}>

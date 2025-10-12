@@ -107,10 +107,10 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-2" dir="rtl">
       <Card>
-        <CardHeader className="py-2 px-3"><CardTitle className="text-sm">פרטים אישיים</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-2 gap-2 py-2 px-3">
+        <CardHeader className="py-1.5 px-2.5"><CardTitle className="text-xs font-semibold">פרטים אישיים</CardTitle></CardHeader>
+        <CardContent className="grid grid-cols-2 gap-1.5 py-1.5 px-2.5">
           <div>
             <Label className="flex items-center gap-1 text-xs">
               שם מלא *
@@ -166,8 +166,8 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
       </Card>
 
       <Card>
-        <CardHeader className="py-2 px-3"><CardTitle className="text-sm">פרטי השירות</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-2 gap-2 py-2 px-3">
+        <CardHeader className="py-1.5 px-2.5"><CardTitle className="text-xs font-semibold">פרטי השירות</CardTitle></CardHeader>
+        <CardContent className="grid grid-cols-2 gap-1.5 py-1.5 px-2.5">
           <div>
             <Label className="flex items-center gap-2">
               ספק תשתית נוכחי *

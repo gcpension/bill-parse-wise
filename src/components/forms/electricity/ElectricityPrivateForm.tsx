@@ -216,15 +216,15 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
   const checklistItems = getChecklistItems('electricity', 'private');
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-2" dir="rtl">
       {/* Personal Details */}
       <Card>
-        <CardHeader className="py-2 px-3">
-          <CardTitle className="text-sm">פרטים אישיים</CardTitle>
+        <CardHeader className="py-1.5 px-2.5">
+          <CardTitle className="text-xs font-semibold">פרטים אישיים</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2 py-2 px-3">
-          <div>
-            <Label htmlFor="fullName" className="flex items-center gap-1 text-xs">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
+          <div className="space-y-0.5">
+            <Label htmlFor="fullName" className="flex items-center gap-1 text-[10px]">
               שם מלא *
               <FieldInfoTooltip content={fieldInfo.fullName} />
             </Label>
@@ -234,12 +234,12 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               value={formData.fullName}
               onChange={(e) => updateFormData("fullName", e.target.value)}
               required
-              className="h-8 text-sm"
+              className="h-7 text-xs"
             />
           </div>
-          <div>
-            <Label htmlFor="idNumber" className="flex items-center gap-2">
-              מס׳ תעודת זהות *
+          <div className="space-y-0.5">
+            <Label htmlFor="idNumber" className="flex items-center gap-1 text-[10px]">
+              מס׳ ת.ז. *
               <FieldInfoTooltip content={fieldInfo.idNumber} />
             </Label>
             <Input
@@ -249,11 +249,12 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               onChange={(e) => updateFormData("idNumber", e.target.value)}
               maxLength={9}
               required
+              className="h-7 text-xs"
             />
           </div>
-          <div>
-            <Label htmlFor="phone" className="flex items-center gap-2">
-              טלפון נייד *
+          <div className="space-y-0.5">
+            <Label htmlFor="phone" className="flex items-center gap-1 text-[10px]">
+              נייד *
               <FieldInfoTooltip content={fieldInfo.phone} />
             </Label>
             <Input
@@ -262,11 +263,12 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               value={formData.phone}
               onChange={(e) => updateFormData("phone", e.target.value)}
               required
+              className="h-7 text-xs"
             />
           </div>
-          <div>
-            <Label htmlFor="email" className="flex items-center gap-2">
-              דוא״ל *
+          <div className="space-y-0.5">
+            <Label htmlFor="email" className="flex items-center gap-1 text-[10px]">
+              אימייל *
               <FieldInfoTooltip content={fieldInfo.email} />
             </Label>
             <Input
@@ -276,6 +278,7 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               value={formData.email}
               onChange={(e) => updateFormData("email", e.target.value)}
               required
+              className="h-7 text-xs"
             />
           </div>
         </CardContent>
@@ -283,18 +286,18 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
 
       {/* Service Details */}
       <Card>
-        <CardHeader className="py-2 px-3">
-          <CardTitle className="text-sm">פרטי השירות</CardTitle>
+        <CardHeader className="py-1.5 px-2.5">
+          <CardTitle className="text-xs font-semibold">פרטי השירות</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2 py-2 px-3">
-          <div>
-            <Label htmlFor="currentProvider" className="flex items-center gap-2">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
+          <div className="space-y-0.5">
+            <Label htmlFor="currentProvider" className="flex items-center gap-1 text-[10px]">
               ספק נוכחי *
               <FieldInfoTooltip content={fieldInfo.currentProvider} />
             </Label>
             <Select onValueChange={(value) => updateFormData("currentProvider", value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="בחר/י ספק" />
+              <SelectTrigger className="h-7 text-xs">
+                <SelectValue placeholder="בחר/י" />
               </SelectTrigger>
               <SelectContent>
                 {providers.map(provider => (
@@ -303,8 +306,8 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Label htmlFor="targetProvider" className="flex items-center gap-2">
+          <div className="space-y-0.5">
+            <Label htmlFor="targetProvider" className="flex items-center gap-1 text-[10px]">
               ספק יעד *
               <FieldInfoTooltip content={fieldInfo.targetProvider} />
             </Label>
@@ -314,35 +317,38 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               onChange={(e) => updateFormData("targetProvider", e.target.value)}
               required
               disabled
+              className="h-7 text-xs"
             />
           </div>
-          <div>
-            <Label htmlFor="contractNumber" className="flex items-center gap-2">
-              מס׳ חוזה (אם ידוע)
+          <div className="space-y-0.5">
+            <Label htmlFor="contractNumber" className="flex items-center gap-1 text-[10px]">
+              מס׳ חוזה
               <FieldInfoTooltip content={fieldInfo.contractNumber} />
             </Label>
             <Input
               id="contractNumber"
-              placeholder="מספר"
+              placeholder="אופציונלי"
               value={formData.contractNumber}
               onChange={(e) => updateFormData("contractNumber", e.target.value)}
+              className="h-7 text-xs"
             />
           </div>
-          <div>
-            <Label htmlFor="meterNumber" className="flex items-center gap-2">
-              מס׳ מונה (אם ידוע)
+          <div className="space-y-0.5">
+            <Label htmlFor="meterNumber" className="flex items-center gap-1 text-[10px]">
+              מס׳ מונה
               <FieldInfoTooltip content={fieldInfo.meterNumber} />
             </Label>
             <Input
               id="meterNumber"
-              placeholder="מספר"
+              placeholder="אופציונלי"
               value={formData.meterNumber}
               onChange={(e) => updateFormData("meterNumber", e.target.value)}
+              className="h-7 text-xs"
             />
           </div>
-          <div className="md:col-span-2">
-            <Label htmlFor="consumptionAddress" className="flex items-center gap-2">
-              כתובת אתר צריכה *
+          <div className="md:col-span-2 space-y-0.5">
+            <Label htmlFor="consumptionAddress" className="flex items-center gap-1 text-[10px]">
+              כתובת צריכה *
               <FieldInfoTooltip content={fieldInfo.consumptionAddress} />
             </Label>
             <Input
@@ -351,10 +357,11 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               value={formData.consumptionAddress}
               onChange={(e) => updateFormData("consumptionAddress", e.target.value)}
               required
+              className="h-7 text-xs"
             />
           </div>
-          <div>
-            <Label htmlFor="powerOfAttorneyExpiry" className="flex items-center gap-2">
+          <div className="space-y-0.5">
+            <Label htmlFor="powerOfAttorneyExpiry" className="flex items-center gap-1 text-[10px]">
               תוקף ייפוי כוח *
               <FieldInfoTooltip content={fieldInfo.powerOfAttorneyExpiry} />
             </Label>
@@ -364,32 +371,33 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               value={formData.powerOfAttorneyExpiry}
               onChange={(e) => updateFormData("powerOfAttorneyExpiry", e.target.value)}
               required
+              className="h-7 text-xs"
             />
-            <p className="text-sm text-muted-foreground mt-1">מומלץ 12 חודשים</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5">מומלץ 12 חודשים</p>
           </div>
         </CardContent>
       </Card>
 
       {/* File Uploads */}
       <Card>
-        <CardHeader className="py-2 px-3">
-          <CardTitle className="text-sm">מסמכים מצורפים</CardTitle>
+        <CardHeader className="py-1.5 px-2.5">
+          <CardTitle className="text-xs font-semibold">מסמכים</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2 py-2 px-3">
-          <div>
-            <Label className="flex items-center gap-2">
-              <Upload className="h-4 w-4" />
-              צילום ת״ז לקוח (חובה) *
+        <CardContent className="space-y-1.5 py-1.5 px-2.5">
+          <div className="space-y-0.5">
+            <Label className="flex items-center gap-1 text-[10px]">
+              <Upload className="h-3 w-3" />
+              צילום ת״ז *
               <FieldInfoTooltip content={fieldInfo.subscriberIdCopy} />
             </Label>
             <Input
               type="file"
               accept=".jpg,.jpeg,.png,.pdf"
               onChange={(e) => handleFileUpload("consumerIdCopy", e.target.files?.[0] || null)}
-              className="mt-2"
+              className="h-7 text-xs"
             />
             {formData.consumerIdCopy.uploaded && (
-              <p className="text-sm text-green-600 mt-1">✓ קובץ הועלה בהצלחה</p>
+              <p className="text-[10px] text-green-600 mt-0.5">✓ הועלה</p>
             )}
           </div>
           <div>
@@ -512,12 +520,12 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
       </Card>
 
       {/* Submit Button */}
-      <div className="flex gap-2 pt-2">
-        <Button type="submit" className="flex-1 h-8 text-sm">
+      <div className="flex gap-1.5 pt-1">
+        <Button type="submit" className="flex-1 h-7 text-xs">
           <FileText className="h-3 w-3 ml-1" />
-          שלח בקשה וצור PDF
+          שלח בקשה
         </Button>
-        <Button type="button" variant="outline" onClick={onClose} className="h-8 text-sm">
+        <Button type="button" variant="outline" onClick={onClose} className="h-7 text-xs">
           ביטול
         </Button>
       </div>
