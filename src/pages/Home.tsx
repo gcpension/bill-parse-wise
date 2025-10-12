@@ -301,50 +301,51 @@ const Home = () => {
           </svg>
         </div>
         
-        {/* Organic splatter shape */}
+        {/* Modern geometric badge shape */}
         <div className="absolute -top-20 -left-20 w-[320px] h-[320px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Main irregular organic splatter blob */}
+            {/* Rounded square with cut corners - modern badge style */}
             <g>
-              {/* Central irregular blob */}
+              {/* Main badge shape */}
               <path
-                d="M 45,85 
-                   C 38,80 32,88 28,95 
-                   C 24,102 22,110 25,118 
-                   C 28,126 35,130 42,132 
-                   L 38,140 L 45,138 
-                   C 52,142 62,145 72,144 
-                   C 82,143 92,140 100,135 
-                   L 105,142 L 108,135 
-                   C 118,130 128,125 136,118 
-                   C 144,111 150,102 155,93 
-                   C 160,84 162,74 158,66 
-                   L 165,62 L 160,60 
-                   C 156,52 148,46 138,44 
-                   C 128,42 118,44 108,48 
-                   L 105,40 L 100,46 
-                   C 90,50 80,55 72,62 
-                   L 68,55 L 65,62 
-                   C 58,68 52,76 48,84 Z"
+                d="M 60,40 
+                   L 120,40 
+                   L 140,50
+                   L 150,70
+                   L 150,120
+                   L 140,140
+                   L 120,150
+                   L 70,150
+                   L 50,140
+                   L 40,120
+                   L 40,60
+                   L 50,50
+                   Z"
                 fill="url(#starburstGradient)"
                 opacity="0.95"
               />
               
-              {/* Small splatter dots around */}
-              <circle cx="170" cy="75" r="4" fill="url(#starburstGradient)" opacity="0.9"/>
-              <circle cx="178" cy="85" r="3" fill="url(#starburstGradient)" opacity="0.85"/>
-              <circle cx="165" cy="55" r="2.5" fill="url(#starburstGradient)" opacity="0.8"/>
-              <circle cx="172" cy="95" r="2" fill="url(#starburstGradient)" opacity="0.75"/>
+              {/* Decorative corner accents */}
+              <circle cx="145" cy="55" r="3" fill="white" opacity="0.4"/>
+              <circle cx="55" cy="145" r="3" fill="white" opacity="0.4"/>
+              <circle cx="145" cy="135" r="2.5" fill="white" opacity="0.3"/>
+              <circle cx="45" cy="65" r="2.5" fill="white" opacity="0.3"/>
               
-              <circle cx="20" cy="95" r="3.5" fill="url(#starburstGradient)" opacity="0.9"/>
-              <circle cx="15" cy="105" r="2.5" fill="url(#starburstGradient)" opacity="0.8"/>
-              <circle cx="25" cy="115" r="2" fill="url(#starburstGradient)" opacity="0.75"/>
-              
-              <circle cx="90" cy="50" r="3" fill="url(#starburstGradient)" opacity="0.85"/>
-              <circle cx="98" cy="45" r="2" fill="url(#starburstGradient)" opacity="0.8"/>
-              
-              <circle cx="75" cy="148" r="2.5" fill="url(#starburstGradient)" opacity="0.85"/>
-              <circle cx="85" cy="152" r="2" fill="url(#starburstGradient)" opacity="0.8"/>
+              {/* Inner decorative lines */}
+              <path
+                d="M 55,55 L 135,55"
+                stroke="white"
+                strokeWidth="1"
+                opacity="0.2"
+                fill="none"
+              />
+              <path
+                d="M 55,135 L 135,135"
+                stroke="white"
+                strokeWidth="1"
+                opacity="0.2"
+                fill="none"
+              />
             </g>
             
             {/* EASYSWITCH text - modern distorted style */}
