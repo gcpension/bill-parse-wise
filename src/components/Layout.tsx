@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { Navigation } from './Navigation';
 import BackToTop from './BackToTop';
+import FloatingElements from './FloatingElements';
 import { Toaster } from './ui/toaster';
 import { useLocation } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ export const Layout = ({
 
   return (
     <div className="min-h-screen bg-background">
+      <FloatingElements />
       <Navigation />
       
       {isLoading && (
