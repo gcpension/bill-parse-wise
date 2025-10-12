@@ -221,20 +221,8 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-16 lg:py-20 overflow-hidden">
-        {/* Background Image - Clean and Visible */}
-        <div className="absolute inset-0">
-          <img 
-            src={heroMinimalBackground} 
-            alt="רקע" 
-            className="w-full h-full object-cover opacity-30"
-          />
-        </div>
         
-        {/* Subtle Floating Elements */}
-        <div className="absolute top-20 left-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
-        
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-16 lg:py-20">
           <div className="text-center">
             
             {/* Compact Title */}
@@ -278,8 +266,8 @@ const Home = () => {
       </section>
 
       {/* Clean Categories Section - Enhanced with animations */}
-      <section id="services" className="pt-8 pb-16 bg-gray-50 relative scroll-mt-20">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+      <section id="services" className="bg-gray-50 relative scroll-mt-20">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl py-12">
           {/* Category Selection - Modern Image-Based Design */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {Object.entries(categoryData).map(([category, data], index) => {
@@ -381,8 +369,8 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 bg-gray-50 relative">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
+      <section className="bg-gray-50 relative">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content Side */}
             <div className="order-2 lg:order-1">
@@ -476,7 +464,7 @@ const Home = () => {
       </section>
 
       {/* Our Mission Section - Enhanced */}
-      <section className="py-20 bg-gray-50 relative overflow-hidden">
+      <section className="bg-gray-50 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 pointer-events-none opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 bg-gray-500 rounded-full blur-3xl"></div>
@@ -485,7 +473,7 @@ const Home = () => {
           <div className="absolute bottom-10 right-10 w-28 h-28 bg-gray-500 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-16">
           {/* Clean Comparison Section - 2024 vs 2025 */}
           <div className="mb-20">
             <div className="text-center mb-12 animate-fade-in">
@@ -635,8 +623,8 @@ const Home = () => {
       
 
       {/* FAQ Section */}
-      <section className="py-16 bg-gray-50 relative">
-        <div className="container mx-auto px-4 lg:px-6 max-w-4xl">
+      <section className="bg-gray-50 relative">
+        <div className="container mx-auto px-4 lg:px-6 max-w-4xl py-12">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-cyan-700 mb-4">
               שאלות נפוצות
