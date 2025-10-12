@@ -265,10 +265,6 @@ const Home = () => {
       {/* Clean Categories Section - Enhanced with animations */}
       <section id="services" className="pt-8 pb-16 bg-gray-50 relative scroll-mt-20">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
-          <h2 className="text-3xl lg:text-4xl font-heebo font-bold text-center text-cyan-700 mb-12">
-            בחרו את התחומים שבהם תרצו לחסוך
-          </h2>
-          
           {/* Category Cards Grid - Enhanced Interactive Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {Object.entries(categoryData).map(([category, data], index) => {
