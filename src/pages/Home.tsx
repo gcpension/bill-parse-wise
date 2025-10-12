@@ -265,64 +265,77 @@ const Home = () => {
       {/* Clean Categories Section - Enhanced with animations */}
       <section id="services" className="pt-8 pb-16 bg-gray-50 relative scroll-mt-20">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
-          {/* Category Cards Grid - Enhanced Interactive Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Category Cards Grid - Clean Modern Layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             {Object.entries(categoryData).map(([category, data], index) => {
-            const Icon = data.icon;
-            const isSelected = selectedCategories[category].selected;
-            return <div key={category} className="group relative animate-fade-in opacity-0" style={{
-              animationDelay: `${0.6 + index * 0.1}s`,
-              animationFillMode: 'forwards'
-            }}>
-                  <Card className={`touch-card relative overflow-hidden bg-transparent shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border-0 transform hover:scale-[1.02] hover:-translate-y-1 min-h-[160px] ${isSelected ? 'bg-gradient-to-br from-green-50/80 via-cyan-50/50 to-emerald-50/80 shadow-green-200' : 'bg-gradient-to-br from-cyan-50/50 via-gray-50/30 to-blue-50/40'}`} onClick={() => handleCategorySelect(category)}>
-                    {/* Decorative gradient overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none ${isSelected ? 'from-green-400 to-emerald-600' : 'from-cyan-400 to-blue-600'}`}></div>
+              const Icon = data.icon;
+              const isSelected = selectedCategories[category].selected;
+              return (
+                <div 
+                  key={category} 
+                  className="group animate-fade-in opacity-0 cursor-pointer" 
+                  style={{
+                    animationDelay: `${0.6 + index * 0.1}s`,
+                    animationFillMode: 'forwards'
+                  }}
+                  onClick={() => handleCategorySelect(category)}
+                >
+                  {/* Main Card Container */}
+                  <div className={`relative p-6 rounded-2xl transition-all duration-300 ${
+                    isSelected 
+                      ? 'bg-gradient-to-br from-cyan-100 to-blue-100 shadow-lg' 
+                      : 'bg-white/60 hover:bg-white/80 shadow-md hover:shadow-lg'
+                  }`}>
                     
-                    {/* Selected badge */}
-                    {isSelected && <div className="absolute top-2 right-2 z-10">
-                        <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full p-1 shadow-lg animate-scale-in">
-                          <CheckCircle className="w-4 h-4" />
-                        </div>
-                      </div>}
+                    {/* Selected Indicator */}
+                    {isSelected && (
+                      <div className="absolute top-3 right-3 bg-cyan-600 text-white rounded-full p-1.5 shadow-md">
+                        <CheckCircle className="w-4 h-4" />
+                      </div>
+                    )}
                     
-                    <CardContent className="p-4 text-center flex flex-col justify-between h-full relative z-10">
-                      {/* Icon with interactive background */}
-                      <div className={`relative mx-auto mb-2 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isSelected ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg' : 'bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md'}`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      
-                      {/* Image illustration */}
-                      <div className="w-full h-12 mx-auto mb-2 overflow-hidden rounded-lg shadow-sm">
-                        <img src={data.image} alt={`איור ${data.name}`} className="w-full h-full object-cover" />
-                      </div>
-                      
-                      {/* Category title */}
-                      <h3 className={`text-lg font-heebo font-bold mb-2 ${isSelected ? 'text-green-700' : 'text-cyan-700'}`}>
-                        {data.name}
-                      </h3>
-                      
-                      {/* Interactive button */}
-                      <Button size="sm" className={`w-full rounded-lg font-medium transition-all duration-300 shadow-md ${isSelected ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 text-white' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 hover:from-cyan-600 hover:via-blue-600 hover:to-cyan-700 text-white'}`} onClick={e => {
-                    e.stopPropagation();
-                    handleCategorySelect(category);
-                  }}>
-                        <span className="flex items-center justify-center gap-1 text-sm">
-                          <Icon className="w-4 h-4" />
-                          <span className="font-bold">{isSelected ? '✓ נבחר' : `בחר ${data.name}`}</span>
-                        </span>
-                      </Button>
-                      
-                      {/* Provider count hint */}
-                      <p className={`text-xs mt-2 font-medium transition-all duration-300 ${isSelected ? 'text-green-600' : 'text-cyan-600/70 group-hover:text-cyan-700'}`}>
-                        {data.providers.length} ספקים זמינים
-                      </p>
-                    </CardContent>
-                  </Card>
-                  
-                  {/* Hover glow effect around card */}
-                  <div className={`absolute inset-0 rounded-lg blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none -z-10 ${isSelected ? 'bg-green-400' : 'bg-cyan-500'}`}></div>
-                </div>;
-          })}
+                    {/* Icon */}
+                    <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+                      isSelected 
+                        ? 'bg-gradient-to-br from-cyan-600 to-blue-600' 
+                        : 'bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-600 group-hover:to-blue-600'
+                    }`}>
+                      <Icon className="w-8 h-8 text-white" />
+                    </div>
+                    
+                    {/* Category Name */}
+                    <h3 className={`text-xl font-heebo font-bold text-center mb-3 transition-colors ${
+                      isSelected ? 'text-cyan-800' : 'text-gray-700 group-hover:text-cyan-700'
+                    }`}>
+                      {data.name}
+                    </h3>
+                    
+                    {/* Image Preview */}
+                    <div className="w-full h-20 mx-auto mb-4 overflow-hidden rounded-xl">
+                      <img 
+                        src={data.image} 
+                        alt={`איור ${data.name}`} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    {/* Provider Count */}
+                    <p className={`text-center text-sm font-assistant mb-4 transition-colors ${
+                      isSelected ? 'text-cyan-700' : 'text-gray-500'
+                    }`}>
+                      {data.providers.length} ספקים זמינים
+                    </p>
+                    
+                    {/* Action Text */}
+                    <div className={`text-center text-sm font-heebo font-semibold transition-colors ${
+                      isSelected ? 'text-cyan-700' : 'text-cyan-600'
+                    }`}>
+                      {isSelected ? '✓ נבחר' : 'לחץ לבחירה'}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Interactive Steps Banner */}
