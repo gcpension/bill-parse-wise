@@ -355,25 +355,18 @@ const Home = () => {
               </text>
             </g>
             
-            {/* Magic wand illustration below SWITCH */}
+            {/* Magic wand sketch - pencil style below SWITCH */}
             <g transform="translate(120, 105)">
               {/* Wand stick */}
-              <line x1="-12" y1="8" x2="0" y2="-4" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>
+              <line x1="-12" y1="8" x2="0" y2="-4" stroke="#2d3748" strokeWidth="2" strokeLinecap="round"/>
               {/* Star at top */}
-              <path d="M 0,-4 L 1.5,-8 L 3,-4 L 7,-2.5 L 3,-1 L 1.5,3 L 0,-1 L -4,-2.5 Z" fill="#a855f7" opacity="0.95"/>
-              {/* Sparkles around wand */}
-              <circle cx="-15" cy="10" r="1.2" fill="#9333ea" opacity="0.7">
-                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
-              </circle>
-              <circle cx="-8" cy="6" r="1.5" fill="#a855f7" opacity="0.8">
-                <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
-              </circle>
-              <line x1="-18" y1="12" x2="-16" y2="12" stroke="#7e22ce" strokeWidth="1" opacity="0.6">
-                <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-              </line>
-              <line x1="-17" y1="11" x2="-17" y2="13" stroke="#7e22ce" strokeWidth="1" opacity="0.6">
-                <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-              </line>
+              <path d="M 0,-4 L 1.5,-8 L 3,-4 L 7,-2.5 L 3,-1 L 1.5,3 L 0,-1 L -4,-2.5 Z" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
+              {/* Sparkles around wand - hand-drawn style */}
+              <g stroke="#2d3748" fill="none" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M -15,10 L -15,12 M -16,11 L -14,11"/>
+                <path d="M -8,6 L -8,8 M -9,7 L -7,7"/>
+                <circle cx="-18" cy="13" r="1" strokeWidth="1.2"/>
+              </g>
             </g>
             
             {/* Decorative elements */}
