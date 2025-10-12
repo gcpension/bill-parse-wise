@@ -265,72 +265,83 @@ const Home = () => {
       {/* Clean Categories Section - Enhanced with animations */}
       <section id="services" className="pt-8 pb-16 bg-gray-50 relative scroll-mt-20">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
-          {/* Category Cards Grid - Clean Modern Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          {/* Category Selection - Modern Image-Based Design */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {Object.entries(categoryData).map(([category, data], index) => {
               const Icon = data.icon;
               const isSelected = selectedCategories[category].selected;
               return (
                 <div 
                   key={category} 
-                  className="group animate-fade-in opacity-0 cursor-pointer" 
+                  className="animate-fade-in opacity-0" 
                   style={{
                     animationDelay: `${0.6 + index * 0.1}s`,
                     animationFillMode: 'forwards'
                   }}
-                  onClick={() => handleCategorySelect(category)}
                 >
-                  {/* Main Card Container */}
-                  <div className={`relative p-6 rounded-2xl transition-all duration-300 ${
-                    isSelected 
-                      ? 'bg-gradient-to-br from-cyan-100 to-blue-100 shadow-lg' 
-                      : 'bg-white/60 hover:bg-white/80 shadow-md hover:shadow-lg'
-                  }`}>
-                    
-                    {/* Selected Indicator */}
-                    {isSelected && (
-                      <div className="absolute top-3 right-3 bg-cyan-600 text-white rounded-full p-1.5 shadow-md">
-                        <CheckCircle className="w-4 h-4" />
-                      </div>
-                    )}
-                    
-                    {/* Icon */}
-                    <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center transition-all duration-300 ${
-                      isSelected 
-                        ? 'bg-gradient-to-br from-cyan-600 to-blue-600' 
-                        : 'bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-600 group-hover:to-blue-600'
-                    }`}>
-                      <Icon className="w-8 h-8 text-white" />
-                    </div>
-                    
-                    {/* Category Name */}
-                    <h3 className={`text-xl font-heebo font-bold text-center mb-3 transition-colors ${
-                      isSelected ? 'text-cyan-800' : 'text-gray-700 group-hover:text-cyan-700'
-                    }`}>
-                      {data.name}
-                    </h3>
-                    
-                    {/* Image Preview */}
-                    <div className="w-full h-20 mx-auto mb-4 overflow-hidden rounded-xl">
+                  <div 
+                    className="group relative h-72 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl"
+                    onClick={() => handleCategorySelect(category)}
+                  >
+                    {/* Background Image */}
+                    <div className="absolute inset-0">
                       <img 
                         src={data.image} 
-                        alt={`איור ${data.name}`} 
-                        className="w-full h-full object-cover"
+                        alt={data.name} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
+                      {/* Gradient Overlay */}
+                      <div className={`absolute inset-0 transition-all duration-500 ${
+                        isSelected 
+                          ? 'bg-gradient-to-t from-cyan-900/95 via-cyan-700/70 to-cyan-600/50' 
+                          : 'bg-gradient-to-t from-gray-900/90 via-gray-800/60 to-transparent group-hover:from-cyan-900/90 group-hover:via-cyan-800/60'
+                      }`}></div>
                     </div>
-                    
-                    {/* Provider Count */}
-                    <p className={`text-center text-sm font-assistant mb-4 transition-colors ${
-                      isSelected ? 'text-cyan-700' : 'text-gray-500'
-                    }`}>
-                      {data.providers.length} ספקים זמינים
-                    </p>
-                    
-                    {/* Action Text */}
-                    <div className={`text-center text-sm font-heebo font-semibold transition-colors ${
-                      isSelected ? 'text-cyan-700' : 'text-cyan-600'
-                    }`}>
-                      {isSelected ? '✓ נבחר' : 'לחץ לבחירה'}
+
+                    {/* Content */}
+                    <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                      {/* Top Section - Icon & Badge */}
+                      <div className="flex justify-between items-start">
+                        <div className={`p-3 rounded-2xl backdrop-blur-md transition-all duration-300 ${
+                          isSelected 
+                            ? 'bg-white/20 shadow-lg' 
+                            : 'bg-white/10 group-hover:bg-white/20'
+                        }`}>
+                          <Icon className="w-7 h-7 text-white" strokeWidth={2.5} />
+                        </div>
+                        
+                        {isSelected && (
+                          <div className="bg-cyan-500 text-white rounded-full p-2 shadow-lg animate-scale-in">
+                            <CheckCircle className="w-5 h-5" />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Bottom Section - Title & Info */}
+                      <div>
+                        <h3 className="text-2xl font-heebo font-bold text-white mb-2">
+                          {data.name}
+                        </h3>
+                        <p className="text-white/80 text-sm font-assistant mb-3">
+                          {data.providers.length} ספקים זמינים
+                        </p>
+                        
+                        {/* Selection Indicator */}
+                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md transition-all duration-300 ${
+                          isSelected 
+                            ? 'bg-cyan-500 text-white shadow-lg' 
+                            : 'bg-white/20 text-white group-hover:bg-white/30'
+                        }`}>
+                          <span className="text-sm font-heebo font-semibold">
+                            {isSelected ? 'נבחר ✓' : 'לחץ לבחירה'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Shine Effect on Hover */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                      <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-[slide-right_1.5s_ease-in-out]"></div>
                     </div>
                   </div>
                 </div>
