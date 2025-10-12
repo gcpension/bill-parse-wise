@@ -280,7 +280,7 @@ const Home = () => {
                   }}
                 >
                   <div 
-                    className="group relative h-72 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl"
+                    className="group relative h-56 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl"
                     onClick={() => handleCategorySelect(category)}
                   >
                     {/* Background Image */}
