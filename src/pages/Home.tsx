@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, X, Sparkles, TrendingUp, Star } from 'lucide-react';
+import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, X, Sparkles, TrendingUp, Star, Building2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import electricityFamily from '@/assets/electricity-family.jpg';
@@ -219,132 +219,146 @@ const Home = () => {
       </nav>
 
 
-      {/* Hero Section with Clean Background */}
-      <section className="relative py-16 lg:py-20 overflow-hidden">
+      {/* Hero Section - Modern & Clean */}
+      <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-white via-cyan-50/30 to-white">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
         
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-16 lg:py-20">
-          <div className="text-center">
-            
-            {/* Compact Title */}
-            <div className="mb-8 animate-fade-in opacity-0" style={{
-              animationDelay: '0.2s',
+        <div className="container mx-auto px-4 lg:px-6 max-w-7xl relative z-10">
+          <div className="text-center mb-16">
+            {/* Main Title with Enhanced Animation */}
+            <div className="mb-6 animate-fade-in opacity-0" style={{
+              animationDelay: '0.1s',
               animationFillMode: 'forwards'
             }}>
-              <h1 className="relative">
-                {/* Glow Effect Behind Text */}
-                <div className="absolute inset-0 blur-2xl opacity-30">
-                  <span className="block text-4xl lg:text-5xl xl:text-6xl font-black bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                    באיזה תחום תרצו להתחיל לחסוך היום?
-                  </span>
-                </div>
-                
-                {/* Main Text */}
-                <span className="relative block text-4xl lg:text-5xl xl:text-6xl font-black leading-tight">
-                  <span className="block bg-gradient-to-r from-cyan-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
-                    באיזה תחום תרצו
-                  </span>
-                  <span className="block bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-600 bg-clip-text text-transparent mt-2 animate-gradient-x bg-300%">
-                    להתחיל לחסוך היום?
-                  </span>
+              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-black leading-tight font-heebo">
+                <span className="block bg-gradient-to-r from-cyan-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">
+                  באיזה תחום
+                </span>
+                <span className="block bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-600 bg-clip-text text-transparent">
+                  תרצו לחסוך היום?
                 </span>
               </h1>
             </div>
             
-            {/* Subtitle with Glass Effect */}
-            <div className="animate-fade-in opacity-0 inline-block" style={{
-              animationDelay: '0.4s',
+            {/* Subtitle */}
+            <div className="animate-fade-in opacity-0" style={{
+              animationDelay: '0.3s',
               animationFillMode: 'forwards'
             }}>
-              <div className="backdrop-blur-md bg-white/40 rounded-2xl px-6 py-3 border border-white/50 shadow-xl">
-                <p className="text-lg lg:text-xl text-gray-700 font-semibold max-w-3xl leading-relaxed">
-                  אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
-                </p>
-              </div>
+              <p className="text-xl lg:text-2xl text-gray-600 font-assistant max-w-3xl mx-auto">
+                המשפחה הממוצעת חוסכת עד <span className="font-bold text-cyan-600">₪2,400 בשנה</span> עם השירות שלנו
+              </p>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Clean Categories Section - Enhanced with animations */}
-      <section id="services" className="bg-white relative scroll-mt-20">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl py-12">
-          {/* Category Selection - Modern Image-Based Design */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Enhanced Category Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {Object.entries(categoryData).map(([category, data], index) => {
               const Icon = data.icon;
               const isSelected = selectedCategories[category].selected;
+              
+              // Savings data for each category
+              const savingsData: Record<string, { average: string; percent: string }> = {
+                electricity: { average: '₪80', percent: '25%' },
+                cellular: { average: '₪50', percent: '30%' },
+                internet: { average: '₪40', percent: '20%' },
+                tv: { average: '₪60', percent: '35%' }
+              };
+              
               return (
                 <div 
                   key={category} 
                   className="animate-fade-in opacity-0" 
                   style={{
-                    animationDelay: `${0.6 + index * 0.1}s`,
+                    animationDelay: `${0.5 + index * 0.1}s`,
                     animationFillMode: 'forwards'
                   }}
                 >
                   <div 
-                    className="group relative h-48 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl"
+                    className={`group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 ${
+                      isSelected ? 'shadow-2xl shadow-cyan-500/20' : 'hover:shadow-2xl'
+                    }`}
                     onClick={() => handleCategorySelect(category)}
                   >
-                    {/* Background Image */}
-                    <div className="absolute inset-0">
-                      <img 
-                        src={data.image} 
-                        alt={data.name} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      {/* Gradient Overlay */}
-                      <div className={`absolute inset-0 transition-all duration-500 ${
-                        isSelected 
-                          ? 'bg-gradient-to-t from-cyan-300/80 via-cyan-200/50 to-blue-100/30' 
-                          : 'bg-gradient-to-t from-gray-300/75 via-gray-200/45 to-gray-100/25 group-hover:from-cyan-300/75 group-hover:via-cyan-200/45'
-                      }`}></div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                      {/* Top Section - Icon & Badge */}
-                      <div className="flex justify-between items-start">
-                        <div className={`p-3 rounded-2xl backdrop-blur-md transition-all duration-300 ${
+                    {/* Gradient Border Effect */}
+                    <div className={`absolute inset-0 bg-gradient-to-br from-cyan-500 via-blue-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                      isSelected ? 'opacity-100' : ''
+                    }`}></div>
+                    
+                    {/* Card Content */}
+                    <div className="relative bg-white m-[2px] rounded-3xl overflow-hidden">
+                      {/* Background Image */}
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={data.image} 
+                          alt={data.name} 
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        <div className={`absolute inset-0 bg-gradient-to-t transition-all duration-500 ${
                           isSelected 
-                            ? 'bg-white/20 shadow-lg' 
-                            : 'bg-white/10 group-hover:bg-white/20'
-                        }`}>
-                          <Icon className="w-7 h-7 text-white" strokeWidth={2.5} />
+                            ? 'from-cyan-600/90 via-cyan-500/60 to-transparent' 
+                            : 'from-gray-900/70 via-gray-800/40 to-transparent group-hover:from-cyan-600/80'
+                        }`}></div>
+                        
+                        {/* Icon with Animation */}
+                        <div className="absolute top-4 right-4">
+                          <div className={`p-3 rounded-2xl backdrop-blur-lg transition-all duration-300 ${
+                            isSelected 
+                              ? 'bg-white/30 scale-110 shadow-lg' 
+                              : 'bg-white/20 group-hover:bg-white/30 group-hover:scale-110'
+                          }`}>
+                            <Icon className={`w-8 h-8 text-white transition-transform duration-500 ${
+                              isSelected ? 'rotate-12' : 'group-hover:rotate-12'
+                            }`} strokeWidth={2.5} />
+                          </div>
                         </div>
                         
+                        {/* Check Badge */}
                         {isSelected && (
-                          <div className="bg-cyan-500 text-white rounded-full p-2 shadow-lg animate-scale-in">
-                            <CheckCircle className="w-5 h-5" />
+                          <div className="absolute top-4 left-4 bg-white rounded-full p-2 shadow-lg animate-scale-in">
+                            <CheckCircle className="w-6 h-6 text-cyan-600" />
                           </div>
                         )}
-                      </div>
-
-                      {/* Bottom Section - Title & Info */}
-                      <div>
-                        <h3 className="text-2xl font-heebo font-bold text-white mb-2">
-                          {data.name}
-                        </h3>
-                        <p className="text-white/80 text-sm font-assistant mb-3">
-                          {data.providers.length} ספקים זמינים
-                        </p>
                         
-                        {/* Selection Indicator */}
-                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md transition-all duration-300 ${
-                          isSelected 
-                            ? 'bg-cyan-500 text-white shadow-lg' 
-                            : 'bg-white/20 text-white group-hover:bg-white/30'
-                        }`}>
-                          <span className="text-sm font-heebo font-semibold">
-                            {isSelected ? 'נבחר ✓' : 'לחץ לבחירה'}
-                          </span>
+                        {/* Savings Badge */}
+                        <div className="absolute top-4 left-1/2 -translate-x-1/2">
+                          <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-1.5 rounded-full shadow-lg backdrop-blur-sm">
+                            <span className="text-sm font-bold font-heebo">חיסכון ממוצע: {savingsData[category].average}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Shine Effect on Hover */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-[slide-right_1.5s_ease-in-out]"></div>
+                      
+                      {/* Card Info */}
+                      <div className="p-5 bg-white">
+                        <h3 className="text-2xl font-heebo font-bold text-gray-800 mb-2">
+                          {data.name}
+                        </h3>
+                        
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <Building2 className="w-4 h-4" />
+                            <span className="text-sm font-assistant">{data.providers.length} ספקים</span>
+                          </div>
+                          <div className={`px-3 py-1 rounded-full text-xs font-bold ${
+                            isSelected 
+                              ? 'bg-cyan-100 text-cyan-700' 
+                              : 'bg-gray-100 text-gray-600'
+                          }`}>
+                            עד {savingsData[category].percent} חיסכון
+                          </div>
+                        </div>
+                        
+                        {/* Action Button */}
+                        <button className={`w-full py-3 rounded-xl font-heebo font-semibold transition-all duration-300 ${
+                          isSelected 
+                            ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-500/30' 
+                            : 'bg-gray-100 text-gray-700 group-hover:bg-gradient-to-r group-hover:from-cyan-600 group-hover:to-blue-600 group-hover:text-white'
+                        }`}>
+                          {isSelected ? 'נבחר ✓' : 'בחרו ותחסכו'}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -352,19 +366,42 @@ const Home = () => {
             })}
           </div>
 
-          {/* Interactive Steps Banner */}
-          <SimpleStepsBanner />
-
-          {/* Clean CTA Section - Hidden when banner is visible */}
-          {!showBanner}
-
-          {/* Clean info section */}
-          <div className="text-center mt-12 max-w-4xl mx-auto">
-            
+          {/* Trust Indicators */}
+          <div className="mt-12 animate-fade-in opacity-0" style={{
+            animationDelay: '0.9s',
+            animationFillMode: 'forwards'
+          }}>
+            <div className="bg-gradient-to-r from-cyan-50 via-blue-50 to-cyan-50 rounded-2xl p-6 border border-cyan-100">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-full flex items-center justify-center">
+                    <Star className="w-6 h-6 text-white" />
+                  </div>
+                  <h4 className="font-heebo font-bold text-gray-800">מובילים בשוק</h4>
+                  <p className="text-sm text-gray-600 font-assistant">יותר מ-50,000 לקוחות מרוצים</p>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-full flex items-center justify-center">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
+                  <h4 className="font-heebo font-bold text-gray-800">חיסכון מובטח</h4>
+                  <p className="text-sm text-gray-600 font-assistant">ממוצע חיסכון של ₪200/חודש</p>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-full flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-white" />
+                  </div>
+                  <h4 className="font-heebo font-bold text-gray-800">תהליך מהיר</h4>
+                  <p className="text-sm text-gray-600 font-assistant">מעבר ב-5 דקות בלבד</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* How It Works - Clear & Large Section */}
-          
+          {/* Interactive Steps Banner */}
+          <div className="mt-12">
+            <SimpleStepsBanner />
+          </div>
         </div>
       </section>
 
