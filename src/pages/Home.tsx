@@ -227,10 +227,10 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Large Organic Blob Shape */}
-        <div className="absolute -top-32 -left-32 w-[420px] h-[420px] pointer-events-none">
+        {/* Enhanced Organic Blob Shape with Upgraded Design */}
+        <div className="absolute -top-32 -left-32 w-[450px] h-[450px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Simple smooth organic blob */}
+            {/* Smooth organic blob with enhanced gradient */}
             <path
               d="M 50,10
                  C 90,0 130,5 160,30
@@ -240,72 +240,137 @@ const Home = () => {
                  C -5,105 0,60 30,30
                  C 40,20 45,12 50,10 Z"
               fill="url(#blobGradient)"
-              opacity="0.85"
+              opacity="0.9"
             />
             
-            {/* Clean Typography with Small Illustration */}
-            <g transform="translate(100, 90)">
-              {/* Small lightning bolt illustration */}
-              <g transform="translate(-58, 8)">
+            {/* Upgraded Typography with Subtle Broken Effect */}
+            <g transform="translate(100, 88)">
+              {/* Small decorative icons around text */}
+              <g transform="translate(-62, 10)">
+                {/* Lightning bolt icon */}
                 <path
-                  d="M 0,0 L 3,8 L -2,8 L 1,16 L -6,6 L 0,6 Z"
+                  d="M 2,0 L 5,9 L 0,9 L 3,18 L -5,7 L 2,7 Z"
                   fill="white"
-                  stroke="white"
-                  strokeWidth="0.5"
                   opacity="0.95"
-                  style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.8))' }}
+                  style={{ filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.9))' }}
                 />
-                <circle cx="-1" cy="0" r="1.5" fill="white" opacity="0.7">
-                  <animate attributeName="r" values="1.5;2;1.5" dur="1.5s" repeatCount="indefinite"/>
+                <circle cx="1" cy="-2" r="2" fill="white" opacity="0.8">
+                  <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
                 </circle>
               </g>
               
-              {/* EASY - clean rounded style */}
+              {/* Star sparkle on right */}
+              <g transform="translate(64, 16)">
+                <path d="M 0,-5 L 1,0 L 6,0 L 2,3 L 3,8 L 0,5 L -3,8 L -2,3 L -6,0 L -1,0 Z" fill="white" opacity="0.9"/>
+                <circle cx="0" cy="0" r="8" fill="none" stroke="white" strokeWidth="1" opacity="0.3">
+                  <animate attributeName="r" values="8;12;8" dur="2.5s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2.5s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+              
+              {/* EASY - with broken letter effect using multiple segments */}
+              <defs>
+                <clipPath id="brokenTextEasy">
+                  {/* Each letter broken into segments */}
+                  <rect x="-52" y="-20" width="15" height="22"/>
+                  <rect x="-35" y="-20" width="14" height="22"/>
+                  <rect x="-36" y="-20" width="2" height="22"/>
+                  <rect x="-19" y="-20" width="16" height="22"/>
+                  <rect x="-1" y="-20" width="15" height="22"/>
+                  <rect x="16" y="-20" width="2" height="22"/>
+                  <rect x="20" y="-20" width="14" height="22"/>
+                </clipPath>
+                <clipPath id="brokenTextSwitch">
+                  <rect x="-68" y="12" width="17" height="24"/>
+                  <rect x="-49" y="12" width="16" height="24"/>
+                  <rect x="-31" y="12" width="2" height="24"/>
+                  <rect x="-27" y="12" width="15" height="24"/>
+                  <rect x="-10" y="12" width="2" height="24"/>
+                  <rect x="-6" y="12" width="14" height="24"/>
+                  <rect x="10" y="12" width="16" height="24"/>
+                  <rect x="28" y="12" width="18" height="24"/>
+                  <rect x="48" y="12" width="22" height="24"/>
+                </clipPath>
+              </defs>
+              
+              {/* Shadow layer */}
+              <text
+                x="2"
+                y="3"
+                textAnchor="middle"
+                fill="rgba(0, 0, 0, 0.2)"
+                fontSize="30"
+                fontWeight="700"
+                fontFamily="Poppins, Nunito, Quicksand, sans-serif"
+                letterSpacing="1"
+                clipPath="url(#brokenTextEasy)"
+              >
+                easy
+              </text>
+              
+              {/* EASY main text */}
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="29"
+                fontSize="30"
                 fontWeight="700"
                 fontFamily="Poppins, Nunito, Quicksand, sans-serif"
-                letterSpacing="0"
+                letterSpacing="1"
+                clipPath="url(#brokenTextEasy)"
                 style={{ 
-                  filter: 'drop-shadow(0 3px 10px rgba(0, 0, 0, 0.2))'
+                  filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
                 }}
               >
                 easy
               </text>
               
-              {/* SWITCH - clean rounded style */}
+              {/* SWITCH shadow */}
               <text
-                x="0"
-                y="33"
+                x="2"
+                y="37"
                 textAnchor="middle"
-                fill="white"
-                fontSize="29"
+                fill="rgba(0, 0, 0, 0.2)"
+                fontSize="30"
                 fontWeight="700"
                 fontFamily="Poppins, Nunito, Quicksand, sans-serif"
-                letterSpacing="0"
+                letterSpacing="1"
+                clipPath="url(#brokenTextSwitch)"
+              >
+                switch
+              </text>
+              
+              {/* SWITCH main text */}
+              <text
+                x="0"
+                y="34"
+                textAnchor="middle"
+                fill="white"
+                fontSize="30"
+                fontWeight="700"
+                fontFamily="Poppins, Nunito, Quicksand, sans-serif"
+                letterSpacing="1"
+                clipPath="url(#brokenTextSwitch)"
                 style={{ 
-                  filter: 'drop-shadow(0 3px 10px rgba(0, 0, 0, 0.2))'
+                  filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
                 }}
               >
                 switch
               </text>
               
-              {/* Small sparkle decoration */}
-              <g transform="translate(62, 18)">
-                <line x1="0" y1="-4" x2="0" y2="4" stroke="white" strokeWidth="1.5" opacity="0.8"/>
-                <line x1="-4" y1="0" x2="4" y2="0" stroke="white" strokeWidth="1.5" opacity="0.8"/>
-              </g>
+              {/* Decorative dots */}
+              <circle cx="-70" cy="25" r="2" fill="white" opacity="0.6"/>
+              <circle cx="72" cy="5" r="2" fill="white" opacity="0.6"/>
+              <circle cx="70" cy="30" r="1.5" fill="white" opacity="0.5"/>
             </g>
             
-            {/* Gradient definition */}
+            {/* Enhanced gradient definition */}
             <defs>
               <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#06b6d4', stopOpacity: 1 }} />
-                <stop offset="50%" style={{ stopColor: '#22d3ee', stopOpacity: 1 }} />
+                <stop offset="0%" style={{ stopColor: '#0891b2', stopOpacity: 1 }} />
+                <stop offset="35%" style={{ stopColor: '#06b6d4', stopOpacity: 1 }} />
+                <stop offset="70%" style={{ stopColor: '#22d3ee', stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: '#67e8f9', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
