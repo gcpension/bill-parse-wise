@@ -243,9 +243,27 @@ const Home = () => {
               opacity="0.85"
             />
             
-            {/* Clean Modern Typography EASYSWITCH */}
+            {/* Clean Modern Typography with Broken Letters Effect */}
             <g transform="translate(100, 95)">
-              {/* EASY */}
+              {/* EASY - with cut/broken effect using clipPath */}
+              <defs>
+                <clipPath id="brokenEasy">
+                  <rect x="-60" y="-18" width="25" height="20"/>
+                  <rect x="-33" y="-18" width="20" height="20"/>
+                  <rect x="-11" y="-18" width="18" height="20"/>
+                  <rect x="9" y="-18" width="22" height="20"/>
+                </clipPath>
+                <clipPath id="brokenSwitch">
+                  <rect x="-70" y="14" width="20" height="20"/>
+                  <rect x="-48" y="14" width="24" height="20"/>
+                  <rect x="-22" y="14" width="18" height="20"/>
+                  <rect x="-2" y="14" width="16" height="20"/>
+                  <rect x="16" y="14" width="18" height="20"/>
+                  <rect x="36" y="14" width="35" height="20"/>
+                </clipPath>
+              </defs>
+              
+              {/* EASY with broken effect */}
               <text
                 x="0"
                 y="0"
@@ -255,6 +273,7 @@ const Home = () => {
                 fontWeight="800"
                 fontFamily="Poppins, Nunito, Quicksand, Rounded, sans-serif"
                 letterSpacing="-1"
+                clipPath="url(#brokenEasy)"
                 style={{ 
                   filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
                 }}
@@ -262,7 +281,7 @@ const Home = () => {
                 easy
               </text>
               
-              {/* SWITCH */}
+              {/* SWITCH with broken effect */}
               <text
                 x="0"
                 y="32"
@@ -272,6 +291,7 @@ const Home = () => {
                 fontWeight="800"
                 fontFamily="Poppins, Nunito, Quicksand, Rounded, sans-serif"
                 letterSpacing="-1"
+                clipPath="url(#brokenSwitch)"
                 style={{ 
                   filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
                 }}
