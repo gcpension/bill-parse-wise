@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import ProviderSelector, { defaultProviders } from '@/components/ui/provider-selector';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
-import { Info, User, Mail, Phone, MapPin, Building2, Languages } from 'lucide-react';
+import { Info, User, Mail, Phone, MapPin, Building2, Languages, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface BasicDataStepProps {
   formData: Partial<ServiceRequestFormData>;
@@ -34,9 +35,105 @@ const languageOptions = [
 ];
 
 export default function BasicDataStep({ formData, updateFormData }: BasicDataStepProps) {
+  const [fieldValidation, setFieldValidation] = useState<Record<string, { isValid: boolean; message?: string; isValidating?: boolean }>>({});
+  const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
+
+  // Auto-save to localStorage with debounce
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (Object.keys(formData).length > 0) {
+        localStorage.setItem('basic_data_autosave', JSON.stringify(formData));
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [formData]);
+
+  // Format phone number automatically
+  const formatPhoneNumber = (value: string): string => {
+    const cleaned = value.replace(/\D/g, '');
+    if (cleaned.length <= 3) return cleaned;
+    if (cleaned.length <= 6) return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+    return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}${cleaned.length > 6 ? '-' + cleaned.slice(6, 10) : ''}`;
+  };
+
+  // Validate Israeli ID
+  const validateIsraeliId = (id: string): boolean => {
+    if (!id || id.length !== 9) return false;
+    const digits = id.split('').map(Number);
+    const sum = digits.reduce((acc, digit, index) => {
+      const step = digit * ((index % 2) + 1);
+      return acc + (step > 9 ? step - 9 : step);
+    }, 0);
+    return sum % 10 === 0;
+  };
+
+  // Validate email
+  const validateEmail = (email: string): boolean => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  // Validate phone
+  const validatePhone = (phone: string): boolean => {
+    const cleaned = phone.replace(/\D/g, '');
+    return cleaned.length === 10 && (cleaned.startsWith('05') || cleaned.startsWith('02') || cleaned.startsWith('03') || cleaned.startsWith('04') || cleaned.startsWith('08') || cleaned.startsWith('09'));
+  };
+
   const handleFieldChange = (field: keyof ServiceRequestFormData, value: any) => {
-    console.log('Field changed:', field, 'Value:', value);
     updateFormData({ [field]: value });
+    setTouchedFields(prev => new Set(prev).add(field));
+    
+    // Real-time validation
+    setTimeout(() => validateField(field, value), 300);
+  };
+
+  const validateField = (field: keyof ServiceRequestFormData, value: any) => {
+    let validation = { isValid: true, message: undefined as string | undefined };
+
+    switch (field) {
+      case 'full_name':
+        if (!value || value.length < 2) {
+          validation = { isValid: false, message: 'שם חייב להכיל לפחות 2 תווים' };
+        } else if (value.length > 100) {
+          validation = { isValid: false, message: 'שם ארוך מדי' };
+        } else {
+          validation = { isValid: true, message: 'נראה טוב!' };
+        }
+        break;
+      
+      case 'national_id_or_corp':
+        if (formData.customer_type === 'business') {
+          validation = value && value.length >= 8 
+            ? { isValid: true, message: 'תקין' }
+            : { isValid: false, message: 'מספר חברה צריך להיות 8-9 ספרות' };
+        } else {
+          const isValid = validateIsraeliId(value);
+          validation = isValid
+            ? { isValid: true, message: 'תעודת זהות תקינה' }
+            : { isValid: false, message: 'תעודת זהות לא תקינה' };
+        }
+        break;
+      
+      case 'email':
+        const isValidEmail = validateEmail(value);
+        validation = isValidEmail
+          ? { isValid: true, message: 'כתובת דוא״ל תקינה' }
+          : { isValid: false, message: 'כתובת דוא״ל לא תקינה' };
+        break;
+      
+      case 'phone':
+        const isValidPhone = validatePhone(value);
+        validation = isValidPhone
+          ? { isValid: true, message: 'מספר תקין' }
+          : { isValid: false, message: 'מספר טלפון לא תקין (נדרש 10 ספרות)' };
+        break;
+    }
+
+    setFieldValidation(prev => ({ ...prev, [field]: validation }));
+  };
+
+  const handlePhoneChange = (field: keyof ServiceRequestFormData, value: string) => {
+    const formatted = formatPhoneNumber(value);
+    handleFieldChange(field, formatted);
   };
 
   const handleAddressChange = (field: string, value: string) => {
@@ -49,6 +146,11 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
   };
 
   const needsTargetProvider = formData.action_type === 'switch';
+
+  const getFieldStatus = (field: keyof ServiceRequestFormData) => {
+    if (!touchedFields.has(field) || !fieldValidation[field]) return null;
+    return fieldValidation[field];
+  };
 
   const InfoTooltip = ({ content }: { content: string }) => (
     <TooltipProvider>
@@ -65,15 +167,50 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
     </TooltipProvider>
   );
 
+  const completedFields = [
+    formData.full_name,
+    formData.national_id_or_corp,
+    formData.email,
+    formData.phone,
+    formData.service_address?.street,
+    formData.service_address?.number,
+    formData.service_address?.city,
+    formData.current_provider,
+    formData.preferred_language
+  ].filter(Boolean).length;
+
+  const totalFields = needsTargetProvider ? 10 : 9;
+  const progressPercentage = (completedFields / totalFields) * 100;
+
   return (
     <div className="space-y-10">
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold text-slate-900 mb-3">
           פרטים אישיים
         </h1>
-        <p className="text-slate-600 text-lg">
+        <p className="text-slate-600 text-lg mb-6">
           מלא את הפרטים הבסיסיים הנדרשים לטיפול בבקשה
         </p>
+        
+        {/* Progress indicator */}
+        <div className="max-w-md mx-auto">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-slate-600">התקדמות</span>
+            <span className="text-sm font-bold text-slate-900">{completedFields}/{totalFields}</span>
+          </div>
+          <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-l from-green-500 to-green-600 transition-all duration-500 ease-out rounded-full"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
+          {completedFields === totalFields && (
+            <p className="text-sm text-green-600 font-medium mt-2 animate-fade-in">
+              <CheckCircle2 className="w-4 h-4 inline ml-1" />
+              כל השדות מולאו!
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="space-y-8">
@@ -94,13 +231,36 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                 </Label>
                 <InfoTooltip content="הזן את שמך המלא בדיוק כפי שמופיע בתעודת הזהות או בתעודה הרשמית. זה חשוב למניעת בעיות בזיהוי ובאישור הבקשה." />
               </div>
-              <Input
-                id="full_name"
-                value={formData.full_name || ''}
-                onChange={(e) => handleFieldChange('full_name', e.target.value)}
-                placeholder="שם פרטי ושם משפחה"
-                className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20"
-              />
+              <div className="relative">
+                <Input
+                  id="full_name"
+                  value={formData.full_name || ''}
+                  onChange={(e) => handleFieldChange('full_name', e.target.value)}
+                  placeholder="שם פרטי ושם משפחה"
+                  className={cn(
+                    "h-12 pl-10 transition-all duration-200",
+                    getFieldStatus('full_name')?.isValid === true && "border-green-400 bg-green-50/30 focus:border-green-500",
+                    getFieldStatus('full_name')?.isValid === false && "border-red-400 bg-red-50/30 focus:border-red-500"
+                  )}
+                />
+                {getFieldStatus('full_name') && (
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    {getFieldStatus('full_name')?.isValid ? (
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 text-red-500" />
+                    )}
+                  </div>
+                )}
+              </div>
+              {getFieldStatus('full_name')?.message && (
+                <p className={cn(
+                  "text-xs mt-1.5 font-medium",
+                  getFieldStatus('full_name')?.isValid ? "text-green-600" : "text-red-500"
+                )}>
+                  {getFieldStatus('full_name')?.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -113,13 +273,37 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                   : "הזן את מספר תעודת הזהות שלך בן 9 ספרות (עם ספרת ביקורת)"
                 } />
               </div>
-              <Input
-                id="national_id_or_corp"
-                value={formData.national_id_or_corp || ''}
-                onChange={(e) => handleFieldChange('national_id_or_corp', e.target.value)}
-                placeholder={formData.customer_type === 'business' ? "מספר ח.פ/ע.ר" : "123456789"}
-                className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20"
-              />
+              <div className="relative">
+                <Input
+                  id="national_id_or_corp"
+                  value={formData.national_id_or_corp || ''}
+                  onChange={(e) => handleFieldChange('national_id_or_corp', e.target.value)}
+                  placeholder={formData.customer_type === 'business' ? "מספר ח.פ/ע.ר" : "123456789"}
+                  maxLength={9}
+                  className={cn(
+                    "h-12 pl-10 transition-all duration-200",
+                    getFieldStatus('national_id_or_corp')?.isValid === true && "border-green-400 bg-green-50/30 focus:border-green-500",
+                    getFieldStatus('national_id_or_corp')?.isValid === false && "border-red-400 bg-red-50/30 focus:border-red-500"
+                  )}
+                />
+                {getFieldStatus('national_id_or_corp') && (
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    {getFieldStatus('national_id_or_corp')?.isValid ? (
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 text-red-500" />
+                    )}
+                  </div>
+                )}
+              </div>
+              {getFieldStatus('national_id_or_corp')?.message && (
+                <p className={cn(
+                  "text-xs mt-1.5 font-medium",
+                  getFieldStatus('national_id_or_corp')?.isValid ? "text-green-600" : "text-red-500"
+                )}>
+                  {getFieldStatus('national_id_or_corp')?.message}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -141,14 +325,37 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                 </Label>
                 <InfoTooltip content="הזן כתובת דוא״ל פעילה. אליה נישלח לך אישור הבקשה, קישור לחתימה דיגיטלית ועדכונים על מצב הטיפול." />
               </div>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email || ''}
-                onChange={(e) => handleFieldChange('email', e.target.value)}
-                placeholder="name@example.com"
-                className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20"
-              />
+              <div className="relative">
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email || ''}
+                  onChange={(e) => handleFieldChange('email', e.target.value)}
+                  placeholder="name@example.com"
+                  className={cn(
+                    "h-12 pl-10 transition-all duration-200",
+                    getFieldStatus('email')?.isValid === true && "border-green-400 bg-green-50/30 focus:border-green-500",
+                    getFieldStatus('email')?.isValid === false && "border-red-400 bg-red-50/30 focus:border-red-500"
+                  )}
+                />
+                {getFieldStatus('email') && (
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    {getFieldStatus('email')?.isValid ? (
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 text-red-500" />
+                    )}
+                  </div>
+                )}
+              </div>
+              {getFieldStatus('email')?.message && (
+                <p className={cn(
+                  "text-xs mt-1.5 font-medium",
+                  getFieldStatus('email')?.isValid ? "text-green-600" : "text-red-500"
+                )}>
+                  {getFieldStatus('email')?.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -158,13 +365,37 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                 </Label>
                 <InfoTooltip content="הזן מספר טלפון נייד פעיל. נשלח אליך SMS עם קוד אימות וקישור לחתימה דיגיטלית. הטלפון ישמש גם ליצירת קשר במידת הצורך." />
               </div>
-              <Input
-                id="phone"
-                value={formData.phone || ''}
-                onChange={(e) => handleFieldChange('phone', e.target.value)}
-                placeholder="050-1234567"
-                className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20"
-              />
+              <div className="relative">
+                <Input
+                  id="phone"
+                  value={formData.phone || ''}
+                  onChange={(e) => handlePhoneChange('phone', e.target.value)}
+                  placeholder="050-1234567"
+                  maxLength={12}
+                  className={cn(
+                    "h-12 pl-10 transition-all duration-200",
+                    getFieldStatus('phone')?.isValid === true && "border-green-400 bg-green-50/30 focus:border-green-500",
+                    getFieldStatus('phone')?.isValid === false && "border-red-400 bg-red-50/30 focus:border-red-500"
+                  )}
+                />
+                {getFieldStatus('phone') && (
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    {getFieldStatus('phone')?.isValid ? (
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 text-red-500" />
+                    )}
+                  </div>
+                )}
+              </div>
+              {getFieldStatus('phone')?.message && (
+                <p className={cn(
+                  "text-xs mt-1.5 font-medium",
+                  getFieldStatus('phone')?.isValid ? "text-green-600" : "text-red-500"
+                )}>
+                  {getFieldStatus('phone')?.message}
+                </p>
+              )}
             </div>
           </div>
         </div>
