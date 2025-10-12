@@ -306,10 +306,10 @@ const Home = () => {
                 y="3"
                 textAnchor="middle"
                 fill="rgba(0, 0, 0, 0.2)"
-                fontSize="32"
-                fontWeight="800"
-                fontFamily="Montserrat, Raleway, Roboto, sans-serif"
-                letterSpacing="2"
+                fontSize="24"
+                fontWeight="700"
+                fontFamily="Space Grotesk, Inter, system-ui, sans-serif"
+                letterSpacing="1"
                 clipPath="url(#brokenTextEasy)"
               >
                 EASY
@@ -321,10 +321,10 @@ const Home = () => {
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="32"
-                fontWeight="800"
-                fontFamily="Montserrat, Raleway, Roboto, sans-serif"
-                letterSpacing="2"
+                fontSize="24"
+                fontWeight="700"
+                fontFamily="Space Grotesk, Inter, system-ui, sans-serif"
+                letterSpacing="1"
                 clipPath="url(#brokenTextEasy)"
                 style={{ 
                   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
@@ -336,13 +336,13 @@ const Home = () => {
               {/* SWITCH shadow */}
               <text
                 x="2"
-                y="37"
+                y="30"
                 textAnchor="middle"
                 fill="rgba(0, 0, 0, 0.2)"
-                fontSize="32"
-                fontWeight="800"
-                fontFamily="Montserrat, Raleway, Roboto, sans-serif"
-                letterSpacing="2"
+                fontSize="24"
+                fontWeight="700"
+                fontFamily="Space Grotesk, Inter, system-ui, sans-serif"
+                letterSpacing="1"
                 clipPath="url(#brokenTextSwitch)"
               >
                 SWITCH
@@ -351,13 +351,13 @@ const Home = () => {
               {/* SWITCH main text */}
               <text
                 x="0"
-                y="34"
+                y="27"
                 textAnchor="middle"
                 fill="white"
-                fontSize="32"
-                fontWeight="800"
-                fontFamily="Montserrat, Raleway, Roboto, sans-serif"
-                letterSpacing="2"
+                fontSize="24"
+                fontWeight="700"
+                fontFamily="Space Grotesk, Inter, system-ui, sans-serif"
+                letterSpacing="1"
                 clipPath="url(#brokenTextSwitch)"
                 style={{ 
                   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
