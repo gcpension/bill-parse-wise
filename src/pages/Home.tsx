@@ -301,98 +301,70 @@ const Home = () => {
           </svg>
         </div>
         
-        {/* Hand-drawn time/speed sketch - left side */}
-        <div className="absolute top-12 left-12 w-[180px] h-[180px] pointer-events-none opacity-70">
-          <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Clock/Speed symbol */}
-            <g transform="translate(70, 50)">
-              {/* Clock circle */}
-              <circle cx="0" cy="0" r="28" fill="none" stroke="#2d3748" strokeWidth="2.5"/>
-              <circle cx="0" cy="0" r="22" fill="none" stroke="#2d3748" strokeWidth="1.5" strokeDasharray="2,3"/>
-              
-              {/* Clock hands showing speed */}
-              <line x1="0" y1="0" x2="0" y2="-18" stroke="#2d3748" strokeWidth="3" strokeLinecap="round"/>
-              <line x1="0" y1="0" x2="12" y2="8" stroke="#2d3748" strokeWidth="2.5" strokeLinecap="round"/>
-              
-              {/* Center dot */}
-              <circle cx="0" cy="0" r="3" fill="#2d3748"/>
-              
-              {/* Speed lines around clock */}
-              <g stroke="#2d3748" strokeWidth="2" strokeLinecap="round">
-                <line x1="32" y1="-8" x2="38" y2="-12"/>
-                <line x1="32" y1="0" x2="40" y2="0"/>
-                <line x1="32" y1="8" x2="38" y2="12"/>
-              </g>
+        {/* EASYSWITCH branding - broken text style */}
+        <div className="absolute top-8 left-8 pointer-events-none">
+          <svg width="240" height="120" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              {/* Purple gradient */}
+              <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: '#7e22ce', stopOpacity: 1 }} />
+                <stop offset="50%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
+              </linearGradient>
+            </defs>
+            
+            {/* EASY text with slight breaks */}
+            <g transform="translate(120, 40)">
+              <text
+                x="0"
+                y="0"
+                textAnchor="middle"
+                fill="url(#textGradient)"
+                fontSize="36"
+                fontWeight="800"
+                fontFamily="'Bebas Neue', 'Impact', 'Arial Black', sans-serif"
+                letterSpacing="4"
+                style={{ 
+                  filter: 'drop-shadow(2px 2px 4px rgba(126, 34, 206, 0.3))',
+                  textTransform: 'uppercase'
+                }}
+                transform="rotate(-3)"
+              >
+                EASY
+              </text>
             </g>
             
-            {/* Lightning bolt - fast action */}
-            <g transform="translate(35, 95)">
-              <path
-                d="M 0,-15 L 8,-2 L 3,-2 L 6,12 L -6,0 L -1,0 Z"
-                fill="none"
-                stroke="#2d3748"
-                strokeWidth="2"
-                strokeLinejoin="round"
-              />
+            {/* SWITCH text with slight breaks and offset */}
+            <g transform="translate(120, 80)">
+              <text
+                x="0"
+                y="0"
+                textAnchor="middle"
+                fill="url(#textGradient)"
+                fontSize="36"
+                fontWeight="800"
+                fontFamily="'Bebas Neue', 'Impact', 'Arial Black', sans-serif"
+                letterSpacing="4"
+                style={{ 
+                  filter: 'drop-shadow(2px 2px 4px rgba(126, 34, 206, 0.3))',
+                  textTransform: 'uppercase'
+                }}
+                transform="rotate(2)"
+              >
+                SWITCH
+              </text>
             </g>
             
-            {/* Checkmark - completion */}
-            <g transform="translate(105, 95)">
-              <circle cx="0" cy="0" r="12" fill="none" stroke="#2d3748" strokeWidth="2"/>
-              <path
-                d="M -5,0 L -2,4 L 6,-6"
-                stroke="#2d3748"
-                strokeWidth="2.5"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </g>
-            
-            {/* Curved arrow showing process flow */}
-            <path
-              d="M 50,80 Q 70,75 90,80"
-              stroke="#2d3748"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              strokeDasharray="4,3"
-            />
-            <path
-              d="M 90,80 L 85,77 M 90,80 L 87,85"
-              stroke="#2d3748"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-            />
-            
-            {/* Text elements in Hebrew style */}
-            <g transform="translate(70, 125)">
-              <path
-                d="M -25,0 L -10,0"
-                stroke="#2d3748"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M -5,0 L 5,0"
-                stroke="#2d3748"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 10,0 L 25,0"
-                stroke="#2d3748"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </g>
-            
-            {/* Decorative stars */}
-            <g stroke="#2d3748" fill="none" strokeWidth="2" strokeLinecap="round">
-              <path d="M 25,30 L 25,33 M 23,31.5 L 27,31.5"/>
-              <path d="M 115,25 L 115,28 M 113,26.5 L 117,26.5"/>
-            </g>
+            {/* Decorative elements */}
+            <circle cx="30" cy="30" r="3" fill="#9333ea" opacity="0.6">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="210" cy="50" r="2.5" fill="#a855f7" opacity="0.6">
+              <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="40" cy="95" r="2" fill="#7e22ce" opacity="0.5">
+              <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2.2s" repeatCount="indefinite"/>
+            </circle>
           </svg>
         </div>
         
