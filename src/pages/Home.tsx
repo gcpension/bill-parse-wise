@@ -27,7 +27,6 @@ import { QuickActions } from '@/components/QuickActions';
 import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
 import { CategoryCompletionBanner } from '@/components/CategoryCompletionBanner';
 import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
-
 const Home = () => {
   const [mounted, setMounted] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
@@ -99,7 +98,6 @@ const Home = () => {
   };
   const handleCategorySelect = (category: string) => {
     const isCurrentlySelected = selectedCategories[category].selected;
-    
     if (!isCurrentlySelected) {
       // Show banner when selecting a category
       setBannerCategory(category);
@@ -155,21 +153,20 @@ const Home = () => {
     localStorage.setItem('selectedCategories', JSON.stringify(categories));
     navigate('/all-plans');
   };
-
   const handleCheckAnother = () => {
     setShowBanner(false);
     setBannerCategory('');
     // Scroll to categories section
     const servicesSection = document.getElementById('services');
-    servicesSection?.scrollIntoView({ behavior: 'smooth' });
+    servicesSection?.scrollIntoView({
+      behavior: 'smooth'
+    });
   };
-
   const handleProceedToPlans = () => {
     setShowBanner(false);
     setBannerCategory('');
     handleStartAnalysis();
   };
-
   const handleCloseBanner = () => {
     // Deselect the category if closing without entering amount
     if (bannerCategory && !selectedCategories[bannerCategory].amount) {
@@ -185,6 +182,9 @@ const Home = () => {
     setBannerCategory('');
   };
   return <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+      {/* Floating Steps Banner */}
+      <SimpleStepsBanner />
+
       {/* Top Navigation Bar */}
       <nav className="bg-gray-50 border-b border-gray-200 py-4">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
@@ -295,7 +295,7 @@ const Home = () => {
           </div>
           
           
-      {/* Category Cards Grid - Enhanced Interactive Layout */}
+          {/* Category Cards Grid - Enhanced Interactive Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {Object.entries(categoryData).map(([category, data], index) => {
             const Icon = data.icon;
@@ -355,12 +355,8 @@ const Home = () => {
           })}
           </div>
 
-          {/* Steps Banner Below Categories */}
-          <SimpleStepsBanner />
-
           {/* Clean CTA Section - Hidden when banner is visible */}
-          {!showBanner && (
-            <div className="text-center mt-16 space-y-6">
+          {!showBanner && <div className="text-center mt-16 space-y-6">
               <Button onClick={handleStartAnalysis} className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-assistant font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
                 <span className="flex items-center gap-3">
                   <span>התחל ניתוח חיסכון</span>
@@ -369,130 +365,16 @@ const Home = () => {
               </Button>
               
               {/* New Service Request Button */}
-              <div className="pt-4">
-                <p className="text-gray-600 text-sm mb-4">או</p>
-                <Button onClick={() => navigate('/service-request')} variant="outline" className="border-slate-400 text-slate-700 hover:bg-slate-50 px-8 py-3 text-base font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
-                  <span className="flex items-center gap-3">
-                    <span>בקש שירות ישירות</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                </Button>
-                <p className="text-gray-500 text-xs mt-2">עם בחירת ספקים מהירה ויפה ✨</p>
-              </div>
-            </div>
-          )}
+              
+            </div>}
 
           {/* Clean info section */}
           <div className="text-center mt-12 max-w-4xl mx-auto">
-            <p className="text-gray-600 text-lg font-assistant leading-relaxed mb-8">
-              אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר.
-              <br />
-              <span className="font-medium text-royal-purple">השירות חינם לחלוטין</span> - המשפחה הממוצעת חוסכת ₪2,400 בשנה.
-            </p>
+            
           </div>
 
           {/* How It Works - Clear & Large Section */}
-          <div className="max-w-6xl mx-auto mt-32">
-            <div className="text-center mb-16">
-              <Badge variant="outline" className="mb-4 border-primary text-primary bg-white/80 backdrop-blur-sm text-base px-6 py-2">
-                איך זה עובד?
-              </Badge>
-              <h2 className="text-4xl lg:text-5xl font-heebo font-bold text-royal-purple mb-6">
-                3 שלבים פשוטים לחיסכון גדול
-              </h2>
-              <p className="text-xl text-gray-700 font-assistant max-w-3xl mx-auto leading-relaxed">
-                תהליך פשוט, מהיר ושקוף שחוסך לכם זמן וכסף
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Step 1 */}
-              <div className="relative">
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-purple-100 hover:border-purple-300 h-full">
-                  {/* Step Number */}
-                  <div className="absolute -top-6 right-6 w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-2xl font-black text-white">1</span>
-                  </div>
-                  
-                  {/* Icon */}
-                  <div className="mb-6 mt-4">
-                    <div className="w-20 h-20 mx-auto bg-purple-100 rounded-2xl flex items-center justify-center">
-                      <Zap className="w-10 h-10 text-purple-600" />
-                    </div>
-                  </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-2xl font-heebo font-bold text-royal-purple mb-4 text-center">
-                    בחרו קטגוריות
-                  </h3>
-                  <p className="text-gray-600 font-assistant text-lg leading-relaxed text-center">
-                    בחרו מה מעניין אתכם - חשמל, סלולר, אינטרנט או טלוויזיה. אפשר לבחור מספר קטגוריות ביחד.
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="relative">
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-100 hover:border-blue-300 h-full">
-                  {/* Step Number */}
-                  <div className="absolute -top-6 right-6 w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-2xl font-black text-white">2</span>
-                  </div>
-                  
-                  {/* Icon */}
-                  <div className="mb-6 mt-4">
-                    <div className="w-20 h-20 mx-auto bg-blue-100 rounded-2xl flex items-center justify-center">
-                      <TrendingUp className="w-10 h-10 text-blue-600" />
-                    </div>
-                  </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-2xl font-heebo font-bold text-royal-purple mb-4 text-center">
-                    הזינו פרטים
-                  </h3>
-                  <p className="text-gray-600 font-assistant text-lg leading-relaxed text-center">
-                    ספרו לנו כמה אתם משלמים היום ומה הספק הנוכחי שלכם. זה לוקח רק דקה.
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="relative">
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-green-100 hover:border-green-300 h-full">
-                  {/* Step Number */}
-                  <div className="absolute -top-6 right-6 w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-2xl font-black text-white">3</span>
-                  </div>
-                  
-                  {/* Icon */}
-                  <div className="mb-6 mt-4">
-                    <div className="w-20 h-20 mx-auto bg-green-100 rounded-2xl flex items-center justify-center">
-                      <Star className="w-10 h-10 text-green-600" />
-                    </div>
-                  </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-2xl font-heebo font-bold text-royal-purple mb-4 text-center">
-                    קבלו המלצות
-                  </h3>
-                  <p className="text-gray-600 font-assistant text-lg leading-relaxed text-center">
-                    המערכת מציגה לכם את כל האפשרויות הזולות יותר והחיסכון הצפוי. אתם בוחרים מה מתאים לכם.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom CTA */}
-            <div className="text-center mt-16">
-              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-100 to-blue-100 px-8 py-4 rounded-2xl border-2 border-purple-200">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-                <p className="text-lg font-heebo font-bold text-royal-purple">
-                  זה הכל! פשוט כמו שזה נשמע
-                </p>
-                <Sparkles className="w-6 h-6 text-purple-600" />
-              </div>
-            </div>
-          </div>
+          
         </div>
       </section>
 
@@ -617,7 +499,11 @@ const Home = () => {
             </div>
 
             {/* Comparison Table - Clean Design */}
-            <div className="max-w-5xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'forwards', opacity: 0 }}>
+            <div className="max-w-5xl mx-auto animate-fade-in" style={{
+            animationDelay: '0.2s',
+            animationFillMode: 'forwards',
+            opacity: 0
+          }}>
               {/* Header Row */}
               <div className="grid grid-cols-3 gap-6 mb-8">
                 <div></div>
@@ -733,7 +619,11 @@ const Home = () => {
             </div>
 
             {/* Bottom Stats */}
-            <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'forwards', opacity: 0 }}>
+            <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto animate-fade-in" style={{
+            animationDelay: '0.4s',
+            animationFillMode: 'forwards',
+            opacity: 0
+          }}>
               <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all">
                 <p className="text-3xl font-heebo font-black text-purple-600 mb-2">5 דקות</p>
                 <p className="text-sm text-gray-600 font-assistant">זמן ממוצע</p>
@@ -749,12 +639,14 @@ const Home = () => {
             </div>
 
             {/* CTA */}
-            <div className="text-center mt-12 animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'forwards', opacity: 0 }}>
-              <Button 
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-heebo text-lg px-12 py-6 shadow-lg hover:shadow-xl transition-all"
-                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-              >
+            <div className="text-center mt-12 animate-fade-in" style={{
+            animationDelay: '0.6s',
+            animationFillMode: 'forwards',
+            opacity: 0
+          }}>
+              <Button size="lg" className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-heebo text-lg px-12 py-6 shadow-lg hover:shadow-xl transition-all" onClick={() => document.getElementById('services')?.scrollIntoView({
+              behavior: 'smooth'
+            })}>
                 התחילו לחסוך עכשיו
                 <ArrowRight className="mr-2 h-5 w-5" />
               </Button>
@@ -1031,15 +923,7 @@ const Home = () => {
       
       
       {/* Category Completion Banner */}
-      <CategoryCompletionBanner
-        isVisible={showBanner}
-        selectedCategory={bannerCategory}
-        currentAmount={selectedCategories[bannerCategory]?.amount || ''}
-        onAmountChange={handleAmountChange}
-        onCheckAnother={handleCheckAnother}
-        onProceedToPlans={handleProceedToPlans}
-        onClose={handleCloseBanner}
-      />
+      <CategoryCompletionBanner isVisible={showBanner} selectedCategory={bannerCategory} currentAmount={selectedCategories[bannerCategory]?.amount || ''} onAmountChange={handleAmountChange} onCheckAnother={handleCheckAnother} onProceedToPlans={handleProceedToPlans} onClose={handleCloseBanner} />
 
       {/* Back to Top Button */}
       <BackToTop />
