@@ -394,7 +394,7 @@ const AllPlans = ({
     recommendedProvider: saving.recommendedProvider,
     category: saving.category
   }));
-  return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-white">
+  return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-cyan-50/30 to-white">
       {/* Floating Steps Banner */}
       <SimpleStepsBanner />
 
@@ -421,7 +421,7 @@ const AllPlans = ({
             {Object.entries(categoryConfig).map(([key, config]) => {
             const isSelected = selectedCategory === key;
             const isInMultiSelect = selectedCategories.includes(key as CategoryType);
-            return <Button key={key} variant={isSelected ? "default" : "outline"} className={cn("h-32 flex-col gap-3 text-lg font-heebo transition-all duration-300 group relative overflow-hidden", isSelected || isInMultiSelect ? "bg-gradient-to-br from-purple-600 to-blue-600 text-white shadow-2xl scale-105 border-0" : "border-2 border-purple-200 hover:border-purple-400 hover:bg-gradient-to-br hover:from-purple-50 hover:to-blue-50 hover:scale-105 bg-white/80 backdrop-blur-sm")} onClick={e => {
+            return <Button key={key} variant={isSelected ? "default" : "outline"} className={cn("h-32 flex-col gap-3 text-lg font-heebo transition-all duration-300 group relative overflow-hidden", isSelected || isInMultiSelect ? "bg-gradient-to-br from-cyan-600 to-blue-600 text-white shadow-2xl scale-105 border-0" : "border-2 border-cyan-200 hover:border-cyan-400 hover:bg-gradient-to-br hover:from-cyan-50 hover:to-blue-50 hover:scale-105 bg-white/80 backdrop-blur-sm")} onClick={e => {
               if (e.ctrlKey || e.metaKey) {
                 // Multi-select mode
                 if (isInMultiSelect) {
@@ -435,7 +435,7 @@ const AllPlans = ({
                 setSelectedCategories([]);
               }
             }}>
-                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300", isSelected || isInMultiSelect ? "from-white/10 to-white/5" : "from-purple-100/50 to-blue-100/50")}></div>
+                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300", isSelected || isInMultiSelect ? "from-white/10 to-white/5" : "from-cyan-100/50 to-blue-100/50")}></div>
                   <div className="relative z-10">
                     {config.icon}
                     <span className="font-bold">{config.label}</span>
@@ -645,11 +645,11 @@ const AllPlans = ({
           </div>}
 
         {/* Detailed Comparison */}
-        {showComparison && comparedPlans.length > 0 && <Card className="mb-8 border-2 border-purple-200">
+        {showComparison && comparedPlans.length > 0 && <Card className="mb-8 border-2 border-cyan-200">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <BarChart3 className="w-6 h-6 text-purple-600" />
-                <h3 className="text-2xl font-bold text-purple-800 font-heebo">השוואה מפורטת</h3>
+                <BarChart3 className="w-6 h-6 text-cyan-600" />
+                <h3 className="text-2xl font-bold text-cyan-800 font-heebo">השוואה מפורטת</h3>
               </div>
             </CardHeader>
             <CardContent>
@@ -697,7 +697,7 @@ const AllPlans = ({
                       {currentUserPlan.name && <td className="p-4 text-center font-bold text-yellow-700 bg-yellow-50">
                           ₪{currentUserPlan.price}
                         </td>}
-                      {comparedPlans.map(plan => <td key={plan.id} className="p-4 text-center font-bold text-purple-600">
+                      {comparedPlans.map(plan => <td key={plan.id} className="p-4 text-center font-bold text-cyan-600">
                           ₪{plan.regularPrice}
                         </td>)}
                     </tr>
@@ -860,8 +860,8 @@ const AllPlans = ({
             </div>}
 
         {!selectedCategory && <div className="text-center py-12">
-            <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Target className="w-10 h-10 text-purple-600" />
+            <div className="w-20 h-20 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Target className="w-10 h-10 text-cyan-600" />
             </div>
             <h3 className="text-2xl font-semibold text-gray-800 font-heebo mb-2">
               בחרו קטגוריה להתחלה
@@ -876,7 +876,7 @@ const AllPlans = ({
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-purple-800 font-heebo">
+            <DialogTitle className="text-2xl font-bold text-cyan-800 font-heebo">
               בקשת החלפת ספק
             </DialogTitle>
           </DialogHeader>
