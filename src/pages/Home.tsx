@@ -454,7 +454,7 @@ const Home = () => {
             {/* Illustration Side */}
             <div className="order-1 lg:order-2 flex justify-center">
               <div className="w-full max-w-lg">
-                <img src={middleSectionIllustration} alt="איור של אישה עובדת על השוואת תעריფי שירותי הבית" className="w-full h-auto" style={{
+                <img src={familySavingsHero} alt="איור של אישה עובדת על השוואת תעריפי שירותי הבית" className="w-full h-auto" style={{
                 mixBlendMode: 'multiply',
                 backgroundColor: 'transparent'
               }} />
