@@ -430,138 +430,147 @@ const AllPlans = ({
       <EnhancedNavigation />
 
       <div className="container mx-auto px-4 lg:px-6 max-w-7xl py-8">
-        {/* Category Selection - Enhanced Design */}
-        <div className="mb-12">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {Object.entries(categoryConfig).map(([key, config]) => {
-            const isSelected = selectedCategory === key;
-            const isInMultiSelect = selectedCategories.includes(key as CategoryType);
-            return <Button key={key} variant={isSelected ? "default" : "outline"} className={cn("h-32 flex-col gap-3 text-lg font-heebo transition-all duration-300 group relative overflow-hidden", isSelected || isInMultiSelect ? "bg-gradient-to-br from-cyan-600 to-blue-600 text-white shadow-2xl scale-105 border-0" : "border-2 border-cyan-200 hover:border-cyan-400 hover:bg-gradient-to-br hover:from-cyan-50 hover:to-blue-50 hover:scale-105 bg-white/80 backdrop-blur-sm")} onClick={e => {
-              if (e.ctrlKey || e.metaKey) {
-                // Multi-select mode
-                if (isInMultiSelect) {
-                  setSelectedCategories(prev => prev.filter(c => c !== key));
-                } else {
-                  setSelectedCategories(prev => [...prev, key as CategoryType]);
-                }
-              } else {
-                // Single select mode
-                setSelectedCategory(key as CategoryType);
-                setSelectedCategories([]);
-              }
-            }}>
-                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300", isSelected || isInMultiSelect ? "from-white/10 to-white/5" : "from-cyan-100/50 to-blue-100/50")}></div>
-                  <div className="relative z-10">
-                    {config.icon}
-                    <span className="font-bold">{config.label}</span>
-                    {isInMultiSelect && <CheckCircle className="w-5 h-5 absolute -top-2 -left-2 text-white" />}
-                  </div>
-                </Button>;
-          })}
-          </div>
+        {/* Two Column Layout: Logos LEFT, Categories RIGHT */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
-          {/* Show recommendation button when multiple categories are selected */}
-          {selectedCategories.length > 0 && <div className="mt-3 text-center animate-fade-in">
-              <Card className="max-w-xl mx-auto border border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10">
-                <CardContent className="p-3">
-                  <div className="flex items-center gap-3 justify-between">
-                    <div className="text-right">
-                      <p className="text-sm font-bold text-foreground font-heebo">
-                        נבחרו {selectedCategories.length} סקטורים
-                      </p>
-                      <p className="text-xs text-muted-foreground font-assistant">
-                        {selectedCategories.map(cat => categoryConfig[cat].label).join(', ')}
+          {/* LEFT SIDE: Company Logos - Small */}
+          <div className="lg:col-span-8 order-2 lg:order-1">
+            {selectedCategory && (
+              <div className="animate-fade-in">
+                {/* Mobile Category Header */}
+                <div className="lg:hidden mb-6 p-4 bg-white rounded-xl shadow-sm border-2 border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <div className="text-primary">
+                      {categoryConfig[selectedCategory].icon}
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-800 font-heebo">
+                        {categoryConfig[selectedCategory].label}
+                      </h2>
+                      <p className="text-sm text-gray-600 font-assistant">
+                        חבילות ומבצעים
                       </p>
                     </div>
-                    <Button onClick={() => setShowPersonalizedWizard(true)} size="sm" className="font-heebo bg-gradient-to-r from-primary to-primary/80">
-                      <Brain className="w-4 h-4 ml-1" />
-                      המלצות
-                    </Button>
                   </div>
-                </CardContent>
-              </Card>
-            </div>}
-        </div>
+                </div>
 
-        {/* Provider Logos Display - Large & Clean */}
-        {selectedCategory && <div className="mb-12 animate-fade-in">
-            <div className="max-w-6xl mx-auto">
-              {/* Category Header with Icon */}
-              <div className="flex items-center justify-between mb-8 border-b-2 border-gray-200 pb-4">
-                <h2 className="text-2xl font-bold text-gray-800 font-heebo">
-                  חבילות {categoryConfig[selectedCategory].label} ומבצעים
-                </h2>
-                <div className="flex items-center gap-3 bg-white px-6 py-3 rounded-xl shadow-md border-2 border-gray-100">
-                  <div className="text-primary">
-                    {categoryConfig[selectedCategory].icon}
-                  </div>
-                  <span className="text-xl font-bold text-gray-700 font-heebo">
-                    {categoryConfig[selectedCategory].label}
-                  </span>
+                {/* Company Logos Grid - Small Cards */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {selectedCategory === 'electricity' && <>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={electraLogo} alt="אלקטרה" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={electricityLogo} alt="חברת החשמל" className="w-full h-12 object-contain" />
+                      </div>
+                    </>}
+                  
+                  {selectedCategory === 'internet' && <>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={bezeqLogo} alt="בזק" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={hotLogo} alt="HOT" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={partnerLogo} alt="פרטנר" className="w-full h-12 object-contain" />
+                      </div>
+                    </>}
+                  
+                  {selectedCategory === 'mobile' && <>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={cellcomLogo} alt="סלקום" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={partnerLogo} alt="פרטנר" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={pelephoneLogo} alt="פלאפון" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={logo019} alt="019" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={ramiLevyLogo} alt="רמי לוי" className="w-full h-12 object-contain" />
+                      </div>
+                    </>}
+                  
+                  {selectedCategory === 'tv' && <>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={yesLogo} alt="YES" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={hotLogo} alt="HOT" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={netflixLogo} alt="Netflix" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={disneyLogo} alt="Disney" className="w-full h-12 object-contain" />
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
+                        <img src={hboLogo} alt="HBO" className="w-full h-12 object-contain" />
+                      </div>
+                    </>}
                 </div>
               </div>
+            )}
+            
+            {!selectedCategory && (
+              <div className="text-center py-20">
+                <p className="text-xl text-gray-500 font-heebo">בחרו קטגוריה מצד ימין ←</p>
+              </div>
+            )}
+          </div>
 
-              {/* Provider Logos Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {selectedCategory === 'electricity' && <>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={electraLogo} alt="אלקטרה" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={electricityLogo} alt="חברת החשמל" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                  </>}
-                
-                {selectedCategory === 'internet' && <>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={bezeqLogo} alt="בזק" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={hotLogo} alt="HOT" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={partnerLogo} alt="פרטנר" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                  </>}
-                
-                {selectedCategory === 'mobile' && <>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={cellcomLogo} alt="סלקום" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={partnerLogo} alt="פרטנר" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={pelephoneLogo} alt="פלאפון" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={logo019} alt="019" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={ramiLevyLogo} alt="רמי לוי" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                  </>}
-                
-                {selectedCategory === 'tv' && <>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={yesLogo} alt="YES" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={hotLogo} alt="HOT" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={netflixLogo} alt="Netflix" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={disneyLogo} alt="Disney" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
-                      <img src={hboLogo} alt="HBO" className="w-full h-16 object-contain group-hover:scale-105 transition-transform" />
-                    </div>
-                  </>}
+          {/* RIGHT SIDE: Category Selector */}
+          <div className="lg:col-span-4 order-1 lg:order-2">
+            <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 p-6 sticky top-6">
+              <h3 className="text-2xl font-bold text-gray-800 font-heebo mb-6 pb-4 border-b-2 border-gray-200">
+                חבילות סלולר ומבצעים
+              </h3>
+              
+              {/* Category buttons - vertical stack */}
+              <div className="space-y-3">
+                {Object.entries(categoryConfig).map(([key, config]) => {
+                  const isSelected = selectedCategory === key;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setSelectedCategory(key as CategoryType);
+                        setSelectedCategories([]);
+                      }}
+                      className={cn(
+                        "w-full flex items-center gap-4 p-4 rounded-xl transition-all duration-200",
+                        "border-2 font-heebo text-right",
+                        isSelected 
+                          ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-transparent shadow-lg scale-105" 
+                          : "bg-white text-gray-700 border-gray-200 hover:border-cyan-400 hover:bg-cyan-50/50"
+                      )}
+                    >
+                      <div className={cn(
+                        "flex items-center justify-center w-12 h-12 rounded-lg",
+                        isSelected ? "bg-white/20" : "bg-gray-100"
+                      )}>
+                        {config.icon}
+                      </div>
+                      <div className="flex-1 text-right">
+                        <div className="font-bold text-lg">{config.label}</div>
+                        <div className={cn(
+                          "text-sm",
+                          isSelected ? "text-white/80" : "text-gray-500"
+                        )}>
+                          {config.description}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
-          </div>}
+          </div>
+        </div>
 
         {/* Compact Savings Bar with Big CTA */}
         {selectedCategory && <div className="mb-6 animate-fade-in">
