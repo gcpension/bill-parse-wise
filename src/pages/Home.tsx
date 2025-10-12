@@ -227,15 +227,55 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Purple Organic Shape on Right Top Corner */}
-        <div className="absolute -top-20 -right-20 w-96 h-96 pointer-events-none">
+        {/* Purple Star Shape on Left Top Corner with Brand Name */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <path 
-              fill="#9333ea" 
-              d="M51.4,-58.3C65.6,-49.8,75.5,-32.3,78.8,-14.1C82.1,4.1,78.8,23,69.3,38.4C59.8,53.8,44.1,65.7,26.8,71.2C9.5,76.7,-9.4,75.8,-26.3,69.8C-43.2,63.8,-58.1,52.7,-67.4,37.4C-76.7,22.1,-80.4,2.6,-77.5,-15.8C-74.6,-34.2,-65.1,-51.5,-51.3,-60.2C-37.5,-68.9,-18.8,-68.9,-0.3,-68.5C18.1,-68.1,37.2,-66.8,51.4,-58.3Z" 
-              transform="translate(100 100)" 
-              opacity="0.85"
-            />
+            {/* Star with Rounded Rays */}
+            <g transform="translate(100, 100)">
+              {/* Main star shape with rounded rays */}
+              <path
+                d="M 0,-70 
+                   Q 5,-50 15,-35 
+                   L 35,-15 
+                   Q 50,-5 70,0 
+                   Q 50,5 35,15 
+                   L 15,35 
+                   Q 5,50 0,70 
+                   Q -5,50 -15,35 
+                   L -35,15 
+                   Q -50,5 -70,0 
+                   Q -50,-5 -35,-15 
+                   L -15,-35 
+                   Q -5,-50 0,-70 Z"
+                fill="#9333ea"
+                opacity="0.9"
+              />
+              {/* Brand Text */}
+              <text
+                x="0"
+                y="8"
+                textAnchor="middle"
+                fill="white"
+                fontSize="16"
+                fontWeight="800"
+                fontFamily="Montserrat, sans-serif"
+                letterSpacing="1"
+              >
+                EASY
+              </text>
+              <text
+                x="0"
+                y="24"
+                textAnchor="middle"
+                fill="white"
+                fontSize="16"
+                fontWeight="800"
+                fontFamily="Montserrat, sans-serif"
+                letterSpacing="1"
+              >
+                SWITCH
+              </text>
+            </g>
           </svg>
         </div>
         
