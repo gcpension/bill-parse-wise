@@ -293,8 +293,8 @@ const Home = () => {
                       {/* Gradient Overlay */}
                       <div className={`absolute inset-0 transition-all duration-500 ${
                         isSelected 
-                          ? 'bg-gradient-to-t from-cyan-600/90 via-cyan-500/65 to-blue-400/45' 
-                          : 'bg-gradient-to-t from-gray-700/90 via-gray-600/60 to-gray-500/35 group-hover:from-cyan-600/90 group-hover:via-cyan-500/60'
+                          ? 'bg-gradient-to-t from-cyan-300/80 via-cyan-200/50 to-blue-100/30' 
+                          : 'bg-gradient-to-t from-gray-300/75 via-gray-200/45 to-gray-100/25 group-hover:from-cyan-300/75 group-hover:via-cyan-200/45'
                       }`}></div>
                     </div>
 
