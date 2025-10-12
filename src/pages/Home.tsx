@@ -216,46 +216,44 @@ const Home = () => {
       </nav>
 
 
-      {/* Clean Header Section */}
-      <section className="bg-gradient-to-b from-white via-gray-50 to-gray-50 py-12 lg:py-16 pb-8 lg:pb-10 relative overflow-hidden">
-        {/* Background illustration */}
-        <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" style={{
-        backgroundImage: `url(${heroBackgroundIllustration})`
-      }}>
+      {/* Enhanced Hero Section */}
+      <section className="relative py-20 lg:py-28 overflow-hidden">
+        {/* Background with Image */}
+        <div className="absolute inset-0">
+          <img 
+            src={heroBackgroundIllustration} 
+            alt="רקע" 
+            className="w-full h-full object-cover opacity-10"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-gray-50/90 to-gray-50"></div>
         </div>
         
-        {/* Decorative elements */}
-        <div className="absolute top-1/4 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-primary-glow/5 rounded-full blur-3xl"></div>
+        {/* Decorative Elements */}
+        <div className="absolute top-1/4 left-10 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-10 w-[500px] h-[500px] bg-blue-400/10 rounded-full blur-3xl"></div>
         
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="text-center">
             
-            {/* Clean subtitle badge */}
-            <div className="inline-block mb-8 animate-fade-in opacity-0" style={{
-            animationDelay: '0.1s',
-            animationFillMode: 'forwards'
-          }}>
-              
-            </div>
-            
-            {/* Main highlighted title with gradient background */}
-            <div className="relative inline-block mb-6 animate-fade-in opacity-0" style={{
-            animationDelay: '0.3s',
-            animationFillMode: 'forwards'
-          }}>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary-glow/15 to-primary/10 rounded-3xl blur-xl"></div>
-              <h1 className="relative text-4xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent leading-tight px-8 py-4">
-                באיזה תחום תרצו
-                <br />
-                להתחיל לחסוך היום?
+            {/* Main Title with Modern Styling */}
+            <div className="mb-8 animate-fade-in opacity-0" style={{
+              animationDelay: '0.2s',
+              animationFillMode: 'forwards'
+            }}>
+              <h1 className="text-5xl lg:text-7xl xl:text-8xl font-bold leading-tight mb-6">
+                <span className="block bg-gradient-to-l from-cyan-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                  באיזה תחום תרצו
+                </span>
+                <span className="block bg-gradient-to-r from-cyan-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent mt-2">
+                  להתחיל לחסוך היום?
+                </span>
               </h1>
             </div>
             
-            <p className="text-lg lg:text-xl text-muted-foreground mt-8 font-medium max-w-3xl mx-auto leading-relaxed animate-fade-in opacity-0" style={{
-            animationDelay: '0.5s',
-            animationFillMode: 'forwards'
-          }}>
+            <p className="text-xl lg:text-2xl text-gray-600 font-medium max-w-3xl mx-auto leading-relaxed animate-fade-in opacity-0" style={{
+              animationDelay: '0.4s',
+              animationFillMode: 'forwards'
+            }}>
               אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
             </p>
           </div>
