@@ -184,9 +184,9 @@ const Home = () => {
     setShowBanner(false);
     setBannerCategory('');
   };
-  return <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+  return <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Top Navigation Bar */}
-      <nav className="bg-gray-50 border-b border-gray-200 py-4">
+      <nav className="bg-white border-b border-gray-200 py-4">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="flex items-center justify-between">
             {/* Logo on the left */}
@@ -266,7 +266,7 @@ const Home = () => {
       </section>
 
       {/* Clean Categories Section - Enhanced with animations */}
-      <section id="services" className="bg-gray-50 relative scroll-mt-20">
+      <section id="services" className="bg-white relative scroll-mt-20">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl py-12">
           {/* Category Selection - Modern Image-Based Design */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -369,7 +369,7 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="bg-gray-50 relative">
+      <section className="bg-white relative">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content Side */}
@@ -464,7 +464,7 @@ const Home = () => {
       </section>
 
       {/* Our Mission Section - Enhanced */}
-      <section className="bg-gray-50 relative overflow-hidden">
+      <section className="bg-white relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 pointer-events-none opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 bg-gray-500 rounded-full blur-3xl"></div>
@@ -623,7 +623,7 @@ const Home = () => {
       
 
       {/* FAQ Section */}
-      <section className="bg-gray-50 relative">
+      <section className="bg-white relative">
         <div className="container mx-auto px-4 lg:px-6 max-w-4xl py-12">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-cyan-700 mb-4">
