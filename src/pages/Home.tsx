@@ -224,7 +224,7 @@ const Home = () => {
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <img 
-            src={savingsAnalysisIllustration} 
+            src={middleSectionIllustration} 
             alt="" 
             className="w-full h-full object-contain object-center"
           />
