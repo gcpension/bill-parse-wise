@@ -447,170 +447,135 @@ const Home = () => {
         </div>
 
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
-          {/* Comparison Cards Section - 2024 vs 2025 */}
+          {/* Clean Comparison Section - 2024 vs 2025 */}
           <div className="mb-20">
-            <div className="text-center mb-16 animate-fade-in">
-              <Badge variant="outline" className="mb-4 border-purple-300 text-purple-700 bg-white/80 backdrop-blur-sm">
-                השוואת תהליכים
-              </Badge>
-              <h2 className="text-4xl lg:text-5xl font-heebo font-bold text-cyan-700 mb-4">
-                איך זה נראה היום<br />לעומת 2025?
+            <div className="text-center mb-12 animate-fade-in">
+              <h2 className="text-3xl lg:text-4xl font-heebo font-bold text-cyan-700 mb-3">
+                איך זה נראה היום לעומת 2025?
               </h2>
-              <p className="text-xl text-gray-700 font-assistant max-w-2xl mx-auto">
-                גלו את ההבדל המשמעותי בין הדרך המסורתית לפתרון החדש
+              <p className="text-lg text-gray-600 font-assistant max-w-2xl mx-auto">
+                השוואה פשוטה שמראה את ההבדל
               </p>
             </div>
 
-            {/* Comparison Cards - Modern Design */}
-            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in" style={{
+            {/* Clean Comparison Grid */}
+            <div className="max-w-5xl mx-auto animate-fade-in" style={{
               animationDelay: '0.2s',
               animationFillMode: 'forwards',
               opacity: 0
             }}>
-              {/* Today Card */}
-              <Card className="bg-white/90 backdrop-blur-sm border-2 border-gray-300 shadow-lg overflow-hidden">
-                <CardContent className="p-8">
-                  {/* Header */}
-                  <div className="flex items-center justify-center gap-3 mb-8 pb-6 border-b-2 border-gray-200">
-                    <Zap className="w-8 h-8 text-gray-600" />
-                    <h3 className="text-3xl font-heebo font-bold text-gray-800">היום</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Today Column */}
+                <div className="bg-white rounded-2xl p-8 border-2 border-gray-200">
+                  <div className="text-center mb-8">
+                    <h3 className="text-2xl font-heebo font-bold text-gray-700">היום</h3>
                   </div>
-
-                  {/* Comparison Points */}
+                  
                   <div className="space-y-6">
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                        <X className="w-5 h-5 text-red-600" />
-                      </div>
+                      <div className="text-gray-400 text-xl">⏰</div>
                       <div>
-                        <h4 className="font-heebo font-bold text-gray-900 text-lg mb-1">משך זמן</h4>
-                        <p className="text-gray-600 font-assistant text-lg">3-5 שעות</p>
+                        <p className="font-heebo font-semibold text-gray-700">3-5 שעות</p>
+                        <p className="text-sm text-gray-500 font-assistant">משך זמן ממוצע</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                        <X className="w-5 h-5 text-red-600" />
-                      </div>
+                      <div className="text-gray-400 text-xl">📞</div>
                       <div>
-                        <h4 className="font-heebo font-bold text-gray-900 text-lg mb-1">שיחות טלפון</h4>
-                        <p className="text-gray-600 font-assistant text-lg">רבות ומתישות</p>
+                        <p className="font-heebo font-semibold text-gray-700">שיחות רבות</p>
+                        <p className="text-sm text-gray-500 font-assistant">תיאומים מתישים</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                        <X className="w-5 h-5 text-red-600" />
-                      </div>
+                      <div className="text-gray-400 text-xl">📝</div>
                       <div>
-                        <h4 className="font-heebo font-bold text-gray-900 text-lg mb-1">מילוי טפסים</h4>
-                        <p className="text-gray-600 font-assistant text-lg">מסורבל ומורכב</p>
+                        <p className="font-heebo font-semibold text-gray-700">טפסים מורכבים</p>
+                        <p className="text-sm text-gray-500 font-assistant">מילוי ידני</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                        <X className="w-5 h-5 text-red-600" />
-                      </div>
+                      <div className="text-gray-400 text-xl">🔍</div>
                       <div>
-                        <h4 className="font-heebo font-bold text-gray-900 text-lg mb-1">השוואת מחירים</h4>
-                        <p className="text-gray-600 font-assistant text-lg">מפוזר ומבלבל</p>
+                        <p className="font-heebo font-semibold text-gray-700">חיפוש מפוזר</p>
+                        <p className="text-sm text-gray-500 font-assistant">בכמה אתרים</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Cost Badge */}
-                  <div className="mt-8 pt-6 border-t-2 border-gray-200">
-                    <div className="text-center bg-gray-50 rounded-xl p-6">
-                      <p className="text-sm font-heebo text-gray-600 mb-2">עלות חודשית ממוצעת</p>
-                      <p className="text-3xl font-heebo font-black text-gray-900">₪800-1,200</p>
-                    </div>
+                  <div className="mt-8 pt-6 border-t-2 border-gray-100 text-center">
+                    <p className="text-sm text-gray-500 font-assistant mb-2">עלות חודשית</p>
+                    <p className="text-2xl font-heebo font-bold text-gray-700">₪800-1,200</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
 
-              {/* 2025 Card - Highlighted */}
-              <Card className="bg-gradient-to-br from-purple-600 via-purple-700 to-purple-800 border-2 border-purple-400 shadow-2xl overflow-hidden relative">
-                {/* Decorative glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
-                
-                <CardContent className="p-8 relative z-10">
-                  {/* Header */}
-                  <div className="flex items-center justify-center gap-3 mb-8 pb-6 border-b-2 border-white/30">
-                    <Sparkles className="w-8 h-8 text-white" />
-                    <h3 className="text-3xl font-heebo font-bold text-white">2025</h3>
+                {/* 2025 Column - Highlighted */}
+                <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-8 border-2 border-cyan-300 relative overflow-hidden">
+                  {/* Subtle decoration */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-200/20 rounded-full -mr-16 -mt-16"></div>
+                  
+                  <div className="text-center mb-8 relative">
+                    <h3 className="text-2xl font-heebo font-bold text-cyan-700">2025</h3>
                   </div>
-
-                  {/* Comparison Points */}
-                  <div className="space-y-6">
+                  
+                  <div className="space-y-6 relative">
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-white" />
-                      </div>
+                      <div className="text-cyan-600 text-xl">⚡</div>
                       <div>
-                        <h4 className="font-heebo font-bold text-white text-lg mb-1">משך זמן</h4>
-                        <p className="text-white/90 font-assistant text-lg font-semibold">5 דקות בלבד!</p>
+                        <p className="font-heebo font-semibold text-cyan-900">5 דקות</p>
+                        <p className="text-sm text-cyan-700 font-assistant">תהליך מהיר</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-white" />
-                      </div>
+                      <div className="text-cyan-600 text-xl">✨</div>
                       <div>
-                        <h4 className="font-heebo font-bold text-white text-lg mb-1">שיחות טלפון</h4>
-                        <p className="text-white/90 font-assistant text-lg font-semibold">אפס - הכל דיגיטלי</p>
+                        <p className="font-heebo font-semibold text-cyan-900">אפס שיחות</p>
+                        <p className="text-sm text-cyan-700 font-assistant">הכל דיגיטלי</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-white" />
-                      </div>
+                      <div className="text-cyan-600 text-xl">💻</div>
                       <div>
-                        <h4 className="font-heebo font-bold text-white text-lg mb-1">מילוי טפסים</h4>
-                        <p className="text-white/90 font-assistant text-lg font-semibold">דיגיטלי וחכם</p>
+                        <p className="font-heebo font-semibold text-cyan-900">טופס חכם</p>
+                        <p className="text-sm text-cyan-700 font-assistant">מילוי קל ומהיר</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-white" />
-                      </div>
+                      <div className="text-cyan-600 text-xl">🎯</div>
                       <div>
-                        <h4 className="font-heebo font-bold text-white text-lg mb-1">השוואת מחירים</h4>
-                        <p className="text-white/90 font-assistant text-lg font-semibold">מרוכז במקום אחד</p>
+                        <p className="font-heebo font-semibold text-cyan-900">כל ההצעות</p>
+                        <p className="text-sm text-cyan-700 font-assistant">במקום אחד</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Cost Badge - Highlighted */}
-                  <div className="mt-8 pt-6 border-t-2 border-white/30">
-                    <div className="text-center bg-white/20 backdrop-blur-sm rounded-xl p-6 ring-2 ring-white/40">
-                      <p className="text-sm font-heebo text-white/90 mb-2">עלות חודשית ממוצעת</p>
-                      <p className="text-3xl font-heebo font-black text-white">₪600-900</p>
-                      <div className="mt-3 inline-flex items-center gap-2 bg-green-500/30 backdrop-blur-sm px-4 py-2 rounded-full">
-                        <TrendingUp className="w-4 h-4 text-white" />
-                        <p className="text-white font-heebo font-bold text-sm">חיסכון של עד ₪300 בחודש</p>
-                      </div>
+                  <div className="mt-8 pt-6 border-t-2 border-cyan-200 text-center relative">
+                    <p className="text-sm text-cyan-700 font-assistant mb-2">עלות חודשית</p>
+                    <p className="text-2xl font-heebo font-bold text-cyan-900">₪600-900</p>
+                    <div className="mt-3 inline-flex items-center gap-2 bg-cyan-600 text-white px-4 py-1.5 rounded-full text-sm font-heebo">
+                      <span>חיסכון עד ₪300</span>
                     </div>
                   </div>
-                </CardContent>
-
-                {/* Decorative corner accent */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full"></div>
-              </Card>
+                </div>
+              </div>
             </div>
 
-            {/* CTA */}
+            {/* Clean CTA */}
             <div className="text-center mt-12 animate-fade-in" style={{
-              animationDelay: '0.6s',
+              animationDelay: '0.4s',
               animationFillMode: 'forwards',
               opacity: 0
             }}>
-              <Button size="lg" className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-heebo text-lg px-12 py-6 shadow-lg hover:shadow-xl transition-all" onClick={() => document.getElementById('services')?.scrollIntoView({
-                behavior: 'smooth'
-              })}>
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-heebo text-lg px-12 py-6 shadow-lg hover:shadow-xl transition-all rounded-xl" 
+                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+              >
                 התחילו לחסוך עכשיו
                 <ArrowRight className="mr-2 h-5 w-5" />
               </Button>
