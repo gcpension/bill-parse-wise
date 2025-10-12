@@ -243,6 +243,55 @@ const Home = () => {
               opacity="0.85"
             />
             
+            {/* Stylish EASYSWITCH Text */}
+            <g transform="translate(100, 85)">
+              {/* Glow effect */}
+              <text
+                x="0"
+                y="0"
+                textAnchor="middle"
+                fill="white"
+                fontSize="24"
+                fontWeight="900"
+                fontFamily="Inter, system-ui, sans-serif"
+                letterSpacing="4"
+                style={{ 
+                  filter: 'drop-shadow(0 0 12px rgba(255, 255, 255, 0.8)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2))',
+                  textTransform: 'uppercase'
+                }}
+              >
+                EASY
+              </text>
+              <text
+                x="0"
+                y="32"
+                textAnchor="middle"
+                fill="white"
+                fontSize="24"
+                fontWeight="900"
+                fontFamily="Inter, system-ui, sans-serif"
+                letterSpacing="4"
+                style={{ 
+                  filter: 'drop-shadow(0 0 12px rgba(255, 255, 255, 0.8)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2))',
+                  textTransform: 'uppercase'
+                }}
+              >
+                SWITCH
+              </text>
+              
+              {/* Decorative underline */}
+              <line 
+                x1="-35" 
+                y1="42" 
+                x2="35" 
+                y2="42" 
+                stroke="white" 
+                strokeWidth="3" 
+                opacity="0.6"
+                strokeLinecap="round"
+              />
+            </g>
+            
             {/* Gradient definition */}
             <defs>
               <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
