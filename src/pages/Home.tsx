@@ -185,8 +185,24 @@ const Home = () => {
     setBannerCategory('');
   };
   return <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Floating Background Elements */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Animated Circles */}
+        <div className="absolute top-20 left-10 w-64 h-64 bg-cyan-100/30 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-16 w-80 h-80 bg-purple-100/25 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-32 left-1/4 w-72 h-72 bg-blue-100/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/3 right-1/3 w-96 h-96 bg-cyan-50/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        <div className="absolute bottom-20 right-20 w-60 h-60 bg-purple-50/35 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+        
+        {/* Small Floating Dots */}
+        <div className="absolute top-1/4 left-1/3 w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDuration: '3s' }}></div>
+        <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-purple-400 rounded-full animate-bounce" style={{ animationDuration: '4s', animationDelay: '0.5s' }}></div>
+        <div className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '1s' }}></div>
+        <div className="absolute top-3/4 right-1/3 w-3 h-3 bg-cyan-300 rounded-full animate-bounce" style={{ animationDuration: '4.5s', animationDelay: '1.5s' }}></div>
+      </div>
+
       {/* Top Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200 py-4">
+      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 py-4 relative z-50">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="flex items-center justify-between">
             {/* Logo on the left */}
@@ -224,7 +240,7 @@ const Home = () => {
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <img 
-            src={professionalServicesIllustration} 
+            src={heroBackgroundIllustration} 
             alt="" 
             className="w-full h-full object-contain object-center"
           />
