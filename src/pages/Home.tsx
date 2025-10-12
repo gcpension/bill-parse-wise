@@ -464,55 +464,69 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Before & After Compact Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-12">
-        <div className="container mx-auto px-4 lg:px-6 max-w-5xl">
-          {/* Compact Header */}
-          <div className="text-center mb-8">
-            <h2 className="text-2xl lg:text-3xl font-heebo font-bold text-gray-900 mb-2">
-              איך זה נראה היום לעומת 2025?
-            </h2>
-            <p className="text-base text-gray-600 font-assistant">
-              ההבדל במספרים
-            </p>
-          </div>
+      {/* Simple Timeline Comparison */}
+      <section className="bg-white py-12">
+        <div className="container mx-auto px-4 lg:px-6 max-w-4xl">
+          {/* Simple Title */}
+          <h2 className="text-2xl lg:text-3xl font-heebo font-bold text-center text-gray-900 mb-8">
+            למה 2025 עובד טוב יותר?
+          </h2>
 
-          {/* Compact Stats Grid */}
-          <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-            <div className="grid grid-cols-3 gap-4 text-center">
-              {/* Time Stat */}
-              <div className="space-y-2">
-                <div className="text-gray-400 text-sm font-assistant">זמן תהליך</div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-gray-600 font-heebo line-through text-lg">5 שעות</span>
-                  <span className="text-cyan-600 font-heebo font-bold text-2xl">5 דקות</span>
+          {/* Timeline Flow */}
+          <div className="relative">
+            {/* Horizontal Line */}
+            <div className="absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-gray-300 via-cyan-400 to-cyan-600"></div>
+            
+            <div className="relative grid grid-cols-1 md:grid-cols-4 gap-6">
+              {/* Item 1 */}
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-3 bg-white border-4 border-cyan-500 rounded-full flex items-center justify-center shadow-md">
+                  <Clock className="w-7 h-7 text-cyan-600" />
+                </div>
+                <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-100">
+                  <div className="text-xs text-gray-400 font-assistant mb-1">מ-</div>
+                  <div className="text-lg font-heebo font-bold text-gray-700 line-through">5 שעות</div>
+                  <div className="text-xs text-gray-400 font-assistant mb-2">ל-</div>
+                  <div className="text-xl font-heebo font-bold text-cyan-600">5 דקות</div>
                 </div>
               </div>
 
-              {/* Calls Stat */}
-              <div className="space-y-2 border-x border-gray-100">
-                <div className="text-gray-400 text-sm font-assistant">שיחות טלפון</div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-gray-600 font-heebo line-through text-lg">10+</span>
-                  <span className="text-cyan-600 font-heebo font-bold text-2xl">0</span>
+              {/* Item 2 */}
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-3 bg-white border-4 border-cyan-500 rounded-full flex items-center justify-center shadow-md">
+                  <Phone className="w-7 h-7 text-cyan-600" />
+                </div>
+                <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-100">
+                  <div className="text-xs text-gray-400 font-assistant mb-1">מ-</div>
+                  <div className="text-lg font-heebo font-bold text-gray-700 line-through">10+ שיחות</div>
+                  <div className="text-xs text-gray-400 font-assistant mb-2">ל-</div>
+                  <div className="text-xl font-heebo font-bold text-cyan-600">0 שיחות</div>
                 </div>
               </div>
 
-              {/* Savings Stat */}
-              <div className="space-y-2">
-                <div className="text-gray-400 text-sm font-assistant">חיסכון חודשי</div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-gray-600 font-heebo text-lg">₪950</span>
-                  <span className="text-cyan-600 font-heebo font-bold text-2xl">₪650</span>
+              {/* Item 3 */}
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-3 bg-white border-4 border-cyan-500 rounded-full flex items-center justify-center shadow-md">
+                  <Sparkles className="w-7 h-7 text-cyan-600" />
+                </div>
+                <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-100">
+                  <div className="text-xs text-gray-400 font-assistant mb-1">מ-</div>
+                  <div className="text-lg font-heebo font-bold text-gray-700 line-through">טפסים מורכבים</div>
+                  <div className="text-xs text-gray-400 font-assistant mb-2">ל-</div>
+                  <div className="text-xl font-heebo font-bold text-cyan-600">טופס חכם</div>
                 </div>
               </div>
-            </div>
 
-            {/* Bottom Result */}
-            <div className="mt-6 pt-6 border-t border-gray-100 text-center">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2 rounded-full">
-                <TrendingUp className="w-5 h-5" />
-                <span className="font-heebo font-bold">חיסכון של ₪300 בחודש</span>
+              {/* Item 4 */}
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                  <TrendingUp className="w-7 h-7 text-white" />
+                </div>
+                <div className="bg-gradient-to-br from-cyan-50 to-blue-50 p-3 rounded-xl shadow-md border-2 border-cyan-200">
+                  <div className="text-xs text-cyan-600 font-assistant mb-1">חיסכון</div>
+                  <div className="text-2xl font-heebo font-bold text-cyan-700">₪300</div>
+                  <div className="text-xs text-cyan-600 font-assistant">לחודש</div>
+                </div>
               </div>
             </div>
           </div>
