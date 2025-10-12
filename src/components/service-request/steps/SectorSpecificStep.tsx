@@ -63,8 +63,8 @@ export default function SectorSpecificStep({ formData, updateFormData }: SectorS
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">פרטים ייעודיים</h2>
-        <p className="text-gray-600">מידע ספציפי לתחום השירות שנבחר</p>
+        <h2 className="text-2xl font-bold text-foreground mb-3 font-heebo">פרטים ייעודיים</h2>
+        <p className="text-base text-muted-foreground font-assistant">מידע ספציפי לתחום השירות שנבחר</p>
       </div>
       {renderSectorFields()}
     </div>

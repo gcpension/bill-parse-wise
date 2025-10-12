@@ -35,12 +35,12 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="ml-1 p-0.5 rounded-full hover:bg-slate-100 transition-colors cursor-help">
-            <Info className="w-2.5 h-2.5 text-slate-500" />
+          <div className="ml-1 p-1 rounded-full hover:bg-slate-100 transition-colors cursor-help">
+            <Info className="w-4 h-4 text-slate-500" />
           </div>
         </TooltipTrigger>
         <TooltipContent side="top" className="max-w-xs">
-          <p className="text-[9px]">{content}</p>
+          <p className="text-sm">{content}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -130,34 +130,34 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
   // First step - Action Type
   if (!formData.action_type) {
     return (
-      <div className="text-center space-y-3 max-w-xl mx-auto">
-        <div className="mb-4">
-          <h1 className="text-base font-bold bg-gradient-to-l from-primary to-primary/80 bg-clip-text text-transparent mb-1">
+      <div className="text-center space-y-5 max-w-2xl mx-auto">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold bg-gradient-to-l from-primary to-primary/80 bg-clip-text text-transparent mb-2">
             איזה פעולה תרצה לבצע?
           </h1>
-          <p className="text-slate-600 text-[10px]">
+          <p className="text-muted-foreground text-base">
             בחר את סוג הבקשה שתרצה להגיש
           </p>
         </div>
         
-        <div className="space-y-2">
+        <div className="space-y-4">
           {actionTypes.map((action) => {
             const IconComponent = action.icon;
             return (
               <div key={action.value} className="relative">
                 <button
                   onClick={() => updateFormData({ action_type: action.value as any })}
-                  className="w-full p-3 bg-gradient-to-br from-slate-50 to-slate-100/50 border border-slate-200/60 rounded-lg hover:border-primary/30 hover:shadow-md transition-all duration-200 text-right group"
+                  className="w-full p-5 bg-gradient-to-br from-slate-50 to-slate-100/50 border-2 border-slate-200/60 rounded-xl hover:border-primary/40 hover:shadow-lg transition-all duration-200 text-right group"
                 >
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg flex items-center justify-center group-hover:from-primary/20 group-hover:to-primary/10 transition-colors">
-                      <IconComponent className="w-3.5 h-3.5 text-primary" />
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl flex items-center justify-center group-hover:from-primary/20 group-hover:to-primary/10 transition-colors">
+                      <IconComponent className="w-6 h-6 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <div className="text-xs font-bold text-slate-900 mb-0.5">
+                      <div className="text-lg font-bold text-foreground mb-1">
                         {action.label}
                       </div>
-                      <div className="text-[9px] text-slate-600">
+                      <div className="text-sm text-muted-foreground">
                         {action.description}
                       </div>
                     </div>
@@ -175,33 +175,33 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
   // Second step - Sector
   if (!formData.sector) {
     return (
-      <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="mb-4">
-          <h1 className="text-base font-bold bg-gradient-to-l from-primary to-primary/80 bg-clip-text text-transparent mb-1">
+      <div className="text-center space-y-5 max-w-3xl mx-auto">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold bg-gradient-to-l from-primary to-primary/80 bg-clip-text text-transparent mb-2">
             באיזה תחום?
           </h1>
-          <p className="text-slate-600 text-[10px]">
+          <p className="text-muted-foreground text-base">
             בחר את סוג השירות שברצונך לטפל בו
           </p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {sectors.map((sector) => {
             const IconComponent = sector.icon;
             return (
               <div key={sector.value} className="relative">
                 <button
                   onClick={() => updateFormData({ sector: sector.value as any })}
-                  className="w-full p-3 bg-gradient-to-br from-slate-50 to-slate-100/50 border border-slate-200/60 rounded-lg hover:border-primary/30 hover:shadow-md transition-all duration-200 group"
+                  className="w-full p-5 bg-gradient-to-br from-slate-50 to-slate-100/50 border-2 border-slate-200/60 rounded-xl hover:border-primary/40 hover:shadow-lg transition-all duration-200 group"
                 >
-                  <div className="flex flex-col items-center space-y-1.5">
-                    <div className="w-8 h-8 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg flex items-center justify-center group-hover:from-primary/20 group-hover:to-primary/10 transition-colors">
-                      <IconComponent className="w-4 h-4 text-primary" />
+                  <div className="flex flex-col items-center space-y-3">
+                    <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl flex items-center justify-center group-hover:from-primary/20 group-hover:to-primary/10 transition-colors">
+                      <IconComponent className="w-7 h-7 text-primary" />
                     </div>
-                    <div className="text-[10px] font-bold text-slate-900">
+                    <div className="text-base font-bold text-foreground">
                       {sector.label}
                     </div>
-                    <div className="absolute top-1 left-1">
+                    <div className="absolute top-2 left-2">
                       <InfoTooltip content={sector.info} />
                     </div>
                   </div>
@@ -216,17 +216,17 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
 
   // Third step - Customer Type
   return (
-    <div className="text-center space-y-3 max-w-xl mx-auto">
-      <div className="mb-4">
-        <h1 className="text-base font-bold bg-gradient-to-l from-primary to-primary/80 bg-clip-text text-transparent mb-1">
+    <div className="text-center space-y-5 max-w-2xl mx-auto">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold bg-gradient-to-l from-primary to-primary/80 bg-clip-text text-transparent mb-2">
           סוג הלקוח?
         </h1>
-        <p className="text-slate-600 text-[10px]">
+        <p className="text-muted-foreground text-base">
           בחר את סוג הלקוח המתאים לך
         </p>
       </div>
       
-      <div className="space-y-2">
+      <div className="space-y-4">
         {customerTypes.map((type) => {
           const IconComponent = type.icon;
           return (
@@ -234,39 +234,39 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
               <button
                 onClick={() => updateFormData({ customer_type: type.value as any })}
                 className={cn(
-                  "w-full p-3 border rounded-lg transition-all duration-200 group",
+                  "w-full p-5 border-2 rounded-xl transition-all duration-200 group",
                   formData.customer_type === type.value
-                    ? "border-primary/40 bg-primary/5 shadow-sm"
-                    : "border-slate-200/60 bg-gradient-to-br from-slate-50 to-slate-100/50 hover:border-primary/20 hover:shadow-md"
+                    ? "border-primary/50 bg-primary/10 shadow-md"
+                    : "border-slate-200/60 bg-gradient-to-br from-slate-50 to-slate-100/50 hover:border-primary/30 hover:shadow-lg"
                 )}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
                   <div className={cn(
-                    "w-7 h-7 rounded-lg flex items-center justify-center transition-colors",
+                    "w-12 h-12 rounded-xl flex items-center justify-center transition-colors",
                     formData.customer_type === type.value
-                      ? "bg-primary/20"
+                      ? "bg-primary/30"
                       : "bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10"
                   )}>
-                    <IconComponent className="w-3.5 h-3.5 text-primary" />
+                    <IconComponent className="w-6 h-6 text-primary" />
                   </div>
                   <div className="flex-1 text-right">
-                    <div className="text-xs font-bold text-slate-900 mb-0.5">
+                    <div className="text-lg font-bold text-foreground mb-1">
                       {type.label}
                     </div>
-                    <div className="text-[9px] text-slate-600">
+                    <div className="text-sm text-muted-foreground">
                       {type.description}
                     </div>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-2">
                     <InfoTooltip content={type.info} />
                     <div className={cn(
-                      "w-3.5 h-3.5 rounded-full border transition-colors",
+                      "w-6 h-6 rounded-full border-2 transition-colors flex items-center justify-center",
                       formData.customer_type === type.value
                         ? "border-primary bg-primary"
                         : "border-slate-300"
                     )}>
                       {formData.customer_type === type.value && (
-                        <CheckCircle className="w-3.5 h-3.5 text-white" />
+                        <CheckCircle className="w-4 h-4 text-white" />
                       )}
                     </div>
                   </div>
@@ -279,21 +279,21 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
 
       {/* Business-specific fields */}
       {formData.customer_type === 'business' && (
-        <div className="mt-4 p-3 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-lg border border-slate-200/60">
-          <div className="flex items-center gap-1.5 mb-3">
-            <div className="w-5 h-5 bg-gradient-to-br from-primary/10 to-primary/5 rounded flex items-center justify-center">
-              <Building2 className="w-3 h-3 text-primary" />
+        <div className="mt-6 p-5 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-xl border-2 border-slate-200/60">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-primary" />
             </div>
-            <h3 className="text-xs font-bold text-slate-900">
+            <h3 className="text-lg font-bold text-foreground">
               פרטים עסקיים נוספים
             </h3>
           </div>
           
-          <div className="space-y-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <div className="flex items-center mb-0.5">
-                  <Label htmlFor="company_name" className="text-[8px] font-semibold text-slate-700">
+                <div className="flex items-center mb-2">
+                  <Label htmlFor="company_name" className="text-sm font-semibold text-foreground">
                     שם החברה <span className="text-red-500">*</span>
                   </Label>
                   <InfoTooltip content="הזן את שם החברה המלא." />
@@ -303,12 +303,12 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
                   value={formData.company_name || ''}
                   onChange={(e) => updateFormData({ company_name: e.target.value })}
                   placeholder="שם החברה המלא"
-                  className="h-7 border-slate-200 text-[9px]"
+                  className="h-11 border-slate-200 text-base"
                 />
               </div>
               <div>
-                <div className="flex items-center mb-0.5">
-                  <Label htmlFor="corp_registration_number" className="text-[8px] font-semibold text-slate-700">
+                <div className="flex items-center mb-2">
+                  <Label htmlFor="corp_registration_number" className="text-sm font-semibold text-foreground">
                     מספר רישום חברה <span className="text-red-500">*</span>
                   </Label>
                   <InfoTooltip content="מספר ח.פ או ע.ר" />
@@ -318,15 +318,15 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
                   value={formData.corp_registration_number || ''}
                   onChange={(e) => updateFormData({ corp_registration_number: e.target.value })}
                   placeholder="מספר ח.פ/ע.ר"
-                  className="h-7 border-slate-200 text-[9px]"
+                  className="h-11 border-slate-200 text-base"
                 />
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <div className="flex items-center mb-0.5">
-                  <Label htmlFor="signer_name" className="text-[8px] font-semibold text-slate-700">
+                <div className="flex items-center mb-2">
+                  <Label htmlFor="signer_name" className="text-sm font-semibold text-foreground">
                     שם החותם <span className="text-red-500">*</span>
                   </Label>
                   <InfoTooltip content="שם המורשה לחתום בשם החברה" />
@@ -336,12 +336,12 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
                   value={formData.signer_name || ''}
                   onChange={(e) => updateFormData({ signer_name: e.target.value })}
                   placeholder="שם מלא של החותם"
-                  className="h-7 border-slate-200 text-[9px]"
+                  className="h-11 border-slate-200 text-base"
                 />
               </div>
               <div>
-                <div className="flex items-center mb-0.5">
-                  <Label htmlFor="signer_title" className="text-[8px] font-semibold text-slate-700">
+                <div className="flex items-center mb-2">
+                  <Label htmlFor="signer_title" className="text-sm font-semibold text-foreground">
                     תפקיד החותם <span className="text-red-500">*</span>
                   </Label>
                   <InfoTooltip content="התפקיד הרשמי" />
@@ -351,7 +351,7 @@ export default function GeneralChoicesStep({ formData, updateFormData }: General
                   value={formData.signer_title || ''}
                   onChange={(e) => updateFormData({ signer_title: e.target.value })}
                   placeholder="מנכ״ל, בעלים"
-                  className="h-7 border-slate-200 text-[9px]"
+                  className="h-11 border-slate-200 text-base"
                 />
               </div>
             </div>

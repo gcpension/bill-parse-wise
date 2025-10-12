@@ -88,40 +88,40 @@ export default function DeclarationsStep({ formData, updateFormData }: Declarati
   ];
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      {/* Simple Header */}
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold font-heebo text-foreground mb-2">
+    <div className="space-y-8 max-w-5xl mx-auto">
+      {/* Header */}
+      <div className="text-center mb-10">
+        <h2 className="text-3xl font-bold font-heebo text-foreground mb-3">
           הצהרות והסכמות
         </h2>
-        <p className="text-muted-foreground font-assistant">
-          יש לקרוא בעיון ולאשר את כל ההצהרות כדי להמשיך
+        <p className="text-base text-muted-foreground font-assistant">
+          אנא קרא בעיון כל הצהרה וסמן את תיבת האישור
         </p>
       </div>
 
-      {/* Simple Progress */}
+      {/* Progress */}
       {completedCount > 0 && (
-        <div className="bg-muted/50 rounded-lg p-4 border border-border">
+        <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-5 border-2 border-primary/20">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <CheckCircle className={cn(
-                "w-5 h-5",
+                "w-6 h-6",
                 allDeclarationsComplete ? "text-green-600" : "text-muted-foreground"
               )} />
-              <span className="font-medium font-heebo text-sm">
-                {allDeclarationsComplete ? "כל ההצהרות אושרו" : `${completedCount} מתוך 4 אושרו`}
+              <span className="font-bold font-heebo text-base">
+                {allDeclarationsComplete ? "כל ההצהרות אושרו בהצלחה!" : `${completedCount} מתוך 4 הצהרות אושרו`}
               </span>
             </div>
-            <Badge variant={allDeclarationsComplete ? "default" : "secondary"}>
+            <Badge variant={allDeclarationsComplete ? "default" : "secondary"} className="text-base px-4 py-1">
               {completedCount}/4
             </Badge>
           </div>
         </div>
       )}
 
-      {/* Clean Declarations List */}
-      <div className="space-y-4">
-        {declarations.map((declaration) => {
+      {/* Declarations List */}
+      <div className="space-y-6">
+        {declarations.map((declaration, index) => {
           const isChecked = formData[declaration.key] as boolean;
           const isExpanded = expandedCard === declaration.key;
           const Icon = declaration.icon;
@@ -130,67 +130,60 @@ export default function DeclarationsStep({ formData, updateFormData }: Declarati
             <Card 
               key={declaration.key} 
               className={cn(
-                "transition-all duration-300",
+                "transition-all duration-300 hover:shadow-lg",
                 isChecked 
-                  ? "border-primary bg-primary/5" 
-                  : "border-border hover:border-primary/30"
+                  ? "border-2 border-green-500 bg-green-50/50 shadow-md" 
+                  : "border-2 border-border hover:border-primary/40"
               )}
             >
-              <CardContent className="p-5">
-                {/* Main Content */}
-                <div className="flex items-start gap-4 mb-4">
-                  {/* Simple Icon */}
+              <CardContent className="p-6">
+                {/* Number Badge */}
+                <div className="flex items-start gap-4 mb-5">
                   <div className={cn(
-                    "w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0",
-                    isChecked ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                    "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-lg",
+                    isChecked 
+                      ? "bg-green-600 text-white" 
+                      : "bg-primary/10 text-primary border-2 border-primary/30"
                   )}>
-                    <Icon className="w-5 h-5" />
+                    {isChecked ? <CheckCircle className="w-6 h-6" /> : index + 1}
                   </div>
                   
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-base font-bold font-heebo text-foreground">
-                        {declaration.title}
-                      </h3>
-                      {isChecked && (
-                        <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground font-assistant">
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold font-heebo text-foreground mb-2 flex items-center gap-2">
+                      <Icon className="w-5 h-5 text-primary" />
+                      {declaration.title}
+                    </h3>
+                    <p className="text-base text-foreground/80 font-assistant leading-relaxed">
                       {declaration.description}
                     </p>
                   </div>
                 </div>
                 
-                {/* Expandable Details */}
-                <button
-                  onClick={() => setExpandedCard(isExpanded ? null : declaration.key)}
-                  className="w-full text-left text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 mb-3"
-                >
-                  {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                  {isExpanded ? "הסתר פרטים" : "הצג פרטים"}
-                </button>
-                
-                {isExpanded && (
-                  <div className="bg-muted/50 rounded-lg p-4 mb-4 space-y-2">
+                {/* Details Section - Always Visible */}
+                <div className="bg-muted/30 rounded-xl p-5 mb-5 border border-border">
+                  <h4 className="text-sm font-bold text-primary mb-3 flex items-center gap-2">
+                    <span className="w-1 h-4 bg-primary rounded-full"></span>
+                    פירוט:
+                  </h4>
+                  <ul className="space-y-3">
                     {declaration.details.map((detail, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                        <span className="text-sm text-foreground/80 font-assistant">
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+                        <span className="text-base text-foreground font-assistant leading-relaxed">
                           {detail}
                         </span>
-                      </div>
+                      </li>
                     ))}
-                  </div>
-                )}
+                  </ul>
+                </div>
                 
-                {/* Checkbox */}
+                {/* Checkbox - Prominent */}
                 <div 
                   className={cn(
-                    "flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-colors",
+                    "flex items-center gap-4 p-5 rounded-xl border-3 cursor-pointer transition-all hover:scale-[1.02]",
                     isChecked 
-                      ? "border-primary bg-primary/5" 
-                      : "border-dashed border-border hover:border-primary/30 hover:bg-muted/30"
+                      ? "border-green-500 bg-green-50" 
+                      : "border-dashed border-2 border-primary hover:border-primary hover:bg-primary/5"
                   )}
                   onClick={() => handleCheckboxChange(declaration.key, !isChecked)}
                 >
@@ -199,11 +192,20 @@ export default function DeclarationsStep({ formData, updateFormData }: Declarati
                     onCheckedChange={(checked) => 
                       handleCheckboxChange(declaration.key, checked as boolean)
                     }
-                    className="w-5 h-5"
+                    className="w-6 h-6"
                   />
-                  <span className="text-sm font-medium font-heebo text-foreground">
-                    אני מסכים ומאשר את ההצהרה
-                    <span className="text-destructive mr-1">*</span>
+                  <span className="text-lg font-bold font-heebo text-foreground flex items-center gap-2">
+                    {isChecked ? (
+                      <>
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        הצהרה זו אושרה
+                      </>
+                    ) : (
+                      <>
+                        אני מאשר/ת את ההצהרה הזו
+                        <span className="text-destructive text-xl">*</span>
+                      </>
+                    )}
                   </span>
                 </div>
               </CardContent>
@@ -214,13 +216,16 @@ export default function DeclarationsStep({ formData, updateFormData }: Declarati
 
       {/* Bottom Summary */}
       {allDeclarationsComplete && (
-        <div className="text-center p-4 bg-green-50 border border-green-200 rounded-lg">
-          <div className="flex items-center justify-center gap-2">
-            <CheckCircle className="w-5 h-5 text-green-600" />
-            <p className="font-medium text-green-700 font-heebo">
+        <div className="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-xl shadow-lg">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <CheckCircle className="w-7 h-7 text-green-600" />
+            <p className="font-bold text-xl text-green-700 font-heebo">
               מעולה! כל ההצהרות אושרו בהצלחה
             </p>
           </div>
+          <p className="text-base text-green-600 font-assistant">
+            ניתן להמשיך לשלב הבא
+          </p>
         </div>
       )}
     </div>
