@@ -74,20 +74,20 @@ export const SwitchRequestForm = ({ isOpen, onClose, selectedPlan }: SwitchReque
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto" dir="rtl">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
-            <FileText className="h-6 w-6" />
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-4" dir="rtl">
+        <DialogHeader className="pb-2">
+          <DialogTitle className="flex items-center gap-2 text-base">
+            <FileText className="h-4 w-4" />
             טופס מעבר ספק - {selectedPlan.company}
           </DialogTitle>
         </DialogHeader>
 
         {/* Plan Details Card */}
-        <Card className="mb-4">
-          <CardHeader>
-            <CardTitle className="text-lg">המסלול שנבחר</CardTitle>
+        <Card className="mb-2">
+          <CardHeader className="py-2 px-3">
+            <CardTitle className="text-sm">המסלול שנבחר</CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-4 text-sm">
+          <CardContent className="grid grid-cols-2 gap-2 text-xs py-2 px-3">
             <div><strong>חברה:</strong> {selectedPlan.company}</div>
             <div><strong>מסלול:</strong> {selectedPlan.planName}</div>
             <div><strong>קטגוריה:</strong> {selectedPlan.category}</div>
@@ -107,19 +107,19 @@ export const SwitchRequestForm = ({ isOpen, onClose, selectedPlan }: SwitchReque
         </Card>
 
         {/* Customer Type Selection */}
-        <Card className="mb-4">
-          <CardHeader>
-            <CardTitle className="text-lg">סוג לקוח</CardTitle>
+        <Card className="mb-2">
+          <CardHeader className="py-2 px-3">
+            <CardTitle className="text-sm">סוג לקוח</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="py-2 px-3">
             <Tabs value={customerType} onValueChange={(value) => setCustomerType(value as CustomerType)} dir="rtl">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="private" className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
+              <TabsList className="grid w-full grid-cols-2 h-8">
+                <TabsTrigger value="private" className="flex items-center gap-1 text-xs">
+                  <User className="h-3 w-3" />
                   לקוח פרטי
                 </TabsTrigger>
-                <TabsTrigger value="business" className="flex items-center gap-2">
-                  <Building2 className="h-4 w-4" />
+                <TabsTrigger value="business" className="flex items-center gap-1 text-xs">
+                  <Building2 className="h-3 w-3" />
                   לקוח עסקי
                 </TabsTrigger>
               </TabsList>
@@ -128,7 +128,7 @@ export const SwitchRequestForm = ({ isOpen, onClose, selectedPlan }: SwitchReque
         </Card>
 
         {/* Dynamic Form Component */}
-        <div className="mt-4">
+        <div className="mt-2">
           {renderFormComponent()}
         </div>
       </DialogContent>

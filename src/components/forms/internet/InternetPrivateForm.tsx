@@ -107,12 +107,12 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
       <Card>
-        <CardHeader><CardTitle>פרטים אישיים</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-2 gap-4">
+        <CardHeader className="py-2 px-3"><CardTitle className="text-sm">פרטים אישיים</CardTitle></CardHeader>
+        <CardContent className="grid grid-cols-2 gap-2 py-2 px-3">
           <div>
-            <Label className="flex items-center gap-2">
+            <Label className="flex items-center gap-1 text-xs">
               שם מלא *
               <FieldInfoTooltip content={fieldInfo.fullName} />
             </Label>
@@ -121,6 +121,7 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
               value={formData.fullName} 
               onChange={(e) => updateFormData("fullName", e.target.value)} 
               required 
+              className="h-8 text-sm"
             />
           </div>
           <div>
@@ -165,8 +166,8 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
       </Card>
 
       <Card>
-        <CardHeader><CardTitle>פרטי השירות</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-2 gap-4">
+        <CardHeader className="py-2 px-3"><CardTitle className="text-sm">פרטי השירות</CardTitle></CardHeader>
+        <CardContent className="grid grid-cols-2 gap-2 py-2 px-3">
           <div>
             <Label className="flex items-center gap-2">
               ספק תשתית נוכחי *
@@ -248,8 +249,8 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
       </Card>
 
       <Card>
-        <CardHeader><CardTitle>העלאת מסמכים</CardTitle></CardHeader>
-        <CardContent>
+        <CardHeader className="py-2 px-3"><CardTitle className="text-sm">העלאת מסמכים</CardTitle></CardHeader>
+        <CardContent className="py-2 px-3">
           <Label className="flex items-center gap-2">
             <Upload className="h-4 w-4" />
             צילום ת״ז (חובה) *
@@ -307,9 +308,9 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
         </CardContent>
       </Card>
 
-      <div className="flex gap-4 pt-4">
-        <Button type="submit" className="flex-1"><FileText className="h-4 w-4 ml-2" />שלח בקשה וצור PDF</Button>
-        <Button type="button" variant="outline" onClick={onClose}>ביטול</Button>
+      <div className="flex gap-2 pt-2">
+        <Button type="submit" className="flex-1 h-8 text-sm"><FileText className="h-3 w-3 ml-1" />שלח בקשה וצור PDF</Button>
+        <Button type="button" variant="outline" onClick={onClose} className="h-8 text-sm">ביטול</Button>
       </div>
     </form>
   );

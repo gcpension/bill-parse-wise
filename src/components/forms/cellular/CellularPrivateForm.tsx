@@ -261,13 +261,13 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
   const checklistItems = getChecklistItems('cellular', 'private');
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
       {/* Personal Details */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">פרטים אישיים</CardTitle>
+        <CardHeader className="py-2 px-3">
+          <CardTitle className="text-sm">פרטים אישיים</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2 py-2 px-3">
           <div>
             <Label htmlFor="fullName" className="flex items-center gap-2">
               שם מלא *
@@ -327,10 +327,10 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
 
       {/* Service Details */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">פרטי השירות</CardTitle>
+        <CardHeader className="py-2 px-3">
+          <CardTitle className="text-sm">פרטי השירות</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2 py-2 px-3">
           <div>
             <Label htmlFor="currentProvider" className="flex items-center gap-2">
               ספק נוכחי *
@@ -378,8 +378,8 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
 
       {/* Phone Numbers */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between text-lg">
+        <CardHeader className="py-2 px-3">
+          <CardTitle className="flex items-center justify-between text-sm">
             מספרי קווים להעברה
             <Button
               type="button"
@@ -558,12 +558,12 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
       </Card>
 
       {/* Submit Button */}
-      <div className="flex gap-4 pt-4">
-        <Button type="submit" className="flex-1">
-          <FileText className="h-4 w-4 ml-2" />
+      <div className="flex gap-2 pt-2">
+        <Button type="submit" className="flex-1 h-8 text-sm">
+          <FileText className="h-3 w-3 ml-1" />
           שלח בקשה וצור PDF
         </Button>
-        <Button type="button" variant="outline" onClick={onClose}>
+        <Button type="button" variant="outline" onClick={onClose} className="h-8 text-sm">
           ביטול
         </Button>
       </div>
