@@ -321,9 +321,9 @@ const Home = () => {
                 textAnchor="middle"
                 fill="url(#textGradient)"
                 fontSize="36"
-                fontWeight="800"
-                fontFamily="'Bebas Neue', 'Impact', 'Arial Black', sans-serif"
-                letterSpacing="4"
+                fontWeight="900"
+                fontFamily="'Anton', 'Oswald', 'Bebas Neue', sans-serif"
+                letterSpacing="5"
                 style={{ 
                   filter: 'drop-shadow(2px 2px 4px rgba(126, 34, 206, 0.3))',
                   textTransform: 'uppercase'
@@ -342,9 +342,9 @@ const Home = () => {
                 textAnchor="middle"
                 fill="url(#textGradient)"
                 fontSize="36"
-                fontWeight="800"
-                fontFamily="'Bebas Neue', 'Impact', 'Arial Black', sans-serif"
-                letterSpacing="4"
+                fontWeight="900"
+                fontFamily="'Anton', 'Oswald', 'Bebas Neue', sans-serif"
+                letterSpacing="5"
                 style={{ 
                   filter: 'drop-shadow(2px 2px 4px rgba(126, 34, 206, 0.3))',
                   textTransform: 'uppercase'
