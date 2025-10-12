@@ -243,61 +243,83 @@ const Home = () => {
               opacity="0.85"
             />
             
-            {/* Clean Modern Typography with Broken Letters Effect */}
-            <g transform="translate(100, 95)">
-              {/* EASY - with cut/broken effect using clipPath */}
-              <defs>
-                <clipPath id="brokenEasy">
-                  <rect x="-60" y="-18" width="25" height="20"/>
-                  <rect x="-33" y="-18" width="20" height="20"/>
-                  <rect x="-11" y="-18" width="18" height="20"/>
-                  <rect x="9" y="-18" width="22" height="20"/>
-                </clipPath>
-                <clipPath id="brokenSwitch">
-                  <rect x="-70" y="14" width="20" height="20"/>
-                  <rect x="-48" y="14" width="24" height="20"/>
-                  <rect x="-22" y="14" width="18" height="20"/>
-                  <rect x="-2" y="14" width="16" height="20"/>
-                  <rect x="16" y="14" width="18" height="20"/>
-                  <rect x="36" y="14" width="35" height="20"/>
-                </clipPath>
-              </defs>
+            {/* Broken/Distorted Typography with Decorative Element */}
+            <g transform="translate(100, 90)">
+              {/* White decorative circle element */}
+              <circle cx="-55" cy="10" r="8" fill="white" opacity="0.9">
+                <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="-55" cy="10" r="12" fill="none" stroke="white" strokeWidth="2" opacity="0.5"/>
               
-              {/* EASY with broken effect */}
+              {/* EASY - Broken style with stroke and dashes */}
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
-                fill="white"
-                fontSize="28"
-                fontWeight="800"
-                fontFamily="Poppins, Nunito, Quicksand, Rounded, sans-serif"
-                letterSpacing="-1"
-                clipPath="url(#brokenEasy)"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                strokeDasharray="3 2"
+                fontSize="30"
+                fontWeight="900"
+                fontFamily="Impact, Arial Black, sans-serif"
+                letterSpacing="2"
                 style={{ 
-                  filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
+                  filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.6))'
                 }}
               >
-                easy
+                EASY
               </text>
-              
-              {/* SWITCH with broken effect */}
               <text
-                x="0"
-                y="32"
+                x="1"
+                y="1"
                 textAnchor="middle"
                 fill="white"
-                fontSize="28"
-                fontWeight="800"
-                fontFamily="Poppins, Nunito, Quicksand, Rounded, sans-serif"
-                letterSpacing="-1"
-                clipPath="url(#brokenSwitch)"
+                fontSize="30"
+                fontWeight="900"
+                fontFamily="Impact, Arial Black, sans-serif"
+                letterSpacing="2"
+                opacity="0.3"
+              >
+                EASY
+              </text>
+              
+              {/* SWITCH - Broken style */}
+              <text
+                x="0"
+                y="34"
+                textAnchor="middle"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                strokeDasharray="3 2"
+                fontSize="30"
+                fontWeight="900"
+                fontFamily="Impact, Arial Black, sans-serif"
+                letterSpacing="2"
                 style={{ 
-                  filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
+                  filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.6))'
                 }}
               >
-                switch
+                SWITCH
               </text>
+              <text
+                x="1"
+                y="35"
+                textAnchor="middle"
+                fill="white"
+                fontSize="30"
+                fontWeight="900"
+                fontFamily="Impact, Arial Black, sans-serif"
+                letterSpacing="2"
+                opacity="0.3"
+              >
+                SWITCH
+              </text>
+              
+              {/* Additional small white squares decoration */}
+              <rect x="60" cy="15" width="6" height="6" fill="white" opacity="0.8" transform="rotate(45 63 18)"/>
+              <rect x="58" cy="28" width="4" height="4" fill="white" opacity="0.6" transform="rotate(45 60 30)"/>
             </g>
             
             {/* Gradient definition */}
