@@ -548,97 +548,200 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section ref={whyChooseUs.elementRef} className={`bg-white relative transition-all duration-700 ${whyChooseUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Content Side */}
-            <div className="order-2 lg:order-1">
-              <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-cyan-700 mb-6">
-                למה שווה לבדוק אצלנו?
-              </h2>
-              <p className="text-xl text-gray-700 mb-8 font-assistant leading-relaxed">
-                אנחנו לא רק מוצאים לכם חיסכון - אנחנו מבטיחים שהמעבר יהיה חלק, מהיר ובטוח
-              </p>
-              
-              <div className="space-y-6 mb-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <CheckCircle className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-heebo font-semibold text-cyan-700 mb-2">
-                      ניתוח מותאם אישית
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed font-assistant">
-                      המערכת שלנו בודקת את הצרכים הספציפיים שלכם ומוצאת את החבילות המתאימות ביותר
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <CheckCircle className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-heebo font-semibold text-cyan-700 mb-2">
-                      כיסוי מקיף לכל הבית
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed font-assistant">
-                      חשמל, סלולר, אינטרנט וטלוויזיה - בודקים הכול במקום אחד וחוסכים זמן
-                    </p>
+      {/* Never Been Easier Section - Clean & Impressive */}
+      <section ref={whyChooseUs.elementRef} className={`relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-white py-20 transition-all duration-700 ${whyChooseUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        {/* Background Decoration */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-cyan-100/30 to-purple-100/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-tl from-blue-100/30 to-pink-100/20 rounded-full blur-3xl" />
+        
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <div className="inline-block mb-4">
+              <Badge className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-6 py-2 text-base font-['Rubik']">
+                העידן החדש של מעברים
+              </Badge>
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 font-['Rubik']">
+              מעולם לא היה{" "}
+              <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 text-transparent bg-clip-text">
+                קל יותר
+              </span>
+              {" "}לבצע מעבר
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-['Rubik']">
+              שכחתם מהבירוקרטיה, השיחות האינסופיות והטפסים המסובכים
+            </p>
+          </div>
+
+          {/* Main Visual Timeline */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+            {/* Step 1 */}
+            <div className="group relative">
+              <div className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-cyan-300 h-full">
+                {/* Number Badge */}
+                <div className="absolute -top-4 right-8">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg font-['Rubik']">
+                    1
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <CheckCircle className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-heebo font-semibold text-cyan-700 mb-2">
-                      מעבר מהיר וללא בירוקרטיה
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed font-assistant">
-                      אנחנו מטפלים בכל הניירת והתיאומים - אתם רק חותמים ואנחנו דואגים לכל השאר
-                    </p>
+                {/* Icon */}
+                <div className="mb-6 flex justify-center">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-100 to-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Search className="w-10 h-10 text-cyan-600" />
                   </div>
                 </div>
-              </div>
-              
-              {/* Trust Indicators */}
-              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold text-cyan-700 mb-4 font-heebo text-center">
-                  יתרונות נוספים שחשוב לדעת
+
+                {/* Content */}
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center font-['Rubik']">
+                  מזינים פרטים
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 text-center">
-                    <CheckCircle className="w-6 h-6 text-cyan-600 mx-auto mb-2" />
-                    <h4 className="font-semibold text-cyan-700 mb-1 font-heebo text-sm">ללא התחייבות</h4>
-                    <p className="text-xs text-gray-600 font-assistant">אתם מחליטים בסוף</p>
-                  </div>
-                  <div className="bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 text-center">
-                    <CheckCircle className="w-6 h-6 text-cyan-600 mx-auto mb-2" />
-                    <h4 className="font-semibold text-cyan-700 mb-1 font-heebo text-sm">מעקב אחרי התהליך</h4>
-                    <p className="text-xs text-gray-600 font-assistant">עדכונים לאורך כל הדרך</p>
-                  </div>
-                  <div className="bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 text-center">
-                    <CheckCircle className="w-6 h-6 text-cyan-600 mx-auto mb-2" />
-                    <h4 className="font-semibold text-cyan-700 mb-1 font-heebo text-sm">תמיכה מלאה</h4>
-                    <p className="text-xs text-gray-600 font-assistant">צוות מקצועי לרשותכם</p>
+                <p className="text-gray-600 text-center leading-relaxed font-['Rubik']">
+                  אתם מספרים לנו על השירותים הנוכחיים שלכם - זה לוקח 2 דקות
+                </p>
+                
+                {/* Time Badge */}
+                <div className="mt-6 flex justify-center">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-50 rounded-full">
+                    <Clock className="w-4 h-4 text-cyan-600" />
+                    <span className="text-sm font-semibold text-cyan-700 font-['Rubik']">2 דקות</span>
                   </div>
                 </div>
               </div>
             </div>
-            
-            {/* Illustration Side */}
-            <div className="order-1 lg:order-2 flex justify-center">
-              <div className="w-full max-w-lg">
-                <img src={familySavingsHero} alt="איור של אישה עובדת על השוואת תעריפי שירותי הבית" className="w-full h-auto" style={{
-                mixBlendMode: 'multiply',
-                backgroundColor: 'transparent'
-              }} />
+
+            {/* Step 2 */}
+            <div className="group relative">
+              <div className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-purple-300 h-full">
+                {/* Number Badge */}
+                <div className="absolute -top-4 right-8">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold text-xl shadow-lg font-['Rubik']">
+                    2
+                  </div>
+                </div>
+                
+                {/* Icon */}
+                <div className="mb-6 flex justify-center">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Sparkles className="w-10 h-10 text-purple-600" />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center font-['Rubik']">
+                  אנחנו מנתחים
+                </h3>
+                <p className="text-gray-600 text-center leading-relaxed font-['Rubik']">
+                  המערכת שלנו סורקת את כל השוק ומוצאת את ההצעות הטובות ביותר עבורכם
+                </p>
+                
+                {/* Time Badge */}
+                <div className="mt-6 flex justify-center">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 rounded-full">
+                    <TrendingUp className="w-4 h-4 text-purple-600" />
+                    <span className="text-sm font-semibold text-purple-700 font-['Rubik']">רגע קט</span>
+                  </div>
+                </div>
               </div>
             </div>
+
+            {/* Step 3 */}
+            <div className="group relative">
+              <div className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-green-300 h-full">
+                {/* Number Badge */}
+                <div className="absolute -top-4 right-8">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-xl shadow-lg font-['Rubik']">
+                    3
+                  </div>
+                </div>
+                
+                {/* Icon */}
+                <div className="mb-6 flex justify-center">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <CheckCircle className="w-10 h-10 text-green-600" />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center font-['Rubik']">
+                  מבצעים מעבר
+                </h3>
+                <p className="text-gray-600 text-center leading-relaxed font-['Rubik']">
+                  אנחנו מטפלים בכל הניירת, השיחות והתיאומים - אתם רק נהנים מהחיסכון
+                </p>
+                
+                {/* Time Badge */}
+                <div className="mt-6 flex justify-center">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 rounded-full">
+                    <Star className="w-4 h-4 text-green-600" />
+                    <span className="text-sm font-semibold text-green-700 font-['Rubik']">אוטומטי</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Benefits Grid */}
+          <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-xl border-2 border-gray-100">
+            <h3 className="text-2xl lg:text-3xl font-bold text-center text-gray-900 mb-10 font-['Rubik']">
+              מה זה אומר בשבילכם?
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Benefit 1 */}
+              <div className="text-center group">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cyan-100 to-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Clock className="w-8 h-8 text-cyan-600" />
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 mb-2 font-['Rubik']">חוסכים זמן</h4>
+                <p className="text-gray-600 text-sm font-['Rubik']">5 דקות במקום שעות של חיפושים</p>
+              </div>
+
+              {/* Benefit 2 */}
+              <div className="text-center group">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Target className="w-8 h-8 text-purple-600" />
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 mb-2 font-['Rubik']">ללא מאמץ</h4>
+                <p className="text-gray-600 text-sm font-['Rubik']">אנחנו עושים את כל העבודה בשבילכם</p>
+              </div>
+
+              {/* Benefit 3 */}
+              <div className="text-center group">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <FileText className="w-8 h-8 text-green-600" />
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 mb-2 font-['Rubik']">אפס ניירת</h4>
+                <p className="text-gray-600 text-sm font-['Rubik']">הכל דיגיטלי, פשוט ומהיר</p>
+              </div>
+
+              {/* Benefit 4 */}
+              <div className="text-center group">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <CheckCircle className="w-8 h-8 text-orange-600" />
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 mb-2 font-['Rubik']">מובטח</h4>
+                <p className="text-gray-600 text-sm font-['Rubik']">מעקב מלא עד סיום התהליך</p>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center mt-12">
+            <p className="text-lg text-gray-600 mb-6 font-['Rubik']">
+              מוכנים לחוויית מעבר שלא הכרתם?
+            </p>
+            <Button 
+              onClick={() => {
+                const servicesSection = document.getElementById('services');
+                servicesSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white text-lg px-8 py-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 font-['Rubik']"
+            >
+              בואו נתחיל לחסוך
+              <ArrowRight className="mr-2 h-5 w-5" />
+            </Button>
           </div>
         </div>
       </section>
