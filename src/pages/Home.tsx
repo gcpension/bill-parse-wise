@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, X, Sparkles, TrendingUp, Star } from 'lucide-react';
+import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, X, Sparkles, TrendingUp, Star, Clock, FileText, Search, Target } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import electricityFamily from '@/assets/electricity-family.jpg';
@@ -465,128 +465,162 @@ const Home = () => {
       </section>
 
       {/* Our Mission Section - Enhanced */}
-      <section className="bg-white relative overflow-hidden">
+      <section className="bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
         {/* Background decorative elements */}
-        <div className="absolute inset-0 pointer-events-none opacity-10">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-gray-500 rounded-full blur-3xl"></div>
-          <div className="absolute top-32 right-20 w-40 h-40 bg-gray-400 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-32 w-36 h-36 bg-gray-600 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-28 h-28 bg-gray-500 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 pointer-events-none opacity-5">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-cyan-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-32 w-40 h-40 bg-purple-500 rounded-full blur-3xl"></div>
         </div>
 
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-16">
           {/* Clean Comparison Section - 2024 vs 2025 */}
           <div className="mb-20">
-            <div className="text-center mb-12 animate-fade-in">
-              <h2 className="text-3xl lg:text-4xl font-heebo font-bold text-cyan-700 mb-3">
+            <div className="text-center mb-16 animate-fade-in">
+              <h2 className="text-4xl lg:text-5xl font-heebo font-bold text-gray-900 mb-4">
                 איך זה נראה היום לעומת 2025?
               </h2>
-              <p className="text-lg text-gray-600 font-assistant max-w-2xl mx-auto">
-                השוואה פשוטה שמראה את ההבדל
+              <p className="text-xl text-gray-600 font-assistant max-w-2xl mx-auto">
+                מהפכה דיגיטלית שמפשטת את החיים
               </p>
             </div>
 
-            {/* Clean Comparison Grid */}
-            <div className="max-w-5xl mx-auto animate-fade-in" style={{
+            {/* Modern Timeline Comparison */}
+            <div className="max-w-6xl mx-auto animate-fade-in" style={{
               animationDelay: '0.2s',
               animationFillMode: 'forwards',
               opacity: 0
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Today Column */}
-                <div className="bg-white rounded-2xl p-8 border-2 border-gray-200">
-                  <div className="text-center mb-8">
-                    <h3 className="text-2xl font-heebo font-bold text-gray-700">היום</h3>
-                  </div>
-                  
-                  <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                      <div className="text-gray-400 text-xl">⏰</div>
-                      <div>
-                        <p className="font-heebo font-semibold text-gray-700">3-5 שעות</p>
-                        <p className="text-sm text-gray-500 font-assistant">משך זמן ממוצע</p>
+              <div className="relative">
+                {/* Connecting Line */}
+                <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-gray-300 via-cyan-400 to-cyan-600 transform -translate-y-1/2 z-0"></div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+                  {/* Today Column - Clean Minimal Style */}
+                  <div className="relative">
+                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-8">
+                        <h3 className="text-3xl font-heebo font-bold text-gray-800">היום</h3>
+                        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                          <span className="text-2xl">📅</span>
+                        </div>
                       </div>
-                    </div>
+                      
+                      <div className="space-y-5">
+                        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl transition-all hover:bg-gray-100">
+                          <div className="w-10 h-10 bg-gray-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Clock className="w-5 h-5 text-gray-600" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-heebo font-bold text-gray-900">3-5 שעות</p>
+                            <p className="text-sm text-gray-500 font-assistant">זמן השקעה ממוצע</p>
+                          </div>
+                        </div>
 
-                    <div className="flex items-start gap-4">
-                      <div className="text-gray-400 text-xl">📞</div>
-                      <div>
-                        <p className="font-heebo font-semibold text-gray-700">שיחות רבות</p>
-                        <p className="text-sm text-gray-500 font-assistant">תיאומים מתישים</p>
+                        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl transition-all hover:bg-gray-100">
+                          <div className="w-10 h-10 bg-gray-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Phone className="w-5 h-5 text-gray-600" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-heebo font-bold text-gray-900">10+ שיחות</p>
+                            <p className="text-sm text-gray-500 font-assistant">תיאומים מייגעים</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl transition-all hover:bg-gray-100">
+                          <div className="w-10 h-10 bg-gray-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <FileText className="w-5 h-5 text-gray-600" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-heebo font-bold text-gray-900">מילוי ידני</p>
+                            <p className="text-sm text-gray-500 font-assistant">טפסים מסורבלים</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl transition-all hover:bg-gray-100">
+                          <div className="w-10 h-10 bg-gray-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Search className="w-5 h-5 text-gray-600" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-heebo font-bold text-gray-900">חיפוש מפוזר</p>
+                            <p className="text-sm text-gray-500 font-assistant">באתרים שונים</p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-start gap-4">
-                      <div className="text-gray-400 text-xl">📝</div>
-                      <div>
-                        <p className="font-heebo font-semibold text-gray-700">טפסים מורכבים</p>
-                        <p className="text-sm text-gray-500 font-assistant">מילוי ידני</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="text-gray-400 text-xl">🔍</div>
-                      <div>
-                        <p className="font-heebo font-semibold text-gray-700">חיפוש מפוזר</p>
-                        <p className="text-sm text-gray-500 font-assistant">בכמה אתרים</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-6 border-t-2 border-gray-100 text-center">
-                    <p className="text-sm text-gray-500 font-assistant mb-2">עלות חודשית</p>
-                    <p className="text-2xl font-heebo font-bold text-gray-700">₪800-1,200</p>
-                  </div>
-                </div>
-
-                {/* 2025 Column - Highlighted */}
-                <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-8 border-2 border-cyan-300 relative overflow-hidden">
-                  {/* Subtle decoration */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-200/20 rounded-full -mr-16 -mt-16"></div>
-                  
-                  <div className="text-center mb-8 relative">
-                    <h3 className="text-2xl font-heebo font-bold text-cyan-700">2025</h3>
-                  </div>
-                  
-                  <div className="space-y-6 relative">
-                    <div className="flex items-start gap-4">
-                      <div className="text-cyan-600 text-xl">⚡</div>
-                      <div>
-                        <p className="font-heebo font-semibold text-cyan-900">5 דקות</p>
-                        <p className="text-sm text-cyan-700 font-assistant">תהליך מהיר</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="text-cyan-600 text-xl">✨</div>
-                      <div>
-                        <p className="font-heebo font-semibold text-cyan-900">אפס שיחות</p>
-                        <p className="text-sm text-cyan-700 font-assistant">הכל דיגיטלי</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="text-cyan-600 text-xl">💻</div>
-                      <div>
-                        <p className="font-heebo font-semibold text-cyan-900">טופס חכם</p>
-                        <p className="text-sm text-cyan-700 font-assistant">מילוי קל ומהיר</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="text-cyan-600 text-xl">🎯</div>
-                      <div>
-                        <p className="font-heebo font-semibold text-cyan-900">כל ההצעות</p>
-                        <p className="text-sm text-cyan-700 font-assistant">במקום אחד</p>
+                      <div className="mt-8 pt-6 border-t-2 border-gray-100">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-500 font-assistant">עלות חודשית ממוצעת</span>
+                          <span className="text-3xl font-heebo font-bold text-gray-800">₪950</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-8 pt-6 border-t-2 border-cyan-200 text-center relative">
-                    <p className="text-sm text-cyan-700 font-assistant mb-2">עלות חודשית</p>
-                    <p className="text-2xl font-heebo font-bold text-cyan-900">₪600-900</p>
-                    <div className="mt-3 inline-flex items-center gap-2 bg-cyan-600 text-white px-4 py-1.5 rounded-full text-sm font-heebo">
-                      <span>חיסכון עד ₪300</span>
+                  {/* 2025 Column - Modern Gradient Style */}
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-3xl blur opacity-25"></div>
+                    <div className="relative bg-gradient-to-br from-cyan-50 to-blue-50 rounded-3xl p-8 shadow-xl border-2 border-cyan-200">
+                      <div className="flex items-center justify-between mb-8">
+                        <h3 className="text-3xl font-heebo font-bold text-cyan-900">2025</h3>
+                        <div className="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center shadow-lg">
+                          <Sparkles className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-5">
+                        <div className="flex items-center gap-4 p-4 bg-white/60 backdrop-blur-sm rounded-2xl transition-all hover:bg-white/80 hover:shadow-md">
+                          <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                            <Zap className="w-5 h-5 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-heebo font-bold text-cyan-900">5 דקות</p>
+                            <p className="text-sm text-cyan-700 font-assistant">תהליך מהיר וקל</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-4 bg-white/60 backdrop-blur-sm rounded-2xl transition-all hover:bg-white/80 hover:shadow-md">
+                          <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                            <Sparkles className="w-5 h-5 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-heebo font-bold text-cyan-900">אפס שיחות</p>
+                            <p className="text-sm text-cyan-700 font-assistant">הכל אוטומטי</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-4 bg-white/60 backdrop-blur-sm rounded-2xl transition-all hover:bg-white/80 hover:shadow-md">
+                          <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                            <Smartphone className="w-5 h-5 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-heebo font-bold text-cyan-900">טופס חכם</p>
+                            <p className="text-sm text-cyan-700 font-assistant">ממשק ידידותי</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-4 bg-white/60 backdrop-blur-sm rounded-2xl transition-all hover:bg-white/80 hover:shadow-md">
+                          <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                            <Target className="w-5 h-5 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-heebo font-bold text-cyan-900">כל ההצעות</p>
+                            <p className="text-sm text-cyan-700 font-assistant">פלטפורמה אחת</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-8 pt-6 border-t-2 border-cyan-200">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-sm text-cyan-700 font-assistant">עלות חודשית ממוצעת</span>
+                          <span className="text-3xl font-heebo font-bold text-cyan-900">₪650</span>
+                        </div>
+                        <div className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-2xl text-center shadow-lg">
+                          <div className="flex items-center justify-center gap-2">
+                            <TrendingUp className="w-5 h-5" />
+                            <span className="font-heebo font-bold text-lg">חיסכון של ₪300 בחודש!</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
