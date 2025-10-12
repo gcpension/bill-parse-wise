@@ -12,6 +12,7 @@ import yesLogo from "@/assets/logos/yes-logo.png";
 import netflixLogo from "@/assets/logos/netflix-logo.svg";
 import disneyLogo from "@/assets/logos/disney-logo.png";
 import hboLogo from "@/assets/logos/hbo-logo.png";
+import heroModernBg from "@/assets/hero-modern-bg.jpg";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -394,7 +395,34 @@ const AllPlans = ({
     recommendedProvider: saving.recommendedProvider,
     category: saving.category
   }));
-  return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-cyan-50/30 to-white">
+  return <div className="min-h-screen bg-gray-50">
+      {/* Hero Section with Background */}
+      <section className="relative py-12 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src={heroModernBg} 
+            alt="רקע" 
+            className="w-full h-full object-cover opacity-40"
+          />
+        </div>
+
+        <div className="container mx-auto px-4 lg:px-6 max-w-7xl relative z-10">
+          {/* Breadcrumb Navigation */}
+          <BreadcrumbNavigation />
+          
+          {/* Page Title */}
+          <div className="text-center mt-16 mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 font-heebo mb-2">
+              בחרו קטגוריה לצפייה במסלולים
+            </h2>
+            <p className="text-lg text-gray-600 font-assistant">
+              לחצו על הקטגוריה המעניינת אתכם • החזיקו Ctrl ללחוץ על מספר קטגוריות
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Floating Steps Banner */}
       <SimpleStepsBanner />
 
@@ -402,21 +430,8 @@ const AllPlans = ({
       <EnhancedNavigation />
 
       <div className="container mx-auto px-4 lg:px-6 max-w-7xl py-8">
-        {/* Breadcrumb Navigation */}
-        <BreadcrumbNavigation />
-        
-        {/* Enhanced Page Header */}
-        
-
-
         {/* Category Selection - Enhanced Design */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 font-heebo mb-2 text-center">
-            בחרו קטגוריה לצפייה במסלולים
-          </h2>
-          <p className="text-lg text-gray-600 font-assistant mb-8 text-center">
-            לחצו על הקטגוריה המעניינת אתכם • החזיקו Ctrl ללחוץ על מספר קטגוריות
-          </p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {Object.entries(categoryConfig).map(([key, config]) => {
             const isSelected = selectedCategory === key;
