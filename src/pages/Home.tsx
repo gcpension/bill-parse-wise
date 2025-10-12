@@ -182,32 +182,35 @@ const Home = () => {
     setBannerCategory('');
   };
   return <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+      {/* Floating Steps Banner */}
+      <SimpleStepsBanner />
+
       {/* Top Navigation Bar */}
       <nav className="bg-gray-50 border-b border-gray-200 py-4">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="flex items-center justify-between">
             {/* Logo on the left */}
             <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-cyan-600 font-heebo">
+              <h1 className="text-3xl font-bold text-purple-600 font-heebo">
                 EasySwitch
               </h1>
             </div>
             
             {/* Navigation Links on the right */}
             <div className="flex items-center space-x-8">
-              <a href="/" className="text-cyan-600 font-medium hover:text-cyan-700 transition-colors font-heebo">
+              <a href="/" className="text-purple-600 font-medium hover:text-purple-700 transition-colors font-heebo">
                 דף הבית
               </a>
-              <a href="/magazine" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo">
+              <a href="/magazine" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
                 מגזין
               </a>
-              <a href="/tips" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo">
+              <a href="/tips" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
                 טיפים
               </a>
-              <a href="/about" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo">
+              <a href="/about" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
                 אודות
               </a>
-              <a href="/contact" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo">
+              <a href="/contact" className="text-gray-600 font-medium hover:text-purple-600 transition-colors font-heebo">
                 צור קשר
               </a>
             </div>
@@ -215,69 +218,73 @@ const Home = () => {
         </div>
       </nav>
 
+      {/* Background decorative elements */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        {/* Subtle background icons scattered across the page */}
+        <Lightbulb className="absolute top-[15%] left-[8%] w-8 h-8 text-purple-500 opacity-20" />
+        <Smartphone className="absolute top-[25%] right-[12%] w-8 h-8 text-purple-600 opacity-20" />
+        <Wifi className="absolute top-[45%] left-[15%] w-7 h-7 text-royal-purple opacity-20" />
+        <Tv className="absolute bottom-[35%] right-[7%] w-7 h-7 text-purple-500 opacity-20" />
+        
+        {/* Additional scattered elements */}
+        <Phone className="absolute top-[60%] left-[5%] w-6 h-6 text-purple-400 opacity-15" />
+        <Router className="absolute top-[35%] right-[20%] w-6 h-6 text-purple-600 opacity-15" />
+        <Cable className="absolute bottom-[60%] left-[25%] w-5 h-5 text-gray-500 opacity-15" />
+        <Plug className="absolute top-[80%] right-[8%] w-5 h-5 text-gray-500 opacity-15" />
+        <WifiOff className="absolute bottom-[45%] right-[30%] w-5 h-5 text-purple-400 opacity-12" />
+        <Battery className="absolute top-[70%] left-[35%] w-5 h-5 text-purple-500 opacity-12" />
+        
+        <Tablet className="absolute top-[50%] right-[40%] w-5 h-5 text-purple-400 opacity-12" />
+        <Headphones className="absolute bottom-[70%] right-[15%] w-5 h-5 text-gray-500 opacity-15" />
+        <Radio className="absolute top-[85%] left-[20%] w-5 h-5 text-purple-400 opacity-12" />
+        <Satellite className="absolute bottom-[15%] right-[35%] w-6 h-6 text-purple-600 opacity-15" />
+        
+        {/* Additional elements for better distribution */}
+        <Zap className="absolute top-[30%] left-[30%] w-6 h-6 text-purple-500 opacity-15" />
+        <Phone className="absolute bottom-[50%] left-[60%] w-5 h-5 text-purple-400 opacity-12" />
+        <Lightbulb className="absolute top-[65%] right-[25%] w-5 h-5 text-gray-500 opacity-15" />
+        <Wifi className="absolute bottom-[80%] left-[50%] w-6 h-6 text-purple-600 opacity-15" />
+      </div>
 
       {/* Clean Header Section */}
-      <section className="bg-gradient-to-b from-white via-gray-50 to-gray-50 py-12 lg:py-16 pb-8 lg:pb-10 relative overflow-hidden">
+      <section className="bg-gray-50 py-16 lg:py-24 relative overflow-hidden">
         {/* Background illustration */}
         <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" style={{
         backgroundImage: `url(${heroBackgroundIllustration})`
       }}>
         </div>
-        
-        {/* Decorative elements */}
-        <div className="absolute top-1/4 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-primary-glow/5 rounded-full blur-3xl"></div>
-        
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="text-center">
             
-            {/* Clean subtitle badge */}
-            <div className="inline-block mb-8 animate-fade-in opacity-0" style={{
-              animationDelay: '0.1s',
-              animationFillMode: 'forwards'
-            }}>
-              <div className="bg-gradient-to-r from-primary/10 via-primary-glow/10 to-primary/10 backdrop-blur-sm border border-primary/20 rounded-full px-6 py-3">
-                <p className="text-base lg:text-lg text-primary font-medium">
-                  ✨ המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
-                </p>
-              </div>
-            </div>
-            
-            {/* Main highlighted title with gradient background */}
-            <div className="relative inline-block mb-6 animate-fade-in opacity-0" style={{
-              animationDelay: '0.3s',
-              animationFillMode: 'forwards'
-            }}>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary-glow/15 to-primary/10 rounded-3xl blur-xl"></div>
-              <h1 className="relative text-4xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent leading-tight px-8 py-4">
-                באיזה תחום תרצו
-                <br />
-                להתחיל לחסוך היום?
-              </h1>
-            </div>
-            
-            <p className="text-lg lg:text-xl text-muted-foreground mt-8 font-medium max-w-3xl mx-auto leading-relaxed animate-fade-in opacity-0" style={{
-              animationDelay: '0.5s',
-              animationFillMode: 'forwards'
-            }}>
-              אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
+            {/* Clean subtitle */}
+            <p className="text-lg text-purple-600 mb-8 font-assistant">
+              המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
             </p>
+            
+            {/* Clean main title */}
+            <h1 className="text-4xl lg:text-6xl font-heebo font-light text-royal-purple mb-4 leading-tight">
+              חסכו בחשבונות הבית
+              <br />
+              <span className="font-medium text-purple-700">בקלות ובמהירות</span>
+            </h1>
+            
+            
           </div>
         </div>
       </section>
 
       {/* Clean Categories Section - Enhanced with animations */}
-      <section id="services" className="pt-8 pb-16 bg-gray-50 relative scroll-mt-20">
+      <section id="services" className="py-16 bg-gray-50 relative scroll-mt-20">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-heebo font-medium text-cyan-700 mb-4 animate-fade-in opacity-0" style={{
+            <h2 className="text-3xl font-heebo font-medium text-royal-purple mb-4 animate-fade-in opacity-0" style={{
             animationDelay: '0.2s',
             animationFillMode: 'forwards'
           }}>
               בחרו את הקטגוריה שלכם
             </h2>
-            <p className="text-lg text-cyan-600 font-assistant animate-fade-in opacity-0" style={{
+            <p className="text-lg text-purple-600 font-assistant animate-fade-in opacity-0" style={{
             animationDelay: '0.4s',
             animationFillMode: 'forwards'
           }}>
@@ -295,9 +302,9 @@ const Home = () => {
               animationDelay: `${0.6 + index * 0.1}s`,
               animationFillMode: 'forwards'
             }}>
-                  <Card className={`touch-card relative overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border-2 transform hover:scale-[1.02] hover:-translate-y-1 min-h-[160px] ${isSelected ? 'border-green-500 bg-gradient-to-br from-green-50 via-white to-emerald-50 shadow-green-200' : 'border-cyan-200 hover:border-cyan-400 bg-gradient-to-br from-cyan-50/30 via-white to-blue-50/20'}`} onClick={() => handleCategorySelect(category)}>
+                  <Card className={`touch-card relative overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border-2 transform hover:scale-[1.02] hover:-translate-y-1 min-h-[160px] ${isSelected ? 'border-green-500 bg-gradient-to-br from-green-50 via-white to-emerald-50 shadow-green-200' : 'border-purple-200 hover:border-purple-400 bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/20'}`} onClick={() => handleCategorySelect(category)}>
                     {/* Decorative gradient overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none ${isSelected ? 'from-green-400 to-emerald-600' : 'from-cyan-400 to-blue-600'}`}></div>
+                    <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none ${isSelected ? 'from-green-400 to-emerald-600' : 'from-purple-400 to-indigo-600'}`}></div>
                     
                     {/* Selected badge */}
                     {isSelected && <div className="absolute top-2 right-2 z-10">
@@ -308,7 +315,7 @@ const Home = () => {
                     
                     <CardContent className="p-4 text-center flex flex-col justify-between h-full relative z-10">
                       {/* Icon with interactive background */}
-                      <div className={`relative mx-auto mb-2 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isSelected ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg' : 'bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md'}`}>
+                      <div className={`relative mx-auto mb-2 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isSelected ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg' : 'bg-gradient-to-br from-purple-500 to-indigo-600 shadow-md'}`}>
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                       
@@ -318,12 +325,12 @@ const Home = () => {
                       </div>
                       
                       {/* Category title */}
-                      <h3 className={`text-lg font-heebo font-bold mb-2 ${isSelected ? 'text-green-700' : 'text-cyan-700'}`}>
+                      <h3 className={`text-lg font-heebo font-bold mb-2 ${isSelected ? 'text-green-700' : 'text-purple-700'}`}>
                         {data.name}
                       </h3>
                       
                       {/* Interactive button */}
-                      <Button size="sm" className={`w-full rounded-lg font-medium transition-all duration-300 shadow-md ${isSelected ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 text-white' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 hover:from-cyan-600 hover:via-blue-600 hover:to-cyan-700 text-white'}`} onClick={e => {
+                      <Button size="sm" className={`w-full rounded-lg font-medium transition-all duration-300 shadow-md ${isSelected ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 text-white' : 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-purple-700 text-white'}`} onClick={e => {
                     e.stopPropagation();
                     handleCategorySelect(category);
                   }}>
@@ -334,20 +341,17 @@ const Home = () => {
                       </Button>
                       
                       {/* Provider count hint */}
-                      <p className={`text-xs mt-2 font-medium transition-all duration-300 ${isSelected ? 'text-green-600' : 'text-cyan-600/70 group-hover:text-cyan-700'}`}>
+                      <p className={`text-xs mt-2 font-medium transition-all duration-300 ${isSelected ? 'text-green-600' : 'text-purple-600/70 group-hover:text-purple-700'}`}>
                         {data.providers.length} ספקים זמינים
                       </p>
                     </CardContent>
                   </Card>
                   
                   {/* Hover glow effect around card */}
-                  <div className={`absolute inset-0 rounded-lg blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none -z-10 ${isSelected ? 'bg-green-400' : 'bg-cyan-500'}`}></div>
+                  <div className={`absolute inset-0 rounded-lg blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none -z-10 ${isSelected ? 'bg-green-400' : 'bg-purple-500'}`}></div>
                 </div>;
           })}
           </div>
-
-          {/* Interactive Steps Banner */}
-          <SimpleStepsBanner />
 
           {/* Clean CTA Section - Hidden when banner is visible */}
           {!showBanner && <div className="text-center mt-16 space-y-6">
@@ -378,7 +382,7 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content Side */}
             <div className="order-2 lg:order-1">
-              <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-cyan-700 mb-6">
+              <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-6">
                 למה שווה לבדוק אצלנו?
               </h2>
               <p className="text-xl text-gray-700 mb-8 font-assistant leading-relaxed">
@@ -387,11 +391,11 @@ const Home = () => {
               
               <div className="space-y-6 mb-8">
                 <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 bg-royal-purple rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-heebo font-semibold text-cyan-700 mb-2">
+                    <h3 className="text-xl font-heebo font-semibold text-royal-purple mb-2">
                       ניתוח מותאם אישית
                     </h3>
                     <p className="text-gray-600 leading-relaxed font-assistant">
@@ -401,11 +405,11 @@ const Home = () => {
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 bg-royal-purple rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-heebo font-semibold text-cyan-700 mb-2">
+                    <h3 className="text-xl font-heebo font-semibold text-royal-purple mb-2">
                       כיסוי מקיף לכל הבית
                     </h3>
                     <p className="text-gray-600 leading-relaxed font-assistant">
@@ -415,11 +419,11 @@ const Home = () => {
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 bg-royal-purple rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-heebo font-semibold text-cyan-700 mb-2">
+                    <h3 className="text-xl font-heebo font-semibold text-royal-purple mb-2">
                       מעבר מהיר וללא בירוקרטיה
                     </h3>
                     <p className="text-gray-600 leading-relaxed font-assistant">
@@ -431,23 +435,23 @@ const Home = () => {
               
               {/* Trust Indicators */}
               <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold text-cyan-700 mb-4 font-heebo text-center">
+                <h3 className="text-lg font-semibold text-royal-purple mb-4 font-heebo text-center">
                   יתרונות נוספים שחשוב לדעת
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 text-center">
-                    <CheckCircle className="w-6 h-6 text-cyan-600 mx-auto mb-2" />
-                    <h4 className="font-semibold text-cyan-700 mb-1 font-heebo text-sm">ללא התחייבות</h4>
+                    <CheckCircle className="w-6 h-6 text-royal-purple mx-auto mb-2" />
+                    <h4 className="font-semibold text-royal-purple mb-1 font-heebo text-sm">ללא התחייבות</h4>
                     <p className="text-xs text-gray-600 font-assistant">אתם מחליטים בסוף</p>
                   </div>
                   <div className="bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 text-center">
-                    <CheckCircle className="w-6 h-6 text-cyan-600 mx-auto mb-2" />
-                    <h4 className="font-semibold text-cyan-700 mb-1 font-heebo text-sm">מעקב אחרי התהליך</h4>
+                    <CheckCircle className="w-6 h-6 text-royal-purple mx-auto mb-2" />
+                    <h4 className="font-semibold text-royal-purple mb-1 font-heebo text-sm">מעקב אחרי התהליך</h4>
                     <p className="text-xs text-gray-600 font-assistant">עדכונים לאורך כל הדרך</p>
                   </div>
                   <div className="bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 text-center">
-                    <CheckCircle className="w-6 h-6 text-cyan-600 mx-auto mb-2" />
-                    <h4 className="font-semibold text-cyan-700 mb-1 font-heebo text-sm">תמיכה מלאה</h4>
+                    <CheckCircle className="w-6 h-6 text-royal-purple mx-auto mb-2" />
+                    <h4 className="font-semibold text-royal-purple mb-1 font-heebo text-sm">תמיכה מלאה</h4>
                     <p className="text-xs text-gray-600 font-assistant">צוות מקצועי לרשותכם</p>
                   </div>
                 </div>
@@ -470,12 +474,7 @@ const Home = () => {
       {/* Our Mission Section - Enhanced */}
       <section className="py-20 bg-gray-50 relative overflow-hidden">
         {/* Background decorative elements */}
-        <div className="absolute inset-0 pointer-events-none opacity-10">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-gray-500 rounded-full blur-3xl"></div>
-          <div className="absolute top-32 right-20 w-40 h-40 bg-gray-400 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-32 w-36 h-36 bg-gray-600 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-28 h-28 bg-gray-500 rounded-full blur-3xl"></div>
-        </div>
+        
 
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           {/* Comparison Table Section - 2024 vs 2025 */}
@@ -484,7 +483,7 @@ const Home = () => {
               <Badge variant="outline" className="mb-4 border-purple-300 text-purple-700 bg-white/80 backdrop-blur-sm">
                 השוואת תהליכים
               </Badge>
-              <h2 className="text-4xl lg:text-5xl font-heebo font-bold text-cyan-700 mb-4">
+              <h2 className="text-4xl lg:text-5xl font-heebo font-bold text-royal-purple mb-4">
                 איך זה נראה היום<br />לעומת 2025?
               </h2>
               <p className="text-xl text-gray-700 font-assistant max-w-2xl mx-auto">
@@ -538,9 +537,7 @@ const Home = () => {
 
                 {/* Row 2: Phone Calls */}
                 <div className="grid grid-cols-3 gap-6 items-center">
-                  <div className="text-right">
-                    <p className="text-gray-900 font-heebo font-bold text-lg">שיחות טלפון</p>
-                  </div>
+                  
                   <div className="text-center">
                     <div className="inline-flex items-center gap-2 text-red-600 bg-red-50/50 backdrop-blur-sm px-4 py-2 rounded-lg">
                       <X className="w-5 h-5" />
@@ -666,7 +663,7 @@ const Home = () => {
       <section className="py-16 bg-gray-50 relative">
         <div className="container mx-auto px-4 lg:px-6 max-w-4xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-cyan-700 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-royal-purple mb-4">
               שאלות נפוצות
             </h2>
             <p className="text-lg text-gray-600 font-assistant">
@@ -678,7 +675,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-semibold text-royal-purple font-heebo">
                     האם השירות באמת חינמי?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -697,7 +694,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-semibold text-royal-purple font-heebo">
                     כמה זמן לוקח התהליך?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -716,7 +713,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-semibold text-royal-purple font-heebo">
                     מה קורה אם אני לא מרוצה מהמעבר?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -735,7 +732,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-semibold text-royal-purple font-heebo">
                     האם המידע שלי מוגן?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -754,7 +751,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-semibold text-royal-purple font-heebo">
                     האם יש מחויבות לתקופה מסוימת?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
