@@ -307,9 +307,9 @@ const Home = () => {
                 textAnchor="middle"
                 fill="rgba(0, 0, 0, 0.2)"
                 fontSize="24"
-                fontWeight="700"
-                fontFamily="Space Grotesk, Inter, system-ui, sans-serif"
-                letterSpacing="1"
+                fontWeight="900"
+                fontFamily="Anton, Impact, Bebas Neue, sans-serif"
+                letterSpacing="2"
                 clipPath="url(#brokenTextEasy)"
               >
                 EASY
@@ -322,9 +322,9 @@ const Home = () => {
                 textAnchor="middle"
                 fill="white"
                 fontSize="24"
-                fontWeight="700"
-                fontFamily="Space Grotesk, Inter, system-ui, sans-serif"
-                letterSpacing="1"
+                fontWeight="900"
+                fontFamily="Anton, Impact, Bebas Neue, sans-serif"
+                letterSpacing="2"
                 clipPath="url(#brokenTextEasy)"
                 style={{ 
                   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
@@ -340,9 +340,9 @@ const Home = () => {
                 textAnchor="middle"
                 fill="rgba(0, 0, 0, 0.2)"
                 fontSize="24"
-                fontWeight="700"
-                fontFamily="Space Grotesk, Inter, system-ui, sans-serif"
-                letterSpacing="1"
+                fontWeight="900"
+                fontFamily="Anton, Impact, Bebas Neue, sans-serif"
+                letterSpacing="2"
                 clipPath="url(#brokenTextSwitch)"
               >
                 SWITCH
@@ -355,9 +355,9 @@ const Home = () => {
                 textAnchor="middle"
                 fill="white"
                 fontSize="24"
-                fontWeight="700"
-                fontFamily="Space Grotesk, Inter, system-ui, sans-serif"
-                letterSpacing="1"
+                fontWeight="900"
+                fontFamily="Anton, Impact, Bebas Neue, sans-serif"
+                letterSpacing="2"
                 clipPath="url(#brokenTextSwitch)"
                 style={{ 
                   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
@@ -372,13 +372,13 @@ const Home = () => {
               <circle cx="70" cy="30" r="1.5" fill="white" opacity="0.5"/>
             </g>
             
-            {/* Enhanced gradient definition */}
+            {/* Enhanced gradient definition - Purple-Pink */}
             <defs>
               <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#0891b2', stopOpacity: 1 }} />
-                <stop offset="35%" style={{ stopColor: '#06b6d4', stopOpacity: 1 }} />
-                <stop offset="70%" style={{ stopColor: '#22d3ee', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: '#67e8f9', stopOpacity: 1 }} />
+                <stop offset="0%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
+                <stop offset="35%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
+                <stop offset="70%" style={{ stopColor: '#d8b4fe', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: '#f0abfc', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
           </svg>
@@ -408,7 +408,7 @@ const Home = () => {
                     באיזה תחום תרצו
                   </span>
                   <span className="block mt-2">
-                    להתחיל <span className="text-royal-purple font-medium">לחסוך</span> היום?
+                    להתחיל <span className="text-purple-400 font-medium">לחסוך</span> היום?
                   </span>
                 </span>
               </h1>
