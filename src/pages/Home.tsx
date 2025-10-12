@@ -464,133 +464,55 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Before & After Section - Modern Design */}
-      <section className="bg-white relative overflow-hidden py-20">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
-          {/* Header */}
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-4xl lg:text-5xl font-heebo font-bold text-gray-900 mb-4">
+      {/* Before & After Compact Section */}
+      <section className="bg-gradient-to-b from-gray-50 to-white py-12">
+        <div className="container mx-auto px-4 lg:px-6 max-w-5xl">
+          {/* Compact Header */}
+          <div className="text-center mb-8">
+            <h2 className="text-2xl lg:text-3xl font-heebo font-bold text-gray-900 mb-2">
               איך זה נראה היום לעומת 2025?
             </h2>
-            <p className="text-xl text-gray-600 font-assistant max-w-2xl mx-auto">
-              מהפכה דיגיטלית שחוסכת לכם זמן וכסף
+            <p className="text-base text-gray-600 font-assistant">
+              ההבדל במספרים
             </p>
           </div>
 
-          {/* Visual Comparison List */}
-          <div className="max-w-4xl mx-auto space-y-6 animate-fade-in" style={{
-            animationDelay: '0.2s',
-            animationFillMode: 'forwards',
-            opacity: 0
-          }}>
-            {/* Comparison Item 1 - Time */}
-            <div className="relative bg-gradient-to-l from-cyan-50 to-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all">
-              <div className="flex items-center gap-8">
-                <div className="flex-1 text-right">
-                  <div className="inline-flex items-center gap-3 text-gray-600">
-                    <span className="text-2xl font-heebo font-bold">3-5 שעות</span>
-                    <Clock className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm text-gray-500 font-assistant mt-1">זמן השקעה</p>
+          {/* Compact Stats Grid */}
+          <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+            <div className="grid grid-cols-3 gap-4 text-center">
+              {/* Time Stat */}
+              <div className="space-y-2">
+                <div className="text-gray-400 text-sm font-assistant">זמן תהליך</div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-gray-600 font-heebo line-through text-lg">5 שעות</span>
+                  <span className="text-cyan-600 font-heebo font-bold text-2xl">5 דקות</span>
                 </div>
-                
-                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                  <ArrowRight className="w-8 h-8 text-white" />
+              </div>
+
+              {/* Calls Stat */}
+              <div className="space-y-2 border-x border-gray-100">
+                <div className="text-gray-400 text-sm font-assistant">שיחות טלפון</div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-gray-600 font-heebo line-through text-lg">10+</span>
+                  <span className="text-cyan-600 font-heebo font-bold text-2xl">0</span>
                 </div>
-                
-                <div className="flex-1 text-left">
-                  <div className="inline-flex items-center gap-3 text-cyan-700">
-                    <Zap className="w-6 h-6 text-cyan-500" />
-                    <span className="text-2xl font-heebo font-bold">5 דקות</span>
-                  </div>
-                  <p className="text-sm text-cyan-600 font-assistant mt-1">תהליך מהיר</p>
+              </div>
+
+              {/* Savings Stat */}
+              <div className="space-y-2">
+                <div className="text-gray-400 text-sm font-assistant">חיסכון חודשי</div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-gray-600 font-heebo text-lg">₪950</span>
+                  <span className="text-cyan-600 font-heebo font-bold text-2xl">₪650</span>
                 </div>
               </div>
             </div>
 
-            {/* Comparison Item 2 - Calls */}
-            <div className="relative bg-gradient-to-l from-cyan-50 to-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all">
-              <div className="flex items-center gap-8">
-                <div className="flex-1 text-right">
-                  <div className="inline-flex items-center gap-3 text-gray-600">
-                    <span className="text-2xl font-heebo font-bold">10+ שיחות</span>
-                    <Phone className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm text-gray-500 font-assistant mt-1">תיאומים מייגעים</p>
-                </div>
-                
-                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                  <ArrowRight className="w-8 h-8 text-white" />
-                </div>
-                
-                <div className="flex-1 text-left">
-                  <div className="inline-flex items-center gap-3 text-cyan-700">
-                    <Sparkles className="w-6 h-6 text-cyan-500" />
-                    <span className="text-2xl font-heebo font-bold">0 שיחות</span>
-                  </div>
-                  <p className="text-sm text-cyan-600 font-assistant mt-1">הכל אוטומטי</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Comparison Item 3 - Forms */}
-            <div className="relative bg-gradient-to-l from-cyan-50 to-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all">
-              <div className="flex items-center gap-8">
-                <div className="flex-1 text-right">
-                  <div className="inline-flex items-center gap-3 text-gray-600">
-                    <span className="text-2xl font-heebo font-bold">מילוי ידני</span>
-                    <FileText className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm text-gray-500 font-assistant mt-1">טפסים מסורבלים</p>
-                </div>
-                
-                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                  <ArrowRight className="w-8 h-8 text-white" />
-                </div>
-                
-                <div className="flex-1 text-left">
-                  <div className="inline-flex items-center gap-3 text-cyan-700">
-                    <Smartphone className="w-6 h-6 text-cyan-500" />
-                    <span className="text-2xl font-heebo font-bold">טופס חכם</span>
-                  </div>
-                  <p className="text-sm text-cyan-600 font-assistant mt-1">ממשק ידידותי</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Comparison Item 4 - Search */}
-            <div className="relative bg-gradient-to-l from-cyan-50 to-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all">
-              <div className="flex items-center gap-8">
-                <div className="flex-1 text-right">
-                  <div className="inline-flex items-center gap-3 text-gray-600">
-                    <span className="text-2xl font-heebo font-bold">חיפוש מפוזר</span>
-                    <Search className="w-6 h-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm text-gray-500 font-assistant mt-1">באתרים שונים</p>
-                </div>
-                
-                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                  <ArrowRight className="w-8 h-8 text-white" />
-                </div>
-                
-                <div className="flex-1 text-left">
-                  <div className="inline-flex items-center gap-3 text-cyan-700">
-                    <Target className="w-6 h-6 text-cyan-500" />
-                    <span className="text-2xl font-heebo font-bold">כל ההצעות</span>
-                  </div>
-                  <p className="text-sm text-cyan-600 font-assistant mt-1">פלטפורמה אחת</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Final Result - Savings */}
-            <div className="relative mt-8">
-              <div className="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl p-8 shadow-xl text-white text-center">
-                <div className="flex items-center justify-center gap-4 mb-3">
-                  <TrendingUp className="w-8 h-8" />
-                  <h3 className="text-3xl font-heebo font-bold">התוצאה: חיסכון של ₪300 בחודש</h3>
-                </div>
-                <p className="text-lg text-cyan-50 font-assistant">₪3,600 בשנה בממוצע למשפחה</p>
+            {/* Bottom Result */}
+            <div className="mt-6 pt-6 border-t border-gray-100 text-center">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2 rounded-full">
+                <TrendingUp className="w-5 h-5" />
+                <span className="font-heebo font-bold">חיסכון של ₪300 בחודש</span>
               </div>
             </div>
           </div>
