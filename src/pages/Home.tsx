@@ -227,6 +227,15 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
+        {/* Purple Organic Shape on Right */}
+        <div className="absolute top-10 -right-20 w-80 h-80 opacity-20 pointer-events-none">
+          <div className="relative w-full h-full">
+            <div className="absolute inset-0 bg-purple-500 rounded-full blur-3xl"></div>
+            <div className="absolute top-10 left-10 w-48 h-48 bg-purple-600 rounded-full blur-2xl"></div>
+            <div className="absolute bottom-5 right-5 w-32 h-32 bg-purple-400 rounded-full blur-xl"></div>
+          </div>
+        </div>
+        
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <img 
