@@ -216,8 +216,8 @@ const Home = () => {
       </nav>
 
 
-      {/* Stunning Hero Section with Background Image */}
-      <section className="relative py-24 lg:py-32 overflow-hidden">
+      {/* Compact Hero Section with Background Image */}
+      <section className="relative py-16 lg:py-20 overflow-hidden">
         {/* Background Image - More Visible */}
         <div className="absolute inset-0">
           <img 
@@ -233,28 +233,28 @@ const Home = () => {
         <div className="absolute bottom-20 right-20 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
         <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl"></div>
         
-        <div className="container mx-auto px-4 lg:px-6 max-w-7xl relative z-10">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="text-center">
             
-            {/* Stunning Title */}
-            <div className="mb-10 animate-fade-in opacity-0" style={{
+            {/* Compact Title */}
+            <div className="mb-8 animate-fade-in opacity-0" style={{
               animationDelay: '0.2s',
               animationFillMode: 'forwards'
             }}>
               <h1 className="relative">
                 {/* Glow Effect Behind Text */}
                 <div className="absolute inset-0 blur-2xl opacity-30">
-                  <span className="block text-5xl lg:text-7xl xl:text-8xl font-black bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                  <span className="block text-4xl lg:text-5xl xl:text-6xl font-black bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
                     באיזה תחום תרצו להתחיל לחסוך היום?
                   </span>
                 </div>
                 
                 {/* Main Text */}
-                <span className="relative block text-5xl lg:text-7xl xl:text-8xl font-black leading-tight">
+                <span className="relative block text-4xl lg:text-5xl xl:text-6xl font-black leading-tight">
                   <span className="block bg-gradient-to-r from-cyan-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
                     באיזה תחום תרצו
                   </span>
-                  <span className="block bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-600 bg-clip-text text-transparent mt-3 animate-gradient-x bg-300%">
+                  <span className="block bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-600 bg-clip-text text-transparent mt-2 animate-gradient-x bg-300%">
                     להתחיל לחסוך היום?
                   </span>
                 </span>
@@ -266,8 +266,8 @@ const Home = () => {
               animationDelay: '0.4s',
               animationFillMode: 'forwards'
             }}>
-              <div className="backdrop-blur-md bg-white/40 rounded-2xl px-8 py-4 border border-white/50 shadow-xl">
-                <p className="text-xl lg:text-2xl text-gray-700 font-semibold max-w-3xl leading-relaxed">
+              <div className="backdrop-blur-md bg-white/40 rounded-2xl px-6 py-3 border border-white/50 shadow-xl">
+                <p className="text-lg lg:text-xl text-gray-700 font-semibold max-w-3xl leading-relaxed">
                   אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
                 </p>
               </div>
@@ -294,7 +294,7 @@ const Home = () => {
                   }}
                 >
                   <div 
-                    className="group relative h-56 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl"
+                    className="group relative h-48 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl"
                     onClick={() => handleCategorySelect(category)}
                   >
                     {/* Background Image */}
