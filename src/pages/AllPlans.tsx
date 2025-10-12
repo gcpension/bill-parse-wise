@@ -42,6 +42,7 @@ import { PersonalizedRecommendationWizard } from "@/components/PersonalizedRecom
 import { PlanDetailsSheet } from "@/components/plans/PlanDetailsSheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
+import ServiceRequestWizard from "@/components/service-request/ServiceRequestWizard";
 
 interface SavingsData {
   currentMonthly: number;
@@ -87,6 +88,7 @@ const AllPlans = ({
   const [viewedPlans, setViewedPlans] = useState<Set<string>>(new Set());
   const [selectedPlanForDetails, setSelectedPlanForDetails] = useState<ManualPlan | null>(null);
   const [openCompanies, setOpenCompanies] = useState<Set<string>>(new Set());
+  const [isServiceRequestDialogOpen, setIsServiceRequestDialogOpen] = useState(false);
   const [currentUserPlan, setCurrentUserPlan] = useState({
     name: '',
     price: '',
@@ -297,8 +299,8 @@ const AllPlans = ({
       switchType: 'switch'
     }));
 
-    // Navigate to service request page
-    window.location.href = '/service-request';
+    // Open dialog instead of navigating
+    setIsServiceRequestDialogOpen(true);
   };
   
   // Company Logo Mapping
@@ -1118,6 +1120,12 @@ const AllPlans = ({
         onSelectForSwitch={handleSelectForSwitch}
       />
 
+      {/* Service Request Dialog */}
+      <Dialog open={isServiceRequestDialogOpen} onOpenChange={setIsServiceRequestDialogOpen}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto p-0 border-0">
+          <ServiceRequestWizard onComplete={() => setIsServiceRequestDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
 
       {/* Floating Help Button */}
       <FloatingHelpButton />

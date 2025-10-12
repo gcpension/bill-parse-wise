@@ -21,7 +21,11 @@ const steps = [
   { title: 'פרטים ספציפיים', component: ProviderSpecificStep },
 ];
 
-export default function ServiceRequestWizard() {
+interface ServiceRequestWizardProps {
+  onComplete?: () => void;
+}
+
+export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<ServiceRequestFormData>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -279,15 +283,21 @@ export default function ServiceRequestWizard() {
                 <p className="text-muted-foreground text-lg max-w-md mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
                   תקבל SMS עם קישור לחתימה דיגיטלית ועדכונים על הסטטוס
                 </p>
-                <div className="pt-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                  <Button 
-                    onClick={() => window.location.href = '/'} 
-                    size="lg"
-                    className="bg-gradient-to-l from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground px-12 py-6 rounded-2xl shadow-xl shadow-primary/30 text-lg font-bold hover:scale-105 transition-all duration-300"
-                  >
-                    חזור לדף הבית
-                  </Button>
-                </div>
+                 <div className="pt-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                   <Button 
+                     onClick={() => {
+                       if (onComplete) {
+                         onComplete();
+                       } else {
+                         window.location.href = '/';
+                       }
+                     }} 
+                     size="lg"
+                     className="bg-gradient-to-l from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground px-12 py-6 rounded-2xl shadow-xl shadow-primary/30 text-lg font-bold hover:scale-105 transition-all duration-300"
+                   >
+                     {onComplete ? 'סגור' : 'חזור לדף הבית'}
+                   </Button>
+                 </div>
               </div>
             ) : (
               <div className="space-y-8 relative z-10">
