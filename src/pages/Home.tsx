@@ -12,6 +12,7 @@ import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
 import tvFamily from '@/assets/tv-family.jpg';
 import familySavingsHero from '@/assets/family-savings-hero.jpg';
+import heroFamilyHome from '@/assets/hero-family-home.jpg';
 import minimalistSelectionIcon from '@/assets/minimalist-selection-icon.png';
 import minimalistAnalysisIcon from '@/assets/minimalist-analysis-icon.png';
 import minimalistCompletionIcon from '@/assets/minimalist-completion-icon.png';
@@ -222,7 +223,7 @@ const Home = () => {
         {/* Background Image - Clean and Visible */}
         <div className="absolute inset-0">
           <img 
-            src={familySavingsHero} 
+            src={heroFamilyHome} 
             alt="רקע" 
             className="w-full h-full object-cover opacity-15"
           />
