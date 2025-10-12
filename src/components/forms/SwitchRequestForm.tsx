@@ -71,7 +71,20 @@ export const SwitchRequestForm = ({ isOpen, onClose, selectedPlan }: SwitchReque
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto p-2" dir="rtl">
+      <DialogContent 
+        className="max-w-xl max-h-[85vh] overflow-y-auto p-2" 
+        dir="rtl"
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+          // Scroll to top when dialog opens
+          setTimeout(() => {
+            const dialogContent = document.querySelector('[role="dialog"]');
+            if (dialogContent) {
+              dialogContent.scrollTop = 0;
+            }
+          }, 0);
+        }}
+      >
         <DialogHeader className="pb-1">
           <DialogTitle className="flex items-center gap-1.5 text-sm">
             <FileText className="h-3.5 w-3.5" />
