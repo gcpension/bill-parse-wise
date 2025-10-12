@@ -227,51 +227,62 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Purple Star Shape on Left Top Corner with Brand Name */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 pointer-events-none">
-          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Star with Rounded Rays */}
-            <g transform="translate(100, 100)">
-              {/* Main star shape with rounded rays */}
-              <path
-                d="M 0,-70 
-                   Q 5,-50 15,-35 
-                   L 35,-15 
-                   Q 50,-5 70,0 
-                   Q 50,5 35,15 
-                   L 15,35 
-                   Q 5,50 0,70 
-                   Q -5,50 -15,35 
-                   L -35,15 
-                   Q -50,5 -70,0 
-                   Q -50,-5 -35,-15 
-                   L -15,-35 
-                   Q -5,-50 0,-70 Z"
-                fill="#9333ea"
-                opacity="0.9"
-              />
-              {/* Brand Text */}
+        {/* Purple Decorative Shape on Left Top Corner with Brand */}
+        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] pointer-events-none">
+          <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            {/* Beautiful flowing shape */}
+            <path
+              d="M 0,150 
+                 C 0,100 20,60 60,40
+                 C 100,20 140,30 170,50
+                 C 200,70 220,100 230,140
+                 C 240,180 230,220 210,250
+                 C 190,280 160,290 120,280
+                 C 80,270 40,240 20,200
+                 C 5,170 0,160 0,150
+                 L 0,0
+                 L 150,0
+                 C 120,20 100,50 90,90
+                 C 80,130 85,170 100,200
+                 Q 50,180 20,150
+                 L 0,150 Z"
+              fill="url(#purpleGradient)"
+              opacity="0.9"
+            />
+            
+            {/* Gradient definition */}
+            <defs>
+              <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
+              </linearGradient>
+            </defs>
+            
+            {/* Brand Text */}
+            <g transform="translate(100, 120)">
               <text
                 x="0"
-                y="8"
+                y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="16"
-                fontWeight="800"
+                fontSize="22"
+                fontWeight="900"
                 fontFamily="Montserrat, sans-serif"
-                letterSpacing="1"
+                letterSpacing="2"
+                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}
               >
                 EASY
               </text>
               <text
                 x="0"
-                y="24"
+                y="26"
                 textAnchor="middle"
                 fill="white"
-                fontSize="16"
-                fontWeight="800"
+                fontSize="22"
+                fontWeight="900"
                 fontFamily="Montserrat, sans-serif"
-                letterSpacing="1"
+                letterSpacing="2"
+                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}
               >
                 SWITCH
               </text>
