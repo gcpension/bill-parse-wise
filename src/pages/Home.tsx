@@ -225,7 +225,7 @@ const Home = () => {
             alt="רקע" 
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-gray-50/92 to-gray-50/95"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/93 to-gray-50/95"></div>
         </div>
         
         {/* Floating Decorative Elements */}
