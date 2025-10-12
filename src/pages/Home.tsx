@@ -227,89 +227,105 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Decorative Purple Design on Left Top */}
-        <div className="absolute -top-12 -left-12 w-[300px] h-[300px] pointer-events-none">
+        {/* Futuristic Organic Design on Left Top */}
+        <div className="absolute -top-14 -left-14 w-[320px] h-[320px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Decorative layered design */}
-            
-            {/* Base organic shape */}
+            {/* Organic flowing base shape */}
             <path
-              d="M 0,70
-                 C 15,45 35,30 58,22
-                 C 81,14 105,14 125,22
-                 C 145,30 160,45 168,63
-                 C 176,81 178,102 172,121
-                 C 166,140 153,156 136,166
-                 C 119,176 99,180 79,176
-                 C 59,172 40,160 26,143
-                 C 12,126 3,105 0,83
+              d="M 0,75
+                 C 12,52 28,35 48,24
+                 C 68,13 91,9 113,12
+                 C 135,15 155,25 169,40
+                 C 183,55 191,75 192,96
+                 C 193,117 187,138 175,155
+                 C 163,172 145,184 125,189
+                 C 105,194 83,192 64,183
+                 C 45,174 29,158 18,139
+                 C 7,120 1,98 0,75
                  L 0,0
-                 L 110,0
-                 C 105,18 102,37 102,57
-                 C 102,77 105,96 110,114
-                 L 0,70 Z"
-              fill="url(#decorGradient1)"
-              opacity="0.85"
+                 L 115,0
+                 C 108,20 104,42 103,65
+                 C 102,88 104,110 109,131
+                 L 0,75 Z"
+              fill="url(#futureGrad)"
+              opacity="0.9"
             />
             
-            {/* Decorative circles pattern */}
-            <circle cx="45" cy="45" r="8" fill="white" opacity="0.2"/>
-            <circle cx="70" cy="35" r="6" fill="white" opacity="0.25"/>
-            <circle cx="90" cy="50" r="7" fill="white" opacity="0.2"/>
-            <circle cx="55" cy="70" r="5" fill="white" opacity="0.3"/>
-            <circle cx="75" cy="80" r="6" fill="white" opacity="0.25"/>
-            
-            {/* Decorative curved lines */}
+            {/* Futuristic geometric overlays */}
             <path
-              d="M 30,40 Q 50,35 70,40"
-              stroke="white"
-              strokeWidth="2"
-              fill="none"
-              opacity="0.3"
+              d="M 40,35 L 55,30 L 60,45 L 45,50 Z"
+              fill="white"
+              opacity="0.15"
             />
             <path
-              d="M 40,65 Q 60,60 80,65"
-              stroke="white"
-              strokeWidth="2"
-              fill="none"
-              opacity="0.3"
+              d="M 70,40 L 85,38 L 88,53 L 73,55 Z"
+              fill="white"
+              opacity="0.2"
+            />
+            <path
+              d="M 50,65 L 65,62 L 68,77 L 53,80 Z"
+              fill="white"
+              opacity="0.15"
             />
             
-            {/* Gradient definitions */}
+            {/* Glowing lines effect */}
+            <line x1="35" y1="40" x2="75" y2="35" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+            <line x1="45" y1="55" x2="85" y2="50" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+            <line x1="40" y1="70" x2="70" y2="68" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+            
+            {/* Tech dots */}
+            <circle cx="60" cy="45" r="2" fill="white" opacity="0.6">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="75" cy="60" r="2" fill="white" opacity="0.6">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="50" cy="75" r="2" fill="white" opacity="0.6">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" begin="1s" repeatCount="indefinite"/>
+            </circle>
+            
+            {/* Advanced gradient */}
             <defs>
-              <linearGradient id="decorGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#e9d5ff', stopOpacity: 1 }} />
-                <stop offset="30%" style={{ stopColor: '#d8b4fe', stopOpacity: 1 }} />
-                <stop offset="70%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
+              <linearGradient id="futureGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: '#f5d0fe', stopOpacity: 1 }} />
+                <stop offset="25%" style={{ stopColor: '#e9d5ff', stopOpacity: 1 }} />
+                <stop offset="50%" style={{ stopColor: '#d8b4fe', stopOpacity: 1 }} />
+                <stop offset="75%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
             
-            {/* Stylish Brand Text */}
-            <g transform="translate(65, 55)">
+            {/* Futuristic Brand Text */}
+            <g transform="translate(70, 58)">
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="16"
-                fontWeight="800"
-                fontFamily="Montserrat, sans-serif"
-                letterSpacing="3"
-                style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.4))' }}
+                fontSize="17"
+                fontWeight="700"
+                fontFamily="Inter, sans-serif"
+                letterSpacing="4"
+                style={{ 
+                  filter: 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.8))',
+                  textTransform: 'uppercase'
+                }}
               >
                 EASY
               </text>
               <text
                 x="0"
-                y="20"
+                y="22"
                 textAnchor="middle"
                 fill="white"
-                fontSize="16"
-                fontWeight="800"
-                fontFamily="Montserrat, sans-serif"
-                letterSpacing="3"
-                style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.4))' }}
+                fontSize="17"
+                fontWeight="700"
+                fontFamily="Inter, sans-serif"
+                letterSpacing="4"
+                style={{ 
+                  filter: 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.8))',
+                  textTransform: 'uppercase'
+                }}
               >
                 SWITCH
               </text>
