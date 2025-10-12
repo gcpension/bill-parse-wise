@@ -227,73 +227,82 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Purple Organic Blob Shape on Left Top Corner */}
-        <div className="absolute -top-24 -left-24 w-[400px] h-[400px] pointer-events-none">
-          <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Complex organic blob with many curves */}
+        {/* Dynamic Purple Blob on Left Top */}
+        <div className="absolute -top-28 -left-28 w-[450px] h-[450px] pointer-events-none">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            {/* Ultra Dynamic Blob Shape */}
             <path
-              d="M 0,140
-                 C 5,120 12,105 22,92
-                 C 32,79 45,70 60,65
-                 C 75,60 92,58 108,61
-                 C 124,64 139,71 152,82
-                 C 165,93 175,108 181,125
-                 C 187,142 189,161 186,179
-                 C 183,197 175,213 163,225
-                 C 151,237 136,245 119,248
-                 C 102,251 84,249 68,242
-                 C 52,235 38,223 27,208
-                 C 16,193 8,175 4,156
-                 C 0,148 0,144 0,140
+              d="M 0,180
+                 C 8,155 18,135 32,118
+                 C 46,101 64,88 85,79
+                 C 106,70 130,66 154,68
+                 C 178,70 201,78 221,91
+                 C 241,104 257,122 268,144
+                 C 279,166 285,192 285,218
+                 C 285,244 279,270 268,292
+                 C 257,314 241,332 221,344
+                 C 201,356 178,362 154,362
+                 C 130,362 106,356 85,344
+                 C 64,332 46,314 32,292
+                 C 18,270 8,244 4,218
+                 C 0,200 0,190 0,180
                  L 0,0
-                 L 180,0
-                 C 170,18 162,38 156,59
-                 C 150,80 147,102 147,124
-                 C 147,146 150,168 156,188
-                 C 145,185 134,179 124,170
-                 C 114,161 105,150 97,137
-                 C 89,124 82,110 77,95
-                 C 65,105 54,117 45,130
-                 C 36,143 28,157 22,172
-                 C 10,160 2,148 0,140 Z"
-              fill="url(#blobGradient)"
-              opacity="0.88"
+                 L 240,0
+                 C 230,25 222,52 217,81
+                 C 212,110 210,140 211,170
+                 C 212,200 216,229 223,257
+                 C 205,252 188,244 173,233
+                 C 158,222 145,208 134,192
+                 C 123,176 114,158 108,138
+                 C 95,152 83,168 73,185
+                 C 63,202 55,220 49,239
+                 C 35,225 23,209 14,191
+                 C 5,186 0,183 0,180 Z"
+              fill="url(#megaGradient)"
+              opacity="0.9"
             />
             
-            {/* Enhanced Gradient */}
+            {/* Triple Gradient */}
             <defs>
-              <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
-                <stop offset="50%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
+              <linearGradient id="megaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: '#d8b4fe', stopOpacity: 1 }} />
+                <stop offset="40%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
+                <stop offset="70%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
             
-            {/* Brand Text with Cool Font */}
-            <g transform="translate(95, 115)">
+            {/* Brand Text - Ultra Modern */}
+            <g transform="translate(140, 160)">
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="26"
-                fontWeight="900"
-                fontFamily="Playfair Display, serif"
-                letterSpacing="3"
-                style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))' }}
+                fontSize="38"
+                fontWeight="800"
+                fontFamily="Inter, sans-serif"
+                letterSpacing="4"
+                style={{ 
+                  filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.4))',
+                  textTransform: 'uppercase'
+                }}
               >
                 EASY
               </text>
               <text
                 x="0"
-                y="32"
+                y="44"
                 textAnchor="middle"
                 fill="white"
-                fontSize="26"
-                fontWeight="900"
-                fontFamily="Playfair Display, serif"
-                letterSpacing="3"
-                style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))' }}
+                fontSize="38"
+                fontWeight="800"
+                fontFamily="Inter, sans-serif"
+                letterSpacing="4"
+                style={{ 
+                  filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.4))',
+                  textTransform: 'uppercase'
+                }}
               >
                 SWITCH
               </text>
