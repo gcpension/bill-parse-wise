@@ -11,6 +11,7 @@ import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
 import tvFamily from '@/assets/tv-family.jpg';
+import familySavingsHero from '@/assets/family-savings-hero.jpg';
 import minimalistSelectionIcon from '@/assets/minimalist-selection-icon.png';
 import minimalistAnalysisIcon from '@/assets/minimalist-analysis-icon.png';
 import minimalistCompletionIcon from '@/assets/minimalist-completion-icon.png';
@@ -216,22 +217,20 @@ const Home = () => {
       </nav>
 
 
-      {/* Compact Hero Section with Background Image */}
+      {/* Hero Section with Clean Background */}
       <section className="relative py-16 lg:py-20 overflow-hidden">
-        {/* Background Image - More Visible */}
+        {/* Background Image - Clean and Visible */}
         <div className="absolute inset-0">
           <img 
-            src={heroBackgroundIllustration} 
+            src={familySavingsHero} 
             alt="רקע" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-15"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/93 to-gray-50/95"></div>
         </div>
         
-        {/* Floating Decorative Elements */}
-        <div className="absolute top-20 left-20 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl"></div>
+        {/* Subtle Floating Elements */}
+        <div className="absolute top-20 left-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
         
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="text-center">
