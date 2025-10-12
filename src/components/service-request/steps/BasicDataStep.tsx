@@ -183,50 +183,50 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
   const progressPercentage = (completedFields / totalFields) * 100;
 
   return (
-    <div className="space-y-10">
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-slate-900 mb-3">
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <h1 className="text-2xl font-bold text-slate-900 mb-2">
           פרטים אישיים
         </h1>
-        <p className="text-slate-600 text-lg mb-6">
+        <p className="text-slate-600 text-sm mb-4">
           מלא את הפרטים הבסיסיים הנדרשים לטיפול בבקשה
         </p>
         
         {/* Progress indicator */}
         <div className="max-w-md mx-auto">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-slate-600">התקדמות</span>
-            <span className="text-sm font-bold text-slate-900">{completedFields}/{totalFields}</span>
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-xs font-medium text-slate-600">התקדמות</span>
+            <span className="text-xs font-bold text-slate-900">{completedFields}/{totalFields}</span>
           </div>
-          <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden">
+          <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
             <div 
               className="h-full bg-gradient-to-l from-green-500 to-green-600 transition-all duration-500 ease-out rounded-full"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
           {completedFields === totalFields && (
-            <p className="text-sm text-green-600 font-medium mt-2 animate-fade-in">
-              <CheckCircle2 className="w-4 h-4 inline ml-1" />
+            <p className="text-xs text-green-600 font-medium mt-1.5 animate-fade-in">
+              <CheckCircle2 className="w-3.5 h-3.5 inline ml-1" />
               כל השדות מולאו!
             </p>
           )}
         </div>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-5">
         {/* Personal Information Section */}
-        <div className="bg-slate-50/50 rounded-2xl p-6 space-y-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-slate-200 rounded-xl flex items-center justify-center">
-              <User className="w-5 h-5 text-slate-700" />
+        <div className="bg-slate-50/50 rounded-xl p-4 space-y-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center">
+              <User className="w-4 h-4 text-slate-700" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900">פרטים אישיים</h3>
+            <h3 className="text-lg font-bold text-slate-900">פרטים אישיים</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="full_name" className="text-sm font-semibold text-slate-700">
+              <div className="flex items-center mb-1.5">
+                <Label htmlFor="full_name" className="text-xs font-semibold text-slate-700">
                   שם מלא <span className="text-red-500">*</span>
                 </Label>
                 <InfoTooltip content="הזן את שמך המלא בדיוק כפי שמופיע בתעודת הזהות או בתעודה הרשמית. זה חשוב למניעת בעיות בזיהוי ובאישור הבקשה." />
@@ -238,24 +238,24 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                   onChange={(e) => handleFieldChange('full_name', e.target.value)}
                   placeholder="שם פרטי ושם משפחה"
                   className={cn(
-                    "h-12 pl-10 transition-all duration-200",
+                    "h-10 pl-9 transition-all duration-200 text-sm",
                     getFieldStatus('full_name')?.isValid === true && "border-green-400 bg-green-50/30 focus:border-green-500",
                     getFieldStatus('full_name')?.isValid === false && "border-red-400 bg-red-50/30 focus:border-red-500"
                   )}
                 />
                 {getFieldStatus('full_name') && (
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                  <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
                     {getFieldStatus('full_name')?.isValid ? (
-                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
                     ) : (
-                      <AlertCircle className="w-5 h-5 text-red-500" />
+                      <AlertCircle className="w-4 h-4 text-red-500" />
                     )}
                   </div>
                 )}
               </div>
               {getFieldStatus('full_name')?.message && (
                 <p className={cn(
-                  "text-xs mt-1.5 font-medium",
+                  "text-xs mt-1 font-medium",
                   getFieldStatus('full_name')?.isValid ? "text-green-600" : "text-red-500"
                 )}>
                   {getFieldStatus('full_name')?.message}
@@ -264,8 +264,8 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
             </div>
 
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="national_id_or_corp" className="text-sm font-semibold text-slate-700">
+              <div className="flex items-center mb-1.5">
+                <Label htmlFor="national_id_or_corp" className="text-xs font-semibold text-slate-700">
                   {formData.customer_type === 'business' ? 'מספר חברה' : 'תעודת זהות'} <span className="text-red-500">*</span>
                 </Label>
                 <InfoTooltip content={formData.customer_type === 'business' 
@@ -281,24 +281,24 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                   placeholder={formData.customer_type === 'business' ? "מספר ח.פ/ע.ר" : "123456789"}
                   maxLength={9}
                   className={cn(
-                    "h-12 pl-10 transition-all duration-200",
+                    "h-10 pl-9 transition-all duration-200 text-sm",
                     getFieldStatus('national_id_or_corp')?.isValid === true && "border-green-400 bg-green-50/30 focus:border-green-500",
                     getFieldStatus('national_id_or_corp')?.isValid === false && "border-red-400 bg-red-50/30 focus:border-red-500"
                   )}
                 />
                 {getFieldStatus('national_id_or_corp') && (
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                  <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
                     {getFieldStatus('national_id_or_corp')?.isValid ? (
-                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
                     ) : (
-                      <AlertCircle className="w-5 h-5 text-red-500" />
+                      <AlertCircle className="w-4 h-4 text-red-500" />
                     )}
                   </div>
                 )}
               </div>
               {getFieldStatus('national_id_or_corp')?.message && (
                 <p className={cn(
-                  "text-xs mt-1.5 font-medium",
+                  "text-xs mt-1 font-medium",
                   getFieldStatus('national_id_or_corp')?.isValid ? "text-green-600" : "text-red-500"
                 )}>
                   {getFieldStatus('national_id_or_corp')?.message}
@@ -309,18 +309,18 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
         </div>
 
         {/* Contact Information Section */}
-        <div className="bg-slate-50/50 rounded-2xl p-6 space-y-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-slate-200 rounded-xl flex items-center justify-center">
-              <Mail className="w-5 h-5 text-slate-700" />
+        <div className="bg-slate-50/50 rounded-xl p-4 space-y-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center">
+              <Mail className="w-4 h-4 text-slate-700" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900">פרטי קשר</h3>
+            <h3 className="text-lg font-bold text-slate-900">פרטי קשר</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="email" className="text-sm font-semibold text-slate-700">
+              <div className="flex items-center mb-1.5">
+                <Label htmlFor="email" className="text-xs font-semibold text-slate-700">
                   כתובת דוא״ל <span className="text-red-500">*</span>
                 </Label>
                 <InfoTooltip content="הזן כתובת דוא״ל פעילה. אליה נישלח לך אישור הבקשה, קישור לחתימה דיגיטלית ועדכונים על מצב הטיפול." />
@@ -333,24 +333,24 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                   onChange={(e) => handleFieldChange('email', e.target.value)}
                   placeholder="name@example.com"
                   className={cn(
-                    "h-12 pl-10 transition-all duration-200",
+                    "h-10 pl-9 transition-all duration-200 text-sm",
                     getFieldStatus('email')?.isValid === true && "border-green-400 bg-green-50/30 focus:border-green-500",
                     getFieldStatus('email')?.isValid === false && "border-red-400 bg-red-50/30 focus:border-red-500"
                   )}
                 />
                 {getFieldStatus('email') && (
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                  <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
                     {getFieldStatus('email')?.isValid ? (
-                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
                     ) : (
-                      <AlertCircle className="w-5 h-5 text-red-500" />
+                      <AlertCircle className="w-4 h-4 text-red-500" />
                     )}
                   </div>
                 )}
               </div>
               {getFieldStatus('email')?.message && (
                 <p className={cn(
-                  "text-xs mt-1.5 font-medium",
+                  "text-xs mt-1 font-medium",
                   getFieldStatus('email')?.isValid ? "text-green-600" : "text-red-500"
                 )}>
                   {getFieldStatus('email')?.message}
@@ -359,8 +359,8 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
             </div>
 
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="phone" className="text-sm font-semibold text-slate-700">
+              <div className="flex items-center mb-1.5">
+                <Label htmlFor="phone" className="text-xs font-semibold text-slate-700">
                   טלפון נייד <span className="text-red-500">*</span>
                 </Label>
                 <InfoTooltip content="הזן מספר טלפון נייד פעיל. נשלח אליך SMS עם קוד אימות וקישור לחתימה דיגיטלית. הטלפון ישמש גם ליצירת קשר במידת הצורך." />
@@ -373,24 +373,24 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                   placeholder="050-1234567"
                   maxLength={12}
                   className={cn(
-                    "h-12 pl-10 transition-all duration-200",
+                    "h-10 pl-9 transition-all duration-200 text-sm",
                     getFieldStatus('phone')?.isValid === true && "border-green-400 bg-green-50/30 focus:border-green-500",
                     getFieldStatus('phone')?.isValid === false && "border-red-400 bg-red-50/30 focus:border-red-500"
                   )}
                 />
                 {getFieldStatus('phone') && (
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                  <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
                     {getFieldStatus('phone')?.isValid ? (
-                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
                     ) : (
-                      <AlertCircle className="w-5 h-5 text-red-500" />
+                      <AlertCircle className="w-4 h-4 text-red-500" />
                     )}
                   </div>
                 )}
               </div>
               {getFieldStatus('phone')?.message && (
                 <p className={cn(
-                  "text-xs mt-1.5 font-medium",
+                  "text-xs mt-1 font-medium",
                   getFieldStatus('phone')?.isValid ? "text-green-600" : "text-red-500"
                 )}>
                   {getFieldStatus('phone')?.message}
@@ -401,21 +401,21 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
         </div>
 
         {/* Service Address Section */}
-        <div className="bg-slate-50/50 rounded-2xl p-6 space-y-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-slate-200 rounded-xl flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-slate-700" />
+        <div className="bg-slate-50/50 rounded-xl p-4 space-y-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center">
+              <MapPin className="w-4 h-4 text-slate-700" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-900">כתובת השירות</h3>
-              <p className="text-sm text-slate-600">הכתובת בה השירות מותקן או מסופק</p>
+              <h3 className="text-lg font-bold text-slate-900">כתובת השירות</h3>
+              <p className="text-xs text-slate-600">הכתובת בה השירות מותקן</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="street" className="text-sm font-semibold text-slate-700">
+              <div className="flex items-center mb-1.5">
+                <Label htmlFor="street" className="text-xs font-semibold text-slate-700">
                   רחוב <span className="text-red-500">*</span>
                 </Label>
                 <InfoTooltip content="הזן את שם הרחוב המדויק של הכתובת בה השירות מותקן. וודא שהכתובת מדויקת למניעת עיכובים." />
@@ -425,13 +425,13 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                 value={formData.service_address?.street || ''}
                 onChange={(e) => handleAddressChange('street', e.target.value)}
                 placeholder="שם הרחוב"
-                className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20"
+                className="h-10 text-sm"
               />
             </div>
 
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="number" className="text-sm font-semibold text-slate-700">
+              <div className="flex items-center mb-1.5">
+                <Label htmlFor="number" className="text-xs font-semibold text-slate-700">
                   מספר בית <span className="text-red-500">*</span>
                 </Label>
                 <InfoTooltip content="מספר הבית או הדירה. אם יש מספר דירה, הזן גם אותו (לדוגמה: 5 דירה 3 או 5/3)." />
@@ -441,13 +441,13 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                 value={formData.service_address?.number || ''}
                 onChange={(e) => handleAddressChange('number', e.target.value)}
                 placeholder="מספר + דירה"
-                className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20"
+                className="h-10 text-sm"
               />
             </div>
 
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="city" className="text-sm font-semibold text-slate-700">
+              <div className="flex items-center mb-1.5">
+                <Label htmlFor="city" className="text-xs font-semibold text-slate-700">
                   עיר <span className="text-red-500">*</span>
                 </Label>
                 <InfoTooltip content="שם העיר או הישוב בו נמצאת כתובת השירות. וודא שהשם מדויק כפי שמופיע רשמית." />
@@ -457,25 +457,25 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                 value={formData.service_address?.city || ''}
                 onChange={(e) => handleAddressChange('city', e.target.value)}
                 placeholder="שם העיר"
-                className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20"
+                className="h-10 text-sm"
               />
             </div>
           </div>
         </div>
 
         {/* Provider Information Section */}
-        <div className="bg-slate-50/50 rounded-2xl p-6 space-y-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-slate-200 rounded-xl flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-slate-700" />
+        <div className="bg-slate-50/50 rounded-xl p-4 space-y-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center">
+              <Building2 className="w-4 h-4 text-slate-700" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900">פרטי ספקים</h3>
+            <h3 className="text-lg font-bold text-slate-900">פרטי ספקים</h3>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-5">
             <div>
-              <div className="flex items-center mb-4">
-                <h4 className="text-lg font-semibold text-slate-700">
+              <div className="flex items-center mb-3">
+                <h4 className="text-sm font-semibold text-slate-700">
                   הספק הנוכחי <span className="text-red-500">*</span>
                 </h4>
                 <InfoTooltip content="בחר את הספק שממנו אתה מבקש לעבור או לבצע פעולה. זה הספק שמספק לך כרגע את השירות." />
@@ -489,8 +489,8 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
 
             {needsTargetProvider && (
               <div>
-                <div className="flex items-center mb-4">
-                  <h4 className="text-lg font-semibold text-slate-700">
+                <div className="flex items-center mb-3">
+                  <h4 className="text-sm font-semibold text-slate-700">
                     ספק היעד <span className="text-red-500">*</span>
                   </h4>
                   <InfoTooltip content="בחר את הספק החדש אליו אתה רוצה לעבור. וודא שהספק מספק שירות באזור שלך." />
@@ -507,17 +507,17 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
         </div>
 
         {/* Preferences Section */}
-        <div className="bg-slate-50/50 rounded-2xl p-6 space-y-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-slate-200 rounded-xl flex items-center justify-center">
-              <Languages className="w-5 h-5 text-slate-700" />
+        <div className="bg-slate-50/50 rounded-xl p-4 space-y-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center">
+              <Languages className="w-4 h-4 text-slate-700" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900">העדפות תקשורת</h3>
+            <h3 className="text-lg font-bold text-slate-900">העדפות תקשורת</h3>
           </div>
 
           <div className="max-w-md">
-            <div className="flex items-center mb-2">
-              <Label htmlFor="preferred_language" className="text-sm font-semibold text-slate-700">
+            <div className="flex items-center mb-1.5">
+              <Label htmlFor="preferred_language" className="text-xs font-semibold text-slate-700">
                 שפה מועדפת <span className="text-red-500">*</span>
               </Label>
               <InfoTooltip content="בחר את השפה בה תעדיף לקבל הודעות ולנהל תקשורת. זה יעזור לנו לספק שירות מותאם יותר." />
@@ -526,7 +526,7 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
               value={formData.preferred_language || ''}
               onValueChange={(value) => handleFieldChange('preferred_language', value)}
             >
-              <SelectTrigger className="h-12 border-slate-300 focus:border-slate-500 focus:ring-slate-500/20">
+              <SelectTrigger className="h-10 text-sm">
                 <SelectValue placeholder="בחר שפה מועדפת" />
               </SelectTrigger>
               <SelectContent>
