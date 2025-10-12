@@ -228,7 +228,7 @@ const Home = () => {
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
         {/* Compact connected blobs shape */}
-        <div className="absolute -top-16 -left-16 w-[200px] h-[200px] pointer-events-none">
+        <div className="absolute -top-20 -left-20 w-[280px] h-[280px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
             {/* Connected organic blobs shape - Nickelodeon style */}
             <g>
@@ -247,7 +247,7 @@ const Home = () => {
               {/* Overall shadow effect */}
               <ellipse cx="115" cy="100" rx="80" ry="50" fill="none" 
                 style={{
-                  filter: 'drop-shadow(0 6px 20px rgba(109, 40, 217, 0.6))'
+                  filter: 'drop-shadow(0 6px 20px rgba(88, 28, 135, 0.6))'
                 }}
               />
             </g>
@@ -256,13 +256,13 @@ const Home = () => {
             <g transform="translate(112, 100)">
               <text
                 x="0"
-                y="-2"
+                y="-3"
                 textAnchor="middle"
                 fill="white"
-                fontSize="14"
+                fontSize="16"
                 fontWeight="700"
                 fontFamily="'Rubik', 'Heebo', 'Inter', sans-serif"
-                letterSpacing="2"
+                letterSpacing="2.5"
                 style={{ 
                   filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))',
                   textTransform: 'uppercase'
@@ -272,13 +272,13 @@ const Home = () => {
               </text>
               <text
                 x="0"
-                y="12"
+                y="13"
                 textAnchor="middle"
                 fill="white"
-                fontSize="14"
+                fontSize="16"
                 fontWeight="700"
                 fontFamily="'Rubik', 'Heebo', 'Inter', sans-serif"
-                letterSpacing="2"
+                letterSpacing="2.5"
                 style={{ 
                   filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))',
                   textTransform: 'uppercase'
@@ -288,13 +288,13 @@ const Home = () => {
               </text>
             </g>
             
-            {/* Gradient definition - Deep Purple */}
+            {/* Gradient definition - Deep Rich Purple */}
             <defs>
               <linearGradient id="starburstGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#6d28d9', stopOpacity: 1 }} />
-                <stop offset="33%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
-                <stop offset="66%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: '#a78bfa', stopOpacity: 1 }} />
+                <stop offset="0%" style={{ stopColor: '#581c87', stopOpacity: 1 }} />
+                <stop offset="33%" style={{ stopColor: '#6b21a8', stopOpacity: 1 }} />
+                <stop offset="66%" style={{ stopColor: '#7e22ce', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
           </svg>
