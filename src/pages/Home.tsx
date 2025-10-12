@@ -278,25 +278,21 @@ const Home = () => {
               {/* EASY - with broken letter effect using multiple segments */}
               <defs>
                 <clipPath id="brokenTextEasy">
-                  {/* Each letter broken into segments */}
-                  <rect x="-52" y="-20" width="15" height="22"/>
-                  <rect x="-35" y="-20" width="14" height="22"/>
-                  <rect x="-36" y="-20" width="2" height="22"/>
-                  <rect x="-19" y="-20" width="16" height="22"/>
-                  <rect x="-1" y="-20" width="15" height="22"/>
-                  <rect x="16" y="-20" width="2" height="22"/>
-                  <rect x="20" y="-20" width="14" height="22"/>
+                  {/* Each letter broken into segments for EASY */}
+                  <rect x="-50" y="-18" width="18" height="25"/>
+                  <rect x="-30" y="-18" width="16" height="25"/>
+                  <rect x="-12" y="-18" width="16" height="25"/>
+                  <rect x="6" y="-18" width="14" height="25"/>
+                  <rect x="22" y="-18" width="18" height="25"/>
                 </clipPath>
                 <clipPath id="brokenTextSwitch">
-                  <rect x="-68" y="12" width="17" height="24"/>
-                  <rect x="-49" y="12" width="16" height="24"/>
-                  <rect x="-31" y="12" width="2" height="24"/>
-                  <rect x="-27" y="12" width="15" height="24"/>
-                  <rect x="-10" y="12" width="2" height="24"/>
-                  <rect x="-6" y="12" width="14" height="24"/>
-                  <rect x="10" y="12" width="16" height="24"/>
-                  <rect x="28" y="12" width="18" height="24"/>
-                  <rect x="48" y="12" width="22" height="24"/>
+                  {/* Each letter broken into segments for SWITCH */}
+                  <rect x="-70" y="10" width="18" height="26"/>
+                  <rect x="-50" y="10" width="16" height="26"/>
+                  <rect x="-32" y="10" width="10" height="26"/>
+                  <rect x="-20" y="10" width="18" height="26"/>
+                  <rect x="0" y="10" width="16" height="26"/>
+                  <rect x="18" y="10" width="20" height="26"/>
                 </clipPath>
               </defs>
               
