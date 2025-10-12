@@ -44,18 +44,19 @@ const AllPlans = () => {
   const allPlans = useAllPlans();
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentMonthlyBill, setCurrentMonthlyBill] = useState<string>('');
-  const [showRecommendations, setShowRecommendations] = useState(false);
+  const [currentMonthlyBill, setCurrentMonthlyBill] = useState<number>(0);
+  const [userProfile, setUserProfile] = useState<any>(null);
 
-  // Load stored analysis data
+  // Load stored analysis data and user profile
   useEffect(() => {
+    // Load analysis data
     const storedData = localStorage.getItem('analysisData');
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
         if (Array.isArray(parsedData) && parsedData.length > 0) {
           const firstCategory = parsedData[0];
-          setCurrentMonthlyBill(firstCategory.amount || '');
+          setCurrentMonthlyBill(parseFloat(firstCategory.amount) || 0);
           
           // Map to Hebrew categories
           const categoryMapping: Record<string, CategoryType> = {
@@ -70,6 +71,16 @@ const AllPlans = () => {
         console.error('Error parsing analysis data:', error);
       }
     }
+
+    // Load user profile from personalized wizard
+    const storedProfile = localStorage.getItem('userProfile');
+    if (storedProfile) {
+      try {
+        setUserProfile(JSON.parse(storedProfile));
+      } catch (error) {
+        console.error('Error parsing user profile:', error);
+      }
+    }
   }, []);
 
   // Categories configuration
@@ -81,8 +92,8 @@ const AllPlans = () => {
     { id: 'טלוויזיה' as CategoryType, label: 'טלוויזיה', icon: <Tv className="w-5 h-5" />, color: 'from-red-500 to-pink-500' },
   ];
 
-  // Filter and recommend plans
-  const { filteredPlans, recommendedPlans, cheapestPlans } = useMemo(() => {
+  // Filter and categorize plans
+  const { allCategoryPlans, recommendedPlans, cheapestPlans } = useMemo(() => {
     let filtered = allPlans;
     
     // Filter by category - map UI categories to data categories
@@ -113,35 +124,27 @@ const AllPlans = () => {
       );
     }
 
-    // Get cheapest plans per category
-    const cheapest = selectedCategory !== 'all' 
-      ? filtered
-          .filter(p => p.monthlyPrice && p.monthlyPrice > 0)
-          .sort((a, b) => (a.monthlyPrice || 0) - (b.monthlyPrice || 0))
-          .slice(0, 3)
-      : [];
+    // Sort by price (lowest first)
+    const sortedByPrice = [...filtered]
+      .filter(p => p.monthlyPrice && p.monthlyPrice > 0)
+      .sort((a, b) => (a.monthlyPrice || 0) - (b.monthlyPrice || 0));
 
-    // Get recommended plans based on user's current bill
-    const currentBill = parseFloat(currentMonthlyBill) || 0;
-    const recommended = currentBill > 0
-      ? filtered
-          .filter(p => p.monthlyPrice && p.monthlyPrice > 0 && p.monthlyPrice < currentBill)
-          .sort((a, b) => (currentBill - (a.monthlyPrice || 0)) - (currentBill - (b.monthlyPrice || 0)))
-          .slice(0, 3)
+    // Get cheapest 3 plans
+    const cheapest = sortedByPrice.slice(0, 3);
+
+    // Get recommended plans (cheaper than current bill and match user profile)
+    const recommended = currentMonthlyBill > 0
+      ? sortedByPrice
+          .filter(p => p.monthlyPrice! < currentMonthlyBill)
+          .slice(0, 6) // Show top 6 recommendations
       : [];
 
     return {
-      filteredPlans: filtered,
+      allCategoryPlans: sortedByPrice,
       recommendedPlans: recommended,
       cheapestPlans: cheapest
     };
   }, [allPlans, selectedCategory, searchQuery, currentMonthlyBill]);
-
-  const handleAnalyze = () => {
-    if (currentMonthlyBill && parseFloat(currentMonthlyBill) > 0) {
-      setShowRecommendations(true);
-    }
-  };
 
   const handleSelectPlan = (plan: PlanRecord) => {
     // Store plan for service request
@@ -192,123 +195,148 @@ const AllPlans = () => {
       </section>
 
       <div className="container mx-auto px-4 max-w-7xl py-8">
-        {/* Quick Analysis Card */}
-        <div className="mb-10 max-w-3xl mx-auto">
-          <Card className="bg-gradient-to-br from-white to-gray-50 border-2 border-primary/20 shadow-xl">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-white" />
+        {/* Category Tabs */}
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-2 justify-center">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={cn(
+                  "group relative px-6 py-3 rounded-xl font-semibold transition-all duration-300 overflow-hidden font-['Rubik']",
+                  "flex items-center gap-2 shadow-md hover:shadow-lg hover:scale-105",
+                  selectedCategory === category.id
+                    ? "bg-white text-primary ring-2 ring-primary ring-offset-2"
+                    : "bg-white text-gray-700 hover:text-primary"
+                )}
+              >
+                <div className={cn(
+                  "absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity",
+                  category.color
+                )} />
+                
+                <div className={cn(
+                  "relative z-10 p-1.5 rounded-lg bg-gradient-to-br transition-transform group-hover:scale-110",
+                  selectedCategory === category.id ? category.color + " text-white" : "bg-gray-100 text-gray-600"
+                )}>
+                  {category.icon}
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 font-['Rubik']">
-                    נמצא לכם הצעות מנצחות
-                  </h3>
-                  <p className="text-gray-600 font-['Rubik']">ספרו לנו כמה אתם משלמים וראו מיד כמה תחסכו</p>
-                </div>
-              </div>
+                
+                <span className="relative z-10 text-base">{category.label}</span>
+                
+                {selectedCategory === category.id && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-full" />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label className="font-['Rubik'] mb-2 block">בחרו קטגוריה</Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {categories.filter(c => c.id !== 'all').map((category) => (
-                      <button
-                        key={category.id}
-                        onClick={() => setSelectedCategory(category.id)}
-                        className={cn(
-                          "p-3 rounded-lg font-semibold transition-all duration-300 font-['Rubik'] text-sm",
-                          "flex items-center justify-center gap-2",
-                          selectedCategory === category.id
-                            ? "bg-gradient-to-r " + category.color + " text-white shadow-lg"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        )}
-                      >
-                        {category.icon}
-                        {category.label}
-                      </button>
-                    ))}
+        {/* Current Bill Info - if available */}
+        {currentMonthlyBill > 0 && selectedCategory !== 'all' && (
+          <div className="mb-8 max-w-2xl mx-auto">
+            <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-primary/30">
+              <CardContent className="p-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                    <TrendingUp className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 font-['Rubik']">אתם משלמים היום</p>
+                    <p className="text-2xl font-bold text-primary font-['Rubik']">₪{currentMonthlyBill}</p>
                   </div>
                 </div>
+                <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-['Rubik']">
+                  {recommendedPlans.length} מסלולים זולים יותר
+                </Badge>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
-                <div>
-                  <Label className="font-['Rubik'] mb-2 block">כמה אתם משלמים היום?</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="number"
-                      placeholder="0"
-                      value={currentMonthlyBill}
-                      onChange={(e) => setCurrentMonthlyBill(e.target.value)}
-                      className="text-2xl font-bold text-center font-['Rubik']"
-                    />
-                    <Button
-                      onClick={handleAnalyze}
-                      disabled={!currentMonthlyBill || !selectedCategory || selectedCategory === 'all'}
-                      className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 text-white font-['Rubik'] px-8"
-                    >
-                      מצאו לי!
-                      <ArrowRight className="mr-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1 font-['Rubik']">₪ לחודש</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Search Bar */}
+        <div className="mb-8 max-w-2xl mx-auto">
+          <div className="relative">
+            <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="חיפוש חברה או מסלול..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pr-12 py-6 rounded-xl border-2 focus:border-primary font-['Rubik'] text-base"
+            />
+          </div>
         </div>
 
         {/* Personalized Recommendations */}
-        {showRecommendations && recommendedPlans.length > 0 && (
+        {recommendedPlans.length > 0 && selectedCategory !== 'all' && (
           <div className="mb-10">
             <div className="text-center mb-6">
-              <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 font-['Rubik']">
-                <TrendingUp className="w-4 h-4 inline ml-1" />
-                ההמלצות שלנו בשבילכם
+              <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 font-['Rubik'] mb-3">
+                <Sparkles className="w-4 h-4 inline ml-1" />
+                המלצות אישיות בשבילכם
               </Badge>
-              <h2 className="text-3xl font-bold text-gray-900 mt-3 font-['Rubik']">
-                מצאנו לכם {recommendedPlans.length} מסלולים שיחסכו לכם כסף!
+              <h2 className="text-3xl font-bold text-gray-900 font-['Rubik']">
+                מצאנו לכם מסלולים שיחסכו לכם כסף!
               </h2>
+              <p className="text-gray-600 mt-2 font-['Rubik']">
+                המסלולים הבאים זולים יותר מהמחיר שאתם משלמים היום
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recommendedPlans.map((plan, index) => {
-                const savings = parseFloat(currentMonthlyBill) - (plan.monthlyPrice || 0);
-                const savingsPercent = ((savings / parseFloat(currentMonthlyBill)) * 100).toFixed(0);
+                const savings = currentMonthlyBill - (plan.monthlyPrice || 0);
+                const savingsPercent = ((savings / currentMonthlyBill) * 100).toFixed(0);
+                const annualSavings = savings * 12;
                 
                 return (
-                  <Card key={`${plan.company}-${plan.plan}-${index}`} className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-primary">
-                    <CardContent className="p-6">
+                  <Card key={`rec-${plan.company}-${plan.plan}-${index}`} className="group hover:shadow-2xl transition-all duration-300 border-2 border-green-200 hover:border-green-400 relative overflow-hidden">
+                    {/* Recommended Badge */}
+                    {index < 3 && (
+                      <div className="absolute top-0 left-0 right-0">
+                        <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-center py-1 text-xs font-bold font-['Rubik']">
+                          {index === 0 ? '⭐ החיסכון הגדול ביותר!' : index === 1 ? '🔥 מומלץ מאוד' : '✨ בחירה מעולה'}
+                        </div>
+                      </div>
+                    )}
+
+                    <CardContent className="p-6 pt-10">
                       {/* Savings Badge */}
                       <div className="mb-4">
-                        <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-['Rubik']">
-                          חיסכון של {savings.toFixed(0)}₪ ({savingsPercent}%)
-                        </Badge>
+                        <div className="bg-green-50 rounded-lg p-3 text-center">
+                          <p className="text-2xl font-bold text-green-700 font-['Rubik']">חוסכים ₪{savings.toFixed(0)}</p>
+                          <p className="text-sm text-green-600 font-['Rubik']">({savingsPercent}% פחות • ₪{annualSavings.toFixed(0)} בשנה)</p>
+                        </div>
                       </div>
 
                       {/* Company & Plan Name */}
                       <h3 className="text-xl font-bold text-gray-900 mb-1 font-['Rubik']">{plan.company}</h3>
-                      <p className="text-gray-600 mb-4 font-['Rubik'] line-clamp-2">{plan.plan}</p>
+                      <p className="text-gray-600 mb-4 font-['Rubik'] line-clamp-2 text-sm">{plan.plan}</p>
 
-                      {/* Price */}
-                      <div className="mb-4">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-3xl font-bold text-primary font-['Rubik']">₪{plan.monthlyPrice}</span>
-                          <span className="text-gray-500 font-['Rubik']">לחודש</span>
+                      {/* Price Comparison */}
+                      <div className="mb-4 bg-gray-50 rounded-lg p-3">
+                        <div className="flex items-baseline justify-between mb-1">
+                          <span className="text-gray-500 font-['Rubik'] text-sm">מחיר חדש:</span>
+                          <span className="text-2xl font-bold text-primary font-['Rubik']">₪{plan.monthlyPrice}</span>
                         </div>
-                        <p className="text-sm text-gray-500 line-through font-['Rubik']">₪{currentMonthlyBill} לחודש כרגע</p>
+                        <div className="flex items-baseline justify-between">
+                          <span className="text-gray-400 font-['Rubik'] text-xs">מחיר נוכחי:</span>
+                          <span className="text-sm text-gray-400 line-through font-['Rubik']">₪{currentMonthlyBill}</span>
+                        </div>
                       </div>
 
                       {/* Benefits */}
                       {plan.transferBenefits && (
                         <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                          <p className="text-sm text-blue-900 font-['Rubik']">🎁 {plan.transferBenefits}</p>
+                          <p className="text-xs text-blue-900 font-['Rubik'] line-clamp-2">🎁 {plan.transferBenefits}</p>
                         </div>
                       )}
 
                       {/* CTA */}
                       <Button
                         onClick={() => handleSelectPlan(plan)}
-                        className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 text-white font-['Rubik']"
+                        className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-['Rubik']"
                       >
                         עוברים למסלול הזה
                         <CheckCircle className="mr-2 h-4 w-4" />
@@ -361,70 +389,18 @@ const AllPlans = () => {
             </div>
           </div>
         )}
-
-
-        {/* All Plans Grid - Fallback */}
-        {!showRecommendations && selectedCategory !== 'all' && (
-          <div>
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 font-['Rubik']">
-                כל המסלולים ב{categories.find(c => c.id === selectedCategory)?.label}
-              </h2>
-              <p className="text-gray-600 font-['Rubik']">סה"כ {filteredPlans.length} מסלולים זמינים</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPlans.slice(0, 12).map((plan, index) => (
-                <Card key={`${plan.company}-${plan.plan}-${index}`} className="hover:shadow-xl transition-all duration-300">
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-1 font-['Rubik']">{plan.company}</h3>
-                    <p className="text-gray-600 mb-3 font-['Rubik'] text-sm line-clamp-2">{plan.plan}</p>
-
-                    {plan.monthlyPrice && plan.monthlyPrice > 0 && (
-                      <div className="mb-4">
-                        <span className="text-2xl font-bold text-primary font-['Rubik']">₪{plan.monthlyPrice}</span>
-                        <span className="text-gray-500 font-['Rubik'] text-sm">/חודש</span>
-                      </div>
-                    )}
-
-                    {plan.commitment && (
-                      <p className="text-xs text-gray-500 mb-3 font-['Rubik']">התחייבות: {plan.commitment}</p>
-                    )}
-
-                    <Button
-                      onClick={() => handleSelectPlan(plan)}
-                      variant="outline"
-                      className="w-full font-['Rubik'] border-primary text-primary hover:bg-primary hover:text-white"
-                    >
-                      בחרו במסלול
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {filteredPlans.length > 12 && (
-              <div className="text-center mt-8">
-                <p className="text-gray-600 font-['Rubik']">
-                  מוצגים 12 מתוך {filteredPlans.length} מסלולים
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
         {/* Empty State */}
-        {!showRecommendations && selectedCategory === 'all' && (
+        {selectedCategory === 'all' && (
           <div className="text-center py-16">
             <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-purple-200/50 rounded-full flex items-center justify-center">
               <TrendingDown className="w-10 h-10 text-primary" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2 font-['Rubik']">בחרו קטגוריה כדי להתחיל</h3>
-            <p className="text-gray-600 font-['Rubik']">בחרו את התחום שאתם רוצים לחסוך בו ונמצא לכם מסלולים מתאימים</p>
+            <p className="text-gray-600 font-['Rubik']">בחרו את התחום שאתם רוצים לחסוך בו ונציג לכם את כל המסלולים הזמינים</p>
           </div>
         )}
 
-        {filteredPlans.length === 0 && selectedCategory !== 'all' && (
+        {allCategoryPlans.length === 0 && selectedCategory !== 'all' && (
           <div className="text-center py-16">
             <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center">
               <Search className="w-10 h-10 text-gray-500" />
