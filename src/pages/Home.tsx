@@ -227,75 +227,89 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Asymmetric Purple Blob on Left Top */}
-        <div className="absolute -top-16 -left-16 w-[280px] h-[280px] pointer-events-none">
+        {/* Decorative Purple Design on Left Top */}
+        <div className="absolute -top-12 -left-12 w-[300px] h-[300px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Sharp Asymmetric Shape */}
+            {/* Decorative layered design */}
+            
+            {/* Base organic shape */}
             <path
-              d="M 0,80
-                 L 20,50
-                 Q 35,35 55,28
-                 L 85,18
-                 Q 110,15 130,25
-                 L 155,40
-                 Q 165,50 168,65
-                 L 170,90
-                 Q 168,110 158,125
-                 L 142,145
-                 Q 125,155 105,158
-                 L 80,160
-                 Q 60,158 45,148
-                 L 25,132
-                 Q 12,115 5,95
-                 L 0,80
+              d="M 0,70
+                 C 15,45 35,30 58,22
+                 C 81,14 105,14 125,22
+                 C 145,30 160,45 168,63
+                 C 176,81 178,102 172,121
+                 C 166,140 153,156 136,166
+                 C 119,176 99,180 79,176
+                 C 59,172 40,160 26,143
+                 C 12,126 3,105 0,83
                  L 0,0
-                 L 120,0
-                 L 110,15
-                 Q 95,35 88,58
-                 L 85,85
-                 Q 86,108 92,128
-                 L 75,120
-                 Q 58,108 45,92
-                 L 30,70
-                 Q 18,52 10,80
-                 L 0,80 Z"
-              fill="url(#sharpGradient)"
-              opacity="0.92"
+                 L 110,0
+                 C 105,18 102,37 102,57
+                 C 102,77 105,96 110,114
+                 L 0,70 Z"
+              fill="url(#decorGradient1)"
+              opacity="0.85"
             />
             
-            {/* Gradient */}
+            {/* Decorative circles pattern */}
+            <circle cx="45" cy="45" r="8" fill="white" opacity="0.2"/>
+            <circle cx="70" cy="35" r="6" fill="white" opacity="0.25"/>
+            <circle cx="90" cy="50" r="7" fill="white" opacity="0.2"/>
+            <circle cx="55" cy="70" r="5" fill="white" opacity="0.3"/>
+            <circle cx="75" cy="80" r="6" fill="white" opacity="0.25"/>
+            
+            {/* Decorative curved lines */}
+            <path
+              d="M 30,40 Q 50,35 70,40"
+              stroke="white"
+              strokeWidth="2"
+              fill="none"
+              opacity="0.3"
+            />
+            <path
+              d="M 40,65 Q 60,60 80,65"
+              stroke="white"
+              strokeWidth="2"
+              fill="none"
+              opacity="0.3"
+            />
+            
+            {/* Gradient definitions */}
             <defs>
-              <linearGradient id="sharpGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
+              <linearGradient id="decorGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: '#e9d5ff', stopOpacity: 1 }} />
+                <stop offset="30%" style={{ stopColor: '#d8b4fe', stopOpacity: 1 }} />
+                <stop offset="70%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
             
-            {/* Compact Brand Text */}
-            <g transform="translate(80, 70)">
+            {/* Stylish Brand Text */}
+            <g transform="translate(65, 55)">
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="18"
-                fontWeight="900"
-                fontFamily="Inter, sans-serif"
-                letterSpacing="2"
-                style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
+                fontSize="16"
+                fontWeight="800"
+                fontFamily="Montserrat, sans-serif"
+                letterSpacing="3"
+                style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.4))' }}
               >
                 EASY
               </text>
               <text
                 x="0"
-                y="22"
+                y="20"
                 textAnchor="middle"
                 fill="white"
-                fontSize="18"
-                fontWeight="900"
-                fontFamily="Inter, sans-serif"
-                letterSpacing="2"
-                style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
+                fontSize="16"
+                fontWeight="800"
+                fontFamily="Montserrat, sans-serif"
+                letterSpacing="3"
+                style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.4))' }}
               >
                 SWITCH
               </text>
