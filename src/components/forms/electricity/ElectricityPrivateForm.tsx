@@ -221,30 +221,30 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
   const checklistItems = getChecklistItems('electricity', 'private');
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-1" dir="rtl">
       {/* Personal Details */}
       <Card>
-        <CardHeader className="py-1.5 px-2.5">
-          <CardTitle className="text-xs font-semibold">פרטים אישיים</CardTitle>
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="text-[9px] font-semibold">פרטים אישיים</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
-          <div className="space-y-0.5">
-            <Label htmlFor="fullName" className="flex items-center gap-1 text-[10px]">
+        <CardContent className="grid grid-cols-2 gap-1 py-1 px-1.5">
+          <div className="space-y-0">
+            <Label htmlFor="fullName" className="flex items-center gap-0.5 text-[8px]">
               שם מלא *
               <FieldInfoTooltip content={fieldInfo.fullName} />
             </Label>
             <Input
               id="fullName"
-              placeholder="שם פרטי ושם משפחה"
+              placeholder="שם מלא"
               value={formData.fullName}
               onChange={(e) => updateFormData("fullName", e.target.value)}
               required
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
           </div>
-          <div className="space-y-0.5">
-            <Label htmlFor="idNumber" className="flex items-center gap-1 text-[10px]">
-              מס׳ ת.ז. *
+          <div className="space-y-0">
+            <Label htmlFor="idNumber" className="flex items-center gap-0.5 text-[8px]">
+              ת.ז. *
               <FieldInfoTooltip content={fieldInfo.idNumber} />
             </Label>
             <Input
@@ -254,36 +254,36 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               onChange={(e) => updateFormData("idNumber", e.target.value)}
               maxLength={9}
               required
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
           </div>
-          <div className="space-y-0.5">
-            <Label htmlFor="phone" className="flex items-center gap-1 text-[10px]">
+          <div className="space-y-0">
+            <Label htmlFor="phone" className="flex items-center gap-0.5 text-[8px]">
               נייד *
               <FieldInfoTooltip content={fieldInfo.phone} />
             </Label>
             <Input
               id="phone"
-              placeholder="05X-XXXXXXX"
+              placeholder="05X-XXX"
               value={formData.phone}
               onChange={(e) => updateFormData("phone", e.target.value)}
               required
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
           </div>
-          <div className="space-y-0.5">
-            <Label htmlFor="email" className="flex items-center gap-1 text-[10px]">
-              אימייל *
+          <div className="space-y-0">
+            <Label htmlFor="email" className="flex items-center gap-0.5 text-[8px]">
+              מייל *
               <FieldInfoTooltip content={fieldInfo.email} />
             </Label>
             <Input
               id="email"
               type="email"
-              placeholder="name@example.com"
+              placeholder="email"
               value={formData.email}
               onChange={(e) => updateFormData("email", e.target.value)}
               required
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
           </div>
         </CardContent>
@@ -291,18 +291,18 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
 
       {/* Service Details */}
       <Card>
-        <CardHeader className="py-1.5 px-2.5">
-          <CardTitle className="text-xs font-semibold">פרטי השירות</CardTitle>
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="text-[9px] font-semibold">פרטי שירות</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
-          <div className="space-y-0.5">
-            <Label htmlFor="currentProvider" className="flex items-center gap-1 text-[10px]">
+        <CardContent className="grid grid-cols-2 gap-1 py-1 px-1.5">
+          <div className="space-y-0">
+            <Label htmlFor="currentProvider" className="flex items-center gap-0.5 text-[8px]">
               ספק נוכחי *
               <FieldInfoTooltip content={fieldInfo.currentProvider} />
             </Label>
             <Select onValueChange={(value) => updateFormData("currentProvider", value)}>
-              <SelectTrigger className="h-7 text-xs">
-                <SelectValue placeholder="בחר/י" />
+              <SelectTrigger className="h-6 text-[11px]">
+                <SelectValue placeholder="בחר" />
               </SelectTrigger>
               <SelectContent>
                 {providers.map(provider => (
@@ -311,64 +311,57 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-0.5">
-            <Label htmlFor="targetProvider" className="flex items-center gap-1 text-[10px]">
-              ספק יעד *
-              <FieldInfoTooltip content={fieldInfo.targetProvider} />
+          <div className="space-y-0">
+            <Label htmlFor="targetProvider" className="flex items-center gap-0.5 text-[8px]">
+              יעד *
             </Label>
             <Input
               id="targetProvider"
               value={formData.targetProvider}
-              onChange={(e) => updateFormData("targetProvider", e.target.value)}
-              required
               disabled
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
           </div>
-          <div className="space-y-0.5">
-            <Label htmlFor="contractNumber" className="flex items-center gap-1 text-[10px]">
+          <div className="space-y-0">
+            <Label htmlFor="contractNumber" className="text-[8px]">
               מס׳ חוזה
-              <FieldInfoTooltip content={fieldInfo.contractNumber} />
             </Label>
             <Input
               id="contractNumber"
-              placeholder="אופציונלי"
+              placeholder="אופ׳"
               value={formData.contractNumber}
               onChange={(e) => updateFormData("contractNumber", e.target.value)}
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
           </div>
-          <div className="space-y-0.5">
-            <Label htmlFor="meterNumber" className="flex items-center gap-1 text-[10px]">
+          <div className="space-y-0">
+            <Label htmlFor="meterNumber" className="text-[8px]">
               מס׳ מונה
-              <FieldInfoTooltip content={fieldInfo.meterNumber} />
             </Label>
             <Input
               id="meterNumber"
-              placeholder="אופציונלי"
+              placeholder="אופ׳"
               value={formData.meterNumber}
               onChange={(e) => updateFormData("meterNumber", e.target.value)}
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
           </div>
-          <div className="md:col-span-2 space-y-0.5">
-            <Label htmlFor="consumptionAddress" className="flex items-center gap-1 text-[10px]">
+          <div className="col-span-2 space-y-0">
+            <Label htmlFor="consumptionAddress" className="text-[8px]">
               כתובת צריכה *
-              <FieldInfoTooltip content={fieldInfo.consumptionAddress} />
             </Label>
             <Input
               id="consumptionAddress"
-              placeholder="רחוב, מספר, עיר"
+              placeholder="רחוב, מס׳, עיר"
               value={formData.consumptionAddress}
               onChange={(e) => updateFormData("consumptionAddress", e.target.value)}
               required
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
           </div>
-          <div className="space-y-0.5">
-            <Label htmlFor="powerOfAttorneyExpiry" className="flex items-center gap-1 text-[10px]">
-              תוקף ייפוי כוח *
-              <FieldInfoTooltip content={fieldInfo.powerOfAttorneyExpiry} />
+          <div className="space-y-0">
+            <Label htmlFor="powerOfAttorneyExpiry" className="text-[8px]">
+              תוקף ייפוי *
             </Label>
             <Input
               id="powerOfAttorneyExpiry"
@@ -376,161 +369,65 @@ export const ElectricityPrivateForm = ({ selectedPlan, onClose }: ElectricityPri
               value={formData.powerOfAttorneyExpiry}
               onChange={(e) => updateFormData("powerOfAttorneyExpiry", e.target.value)}
               required
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
-            <p className="text-[10px] text-muted-foreground mt-0.5">מומלץ 12 חודשים</p>
           </div>
         </CardContent>
       </Card>
 
-      {/* File Uploads */}
+      {/* File & Terms */}
       <Card>
-        <CardHeader className="py-1.5 px-2.5">
-          <CardTitle className="text-xs font-semibold">מסמכים</CardTitle>
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="text-[9px] font-semibold">מסמכים והסכמות</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-1.5 py-1.5 px-2.5">
-          <div className="space-y-0.5">
-            <Label className="flex items-center gap-1 text-[10px]">
-              <Upload className="h-3 w-3" />
-              צילום ת״ז *
-              <FieldInfoTooltip content={fieldInfo.subscriberIdCopy} />
+        <CardContent className="space-y-1 py-1 px-1.5">
+          <div>
+            <Label className="flex items-center gap-0.5 text-[8px]">
+              <Upload className="h-2.5 w-2.5" />
+              ת״ז *
             </Label>
             <Input
               type="file"
               accept=".jpg,.jpeg,.png,.pdf"
               onChange={(e) => handleFileUpload("consumerIdCopy", e.target.files?.[0] || null)}
-              className="h-7 text-xs"
+              className="h-6 text-[11px]"
             />
             {formData.consumerIdCopy.uploaded && (
-              <p className="text-[10px] text-green-600 mt-0.5">✓ הועלה</p>
+              <p className="text-[8px] text-green-600">✓</p>
             )}
           </div>
-          <div>
-            <Label className="flex items-center gap-2">
-              <Upload className="h-4 w-4" />
-              צילום ת״ז מיופה כוח (אם צד ג׳)
-              <FieldInfoTooltip content={fieldInfo.attorneyIdCopy} />
-            </Label>
-            <Input
-              type="file"
-              accept=".jpg,.jpeg,.png,.pdf"
-              onChange={(e) => handleFileUpload("attorneyIdCopy", e.target.files?.[0] || null)}
-              className="mt-2"
-            />
-            {formData.attorneyIdCopy.uploaded && (
-              <p className="text-sm text-green-600 mt-1">✓ קובץ הועלה בהצלחה</p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Optional Notes */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">פרטי תשלום מאובטחים (אופציונלי)</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="creditCardLast4" className="flex items-center gap-2">
-                4 ספרות אחרונות של כרטיס אשראי
-                <FieldInfoTooltip content={fieldInfo.creditCardLast4} />
-              </Label>
-              <Input
-                id="creditCardLast4"
-                placeholder="XXXX"
-                maxLength={4}
-                pattern="[0-9]*"
-                onChange={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                }}
-              />
-              <p className="text-xs text-muted-foreground mt-1">לצורך זיהוי בלבד - לא נשמרים פרטים מלאים</p>
-            </div>
-            <div>
-              <Label htmlFor="bankName" className="flex items-center gap-2">
-                שם הבנק (לחיוב עתידי)
-                <FieldInfoTooltip content={fieldInfo.bankName} />
-              </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="בחר בנק" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="leumi">בנק לאומי</SelectItem>
-                  <SelectItem value="hapoalim">בנק הפועלים</SelectItem>
-                  <SelectItem value="mizrahi">בנק מזרחי</SelectItem>
-                  <SelectItem value="discount">בנק דיסקונט</SelectItem>
-                  <SelectItem value="other">אחר</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-            <div className="flex items-start gap-2">
-              <AlertCircle className="h-4 w-4 text-blue-600 mt-0.5" />
-              <div className="text-sm text-blue-800">
-                <strong>אבטחת מידע:</strong> אנו משתמשים בהצפנה ברמת בנקים. פרטי תשלום מלאים יתווספו רק בשלב האישור הסופי בצורה מאובטחת.
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Contact Notes */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">הערות נוספות</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Textarea
-            placeholder="הערות מיוחדות לגבי המעבר (אופציונלי)"
-            value={formData.billingNotes || ""}
-            onChange={(e) => updateFormData("billingNotes" as any, e.target.value)}
-            rows={3}
-          />
-          <p className="text-sm text-muted-foreground mt-2">
-            ייתכן אימות ישיר מהספק (SMS/קישור) לאישור סופי.
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Terms and Privacy */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">הסכמות</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-start gap-2">
+          <div className="flex items-start gap-1">
             <Checkbox
               id="agreeToTerms"
               checked={agreeToTerms}
               onCheckedChange={(checked) => setAgreeToTerms(checked === true)}
+              className="h-3 w-3"
             />
-            <label htmlFor="agreeToTerms" className="text-sm">
-              מאשר/ת עיבוד נתונים והעברתם לספקים לצורך המעבר
+            <label htmlFor="agreeToTerms" className="text-[8px] leading-tight">
+              מסכים/ה לתנאים
             </label>
           </div>
-          <div className="flex items-start gap-2">
+          <div className="flex items-start gap-1">
             <Checkbox
               id="agreeToPrivacy"
               checked={agreeToPrivacy}
               onCheckedChange={(checked) => setAgreeToPrivacy(checked === true)}
+              className="h-3 w-3"
             />
-            <label htmlFor="agreeToPrivacy" className="text-sm">
-              אני מסכים/ה למדיניות הפרטיות ולעיבוד הנתונים
+            <label htmlFor="agreeToPrivacy" className="text-[8px] leading-tight">
+              מסכים/ה לפרטיות
             </label>
           </div>
         </CardContent>
       </Card>
 
       {/* Submit Button */}
-      <div className="flex gap-1.5 pt-1">
-        <Button type="submit" className="flex-1 h-7 text-xs">
-          <FileText className="h-3 w-3 ml-1" />
-          שלח בקשה
+      <div className="flex gap-1 pt-1">
+        <Button type="submit" className="flex-1 h-6 text-[11px]">
+          <FileText className="h-2.5 w-2.5 ml-0.5" />
+          שלח
         </Button>
-        <Button type="button" variant="outline" onClick={onClose} className="h-7 text-xs">
+        <Button type="button" variant="outline" onClick={onClose} className="h-6 text-[11px]">
           ביטול
         </Button>
       </div>

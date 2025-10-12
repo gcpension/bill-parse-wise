@@ -261,30 +261,29 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
   const checklistItems = getChecklistItems('cellular', 'private');
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-1" dir="rtl">
       {/* Personal Details */}
       <Card>
-        <CardHeader className="py-1.5 px-2.5">
-          <CardTitle className="text-xs font-semibold">פרטים אישיים</CardTitle>
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="text-[9px] font-semibold">פרטים אישיים</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
+        <CardContent className="grid grid-cols-2 gap-1 py-1 px-1.5">
           <div>
-            <Label htmlFor="fullName" className="flex items-center gap-2">
+            <Label htmlFor="fullName" className="text-[8px]">
               שם מלא *
-              <FieldInfoTooltip content={fieldInfo.fullName} />
             </Label>
             <Input
               id="fullName"
-              placeholder="הקלד/י שם מלא"
+              placeholder="שם מלא"
               value={formData.fullName}
               onChange={(e) => updateFormData("fullName", e.target.value)}
               required
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label htmlFor="idNumber" className="flex items-center gap-2">
+            <Label htmlFor="idNumber" className="text-[8px]">
               ת.ז. *
-              <FieldInfoTooltip content={fieldInfo.idNumber} />
             </Label>
             <Input
               id="idNumber"
@@ -293,33 +292,34 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
               onChange={(e) => updateFormData("idNumber", e.target.value)}
               maxLength={9}
               required
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label htmlFor="phone" className="flex items-center gap-2">
-              נייד ליצירת קשר *
-              <FieldInfoTooltip content={fieldInfo.phone} />
+            <Label htmlFor="phone" className="text-[8px]">
+              נייד *
             </Label>
             <Input
               id="phone"
-              placeholder="05X-XXXXXXX"
+              placeholder="05X-XXX"
               value={formData.phone}
               onChange={(e) => updateFormData("phone", e.target.value)}
               required
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label htmlFor="email" className="flex items-center gap-2">
-              אימייל *
-              <FieldInfoTooltip content={fieldInfo.email} />
+            <Label htmlFor="email" className="text-[8px]">
+              מייל *
             </Label>
             <Input
               id="email"
               type="email"
-              placeholder="name@email.com"
+              placeholder="email"
               value={formData.email}
               onChange={(e) => updateFormData("email", e.target.value)}
               required
+              className="h-6 text-[11px]"
             />
           </div>
         </CardContent>
@@ -327,18 +327,17 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
 
       {/* Service Details */}
       <Card>
-        <CardHeader className="py-1.5 px-2.5">
-          <CardTitle className="text-xs font-semibold">פרטי השירות</CardTitle>
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="text-[9px] font-semibold">פרטי שירות</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
+        <CardContent className="grid grid-cols-2 gap-1 py-1 px-1.5">
           <div>
-            <Label htmlFor="currentProvider" className="flex items-center gap-2">
+            <Label htmlFor="currentProvider" className="text-[8px]">
               ספק נוכחי *
-              <FieldInfoTooltip content={fieldInfo.currentProvider} />
             </Label>
             <Select onValueChange={handleProviderChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="בחר/י ספק" />
+              <SelectTrigger className="h-6 text-[11px]">
+                <SelectValue placeholder="בחר" />
               </SelectTrigger>
               <SelectContent>
                 {providers.map(provider => (
@@ -348,22 +347,19 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
             </Select>
           </div>
           <div>
-            <Label htmlFor="targetProvider" className="flex items-center gap-2">
-              ספק יעד *
-              <FieldInfoTooltip content={fieldInfo.targetProvider} />
+            <Label htmlFor="targetProvider" className="text-[8px]">
+              יעד *
             </Label>
             <Input
               id="targetProvider"
               value={formData.targetProvider}
-              onChange={(e) => updateFormData("targetProvider", e.target.value)}
-              required
               disabled
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label htmlFor="powerOfAttorneyExpiry" className="flex items-center gap-2">
-              תוקף ייפוי כוח *
-              <FieldInfoTooltip content={fieldInfo.powerOfAttorneyExpiry} />
+            <Label htmlFor="powerOfAttorneyExpiry" className="text-[8px]">
+              תוקף *
             </Label>
             <Input
               id="powerOfAttorneyExpiry"
@@ -371,6 +367,7 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
               value={formData.powerOfAttorneyExpiry}
               onChange={(e) => updateFormData("powerOfAttorneyExpiry", e.target.value)}
               required
+              className="h-6 text-[11px]"
             />
           </div>
         </CardContent>
@@ -378,35 +375,35 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
 
       {/* Phone Numbers */}
       <Card>
-        <CardHeader className="py-1.5 px-2.5">
-          <CardTitle className="flex items-center justify-between text-xs font-semibold">
-            מספרי קווים להעברה
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="flex items-center justify-between text-[9px] font-semibold">
+            קווים
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={addPhoneNumber}
-              className="h-6 text-xs"
+              className="h-5 text-[10px] px-1.5"
             >
-              <Plus className="h-3 w-3 ml-1" />
-              הוסף
+              <Plus className="h-2.5 w-2.5" />
+              +
             </Button>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-1 py-1 px-1.5">
           {formData.phoneNumbers.map((phone, index) => (
-            <div key={index} className="flex gap-4 items-end">
+            <div key={index} className="flex gap-1 items-end">
               <div className="flex-1">
-                <Label htmlFor={`phone-${index}`} className="flex items-center gap-2">
-                  מספר טלפון {index + 1} *
-                  {index === 0 && <FieldInfoTooltip content={fieldInfo.phoneNumbers} />}
+                <Label htmlFor={`phone-${index}`} className="text-[8px]">
+                  קו {index + 1} *
                 </Label>
                 <Input
                   id={`phone-${index}`}
-                  placeholder="05X-XXXXXXX"
+                  placeholder="05X-XXX"
                   value={phone}
                   onChange={(e) => updatePhoneNumber(index, e.target.value)}
                   required
+                  className="h-6 text-[11px]"
                 />
               </div>
               {formData.phoneNumbers.length > 1 && (
@@ -415,8 +412,9 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
                   variant="outline"
                   size="sm"
                   onClick={() => removePhoneNumber(index)}
+                  className="h-6 w-6 p-0"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-2.5 w-2.5" />
                 </Button>
               )}
             </div>
@@ -424,147 +422,81 @@ export const CellularPrivateForm = ({ selectedPlan, onClose }: CellularPrivateFo
         </CardContent>
       </Card>
 
-      {/* OTP Confirmation */}
+      {/* File & Terms */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">אישור OTP</CardTitle>
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="text-[9px] font-semibold">מסמכים והסכמות</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-start gap-2">
-            <Checkbox
-              id="acceptOtpConfirmation"
-              checked={formData.acceptOtpConfirmation}
-              onCheckedChange={(checked) => updateFormData("acceptOtpConfirmation", checked as boolean)}
-            />
-            <label htmlFor="acceptOtpConfirmation" className="text-sm flex items-start gap-2">
-              אני מצהיר/ה שיש ברשותי את כרטיס ה-SIM הנוכחי ואוכל לקבל ולאשר הודעות OTP *
-              <FieldInfoTooltip content={fieldInfo.acceptOtpConfirmation} />
-            </label>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* HOT Mobile Warning */}
-      {showHotMobileWarning && (
-        <Card className="border-orange-200 bg-orange-50">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-2 text-orange-800">
-              <AlertTriangle className="h-5 w-5 mt-0.5" />
-              <div>
-                <p className="font-medium">תזכורת חשובה עבור לקוחות HOT Mobile</p>
-                <p className="text-sm mt-1">
-                  לאחר קבלת כרטיס ה-SIM החדש, יש להתקשר למוקד השירות לאישור ההפעלה
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* File Uploads */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">מסמכים מצורפים</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-1 py-1 px-1.5">
           <div>
-            <Label className="flex items-center gap-2">
-              <Upload className="h-4 w-4" />
-              צילום ת.ז. בעל המנוי *
-              <FieldInfoTooltip content={fieldInfo.subscriberIdCopy} />
+            <Label className="flex items-center gap-0.5 text-[8px]">
+              <Upload className="h-2.5 w-2.5" />
+              ת.ז. *
             </Label>
             <Input
               type="file"
               accept=".jpg,.jpeg,.png,.pdf"
               onChange={(e) => handleFileUpload("subscriberIdCopy", e.target.files?.[0] || null)}
-              className="mt-2"
+              className="h-6 text-[11px]"
             />
             {formData.subscriberIdCopy.uploaded && (
-              <p className="text-sm text-green-600 mt-1">✓ קובץ הועלה בהצלחה</p>
+              <p className="text-[8px] text-green-600">✓</p>
             )}
           </div>
-          <div>
-            <Label className="flex items-center gap-2">
-              <Upload className="h-4 w-4" />
-              חשבונית אחרונה (אופציונלי)
-              <FieldInfoTooltip content={fieldInfo.lastBill} />
-            </Label>
-            <Input
-              type="file"
-              accept=".jpg,.jpeg,.png,.pdf"
-              onChange={(e) => handleFileUpload("lastBill", e.target.files?.[0] || null)}
-              className="mt-2"
+          <div className="flex items-start gap-1">
+            <Checkbox
+              id="acceptOtpConfirmation"
+              checked={formData.acceptOtpConfirmation}
+              onCheckedChange={(checked) => updateFormData("acceptOtpConfirmation", checked as boolean)}
+              className="h-3 w-3"
             />
-            {formData.lastBill?.uploaded && (
-              <p className="text-sm text-green-600 mt-1">✓ קובץ הועלה בהצלחה</p>
-            )}
+            <label htmlFor="acceptOtpConfirmation" className="text-[8px] leading-tight">
+              יש לי SIM נוכחי לקבלת OTP *
+            </label>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Checklist */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <FileText className="h-5 w-5" />
-            צ׳קליסט לפני שליחה
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {checklistItems.map(item => (
-            <div key={item.id} className="flex items-start gap-2">
-              <Checkbox
-                id={item.id}
-                checked={checkedItems[item.id] || false}
-                onCheckedChange={(checked) => setCheckedItems(prev => ({
-                  ...prev,
-                  [item.id]: checked as boolean
-                }))}
-              />
-              <label htmlFor={item.id} className="text-sm leading-relaxed">
-                {item.text}
-              </label>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      {/* Terms and Privacy */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">הסכמות</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-start gap-2">
+          <div className="flex items-start gap-1">
             <Checkbox
               id="agreeToTerms"
               checked={agreeToTerms}
               onCheckedChange={(checked) => setAgreeToTerms(checked === true)}
+              className="h-3 w-3"
             />
-            <label htmlFor="agreeToTerms" className="text-sm">
-              אני מסכים/ה לתנאי השימוש ולביצוע המעבר כמפורט
+            <label htmlFor="agreeToTerms" className="text-[8px] leading-tight">
+              מסכים/ה לתנאים
             </label>
           </div>
-          <div className="flex items-start gap-2">
+          <div className="flex items-start gap-1">
             <Checkbox
               id="agreeToPrivacy"
               checked={agreeToPrivacy}
               onCheckedChange={(checked) => setAgreeToPrivacy(checked === true)}
+              className="h-3 w-3"
             />
-            <label htmlFor="agreeToPrivacy" className="text-sm">
-              אני מסכים/ה למדיניות הפרטיות ולעיבוד הנתונים לצורך המעבר
+            <label htmlFor="agreeToPrivacy" className="text-[8px] leading-tight">
+              מסכים/ה לפרטיות
             </label>
           </div>
         </CardContent>
       </Card>
 
+      {showHotMobileWarning && (
+        <Card className="border-orange-200 bg-orange-50">
+          <CardContent className="py-1 px-1.5">
+            <div className="flex items-start gap-1 text-orange-800">
+              <AlertTriangle className="h-3 w-3" />
+              <p className="text-[8px]">HOT: התקשר למוקד לאחר קבלת SIM</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Submit Button */}
-      <div className="flex gap-2 pt-2">
-        <Button type="submit" className="flex-1 h-8 text-sm">
-          <FileText className="h-3 w-3 ml-1" />
-          שלח בקשה וצור PDF
+      <div className="flex gap-1 pt-1">
+        <Button type="submit" className="flex-1 h-6 text-[11px]">
+          <FileText className="h-2.5 w-2.5 ml-0.5" />
+          שלח
         </Button>
-        <Button type="button" variant="outline" onClick={onClose} className="h-8 text-sm">
+        <Button type="button" variant="outline" onClick={onClose} className="h-6 text-[11px]">
           ביטול
         </Button>
       </div>

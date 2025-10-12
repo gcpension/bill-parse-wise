@@ -190,26 +190,26 @@ export const TVPrivateForm = ({ selectedPlan, onClose }: TVPrivateFormProps) => 
   const checklistItems = getChecklistItems('tv', 'private');
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-1" dir="rtl">
       {/* Personal Details */}
       <Card>
-        <CardHeader className="py-1.5 px-2.5">
-          <CardTitle className="text-xs font-semibold">פרטים אישיים</CardTitle>
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="text-[9px] font-semibold">פרטים אישיים</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
+        <CardContent className="grid grid-cols-2 gap-1 py-1 px-1.5">
           <div>
-            <Label htmlFor="fullName" className="text-xs">שם מלא *</Label>
+            <Label htmlFor="fullName" className="text-[8px]">שם מלא *</Label>
             <Input
               id="fullName"
-              placeholder="הקלד/י שם מלא"
+              placeholder="שם מלא"
               value={formData.fullName}
               onChange={(e) => updateFormData("fullName", e.target.value)}
               required
-              className="h-8 text-sm"
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label htmlFor="idNumber">ת.ז. *</Label>
+            <Label htmlFor="idNumber" className="text-[8px]">ת.ז. *</Label>
             <Input
               id="idNumber"
               placeholder="9 ספרות"
@@ -217,27 +217,30 @@ export const TVPrivateForm = ({ selectedPlan, onClose }: TVPrivateFormProps) => 
               onChange={(e) => updateFormData("idNumber", e.target.value)}
               maxLength={9}
               required
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label htmlFor="phone">נייד *</Label>
+            <Label htmlFor="phone" className="text-[8px]">נייד *</Label>
             <Input
               id="phone"
-              placeholder="05X-XXXXXXX"
+              placeholder="05X-XXX"
               value={formData.phone}
               onChange={(e) => updateFormData("phone", e.target.value)}
               required
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label htmlFor="email">אימייל *</Label>
+            <Label htmlFor="email" className="text-[8px]">מייל *</Label>
             <Input
               id="email"
               type="email"
-              placeholder="name@email.com"
+              placeholder="email"
               value={formData.email}
               onChange={(e) => updateFormData("email", e.target.value)}
               required
+              className="h-6 text-[11px]"
             />
           </div>
         </CardContent>
@@ -245,15 +248,15 @@ export const TVPrivateForm = ({ selectedPlan, onClose }: TVPrivateFormProps) => 
 
       {/* Service Details */}
       <Card>
-        <CardHeader className="py-1.5 px-2.5">
-          <CardTitle className="text-xs font-semibold">פרטי השירות</CardTitle>
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="text-[9px] font-semibold">פרטי שירות</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-1.5 py-1.5 px-2.5">
+        <CardContent className="grid grid-cols-2 gap-1 py-1 px-1.5">
           <div>
-            <Label htmlFor="currentProvider">ספק נוכחי *</Label>
+            <Label htmlFor="currentProvider" className="text-[8px]">ספק נוכחי *</Label>
             <Select onValueChange={(value) => updateFormData("currentProvider", value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="בחר/י ספק" />
+              <SelectTrigger className="h-6 text-[11px]">
+                <SelectValue placeholder="בחר" />
               </SelectTrigger>
               <SelectContent>
                 {providers.map(provider => (
@@ -263,146 +266,92 @@ export const TVPrivateForm = ({ selectedPlan, onClose }: TVPrivateFormProps) => 
             </Select>
           </div>
           <div>
-            <Label htmlFor="subscriberNumber">מספר מנוי/לקוח *</Label>
+            <Label htmlFor="subscriberNumber" className="text-[8px]">מס׳ מנוי *</Label>
             <Input
               id="subscriberNumber"
-              placeholder="מספר מנוי"
+              placeholder="מנוי"
               value={formData.subscriberNumber}
               onChange={(e) => updateFormData("subscriberNumber", e.target.value)}
               required
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label htmlFor="targetProvider">ספק יעד *</Label>
+            <Label htmlFor="targetProvider" className="text-[8px]">יעד *</Label>
             <Input
               id="targetProvider"
               value={formData.targetProvider}
-              onChange={(e) => updateFormData("targetProvider", e.target.value)}
-              required
               disabled
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label htmlFor="requestedPackage">חבילה מבוקשת</Label>
-            <Input
-              id="requestedPackage"
-              placeholder="שם החבילה"
-              value={formData.requestedPackage}
-              onChange={(e) => updateFormData("requestedPackage", e.target.value)}
-            />
-          </div>
-          <div>
-            <Label htmlFor="equipmentReturn">אופן החזרת ציוד *</Label>
-            <Select onValueChange={(value) => updateFormData("equipmentReturnMethod", value as 'courier' | 'pickup-point')} defaultValue="courier">
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="courier">שליח</SelectItem>
-                <SelectItem value="pickup-point">נק׳ מסירה</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label htmlFor="powerOfAttorneyExpiry">תוקף ייפוי כוח *</Label>
+            <Label htmlFor="powerOfAttorneyExpiry" className="text-[8px]">תוקף *</Label>
             <Input
               id="powerOfAttorneyExpiry"
               type="date"
               value={formData.powerOfAttorneyExpiry}
               onChange={(e) => updateFormData("powerOfAttorneyExpiry", e.target.value)}
               required
+              className="h-6 text-[11px]"
             />
           </div>
         </CardContent>
       </Card>
 
-      {/* File Upload */}
+      {/* File & Terms */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">מסמכים מצורפים</CardTitle>
+        <CardHeader className="py-0.5 px-1.5">
+          <CardTitle className="text-[9px] font-semibold">מסמכים והסכמות</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-1 py-1 px-1.5">
           <div>
-            <Label className="flex items-center gap-2">
-              <Upload className="h-4 w-4" />
-              צילום ת.ז. *
+            <Label className="flex items-center gap-0.5 text-[8px]">
+              <Upload className="h-2.5 w-2.5" />
+              ת.ז. *
             </Label>
             <Input
               type="file"
               accept=".jpg,.jpeg,.png,.pdf"
               onChange={(e) => handleFileUpload("subscriberIdCopy", e.target.files?.[0] || null)}
-              className="mt-2"
+              className="h-6 text-[11px]"
             />
             {formData.subscriberIdCopy.uploaded && (
-              <p className="text-sm text-green-600 mt-1">✓ קובץ הועלה בהצלחה</p>
+              <p className="text-[8px] text-green-600">✓</p>
             )}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Checklist */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <FileText className="h-5 w-5" />
-            צ׳קליסט לפני שליחה
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {checklistItems.map(item => (
-            <div key={item.id} className="flex items-start gap-2">
-              <Checkbox
-                id={item.id}
-                checked={checkedItems[item.id] || false}
-                onCheckedChange={(checked) => setCheckedItems(prev => ({
-                  ...prev,
-                  [item.id]: checked as boolean
-                }))}
-              />
-              <label htmlFor={item.id} className="text-sm leading-relaxed">
-                {item.text}
-              </label>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      {/* Terms and Privacy */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">הסכמות</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-start gap-2">
+          <div className="flex items-start gap-1">
             <Checkbox
               id="agreeToTerms"
               checked={agreeToTerms}
               onCheckedChange={(checked) => setAgreeToTerms(checked === true)}
+              className="h-3 w-3"
             />
-            <label htmlFor="agreeToTerms" className="text-sm">
-              אני מסכים/ה לתנאי השימוש ולביצוע המעבר כמפורט
+            <label htmlFor="agreeToTerms" className="text-[8px] leading-tight">
+              מסכים/ה לתנאים
             </label>
           </div>
-          <div className="flex items-start gap-2">
+          <div className="flex items-start gap-1">
             <Checkbox
               id="agreeToPrivacy"
               checked={agreeToPrivacy}
               onCheckedChange={(checked) => setAgreeToPrivacy(checked === true)}
+              className="h-3 w-3"
             />
-            <label htmlFor="agreeToPrivacy" className="text-sm">
-              אני מסכים/ה למדיניות הפרטיות ולעיבוד הנתונים לצורך המעבר
+            <label htmlFor="agreeToPrivacy" className="text-[8px] leading-tight">
+              מסכים/ה לפרטיות
             </label>
           </div>
         </CardContent>
       </Card>
 
       {/* Submit Button */}
-      <div className="flex gap-2 pt-2">
-        <Button type="submit" className="flex-1 h-8 text-sm">
-          <FileText className="h-3 w-3 ml-1" />
-          שלח בקשה וצור PDF
+      <div className="flex gap-1 pt-1">
+        <Button type="submit" className="flex-1 h-6 text-[11px]">
+          <FileText className="h-2.5 w-2.5 ml-0.5" />
+          שלח
         </Button>
-        <Button type="button" variant="outline" onClick={onClose} className="h-8 text-sm">
+        <Button type="button" variant="outline" onClick={onClose} className="h-6 text-[11px]">
           ביטול
         </Button>
       </div>

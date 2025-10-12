@@ -107,210 +107,135 @@ export const InternetPrivateForm = ({ selectedPlan, onClose }: InternetPrivateFo
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2" dir="rtl">
+    <form onSubmit={handleSubmit} className="space-y-1" dir="rtl">
       <Card>
-        <CardHeader className="py-1.5 px-2.5"><CardTitle className="text-xs font-semibold">פרטים אישיים</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-2 gap-1.5 py-1.5 px-2.5">
+        <CardHeader className="py-0.5 px-1.5"><CardTitle className="text-[9px] font-semibold">פרטים אישיים</CardTitle></CardHeader>
+        <CardContent className="grid grid-cols-2 gap-1 py-1 px-1.5">
           <div>
-            <Label className="flex items-center gap-1 text-xs">
-              שם מלא *
-              <FieldInfoTooltip content={fieldInfo.fullName} />
-            </Label>
+            <Label className="text-[8px]">שם מלא *</Label>
             <Input 
-              placeholder="שם פרטי ושם משפחה"
+              placeholder="שם מלא"
               value={formData.fullName} 
               onChange={(e) => updateFormData("fullName", e.target.value)} 
               required 
-              className="h-8 text-sm"
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label className="flex items-center gap-2">
-              מס׳ תעודת זהות *
-              <FieldInfoTooltip content={fieldInfo.idNumber} />
-            </Label>
+            <Label className="text-[8px]">ת.ז. *</Label>
             <Input 
               placeholder="9 ספרות"
               value={formData.idNumber} 
               onChange={(e) => updateFormData("idNumber", e.target.value)} 
               maxLength={9}
               required 
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label className="flex items-center gap-2">
-              טלפון נייד *
-              <FieldInfoTooltip content={fieldInfo.phone} />
-            </Label>
+            <Label className="text-[8px]">נייד *</Label>
             <Input 
-              placeholder="05X-XXXXXXX"
+              placeholder="05X-XXX"
               value={formData.phone} 
               onChange={(e) => updateFormData("phone", e.target.value)} 
               required 
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label className="flex items-center gap-2">
-              דוא״ל *
-              <FieldInfoTooltip content={fieldInfo.email} />
-            </Label>
+            <Label className="text-[8px]">מייל *</Label>
             <Input 
               type="email" 
-              placeholder="name@example.com"
+              placeholder="email"
               value={formData.email} 
               onChange={(e) => updateFormData("email", e.target.value)} 
               required 
+              className="h-6 text-[11px]"
             />
           </div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="py-1.5 px-2.5"><CardTitle className="text-xs font-semibold">פרטי השירות</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-2 gap-1.5 py-1.5 px-2.5">
+        <CardHeader className="py-0.5 px-1.5"><CardTitle className="text-[9px] font-semibold">פרטי שירות</CardTitle></CardHeader>
+        <CardContent className="grid grid-cols-2 gap-1 py-1 px-1.5">
           <div>
-            <Label className="flex items-center gap-2">
-              ספק תשתית נוכחי *
-              <FieldInfoTooltip content={fieldInfo.infrastructureProvider} />
-            </Label>
+            <Label className="text-[8px]">תשתית *</Label>
             <Select onValueChange={(value) => updateFormData("infrastructureProvider", value)}>
-              <SelectTrigger><SelectValue placeholder="בחר/י ספק תשתית" /></SelectTrigger>
+              <SelectTrigger className="h-6 text-[11px]"><SelectValue placeholder="בחר" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="בזק">בזק</SelectItem>
                 <SelectItem value="HOT">HOT</SelectItem>
-                <SelectItem value="סיב אחר">סיב אחר</SelectItem>
+                <SelectItem value="סיב אחר">סיב</SelectItem>
                 <SelectItem value="אחר">אחר</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label className="flex items-center gap-2">
-              ספק אינטרנט (ISP) נוכחי *
-              <FieldInfoTooltip content={fieldInfo.currentISP} />
-            </Label>
+            <Label className="text-[8px]">ISP נוכחי *</Label>
             <Input 
-              placeholder="בחר/י או כתוב/י"
+              placeholder="ספק"
               value={formData.currentISP} 
               onChange={(e) => updateFormData("currentISP", e.target.value)} 
               required 
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label className="flex items-center gap-2">
-              מזהה קו/מנוי/ONT *
-              <FieldInfoTooltip content={fieldInfo.lineIdentifier} />
-            </Label>
+            <Label className="text-[8px]">מזהה קו *</Label>
             <Input 
-              placeholder="מספר או מזהה ציוד"
+              placeholder="מזהה"
               value={formData.lineIdentifier} 
               onChange={(e) => updateFormData("lineIdentifier", e.target.value)} 
               required 
+              className="h-6 text-[11px]"
             />
           </div>
           <div>
-            <Label className="flex items-center gap-2">
-              ספק יעד + חבילה *
-              <FieldInfoTooltip content={fieldInfo.requestedPackage} />
-            </Label>
-            <Input 
-              placeholder="בחר/י חבילה"
-              value={formData.requestedPackage} 
-              onChange={(e) => updateFormData("requestedPackage", e.target.value)} 
-              required 
-            />
-          </div>
-          <div>
-            <Label className="flex items-center gap-2">
-              תוקף ייפוי כוח *
-              <FieldInfoTooltip content={fieldInfo.powerOfAttorneyExpiry} />
-            </Label>
+            <Label className="text-[8px]">תוקף *</Label>
             <Input 
               type="date" 
               value={formData.powerOfAttorneyExpiry} 
               onChange={(e) => updateFormData("powerOfAttorneyExpiry", e.target.value)} 
               required 
+              className="h-6 text-[11px]"
             />
-            <p className="text-sm text-muted-foreground mt-1">בחר/י תאריך (מומלץ 12 חודשים)</p>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="py-0.5 px-1.5"><CardTitle className="text-[9px] font-semibold">מסמכים והסכמות</CardTitle></CardHeader>
+        <CardContent className="space-y-1 py-1 px-1.5">
           <div>
-            <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <Checkbox 
-                id="bundleService"
-                checked={formData.isBundleService}
-                onCheckedChange={(checked) => updateFormData("isBundleService", checked as boolean)}
-              />
-              <Label htmlFor="bundleService" className="text-sm flex items-start gap-2">
-                התשתית וה-ISP באותה חבילה (דורש שתי בקשות)
-                <FieldInfoTooltip content={fieldInfo.isBundleService} />
-              </Label>
-            </div>
+            <Label className="flex items-center gap-0.5 text-[8px]">
+              <Upload className="h-2.5 w-2.5" />
+              ת״ז *
+            </Label>
+            <Input 
+              type="file" 
+              accept=".jpg,.jpeg,.png,.pdf" 
+              onChange={(e) => handleFileUpload("subscriberIdCopy", e.target.files?.[0] || null)} 
+              className="h-6 text-[11px]"
+            />
+            {formData.subscriberIdCopy.uploaded && (
+              <p className="text-[8px] text-green-600">✓</p>
+            )}
+          </div>
+          <div className="flex items-start gap-1">
+            <Checkbox checked={agreeToTerms} onCheckedChange={(checked) => setAgreeToTerms(checked === true)} className="h-3 w-3" />
+            <label className="text-[8px] leading-tight">מסכים/ה לתנאים</label>
+          </div>
+          <div className="flex items-start gap-1">
+            <Checkbox checked={agreeToPrivacy} onCheckedChange={(checked) => setAgreeToPrivacy(checked === true)} className="h-3 w-3" />
+            <label className="text-[8px] leading-tight">מסכים/ה לפרטיות</label>
           </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader className="py-2 px-3"><CardTitle className="text-sm">העלאת מסמכים</CardTitle></CardHeader>
-        <CardContent className="py-2 px-3">
-          <Label className="flex items-center gap-2">
-            <Upload className="h-4 w-4" />
-            צילום ת״ז (חובה) *
-            <FieldInfoTooltip content={fieldInfo.subscriberIdCopy} />
-          </Label>
-          <Input 
-            type="file" 
-            accept=".jpg,.jpeg,.png,.pdf" 
-            onChange={(e) => handleFileUpload("subscriberIdCopy", e.target.files?.[0] || null)} 
-            className="mt-2"
-          />
-          {formData.subscriberIdCopy.uploaded && (
-            <p className="text-sm text-green-600 mt-1">✓ קובץ הועלה בהצלחה</p>
-          )}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <FileText className="h-5 w-5" />
-            צ׳קליסט לפני שליחה
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {checklistItems.map(item => (
-            <div key={item.id} className="flex items-start gap-2">
-              <Checkbox
-                id={item.id}
-                checked={checkedItems[item.id] || false}
-                onCheckedChange={(checked) => setCheckedItems(prev => ({
-                  ...prev,
-                  [item.id]: checked as boolean
-                }))}
-              />
-              <label htmlFor={item.id} className="text-sm leading-relaxed">
-                {item.text}
-              </label>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader><CardTitle>הסכמות</CardTitle></CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-start gap-2">
-            <Checkbox checked={agreeToTerms} onCheckedChange={(checked) => setAgreeToTerms(checked === true)} />
-            <label className="text-sm">אני מסכים/ה לתנאי השימוש</label>
-          </div>
-          <div className="flex items-start gap-2">
-            <Checkbox checked={agreeToPrivacy} onCheckedChange={(checked) => setAgreeToPrivacy(checked === true)} />
-            <label className="text-sm">אני מסכים/ה למדיניות הפרטיות</label>
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="flex gap-2 pt-2">
-        <Button type="submit" className="flex-1 h-8 text-sm"><FileText className="h-3 w-3 ml-1" />שלח בקשה וצור PDF</Button>
-        <Button type="button" variant="outline" onClick={onClose} className="h-8 text-sm">ביטול</Button>
+      <div className="flex gap-1 pt-1">
+        <Button type="submit" className="flex-1 h-6 text-[11px]"><FileText className="h-2.5 w-2.5 ml-0.5" />שלח</Button>
+        <Button type="button" variant="outline" onClick={onClose} className="h-6 text-[11px]">ביטול</Button>
       </div>
     </form>
   );
