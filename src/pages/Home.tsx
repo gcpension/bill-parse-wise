@@ -227,71 +227,73 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Purple Decorative Shape on Left Top Corner with Brand */}
-        <div className="absolute -top-20 -left-20 w-[350px] h-[350px] pointer-events-none">
+        {/* Purple Organic Blob Shape on Left Top Corner */}
+        <div className="absolute -top-24 -left-24 w-[400px] h-[400px] pointer-events-none">
           <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Wavy flowing shape with curves */}
+            {/* Complex organic blob with many curves */}
             <path
-              d="M 0,120 
-                 Q 10,100 25,85
-                 Q 40,70 60,62
-                 Q 80,54 100,55
-                 Q 120,56 135,65
-                 Q 150,74 160,88
-                 Q 170,102 175,120
-                 Q 180,138 178,155
-                 Q 176,172 168,185
-                 Q 160,198 147,206
-                 Q 134,214 118,217
-                 Q 102,220 85,216
-                 Q 68,212 54,202
-                 Q 40,192 28,177
-                 Q 16,162 8,145
-                 Q 0,133 0,120
+              d="M 0,140
+                 C 5,120 12,105 22,92
+                 C 32,79 45,70 60,65
+                 C 75,60 92,58 108,61
+                 C 124,64 139,71 152,82
+                 C 165,93 175,108 181,125
+                 C 187,142 189,161 186,179
+                 C 183,197 175,213 163,225
+                 C 151,237 136,245 119,248
+                 C 102,251 84,249 68,242
+                 C 52,235 38,223 27,208
+                 C 16,193 8,175 4,156
+                 C 0,148 0,144 0,140
                  L 0,0
-                 L 150,0
-                 Q 140,15 130,32
-                 Q 120,49 112,68
-                 Q 104,87 100,107
-                 Q 96,127 96,145
-                 Q 60,135 35,115
-                 Q 15,100 5,120
-                 L 0,120 Z"
-              fill="url(#purpleGradient)"
-              opacity="0.92"
+                 L 180,0
+                 C 170,18 162,38 156,59
+                 C 150,80 147,102 147,124
+                 C 147,146 150,168 156,188
+                 C 145,185 134,179 124,170
+                 C 114,161 105,150 97,137
+                 C 89,124 82,110 77,95
+                 C 65,105 54,117 45,130
+                 C 36,143 28,157 22,172
+                 C 10,160 2,148 0,140 Z"
+              fill="url(#blobGradient)"
+              opacity="0.88"
             />
             
-            {/* Gradient definition */}
+            {/* Enhanced Gradient */}
             <defs>
-              <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
+              <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
+                <stop offset="50%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
             
-            {/* Brand Text */}
-            <g transform="translate(90, 100)">
+            {/* Brand Text with Cool Font */}
+            <g transform="translate(95, 115)">
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="20"
-                fontWeight="700"
-                fontFamily="Poppins, sans-serif"
-                letterSpacing="1.5"
+                fontSize="26"
+                fontWeight="900"
+                fontFamily="Playfair Display, serif"
+                letterSpacing="3"
+                style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))' }}
               >
                 EASY
               </text>
               <text
                 x="0"
-                y="24"
+                y="32"
                 textAnchor="middle"
                 fill="white"
-                fontSize="20"
-                fontWeight="700"
-                fontFamily="Poppins, sans-serif"
-                letterSpacing="1.5"
+                fontSize="26"
+                fontWeight="900"
+                fontFamily="Playfair Display, serif"
+                letterSpacing="3"
+                style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))' }}
               >
                 SWITCH
               </text>
