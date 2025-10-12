@@ -20,7 +20,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Zap, Smartphone, Wifi, Tv, ArrowLeft, Building2, Crown, Award, CheckCircle, TrendingUp, Sparkles, Star, BarChart3, Filter, Search, Calculator, Brain, Target, Eye, X, Plus, Minus, Settings2, RefreshCw, User, Package } from "lucide-react";
 import { manualPlans, ManualPlan } from "@/data/manual-plans";
-import { EnhancedSwitchRequestForm } from "@/components/forms/EnhancedSwitchRequestForm";
+import { SwitchRequestForm } from "@/components/forms/SwitchRequestForm";
 import DetailedAIComparison from "@/components/plans/DetailedAIComparison";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { RecommendationContext } from "@/lib/recommendationEngine";
@@ -275,7 +275,12 @@ const AllPlans = ({
     // Mark as viewed
     setViewedPlans(prev => new Set(prev).add(plan.id));
     
-    // Open details sheet
+    // Open form directly instead of details sheet
+    handleSelectForSwitch(plan);
+  };
+
+  const handleViewDetails = (plan: ManualPlan) => {
+    // Open details sheet for viewing
     setSelectedPlanForDetails(plan);
   };
   
@@ -999,6 +1004,7 @@ const AllPlans = ({
                                   onToggleFavorite={() => toggleFavorite(plan.id)}
                                   onToggleCompare={() => handleCompareToggle(plan)}
                                   onSelect={() => handlePlanSelect(plan)}
+                                  onViewDetails={() => handleViewDetails(plan)}
                                   comparisonDisabled={!canAddToComparison && !isInComparison(plan.id)}
                                   savingsAmount={savingsAmount}
                                 />
@@ -1040,19 +1046,16 @@ const AllPlans = ({
       </div>
 
       {/* Form Dialog */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-purple-800 font-heebo">
-              בקשת החלפת ספק
-            </DialogTitle>
-          </DialogHeader>
-          {selectedPlan && <EnhancedSwitchRequestForm selectedPlan={selectedPlan} isOpen={isFormOpen} onClose={() => {
-          setIsFormOpen(false);
-          setSelectedPlan(null);
-        }} />}
-        </DialogContent>
-      </Dialog>
+      {selectedPlan && (
+        <SwitchRequestForm
+          selectedPlan={selectedPlan}
+          isOpen={isFormOpen}
+          onClose={() => {
+            setIsFormOpen(false);
+            setSelectedPlan(null);
+          }}
+        />
+      )}
 
       {/* Enhanced Personalized Recommendation Banner */}
       {selectedCategory && !showPersonalizedWizard && !isAnalyzing && (

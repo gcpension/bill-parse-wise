@@ -2,7 +2,7 @@ import { ManualPlan } from "@/data/manual-plans";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, Eye, Check, Heart, TrendingDown, Zap, Crown } from "lucide-react";
+import { Star, Eye, Check, Heart, TrendingDown, Zap, Crown, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PlanCardProps {
@@ -14,6 +14,7 @@ interface PlanCardProps {
   onToggleFavorite?: () => void;
   onToggleCompare?: () => void;
   onSelect: () => void;
+  onViewDetails?: () => void;
   comparisonDisabled?: boolean;
   savingsAmount?: number;
 }
@@ -27,6 +28,7 @@ export const PlanCard = ({
   onToggleFavorite,
   onToggleCompare,
   onSelect,
+  onViewDetails,
   comparisonDisabled = false,
   savingsAmount
 }: PlanCardProps) => {
@@ -134,33 +136,48 @@ export const PlanCard = ({
         )}
 
         {/* Action Buttons with Enhanced Design */}
-        <div className="flex gap-1.5 pt-2">
+        <div className="space-y-1.5 pt-2">
           <Button 
             onClick={(e) => {
               e.stopPropagation();
               onSelect();
             }}
-            className="flex-1 font-heebo h-8 text-sm bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-md hover:shadow-lg transition-all"
+            className="w-full font-heebo h-8 text-sm bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-md hover:shadow-lg transition-all"
             variant="default"
           >
             בחר מסלול
           </Button>
-          {onToggleCompare && (
-            <Button
-              variant="outline"
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleCompare();
-              }}
-              disabled={comparisonDisabled && !isComparing}
-              className={cn(
-                "font-heebo h-8 text-sm transition-all",
-                isComparing && "bg-primary text-primary-foreground hover:bg-primary/90"
-              )}
-            >
-              {isComparing ? 'הסר' : 'השווה'}
-            </Button>
-          )}
+          <div className="flex gap-1.5">
+            {onViewDetails && (
+              <Button
+                variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewDetails();
+                }}
+                className="flex-1 font-heebo h-7 text-xs transition-all"
+              >
+                <Info className="w-3 h-3 ml-1" />
+                פרטים
+              </Button>
+            )}
+            {onToggleCompare && (
+              <Button
+                variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleCompare();
+                }}
+                disabled={comparisonDisabled && !isComparing}
+                className={cn(
+                  "flex-1 font-heebo h-7 text-xs transition-all",
+                  isComparing && "bg-primary text-primary-foreground hover:bg-primary/90"
+                )}
+              >
+                {isComparing ? 'הסר' : 'השווה'}
+              </Button>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
