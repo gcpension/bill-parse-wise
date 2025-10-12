@@ -233,21 +233,17 @@ const Home = () => {
             
             {/* Clean subtitle badge */}
             <div className="inline-block mb-8 animate-fade-in opacity-0" style={{
-              animationDelay: '0.1s',
-              animationFillMode: 'forwards'
-            }}>
-              <div className="bg-gradient-to-r from-primary/10 via-primary-glow/10 to-primary/10 backdrop-blur-sm border border-primary/20 rounded-full px-6 py-3">
-                <p className="text-base lg:text-lg text-primary font-medium">
-                  ✨ המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
-                </p>
-              </div>
+            animationDelay: '0.1s',
+            animationFillMode: 'forwards'
+          }}>
+              
             </div>
             
             {/* Main highlighted title with gradient background */}
             <div className="relative inline-block mb-6 animate-fade-in opacity-0" style={{
-              animationDelay: '0.3s',
-              animationFillMode: 'forwards'
-            }}>
+            animationDelay: '0.3s',
+            animationFillMode: 'forwards'
+          }}>
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary-glow/15 to-primary/10 rounded-3xl blur-xl"></div>
               <h1 className="relative text-4xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent leading-tight px-8 py-4">
                 באיזה תחום תרצו
@@ -257,9 +253,9 @@ const Home = () => {
             </div>
             
             <p className="text-lg lg:text-xl text-muted-foreground mt-8 font-medium max-w-3xl mx-auto leading-relaxed animate-fade-in opacity-0" style={{
-              animationDelay: '0.5s',
-              animationFillMode: 'forwards'
-            }}>
+            animationDelay: '0.5s',
+            animationFillMode: 'forwards'
+          }}>
               אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
             </p>
           </div>
@@ -270,20 +266,7 @@ const Home = () => {
       <section id="services" className="pt-8 pb-16 bg-gray-50 relative scroll-mt-20">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-heebo font-medium text-cyan-700 mb-4 animate-fade-in opacity-0" style={{
-            animationDelay: '0.2s',
-            animationFillMode: 'forwards'
-          }}>
-              בחרו את הקטגוריה שלכם
-            </h2>
-            <p className="text-lg text-cyan-600 font-assistant animate-fade-in opacity-0" style={{
-            animationDelay: '0.4s',
-            animationFillMode: 'forwards'
-          }}>
-              קבלו המלצות מותאמות אישית והשוו מחירים בכל הקטגוריות
-            </p>
-          </div>
+          
           
           
           {/* Category Cards Grid - Enhanced Interactive Layout */}
@@ -613,24 +596,7 @@ const Home = () => {
             </div>
 
             {/* Bottom Stats */}
-            <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto animate-fade-in" style={{
-            animationDelay: '0.4s',
-            animationFillMode: 'forwards',
-            opacity: 0
-          }}>
-              <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                <p className="text-3xl font-heebo font-black text-purple-600 mb-2">5 דקות</p>
-                <p className="text-sm text-gray-600 font-assistant">זמן ממוצע</p>
-              </div>
-              <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                <p className="text-3xl font-heebo font-black text-purple-600 mb-2">15,000+</p>
-                <p className="text-sm text-gray-600 font-assistant">משפחות חסכו</p>
-              </div>
-              <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                <p className="text-3xl font-heebo font-black text-purple-600 mb-2">₪2,400</p>
-                <p className="text-sm text-gray-600 font-assistant">חיסכון שנתי</p>
-              </div>
-            </div>
+            
 
             {/* CTA */}
             <div className="text-center mt-12 animate-fade-in" style={{
@@ -658,9 +624,7 @@ const Home = () => {
       </section>
 
       {/* Partners Section */}
-      <section className="py-16 bg-gray-50 relative">
-        
-      </section>
+      
 
       {/* FAQ Section */}
       <section className="py-16 bg-gray-50 relative">
