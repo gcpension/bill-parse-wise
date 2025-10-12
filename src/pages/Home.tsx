@@ -217,7 +217,7 @@ const Home = () => {
 
 
       {/* Clean Header Section */}
-      <section className="bg-gradient-to-b from-white via-gray-50 to-gray-50 py-16 lg:py-24 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-white via-gray-50 to-gray-50 py-12 lg:py-16 pb-8 lg:pb-10 relative overflow-hidden">
         {/* Background illustration */}
         <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" style={{
         backgroundImage: `url(${heroBackgroundIllustration})`
@@ -267,7 +267,7 @@ const Home = () => {
       </section>
 
       {/* Clean Categories Section - Enhanced with animations */}
-      <section id="services" className="py-16 bg-gray-50 relative scroll-mt-20">
+      <section id="services" className="pt-8 pb-16 bg-gray-50 relative scroll-mt-20">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           
           <div className="text-center mb-12">
