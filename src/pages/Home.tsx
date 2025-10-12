@@ -243,83 +243,62 @@ const Home = () => {
               opacity="0.85"
             />
             
-            {/* Broken/Distorted Typography with Decorative Element */}
+            {/* Clean Typography with Small Illustration */}
             <g transform="translate(100, 90)">
-              {/* White decorative circle element */}
-              <circle cx="-55" cy="10" r="8" fill="white" opacity="0.9">
-                <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
-              </circle>
-              <circle cx="-55" cy="10" r="12" fill="none" stroke="white" strokeWidth="2" opacity="0.5"/>
+              {/* Small lightning bolt illustration */}
+              <g transform="translate(-58, 8)">
+                <path
+                  d="M 0,0 L 3,8 L -2,8 L 1,16 L -6,6 L 0,6 Z"
+                  fill="white"
+                  stroke="white"
+                  strokeWidth="0.5"
+                  opacity="0.95"
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.8))' }}
+                />
+                <circle cx="-1" cy="0" r="1.5" fill="white" opacity="0.7">
+                  <animate attributeName="r" values="1.5;2;1.5" dur="1.5s" repeatCount="indefinite"/>
+                </circle>
+              </g>
               
-              {/* EASY - Broken style with stroke and dashes */}
+              {/* EASY - clean rounded style */}
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
-                strokeDasharray="3 2"
-                fontSize="30"
-                fontWeight="900"
-                fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="2"
+                fill="white"
+                fontSize="29"
+                fontWeight="700"
+                fontFamily="Poppins, Nunito, Quicksand, sans-serif"
+                letterSpacing="0"
                 style={{ 
-                  filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.6))'
+                  filter: 'drop-shadow(0 3px 10px rgba(0, 0, 0, 0.2))'
                 }}
               >
-                EASY
-              </text>
-              <text
-                x="1"
-                y="1"
-                textAnchor="middle"
-                fill="white"
-                fontSize="30"
-                fontWeight="900"
-                fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="2"
-                opacity="0.3"
-              >
-                EASY
+                easy
               </text>
               
-              {/* SWITCH - Broken style */}
+              {/* SWITCH - clean rounded style */}
               <text
                 x="0"
-                y="34"
-                textAnchor="middle"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
-                strokeDasharray="3 2"
-                fontSize="30"
-                fontWeight="900"
-                fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="2"
-                style={{ 
-                  filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.6))'
-                }}
-              >
-                SWITCH
-              </text>
-              <text
-                x="1"
-                y="35"
+                y="33"
                 textAnchor="middle"
                 fill="white"
-                fontSize="30"
-                fontWeight="900"
-                fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="2"
-                opacity="0.3"
+                fontSize="29"
+                fontWeight="700"
+                fontFamily="Poppins, Nunito, Quicksand, sans-serif"
+                letterSpacing="0"
+                style={{ 
+                  filter: 'drop-shadow(0 3px 10px rgba(0, 0, 0, 0.2))'
+                }}
               >
-                SWITCH
+                switch
               </text>
               
-              {/* Additional small white squares decoration */}
-              <rect x="60" cy="15" width="6" height="6" fill="white" opacity="0.8" transform="rotate(45 63 18)"/>
-              <rect x="58" cy="28" width="4" height="4" fill="white" opacity="0.6" transform="rotate(45 60 30)"/>
+              {/* Small sparkle decoration */}
+              <g transform="translate(62, 18)">
+                <line x1="0" y1="-4" x2="0" y2="4" stroke="white" strokeWidth="1.5" opacity="0.8"/>
+                <line x1="-4" y1="0" x2="4" y2="0" stroke="white" strokeWidth="1.5" opacity="0.8"/>
+              </g>
             </g>
             
             {/* Gradient definition */}
