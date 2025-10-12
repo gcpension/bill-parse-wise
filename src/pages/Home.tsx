@@ -221,6 +221,14 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-16 lg:py-20 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <img 
+            src={middleSectionIllustration} 
+            alt="" 
+            className="w-full h-full object-cover"
+          />
+        </div>
         
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-16 lg:py-20">
           <div className="text-center">
@@ -233,17 +241,17 @@ const Home = () => {
               <h1 className="relative">
                 {/* Glow Effect Behind Text */}
                 <div className="absolute inset-0 blur-2xl opacity-30">
-                  <span className="block text-4xl lg:text-5xl xl:text-6xl font-black bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                  <span className="block text-4xl lg:text-5xl xl:text-6xl font-black font-assistant bg-gradient-to-r from-accent via-royal-purple to-accent bg-clip-text text-transparent">
                     באיזה תחום תרצו להתחיל לחסוך היום?
                   </span>
                 </div>
                 
                 {/* Main Text */}
-                <span className="relative block text-4xl lg:text-5xl xl:text-6xl font-black leading-tight">
-                  <span className="block bg-gradient-to-r from-cyan-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent animate-gradient-x bg-300%">
+                <span className="relative block text-4xl lg:text-5xl xl:text-6xl font-black font-assistant leading-tight">
+                  <span className="block bg-gradient-to-r from-accent via-royal-purple to-accent bg-clip-text text-transparent animate-gradient-x bg-300%">
                     באיזה תחום תרצו
                   </span>
-                  <span className="block bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-600 bg-clip-text text-transparent mt-2 animate-gradient-x bg-300%">
+                  <span className="block bg-gradient-to-r from-royal-purple via-accent to-royal-purple bg-clip-text text-transparent mt-2 animate-gradient-x bg-300%">
                     להתחיל לחסוך היום?
                   </span>
                 </span>

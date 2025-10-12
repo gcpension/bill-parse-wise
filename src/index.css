@@ -63,6 +63,14 @@ body {
     --accent-red: 239 68 68;
     --accent-red-hover: 220 38 38;
     
+    /* Custom vibrant colors */
+    --electric-blue: 210 100% 60%;
+    --vibrant-green: 142 76% 45%;
+    --sunset-orange: 25 95% 55%;
+    --royal-purple: 270 80% 60%;
+    --coral-pink: 350 80% 65%;
+    --golden-yellow: 45 100% 50%;
+    
     /* Trust and brand colors */
     --color-trust-blue: 215 100% 60%;
 
