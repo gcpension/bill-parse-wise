@@ -254,9 +254,6 @@ const Home = () => {
                    C 58,68 52,76 48,84 Z"
                 fill="url(#starburstGradient)"
                 opacity="0.95"
-                style={{
-                  filter: 'drop-shadow(0 6px 24px rgba(88, 28, 135, 0.6))'
-                }}
               />
               
               {/* Small splatter dots around */}
@@ -276,61 +273,25 @@ const Home = () => {
               <circle cx="85" cy="152" r="2" fill="url(#starburstGradient)" opacity="0.8"/>
             </g>
             
-            {/* EASYSWITCH text - broken/distorted style */}
+            {/* EASYSWITCH text - modern distorted style */}
             <g transform="translate(92, 95)">
-              {/* Shadow/outline for depth */}
-              <text
-                x="2"
-                y="2"
-                textAnchor="middle"
-                fill="rgba(0, 0, 0, 0.3)"
-                fontSize="18"
-                fontWeight="900"
-                fontFamily="'Impact', 'Anton', 'Bebas Neue', sans-serif"
-                letterSpacing="1"
-                style={{ 
-                  textTransform: 'uppercase'
-                }}
-                transform="skewX(-5) skewY(2)"
-              >
-                EASY
-              </text>
-              
               {/* Main EASY text with distortion */}
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="18"
-                fontWeight="900"
-                fontFamily="'Impact', 'Anton', 'Bebas Neue', sans-serif"
-                letterSpacing="1"
+                fontSize="17"
+                fontWeight="700"
+                fontFamily="'Montserrat', 'Poppins', 'Inter', sans-serif"
+                letterSpacing="2"
                 style={{ 
-                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
+                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4))',
                   textTransform: 'uppercase'
                 }}
-                transform="skewX(-5) skewY(2)"
+                transform="skewX(-3) rotate(-2)"
               >
                 EASY
-              </text>
-              
-              {/* Shadow for SWITCH */}
-              <text
-                x="2"
-                y="20"
-                textAnchor="middle"
-                fill="rgba(0, 0, 0, 0.3)"
-                fontSize="18"
-                fontWeight="900"
-                fontFamily="'Impact', 'Anton', 'Bebas Neue', sans-serif"
-                letterSpacing="1"
-                style={{ 
-                  textTransform: 'uppercase'
-                }}
-                transform="skewX(4) skewY(-1)"
-              >
-                SWITCH
               </text>
               
               {/* Main SWITCH text with opposite distortion */}
@@ -339,15 +300,15 @@ const Home = () => {
                 y="18"
                 textAnchor="middle"
                 fill="white"
-                fontSize="18"
-                fontWeight="900"
-                fontFamily="'Impact', 'Anton', 'Bebas Neue', sans-serif"
-                letterSpacing="1"
+                fontSize="17"
+                fontWeight="700"
+                fontFamily="'Montserrat', 'Poppins', 'Inter', sans-serif"
+                letterSpacing="2"
                 style={{ 
-                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
+                  filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4))',
                   textTransform: 'uppercase'
                 }}
-                transform="skewX(4) skewY(-1)"
+                transform="skewX(2) rotate(1)"
               >
                 SWITCH
               </text>
