@@ -430,30 +430,61 @@ const AllPlans = ({
       <EnhancedNavigation />
 
       <div className="container mx-auto px-4 lg:px-6 max-w-7xl py-8">
-        {/* Two Column Layout: Logos LEFT, Categories RIGHT */}
+        {/* Two Column Layout: Categories RIGHT, Logos LEFT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
+          {/* RIGHT SIDE: Category Selector (appears first in RTL) */}
+          <div className="lg:col-span-4">
+            <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 p-6 lg:sticky lg:top-6">
+              <h3 className="text-2xl font-bold text-gray-800 font-heebo mb-6 pb-4 border-b-2 border-gray-200">
+                חבילות סלולר ומבצעים
+              </h3>
+              
+              {/* Category buttons - vertical stack */}
+              <div className="space-y-3">
+                {Object.entries(categoryConfig).map(([key, config]) => {
+                  const isSelected = selectedCategory === key;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setSelectedCategory(key as CategoryType);
+                        setSelectedCategories([]);
+                      }}
+                      className={cn(
+                        "w-full flex items-center gap-4 p-4 rounded-xl transition-all duration-200",
+                        "border-2 font-heebo text-right",
+                        isSelected 
+                          ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-transparent shadow-lg scale-105" 
+                          : "bg-white text-gray-700 border-gray-200 hover:border-cyan-400 hover:bg-cyan-50/50"
+                      )}
+                    >
+                      <div className={cn(
+                        "flex items-center justify-center w-12 h-12 rounded-lg",
+                        isSelected ? "bg-white/20" : "bg-gray-100"
+                      )}>
+                        {config.icon}
+                      </div>
+                      <div className="flex-1 text-right">
+                        <div className="font-bold text-lg">{config.label}</div>
+                        <div className={cn(
+                          "text-sm",
+                          isSelected ? "text-white/80" : "text-gray-500"
+                        )}>
+                          {config.description}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
           {/* LEFT SIDE: Company Logos - Small */}
-          <div className="lg:col-span-8 order-2 lg:order-1">
+          <div className="lg:col-span-8">
             {selectedCategory && (
               <div className="animate-fade-in">
-                {/* Mobile Category Header */}
-                <div className="lg:hidden mb-6 p-4 bg-white rounded-xl shadow-sm border-2 border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <div className="text-primary">
-                      {categoryConfig[selectedCategory].icon}
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-bold text-gray-800 font-heebo">
-                        {categoryConfig[selectedCategory].label}
-                      </h2>
-                      <p className="text-sm text-gray-600 font-assistant">
-                        חבילות ומבצעים
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Company Logos Grid - Small Cards */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                   {selectedCategory === 'electricity' && <>
@@ -521,54 +552,6 @@ const AllPlans = ({
                 <p className="text-xl text-gray-500 font-heebo">בחרו קטגוריה מצד ימין ←</p>
               </div>
             )}
-          </div>
-
-          {/* RIGHT SIDE: Category Selector */}
-          <div className="lg:col-span-4 order-1 lg:order-2">
-            <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 p-6 sticky top-6">
-              <h3 className="text-2xl font-bold text-gray-800 font-heebo mb-6 pb-4 border-b-2 border-gray-200">
-                חבילות סלולר ומבצעים
-              </h3>
-              
-              {/* Category buttons - vertical stack */}
-              <div className="space-y-3">
-                {Object.entries(categoryConfig).map(([key, config]) => {
-                  const isSelected = selectedCategory === key;
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => {
-                        setSelectedCategory(key as CategoryType);
-                        setSelectedCategories([]);
-                      }}
-                      className={cn(
-                        "w-full flex items-center gap-4 p-4 rounded-xl transition-all duration-200",
-                        "border-2 font-heebo text-right",
-                        isSelected 
-                          ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-transparent shadow-lg scale-105" 
-                          : "bg-white text-gray-700 border-gray-200 hover:border-cyan-400 hover:bg-cyan-50/50"
-                      )}
-                    >
-                      <div className={cn(
-                        "flex items-center justify-center w-12 h-12 rounded-lg",
-                        isSelected ? "bg-white/20" : "bg-gray-100"
-                      )}>
-                        {config.icon}
-                      </div>
-                      <div className="flex-1 text-right">
-                        <div className="font-bold text-lg">{config.label}</div>
-                        <div className={cn(
-                          "text-sm",
-                          isSelected ? "text-white/80" : "text-gray-500"
-                        )}>
-                          {config.description}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         </div>
 
