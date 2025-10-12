@@ -220,7 +220,7 @@ const Home = () => {
 
 
       {/* Hero Section with Clean Background */}
-      <section className="relative py-16 lg:py-20 overflow-hidden">
+      <section className="relative py-6 lg:py-8 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <img 
@@ -230,22 +230,22 @@ const Home = () => {
           />
         </div>
         
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-16 lg:py-20">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-6 lg:py-8">
           <div className="text-center">
             
             {/* Compact Title */}
-            <div className="mb-8 animate-fade-in opacity-0" style={{
+            <div className="mb-3 animate-fade-in opacity-0" style={{
               animationDelay: '0.2s',
               animationFillMode: 'forwards'
             }}>
               <h1 className="relative">
                 {/* Main Text */}
-                <span className="relative block text-4xl lg:text-5xl xl:text-6xl font-light font-assistant leading-tight text-foreground">
+                <span className="relative block text-5xl lg:text-6xl xl:text-7xl font-light font-assistant leading-tight text-foreground">
                   <span className="block">
                     באיזה תחום תרצו
                   </span>
                   <span className="block mt-2">
-                    להתחיל לחסוך היום?
+                    להתחיל <span className="text-royal-purple font-medium">לחסוך</span> היום?
                   </span>
                 </span>
               </h1>
@@ -256,8 +256,8 @@ const Home = () => {
               animationDelay: '0.4s',
               animationFillMode: 'forwards'
             }}>
-              <div className="backdrop-blur-md bg-white/40 rounded-2xl px-6 py-3 border border-white/50 shadow-xl">
-                <p className="text-lg lg:text-xl text-gray-700 font-semibold max-w-3xl leading-relaxed">
+              <div className="backdrop-blur-md bg-white/40 rounded-2xl px-6 py-2 border border-white/50 shadow-xl">
+                <p className="text-base lg:text-lg text-gray-700 font-semibold max-w-3xl leading-relaxed">
                   אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
                 </p>
               </div>
@@ -267,8 +267,8 @@ const Home = () => {
       </section>
 
       {/* Clean Categories Section - Enhanced with animations */}
-      <section id="services" className="bg-white relative scroll-mt-20">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl py-12">
+      <section id="services" className="bg-white relative scroll-mt-20 pt-6">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl pb-12">
           {/* Category Selection - Modern Image-Based Design */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {Object.entries(categoryData).map(([category, data], index) => {
