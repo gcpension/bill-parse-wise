@@ -230,63 +230,74 @@ const Home = () => {
         {/* Hand-drawn sketch element - top right */}
         <div className="absolute top-8 right-12 w-[160px] h-[160px] pointer-events-none opacity-75">
           <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Money/savings symbols */}
-            <circle cx="85" cy="25" r="12" fill="none" stroke="#2d3748" strokeWidth="2" strokeDasharray="3,2"/>
-            <text x="85" y="30" textAnchor="middle" fill="#2d3748" fontSize="14" fontWeight="bold">₪</text>
-            
-            {/* Curved arrow pointing to blob */}
-            <path
-              d="M 75,35 Q 65,45 55,52 Q 45,58 35,60"
-              stroke="#2d3748"
-              strokeWidth="2.5"
-              fill="none"
-              strokeLinecap="round"
-              strokeDasharray="4,3"
-            />
-            <path
-              d="M 35,60 L 38,55 M 35,60 L 40,62"
-              stroke="#2d3748"
-              strokeWidth="2.5"
-              fill="none"
-              strokeLinecap="round"
-            />
-            
-            {/* "Switch" arrows in circle */}
-            <circle cx="95" cy="55" r="10" fill="none" stroke="#2d3748" strokeWidth="1.8" strokeDasharray="2,2"/>
-            <path d="M 92,52 L 98,52 L 96,50" stroke="#2d3748" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-            <path d="M 98,58 L 92,58 L 94,60" stroke="#2d3748" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-            
-            {/* Price comparison bars sketch */}
-            <g transform="translate(75, 75)">
-              <rect x="0" y="10" width="8" height="25" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
-              <rect x="12" y="0" width="8" height="35" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
-              <rect x="24" y="15" width="8" height="20" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
-              {/* Check mark on middle bar */}
-              <path d="M 14,15 L 16,18 L 19,12" stroke="#2d3748" strokeWidth="2" fill="none" strokeLinecap="round"/>
+            {/* Light bulb - smart idea */}
+            <g transform="translate(85, 20)">
+              {/* Bulb shape */}
+              <circle cx="0" cy="0" r="14" fill="none" stroke="#2d3748" strokeWidth="2.5"/>
+              {/* Filament inside */}
+              <path d="M -4,-2 Q 0,-6 4,-2" stroke="#2d3748" strokeWidth="1.5" fill="none"/>
+              <line x1="0" y1="-2" x2="0" y2="4" stroke="#2d3748" strokeWidth="1.5"/>
+              {/* Base of bulb */}
+              <rect x="-5" y="12" width="10" height="8" fill="none" stroke="#2d3748" strokeWidth="2"/>
+              <line x1="-5" y1="15" x2="5" y2="15" stroke="#2d3748" strokeWidth="1.5"/>
+              <line x1="-5" y1="17" x2="5" y2="17" stroke="#2d3748" strokeWidth="1.5"/>
+              {/* Light rays */}
+              <g stroke="#2d3748" strokeWidth="2" strokeLinecap="round">
+                <line x1="-18" y1="-8" x2="-22" y2="-10"/>
+                <line x1="-14" y1="-14" x2="-16" y2="-18"/>
+                <line x1="14" y1="-14" x2="16" y2="-18"/>
+                <line x1="18" y1="-8" x2="22" y2="-10"/>
+                <line x1="-18" y1="6" x2="-22" y2="8"/>
+                <line x1="18" y1="6" x2="22" y2="8"/>
+              </g>
             </g>
             
-            {/* Sparkles/stars for savings */}
-            <g stroke="#2d3748" fill="none" strokeWidth="2" strokeLinecap="round">
-              <path d="M 100,15 L 100,18 M 98,16.5 L 102,16.5"/>
-              <path d="M 68,28 L 68,30 M 67,29 L 69,29"/>
-              <path d="M 108,68 L 108,71 M 106,69.5 L 110,69.5"/>
+            {/* Piggy bank / savings symbol */}
+            <g transform="translate(70, 75)">
+              {/* Body */}
+              <ellipse cx="0" cy="0" rx="16" ry="12" fill="none" stroke="#2d3748" strokeWidth="2"/>
+              {/* Snout */}
+              <ellipse cx="14" cy="0" rx="4" ry="3" fill="none" stroke="#2d3748" strokeWidth="2"/>
+              {/* Ear */}
+              <path d="M -8,-10 Q -6,-14 -4,-10" fill="none" stroke="#2d3748" strokeWidth="2"/>
+              {/* Legs */}
+              <line x1="-8" y1="10" x2="-8" y2="16" stroke="#2d3748" strokeWidth="2" strokeLinecap="round"/>
+              <line x1="8" y1="10" x2="8" y2="16" stroke="#2d3748" strokeWidth="2" strokeLinecap="round"/>
+              {/* Coin slot */}
+              <line x1="-4" y1="-8" x2="4" y2="-8" stroke="#2d3748" strokeWidth="2.5" strokeLinecap="round"/>
             </g>
             
-            {/* "Save money" text suggestion in Hebrew style */}
+            {/* Coins falling */}
+            <g stroke="#2d3748" fill="none" strokeWidth="2">
+              <circle cx="95" cy="55" r="5"/>
+              <text x="95" y="58" textAnchor="middle" fill="#2d3748" fontSize="8" fontWeight="bold">₪</text>
+              
+              <circle cx="105" cy="65" r="4"/>
+              <circle cx="88" cy="62" r="3.5"/>
+            </g>
+            
+            {/* Dashed arrow connecting bulb to piggy bank */}
             <path
-              d="M 85,90 Q 78,92 70,92"
+              d="M 82,48 Q 75,58 72,68"
+              stroke="#2d3748"
+              strokeWidth="2"
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray="3,3"
+            />
+            <path
+              d="M 72,68 L 74,63 M 72,68 L 77,67"
               stroke="#2d3748"
               strokeWidth="2"
               fill="none"
               strokeLinecap="round"
             />
-            <path
-              d="M 84,95 Q 77,97 69,97"
-              stroke="#2d3748"
-              strokeWidth="1.5"
-              fill="none"
-              strokeLinecap="round"
-            />
+            
+            {/* Sparkles */}
+            <g stroke="#2d3748" fill="none" strokeWidth="2" strokeLinecap="round">
+              <path d="M 60,25 L 60,28 M 58,26.5 L 62,26.5"/>
+              <path d="M 110,42 L 110,45 M 108,43.5 L 112,43.5"/>
+            </g>
           </svg>
         </div>
         
