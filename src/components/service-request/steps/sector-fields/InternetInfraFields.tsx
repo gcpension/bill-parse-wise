@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
-import { Router, Settings } from 'lucide-react';
+import { Router, Settings, Info } from 'lucide-react';
+import { FieldInfoTooltip, fieldInfo } from '@/components/ui/field-info-tooltip';
 
 interface InternetInfraFieldsProps {
   formData: Partial<ServiceRequestFormData>;
@@ -39,22 +40,31 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
   return (
     <div className="space-y-8">
       {/* Infrastructure Provider */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-        <div className="p-6 border-b border-gray-50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center">
-              <Router className="w-5 h-5 text-indigo-600" />
+      <div className="bg-white rounded-xl border-2 border-indigo-100 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="p-6 border-b border-gray-50 bg-gradient-to-l from-indigo-50/50 to-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                <Router className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">ספק תשתית</h3>
+                <p className="text-sm text-gray-600 mt-1">מידע על החיבור הפיזי לבית</p>
+              </div>
             </div>
-            <h3 className="text-xl font-medium text-gray-900">ספק תשתית</h3>
+            <FieldInfoTooltip content={fieldInfo.infrastructureProvider} />
           </div>
         </div>
         
-        <div className="p-6 space-y-6">
-          <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-700">
-              ספק התשתית <span className="text-red-500">*</span>
-            </Label>
-            <Select
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Label className="text-base font-semibold text-gray-800">
+                  ספק התשתית <span className="text-red-500">*</span>
+                </Label>
+                <FieldInfoTooltip content="הספק שמספק את החיבור הפיזי לבית - בזק או HOT." />
+              </div>
+              <Select
               value={internetInfraData.infra_provider}
               onValueChange={(value) => 
                 updateInfraData({ infra_provider: value as 'bezeq' | 'hot' })
@@ -71,18 +81,21 @@ export default function InternetInfraFields({ formData, updateFormData }: Intern
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-700">
-              מספר חוזה <span className="text-red-500">*</span>
-            </Label>
+            <div className="flex items-center gap-2">
+              <Label className="text-base font-semibold text-gray-800">
+                מספר חוזה <span className="text-red-500">*</span>
+              </Label>
+              <FieldInfoTooltip content={fieldInfo.contractNumber} />
+            </div>
             <Input
               value={internetInfraData.contract_no}
               onChange={(e) => updateInfraData({ contract_no: e.target.value })}
-              placeholder="הזן מספר חוזה"
-              className="h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500/20"
-            />
+                placeholder="הזן מספר חוזה"
+                className="h-12 text-base border-2 border-indigo-200 focus:border-indigo-500 focus:ring-indigo-500/20"
+              />
+            </div>
           </div>
         </div>
-      </div>
 
       {/* Equipment Information */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm">

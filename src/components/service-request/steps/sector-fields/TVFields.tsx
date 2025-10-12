@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
-import { Tv, MonitorSpeaker } from 'lucide-react';
+import { Tv, MonitorSpeaker, Info } from 'lucide-react';
+import { FieldInfoTooltip, fieldInfo } from '@/components/ui/field-info-tooltip';
 
 interface TVFieldsProps {
   formData: Partial<ServiceRequestFormData>;
@@ -40,21 +41,30 @@ export default function TVFields({ formData, updateFormData }: TVFieldsProps) {
   return (
     <div className="space-y-8">
       {/* TV Account Information */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-        <div className="p-6 border-b border-gray-50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-pink-50 rounded-lg flex items-center justify-center">
-              <Tv className="w-5 h-5 text-pink-600" />
+      <div className="bg-white rounded-xl border-2 border-pink-100 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="p-6 border-b border-gray-50 bg-gradient-to-l from-pink-50/50 to-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-pink-500/30">
+                <Tv className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">פרטי חשבון טלוויזיה</h3>
+                <p className="text-sm text-gray-600 mt-1">מידע על חשבון הטלוויזיה שלך</p>
+              </div>
             </div>
-            <h3 className="text-xl font-medium text-gray-900">פרטי חשבון טלוויזיה</h3>
+            <FieldInfoTooltip content="פרטי החשבון נדרשים לזיהוי החיבור שלך במערכת ספק הטלוויזיה." />
           </div>
         </div>
         
         <div className="p-6 space-y-6">
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-700">
-              מספר חשבון טלוויזיה <span className="text-red-500">*</span>
-            </Label>
+            <div className="flex items-center gap-2">
+              <Label className="text-base font-semibold text-gray-800">
+                מספר חשבון טלוויזיה <span className="text-red-500">*</span>
+              </Label>
+              <FieldInfoTooltip content="מספר החשבון שלך אצל ספק הטלוויזיה. ניתן למצוא בחשבונית האחרונה." />
+            </div>
             <Input
               value={tvData.tv_account_no}
               onChange={(e) => updateTVData({ tv_account_no: e.target.value })}

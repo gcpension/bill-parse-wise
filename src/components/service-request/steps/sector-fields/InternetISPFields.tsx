@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
-import { Plus, Trash2, Globe, Package } from 'lucide-react';
+import { Plus, Trash2, Globe, Package, Info } from 'lucide-react';
+import { FieldInfoTooltip, fieldInfo } from '@/components/ui/field-info-tooltip';
 
 interface InternetISPFieldsProps {
   formData: Partial<ServiceRequestFormData>;
@@ -56,21 +57,30 @@ export default function InternetISPFields({ formData, updateFormData }: Internet
   return (
     <div className="space-y-8">
       {/* ISP Account Information */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-        <div className="p-6 border-b border-gray-50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
-              <Globe className="w-5 h-5 text-purple-600" />
+      <div className="bg-white rounded-xl border-2 border-purple-100 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="p-6 border-b border-gray-50 bg-gradient-to-l from-purple-50/50 to-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <Globe className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">פרטי חשבון ספק האינטרנט</h3>
+                <p className="text-sm text-gray-600 mt-1">מידע על חיבור האינטרנט הנוכחי שלך</p>
+              </div>
             </div>
-            <h3 className="text-xl font-medium text-gray-900">פרטי חשבון ספק האינטרנט</h3>
+            <FieldInfoTooltip content={fieldInfo.currentISP} />
           </div>
         </div>
         
         <div className="p-6 space-y-6">
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-700">
-              מספר חשבון ספק האינטרנט <span className="text-red-500">*</span>
-            </Label>
+            <div className="flex items-center gap-2">
+              <Label className="text-base font-semibold text-gray-800">
+                מספר חשבון ספק האינטרנט <span className="text-red-500">*</span>
+              </Label>
+              <FieldInfoTooltip content="מספר החשבון שלך אצל ספק האינטרנט הנוכחי. ניתן למצוא אותו בחשבונית או באזור האישי באתר הספק." />
+            </div>
             <Input
               value={internetISPData.isp_account_no}
               onChange={(e) => updateISPData({ isp_account_no: e.target.value })}
@@ -138,13 +148,19 @@ export default function InternetISPFields({ formData, updateFormData }: Internet
       </div>
 
       {/* Bundle Services */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-        <div className="p-6 border-b border-gray-50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
-              <Package className="w-5 h-5 text-purple-600" />
+      <div className="bg-white rounded-xl border-2 border-purple-100 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="p-6 border-b border-gray-50 bg-gradient-to-l from-purple-50/50 to-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <Package className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">חבילת שירותים</h3>
+                <p className="text-sm text-gray-600 mt-1">פירוט השירותים הכלולים בחבילה</p>
+              </div>
             </div>
-            <h3 className="text-xl font-medium text-gray-900">חבילת שירותים</h3>
+            <FieldInfoTooltip content={fieldInfo.isBundleService} />
           </div>
         </div>
         

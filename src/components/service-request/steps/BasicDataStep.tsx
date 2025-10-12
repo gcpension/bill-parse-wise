@@ -7,6 +7,7 @@ import ProviderSelector, { defaultProviders } from '@/components/ui/provider-sel
 import { ServiceRequestFormData } from '@/types/serviceRequest';
 import { Info, User, Mail, Phone, MapPin, Building2, Languages, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { FieldInfoTooltip, fieldInfo } from '@/components/ui/field-info-tooltip';
 
 interface BasicDataStepProps {
   formData: Partial<ServiceRequestFormData>;
@@ -225,11 +226,11 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="full_name" className="text-sm font-semibold text-foreground">
+              <div className="flex items-center gap-2 mb-2">
+                <Label htmlFor="full_name" className="text-base font-bold text-foreground">
                   שם מלא <span className="text-red-500">*</span>
                 </Label>
-                <InfoTooltip content="הזן את שמך המלא בדיוק כפי שמופיע בתעודת הזהות." />
+                <FieldInfoTooltip content={fieldInfo.fullName} />
               </div>
               <div className="relative">
                 <Input
@@ -264,14 +265,11 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
             </div>
 
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="national_id_or_corp" className="text-sm font-semibold text-foreground">
+              <div className="flex items-center gap-2 mb-2">
+                <Label htmlFor="national_id_or_corp" className="text-base font-bold text-foreground">
                   {formData.customer_type === 'business' ? 'מספר חברה' : 'תעודת זהות'} <span className="text-red-500">*</span>
                 </Label>
-                <InfoTooltip content={formData.customer_type === 'business' 
-                  ? "הזן את מספר החברה"
-                  : "הזן מספר ת.ז בן 9 ספרות"
-                } />
+                <FieldInfoTooltip content={fieldInfo.idNumber} />
               </div>
               <div className="relative">
                 <Input
@@ -319,11 +317,11 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="email" className="text-sm font-semibold text-foreground">
+              <div className="flex items-center gap-2 mb-2">
+                <Label htmlFor="email" className="text-base font-bold text-foreground">
                   כתובת דוא״ל <span className="text-red-500">*</span>
                 </Label>
-                <InfoTooltip content="הזן כתובת דוא״ל פעילה לעדכונים." />
+                <FieldInfoTooltip content={fieldInfo.email} />
               </div>
               <div className="relative">
                 <Input
@@ -359,11 +357,11 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
             </div>
 
             <div>
-              <div className="flex items-center mb-2">
-                <Label htmlFor="phone" className="text-sm font-semibold text-foreground">
+              <div className="flex items-center gap-2 mb-2">
+                <Label htmlFor="phone" className="text-base font-bold text-foreground">
                   טלפון נייד <span className="text-red-500">*</span>
                 </Label>
-                <InfoTooltip content="הזן מספר טלפון נייד פעיל." />
+                <FieldInfoTooltip content={fieldInfo.phone} />
               </div>
               <div className="relative">
                 <Input

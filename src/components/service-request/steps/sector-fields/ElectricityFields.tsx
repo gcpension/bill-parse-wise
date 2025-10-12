@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
-import { Plus, Trash2, Zap, BarChart3 } from 'lucide-react';
+import { Plus, Trash2, Zap, BarChart3, Info } from 'lucide-react';
+import { FieldInfoTooltip, fieldInfo } from '@/components/ui/field-info-tooltip';
 
 interface ElectricityFieldsProps {
   formData: Partial<ServiceRequestFormData>;
@@ -71,22 +72,31 @@ export default function ElectricityFields({ formData, updateFormData }: Electric
   return (
     <div className="space-y-8">
       {/* Electricity Account Information */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-        <div className="p-6 border-b border-gray-50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-50 rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-yellow-600" />
+      <div className="bg-white rounded-xl border-2 border-yellow-100 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="p-6 border-b border-gray-50 bg-gradient-to-l from-yellow-50/50 to-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/30">
+                <Zap className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">פרטי חשבון חשמל</h3>
+                <p className="text-sm text-gray-600 mt-1">מידע על חשבון החשמל שלך</p>
+              </div>
             </div>
-            <h3 className="text-xl font-medium text-gray-900">פרטי חשבון חשמל</h3>
+            <FieldInfoTooltip content="פרטי חשבון החשמל נדרשים לזיהוי החיבור שלך במערכת חברת החשמל או הספק הנוכחי." />
           </div>
         </div>
         
         <div className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label className="text-sm font-medium text-gray-700">
-                מספר חשבון חשמל <span className="text-red-500">*</span>
-              </Label>
+              <div className="flex items-center gap-2">
+                <Label className="text-base font-semibold text-gray-800">
+                  מספר חשבון חשמל <span className="text-red-500">*</span>
+                </Label>
+                <FieldInfoTooltip content={fieldInfo.contractNumber} />
+              </div>
               <Input
                 value={electricityData.electricity_account_no}
                 onChange={(e) => updateElectricityData({ electricity_account_no: e.target.value })}
@@ -96,9 +106,12 @@ export default function ElectricityFields({ formData, updateFormData }: Electric
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm font-medium text-gray-700">
-                מספר מונה עיקרי <span className="text-red-500">*</span>
-              </Label>
+              <div className="flex items-center gap-2">
+                <Label className="text-base font-semibold text-gray-800">
+                  מספר מונה עיקרי <span className="text-red-500">*</span>
+                </Label>
+                <FieldInfoTooltip content={fieldInfo.meterNumber} />
+              </div>
               <Input
                 value={electricityData.meter_number}
                 onChange={(e) => updateElectricityData({ meter_number: e.target.value })}

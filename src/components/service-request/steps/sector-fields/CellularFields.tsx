@@ -7,7 +7,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FileUpload } from '@/components/ui/file-upload';
 import { ServiceRequestFormData, CellularLine } from '@/types/serviceRequest';
-import { Plus, Trash2, Smartphone } from 'lucide-react';
+import { Plus, Trash2, Smartphone, Info, AlertCircle } from 'lucide-react';
+import { FieldInfoTooltip, fieldInfo } from '@/components/ui/field-info-tooltip';
 
 interface CellularFieldsProps {
   formData: Partial<ServiceRequestFormData>;
@@ -51,13 +52,19 @@ export default function CellularFields({ formData, updateFormData }: CellularFie
   return (
     <div className="space-y-8">
       {/* Phone Lines */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-        <div className="p-6 border-b border-gray-50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-              <Smartphone className="w-5 h-5 text-blue-600" />
+      <div className="bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="p-6 border-b border-gray-50 bg-gradient-to-l from-blue-50/50 to-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                <Smartphone className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">קווי טלפון סלולריים</h3>
+                <p className="text-sm text-gray-600 mt-1">הזן את מספרי הטלפון שברצונך להעביר</p>
+              </div>
             </div>
-            <h3 className="text-xl font-medium text-gray-900">קווי טלפון סלולריים</h3>
+            <FieldInfoTooltip content={fieldInfo.phoneNumbers} />
           </div>
         </div>
         
@@ -79,9 +86,12 @@ export default function CellularFields({ formData, updateFormData }: CellularFie
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">
-                    מספר טלפון <span className="text-red-500">*</span>
-                  </Label>
+                  <div className="flex items-center gap-2">
+                    <Label className="text-base font-semibold text-gray-800">
+                      מספר טלפון <span className="text-red-500">*</span>
+                    </Label>
+                    <FieldInfoTooltip content="מספר הטלפון הנייד שברצונך להעביר. הקפד על הזנת מספר תקין ופעיל." />
+                  </div>
                   <Input
                     value={line.msisdn}
                     onChange={(e) => updateLine(index, 'msisdn', e.target.value)}
@@ -157,22 +167,36 @@ export default function CellularFields({ formData, updateFormData }: CellularFie
 
       {/* OTP Code */}
       {(formData.action_type === 'switch' || formData.action_type === 'disconnect') && (
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-          <div className="p-6 border-b border-gray-50">
-            <h3 className="text-xl font-medium text-gray-900">קוד OTP להעברת מספר</h3>
+        <div className="bg-amber-50 rounded-xl border-2 border-amber-200 shadow-lg">
+          <div className="p-6 border-b border-amber-100 bg-gradient-to-l from-amber-100/50 to-amber-50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/30">
+                  <AlertCircle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">קוד OTP להעברת מספר</h3>
+                  <p className="text-sm text-gray-600 mt-1">קוד זה נדרש לאימות העברת המספר</p>
+                </div>
+              </div>
+              <FieldInfoTooltip content={fieldInfo.acceptOtpConfirmation} />
+            </div>
           </div>
           <div className="p-6">
             <div className="space-y-3">
-              <Label className="text-sm font-medium text-gray-700">קוד OTP (אם התקבל מהספק)</Label>
+              <Label className="text-base font-semibold text-gray-800">קוד OTP (אם התקבל מהספק)</Label>
               <Input
                 value={cellularData.porting_otp || ''}
                 onChange={(e) => updateCellularData({ porting_otp: e.target.value })}
-                placeholder="הזן קוד OTP"
-                className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
-              />
-              <p className="text-sm text-gray-500">
-                קוד OTP מתקבל בדרך כלל בהודעת SMS מהספק הנוכחי
-              </p>
+                    placeholder="הזן קוד OTP"
+                    className="h-12 text-base border-2 border-amber-200 focus:border-amber-500 focus:ring-amber-500/20"
+                  />
+                  <div className="flex items-start gap-2 p-3 bg-amber-100/50 rounded-lg border border-amber-200">
+                    <Info className="w-4 h-4 text-amber-700 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-amber-900 leading-relaxed">
+                      קוד OTP מתקבל בדרך כלל בהודעת SMS מהספק הנוכחי. הקוד תקף למשך זמן מוגבל בלבד.
+                    </p>
+                  </div>
             </div>
           </div>
         </div>

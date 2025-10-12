@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
 import { cn } from '@/lib/utils';
 import { FileText, Shield, Info, MessageSquare } from 'lucide-react';
+import { FieldInfoTooltip, fieldInfo } from '@/components/ui/field-info-tooltip';
 
 interface ProviderSpecificStepProps {
   formData: Partial<ServiceRequestFormData>;
@@ -146,13 +147,16 @@ export default function ProviderSpecificStep({ formData, updateFormData }: Provi
                   className="space-y-3 animate-fade-in"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
-                  <Label className="font-semibold text-foreground flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                    {currentConfig.labels[field as keyof typeof currentConfig.labels]}
-                    {field !== 'puk_code' && field !== 'last_reading' && (
-                      <span className="text-destructive">*</span>
-                    )}
-                  </Label>
+                  <div className="flex items-center gap-2">
+                    <Label className="text-base font-semibold text-foreground flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                      {currentConfig.labels[field as keyof typeof currentConfig.labels]}
+                      {field !== 'puk_code' && field !== 'last_reading' && (
+                        <span className="text-destructive">*</span>
+                      )}
+                    </Label>
+                    <FieldInfoTooltip content={`מידע ספציפי הנדרש לטיפול בבקשה. אנא הקפד על דיוק.`} />
+                  </div>
                   <Input
                     value={formData[`current_${field}` as keyof ServiceRequestFormData] as string || ''}
                     onChange={(e) => updateFormData({ [`current_${field}`]: e.target.value })}
