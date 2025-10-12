@@ -1,168 +1,93 @@
-import { useState } from 'react';
-import { Brain, FileCheck, Sparkles, Zap, ArrowLeft, TrendingUp } from 'lucide-react';
+import { Brain, FileCheck, Sparkles, TrendingUp } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const SimpleStepsBanner = () => {
-  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
   const { isVisible, elementRef } = useScrollAnimation(0.2);
-
-  const steps = [
-    {
-      id: 1,
-      icon: Sparkles,
-      title: 'הזנת נתונים',
-      subtitle: '30 שניות',
-      color: 'from-blue-400 to-cyan-500',
-      bgColor: 'bg-blue-50',
-      textColor: 'text-blue-700',
-      iconBg: 'bg-blue-500'
-    },
-    {
-      id: 2,
-      icon: Brain,
-      title: 'ניתוח AI',
-      subtitle: 'חכם ומהיר',
-      color: 'from-purple-400 to-pink-500',
-      bgColor: 'bg-purple-50',
-      textColor: 'text-purple-700',
-      iconBg: 'bg-purple-500'
-    },
-    {
-      id: 3,
-      icon: FileCheck,
-      title: 'בחירת תוכנית',
-      subtitle: 'השוואה פשוטה',
-      color: 'from-orange-400 to-red-500',
-      bgColor: 'bg-orange-50',
-      textColor: 'text-orange-700',
-      iconBg: 'bg-orange-500'
-    },
-    {
-      id: 4,
-      icon: Zap,
-      title: 'מעבר מהיר',
-      subtitle: '100% חינם',
-      color: 'from-green-400 to-emerald-500',
-      bgColor: 'bg-green-50',
-      textColor: 'text-green-700',
-      iconBg: 'bg-green-500'
-    }
-  ];
 
   return (
     <div 
       ref={elementRef}
-      className={`max-w-4xl mx-auto mb-10 transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+      className={`max-w-xl mx-auto mb-10 transition-all duration-500 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
     >
-      {/* Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white px-5 py-2 rounded-full shadow-lg mb-2">
-          <Sparkles className="w-4 h-4" />
-          <span className="font-bold text-sm font-heebo">איך זה עובד?</span>
-        </div>
-        <p className="text-muted-foreground text-sm font-assistant">4 שלבים פשוטים לחיסכון משמעותי</p>
-      </div>
+      <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-6 relative overflow-hidden">
+        {/* Subtle decorative elements */}
+        <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full blur-2xl opacity-30"></div>
+        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full blur-2xl opacity-30"></div>
+        
+        <div className="relative">
+          {/* Header */}
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full shadow-md mb-2">
+              <Sparkles className="w-4 h-4" />
+              <h3 className="font-bold text-sm font-heebo">איך זה עובד?</h3>
+            </div>
+            <p className="text-muted-foreground text-xs font-assistant">3 שלבים פשוטים</p>
+          </div>
 
-      {/* Steps Container */}
-      <div className="relative">
-        {/* Connecting Line */}
-        <div className="absolute top-8 left-0 right-0 h-1 bg-gradient-to-r from-blue-300 via-purple-300 via-orange-300 to-green-300 rounded-full hidden md:block"></div>
-        <div className="absolute top-8 left-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 via-orange-500 to-green-500 rounded-full hidden md:block transition-all duration-1000 animate-pulse" 
-          style={{ width: hoveredStep ? `${(hoveredStep / 4) * 100}%` : '0%' }}></div>
+          {/* Steps Grid */}
+          <div className="grid grid-cols-3 gap-4 mb-5">
+            {/* Step 1 */}
+            <div className="group text-center">
+              <div className="relative mb-3">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl mx-auto flex items-center justify-center transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg">
+                  <Sparkles className="w-7 h-7 text-white" />
+                </div>
+                <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">1</div>
+              </div>
+              <div className="bg-blue-50 rounded-xl p-3 transition-all duration-300 group-hover:bg-blue-100">
+                <h4 className="font-bold text-blue-700 text-sm mb-1 font-heebo">הזנת נתונים</h4>
+                <p className="text-xs text-blue-600 font-assistant">לוקח 30 שניות</p>
+              </div>
+            </div>
 
-        {/* Steps Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative">
-          {steps.map((step, index) => {
-            const Icon = step.icon;
-            const isHovered = hoveredStep === step.id;
-            
-            return (
-              <div
-                key={step.id}
-                onMouseEnter={() => setHoveredStep(step.id)}
-                onMouseLeave={() => setHoveredStep(null)}
-                className={`transition-all duration-500 ${
-                  isHovered ? 'transform -translate-y-2' : ''
-                }`}
-                style={{ 
-                  transitionDelay: `${index * 100}ms`,
-                  animation: isVisible ? `fadeInUp 0.6s ease-out ${index * 150}ms both` : 'none'
-                }}
-              >
-                <div className={`
-                  relative bg-white rounded-2xl p-4 shadow-md hover:shadow-2xl
-                  transition-all duration-500 border-2
-                  ${isHovered ? 'border-transparent shadow-xl' : 'border-gray-200'}
-                `}>
-                  {/* Gradient Overlay on Hover */}
-                  <div className={`
-                    absolute inset-0 rounded-2xl bg-gradient-to-br ${step.color} 
-                    transition-opacity duration-500 -z-10
-                    ${isHovered ? 'opacity-10' : 'opacity-0'}
-                  `}></div>
+            {/* Step 2 */}
+            <div className="group text-center">
+              <div className="relative mb-3">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl mx-auto flex items-center justify-center transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg">
+                  <Brain className="w-7 h-7 text-white" />
+                </div>
+                <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">2</div>
+              </div>
+              <div className="bg-purple-50 rounded-xl p-3 transition-all duration-300 group-hover:bg-purple-100">
+                <h4 className="font-bold text-purple-700 text-sm mb-1 font-heebo">ניתוח חכם</h4>
+                <p className="text-xs text-purple-600 font-assistant">מוצא הצעות מותאמות</p>
+              </div>
+            </div>
 
-                  {/* Step Number Badge */}
-                  <div className={`
-                    absolute -top-2 -right-2 w-7 h-7 rounded-full
-                    flex items-center justify-center font-bold text-xs text-white
-                    shadow-lg transition-all duration-500 ${step.iconBg}
-                    ${isHovered ? 'scale-110' : 'scale-100'}
-                  `}>
-                    {step.id}
-                  </div>
+            {/* Step 3 */}
+            <div className="group text-center">
+              <div className="relative mb-3">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl mx-auto flex items-center justify-center transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg">
+                  <FileCheck className="w-7 h-7 text-white" />
+                </div>
+                <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-green-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">3</div>
+              </div>
+              <div className="bg-green-50 rounded-xl p-3 transition-all duration-300 group-hover:bg-green-100">
+                <h4 className="font-bold text-green-700 text-sm mb-1 font-heebo">מעבר מלא</h4>
+                <p className="text-xs text-green-600 font-assistant">חינמי לחלוטין</p>
+              </div>
+            </div>
+          </div>
 
-                  {/* Icon */}
-                  <div className={`
-                    w-16 h-16 mx-auto mb-3 rounded-2xl
-                    flex items-center justify-center
-                    bg-gradient-to-br ${step.color} shadow-lg
-                    transition-all duration-500
-                    ${isHovered ? 'scale-110 rotate-3' : 'scale-100 rotate-0'}
-                  `}>
-                    <Icon className="w-8 h-8 text-white" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="text-center">
-                    <h4 className={`font-bold text-sm mb-1 font-heebo ${step.textColor}`}>
-                      {step.title}
-                    </h4>
-                    <p className="text-xs text-muted-foreground font-assistant">
-                      {step.subtitle}
-                    </p>
-                  </div>
-
-                  {/* Hover Arrow */}
-                  {isHovered && index < 3 && (
-                    <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 hidden md:block">
-                      <ArrowLeft className="w-5 h-5 text-gray-400 animate-pulse" />
-                    </div>
-                  )}
+          {/* Bottom Summary - Enhanced */}
+          <div className="relative">
+            <div className="bg-gradient-to-r from-orange-50 via-red-50 to-orange-50 rounded-2xl p-4 border-2 border-orange-200 shadow-md">
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                  <TrendingUp className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-center">
+                  <p className="font-bold text-orange-700 text-base font-heebo leading-tight">
+                    חיסכון של ₪2,400 בשנה
+                  </p>
+                  <p className="text-xs text-orange-600 font-assistant">
+                    הנחה ממוצעת של 35%
+                  </p>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Bottom Highlight Card */}
-      <div className="mt-6 bg-gradient-to-r from-orange-50 via-red-50 to-pink-50 rounded-2xl p-4 border-2 border-orange-200 shadow-md relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-orange-300 rounded-full blur-3xl opacity-20"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-300 rounded-full blur-3xl opacity-20"></div>
-        
-        <div className="relative flex items-center justify-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
-            <TrendingUp className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <p className="font-bold text-orange-700 text-lg font-heebo leading-tight">
-              חיסכון ממוצע של ₪2,400 בשנה
-            </p>
-            <p className="text-xs text-orange-600 font-assistant">
-              35% הנחה • אלפי לקוחות מרוצים
-            </p>
+            </div>
           </div>
         </div>
       </div>
