@@ -228,33 +228,60 @@ const Home = () => {
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
         {/* Hand-drawn sketch element - top right */}
-        <div className="absolute top-8 right-12 w-[120px] h-[120px] pointer-events-none opacity-70">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Hand-drawn arrow pointing down-left */}
+        <div className="absolute top-8 right-12 w-[160px] h-[160px] pointer-events-none opacity-75">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            {/* Money/savings symbols */}
+            <circle cx="85" cy="25" r="12" fill="none" stroke="#2d3748" strokeWidth="2" strokeDasharray="3,2"/>
+            <text x="85" y="30" textAnchor="middle" fill="#2d3748" fontSize="14" fontWeight="bold">₪</text>
+            
+            {/* Curved arrow pointing to blob */}
             <path
-              d="M 75,15 Q 70,25 60,35 Q 50,45 40,52"
+              d="M 75,35 Q 65,45 55,52 Q 45,58 35,60"
+              stroke="#2d3748"
+              strokeWidth="2.5"
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray="4,3"
+            />
+            <path
+              d="M 35,60 L 38,55 M 35,60 L 40,62"
+              stroke="#2d3748"
+              strokeWidth="2.5"
+              fill="none"
+              strokeLinecap="round"
+            />
+            
+            {/* "Switch" arrows in circle */}
+            <circle cx="95" cy="55" r="10" fill="none" stroke="#2d3748" strokeWidth="1.8" strokeDasharray="2,2"/>
+            <path d="M 92,52 L 98,52 L 96,50" stroke="#2d3748" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+            <path d="M 98,58 L 92,58 L 94,60" stroke="#2d3748" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+            
+            {/* Price comparison bars sketch */}
+            <g transform="translate(75, 75)">
+              <rect x="0" y="10" width="8" height="25" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
+              <rect x="12" y="0" width="8" height="35" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
+              <rect x="24" y="15" width="8" height="20" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
+              {/* Check mark on middle bar */}
+              <path d="M 14,15 L 16,18 L 19,12" stroke="#2d3748" strokeWidth="2" fill="none" strokeLinecap="round"/>
+            </g>
+            
+            {/* Sparkles/stars for savings */}
+            <g stroke="#2d3748" fill="none" strokeWidth="2" strokeLinecap="round">
+              <path d="M 100,15 L 100,18 M 98,16.5 L 102,16.5"/>
+              <path d="M 68,28 L 68,30 M 67,29 L 69,29"/>
+              <path d="M 108,68 L 108,71 M 106,69.5 L 110,69.5"/>
+            </g>
+            
+            {/* "Save money" text suggestion in Hebrew style */}
+            <path
+              d="M 85,90 Q 78,92 70,92"
               stroke="#2d3748"
               strokeWidth="2"
               fill="none"
               strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ strokeDasharray: '2,1' }}
             />
-            {/* Arrow head */}
             <path
-              d="M 40,52 L 42,46 M 40,52 L 46,50"
-              stroke="#2d3748"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-            />
-            {/* Small stars/sparkles */}
-            <path d="M 80,10 L 82,12 L 84,10 L 82,8 Z" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
-            <path d="M 72,8 L 73,10 L 74,8 L 73,6 Z" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
-            <circle cx="78" cy="18" r="1.5" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
-            {/* Underline/emphasis lines */}
-            <path
-              d="M 68,25 Q 62,26 56,28"
+              d="M 84,95 Q 77,97 69,97"
               stroke="#2d3748"
               strokeWidth="1.5"
               fill="none"
