@@ -233,9 +233,7 @@ const Home = () => {
             
             {/* Clean main title */}
             <h1 className="text-4xl lg:text-6xl font-heebo font-light text-cyan-700 mb-4 leading-tight">
-              חסכו בחשבונות הבית
-              <br />
-              <span className="font-medium text-cyan-600">בקלות ובמהירות</span>
+              באיזה תחום תרצו להתחיל לחסוך היום?
             </h1>
             
             <p className="text-xl text-cyan-600 mt-6 font-assistant max-w-3xl mx-auto">
