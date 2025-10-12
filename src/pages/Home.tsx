@@ -245,18 +245,25 @@ const Home = () => {
             
             {/* Upgraded Typography with Subtle Broken Effect */}
             <g transform="translate(100, 88)">
-              {/* Small decorative icons around text */}
-              <g transform="translate(-62, 10)">
-                {/* Lightning bolt icon */}
-                <path
-                  d="M 2,0 L 5,9 L 0,9 L 3,18 L -5,7 L 2,7 Z"
-                  fill="white"
-                  opacity="0.95"
-                  style={{ filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.9))' }}
-                />
-                <circle cx="1" cy="-2" r="2" fill="white" opacity="0.8">
-                  <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+              {/* Magic wand illustration */}
+              <g transform="translate(-64, 12)">
+                {/* Wand stick */}
+                <line x1="0" y1="12" x2="8" y2="4" stroke="white" strokeWidth="2.5" strokeLinecap="round" opacity="0.95"/>
+                {/* Star at top */}
+                <path d="M 8,4 L 9.5,0 L 11,4 L 15,5.5 L 11,7 L 9.5,11 L 8,7 L 4,5.5 Z" fill="white" opacity="0.95"/>
+                {/* Sparkles around wand */}
+                <circle cx="2" cy="10" r="1" fill="white" opacity="0.8">
+                  <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
                 </circle>
+                <circle cx="6" cy="8" r="1.5" fill="white" opacity="0.7">
+                  <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+                </circle>
+                <line x1="1" y1="14" x2="3" y2="14" stroke="white" strokeWidth="1" opacity="0.6">
+                  <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                </line>
+                <line x1="2" y1="13" x2="2" y2="15" stroke="white" strokeWidth="1" opacity="0.6">
+                  <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                </line>
               </g>
               
               {/* Star sparkle on right */}
@@ -299,13 +306,13 @@ const Home = () => {
                 y="3"
                 textAnchor="middle"
                 fill="rgba(0, 0, 0, 0.2)"
-                fontSize="30"
-                fontWeight="700"
-                fontFamily="Poppins, Nunito, Quicksand, sans-serif"
-                letterSpacing="1"
+                fontSize="32"
+                fontWeight="800"
+                fontFamily="Montserrat, Raleway, Roboto, sans-serif"
+                letterSpacing="2"
                 clipPath="url(#brokenTextEasy)"
               >
-                easy
+                EASY
               </text>
               
               {/* EASY main text */}
@@ -314,16 +321,16 @@ const Home = () => {
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="30"
-                fontWeight="700"
-                fontFamily="Poppins, Nunito, Quicksand, sans-serif"
-                letterSpacing="1"
+                fontSize="32"
+                fontWeight="800"
+                fontFamily="Montserrat, Raleway, Roboto, sans-serif"
+                letterSpacing="2"
                 clipPath="url(#brokenTextEasy)"
                 style={{ 
                   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
                 }}
               >
-                easy
+                EASY
               </text>
               
               {/* SWITCH shadow */}
@@ -332,13 +339,13 @@ const Home = () => {
                 y="37"
                 textAnchor="middle"
                 fill="rgba(0, 0, 0, 0.2)"
-                fontSize="30"
-                fontWeight="700"
-                fontFamily="Poppins, Nunito, Quicksand, sans-serif"
-                letterSpacing="1"
+                fontSize="32"
+                fontWeight="800"
+                fontFamily="Montserrat, Raleway, Roboto, sans-serif"
+                letterSpacing="2"
                 clipPath="url(#brokenTextSwitch)"
               >
-                switch
+                SWITCH
               </text>
               
               {/* SWITCH main text */}
@@ -347,16 +354,16 @@ const Home = () => {
                 y="34"
                 textAnchor="middle"
                 fill="white"
-                fontSize="30"
-                fontWeight="700"
-                fontFamily="Poppins, Nunito, Quicksand, sans-serif"
-                letterSpacing="1"
+                fontSize="32"
+                fontWeight="800"
+                fontFamily="Montserrat, Raleway, Roboto, sans-serif"
+                letterSpacing="2"
                 clipPath="url(#brokenTextSwitch)"
                 style={{ 
                   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
                 }}
               >
-                switch
+                SWITCH
               </text>
               
               {/* Decorative dots */}
