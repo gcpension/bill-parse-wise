@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, X, Sparkles, TrendingUp, Star, Clock, FileText, Search, Target } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
+import { cn } from '@/lib/utils';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
@@ -34,6 +35,16 @@ const Home = () => {
   const [mounted, setMounted] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
   const [bannerCategory, setBannerCategory] = useState<string>('');
+  const [isScrolled, setIsScrolled] = useState(false);
+  
+  // Scroll detection for navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   const [selectedCategories, setSelectedCategories] = useState<Record<string, {
     provider: string;
     amount: string;
@@ -190,9 +201,14 @@ const Home = () => {
     setShowBanner(false);
     setBannerCategory('');
   };
-  return <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Top Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200 py-4 relative z-50">
+  return <div className="min-h-screen bg-white relative overflow-hidden pt-16">{/* Add padding-top to account for fixed navbar */}
+      {/* Sticky Top Navigation Bar with scroll effect */}
+      <nav className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        isScrolled 
+          ? "bg-white/80 backdrop-blur-md shadow-sm py-3" 
+          : "bg-white border-b border-gray-200 py-4"
+      )}>
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="flex items-center justify-between">
             {/* Logo on the left */}
