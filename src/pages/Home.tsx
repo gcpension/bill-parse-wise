@@ -425,7 +425,7 @@ const Home = () => {
                     באיזה תחום תרצו
                   </span>
                   <span className="block mt-2">
-                    להתחיל <span className="text-purple-400 font-medium">לחסוך</span> היום?
+                    להתחיל <span className="text-purple-900 font-medium">לחסֹוֹך</span> היום?
                   </span>
                 </span>
               </h1>
