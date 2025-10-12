@@ -228,12 +228,15 @@ const Home = () => {
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
         {/* Purple Organic Shape on Right */}
-        <div className="absolute top-10 -right-20 w-80 h-80 opacity-20 pointer-events-none">
-          <div className="relative w-full h-full">
-            <div className="absolute inset-0 bg-purple-500 rounded-full blur-3xl"></div>
-            <div className="absolute top-10 left-10 w-48 h-48 bg-purple-600 rounded-full blur-2xl"></div>
-            <div className="absolute bottom-5 right-5 w-32 h-32 bg-purple-400 rounded-full blur-xl"></div>
-          </div>
+        <div className="absolute top-20 -right-10 w-64 h-64 pointer-events-none">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path 
+              fill="#9333ea" 
+              d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,79.6,-45.8C87.4,-32.6,90,-16.3,88.5,-0.9C87,14.6,81.4,29.2,73.1,42.8C64.8,56.4,53.8,69,39.8,76.8C25.8,84.6,8.8,87.6,-7.5,87.1C-23.8,86.6,-39.1,82.6,-52.4,74.6C-65.7,66.6,-77,54.6,-83.8,40.2C-90.6,25.8,-92.9,9,-89.7,-6.4C-86.5,-21.8,-77.8,-35.8,-67.3,-47.8C-56.8,-59.8,-44.5,-69.8,-31.2,-77.4C-17.9,-85,-8.9,-90.2,2.9,-95.1C14.7,-100,30.6,-83.6,44.7,-76.4Z" 
+              transform="translate(100 100)" 
+              opacity="0.7"
+            />
+          </svg>
         </div>
         
         {/* Background Pattern */}
