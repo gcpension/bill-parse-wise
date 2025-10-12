@@ -227,62 +227,127 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Compact connected blobs shape */}
-        <div className="absolute -top-20 -left-20 w-[280px] h-[280px] pointer-events-none">
+        {/* Organic splatter shape */}
+        <div className="absolute -top-20 -left-20 w-[320px] h-[320px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Connected organic blobs shape - Nickelodeon style */}
+            {/* Main irregular organic splatter blob */}
             <g>
-              {/* Left blob */}
-              <ellipse cx="50" cy="100" rx="42" ry="45" fill="url(#starburstGradient)" opacity="0.95"/>
-              
-              {/* Center-left blob */}
-              <ellipse cx="95" cy="95" rx="38" ry="42" fill="url(#starburstGradient)" opacity="0.95"/>
-              
-              {/* Center-right blob */}
-              <ellipse cx="138" cy="98" rx="40" ry="44" fill="url(#starburstGradient)" opacity="0.95"/>
-              
-              {/* Right blob */}
-              <ellipse cx="175" cy="105" rx="35" ry="38" fill="url(#starburstGradient)" opacity="0.95"/>
-              
-              {/* Overall shadow effect */}
-              <ellipse cx="115" cy="100" rx="80" ry="50" fill="none" 
+              {/* Central irregular blob */}
+              <path
+                d="M 45,85 
+                   C 38,80 32,88 28,95 
+                   C 24,102 22,110 25,118 
+                   C 28,126 35,130 42,132 
+                   L 38,140 L 45,138 
+                   C 52,142 62,145 72,144 
+                   C 82,143 92,140 100,135 
+                   L 105,142 L 108,135 
+                   C 118,130 128,125 136,118 
+                   C 144,111 150,102 155,93 
+                   C 160,84 162,74 158,66 
+                   L 165,62 L 160,60 
+                   C 156,52 148,46 138,44 
+                   C 128,42 118,44 108,48 
+                   L 105,40 L 100,46 
+                   C 90,50 80,55 72,62 
+                   L 68,55 L 65,62 
+                   C 58,68 52,76 48,84 Z"
+                fill="url(#starburstGradient)"
+                opacity="0.95"
                 style={{
-                  filter: 'drop-shadow(0 6px 20px rgba(88, 28, 135, 0.6))'
+                  filter: 'drop-shadow(0 6px 24px rgba(88, 28, 135, 0.6))'
                 }}
               />
+              
+              {/* Small splatter dots around */}
+              <circle cx="170" cy="75" r="4" fill="url(#starburstGradient)" opacity="0.9"/>
+              <circle cx="178" cy="85" r="3" fill="url(#starburstGradient)" opacity="0.85"/>
+              <circle cx="165" cy="55" r="2.5" fill="url(#starburstGradient)" opacity="0.8"/>
+              <circle cx="172" cy="95" r="2" fill="url(#starburstGradient)" opacity="0.75"/>
+              
+              <circle cx="20" cy="95" r="3.5" fill="url(#starburstGradient)" opacity="0.9"/>
+              <circle cx="15" cy="105" r="2.5" fill="url(#starburstGradient)" opacity="0.8"/>
+              <circle cx="25" cy="115" r="2" fill="url(#starburstGradient)" opacity="0.75"/>
+              
+              <circle cx="90" cy="50" r="3" fill="url(#starburstGradient)" opacity="0.85"/>
+              <circle cx="98" cy="45" r="2" fill="url(#starburstGradient)" opacity="0.8"/>
+              
+              <circle cx="75" cy="148" r="2.5" fill="url(#starburstGradient)" opacity="0.85"/>
+              <circle cx="85" cy="152" r="2" fill="url(#starburstGradient)" opacity="0.8"/>
             </g>
             
-            {/* EASYSWITCH text - compact and readable */}
-            <g transform="translate(112, 100)">
+            {/* EASYSWITCH text - broken/distorted style */}
+            <g transform="translate(92, 95)">
+              {/* Shadow/outline for depth */}
               <text
-                x="0"
-                y="-3"
+                x="2"
+                y="2"
                 textAnchor="middle"
-                fill="white"
-                fontSize="16"
-                fontWeight="700"
-                fontFamily="'Rubik', 'Heebo', 'Inter', sans-serif"
-                letterSpacing="2.5"
+                fill="rgba(0, 0, 0, 0.3)"
+                fontSize="18"
+                fontWeight="900"
+                fontFamily="'Impact', 'Anton', 'Bebas Neue', sans-serif"
+                letterSpacing="1"
                 style={{ 
-                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))',
                   textTransform: 'uppercase'
                 }}
+                transform="skewX(-5) skewY(2)"
               >
                 EASY
               </text>
+              
+              {/* Main EASY text with distortion */}
               <text
                 x="0"
-                y="13"
+                y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="16"
-                fontWeight="700"
-                fontFamily="'Rubik', 'Heebo', 'Inter', sans-serif"
-                letterSpacing="2.5"
+                fontSize="18"
+                fontWeight="900"
+                fontFamily="'Impact', 'Anton', 'Bebas Neue', sans-serif"
+                letterSpacing="1"
                 style={{ 
-                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))',
+                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
                   textTransform: 'uppercase'
                 }}
+                transform="skewX(-5) skewY(2)"
+              >
+                EASY
+              </text>
+              
+              {/* Shadow for SWITCH */}
+              <text
+                x="2"
+                y="20"
+                textAnchor="middle"
+                fill="rgba(0, 0, 0, 0.3)"
+                fontSize="18"
+                fontWeight="900"
+                fontFamily="'Impact', 'Anton', 'Bebas Neue', sans-serif"
+                letterSpacing="1"
+                style={{ 
+                  textTransform: 'uppercase'
+                }}
+                transform="skewX(4) skewY(-1)"
+              >
+                SWITCH
+              </text>
+              
+              {/* Main SWITCH text with opposite distortion */}
+              <text
+                x="0"
+                y="18"
+                textAnchor="middle"
+                fill="white"
+                fontSize="18"
+                fontWeight="900"
+                fontFamily="'Impact', 'Anton', 'Bebas Neue', sans-serif"
+                letterSpacing="1"
+                style={{ 
+                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
+                  textTransform: 'uppercase'
+                }}
+                transform="skewX(4) skewY(-1)"
               >
                 SWITCH
               </text>
