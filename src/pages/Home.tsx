@@ -217,26 +217,49 @@ const Home = () => {
 
 
       {/* Clean Header Section */}
-      <section className="bg-gray-50 py-16 lg:py-24 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-white via-gray-50 to-gray-50 py-16 lg:py-24 relative overflow-hidden">
         {/* Background illustration */}
         <div className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat" style={{
         backgroundImage: `url(${heroBackgroundIllustration})`
       }}>
         </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-1/4 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-primary-glow/5 rounded-full blur-3xl"></div>
+        
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="text-center">
             
-            {/* Clean subtitle */}
-            <p className="text-lg text-cyan-600 mb-8 font-assistant">
-              המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
-            </p>
+            {/* Clean subtitle badge */}
+            <div className="inline-block mb-8 animate-fade-in opacity-0" style={{
+              animationDelay: '0.1s',
+              animationFillMode: 'forwards'
+            }}>
+              <div className="bg-gradient-to-r from-primary/10 via-primary-glow/10 to-primary/10 backdrop-blur-sm border border-primary/20 rounded-full px-6 py-3">
+                <p className="text-base lg:text-lg text-primary font-medium">
+                  ✨ המשפחה הממוצעת חוסכת ₪2,400 בשנה עם השירות שלנו
+                </p>
+              </div>
+            </div>
             
-            {/* Clean main title */}
-            <h1 className="text-4xl lg:text-6xl font-heebo font-light text-cyan-700 mb-4 leading-tight">
-              באיזה תחום תרצו להתחיל לחסוך היום?
-            </h1>
+            {/* Main highlighted title with gradient background */}
+            <div className="relative inline-block mb-6 animate-fade-in opacity-0" style={{
+              animationDelay: '0.3s',
+              animationFillMode: 'forwards'
+            }}>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary-glow/15 to-primary/10 rounded-3xl blur-xl"></div>
+              <h1 className="relative text-4xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent leading-tight px-8 py-4">
+                באיזה תחום תרצו
+                <br />
+                להתחיל לחסוך היום?
+              </h1>
+            </div>
             
-            <p className="text-xl text-cyan-600 mt-6 font-assistant max-w-3xl mx-auto">
+            <p className="text-lg lg:text-xl text-muted-foreground mt-8 font-medium max-w-3xl mx-auto leading-relaxed animate-fade-in opacity-0" style={{
+              animationDelay: '0.5s',
+              animationFillMode: 'forwards'
+            }}>
               אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
             </p>
           </div>
