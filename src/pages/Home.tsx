@@ -243,34 +243,34 @@ const Home = () => {
               opacity="0.85"
             />
             
-            {/* Glitch Style EASYSWITCH Text */}
-            <g transform="translate(100, 85)">
+            {/* Glitch Style EASYSWITCH Text - Tilted */}
+            <g transform="translate(100, 95) skewY(-5) rotate(-8)">
               {/* Background glitch layers */}
               <text
                 x="-2"
                 y="-1"
                 textAnchor="middle"
                 fill="#ff00ff"
-                fontSize="26"
+                fontSize="22"
                 fontWeight="900"
                 fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="5"
+                letterSpacing="3"
                 opacity="0.4"
               >
-                EASY
+                EASYSWITCH
               </text>
               <text
                 x="2"
                 y="1"
                 textAnchor="middle"
                 fill="#00ffff"
-                fontSize="26"
+                fontSize="22"
                 fontWeight="900"
                 fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="5"
+                letterSpacing="3"
                 opacity="0.4"
               >
-                EASY
+                EASYSWITCH
               </text>
               
               {/* Main text */}
@@ -279,71 +279,28 @@ const Home = () => {
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="26"
+                fontSize="22"
                 fontWeight="900"
                 fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="5"
+                letterSpacing="3"
                 style={{ 
                   filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.9))'
                 }}
               >
-                EASY
-              </text>
-              
-              {/* Glitch effect on SWITCH */}
-              <text
-                x="-2"
-                y="31"
-                textAnchor="middle"
-                fill="#ff00ff"
-                fontSize="26"
-                fontWeight="900"
-                fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="5"
-                opacity="0.4"
-              >
-                SWITCH
-              </text>
-              <text
-                x="2"
-                y="33"
-                textAnchor="middle"
-                fill="#00ffff"
-                fontSize="26"
-                fontWeight="900"
-                fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="5"
-                opacity="0.4"
-              >
-                SWITCH
-              </text>
-              
-              <text
-                x="0"
-                y="32"
-                textAnchor="middle"
-                fill="white"
-                fontSize="26"
-                fontWeight="900"
-                fontFamily="Impact, Arial Black, sans-serif"
-                letterSpacing="5"
-                style={{ 
-                  filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.9))'
-                }}
-              >
-                SWITCH
+                EASYSWITCH
               </text>
               
               {/* Broken/fragmented decorative lines */}
-              <line x1="-40" y1="44" x2="-15" y2="44" stroke="white" strokeWidth="4" opacity="0.8" strokeLinecap="square"/>
-              <line x1="-10" y1="44" x2="10" y2="44" stroke="white" strokeWidth="4" opacity="0.8" strokeLinecap="square"/>
-              <line x1="15" y1="44" x2="40" y2="44" stroke="white" strokeWidth="4" opacity="0.8" strokeLinecap="square"/>
+              <line x1="-70" y1="12" x2="-45" y2="12" stroke="white" strokeWidth="4" opacity="0.8" strokeLinecap="square"/>
+              <line x1="-40" y1="12" x2="-10" y2="12" stroke="white" strokeWidth="4" opacity="0.8" strokeLinecap="square"/>
+              <line x1="10" y1="12" x2="40" y2="12" stroke="white" strokeWidth="4" opacity="0.8" strokeLinecap="square"/>
+              <line x1="45" y1="12" x2="70" y2="12" stroke="white" strokeWidth="4" opacity="0.8" strokeLinecap="square"/>
               
               {/* Glitch rectangles */}
-              <rect x="-45" y="-8" width="8" height="3" fill="white" opacity="0.6"/>
-              <rect x="38" y="8" width="6" height="3" fill="white" opacity="0.6"/>
-              <rect x="-42" y="35" width="7" height="3" fill="white" opacity="0.6"/>
-              <rect x="36" y="28" width="9" height="2" fill="white" opacity="0.6"/>
+              <rect x="-75" y="-10" width="8" height="3" fill="white" opacity="0.6"/>
+              <rect x="68" y="-8" width="6" height="3" fill="white" opacity="0.6"/>
+              <rect x="-72" y="5" width="7" height="3" fill="white" opacity="0.6"/>
+              <rect x="66" y="3" width="9" height="2" fill="white" opacity="0.6"/>
             </g>
             
             {/* Gradient definition */}
