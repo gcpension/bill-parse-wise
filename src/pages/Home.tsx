@@ -227,6 +227,42 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
+        {/* Hand-drawn sketch element - top right */}
+        <div className="absolute top-8 right-12 w-[120px] h-[120px] pointer-events-none opacity-70">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            {/* Hand-drawn arrow pointing down-left */}
+            <path
+              d="M 75,15 Q 70,25 60,35 Q 50,45 40,52"
+              stroke="#2d3748"
+              strokeWidth="2"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ strokeDasharray: '2,1' }}
+            />
+            {/* Arrow head */}
+            <path
+              d="M 40,52 L 42,46 M 40,52 L 46,50"
+              stroke="#2d3748"
+              strokeWidth="2"
+              fill="none"
+              strokeLinecap="round"
+            />
+            {/* Small stars/sparkles */}
+            <path d="M 80,10 L 82,12 L 84,10 L 82,8 Z" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
+            <path d="M 72,8 L 73,10 L 74,8 L 73,6 Z" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
+            <circle cx="78" cy="18" r="1.5" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
+            {/* Underline/emphasis lines */}
+            <path
+              d="M 68,25 Q 62,26 56,28"
+              stroke="#2d3748"
+              strokeWidth="1.5"
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+        
         {/* Organic splatter shape */}
         <div className="absolute -top-20 -left-20 w-[320px] h-[320px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
