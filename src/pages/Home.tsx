@@ -227,153 +227,80 @@ const Home = () => {
 
       {/* Hero Section with Clean Background */}
       <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Enhanced Organic Blob Shape with Upgraded Design */}
+        {/* Asymmetric starburst shape with text */}
         <div className="absolute -top-32 -left-32 w-[450px] h-[450px] pointer-events-none">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Smooth organic blob with enhanced gradient */}
+            {/* Asymmetric starburst shape with multiple arms */}
             <path
-              d="M 50,10
-                 C 90,0 130,5 160,30
-                 C 190,55 195,90 185,125
-                 C 175,160 145,185 105,190
-                 C 65,195 25,175 10,140
-                 C -5,105 0,60 30,30
-                 C 40,20 45,12 50,10 Z"
-              fill="url(#blobGradient)"
-              opacity="0.9"
+              d="M 100,20 
+                 L 110,60 L 140,30 L 115,70 L 160,55 L 120,85 
+                 L 170,95 L 125,100 L 180,125 L 130,115 
+                 L 165,155 L 120,130 L 140,175 L 110,135 
+                 L 105,185 L 95,140 L 75,180 L 85,135 
+                 L 50,170 L 75,125 L 30,155 L 70,115 
+                 L 15,130 L 65,100 L 20,100 L 70,85 
+                 L 30,70 L 80,75 L 40,45 L 90,65 
+                 L 55,25 L 100,55 Z"
+              fill="url(#starburstGradient)"
+              opacity="0.92"
+              style={{
+                filter: 'drop-shadow(0 8px 30px rgba(168, 85, 247, 0.45))'
+              }}
             />
             
-            {/* Upgraded Typography with Subtle Broken Effect */}
-            <g transform="translate(100, 88)">
-              {/* Magic wand illustration */}
-              <g transform="translate(-64, 12)">
-                {/* Wand stick */}
-                <line x1="0" y1="12" x2="8" y2="4" stroke="white" strokeWidth="2.5" strokeLinecap="round" opacity="0.95"/>
-                {/* Star at top */}
-                <path d="M 8,4 L 9.5,0 L 11,4 L 15,5.5 L 11,7 L 9.5,11 L 8,7 L 4,5.5 Z" fill="white" opacity="0.95"/>
-                {/* Sparkles around wand */}
-                <circle cx="2" cy="10" r="1" fill="white" opacity="0.8">
-                  <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="6" cy="8" r="1.5" fill="white" opacity="0.7">
-                  <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
-                </circle>
-                <line x1="1" y1="14" x2="3" y2="14" stroke="white" strokeWidth="1" opacity="0.6">
-                  <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-                </line>
-                <line x1="2" y1="13" x2="2" y2="15" stroke="white" strokeWidth="1" opacity="0.6">
-                  <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-                </line>
-              </g>
-              
-              {/* Star sparkle on right */}
-              <g transform="translate(64, 16)">
-                <path d="M 0,-5 L 1,0 L 6,0 L 2,3 L 3,8 L 0,5 L -3,8 L -2,3 L -6,0 L -1,0 Z" fill="white" opacity="0.9"/>
-                <circle cx="0" cy="0" r="8" fill="none" stroke="white" strokeWidth="1" opacity="0.3">
-                  <animate attributeName="r" values="8;12;8" dur="2.5s" repeatCount="indefinite"/>
-                  <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2.5s" repeatCount="indefinite"/>
-                </circle>
-              </g>
-              
-              {/* EASY - with broken letter effect using multiple segments */}
-              <defs>
-                <clipPath id="brokenTextEasy">
-                  {/* Each letter broken into segments for EASY */}
-                  <rect x="-50" y="-18" width="18" height="25"/>
-                  <rect x="-30" y="-18" width="16" height="25"/>
-                  <rect x="-12" y="-18" width="16" height="25"/>
-                  <rect x="6" y="-18" width="14" height="25"/>
-                  <rect x="22" y="-18" width="18" height="25"/>
-                </clipPath>
-                <clipPath id="brokenTextSwitch">
-                  {/* Each letter broken into segments for SWITCH */}
-                  <rect x="-70" y="10" width="18" height="26"/>
-                  <rect x="-50" y="10" width="16" height="26"/>
-                  <rect x="-32" y="10" width="10" height="26"/>
-                  <rect x="-20" y="10" width="18" height="26"/>
-                  <rect x="0" y="10" width="16" height="26"/>
-                  <rect x="18" y="10" width="20" height="26"/>
-                </clipPath>
-              </defs>
-              
-              {/* Shadow layer */}
-              <text
-                x="2"
-                y="3"
-                textAnchor="middle"
-                fill="rgba(0, 0, 0, 0.2)"
-                fontSize="24"
-                fontWeight="900"
-                fontFamily="Anton, Impact, Bebas Neue, sans-serif"
-                letterSpacing="2"
-                clipPath="url(#brokenTextEasy)"
-              >
-                EASY
-              </text>
-              
-              {/* EASY main text */}
+            {/* EASYSWITCH text - clear and readable */}
+            <g transform="translate(100, 105)">
               <text
                 x="0"
                 y="0"
                 textAnchor="middle"
                 fill="white"
-                fontSize="24"
-                fontWeight="900"
-                fontFamily="Anton, Impact, Bebas Neue, sans-serif"
-                letterSpacing="2"
-                clipPath="url(#brokenTextEasy)"
+                fontSize="22"
+                fontWeight="700"
+                fontFamily="'Rubik', 'Heebo', 'Inter', sans-serif"
+                letterSpacing="4"
                 style={{ 
-                  filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
+                  filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6))',
+                  textTransform: 'uppercase'
                 }}
               >
                 EASY
               </text>
-              
-              {/* SWITCH shadow */}
-              <text
-                x="2"
-                y="30"
-                textAnchor="middle"
-                fill="rgba(0, 0, 0, 0.2)"
-                fontSize="24"
-                fontWeight="900"
-                fontFamily="Anton, Impact, Bebas Neue, sans-serif"
-                letterSpacing="2"
-                clipPath="url(#brokenTextSwitch)"
-              >
-                SWITCH
-              </text>
-              
-              {/* SWITCH main text */}
               <text
                 x="0"
-                y="27"
+                y="24"
                 textAnchor="middle"
                 fill="white"
-                fontSize="24"
-                fontWeight="900"
-                fontFamily="Anton, Impact, Bebas Neue, sans-serif"
-                letterSpacing="2"
-                clipPath="url(#brokenTextSwitch)"
+                fontSize="22"
+                fontWeight="700"
+                fontFamily="'Rubik', 'Heebo', 'Inter', sans-serif"
+                letterSpacing="4"
                 style={{ 
-                  filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))'
+                  filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6))',
+                  textTransform: 'uppercase'
                 }}
               >
                 SWITCH
               </text>
               
-              {/* Decorative dots */}
-              <circle cx="-70" cy="25" r="2" fill="white" opacity="0.6"/>
-              <circle cx="72" cy="5" r="2" fill="white" opacity="0.6"/>
-              <circle cx="70" cy="30" r="1.5" fill="white" opacity="0.5"/>
+              {/* Decorative sparkles */}
+              <circle cx="-60" cy="-8" r="2.5" fill="white" opacity="0.85">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="65" cy="4" r="2" fill="white" opacity="0.8">
+                <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.3s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="-55" cy="20" r="2.2" fill="white" opacity="0.75">
+                <animate attributeName="opacity" values="0.45;0.95;0.45" dur="1.8s" repeatCount="indefinite"/>
+              </circle>
             </g>
             
-            {/* Enhanced gradient definition - Purple-Pink */}
+            {/* Gradient definition - Purple-Pink starburst */}
             <defs>
-              <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id="starburstGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
-                <stop offset="35%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
-                <stop offset="70%" style={{ stopColor: '#d8b4fe', stopOpacity: 1 }} />
+                <stop offset="33%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
+                <stop offset="66%" style={{ stopColor: '#e879f9', stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: '#f0abfc', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
