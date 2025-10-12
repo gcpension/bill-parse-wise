@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, User, Building2 } from "lucide-react";
+import { FileText } from "lucide-react";
 import { ManualPlan } from "@/data/manual-plans";
 import { ServiceCategory, CustomerType, SwitchFormData } from "@/types/switchForms";
 import { useToast } from "@/hooks/use-toast";
@@ -26,7 +23,7 @@ interface SwitchRequestFormProps {
 
 export const SwitchRequestForm = ({ isOpen, onClose, selectedPlan }: SwitchRequestFormProps) => {
   const { toast } = useToast();
-  const [customerType, setCustomerType] = useState<CustomerType>('private');
+  const customerType: CustomerType = 'private'; // Always use private form
   
   // Map plan category to our form categories
   const mapServiceCategory = (planCategory: string): ServiceCategory => {
@@ -103,27 +100,6 @@ export const SwitchRequestForm = ({ isOpen, onClose, selectedPlan }: SwitchReque
             {selectedPlan.dataAmount && (
               <div><strong>כמות גלישה:</strong> {selectedPlan.dataAmount}</div>
             )}
-          </CardContent>
-        </Card>
-
-        {/* Customer Type Selection */}
-        <Card className="mb-2">
-          <CardHeader className="py-2 px-3">
-            <CardTitle className="text-sm">סוג לקוח</CardTitle>
-          </CardHeader>
-          <CardContent className="py-2 px-3">
-            <Tabs value={customerType} onValueChange={(value) => setCustomerType(value as CustomerType)} dir="rtl">
-              <TabsList className="grid w-full grid-cols-2 h-8">
-                <TabsTrigger value="private" className="flex items-center gap-1 text-xs">
-                  <User className="h-3 w-3" />
-                  לקוח פרטי
-                </TabsTrigger>
-                <TabsTrigger value="business" className="flex items-center gap-1 text-xs">
-                  <Building2 className="h-3 w-3" />
-                  לקוח עסקי
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
           </CardContent>
         </Card>
 
