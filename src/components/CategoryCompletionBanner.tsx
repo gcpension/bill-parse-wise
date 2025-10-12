@@ -107,74 +107,95 @@ export const CategoryCompletionBanner = ({
               transition={{ type: "spring", duration: 0.4 }}
               className="pointer-events-auto w-full max-w-md"
             >
-              <Card className="relative overflow-hidden shadow-2xl rounded-3xl">
+              <Card className="relative overflow-hidden shadow-2xl rounded-3xl border-2 bg-card/95 backdrop-blur-sm">
                 {/* Close Button */}
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={onClose}
-                  className="absolute top-3 left-3 z-10 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background"
+                  className="absolute top-4 left-4 z-10 h-9 w-9 rounded-xl bg-background/90 hover:bg-background shadow-sm transition-all hover:shadow-md"
                 >
                   <X className="w-4 h-4" />
                 </Button>
 
-                <div className="relative p-6">
-                  {/* Compact Header */}
-                  <div className="flex items-center gap-3 mb-5">
+                <div className="relative p-7">
+                  {/* Professional Header */}
+                  <div className="flex items-center gap-4 mb-6 pb-6 border-b border-border/50">
                     <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: "spring", duration: 0.5 }}
-                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-lg`}
+                      initial={{ scale: 0, rotate: -90 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", duration: 0.6 }}
+                      className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-lg`}
                     >
-                      <span className="text-2xl">{category.icon}</span>
+                      <span className="text-3xl">{category.icon}</span>
+                      <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${category.gradient} blur-xl opacity-50`} />
                     </motion.div>
                     <div className="flex-1">
-                      <h2 className="text-xl font-bold text-foreground mb-1">{category.name}</h2>
-                      <p className="text-sm text-muted-foreground">כמה אתם משלמים כרגע?</p>
+                      <h2 className="text-2xl font-bold text-foreground mb-1 tracking-tight font-rubik">{category.name}</h2>
+                      <p className="text-sm text-muted-foreground font-inter">הזינו את התשלום החודשי הנוכחי שלכם</p>
                     </div>
                   </div>
 
-                  {/* Compact Amount Display */}
-                  <div className="mb-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm text-muted-foreground font-medium">סכום חודשי</span>
+                  {/* Professional Amount Display */}
+                  <div className="mb-6">
+                    <label className="text-sm font-semibold text-muted-foreground mb-4 block font-inter">
+                      סכום חודשי נוכחי
+                    </label>
+                    
+                    {/* Amount Badge */}
+                    <div className="flex justify-center mb-5">
                       <motion.div
-                        animate={{ scale: hasAmount ? [1, 1.05, 1] : 1 }}
-                        transition={{ duration: 0.5 }}
-                        className={cn(
-                          "px-5 py-2 rounded-2xl transition-all duration-300",
-                          hasAmount 
-                            ? `bg-gradient-to-br ${category.gradient} shadow-lg` 
-                            : "bg-muted"
-                        )}
+                        animate={{ scale: hasAmount ? [1, 1.02, 1] : 1 }}
+                        transition={{ duration: 0.8 }}
+                        className="relative"
                       >
-                        <span className={cn(
-                          "text-2xl font-black",
-                          hasAmount ? "text-white" : "text-foreground"
+                        {hasAmount && (
+                          <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${category.gradient} blur-2xl opacity-30`} />
+                        )}
+                        <div className={cn(
+                          "relative px-8 py-4 rounded-3xl transition-all duration-500 border-2",
+                          hasAmount 
+                            ? `bg-gradient-to-br ${category.gradient} border-transparent shadow-xl` 
+                            : "bg-muted/50 border-border"
                         )}>
-                          ₪{amount.toFixed(0)}
-                        </span>
+                          <div className="flex items-baseline justify-center gap-2">
+                            <span className={cn(
+                              "text-4xl font-black tracking-tight font-inter transition-colors",
+                              hasAmount ? "text-white" : "text-foreground"
+                            )}>
+                              {amount.toFixed(0)}
+                            </span>
+                            <span className={cn(
+                              "text-2xl font-bold transition-colors",
+                              hasAmount ? "text-white/90" : "text-muted-foreground"
+                            )}>
+                              ₪
+                            </span>
+                          </div>
+                        </div>
                       </motion.div>
                     </div>
                     
-                    {/* Slider */}
-                    <Slider
-                      value={[amount]}
-                      onValueChange={(values) => onAmountChange(values[0].toString())}
-                      max={800}
-                      step={10}
-                      className="mb-2 [&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:border-3 [&_[role=slider]]:shadow-lg"
-                    />
-                    
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>₪0</span>
-                      <span>₪800</span>
+                    {/* Professional Slider */}
+                    <div className="space-y-3">
+                      <Slider
+                        value={[amount]}
+                        onValueChange={(values) => onAmountChange(values[0].toString())}
+                        max={800}
+                        step={10}
+                        className="[&_[role=slider]]:h-5 [&_[role=slider]]:w-5 [&_[role=slider]]:border-2 [&_[role=slider]]:border-background [&_[role=slider]]:shadow-md [&_[role=slider]]:transition-all [&_[role=slider]]:hover:scale-110"
+                      />
+                      
+                      <div className="flex justify-between text-xs font-medium text-muted-foreground font-inter">
+                        <span>₪0</span>
+                        <span className="text-primary">בחרו סכום</span>
+                        <span>₪800+</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Quick Presets */}
-                  <div className="flex gap-2 mb-5">
+                  {/* Professional Presets */}
+                  <div className="grid grid-cols-4 gap-2 mb-6">
                     {[100, 200, 350, 500].map((preset) => (
                       <Button
                         key={preset}
@@ -182,8 +203,10 @@ export const CategoryCompletionBanner = ({
                         size="sm"
                         onClick={() => onAmountChange(preset.toString())}
                         className={cn(
-                          "flex-1 h-9 rounded-xl font-bold transition-all",
-                          amount === preset && "shadow-md scale-105"
+                          "h-11 rounded-2xl font-bold text-sm font-inter transition-all duration-300",
+                          amount === preset 
+                            ? "shadow-lg scale-105" 
+                            : "hover:border-primary/50 hover:scale-105"
                         )}
                       >
                         ₪{preset}
@@ -191,7 +214,7 @@ export const CategoryCompletionBanner = ({
                     ))}
                   </div>
 
-                  {/* Compact Savings & Actions */}
+                  {/* Professional Savings & Actions */}
                   <AnimatePresence mode="wait">
                     {hasAmount ? (
                       <motion.div
@@ -199,36 +222,52 @@ export const CategoryCompletionBanner = ({
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="space-y-4"
+                        className="space-y-5 pt-5 border-t border-border/50"
                       >
-                        {/* Compact Savings Display */}
-                        <div className={`bg-gradient-to-br ${category.gradient} rounded-2xl p-4 text-center`}>
-                          <Sparkles className="w-6 h-6 text-white mx-auto mb-2" />
-                          <div className="text-xs text-white/80 mb-1">חיסכון שנתי משוער</div>
-                          <div className="text-3xl font-black text-white mb-1">
-                            ₪{savings.yearlyGain.toLocaleString()}
-                          </div>
-                          <div className="flex items-center justify-center gap-2 text-white/90 text-sm">
-                            <TrendingUp className="w-4 h-4" />
-                            <span>₪{savings.monthlyGain} לחודש</span>
+                        {/* Professional Savings Card */}
+                        <div className="relative overflow-hidden">
+                          <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} blur-3xl opacity-20`} />
+                          <div className={`relative bg-gradient-to-br ${category.gradient} rounded-3xl p-6 text-center shadow-xl`}>
+                            <div className="flex items-center justify-center gap-2 mb-3">
+                              <Sparkles className="w-5 h-5 text-white" />
+                              <span className="text-sm font-semibold text-white/90 font-inter">חיסכון צפוי</span>
+                            </div>
+                            
+                            <div className="space-y-3">
+                              {/* Yearly */}
+                              <div>
+                                <div className="text-xs text-white/70 mb-1 font-inter">שנתי</div>
+                                <div className="text-4xl font-black text-white tracking-tight font-inter">
+                                  ₪{savings.yearlyGain.toLocaleString()}
+                                </div>
+                              </div>
+                              
+                              {/* Monthly */}
+                              <div className="flex items-center justify-center gap-2 pt-3 border-t border-white/20">
+                                <TrendingUp className="w-4 h-4 text-white/90" />
+                                <span className="text-base font-bold text-white/90 font-inter">
+                                  ₪{savings.monthlyGain} חיסכון חודשי
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
 
-                        {/* Action Buttons */}
-                        <div className="space-y-2">
+                        {/* Professional Action Buttons */}
+                        <div className="space-y-3">
                           <Button
                             onClick={onProceedToPlans}
                             size="lg"
-                            className="w-full h-12 rounded-2xl font-bold"
+                            className="w-full h-13 rounded-2xl font-bold text-base shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] font-inter"
                           >
-                            בואו נתחיל לחסוך
+                            התחילו לחסוך עכשיו
                             <ArrowLeft className="w-5 h-5 mr-2" />
                           </Button>
                           <Button
                             onClick={onCheckAnother}
                             variant="outline"
-                            size="default"
-                            className="w-full rounded-2xl"
+                            size="lg"
+                            className="w-full h-11 rounded-2xl font-medium hover:scale-[1.02] transition-all font-inter"
                           >
                             בדקו סקטור נוסף
                           </Button>
@@ -240,11 +279,13 @@ export const CategoryCompletionBanner = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="text-center py-6"
+                        className="text-center py-8 pt-5 border-t border-border/50"
                       >
-                        <Wallet className="w-10 h-10 mx-auto mb-2 text-muted-foreground/50" />
-                        <p className="text-sm text-muted-foreground">
-                          גררו את הסליידר לחישוב החיסכון
+                        <div className={`inline-flex w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} items-center justify-center mb-3 shadow-lg`}>
+                          <Wallet className="w-8 h-8 text-white" />
+                        </div>
+                        <p className="text-sm font-medium text-muted-foreground font-inter">
+                          בחרו סכום לצפייה בחיסכון הצפוי
                         </p>
                       </motion.div>
                     )}
