@@ -1,61 +1,55 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { X, Sparkles, Send, MessageCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { X, Sparkles, ChevronDown, ChevronUp, Smartphone, Wifi, Zap, Tv, Users, DollarSign, ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
-interface Message {
-  role: 'assistant' | 'user';
-  content: string;
+interface WizardData {
+  service?: 'cellular' | 'internet' | 'electricity' | 'tv';
+  lines?: number;
+  budget?: number;
 }
 
 export const PersonalizedWizardFloat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: 'שלום! אני אשף ההמלצות האישי שלכם 👋\n\nאני כאן כדי לעזור לכם למצוא את המסלול המושלם שמתאים בדיוק לצרכים שלכם.\n\nבואו נתחיל - באיזה שירות אתם מעוניינים?'
-    }
-  ]);
-  const [inputValue, setInputValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [step, setStep] = useState(1);
+  const [wizardData, setWizardData] = useState<WizardData>({});
+  const navigate = useNavigate();
 
-  const handleSend = async () => {
-    if (!inputValue.trim() || isLoading) return;
-
-    const userMessage: Message = { role: 'user', content: inputValue };
-    setMessages(prev => [...prev, userMessage]);
-    setInputValue('');
-    setIsLoading(true);
-
-    // Simulate AI response (replace with actual AI call)
-    setTimeout(() => {
-      const responses = [
-        'מצוין! כמה קווים יש לכם כרגע?',
-        'אני מבין. איזה תקציב חודשי מתאים לכם?',
-        'נהדר! האם יש לכם העדפה לספק מסוים?',
-        'תודה על המידע! בהתבסס על הנתונים שלכם, אני ממליץ על המסלולים הבאים...'
-      ];
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: randomResponse
-      }]);
-      setIsLoading(false);
-    }, 1000);
+  const handleServiceSelect = (service: WizardData['service']) => {
+    setWizardData({ ...wizardData, service });
+    setStep(2);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
+  const handleLinesSelect = (lines: number) => {
+    setWizardData({ ...wizardData, lines });
+    setStep(3);
   };
+
+  const handleBudgetSelect = (budget: number) => {
+    setWizardData({ ...wizardData, budget });
+    // Navigate to results with filters
+    navigate(`/all-plans?service=${wizardData.service}&budget=${budget}`);
+    setIsOpen(false);
+  };
+
+  const handleBack = () => {
+    if (step > 1) setStep(step - 1);
+  };
+
+  const services = [
+    { id: 'cellular' as const, icon: Smartphone, label: 'סלולר', color: 'from-blue-50 to-blue-100' },
+    { id: 'internet' as const, icon: Wifi, label: 'אינטרנט', color: 'from-purple-50 to-purple-100' },
+    { id: 'electricity' as const, icon: Zap, label: 'חשמל', color: 'from-yellow-50 to-yellow-100' },
+    { id: 'tv' as const, icon: Tv, label: 'טלוויזיה', color: 'from-green-50 to-green-100' },
+  ];
+
+  const linesOptions = [1, 2, 3, 4, 5, 6];
+  const budgetOptions = [50, 100, 150, 200, 300, 500];
 
   return (
     <>
@@ -81,14 +75,14 @@ export const PersonalizedWizardFloat = () => {
         )}
       </AnimatePresence>
 
-      {/* Chat Window */}
+      {/* Wizard Window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="fixed bottom-6 right-6 z-50 w-[400px] max-w-[calc(100vw-3rem)]"
+            className="fixed bottom-6 right-6 z-50 w-[420px] max-w-[calc(100vw-3rem)]"
           >
             <Card className="shadow-2xl border-2 border-purple-200 overflow-hidden">
               {/* Header */}
@@ -124,7 +118,7 @@ export const PersonalizedWizardFloat = () => {
                 </div>
               </div>
 
-              {/* Chat Content */}
+              {/* Wizard Content */}
               <AnimatePresence>
                 {!isMinimized && (
                   <motion.div
@@ -133,72 +127,126 @@ export const PersonalizedWizardFloat = () => {
                     exit={{ height: 0 }}
                     className="overflow-hidden"
                   >
-                    <CardContent className="p-0">
-                      {/* Messages */}
-                      <div className="h-[400px] overflow-y-auto p-4 space-y-4 bg-gray-50">
-                        {messages.map((message, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
+                    <CardContent className="p-6">
+                      {/* Progress Indicator */}
+                      <div className="flex justify-center gap-2 mb-6">
+                        {[1, 2, 3].map((s) => (
+                          <div
+                            key={s}
                             className={cn(
-                              "flex",
-                              message.role === 'user' ? "justify-end" : "justify-start"
+                              "h-2 rounded-full transition-all duration-300",
+                              s === step ? "w-8 bg-purple-600" : "w-2 bg-gray-300",
+                              s < step && "bg-purple-400"
                             )}
-                          >
-                            <div
-                              className={cn(
-                                "max-w-[80%] rounded-2xl px-4 py-3 font-['Rubik']",
-                                message.role === 'user'
-                                  ? "bg-purple-600 text-white"
-                                  : "bg-white border border-gray-200 text-gray-900"
-                              )}
-                            >
-                              <div className="text-sm whitespace-pre-wrap leading-relaxed">
-                                {message.content}
-                              </div>
-                            </div>
-                          </motion.div>
+                          />
                         ))}
-                        {isLoading && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="flex justify-start"
-                          >
-                            <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
-                              <div className="flex gap-1">
-                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                              </div>
-                            </div>
-                          </motion.div>
-                        )}
                       </div>
 
-                      {/* Input */}
-                      <div className="p-4 border-t bg-white">
-                        <div className="flex gap-2">
-                          <Input
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                            placeholder="שלחו הודעה..."
-                            className="flex-1 font-['Rubik']"
-                            disabled={isLoading}
-                          />
+                      {/* Step 1: Service Selection */}
+                      {step === 1 && (
+                        <motion.div
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          className="space-y-4"
+                        >
+                          <h3 className="text-lg font-bold text-center mb-4 font-['Rubik']">
+                            באיזה שירות אתם מעוניינים?
+                          </h3>
+                          <div className="grid grid-cols-2 gap-3">
+                            {services.map((service) => (
+                              <button
+                                key={service.id}
+                                onClick={() => handleServiceSelect(service.id)}
+                                className={cn(
+                                  "p-4 rounded-xl border-2 border-gray-200 hover:border-purple-400 transition-all duration-200 hover:scale-105 bg-gradient-to-br",
+                                  service.color
+                                )}
+                              >
+                                <service.icon className="w-8 h-8 mx-auto mb-2 text-gray-700" />
+                                <div className="text-sm font-semibold text-gray-800 font-['Rubik']">
+                                  {service.label}
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {/* Step 2: Lines Selection */}
+                      {step === 2 && (
+                        <motion.div
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          className="space-y-4"
+                        >
+                          <h3 className="text-lg font-bold text-center mb-4 font-['Rubik']">
+                            כמה קווים יש לכם?
+                          </h3>
+                          <div className="grid grid-cols-3 gap-3">
+                            {linesOptions.map((lines) => (
+                              <button
+                                key={lines}
+                                onClick={() => handleLinesSelect(lines)}
+                                className="p-4 rounded-xl border-2 border-gray-200 hover:border-purple-400 transition-all duration-200 hover:scale-105 bg-white"
+                              >
+                                <Users className="w-6 h-6 mx-auto mb-2 text-purple-600" />
+                                <div className="text-2xl font-bold text-gray-800 font-['Rubik']">
+                                  {lines}
+                                </div>
+                              </button>
+                            ))}
+                          </div>
                           <Button
-                            onClick={handleSend}
-                            disabled={!inputValue.trim() || isLoading}
-                            className="bg-purple-600 hover:bg-purple-700 text-white"
+                            onClick={handleBack}
+                            variant="ghost"
+                            className="w-full mt-4 font-['Rubik']"
                           >
-                            <Send className="h-4 w-4" />
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                            חזרה
                           </Button>
-                        </div>
-                        <div className="mt-2 text-xs text-gray-500 text-center font-['Rubik']">
-                          מופעל על ידי AI • מענה מיידי
-                        </div>
+                        </motion.div>
+                      )}
+
+                      {/* Step 3: Budget Selection */}
+                      {step === 3 && (
+                        <motion.div
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          className="space-y-4"
+                        >
+                          <h3 className="text-lg font-bold text-center mb-4 font-['Rubik']">
+                            מה התקציב החודשי שלכם?
+                          </h3>
+                          <div className="grid grid-cols-2 gap-3">
+                            {budgetOptions.map((budget) => (
+                              <button
+                                key={budget}
+                                onClick={() => handleBudgetSelect(budget)}
+                                className="p-4 rounded-xl border-2 border-gray-200 hover:border-purple-400 transition-all duration-200 hover:scale-105 bg-white"
+                              >
+                                <DollarSign className="w-6 h-6 mx-auto mb-2 text-green-600" />
+                                <div className="text-xl font-bold text-gray-800 font-['Rubik']">
+                                  ₪{budget}
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                          <Button
+                            onClick={handleBack}
+                            variant="ghost"
+                            className="w-full mt-4 font-['Rubik']"
+                          >
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                            חזרה
+                          </Button>
+                        </motion.div>
+                      )}
+
+                      <div className="mt-4 text-xs text-gray-500 text-center font-['Rubik']">
+                        מופעל על ידי AI • מענה מיידי
                       </div>
                     </CardContent>
                   </motion.div>
