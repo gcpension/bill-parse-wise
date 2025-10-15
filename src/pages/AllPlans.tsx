@@ -28,9 +28,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
+import ServiceRequestWizard from "@/components/service-request/ServiceRequestWizard";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -59,6 +61,8 @@ const AllPlans = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [isLoading, setIsLoading] = useState(true);
   const [showTopPlan, setShowTopPlan] = useState(false);
+  const [selectedPlanForForm, setSelectedPlanForForm] = useState<PlanRecord | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   // Load stored analysis data
   useEffect(() => {
@@ -186,14 +190,13 @@ const AllPlans = () => {
   }, [filteredPlans, currentMonthlyBill]);
 
   const handleSelectPlan = (plan: PlanRecord) => {
-    localStorage.setItem('selectedPlanForSwitch', JSON.stringify({
-      planName: plan.plan,
-      company: plan.company,
-      price: plan.monthlyPrice,
-      category: plan.service,
-      switchType: 'switch'
-    }));
-    navigate('/service-request');
+    setSelectedPlanForForm(plan);
+    setIsFormOpen(true);
+  };
+
+  const handleFormClose = () => {
+    setIsFormOpen(false);
+    setSelectedPlanForForm(null);
   };
 
   const getCategoryColor = (category: CategoryType) => {
@@ -335,7 +338,7 @@ const AllPlans = () => {
                   
                   {/* Sales Message */}
                   <p className="text-lg font-light text-gray-600 max-w-2xl mx-auto">
-                    מצאנו עבורכם {stats.recommendedCount} מסלולים שיחסכו לכם כסף - בלי להתפשר על השירות
+                    גלו כמה תחסכו עם המסלולים המומלצים - ללא התחייבות
                   </p>
                 </div>
                 
@@ -722,6 +725,25 @@ const AllPlans = () => {
         )}
       </div>
       
+      {/* Form Dialog */}
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogHeader className="p-6 pb-4 border-b">
+            <DialogTitle className="text-2xl font-light font-heebo">
+              {selectedPlanForForm && (
+                <>השלמת מעבר ל-{selectedPlanForForm.company}</>
+              )}
+            </DialogTitle>
+            <DialogDescription className="font-heebo font-light">
+              מלאו את הפרטים הבאים להשלמת המעבר למסלול החדש
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-6 pt-2">
+            <ServiceRequestWizard onComplete={handleFormClose} />
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Personalized Wizard Float */}
       <PersonalizedWizardFloat />
     </div>
