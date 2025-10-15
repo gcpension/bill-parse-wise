@@ -288,50 +288,41 @@ const AllPlans = () => {
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl py-6">
-        {/* Stats Cards */}
+        {/* Savings Banner & Wizard */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 animate-fade-in">
-            <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="text-sm opacity-90 mb-1">המחיר הנמוך ביותר</div>
-                    <div className="text-3xl font-bold">₪{stats.minPrice}</div>
+          <div className="mb-6 animate-fade-in">
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6">
+                {/* Savings Display */}
+                <div className="flex items-center gap-6 flex-1">
+                  <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 border-2 border-gray-200">
+                    <TrendingDown className="w-10 h-10 text-gray-600" />
                   </div>
-                  <div className="bg-white/20 p-3 rounded-xl">
-                    <TrendingDown className="h-6 w-6" />
+                  <div>
+                    <div className="text-sm text-gray-600 font-medium mb-1 font-['Rubik']">
+                      חיסכון צפוי בשנה
+                    </div>
+                    <div className="text-4xl font-black text-gray-900 font-['Rubik']">
+                      ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1 font-['Rubik']">
+                      ₪{stats.maxSavings.toFixed(0)} לחודש • {stats.recommendedCount} מסלולים מומלצים
+                    </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
 
-            <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="text-sm opacity-90 mb-1">חיסכון מקסימלי</div>
-                    <div className="text-3xl font-bold">₪{stats.maxSavings.toFixed(0)}</div>
-                  </div>
-                  <div className="bg-white/20 p-3 rounded-xl">
-                    <Award className="h-6 w-6" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="text-sm opacity-90 mb-1">מסלולים מומלצים</div>
-                    <div className="text-3xl font-bold">{stats.recommendedCount}</div>
-                  </div>
-                  <div className="bg-white/20 p-3 rounded-xl">
-                    <Sparkles className="h-6 w-6" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                {/* Wizard Button */}
+                <Button
+                  onClick={() => navigate('/analyze')}
+                  size="lg"
+                  variant="outline"
+                  className="h-14 px-8 rounded-xl border-2 border-gray-300 hover:border-purple-400 hover:bg-purple-50 transition-all font-['Rubik'] font-semibold shadow-sm hover:shadow-md whitespace-nowrap"
+                >
+                  <Sparkles className="ml-2 h-5 w-5 text-purple-600" />
+                  אשף ההמלצות האישיות
+                </Button>
+              </div>
+            </div>
           </div>
         )}
 
