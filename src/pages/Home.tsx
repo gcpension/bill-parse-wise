@@ -214,7 +214,7 @@ const Home = () => {
           <div className="flex items-center justify-between">
             {/* Logo on the left */}
             <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-cyan-600 font-heebo">
+              <h1 className="text-3xl font-light text-cyan-600 font-heebo">
                 EasySwitch
               </h1>
             </div>
@@ -435,7 +435,7 @@ const Home = () => {
               animationFillMode: 'forwards'
             }}>
               <div className="backdrop-blur-md bg-white/40 rounded-2xl px-6 py-2 border border-white/50 shadow-xl">
-                <p className="text-base lg:text-lg text-gray-700 font-semibold max-w-3xl leading-relaxed">
+                <p className="text-base lg:text-lg text-gray-700 font-light max-w-3xl leading-relaxed font-heebo">
                   אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
                 </p>
               </div>
@@ -501,7 +501,7 @@ const Home = () => {
 
                       {/* Bottom Section - Title & Info */}
                       <div>
-                        <h3 className="text-2xl font-heebo font-bold text-white mb-2">
+                        <h3 className="text-2xl font-heebo font-light text-white mb-2">
                           {data.name}
                         </h3>
                         <p className="text-white/80 text-sm font-assistant mb-3">
@@ -514,7 +514,7 @@ const Home = () => {
                             ? 'bg-cyan-500 text-white shadow-lg' 
                             : 'bg-white/20 text-white group-hover:bg-white/30'
                         }`}>
-                          <span className="text-sm font-heebo font-semibold">
+                          <span className="text-sm font-heebo font-normal">
                             {isSelected ? 'נבחר ✓' : 'לחץ לבחירה'}
                           </span>
                         </div>
@@ -560,10 +560,10 @@ const Home = () => {
           <div className="text-center mb-16">
             <div className="inline-block mb-4">
               <div className="px-6 py-2 rounded-full bg-purple-100 border border-purple-200">
-                <span className="text-purple-700 font-semibold text-sm font-['Rubik']">העידן החדש של מעברים</span>
+                <span className="text-purple-700 font-normal text-sm font-heebo">העידן החדש של מעברים</span>
               </div>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 font-['Rubik']">
+            <h2 className="text-4xl lg:text-5xl font-light text-gray-900 mb-4 font-heebo">
               מעולם לא היה{" "}
               <span className="relative inline-block text-purple-600">
                 קל יותר
@@ -573,7 +573,7 @@ const Home = () => {
               </span>
               {" "}לבצע מעבר
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-['Rubik']">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-heebo font-light">
               שכחתם מהבירוקרטיה, השיחות האינסופיות והטפסים המסובכים
             </p>
           </div>
@@ -696,7 +696,7 @@ const Home = () => {
                 const servicesSection = document.getElementById('services');
                 servicesSection?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white text-lg px-10 py-7 rounded-2xl shadow-xl shadow-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105 font-['Rubik']"
+              className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white text-lg px-10 py-7 rounded-2xl shadow-xl shadow-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105 font-heebo font-normal"
             >
               בואו נתחיל לחסוך
               <ArrowRight className="mr-2 h-5 w-5" />
@@ -708,7 +708,7 @@ const Home = () => {
       {/* Minimal Comparison Cards */}
       <section ref={comparisonSection.elementRef} className={`bg-white py-10 transition-all duration-700 ${comparisonSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="container mx-auto px-4 lg:px-6 max-w-5xl">
-          <h2 className="text-2xl lg:text-3xl font-heebo font-bold text-center text-gray-900 mb-10">
+          <h2 className="text-2xl lg:text-3xl font-heebo font-light text-center text-gray-900 mb-10">
             ההבדל בין היום ל-2025
           </h2>
 
@@ -719,7 +719,7 @@ const Home = () => {
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-300 rounded-full mb-3">
                   <span className="text-2xl">😓</span>
                 </div>
-                <h3 className="text-xl font-heebo font-bold text-gray-700">הדרך הישנה</h3>
+                <h3 className="text-xl font-heebo font-normal text-gray-700">הדרך הישנה</h3>
               </div>
               <ul className="space-y-3 text-gray-600">
                 <li className="flex items-center gap-2 font-assistant">
@@ -747,7 +747,7 @@ const Home = () => {
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-cyan-500 rounded-full mb-3">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-heebo font-bold text-cyan-900">הדרך החדשה</h3>
+                <h3 className="text-xl font-heebo font-normal text-cyan-900">הדרך החדשה</h3>
               </div>
               <ul className="space-y-3 text-cyan-900">
                 <li className="flex items-center gap-2 font-assistant">
@@ -762,13 +762,13 @@ const Home = () => {
                   <CheckCircle className="w-4 h-4 text-cyan-600 flex-shrink-0" />
                   <span>טופס פשוט וחכם</span>
                 </li>
-                <li className="flex items-center gap-2 font-assistant font-bold">
+                <li className="flex items-center gap-2 font-assistant font-normal">
                   <CheckCircle className="w-4 h-4 text-cyan-600 flex-shrink-0" />
                   <span>עלות: ₪650/חודש</span>
                 </li>
               </ul>
               <div className="mt-4 pt-4 border-t border-cyan-200 text-center">
-                <span className="inline-flex items-center gap-2 text-cyan-700 font-heebo font-bold">
+                <span className="inline-flex items-center gap-2 text-cyan-700 font-heebo font-normal">
                   <TrendingUp className="w-5 h-5" />
                   חיסכון ₪300 בחודש
                 </span>
@@ -785,7 +785,7 @@ const Home = () => {
       <section ref={faqSection.elementRef} className={`bg-white relative transition-all duration-700 ${faqSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="container mx-auto px-4 lg:px-6 max-w-4xl py-12">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heebo font-semibold text-cyan-700 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-heebo font-light text-cyan-700 mb-4">
               שאלות נפוצות
             </h2>
             <p className="text-lg text-gray-600 font-assistant">
@@ -797,7 +797,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
                     האם השירות באמת חינמי?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -816,7 +816,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
                     כמה זמן לוקח התהליך?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -835,7 +835,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
                     מה קורה אם אני לא מרוצה מהמעבר?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -854,7 +854,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
                     האם המידע שלי מוגן?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -873,7 +873,7 @@ const Home = () => {
             <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
               <details className="group">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-semibold text-cyan-700 font-heebo">
+                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
                     האם יש מחויבות לתקופה מסוימת?
                   </h3>
                   <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -914,7 +914,7 @@ const Home = () => {
                   <Zap className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-heebo font-bold">Switch IL</h3>
+                  <h3 className="text-2xl font-heebo font-light">Switch IL</h3>
                   <p className="text-gray-300 text-sm font-assistant">פלטפורמת החיסכון המובילה בישראל</p>
                 </div>
               </div>
@@ -926,7 +926,7 @@ const Home = () => {
 
             {/* Services */}
             <div className="lg:col-span-1">
-              <h4 className="text-xl font-heebo font-semibold mb-6 flex items-center gap-2">
+              <h4 className="text-xl font-heebo font-normal mb-6 flex items-center gap-2">
                 <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -962,7 +962,7 @@ const Home = () => {
 
             {/* Links */}
             <div className="lg:col-span-1">
-              <h4 className="text-xl font-heebo font-semibold mb-6">קישורים מהירים</h4>
+              <h4 className="text-xl font-heebo font-normal mb-6">קישורים מהירים</h4>
               <ul className="space-y-4 font-assistant">
                 <li>
                   <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">
@@ -989,25 +989,25 @@ const Home = () => {
 
             {/* Contact */}
             <div className="lg:col-span-1">
-              <h4 className="text-xl font-heebo font-semibold mb-6 flex items-center gap-2">
+              <h4 className="text-xl font-heebo font-normal mb-6 flex items-center gap-2">
                 <Phone className="w-5 h-5 text-gray-400" />
                 צור קשר
               </h4>
               <div className="space-y-4">
                 <div className="bg-gray-700/50 p-4 rounded-xl border border-gray-600/50">
                   <p className="text-gray-300 text-sm font-assistant mb-1">טלפון</p>
-                  <p className="text-white font-semibold font-heebo">*3456</p>
+                  <p className="text-white font-normal font-heebo">*3456</p>
                   <p className="text-gray-400 text-xs font-assistant">חיוב שיחה</p>
                 </div>
                 
                 <div className="bg-gray-700/50 p-4 rounded-xl border border-gray-600/50">
                   <p className="text-gray-300 text-sm font-assistant mb-1">מייל תמיכה</p>
-                  <p className="text-white font-semibold font-mono text-sm">support@switchil.co.il</p>
+                  <p className="text-white font-normal font-mono text-sm">support@switchil.co.il</p>
                 </div>
                 
                 <div className="bg-gray-700/50 p-4 rounded-xl border border-gray-600/50">
                   <p className="text-gray-300 text-sm font-assistant mb-1">שעות פעילות</p>
-                  <p className="text-white font-semibold font-heebo">א'-ה' 8:00-20:00</p>
+                  <p className="text-white font-normal font-heebo">א'-ה' 8:00-20:00</p>
                 </div>
               </div>
             </div>
