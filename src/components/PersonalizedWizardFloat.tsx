@@ -505,66 +505,98 @@ export const PersonalizedWizardFloat = () => {
                       {/* Step 1: Service Selection */}
                       {step === 1 && (
                         <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.3 }}
                           className="space-y-6"
                         >
                           <div className="text-center">
-                            <h3 className="text-2xl font-bold mb-2 font-['Rubik'] bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
-                              באיזה שירות אתם מעוניינים?
-                            </h3>
-                            <p className="text-sm text-muted-foreground font-['Rubik']">
-                              בחרו את הקטגוריה שברצונכם לחסוך בה
-                            </p>
+                            <motion.div
+                              initial={{ y: -20, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: 0.1 }}
+                            >
+                              <h3 className="text-2xl font-bold mb-2 font-['Rubik'] bg-gradient-to-r from-primary via-purple-600 to-primary bg-clip-text text-transparent">
+                                באיזה שירות תרצו לחסוך?
+                              </h3>
+                            </motion.div>
+                            <motion.p
+                              initial={{ y: -10, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: 0.2 }}
+                              className="text-sm text-muted-foreground font-['Rubik']"
+                            >
+                              בחרו קטגוריה ונמצא לכם את המסלול המושלם
+                            </motion.p>
                           </div>
                           
-                          <div className="grid grid-cols-1 gap-4">
+                          <div className="grid grid-cols-2 gap-3">
                             {services.map((service, index) => (
                               <motion.button
                                 key={service.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                whileHover={{ scale: 1.02, y: -2 }}
-                                whileTap={{ scale: 0.98 }}
+                                initial={{ opacity: 0, scale: 0.8, rotateY: -20 }}
+                                animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                                whileHover={{ scale: 1.05, y: -6 }}
+                                whileTap={{ scale: 0.95 }}
+                                transition={{ 
+                                  delay: index * 0.1,
+                                  type: "spring",
+                                  stiffness: 200,
+                                  damping: 15
+                                }}
                                 onClick={() => handleServiceSelect(service.id)}
-                                className={cn(
-                                  "group relative p-6 rounded-2xl border-2 border-border transition-all duration-300 text-right overflow-hidden",
-                                  service.bgColor,
-                                  "hover:border-purple-400 hover:shadow-xl"
-                                )}
+                                className="group relative p-5 rounded-2xl border-2 border-border hover:border-primary transition-all duration-300 text-center overflow-hidden bg-card hover:shadow-xl"
                               >
-                                {/* Gradient overlay on hover */}
+                                {/* Animated gradient background */}
                                 <div className={cn(
-                                  "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-300",
-                                  service.color
-                                )} />
+                                  "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-all duration-500",
+                                  service.color.replace('to-', 'via-') + ' to-transparent'
+                                )} 
+                                style={{ 
+                                  background: `linear-gradient(135deg, transparent 0%, ${
+                                    service.id === 'cellular' ? 'rgba(59, 130, 246, 0.1)' :
+                                    service.id === 'internet' ? 'rgba(168, 85, 247, 0.1)' :
+                                    service.id === 'electricity' ? 'rgba(251, 191, 36, 0.1)' :
+                                    'rgba(16, 185, 129, 0.1)'
+                                  } 100%)`
+                                }}
+                                />
                                 
-                                <div className="relative flex items-center gap-4">
-                                  {/* Icon container */}
-                                  <div className={cn(
-                                    "w-16 h-16 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl",
-                                    service.color
-                                  )}>
-                                    <service.icon className="w-8 h-8 text-white" />
-                                  </div>
+                                {/* Shine effect */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                                
+                                <div className="relative z-10 flex flex-col items-center gap-3">
+                                  {/* Icon with glow effect */}
+                                  <motion.div 
+                                    className={cn(
+                                      "w-14 h-14 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-lg",
+                                      service.color
+                                    )}
+                                    whileHover={{ rotate: 360, scale: 1.1 }}
+                                    transition={{ duration: 0.6 }}
+                                  >
+                                    <service.icon className="w-7 h-7 text-white" />
+                                  </motion.div>
                                   
-                                  {/* Text content */}
-                                  <div className="flex-1 text-right">
-                                    <div className="text-xl font-bold text-foreground font-['Rubik'] mb-1 group-hover:text-purple-700 transition-colors">
+                                  {/* Text */}
+                                  <div>
+                                    <div className="text-lg font-bold text-foreground font-['Rubik'] mb-0.5">
                                       {service.label}
                                     </div>
-                                    <div className="text-sm text-muted-foreground font-['Rubik']">
+                                    <div className="text-xs text-muted-foreground font-['Rubik'] leading-tight">
                                       {service.description}
                                     </div>
                                   </div>
                                   
-                                  {/* Arrow indicator */}
-                                  <ArrowLeft className={cn(
-                                    "w-6 h-6 transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-[-4px]",
-                                    service.iconColor
-                                  )} />
+                                  {/* Hover indicator */}
+                                  <motion.div
+                                    className="absolute bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100"
+                                    initial={{ y: 10 }}
+                                    whileHover={{ y: 0 }}
+                                  >
+                                    <ArrowLeft className="w-5 h-5 text-primary" />
+                                  </motion.div>
                                 </div>
                               </motion.button>
                             ))}
