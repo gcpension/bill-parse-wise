@@ -207,7 +207,7 @@ const AllPlans = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50/30 to-gray-50 font-['Rubik']">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50/50 to-white font-heebo antialiased">
       {/* Floating Top Plan CTA */}
       {showTopPlan && topPlan && (
         <div 
@@ -236,29 +236,29 @@ const AllPlans = () => {
       )}
 
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-md border-b sticky top-0 z-40 shadow-sm">
-        <div className="container mx-auto px-4 max-w-7xl py-4">
+      <div className="bg-white/90 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-40 shadow-sm">
+        <div className="container mx-auto px-4 max-w-7xl py-5">
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="mb-3 font-['Rubik']"
+            className="mb-4 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="ml-2 h-4 w-4" />
-            חזרה לדף הבית
+            <span className="font-normal">חזרה לדף הבית</span>
           </Button>
           
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent font-['Rubik']">
+              <h1 className="text-3xl md:text-4xl font-light text-gray-900 tracking-tight">
                 מסלולים זמינים
               </h1>
               {currentMonthlyBill > 0 && stats && (
                 <div className="flex flex-wrap gap-2 text-sm">
-                  <Badge variant="outline" className="bg-white font-['Rubik']">
-                    משלמים היום: <span className="font-bold text-purple-600 mr-1">₪{currentMonthlyBill}</span>
+                  <Badge variant="outline" className="bg-white border-gray-300 font-normal text-gray-700">
+                    משלמים היום: <span className="font-medium text-gray-900 mr-1">₪{currentMonthlyBill}</span>
                   </Badge>
                   {stats.maxSavings > 0 && (
-                    <Badge className="bg-gradient-to-r from-green-600 to-green-500 text-white font-['Rubik']">
+                    <Badge className="bg-green-500 text-white font-normal border-0 shadow-sm">
                       <TrendingDown className="ml-1 h-3 w-3" />
                       חיסכון עד ₪{stats.maxSavings.toFixed(0)} בחודש
                     </Badge>
@@ -269,18 +269,18 @@ const AllPlans = () => {
             
             <div className="flex items-center gap-3">
               <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as ViewMode)}>
-                <TabsList className="bg-purple-100">
-                  <TabsTrigger value="grid" className="gap-2">
+                <TabsList className="bg-gray-100 border-gray-200">
+                  <TabsTrigger value="grid" className="gap-2 font-normal">
                     <Grid3x3 className="h-4 w-4" />
                     כרטיסים
                   </TabsTrigger>
-                  <TabsTrigger value="list" className="gap-2">
+                  <TabsTrigger value="list" className="gap-2 font-normal">
                     <List className="h-4 w-4" />
                     רשימה
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-              <Badge variant="outline" className="font-['Rubik']">
+              <Badge variant="outline" className="font-normal border-gray-300 text-gray-600">
                 {filteredPlans.length} מסלולים
               </Badge>
             </div>
@@ -288,29 +288,29 @@ const AllPlans = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 max-w-7xl py-6">
+      <div className="container mx-auto px-4 max-w-7xl py-8">
         {/* Enhanced Savings Banner */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
-          <div className="mb-6 animate-fade-in">
-            <div className="bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+          <div className="mb-8 animate-fade-in">
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
               <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-8">
                 {/* Enhanced Savings Display */}
                 <div className="flex items-start gap-6 flex-1">
                   {/* Icon Circle */}
                   <div className="relative flex-shrink-0">
-                    <div className="absolute inset-0 bg-gray-900/5 rounded-full blur-xl"></div>
-                    <div className="relative flex items-center justify-center w-24 h-24 rounded-full bg-white border-2 border-gray-300 shadow-md">
-                      <TrendingDown className="w-12 h-12 text-gray-700" strokeWidth={2.5} />
+                    <div className="absolute inset-0 bg-green-100 rounded-full blur-lg opacity-60"></div>
+                    <div className="relative flex items-center justify-center w-20 h-20 rounded-full bg-green-50 border border-green-200">
+                      <TrendingDown className="w-9 h-9 text-green-600" strokeWidth={2} />
                     </div>
                   </div>
                   
                   {/* Content */}
-                  <div className="flex-1 pt-2">
+                  <div className="flex-1 pt-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-bold text-gray-900 font-['Rubik']">
+                      <h3 className="text-lg font-light text-gray-900">
                         החיסכון השנתי שלכם
                       </h3>
-                      <Badge variant="outline" className="border-gray-300 text-gray-700 font-semibold">
+                      <Badge variant="outline" className="border-gray-300 text-gray-600 font-normal">
                         צפי
                       </Badge>
                     </div>
@@ -318,27 +318,27 @@ const AllPlans = () => {
                     {/* Large Amount */}
                     <div className="mb-3">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-5xl font-black text-gray-900 font-['Rubik'] tracking-tight">
+                        <span className="text-5xl font-light text-gray-900 tracking-tight">
                           ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
                         </span>
-                        <span className="text-2xl font-bold text-gray-500 font-['Rubik']">
+                        <span className="text-xl font-light text-gray-500">
                           בשנה
                         </span>
                       </div>
                     </div>
                     
                     {/* Details */}
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-1.5 font-medium font-['Rubik']">
-                        <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                      <div className="flex items-center gap-1.5 font-light">
+                        <div className="w-1 h-1 rounded-full bg-gray-400"></div>
                         <span>₪{stats.maxSavings.toFixed(0)} לחודש</span>
                       </div>
-                      <div className="flex items-center gap-1.5 font-medium font-['Rubik']">
-                        <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                      <div className="flex items-center gap-1.5 font-light">
+                        <div className="w-1 h-1 rounded-full bg-gray-400"></div>
                         <span>{stats.recommendedCount} מסלולים מומלצים</span>
                       </div>
-                      <div className="flex items-center gap-1.5 font-medium font-['Rubik']">
-                        <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                      <div className="flex items-center gap-1.5 font-light">
+                        <div className="w-1 h-1 rounded-full bg-gray-400"></div>
                         <span>מתוך {filteredPlans.length} מסלולים</span>
                       </div>
                     </div>
@@ -350,11 +350,11 @@ const AllPlans = () => {
         )}
 
         {/* Filters Section */}
-        <Card className="mb-6 shadow-md border-purple-100">
+        <Card className="mb-8 shadow-sm border-gray-200 bg-white">
           <CardContent className="p-6">
             {/* Category Pills */}
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3 font-['Rubik']">סינון לפי קטגוריה</h3>
+              <h3 className="text-sm font-normal text-gray-600 mb-3">סינון לפי קטגוריה</h3>
               <div className="flex flex-wrap gap-2">
                 {categories.map((category) => {
                   const Icon = category.icon;
@@ -363,10 +363,10 @@ const AllPlans = () => {
                       key={category.id}
                       onClick={() => setSelectedCategory(category.id)}
                       className={cn(
-                        "px-4 py-2 rounded-lg font-medium transition-all duration-200 font-['Rubik'] flex items-center gap-2",
+                        "px-4 py-2.5 rounded-xl font-normal transition-all duration-200 flex items-center gap-2 text-sm",
                         selectedCategory === category.id
-                          ? "bg-purple-600 text-white shadow-md"
-                          : "bg-white text-gray-700 border border-gray-200 hover:border-purple-300 hover:bg-purple-50"
+                          ? "bg-gray-900 text-white shadow-sm"
+                          : "bg-gray-100 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-200"
                       )}
                     >
                       <Icon className="w-4 h-4" />
@@ -386,7 +386,7 @@ const AllPlans = () => {
                   placeholder="חיפוש לפי חברה או שם מסלול..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pr-10 font-['Rubik']"
+                  className="pr-10 border-gray-200 focus:border-gray-300 font-normal"
                 />
               </div>
               
@@ -395,7 +395,7 @@ const AllPlans = () => {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortType)}
-                  className="w-full h-10 pr-10 pl-4 rounded-md border border-gray-200 bg-white text-gray-900 font-['Rubik'] focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full h-10 pr-10 pl-4 rounded-lg border border-gray-200 bg-white text-gray-900 font-normal focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent"
                 >
                   <option value="price-asc">מחיר: מהנמוך לגבוה</option>
                   <option value="price-desc">מחיר: מהגבוה לנמוך</option>
@@ -471,20 +471,20 @@ const AllPlans = () => {
                   }}
                 >
                   {/* Company Header */}
-                  <div className="flex items-center gap-4 pb-3 border-b-2 border-purple-200 group">
+                  <div className="flex items-center gap-4 pb-4 border-b border-gray-200 group">
                     {logo && (
-                      <div className="w-20 h-20 bg-white rounded-xl shadow-md flex items-center justify-center p-3 border border-gray-100 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
+                      <div className="w-16 h-16 bg-white rounded-lg shadow-sm flex items-center justify-center p-2 border border-gray-100 group-hover:shadow transition-all duration-300">
                         <img src={logo} alt={company} className="max-w-full max-h-full object-contain" />
                       </div>
                     )}
                     <div className="flex-1">
-                      <h2 className="text-2xl font-bold text-gray-900 font-['Rubik'] group-hover:text-purple-600 transition-colors">
+                      <h2 className="text-2xl font-light text-gray-900 group-hover:text-gray-700 transition-colors">
                         {company}
                       </h2>
                       <div className="flex items-center gap-2 mt-1">
-                        <p className="text-sm text-gray-500 font-['Rubik']">{plans.length} מסלולים זמינים</p>
+                        <p className="text-sm text-gray-500 font-light">{plans.length} מסלולים זמינים</p>
                         {recommendedInCompany > 0 && (
-                          <Badge className="bg-green-100 text-green-700 text-xs">
+                          <Badge className="bg-green-500 text-white text-xs font-normal border-0">
                             <CheckCircle2 className="ml-1 h-3 w-3" />
                             {recommendedInCompany} מומלצים
                           </Badge>
@@ -505,8 +505,8 @@ const AllPlans = () => {
                         <Card 
                           key={`${plan.company}-${plan.plan}-${index}`}
                           className={cn(
-                            "hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group cursor-pointer relative animate-scale-in",
-                            isRecommended && "ring-2 ring-green-400 bg-gradient-to-br from-green-50 to-white shadow-lg"
+                            "hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group cursor-pointer relative animate-scale-in border-gray-200 bg-white",
+                            isRecommended && "ring-1 ring-green-400 bg-gradient-to-br from-green-50/30 to-white"
                           )}
                           style={{
                             animationDelay: `${index * 50}ms`
@@ -516,35 +516,35 @@ const AllPlans = () => {
                             {/* Badges */}
                             <div className="flex flex-wrap gap-2 mb-4">
                               {isRecommended && (
-                                <Badge className="bg-gradient-to-r from-green-600 to-green-500 text-white font-['Rubik'] shadow-md animate-pulse">
+                                <Badge className="bg-green-500 text-white font-normal shadow-sm">
                                   <Sparkles className="w-3 h-3 ml-1" />
                                   מומלץ במיוחד
                                 </Badge>
                               )}
                               {index === 0 && (
-                                <Badge variant="outline" className="border-yellow-400 bg-yellow-50 text-yellow-700 font-['Rubik'] shadow-sm">
+                                <Badge variant="outline" className="border-yellow-400 bg-yellow-50 text-yellow-700 font-normal">
                                   <Star className="w-3 h-3 ml-1 fill-yellow-400" />
                                   זול ביותר
                                 </Badge>
                               )}
                               {index < 3 && (
-                                <Badge variant="outline" className="border-purple-300 text-purple-700 font-['Rubik']">
+                                <Badge variant="outline" className="border-gray-300 text-gray-600 font-normal">
                                   Top {index + 1}
                                 </Badge>
                               )}
                             </div>
 
                             {/* Plan Name */}
-                            <h3 className="text-lg font-bold text-gray-900 font-['Rubik'] mb-3 line-clamp-2 min-h-[56px]">
+                            <h3 className="text-lg font-normal text-gray-900 mb-3 line-clamp-2 min-h-[56px]">
                               {plan.plan}
                             </h3>
 
                             {/* Benefits */}
                             {plan.transferBenefits && (
-                              <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200 shadow-sm">
+                              <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
                                 <div className="flex items-start gap-2">
-                                  <span className="text-lg">🎁</span>
-                                  <p className="text-xs text-purple-700 font-['Rubik'] line-clamp-2 flex-1">
+                                  <span className="text-base">🎁</span>
+                                  <p className="text-xs text-gray-600 font-light line-clamp-2 flex-1">
                                     {plan.transferBenefits}
                                   </p>
                                 </div>
@@ -554,21 +554,21 @@ const AllPlans = () => {
                             {/* Price Section */}
                             <div className="mb-4 pt-4 border-t border-gray-100">
                               <div className="flex items-baseline justify-center gap-1 mb-1">
-                                <span className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent font-['Rubik']">
+                                <span className="text-4xl font-light text-gray-900 tracking-tight">
                                   {plan.monthlyPrice}
                                 </span>
-                                <span className="text-lg text-gray-500 font-['Rubik']">₪</span>
+                                <span className="text-base text-gray-500 font-light">₪</span>
                               </div>
-                              <div className="text-center text-sm text-gray-500 font-['Rubik']">לחודש</div>
+                              <div className="text-center text-sm text-gray-500 font-light">לחודש</div>
                               {isRecommended && (
-                                <div className="text-center mt-2 px-3 py-2 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full border border-green-200 shadow-sm">
+                                <div className="text-center mt-3 px-3 py-2 bg-green-50 rounded-lg border border-green-200">
                                   <div className="flex items-center justify-center gap-1">
                                     <TrendingDown className="w-4 h-4 text-green-600" />
-                                    <span className="text-sm font-bold text-green-700 font-['Rubik']">
+                                    <span className="text-sm font-medium text-green-700">
                                       חיסכון של ₪{savings.toFixed(0)} בחודש
                                     </span>
                                   </div>
-                                  <div className="text-xs text-green-600 mt-1">
+                                  <div className="text-xs text-green-600 mt-1 font-light">
                                     ₪{(savings * 12).toFixed(0)} בשנה!
                                   </div>
                                 </div>
@@ -580,20 +580,20 @@ const AllPlans = () => {
                               onClick={() => handleSelectPlan(plan)}
                               size="lg"
                               className={cn(
-                                "w-full font-['Rubik'] font-semibold shadow-md group-hover:shadow-xl transition-all duration-300 group-hover:scale-105",
+                                "w-full font-normal shadow-sm hover:shadow transition-all duration-300",
                                 isRecommended 
-                                  ? "bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white" 
-                                  : "bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white"
+                                  ? "bg-green-500 hover:bg-green-600 text-white" 
+                                  : "bg-gray-900 hover:bg-gray-800 text-white"
                               )}
                             >
                               {isRecommended ? (
                                 <>
-                                  <CheckCircle2 className="ml-2 h-5 w-5" />
+                                  <CheckCircle2 className="ml-2 h-4 w-4" />
                                   עברו למסלול המומלץ
                                 </>
                               ) : (
                                 <>
-                                  <Rocket className="ml-2 h-5 w-5" />
+                                  <Rocket className="ml-2 h-4 w-4" />
                                   בחרו מסלול זה
                                 </>
                               )}
