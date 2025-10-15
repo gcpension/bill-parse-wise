@@ -12,7 +12,8 @@ import {
   ArrowRight,
   CheckCircle,
   Sparkles,
-  TrendingUp
+  TrendingUp,
+  X
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
+import ServiceRequestWizard from "@/components/service-request/ServiceRequestWizard";
 
 // Import company logos
 import electraLogo from "@/assets/logos/electra-logo.png";
@@ -46,6 +48,8 @@ const AllPlans = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentMonthlyBill, setCurrentMonthlyBill] = useState<number>(0);
   const [userProfile, setUserProfile] = useState<any>(null);
+  const [selectedPlan, setSelectedPlan] = useState<PlanRecord | null>(null);
+  const [showForm, setShowForm] = useState(false);
 
   // Load stored analysis data and user profile
   useEffect(() => {
@@ -155,22 +159,72 @@ const AllPlans = () => {
       category: plan.service,
       switchType: 'switch'
     }));
-    navigate('/service-request');
+    setSelectedPlan(plan);
+    setShowForm(true);
+    
+    // Scroll to top to show the form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    setSelectedPlan(null);
+    localStorage.removeItem('selectedPlanForSwitch');
+  };
+
+  const handleFormComplete = () => {
+    // After form completion, you can navigate or show success message
+    setShowForm(false);
+    setSelectedPlan(null);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 font-['Rubik']">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-background py-12 border-b">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/')}
-            className="mb-4 hover:bg-white/50 font-['Rubik']"
-          >
-            <ArrowLeft className="ml-2 h-4 w-4" />
-            חזרה לדף הבית
-          </Button>
+      {/* Show Form if plan is selected */}
+      {showForm && selectedPlan ? (
+        <div className="min-h-screen">
+          {/* Form Header with Close Button */}
+          <div className="bg-white border-b sticky top-0 z-50 shadow-sm">
+            <div className="container mx-auto px-4 max-w-7xl py-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 font-['Rubik']">
+                    מעבר למסלול: {selectedPlan.plan}
+                  </h2>
+                  <p className="text-gray-600 font-['Rubik']">
+                    {selectedPlan.company} • ₪{selectedPlan.monthlyPrice}/חודש
+                  </p>
+                </div>
+                <Button
+                  variant="ghost"
+                  onClick={handleCloseForm}
+                  className="font-['Rubik']"
+                >
+                  <X className="ml-2 h-5 w-5" />
+                  סגור
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Service Request Wizard */}
+          <div className="container mx-auto px-4 max-w-5xl py-8">
+            <ServiceRequestWizard onComplete={handleFormComplete} />
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Hero Section */}
+          <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-background py-12 border-b">
+            <div className="container mx-auto px-4 max-w-7xl">
+              <Button
+                variant="ghost"
+                onClick={() => navigate('/')}
+                className="mb-4 hover:bg-white/50 font-['Rubik']"
+              >
+                <ArrowLeft className="ml-2 h-4 w-4" />
+                חזרה לדף הבית
+              </Button>
 
           <div className="text-center space-y-3">
             <Badge className="mb-3 bg-gradient-to-r from-primary to-primary/80 text-white px-5 py-1.5 font-['Rubik']">
@@ -419,6 +473,8 @@ const AllPlans = () => {
           </div>
         )}
       </div>
+      </>
+      )}
     </div>
   );
 };
