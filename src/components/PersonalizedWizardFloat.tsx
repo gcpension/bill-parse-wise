@@ -196,7 +196,7 @@ export const PersonalizedWizardFloat = () => {
             <Button
               onClick={() => setIsOpen(true)}
               size="lg"
-              className="group relative h-16 px-8 rounded-full bg-gradient-to-r from-primary via-purple-600 to-primary hover:from-primary/90 hover:via-purple-700 hover:to-primary/90 text-white shadow-2xl hover:shadow-primary/50 transition-all duration-500 font-['Rubik'] font-bold overflow-hidden"
+              className="group relative h-16 px-8 rounded-full bg-gradient-to-r from-primary via-purple-600 to-primary hover:from-primary/90 hover:via-purple-700 hover:to-primary/90 text-white shadow-2xl hover:shadow-primary/50 transition-all duration-500 font-heebo font-normal overflow-hidden"
             >
               {/* Animated background effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
@@ -261,8 +261,8 @@ export const PersonalizedWizardFloat = () => {
                       <Sparkles className="w-6 h-6 text-white" />
                     </motion.div>
                     <div>
-                      <div className="font-bold text-white font-['Rubik'] text-lg">אשף ההמלצות</div>
-                      <div className="text-xs text-white/90 font-['Rubik'] flex items-center gap-1">
+                      <div className="font-normal text-white font-heebo text-lg">אשף ההמלצות</div>
+                      <div className="text-xs text-white/90 font-heebo flex items-center gap-1">
                         <motion.div
                           animate={{ scale: [1, 1.2, 1] }}
                           transition={{ duration: 2, repeat: Infinity }}
@@ -331,12 +331,36 @@ export const PersonalizedWizardFloat = () => {
                                 />
                               </div>
                             </motion.div>
-                            <h3 className="text-xl font-bold font-['Rubik'] bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-2">
+                            <h3 className="text-xl font-light font-heebo bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-2">
                               מצאנו עבורכם {recommendations.length} מסלולים מתאימים!
                             </h3>
-                            <p className="text-sm text-muted-foreground font-['Rubik']">
+                            <p className="text-sm text-muted-foreground font-heebo font-light mb-4">
                               המסלולים מסודרים לפי התאמה אישית מבוססת AI
                             </p>
+                            
+                            {/* הסבר למה המסלולים נבחרו */}
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-right">
+                              <div className="flex items-start gap-2">
+                                <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                                <div className="text-xs text-blue-700 font-heebo font-light leading-relaxed">
+                                  בחרנו את המסלולים בהתאם ל:
+                                  <span className="font-normal"> {wizardData.familySize} נפשות במשפחה</span>,
+                                  <span className="font-normal"> תקציב של ₪{wizardData.budget}</span>,
+                                  <span className="font-normal"> {
+                                    wizardData.priorities?.price === 5 ? 'דגש על מחיר נמוך' :
+                                    wizardData.priorities?.speed === 5 ? 'דגש על מהירות גבוהה' :
+                                    wizardData.priorities?.reliability === 5 ? 'דגש על אמינות' :
+                                    'איזון בין כל הפרמטרים'
+                                  }</span>
+                                  {' '}ו<span className="font-normal">שימוש {
+                                    wizardData.usageLevel === 'light' ? 'קל' :
+                                    wizardData.usageLevel === 'medium' ? 'בינוני' :
+                                    wizardData.usageLevel === 'heavy' ? 'כבד' :
+                                    'אינטנסיבי'
+                                  }</span>.
+                                </div>
+                              </div>
+                            </div>
                           </div>
 
                           <div className="space-y-3 max-h-[400px] overflow-y-auto">
@@ -384,10 +408,10 @@ export const PersonalizedWizardFloat = () => {
                                   
                                   <div className="flex justify-between items-start mb-3 relative z-10">
                                     <div className="flex-1">
-                                      <div className="font-bold text-foreground font-['Rubik'] text-lg mb-1">
+                                      <div className="font-normal text-foreground font-heebo text-lg mb-1">
                                         {plan.company}
                                       </div>
-                                      <div className="text-sm text-muted-foreground font-['Rubik'] line-clamp-1">
+                                      <div className="text-sm text-muted-foreground font-heebo font-light line-clamp-1">
                                         {plan.planName}
                                       </div>
                                     </div>
@@ -395,10 +419,10 @@ export const PersonalizedWizardFloat = () => {
                                       className="text-left bg-gradient-to-br from-primary/10 to-purple-100 px-3 py-2 rounded-lg"
                                       whileHover={{ scale: 1.05 }}
                                     >
-                                      <div className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent font-['Rubik']">
+                                      <div className="text-2xl font-light bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent font-heebo">
                                         ₪{plan.regularPrice}
                                       </div>
-                                      <div className="text-xs text-muted-foreground font-['Rubik']">
+                                      <div className="text-xs text-muted-foreground font-heebo font-light">
                                         לחודש
                                       </div>
                                     </motion.div>
@@ -413,7 +437,7 @@ export const PersonalizedWizardFloat = () => {
                                         transition={{ duration: 1, delay: idx * 0.1 + 0.3, ease: "easeOut" }}
                                       />
                                     </div>
-                                    <Badge variant="secondary" className="font-bold text-primary font-['Rubik'] shadow-sm">
+                                    <Badge variant="secondary" className="font-normal text-primary font-heebo shadow-sm">
                                       {Math.round(rec.personalizedScore)}%
                                     </Badge>
                                   </div>
@@ -440,7 +464,7 @@ export const PersonalizedWizardFloat = () => {
                                       animate={{ opacity: 1, y: 0 }}
                                       transition={{ delay: idx * 0.1 + 0.7 }}
                                     >
-                                      <div className="flex items-center gap-2 text-sm font-bold text-green-600 font-['Rubik'] bg-green-50 px-3 py-2 rounded-lg">
+                                      <div className="flex items-center gap-2 text-sm font-normal text-green-600 font-heebo bg-green-50 px-3 py-2 rounded-lg">
                                         <TrendingUp className="w-4 h-4" />
                                         חיסכון: ₪{Math.round(rec.expectedSavings.monthly)} לחודש
                                       </div>
