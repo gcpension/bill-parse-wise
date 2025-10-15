@@ -31,6 +31,7 @@ import { QuickActions } from '@/components/QuickActions';
 import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
 import { CategoryCompletionBanner } from '@/components/CategoryCompletionBanner';
 import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
+import { TestimonialsSection } from '@/components/TestimonialsSection';
 const Home = () => {
   const [mounted, setMounted] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
@@ -891,6 +892,9 @@ const Home = () => {
         </div>
       </section>
 
+
+      {/* Testimonials Section */}
+      <TestimonialsSection />
 
       {/* Footer Section */}
       <footer className="bg-gradient-to-br from-gray-800 to-gray-900 text-white py-16 relative overflow-hidden">
