@@ -548,143 +548,154 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Never Been Easier Section - Minimal & Elegant */}
-      <section ref={whyChooseUs.elementRef} className={`relative overflow-hidden bg-white py-16 transition-all duration-700 ${whyChooseUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      {/* Never Been Easier Section - Elegant Purple */}
+      <section ref={whyChooseUs.elementRef} className={`relative overflow-hidden bg-gradient-to-br from-purple-50/30 via-white to-purple-50/20 py-20 transition-all duration-700 ${whyChooseUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        {/* Subtle Background Decoration */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-purple-300/10 rounded-full blur-3xl" />
+        
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3 font-['Rubik']">
+          <div className="text-center mb-16">
+            <div className="inline-block mb-4">
+              <div className="px-6 py-2 rounded-full bg-purple-100 border border-purple-200">
+                <span className="text-purple-700 font-semibold text-sm font-['Rubik']">העידן החדש של מעברים</span>
+              </div>
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 font-['Rubik']">
               מעולם לא היה{" "}
-              <span className="relative inline-block">
+              <span className="relative inline-block text-purple-600">
                 קל יותר
-                <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gray-900"></div>
+                <svg className="absolute -bottom-2 left-0 right-0 h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
+                  <path d="M0,7 Q50,0 100,7 T200,7" fill="none" stroke="currentColor" strokeWidth="3" opacity="0.3"/>
+                </svg>
               </span>
               {" "}לבצע מעבר
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto font-['Rubik']">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-['Rubik']">
               שכחתם מהבירוקרטיה, השיחות האינסופיות והטפסים המסובכים
             </p>
           </div>
 
-          {/* Process Flow - Horizontal Timeline */}
+          {/* Process Flow - Elegant Cards */}
           <div className="relative mb-16">
             {/* Connection Line */}
-            <div className="hidden md:block absolute top-8 left-[16.66%] right-[16.66%] h-px bg-gray-200 z-0"></div>
+            <div className="hidden md:block absolute top-12 left-[16.66%] right-[16.66%] h-0.5 bg-gradient-to-r from-purple-200 via-purple-400 to-purple-200 z-0"></div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
               {/* Step 1 */}
               <div className="text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-900 text-white font-bold text-xl mb-4 font-['Rubik'] relative">
+                <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 text-white font-bold text-2xl mb-6 font-['Rubik'] shadow-lg shadow-purple-500/30 group-hover:shadow-xl group-hover:shadow-purple-500/40 transition-all duration-300 group-hover:scale-110">
                   1
-                  <div className="absolute inset-0 rounded-full bg-gray-900 animate-pulse opacity-20"></div>
+                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 font-['Rubik']">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 font-['Rubik']">
                   מזינים פרטים
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed font-['Rubik'] max-w-xs mx-auto">
+                <p className="text-gray-600 leading-relaxed font-['Rubik'] max-w-xs mx-auto mb-4">
                   אתם מספרים לנו על השירותים הנוכחיים שלכם
                 </p>
-                <div className="mt-4 inline-flex items-center gap-2 text-sm text-gray-500">
-                  <Clock className="w-4 h-4" />
-                  <span className="font-['Rubik']">2 דקות</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100">
+                  <Clock className="w-4 h-4 text-purple-600" />
+                  <span className="text-sm font-semibold text-purple-700 font-['Rubik']">2 דקות</span>
                 </div>
               </div>
 
               {/* Step 2 */}
               <div className="text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-900 text-white font-bold text-xl mb-4 font-['Rubik'] relative">
+                <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 text-white font-bold text-2xl mb-6 font-['Rubik'] shadow-lg shadow-purple-600/30 group-hover:shadow-xl group-hover:shadow-purple-600/40 transition-all duration-300 group-hover:scale-110">
                   2
-                  <div className="absolute inset-0 rounded-full bg-gray-900 animate-pulse opacity-20" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 font-['Rubik']">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 font-['Rubik']">
                   אנחנו מנתחים
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed font-['Rubik'] max-w-xs mx-auto">
+                <p className="text-gray-600 leading-relaxed font-['Rubik'] max-w-xs mx-auto mb-4">
                   המערכת שלנו סורקת את כל השוק ומוצאת את ההצעות הטובות ביותר
                 </p>
-                <div className="mt-4 inline-flex items-center gap-2 text-sm text-gray-500">
-                  <Sparkles className="w-4 h-4" />
-                  <span className="font-['Rubik']">רגע קט</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100">
+                  <Sparkles className="w-4 h-4 text-purple-600" />
+                  <span className="text-sm font-semibold text-purple-700 font-['Rubik']">רגע קט</span>
                 </div>
               </div>
 
               {/* Step 3 */}
               <div className="text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-900 text-white font-bold text-xl mb-4 font-['Rubik'] relative">
+                <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-700 to-purple-900 text-white font-bold text-2xl mb-6 font-['Rubik'] shadow-lg shadow-purple-700/30 group-hover:shadow-xl group-hover:shadow-purple-700/40 transition-all duration-300 group-hover:scale-110">
                   3
-                  <div className="absolute inset-0 rounded-full bg-gray-900 animate-pulse opacity-20" style={{ animationDelay: '0.4s' }}></div>
+                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 font-['Rubik']">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 font-['Rubik']">
                   מבצעים מעבר
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed font-['Rubik'] max-w-xs mx-auto">
+                <p className="text-gray-600 leading-relaxed font-['Rubik'] max-w-xs mx-auto mb-4">
                   אנחנו מטפלים בכל הניירת, השיחות והתיאומים
                 </p>
-                <div className="mt-4 inline-flex items-center gap-2 text-sm text-gray-500">
-                  <CheckCircle className="w-4 h-4" />
-                  <span className="font-['Rubik']">אוטומטי</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100">
+                  <CheckCircle className="w-4 h-4 text-purple-600" />
+                  <span className="text-sm font-semibold text-purple-700 font-['Rubik']">אוטומטי</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Benefits - Simple List */}
-          <div className="max-w-3xl mx-auto">
-            <h3 className="text-xl font-bold text-center text-gray-900 mb-8 font-['Rubik']">
+          {/* Benefits - Elegant Grid */}
+          <div className="max-w-4xl mx-auto bg-white/60 backdrop-blur-sm rounded-3xl p-10 border border-purple-100 shadow-xl shadow-purple-500/5">
+            <h3 className="text-2xl font-bold text-center text-gray-900 mb-10 font-['Rubik']">
               מה זה אומר בשבילכם?
             </h3>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-gray-700" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div className="flex items-start gap-4 group">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Clock className="w-6 h-6 text-purple-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 mb-1 font-['Rubik']">חוסכים זמן</h4>
-                  <p className="text-gray-600 text-sm font-['Rubik']">5 דקות במקום שעות של חיפושים</p>
+                  <h4 className="font-bold text-gray-900 mb-1 text-lg font-['Rubik']">חוסכים זמן</h4>
+                  <p className="text-gray-600 font-['Rubik']">5 דקות במקום שעות של חיפושים</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                  <Target className="w-5 h-5 text-gray-700" />
+              <div className="flex items-start gap-4 group">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Target className="w-6 h-6 text-purple-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 mb-1 font-['Rubik']">ללא מאמץ</h4>
-                  <p className="text-gray-600 text-sm font-['Rubik']">אנחנו עושים את כל העבודה בשבילכם</p>
+                  <h4 className="font-bold text-gray-900 mb-1 text-lg font-['Rubik']">ללא מאמץ</h4>
+                  <p className="text-gray-600 font-['Rubik']">אנחנו עושים את כל העבודה בשבילכם</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-gray-700" />
+              <div className="flex items-start gap-4 group">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <FileText className="w-6 h-6 text-purple-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 mb-1 font-['Rubik']">אפס ניירת</h4>
-                  <p className="text-gray-600 text-sm font-['Rubik']">הכל דיגיטלי, פשוט ומהיר</p>
+                  <h4 className="font-bold text-gray-900 mb-1 text-lg font-['Rubik']">אפס ניירת</h4>
+                  <p className="text-gray-600 font-['Rubik']">הכל דיגיטלי, פשוט ומהיר</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-gray-700" />
+              <div className="flex items-start gap-4 group">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <CheckCircle className="w-6 h-6 text-purple-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 mb-1 font-['Rubik']">מובטח</h4>
-                  <p className="text-gray-600 text-sm font-['Rubik']">מעקב מלא עד סיום התהליך</p>
+                  <h4 className="font-bold text-gray-900 mb-1 text-lg font-['Rubik']">מובטח</h4>
+                  <p className="text-gray-600 font-['Rubik']">מעקב מלא עד סיום התהליך</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* CTA */}
-          <div className="text-center mt-12">
+          <div className="text-center mt-14">
             <Button 
               onClick={() => {
                 const servicesSection = document.getElementById('services');
                 servicesSection?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="bg-gray-900 hover:bg-gray-800 text-white text-lg px-8 py-6 rounded-xl transition-all duration-300 hover:scale-105 font-['Rubik']"
+              className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white text-lg px-10 py-7 rounded-2xl shadow-xl shadow-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105 font-['Rubik']"
             >
               בואו נתחיל לחסוך
               <ArrowRight className="mr-2 h-5 w-5" />
