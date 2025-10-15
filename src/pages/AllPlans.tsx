@@ -33,7 +33,7 @@ import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
-import annualSavingsSketch from "@/assets/annual-savings-transparent.png";
+import annualSavingsSketch from "@/assets/savings-clean.png";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -322,7 +322,7 @@ const AllPlans = () => {
         {/* Enhanced Savings Banner - Centered */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
           <div className="mb-8 animate-fade-in">
-            <div className="bg-gradient-to-br from-green-50/40 via-white to-green-50/20 border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+            <div className="relative bg-gradient-to-br from-green-50/40 via-white to-green-50/20 border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
               <div className="grid md:grid-cols-2 gap-8 items-center p-8">
                 {/* Content - Right Side */}
                 <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1">
@@ -371,11 +371,12 @@ const AllPlans = () => {
 
                 {/* Sketch Illustration - Left Side */}
                 <div className="relative order-2">
-                  <div className="relative w-full h-48 md:h-64 flex items-center justify-center">
+                  <div className="relative w-full h-48 md:h-64 flex items-center justify-center mix-blend-multiply">
                     <img 
                       src={annualSavingsSketch} 
                       alt="חיסכון שנתי" 
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain opacity-80"
+                      style={{ mixBlendMode: 'multiply' }}
                     />
                   </div>
                 </div>
