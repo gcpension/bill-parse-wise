@@ -128,10 +128,42 @@ export const PersonalizedWizardFloat = () => {
   };
 
   const services = [
-    { id: 'cellular' as const, icon: Smartphone, label: 'סלולר', color: 'from-blue-50 to-blue-100' },
-    { id: 'internet' as const, icon: Wifi, label: 'אינטרנט', color: 'from-purple-50 to-purple-100' },
-    { id: 'electricity' as const, icon: Zap, label: 'חשמל', color: 'from-yellow-50 to-yellow-100' },
-    { id: 'tv' as const, icon: Tv, label: 'טלוויזיה', color: 'from-green-50 to-green-100' },
+    { 
+      id: 'cellular' as const, 
+      icon: Smartphone, 
+      label: 'סלולר', 
+      description: 'מסלולי סלולר ונייד',
+      color: 'from-blue-500 to-blue-600',
+      iconColor: 'text-blue-600',
+      bgColor: 'bg-blue-50 hover:bg-blue-100'
+    },
+    { 
+      id: 'internet' as const, 
+      icon: Wifi, 
+      label: 'אינטרנט', 
+      description: 'חבילות אינטרנט ביתי',
+      color: 'from-purple-500 to-purple-600',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50 hover:bg-purple-100'
+    },
+    { 
+      id: 'electricity' as const, 
+      icon: Zap, 
+      label: 'חשמל', 
+      description: 'ספקי חשמל ותעריפים',
+      color: 'from-amber-500 to-amber-600',
+      iconColor: 'text-amber-600',
+      bgColor: 'bg-amber-50 hover:bg-amber-100'
+    },
+    { 
+      id: 'tv' as const, 
+      icon: Tv, 
+      label: 'טלוויזיה', 
+      description: 'חבילות טלוויזיה ושידורים',
+      color: 'from-emerald-500 to-emerald-600',
+      iconColor: 'text-emerald-600',
+      bgColor: 'bg-emerald-50 hover:bg-emerald-100'
+    },
   ];
 
   const familyOptions = [1, 2, 3, 4, 5, 6];
@@ -357,29 +389,68 @@ export const PersonalizedWizardFloat = () => {
                       {/* Step 1: Service Selection */}
                       {step === 1 && (
                         <motion.div
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
-                          className="space-y-4"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          className="space-y-6"
                         >
-                          <h3 className="text-lg font-bold text-center mb-4 font-['Rubik']">
-                            באיזה שירות אתם מעוניינים?
-                          </h3>
-                          <div className="grid grid-cols-2 gap-3">
-                            {services.map((service) => (
-                              <button
+                          <div className="text-center">
+                            <h3 className="text-2xl font-bold mb-2 font-['Rubik'] bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
+                              באיזה שירות אתם מעוניינים?
+                            </h3>
+                            <p className="text-sm text-muted-foreground font-['Rubik']">
+                              בחרו את הקטגוריה שברצונכם לחסוך בה
+                            </p>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 gap-4">
+                            {services.map((service, index) => (
+                              <motion.button
                                 key={service.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ scale: 1.02, y: -2 }}
+                                whileTap={{ scale: 0.98 }}
                                 onClick={() => handleServiceSelect(service.id)}
                                 className={cn(
-                                  "p-4 rounded-xl border-2 border-gray-200 hover:border-purple-400 transition-all duration-200 hover:scale-105 bg-gradient-to-br",
-                                  service.color
+                                  "group relative p-6 rounded-2xl border-2 border-border transition-all duration-300 text-right overflow-hidden",
+                                  service.bgColor,
+                                  "hover:border-purple-400 hover:shadow-xl"
                                 )}
                               >
-                                <service.icon className="w-8 h-8 mx-auto mb-2 text-gray-700" />
-                                <div className="text-sm font-semibold text-gray-800 font-['Rubik']">
-                                  {service.label}
+                                {/* Gradient overlay on hover */}
+                                <div className={cn(
+                                  "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-300",
+                                  service.color
+                                )} />
+                                
+                                <div className="relative flex items-center gap-4">
+                                  {/* Icon container */}
+                                  <div className={cn(
+                                    "w-16 h-16 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl",
+                                    service.color
+                                  )}>
+                                    <service.icon className="w-8 h-8 text-white" />
+                                  </div>
+                                  
+                                  {/* Text content */}
+                                  <div className="flex-1 text-right">
+                                    <div className="text-xl font-bold text-foreground font-['Rubik'] mb-1 group-hover:text-purple-700 transition-colors">
+                                      {service.label}
+                                    </div>
+                                    <div className="text-sm text-muted-foreground font-['Rubik']">
+                                      {service.description}
+                                    </div>
+                                  </div>
+                                  
+                                  {/* Arrow indicator */}
+                                  <ArrowLeft className={cn(
+                                    "w-6 h-6 transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-[-4px]",
+                                    service.iconColor
+                                  )} />
                                 </div>
-                              </button>
+                              </motion.button>
                             ))}
                           </div>
                         </motion.div>
