@@ -289,59 +289,65 @@ const AllPlans = () => {
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl py-8">
-        {/* Enhanced Savings Banner */}
+        {/* Company Logos Section */}
+        <div className="mb-8 text-center">
+          <div className="flex flex-wrap justify-center items-center gap-6 py-6">
+            {Object.entries(companyLogos).map(([company, logo]) => (
+              <div key={company} className="grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
+                <img 
+                  src={logo} 
+                  alt={company}
+                  className="h-8 w-auto object-contain"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Enhanced Savings Banner - Centered */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
           <div className="mb-8 animate-fade-in">
             <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-8">
-                {/* Enhanced Savings Display */}
-                <div className="flex items-start gap-6 flex-1">
-                  {/* Icon Circle */}
-                  <div className="relative flex-shrink-0">
-                    <div className="absolute inset-0 bg-green-100 rounded-full blur-lg opacity-60"></div>
-                    <div className="relative flex items-center justify-center w-20 h-20 rounded-full bg-green-50 border border-green-200">
-                      <TrendingDown className="w-9 h-9 text-green-600" strokeWidth={2} />
-                    </div>
+              <div className="flex flex-col items-center justify-center gap-6 p-8 text-center">
+                {/* Icon Circle */}
+                <div className="relative flex-shrink-0">
+                  <div className="absolute inset-0 bg-green-100 rounded-full blur-xl opacity-50"></div>
+                  <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-green-50 border border-green-200">
+                    <TrendingDown className="w-8 h-8 text-green-600" strokeWidth={2} />
+                  </div>
+                </div>
+                
+                {/* Main Headline */}
+                <div className="space-y-3">
+                  <h2 className="text-2xl font-light text-gray-900">
+                    החיסכון השנתי שלכם
+                  </h2>
+                  
+                  {/* Large Amount */}
+                  <div className="flex items-baseline justify-center gap-2">
+                    <span className="text-6xl font-light text-gray-900 tracking-tight">
+                      ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
+                    </span>
+                    <span className="text-2xl font-light text-gray-500">
+                      בשנה
+                    </span>
                   </div>
                   
-                  {/* Content */}
-                  <div className="flex-1 pt-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-light text-gray-900">
-                        החיסכון השנתי שלכם
-                      </h3>
-                      <Badge variant="outline" className="border-gray-300 text-gray-600 font-normal">
-                        צפי
-                      </Badge>
-                    </div>
-                    
-                    {/* Large Amount */}
-                    <div className="mb-3">
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-5xl font-light text-gray-900 tracking-tight">
-                          ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
-                        </span>
-                        <span className="text-xl font-light text-gray-500">
-                          בשנה
-                        </span>
-                      </div>
-                    </div>
-                    
-                    {/* Details */}
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                      <div className="flex items-center gap-1.5 font-light">
-                        <div className="w-1 h-1 rounded-full bg-gray-400"></div>
-                        <span>₪{stats.maxSavings.toFixed(0)} לחודש</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 font-light">
-                        <div className="w-1 h-1 rounded-full bg-gray-400"></div>
-                        <span>{stats.recommendedCount} מסלולים מומלצים</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 font-light">
-                        <div className="w-1 h-1 rounded-full bg-gray-400"></div>
-                        <span>מתוך {filteredPlans.length} מסלולים</span>
-                      </div>
-                    </div>
+                  {/* Sales Message */}
+                  <p className="text-lg font-light text-gray-600 max-w-2xl mx-auto">
+                    מצאנו עבורכם {stats.recommendedCount} מסלולים שיחסכו לכם כסף - בלי להתפשר על השירות
+                  </p>
+                </div>
+                
+                {/* Details */}
+                <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 pt-2">
+                  <div className="flex items-center gap-2 font-light">
+                    <Sparkles className="w-4 h-4 text-green-500" />
+                    <span>₪{stats.maxSavings.toFixed(0)} חיסכון חודשי</span>
+                  </div>
+                  <div className="flex items-center gap-2 font-light">
+                    <Award className="w-4 h-4 text-green-500" />
+                    <span>{stats.recommendedCount} מסלולים מומלצים</span>
                   </div>
                 </div>
               </div>
@@ -349,13 +355,13 @@ const AllPlans = () => {
           </div>
         )}
 
-        {/* Filters Section */}
+        {/* Filters Section - Compact */}
         <Card className="mb-8 shadow-sm border-gray-200 bg-white">
-          <CardContent className="p-6">
+          <CardContent className="p-5">
             {/* Category Pills */}
-            <div className="mb-6">
-              <h3 className="text-sm font-normal text-gray-600 mb-3">סינון לפי קטגוריה</h3>
-              <div className="flex flex-wrap gap-2">
+            <div className="mb-5">
+              <h3 className="text-xs font-light text-gray-500 mb-2.5">סינון לפי קטגוריה</h3>
+              <div className="flex flex-wrap gap-1.5">
                 {categories.map((category) => {
                   const Icon = category.icon;
                   return (
@@ -363,13 +369,13 @@ const AllPlans = () => {
                       key={category.id}
                       onClick={() => setSelectedCategory(category.id)}
                       className={cn(
-                        "px-4 py-2.5 rounded-xl font-normal transition-all duration-200 flex items-center gap-2 text-sm",
+                        "px-3 py-1.5 rounded-lg font-light transition-all duration-200 flex items-center gap-1.5 text-xs",
                         selectedCategory === category.id
                           ? "bg-gray-900 text-white shadow-sm"
                           : "bg-gray-100 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-200"
                       )}
                     >
-                      <Icon className="w-4 h-4" />
+                      <Icon className="w-3.5 h-3.5" />
                       {category.label}
                     </button>
                   );
@@ -377,25 +383,25 @@ const AllPlans = () => {
               </div>
             </div>
 
-            {/* Search and Sort */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Search and Sort - Compact */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="relative">
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
                 <Input
                   type="text"
                   placeholder="חיפוש לפי חברה או שם מסלול..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pr-10 border-gray-200 focus:border-gray-300 font-normal"
+                  className="pr-9 h-9 text-sm border-gray-200 focus:border-gray-300 font-light"
                 />
               </div>
               
               <div className="relative">
-                <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortType)}
-                  className="w-full h-10 pr-10 pl-4 rounded-lg border border-gray-200 bg-white text-gray-900 font-normal focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent"
+                  className="w-full h-9 pr-9 pl-3 text-sm rounded-lg border border-gray-200 bg-white text-gray-900 font-light focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent"
                 >
                   <option value="price-asc">מחיר: מהנמוך לגבוה</option>
                   <option value="price-desc">מחיר: מהגבוה לנמוך</option>
