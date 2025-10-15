@@ -54,10 +54,8 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
           selected_plan_features: planData.features
         }));
         
-        toast({
-          title: 'מסלול זוהה אוטומטית',
-          description: `מעבר ל${planData.planName} מ${planData.company} בסקטור ${detectedSector === 'cellular' ? 'סלולר' : detectedSector}`,
-        });
+        // Set to step 1 (Basic Data) since step 0 is pre-filled
+        setCurrentStep(1);
         
         // Clear the stored plan data after loading
         localStorage.removeItem('selectedPlanForSwitch');
@@ -65,23 +63,7 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
         console.error('Error loading selected plan:', error);
       }
     }
-
-    // Load saved draft
-    const savedDraft = localStorage.getItem(STORAGE_KEY);
-    if (savedDraft) {
-      try {
-        const parsed = JSON.parse(savedDraft);
-        setFormData(prev => ({ ...prev, ...parsed.formData }));
-        setCurrentStep(parsed.currentStep || 0);
-        toast({
-          title: 'טיוטה נטענה',
-          description: 'המידע השמור שלך נטען בהצלחה',
-        });
-      } catch (error) {
-        console.error('Error loading draft:', error);
-      }
-    }
-  }, [toast]);
+  }, []);
 
   // Save draft to localStorage
   const saveDraft = () => {
@@ -317,26 +299,26 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
               </div>
             )}
 
-            {/* Enhanced Navigation */}
+            {/* Clean Navigation */}
             {currentStep < steps.length && (
-              <div className="flex justify-between items-center mt-12 pt-8 border-t-2 border-border/50 relative">
+              <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
                 <Button
                   variant="outline"
                   onClick={saveDraft}
-                  className="group bg-card/80 hover:bg-card border-2 hover:border-primary/50 px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  className="border-gray-200 hover:bg-gray-50 px-4 py-2 rounded-lg font-light text-sm"
                 >
-                  <Save className="w-4 h-4 ml-2 group-hover:animate-pulse" />
+                  <Save className="w-4 h-4 ml-2" />
                   שמור טיוטה
                 </Button>
 
-                <div className="flex gap-4">
+                <div className="flex gap-3">
                   {currentStep > 0 && (
                     <Button
                       variant="outline"
                       onClick={prevStep}
-                      className="group bg-card/80 hover:bg-card border-2 hover:border-primary/50 px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                      className="border-gray-200 hover:bg-gray-50 px-6 py-2 rounded-lg font-normal"
                     >
-                      <ChevronLeft className="w-5 h-5 ml-2 group-hover:-translate-x-1 transition-transform" />
+                      <ChevronLeft className="w-4 h-4 ml-2" />
                       הקודם
                     </Button>
                   )}
@@ -347,19 +329,14 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
                       disabled={!canProceed()}
                       size="lg"
                       className={cn(
-                        "group px-10 py-3 rounded-xl font-bold text-lg transition-all duration-300 relative overflow-hidden",
+                        "px-8 py-2 rounded-lg font-normal transition-all duration-300",
                         canProceed() 
-                          ? "bg-gradient-to-l from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-xl shadow-primary/30 hover:scale-105 hover:shadow-2xl" 
-                          : "bg-muted text-muted-foreground cursor-not-allowed"
+                          ? "bg-gray-900 hover:bg-gray-800 text-white shadow-sm" 
+                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
                       )}
                     >
-                      {canProceed() && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
-                      )}
-                      <span className="relative flex items-center">
-                        הבא
-                        <ChevronRight className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
-                      </span>
+                      הבא
+                      <ChevronRight className="w-4 h-4 mr-2" />
                     </Button>
                   ) : (
                     <Button
@@ -367,23 +344,20 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
                       disabled={!canProceed() || isLoading}
                       size="lg"
                       className={cn(
-                        "group px-10 py-3 rounded-xl font-bold text-lg transition-all duration-300 relative overflow-hidden",
+                        "px-8 py-2 rounded-lg font-normal transition-all duration-300",
                         canProceed() && !isLoading
-                          ? "bg-gradient-to-l from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl shadow-green-500/30 hover:scale-105 hover:shadow-2xl" 
-                          : "bg-muted text-muted-foreground cursor-not-allowed"
+                          ? "bg-green-600 hover:bg-green-700 text-white shadow-sm" 
+                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
                       )}
                     >
-                      {canProceed() && !isLoading && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
-                      )}
                       {isLoading ? (
-                        <span className="relative flex items-center">
-                          <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent ml-2"></div>
+                        <span className="flex items-center">
+                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent ml-2"></div>
                           שולח...
                         </span>
                       ) : (
-                        <span className="relative flex items-center">
-                          <CheckCircle className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
+                        <span className="flex items-center">
+                          <CheckCircle className="w-4 h-4 ml-2" />
                           שלח בקשה
                         </span>
                       )}
