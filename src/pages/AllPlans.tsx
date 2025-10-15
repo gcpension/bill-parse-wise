@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
+import annualSavingsSketch from "@/assets/annual-savings-sketch.png";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -321,47 +322,61 @@ const AllPlans = () => {
         {/* Enhanced Savings Banner - Centered */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
           <div className="mb-8 animate-fade-in">
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-              <div className="flex flex-col items-center justify-center gap-6 p-8 text-center">
-                {/* Icon Circle */}
-                <div className="relative flex-shrink-0">
-                  <div className="absolute inset-0 bg-green-100 rounded-full blur-xl opacity-50"></div>
-                  <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-green-50 border border-green-200">
-                    <TrendingDown className="w-8 h-8 text-green-600" strokeWidth={2} />
+            <div className="bg-gradient-to-br from-white via-green-50/30 to-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+              <div className="grid md:grid-cols-2 gap-8 items-center p-8">
+                {/* Sketch Illustration - Left Side */}
+                <div className="relative order-2 md:order-1">
+                  <div className="relative w-full h-48 md:h-64 flex items-center justify-center">
+                    <img 
+                      src={annualSavingsSketch} 
+                      alt="חיסכון שנתי" 
+                      className="w-full h-full object-contain opacity-90 drop-shadow-sm"
+                    />
                   </div>
                 </div>
-                
-                {/* Main Headline */}
-                <div className="space-y-3">
-                  <h2 className="text-2xl font-light text-gray-900">
-                    החיסכון השנתי שלכם
-                  </h2>
-                  
-                  {/* Large Amount */}
-                  <div className="flex items-baseline justify-center gap-2">
-                    <span className="text-6xl font-light text-gray-900 tracking-tight">
-                      ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
-                    </span>
-                    <span className="text-2xl font-light text-gray-500">
-                      בשנה
-                    </span>
+
+                {/* Content - Right Side */}
+                <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1 md:order-2">
+                  {/* Icon Circle */}
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute inset-0 bg-green-100 rounded-full blur-xl opacity-50"></div>
+                    <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-green-50 border border-green-200">
+                      <TrendingDown className="w-8 h-8 text-green-600" strokeWidth={2} />
+                    </div>
                   </div>
                   
-                  {/* Sales Message */}
-                  <p className="text-lg font-light text-gray-600 max-w-2xl mx-auto">
-                    גלו כמה תחסכו עם המסלולים המומלצים - ללא התחייבות
-                  </p>
-                </div>
-                
-                {/* Details */}
-                <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 pt-2">
-                  <div className="flex items-center gap-2 font-light">
-                    <Sparkles className="w-4 h-4 text-green-500" />
-                    <span>₪{stats.maxSavings.toFixed(0)} חיסכון חודשי</span>
+                  {/* Main Headline */}
+                  <div className="space-y-3">
+                    <h2 className="text-2xl font-light text-gray-900">
+                      החיסכון השנתי שלכם
+                    </h2>
+                    
+                    {/* Large Amount */}
+                    <div className="flex items-baseline justify-center md:justify-end gap-2">
+                      <span className="text-6xl font-light text-gray-900 tracking-tight">
+                        ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
+                      </span>
+                      <span className="text-2xl font-light text-gray-500">
+                        בשנה
+                      </span>
+                    </div>
+                    
+                    {/* Sales Message */}
+                    <p className="text-lg font-light text-gray-600 max-w-2xl">
+                      גלו כמה תחסכו עם המסלולים המומלצים - ללא התחייבות
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2 font-light">
-                    <Award className="w-4 h-4 text-green-500" />
-                    <span>{stats.recommendedCount} מסלולים מומלצים</span>
+                  
+                  {/* Details */}
+                  <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 text-sm text-gray-500 pt-2">
+                    <div className="flex items-center gap-2 font-light">
+                      <span>₪{stats.maxSavings.toFixed(0)} חיסכון חודשי</span>
+                      <Sparkles className="w-4 h-4 text-green-500" />
+                    </div>
+                    <div className="flex items-center gap-2 font-light">
+                      <span>{stats.recommendedCount} מסלולים מומלצים</span>
+                      <Award className="w-4 h-4 text-green-500" />
+                    </div>
                   </div>
                 </div>
               </div>
