@@ -33,7 +33,7 @@ import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
-import annualSavingsSketch from "@/assets/annual-savings-sketch-detailed.png";
+import annualSavingsSketch from "@/assets/annual-savings-transparent.png";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
