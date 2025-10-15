@@ -30,6 +30,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
+import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -288,7 +289,7 @@ const AllPlans = () => {
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl py-6">
-        {/* Enhanced Savings Banner & Wizard */}
+        {/* Enhanced Savings Banner */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
           <div className="mb-6 animate-fade-in">
             <div className="bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
@@ -342,30 +343,6 @@ const AllPlans = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-
-                {/* Vertical Divider */}
-                <div className="hidden md:block w-px h-24 bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
-
-                {/* Enhanced Wizard Button */}
-                <div className="flex flex-col items-center gap-3 md:w-64">
-                  <div className="text-center mb-1">
-                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 font-['Rubik']">
-                      המלצה אישית
-                    </div>
-                    <div className="text-sm text-gray-600 font-['Rubik']">
-                      קבלו המלצות מותאמות אישית
-                    </div>
-                  </div>
-                  <Button
-                    onClick={() => navigate('/analyze')}
-                    size="lg"
-                    className="w-full h-14 px-6 rounded-2xl bg-gray-900 hover:bg-gray-800 text-white font-['Rubik'] font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                  >
-                    <Sparkles className="ml-2 h-5 w-5" />
-                    אשף ההמלצות
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                  </Button>
                 </div>
               </div>
             </div>
@@ -738,6 +715,9 @@ const AllPlans = () => {
           </div>
         )}
       </div>
+      
+      {/* Personalized Wizard Float */}
+      <PersonalizedWizardFloat />
     </div>
   );
 };
