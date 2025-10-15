@@ -32,7 +32,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
-import ServiceRequestWizard from "@/components/service-request/ServiceRequestWizard";
+import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -190,6 +190,16 @@ const AllPlans = () => {
   }, [filteredPlans, currentMonthlyBill]);
 
   const handleSelectPlan = (plan: PlanRecord) => {
+    // Store plan data for the form
+    const planData = {
+      planName: plan.plan,
+      company: plan.company,
+      price: plan.monthlyPrice,
+      category: plan.service,
+      switchType: 'switch'
+    };
+    localStorage.setItem('selectedPlanForSwitch', JSON.stringify(planData));
+    
     setSelectedPlanForForm(plan);
     setIsFormOpen(true);
   };
@@ -197,6 +207,7 @@ const AllPlans = () => {
   const handleFormClose = () => {
     setIsFormOpen(false);
     setSelectedPlanForForm(null);
+    localStorage.removeItem('selectedPlanForSwitch');
   };
 
   const getCategoryColor = (category: CategoryType) => {
@@ -725,11 +736,11 @@ const AllPlans = () => {
         )}
       </div>
       
-      {/* Form Dialog - Full Height */}
+      {/* Form Dialog - Compact Single Form */}
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="max-w-5xl h-[85vh] p-0 flex flex-col">
-          <DialogHeader className="p-4 pb-3 border-b flex-shrink-0">
-            <DialogTitle className="text-lg font-light font-heebo">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-xl font-light font-heebo">
               {selectedPlanForForm && (
                 <>השלמת מעבר ל-{selectedPlanForForm.company}</>
               )}
@@ -738,9 +749,7 @@ const AllPlans = () => {
               מלאו את הפרטים הבאים להשלמת המעבר למסלול החדש
             </DialogDescription>
           </DialogHeader>
-          <div className="flex-1 overflow-hidden">
-            <ServiceRequestWizard onComplete={handleFormClose} />
-          </div>
+          <UnifiedServiceForm onComplete={handleFormClose} />
         </DialogContent>
       </Dialog>
 
