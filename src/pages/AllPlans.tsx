@@ -14,13 +14,20 @@ import {
   TrendingDown,
   Grid3x3,
   List,
-  Sparkles
+  Sparkles,
+  TrendingUp,
+  Award,
+  ChevronDown,
+  X,
+  Info,
+  Rocket
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 
@@ -49,9 +56,12 @@ const AllPlans = () => {
   const [sortBy, setSortBy] = useState<SortType>('price-asc');
   const [currentMonthlyBill, setCurrentMonthlyBill] = useState<number>(0);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [isLoading, setIsLoading] = useState(true);
+  const [showTopPlan, setShowTopPlan] = useState(false);
 
   // Load stored analysis data
   useEffect(() => {
+    setIsLoading(true);
     const storedData = localStorage.getItem('analysisData');
     if (storedData) {
       try {
@@ -72,6 +82,16 @@ const AllPlans = () => {
         console.error('Error parsing analysis data:', error);
       }
     }
+    setTimeout(() => setIsLoading(false), 800);
+  }, []);
+
+  // Show/hide floating CTA based on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowTopPlan(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Categories configuration
@@ -142,6 +162,28 @@ const AllPlans = () => {
     return grouped;
   }, [filteredPlans]);
 
+  // Calculate statistics
+  const stats = useMemo(() => {
+    if (filteredPlans.length === 0) return null;
+    
+    const prices = filteredPlans.map(p => p.monthlyPrice || 0);
+    const minPrice = Math.min(...prices);
+    const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+    const maxSavings = currentMonthlyBill > 0 ? currentMonthlyBill - minPrice : 0;
+    const recommendedCount = filteredPlans.filter(p => 
+      currentMonthlyBill > 0 && p.monthlyPrice! < currentMonthlyBill
+    ).length;
+    
+    return { minPrice, avgPrice, maxSavings, recommendedCount };
+  }, [filteredPlans, currentMonthlyBill]);
+
+  // Get top recommended plan
+  const topPlan = useMemo(() => {
+    if (!currentMonthlyBill || filteredPlans.length === 0) return null;
+    const recommended = filteredPlans.filter(p => p.monthlyPrice! < currentMonthlyBill);
+    return recommended.length > 0 ? recommended[0] : null;
+  }, [filteredPlans, currentMonthlyBill]);
+
   const handleSelectPlan = (plan: PlanRecord) => {
     localStorage.setItem('selectedPlanForSwitch', JSON.stringify({
       planName: plan.plan,
@@ -164,9 +206,36 @@ const AllPlans = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-['Rubik']">
+    <div className="min-h-screen bg-gradient-to-b from-purple-50/30 to-gray-50 font-['Rubik']">
+      {/* Floating Top Plan CTA */}
+      {showTopPlan && topPlan && (
+        <div 
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-slide-up"
+          style={{
+            animation: 'slideUp 0.3s ease-out'
+          }}
+        >
+          <Card className="shadow-2xl border-2 border-green-400 bg-gradient-to-r from-green-600 to-green-500 text-white max-w-md">
+            <CardContent className="p-4 flex items-center gap-4">
+              <div className="flex-1">
+                <div className="font-bold text-sm mb-1">💎 המסלול המומלץ ביותר</div>
+                <div className="text-xs opacity-90">{topPlan.company} - ₪{topPlan.monthlyPrice}/חודש</div>
+              </div>
+              <Button
+                onClick={() => handleSelectPlan(topPlan)}
+                size="sm"
+                className="bg-white text-green-600 hover:bg-gray-100 font-bold shadow-lg"
+              >
+                <Rocket className="ml-1 h-4 w-4" />
+                עברו עכשיו
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {/* Header */}
-      <div className="bg-white border-b sticky top-0 z-40 shadow-sm">
+      <div className="bg-white/80 backdrop-blur-md border-b sticky top-0 z-40 shadow-sm">
         <div className="container mx-auto px-4 max-w-7xl py-4">
           <Button
             variant="ghost"
@@ -178,14 +247,22 @@ const AllPlans = () => {
           </Button>
           
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 font-['Rubik']">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent font-['Rubik']">
                 מסלולים זמינים
               </h1>
-              {currentMonthlyBill > 0 && (
-                <p className="text-gray-600 mt-1 font-['Rubik']">
-                  אתם משלמים היום: <span className="font-bold text-purple-600">₪{currentMonthlyBill}</span>
-                </p>
+              {currentMonthlyBill > 0 && stats && (
+                <div className="flex flex-wrap gap-2 text-sm">
+                  <Badge variant="outline" className="bg-white font-['Rubik']">
+                    משלמים היום: <span className="font-bold text-purple-600 mr-1">₪{currentMonthlyBill}</span>
+                  </Badge>
+                  {stats.maxSavings > 0 && (
+                    <Badge className="bg-gradient-to-r from-green-600 to-green-500 text-white font-['Rubik']">
+                      <TrendingDown className="ml-1 h-3 w-3" />
+                      חיסכון עד ₪{stats.maxSavings.toFixed(0)} בחודש
+                    </Badge>
+                  )}
+                </div>
               )}
             </div>
             
@@ -211,8 +288,55 @@ const AllPlans = () => {
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl py-6">
+        {/* Stats Cards */}
+        {!isLoading && stats && stats.recommendedCount > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 animate-fade-in">
+            <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="text-sm opacity-90 mb-1">המחיר הנמוך ביותר</div>
+                    <div className="text-3xl font-bold">₪{stats.minPrice}</div>
+                  </div>
+                  <div className="bg-white/20 p-3 rounded-xl">
+                    <TrendingDown className="h-6 w-6" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="text-sm opacity-90 mb-1">חיסכון מקסימלי</div>
+                    <div className="text-3xl font-bold">₪{stats.maxSavings.toFixed(0)}</div>
+                  </div>
+                  <div className="bg-white/20 p-3 rounded-xl">
+                    <Award className="h-6 w-6" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="text-sm opacity-90 mb-1">מסלולים מומלצים</div>
+                    <div className="text-3xl font-bold">{stats.recommendedCount}</div>
+                  </div>
+                  <div className="bg-white/20 p-3 rounded-xl">
+                    <Sparkles className="h-6 w-6" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Filters Section */}
-        <Card className="mb-6">
+        <Card className="mb-6 shadow-md border-purple-100">
           <CardContent className="p-6">
             {/* Category Pills */}
             <div className="mb-6">
@@ -269,7 +393,34 @@ const AllPlans = () => {
         </Card>
 
         {/* Plans Display */}
-        {filteredPlans.length === 0 ? (
+        {isLoading ? (
+          // Loading Skeleton
+          <div className="space-y-8">
+            {[1, 2].map((i) => (
+              <div key={i} className="space-y-4">
+                <div className="flex items-center gap-4 pb-3 border-b-2 border-purple-200">
+                  <Skeleton className="w-20 h-20 rounded-xl" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-8 w-48" />
+                    <Skeleton className="h-4 w-32" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[1, 2, 3].map((j) => (
+                    <Card key={j}>
+                      <CardContent className="p-6 space-y-4">
+                        <Skeleton className="h-6 w-24" />
+                        <Skeleton className="h-16 w-full" />
+                        <Skeleton className="h-12 w-full" />
+                        <Skeleton className="h-10 w-full" />
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filteredPlans.length === 0 ? (
           <Card>
             <CardContent className="p-12 text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
@@ -290,21 +441,41 @@ const AllPlans = () => {
           </Card>
         ) : viewMode === 'grid' ? (
           // Grid View - Grouped by Company
-          <div className="space-y-8">
-            {Array.from(plansByCompany.entries()).map(([company, plans]) => {
+          <div className="space-y-8 animate-fade-in">
+            {Array.from(plansByCompany.entries()).map(([company, plans], companyIndex) => {
               const logo = companyLogos[company];
+              const recommendedInCompany = plans.filter(p => 
+                currentMonthlyBill > 0 && p.monthlyPrice! < currentMonthlyBill
+              ).length;
+              
               return (
-                <div key={company} className="space-y-4">
+                <div 
+                  key={company} 
+                  className="space-y-4 animate-fade-in"
+                  style={{
+                    animationDelay: `${companyIndex * 100}ms`
+                  }}
+                >
                   {/* Company Header */}
-                  <div className="flex items-center gap-4 pb-3 border-b-2 border-purple-200">
+                  <div className="flex items-center gap-4 pb-3 border-b-2 border-purple-200 group">
                     {logo && (
-                      <div className="w-20 h-20 bg-white rounded-xl shadow-md flex items-center justify-center p-3 border border-gray-100">
+                      <div className="w-20 h-20 bg-white rounded-xl shadow-md flex items-center justify-center p-3 border border-gray-100 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
                         <img src={logo} alt={company} className="max-w-full max-h-full object-contain" />
                       </div>
                     )}
                     <div className="flex-1">
-                      <h2 className="text-2xl font-bold text-gray-900 font-['Rubik']">{company}</h2>
-                      <p className="text-sm text-gray-500 font-['Rubik']">{plans.length} מסלולים זמינים</p>
+                      <h2 className="text-2xl font-bold text-gray-900 font-['Rubik'] group-hover:text-purple-600 transition-colors">
+                        {company}
+                      </h2>
+                      <div className="flex items-center gap-2 mt-1">
+                        <p className="text-sm text-gray-500 font-['Rubik']">{plans.length} מסלולים זמינים</p>
+                        {recommendedInCompany > 0 && (
+                          <Badge className="bg-green-100 text-green-700 text-xs">
+                            <CheckCircle2 className="ml-1 h-3 w-3" />
+                            {recommendedInCompany} מומלצים
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -320,22 +491,31 @@ const AllPlans = () => {
                         <Card 
                           key={`${plan.company}-${plan.plan}-${index}`}
                           className={cn(
-                            "hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group",
-                            isRecommended && "ring-2 ring-green-400 bg-gradient-to-br from-green-50 to-white"
+                            "hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group cursor-pointer relative animate-scale-in",
+                            isRecommended && "ring-2 ring-green-400 bg-gradient-to-br from-green-50 to-white shadow-lg"
                           )}
+                          style={{
+                            animationDelay: `${index * 50}ms`
+                          }}
                         >
                           <CardContent className="p-6">
                             {/* Badges */}
                             <div className="flex flex-wrap gap-2 mb-4">
                               {isRecommended && (
-                                <Badge className="bg-gradient-to-r from-green-600 to-green-500 text-white font-['Rubik']">
+                                <Badge className="bg-gradient-to-r from-green-600 to-green-500 text-white font-['Rubik'] shadow-md animate-pulse">
                                   <Sparkles className="w-3 h-3 ml-1" />
                                   מומלץ במיוחד
                                 </Badge>
                               )}
                               {index === 0 && (
-                                <Badge variant="outline" className="border-purple-300 text-purple-700 font-['Rubik']">
+                                <Badge variant="outline" className="border-yellow-400 bg-yellow-50 text-yellow-700 font-['Rubik'] shadow-sm">
+                                  <Star className="w-3 h-3 ml-1 fill-yellow-400" />
                                   זול ביותר
+                                </Badge>
+                              )}
+                              {index < 3 && (
+                                <Badge variant="outline" className="border-purple-300 text-purple-700 font-['Rubik']">
+                                  Top {index + 1}
                                 </Badge>
                               )}
                             </div>
@@ -347,27 +527,36 @@ const AllPlans = () => {
 
                             {/* Benefits */}
                             {plan.transferBenefits && (
-                              <div className="mb-4 p-3 bg-purple-50 rounded-lg border border-purple-100">
-                                <p className="text-xs text-purple-700 font-['Rubik'] line-clamp-2">
-                                  🎁 {plan.transferBenefits}
-                                </p>
+                              <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200 shadow-sm">
+                                <div className="flex items-start gap-2">
+                                  <span className="text-lg">🎁</span>
+                                  <p className="text-xs text-purple-700 font-['Rubik'] line-clamp-2 flex-1">
+                                    {plan.transferBenefits}
+                                  </p>
+                                </div>
                               </div>
                             )}
 
                             {/* Price Section */}
                             <div className="mb-4 pt-4 border-t border-gray-100">
                               <div className="flex items-baseline justify-center gap-1 mb-1">
-                                <span className="text-4xl font-bold text-purple-600 font-['Rubik']">
+                                <span className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent font-['Rubik']">
                                   {plan.monthlyPrice}
                                 </span>
                                 <span className="text-lg text-gray-500 font-['Rubik']">₪</span>
                               </div>
                               <div className="text-center text-sm text-gray-500 font-['Rubik']">לחודש</div>
                               {isRecommended && (
-                                <div className="text-center mt-2 px-3 py-1 bg-green-100 rounded-full">
-                                  <span className="text-sm font-bold text-green-700 font-['Rubik']">
-                                    💰 חיסכון של ₪{savings.toFixed(0)} בחודש
-                                  </span>
+                                <div className="text-center mt-2 px-3 py-2 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full border border-green-200 shadow-sm">
+                                  <div className="flex items-center justify-center gap-1">
+                                    <TrendingDown className="w-4 h-4 text-green-600" />
+                                    <span className="text-sm font-bold text-green-700 font-['Rubik']">
+                                      חיסכון של ₪{savings.toFixed(0)} בחודש
+                                    </span>
+                                  </div>
+                                  <div className="text-xs text-green-600 mt-1">
+                                    ₪{(savings * 12).toFixed(0)} בשנה!
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -375,11 +564,12 @@ const AllPlans = () => {
                             {/* Action Button */}
                             <Button
                               onClick={() => handleSelectPlan(plan)}
+                              size="lg"
                               className={cn(
-                                "w-full font-['Rubik'] font-semibold shadow-md group-hover:shadow-lg transition-all",
+                                "w-full font-['Rubik'] font-semibold shadow-md group-hover:shadow-xl transition-all duration-300 group-hover:scale-105",
                                 isRecommended 
-                                  ? "bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600" 
-                                  : "bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600"
+                                  ? "bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white" 
+                                  : "bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white"
                               )}
                             >
                               {isRecommended ? (
@@ -388,7 +578,10 @@ const AllPlans = () => {
                                   עברו למסלול המומלץ
                                 </>
                               ) : (
-                                'בחרו מסלול זה'
+                                <>
+                                  <Rocket className="ml-2 h-5 w-5" />
+                                  בחרו מסלול זה
+                                </>
                               )}
                             </Button>
                           </CardContent>
@@ -402,11 +595,17 @@ const AllPlans = () => {
           </div>
         ) : (
           // List View - Compact
-          <div className="space-y-6">
-            {Array.from(plansByCompany.entries()).map(([company, plans]) => {
+          <div className="space-y-6 animate-fade-in">
+            {Array.from(plansByCompany.entries()).map(([company, plans], companyIndex) => {
               const logo = companyLogos[company];
               return (
-                <Card key={company} className="overflow-hidden">
+                <Card 
+                  key={company} 
+                  className="overflow-hidden shadow-md hover:shadow-lg transition-shadow animate-fade-in"
+                  style={{
+                    animationDelay: `${companyIndex * 100}ms`
+                  }}
+                >
                   <CardHeader className="bg-gradient-to-l from-purple-50 to-white border-b">
                     <div className="flex items-center gap-4">
                       {logo && (
