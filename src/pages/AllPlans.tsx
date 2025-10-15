@@ -725,20 +725,20 @@ const AllPlans = () => {
         )}
       </div>
       
-      {/* Form Dialog */}
+      {/* Form Dialog - Full Height */}
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
-          <DialogHeader className="p-6 pb-4 border-b">
-            <DialogTitle className="text-2xl font-light font-heebo">
+        <DialogContent className="max-w-5xl h-[85vh] p-0 flex flex-col">
+          <DialogHeader className="p-4 pb-3 border-b flex-shrink-0">
+            <DialogTitle className="text-lg font-light font-heebo">
               {selectedPlanForForm && (
                 <>השלמת מעבר ל-{selectedPlanForForm.company}</>
               )}
             </DialogTitle>
-            <DialogDescription className="font-heebo font-light">
+            <DialogDescription className="font-heebo font-light text-sm">
               מלאו את הפרטים הבאים להשלמת המעבר למסלול החדש
             </DialogDescription>
           </DialogHeader>
-          <div className="p-6 pt-2">
+          <div className="flex-1 overflow-hidden">
             <ServiceRequestWizard onComplete={handleFormClose} />
           </div>
         </DialogContent>

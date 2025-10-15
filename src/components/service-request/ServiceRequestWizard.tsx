@@ -177,198 +177,163 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
   const progress = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background p-6 relative overflow-hidden" dir="rtl">
-      {/* Animated background patterns */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-      </div>
-      
-      <div className="max-w-4xl mx-auto relative z-10">
-        {/* Progress Header */}
-        <div className="mb-8 animate-fade-in">
-          <div className="bg-card/95 backdrop-blur-xl rounded-3xl shadow-lg border-2 border-border/50 p-8 hover:shadow-2xl transition-all duration-500">
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-3xl font-bold bg-gradient-to-l from-primary to-primary/70 bg-clip-text text-transparent">
-                בקשת שירות
-              </h1>
-              <div className="flex items-center gap-3">
-                <div className="text-lg font-bold text-primary">
-                  {currentStep + 1}
+    <div className="h-full font-heebo flex flex-col">
+      {/* Compact Progress Header - Horizontal */}
+      <div className="flex-shrink-0 bg-white border-b border-gray-200 px-6 py-3">
+        <div className="flex items-center justify-between">
+          {/* Steps - Horizontal Compact */}
+          <div className="flex items-center gap-4">
+            {steps.map((step, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <div className={cn(
+                  "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-normal transition-all duration-300",
+                  index <= currentStep 
+                    ? "bg-gray-900 text-white" 
+                    : "bg-gray-100 text-gray-400"
+                )}>
+                  {index < currentStep ? (
+                    <CheckCircle className="w-4 h-4" />
+                  ) : (
+                    <span>{index + 1}</span>
+                  )}
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  / {steps.length}
-                </div>
+                <span className={cn(
+                  "text-sm whitespace-nowrap transition-all duration-300",
+                  index <= currentStep ? "text-gray-900 font-normal" : "text-gray-400 font-light"
+                )}>
+                  {step.title}
+                </span>
+                {index < steps.length - 1 && (
+                  <ChevronLeft className="w-4 h-4 text-gray-300" />
+                )}
               </div>
+            ))}
+          </div>
+          
+          {/* Progress Indicator */}
+          <div className="flex items-center gap-3">
+            <div className="text-sm text-gray-500">
+              <span className="font-normal text-gray-900">{currentStep + 1}</span>
+              <span className="mx-1">/</span>
+              <span>{steps.length}</span>
             </div>
-            
-            {/* Enhanced Progress Bar */}
-            <div className="relative">
-              <div className="flex justify-between mb-4">
-                {steps.map((step, index) => (
-                  <div key={index} className="flex flex-col items-center group cursor-pointer">
-                    <div className={cn(
-                      "w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-bold transition-all duration-500 relative overflow-hidden",
-                      index <= currentStep 
-                        ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/30 scale-110" 
-                        : "bg-muted text-muted-foreground scale-100",
-                      index === currentStep && "ring-4 ring-primary/20 animate-pulse"
-                    )}>
-                      {index < currentStep ? (
-                        <CheckCircle className="w-6 h-6" />
-                      ) : (
-                        <span>{index + 1}</span>
-                      )}
-                      {index <= currentStep && (
-                        <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 animate-shimmer" />
-                      )}
-                    </div>
-                    <span className={cn(
-                      "text-xs mt-3 text-center max-w-24 leading-tight transition-all duration-300",
-                      index <= currentStep ? "text-foreground font-bold scale-105" : "text-muted-foreground scale-100"
-                    )}>
-                      {step.title}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <div className="h-2 bg-muted rounded-full overflow-hidden shadow-inner">
-                <div 
-                  className="h-full bg-gradient-to-l from-primary via-primary/90 to-primary/70 transition-all duration-700 ease-out relative overflow-hidden"
-                  style={{ width: `${progress}%` }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
-                </div>
-              </div>
+            <div className="w-32 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gray-900 transition-all duration-500 ease-out"
+                style={{ width: `${progress}%` }}
+              />
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Main Content */}
-        <div className="bg-card/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-border/50 overflow-hidden animate-fade-in hover:shadow-3xl transition-all duration-500">
-          <div className="p-8 lg:p-12 relative">
-            {/* Decorative corner elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-primary/10 to-transparent rounded-tr-full" />
-            {currentStep >= steps.length ? (
-              // Completion Step
-              <div className="text-center space-y-8 py-16 relative">
-                <div className="relative inline-block">
-                  <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-green-500/50 animate-scale-in">
-                    <CheckCircle className="w-16 h-16 text-white" strokeWidth={3} />
-                  </div>
-                  <div className="absolute inset-0 bg-green-400 rounded-3xl blur-2xl opacity-40 animate-pulse" />
-                </div>
-                <h2 className="text-4xl font-bold bg-gradient-to-l from-green-600 to-green-500 bg-clip-text text-transparent animate-fade-in">
-                  הבקשה נשלחה בהצלחה!
-                </h2>
-                <p className="text-muted-foreground text-lg max-w-md mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                  תקבל SMS עם קישור לחתימה דיגיטלית ועדכונים על הסטטוס
-                </p>
-                 <div className="pt-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                   <Button 
-                     onClick={() => {
-                       if (onComplete) {
-                         onComplete();
-                       } else {
-                         window.location.href = '/';
-                       }
-                     }} 
-                     size="lg"
-                     className="bg-gradient-to-l from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground px-12 py-6 rounded-2xl shadow-xl shadow-primary/30 text-lg font-bold hover:scale-105 transition-all duration-300"
-                   >
-                     {onComplete ? 'סגור' : 'חזור לדף הבית'}
-                   </Button>
-                 </div>
-              </div>
-            ) : (
-              <div className="space-y-8 relative z-10">
-                <div className="mb-8 animate-fade-in">
-                  <h2 className="text-3xl font-bold bg-gradient-to-l from-foreground to-foreground/80 bg-clip-text text-transparent mb-3">
-                    {steps[currentStep].title}
-                  </h2>
-                  <div className="h-1.5 w-24 bg-gradient-to-l from-primary to-primary/70 rounded-full shadow-lg shadow-primary/30"></div>
-                </div>
-                
-                <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                  <StepComponent
-                    formData={formData}
-                    updateFormData={updateFormData}
-                  />
-                </div>
-              </div>
-            )}
+      {/* Main Content - Scrollable if needed */}
+      <div className="flex-1 overflow-y-auto px-6 py-4">
+        {currentStep >= steps.length ? (
+          // Completion Step
+          <div className="text-center space-y-6 py-8">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-10 h-10 text-green-600" strokeWidth={2} />
+            </div>
+            <h2 className="text-2xl font-light text-gray-900">
+              הבקשה נשלחה בהצלחה!
+            </h2>
+            <p className="text-gray-600 font-light max-w-md mx-auto">
+              תקבל SMS עם קישור לחתימה דיגיטלית ועדכונים על הסטטוס
+            </p>
+            <div className="pt-4">
+              <Button 
+                onClick={() => {
+                  if (onComplete) {
+                    onComplete();
+                  } else {
+                    window.location.href = '/';
+                  }
+                }} 
+                size="lg"
+                className="bg-gray-900 hover:bg-gray-800 text-white px-8 rounded-lg font-normal shadow-sm"
+              >
+                {onComplete ? 'סגור' : 'חזור לדף הבית'}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <StepComponent
+              formData={formData}
+              updateFormData={updateFormData}
+            />
+          </div>
+        )}
+      </div>
 
-            {/* Clean Navigation */}
-            {currentStep < steps.length && (
-              <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+      {/* Footer Navigation - Fixed at bottom */}
+      {currentStep < steps.length && (
+        <div className="flex-shrink-0 bg-white border-t border-gray-200 px-6 py-3">
+          <div className="flex justify-between items-center">
+            <Button
+              variant="outline"
+              onClick={saveDraft}
+              className="border-gray-200 hover:bg-gray-50 px-3 py-1.5 rounded-lg font-light text-xs h-8"
+            >
+              <Save className="w-3.5 h-3.5 ml-1.5" />
+              שמור טיוטה
+            </Button>
+
+            <div className="flex gap-2">
+              {currentStep > 0 && (
                 <Button
                   variant="outline"
-                  onClick={saveDraft}
-                  className="border-gray-200 hover:bg-gray-50 px-4 py-2 rounded-lg font-light text-sm"
+                  onClick={prevStep}
+                  className="border-gray-200 hover:bg-gray-50 px-5 py-1.5 rounded-lg font-normal text-sm h-8"
                 >
-                  <Save className="w-4 h-4 ml-2" />
-                  שמור טיוטה
+                  <ChevronLeft className="w-4 h-4 ml-1.5" />
+                  הקודם
                 </Button>
+              )}
 
-                <div className="flex gap-3">
-                  {currentStep > 0 && (
-                    <Button
-                      variant="outline"
-                      onClick={prevStep}
-                      className="border-gray-200 hover:bg-gray-50 px-6 py-2 rounded-lg font-normal"
-                    >
-                      <ChevronLeft className="w-4 h-4 ml-2" />
-                      הקודם
-                    </Button>
+              {currentStep < steps.length - 1 ? (
+                <Button
+                  onClick={nextStep}
+                  disabled={!canProceed()}
+                  className={cn(
+                    "px-6 py-1.5 rounded-lg font-normal text-sm h-8 transition-all duration-300",
+                    canProceed() 
+                      ? "bg-gray-900 hover:bg-gray-800 text-white shadow-sm" 
+                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
                   )}
-
-                  {currentStep < steps.length - 1 ? (
-                    <Button
-                      onClick={nextStep}
-                      disabled={!canProceed()}
-                      size="lg"
-                      className={cn(
-                        "px-8 py-2 rounded-lg font-normal transition-all duration-300",
-                        canProceed() 
-                          ? "bg-gray-900 hover:bg-gray-800 text-white shadow-sm" 
-                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      )}
-                    >
-                      הבא
-                      <ChevronRight className="w-4 h-4 mr-2" />
-                    </Button>
+                >
+                  הבא
+                  <ChevronRight className="w-4 h-4 mr-1.5" />
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!canProceed() || isLoading}
+                  className={cn(
+                    "px-6 py-1.5 rounded-lg font-normal text-sm h-8 transition-all duration-300",
+                    canProceed() && !isLoading
+                      ? "bg-green-600 hover:bg-green-700 text-white shadow-sm" 
+                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  )}
+                >
+                  {isLoading ? (
+                    <span className="flex items-center">
+                      <div className="animate-spin rounded-full h-3.5 w-3.5 border-2 border-white border-t-transparent ml-1.5"></div>
+                      שולח...
+                    </span>
                   ) : (
-                    <Button
-                      onClick={handleSubmit}
-                      disabled={!canProceed() || isLoading}
-                      size="lg"
-                      className={cn(
-                        "px-8 py-2 rounded-lg font-normal transition-all duration-300",
-                        canProceed() && !isLoading
-                          ? "bg-green-600 hover:bg-green-700 text-white shadow-sm" 
-                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      )}
-                    >
-                      {isLoading ? (
-                        <span className="flex items-center">
-                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent ml-2"></div>
-                          שולח...
-                        </span>
-                      ) : (
-                        <span className="flex items-center">
-                          <CheckCircle className="w-4 h-4 ml-2" />
-                          שלח בקשה
-                        </span>
-                      )}
-                    </Button>
+                    <span className="flex items-center">
+                      <CheckCircle className="w-4 h-4 ml-1.5" />
+                      שלח בקשה
+                    </span>
                   )}
-                </div>
-              </div>
-            )}
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
