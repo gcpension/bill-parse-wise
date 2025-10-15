@@ -33,7 +33,7 @@ import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
-import annualSavingsSketch from "@/assets/annual-savings-sketch.png";
+import annualSavingsSketch from "@/assets/annual-savings-sketch-detailed.png";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -322,21 +322,10 @@ const AllPlans = () => {
         {/* Enhanced Savings Banner - Centered */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
           <div className="mb-8 animate-fade-in">
-            <div className="bg-gradient-to-br from-white via-green-50/30 to-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+            <div className="bg-gradient-to-br from-green-50/40 via-white to-green-50/20 border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
               <div className="grid md:grid-cols-2 gap-8 items-center p-8">
-                {/* Sketch Illustration - Left Side */}
-                <div className="relative order-2 md:order-1">
-                  <div className="relative w-full h-48 md:h-64 flex items-center justify-center">
-                    <img 
-                      src={annualSavingsSketch} 
-                      alt="חיסכון שנתי" 
-                      className="w-full h-full object-contain opacity-90 drop-shadow-sm"
-                    />
-                  </div>
-                </div>
-
                 {/* Content - Right Side */}
-                <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1 md:order-2">
+                <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1">
                   {/* Icon Circle */}
                   <div className="relative flex-shrink-0">
                     <div className="absolute inset-0 bg-green-100 rounded-full blur-xl opacity-50"></div>
@@ -377,6 +366,17 @@ const AllPlans = () => {
                       <span>{stats.recommendedCount} מסלולים מומלצים</span>
                       <Award className="w-4 h-4 text-green-500" />
                     </div>
+                  </div>
+                </div>
+
+                {/* Sketch Illustration - Left Side */}
+                <div className="relative order-2">
+                  <div className="relative w-full h-48 md:h-64 flex items-center justify-center">
+                    <img 
+                      src={annualSavingsSketch} 
+                      alt="חיסכון שנתי" 
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                 </div>
               </div>
