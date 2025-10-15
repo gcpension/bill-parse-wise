@@ -226,49 +226,49 @@ export const CategoryCompletionBanner = ({
                         exit={{ opacity: 0, y: -10 }}
                         className="space-y-4"
                       >
-                        {/* Main Annual Savings Card */}
-                        <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.gradient} p-6 shadow-sm`}>
-                          {/* Decorative Elements */}
-                          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+                        {/* Main Annual Savings Card - New Design */}
+                        <div className="relative overflow-hidden rounded-3xl bg-white border-2 border-gray-100 p-8 shadow-sm">
+                          {/* Gradient Accent Bar */}
+                          <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${category.gradient}`}></div>
                           
-                          <div className="relative space-y-4">
-                            {/* Header */}
-                            <div className="flex items-center justify-center gap-2">
-                              <Calendar className="w-5 h-5 text-white/80" />
-                              <span className="text-sm font-light text-white/90 font-heebo">
-                                חיסכון צפוי לשנה
+                          {/* Decorative Background Elements */}
+                          <div className={`absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br ${category.gradient} opacity-5 rounded-full blur-2xl`}></div>
+                          <div className={`absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-br ${category.gradient} opacity-5 rounded-full blur-2xl`}></div>
+                          
+                          <div className="relative space-y-5">
+                            {/* Header with Icon */}
+                            <div className="flex items-center justify-center gap-3">
+                              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-sm`}>
+                                <Calendar className="w-5 h-5 text-white" />
+                              </div>
+                              <span className="text-base font-light text-gray-600 font-heebo">
+                                החיסכון השנתי שלכם
                               </span>
                             </div>
                             
-                            {/* Main Amount */}
-                            <div className="text-center">
-                              <div className="text-5xl font-light text-white font-heebo mb-2">
-                                ₪<AnimatedSavings amount={savings.yearlyGain} />
+                            {/* Main Amount - Large and Beautiful */}
+                            <div className="text-center space-y-2">
+                              <div className="text-6xl font-light text-gray-900 font-heebo tracking-tight">
+                                <span className="text-4xl align-super">₪</span>
+                                <AnimatedSavings amount={savings.yearlyGain} />
                               </div>
-                              <div className="flex items-center justify-center gap-2 text-white/80">
-                                <TrendingUp className="w-4 h-4" />
-                                <span className="text-sm font-light font-heebo">
-                                  חיסכון של ₪{savings.monthlyGain.toLocaleString()} בחודש
+                              
+                              {/* Monthly Breakdown */}
+                              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${category.lightColor}`}>
+                                <TrendingUp className={`w-4 h-4 ${category.accentColor}`} />
+                                <span className={`text-sm font-normal font-heebo ${category.accentColor}`}>
+                                  ₪{savings.monthlyGain.toLocaleString()} חיסכון חודשי
                                 </span>
                               </div>
                             </div>
 
-                            {/* Additional Projections */}
-                            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/20">
-                              <div className="text-center">
-                                <div className="text-xs font-light text-white/70 mb-1 font-heebo">
-                                  3 חודשים
+                            {/* Long-term Projection */}
+                            <div className="pt-4 border-t border-gray-100">
+                              <div className="text-center space-y-1">
+                                <div className="text-xs font-light text-gray-500 font-heebo">
+                                  תחזית לשנתיים
                                 </div>
-                                <div className="text-lg font-normal text-white font-heebo">
-                                  ₪{savings.quarterlyGain.toLocaleString()}
-                                </div>
-                              </div>
-                              <div className="text-center">
-                                <div className="text-xs font-light text-white/70 mb-1 font-heebo">
-                                  שנתיים
-                                </div>
-                                <div className="text-lg font-normal text-white font-heebo">
+                                <div className="text-2xl font-normal text-gray-700 font-heebo">
                                   ₪{savings.twoYearGain.toLocaleString()}
                                 </div>
                               </div>
@@ -278,15 +278,15 @@ export const CategoryCompletionBanner = ({
 
                         {/* Benefits Grid */}
                         <div className="grid grid-cols-3 gap-2">
-                          <div className="bg-white border border-gray-100 rounded-xl p-3 text-center">
+                          <div className="bg-white border border-gray-100 rounded-xl p-3 text-center hover:border-gray-200 transition-colors">
                             <Sparkles className={`w-5 h-5 mx-auto mb-1 ${category.accentColor}`} />
                             <div className="text-xs font-light text-gray-600 font-heebo">חיסכון אמיתי</div>
                           </div>
-                          <div className="bg-white border border-gray-100 rounded-xl p-3 text-center">
+                          <div className="bg-white border border-gray-100 rounded-xl p-3 text-center hover:border-gray-200 transition-colors">
                             <Zap className={`w-5 h-5 mx-auto mb-1 ${category.accentColor}`} />
                             <div className="text-xs font-light text-gray-600 font-heebo">מיידי</div>
                           </div>
-                          <div className="bg-white border border-gray-100 rounded-xl p-3 text-center">
+                          <div className="bg-white border border-gray-100 rounded-xl p-3 text-center hover:border-gray-200 transition-colors">
                             <Award className={`w-5 h-5 mx-auto mb-1 ${category.accentColor}`} />
                             <div className="text-xs font-light text-gray-600 font-heebo">מומלץ</div>
                           </div>
@@ -297,17 +297,17 @@ export const CategoryCompletionBanner = ({
                           <Button
                             onClick={onProceedToPlans}
                             size="lg"
-                            className="w-full h-11 rounded-xl font-normal font-heebo shadow-sm"
+                            className="w-full h-12 rounded-xl font-normal font-heebo shadow-sm text-base"
                           >
                             התחילו לחסוך עכשיו
-                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            <ArrowLeft className="w-5 h-5 mr-2" />
                           </Button>
                           
                           <Button
                             onClick={onCheckAnother}
                             variant="outline"
                             size="lg"
-                            className="w-full h-10 rounded-xl font-light font-heebo"
+                            className="w-full h-11 rounded-xl font-light font-heebo border-gray-200 hover:bg-gray-50"
                           >
                             בדקו סקטור נוסף
                           </Button>
@@ -319,13 +319,13 @@ export const CategoryCompletionBanner = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="text-center py-6"
+                        className="text-center py-8"
                       >
-                        <div className={`inline-flex w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} items-center justify-center mb-3 shadow-sm`}>
-                          <Wallet className="w-8 h-8 text-white" />
+                        <div className={`inline-flex w-20 h-20 rounded-2xl bg-gradient-to-br ${category.gradient} items-center justify-center mb-4 shadow-sm`}>
+                          <Wallet className="w-10 h-10 text-white" />
                         </div>
                         <p className="text-sm text-gray-500 font-heebo font-light">
-                          בחרו סכום לצפייה בחיסכון
+                          בחרו סכום לצפייה בחיסכון הצפוי
                         </p>
                       </motion.div>
                     )}
