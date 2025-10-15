@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
-import { X, ChevronLeft, Sparkles, Wallet, TrendingUp, ArrowLeft, CheckCircle2, Zap, TrendingDown, Star, Rocket, Calendar, DollarSign, Award } from 'lucide-react';
+import { X, Wallet, ArrowLeft, Calendar, TrendingUp, Sparkles, Award, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 import { cn } from '@/lib/utils';
@@ -19,12 +19,12 @@ interface CategoryCompletionBannerProps {
 
 // Animated Savings Component
 const AnimatedSavings = ({ amount }: { amount: number }) => {
-  const displayAmount = useAnimatedCounter({ end: amount, duration: 1000 });
+  const displayAmount = useAnimatedCounter({ end: amount, duration: 1200 });
   
   return (
-    <div className="text-4xl font-black text-primary-foreground">
-      ₪{Math.round(displayAmount).toLocaleString()}
-    </div>
+    <span className="font-light">
+      {Math.round(displayAmount).toLocaleString()}
+    </span>
   );
 };
 
@@ -140,15 +140,15 @@ export const CategoryCompletionBanner = ({
                   {/* Compact Header */}
                   <div className="mb-5">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-md`}>
+                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-sm`}>
                         <span className="text-2xl">{category.icon}</span>
                       </div>
                       
                       <div className="flex-1">
-                        <h2 className="text-xl font-bold text-gray-900 font-rubik mb-1">
+                        <h2 className="text-xl font-light text-gray-900 font-heebo mb-1">
                           {category.name}
                         </h2>
-                        <p className="text-sm text-gray-600 font-inter">
+                        <p className="text-sm text-gray-500 font-heebo font-light">
                           הזינו את התשלום החודשי שלכם
                         </p>
                       </div>
@@ -161,18 +161,18 @@ export const CategoryCompletionBanner = ({
                       <div className={cn(
                         "px-8 py-3 rounded-2xl transition-all duration-300",
                         hasAmount 
-                          ? `bg-gradient-to-br ${category.gradient} shadow-lg` 
-                          : "bg-gray-100 border border-gray-200"
+                          ? `bg-gradient-to-br ${category.gradient} shadow-sm` 
+                          : "bg-gray-50 border border-gray-200"
                       )}>
                         <div className="flex items-baseline justify-center gap-2">
                           <span className={cn(
-                            "text-3xl font-bold font-inter",
+                            "text-3xl font-light font-heebo",
                             hasAmount ? "text-white" : "text-gray-400"
                           )}>
                             {amount.toFixed(0)}
                           </span>
                           <span className={cn(
-                            "text-xl font-semibold",
+                            "text-xl font-light",
                             hasAmount ? "text-white/90" : "text-gray-400"
                           )}>
                             ₪
@@ -190,9 +190,9 @@ export const CategoryCompletionBanner = ({
                         step={10}
                       />
                       
-                      <div className="flex justify-between text-xs text-gray-500 font-inter">
+                      <div className="flex justify-between text-xs text-gray-500 font-heebo">
                         <span>₪0</span>
-                        <span className="text-gray-700 font-medium">בחרו סכום</span>
+                        <span className="text-gray-600 font-normal">בחרו סכום</span>
                         <span>₪800+</span>
                       </div>
                     </div>
@@ -207,8 +207,8 @@ export const CategoryCompletionBanner = ({
                         size="sm"
                         onClick={() => onAmountChange(preset.toString())}
                         className={cn(
-                          "h-9 rounded-xl font-semibold text-sm font-inter",
-                          amount === preset && "shadow-md"
+                          "h-9 rounded-xl font-normal text-sm font-heebo",
+                          amount === preset && "shadow-sm"
                         )}
                       >
                         ₪{preset}
@@ -216,7 +216,7 @@ export const CategoryCompletionBanner = ({
                     ))}
                   </div>
 
-                  {/* Simple Savings Display */}
+                  {/* Enhanced Savings Display */}
                   <AnimatePresence mode="wait">
                     {hasAmount ? (
                       <motion.div
@@ -226,27 +226,78 @@ export const CategoryCompletionBanner = ({
                         exit={{ opacity: 0, y: -10 }}
                         className="space-y-4"
                       >
-                        {/* Circular Savings Display */}
-                        <div className="flex justify-center">
-                          <div className="relative">
-                            <div className={`w-40 h-40 rounded-full bg-gradient-to-br ${category.gradient} flex flex-col items-center justify-center shadow-lg`}>
-                              <div className="text-xs text-white/80 font-semibold mb-1">חיסכון שנתי</div>
-                              <div className="text-3xl font-black text-white">
-                                ₪{savings.yearlyGain.toLocaleString()}
+                        {/* Main Annual Savings Card */}
+                        <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.gradient} p-6 shadow-sm`}>
+                          {/* Decorative Elements */}
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+                          
+                          <div className="relative space-y-4">
+                            {/* Header */}
+                            <div className="flex items-center justify-center gap-2">
+                              <Calendar className="w-5 h-5 text-white/80" />
+                              <span className="text-sm font-light text-white/90 font-heebo">
+                                חיסכון צפוי לשנה
+                              </span>
+                            </div>
+                            
+                            {/* Main Amount */}
+                            <div className="text-center">
+                              <div className="text-5xl font-light text-white font-heebo mb-2">
+                                ₪<AnimatedSavings amount={savings.yearlyGain} />
                               </div>
-                              <div className="text-xs text-white/70 mt-1">
-                                ₪{savings.monthlyGain}/חודש
+                              <div className="flex items-center justify-center gap-2 text-white/80">
+                                <TrendingUp className="w-4 h-4" />
+                                <span className="text-sm font-light font-heebo">
+                                  חיסכון של ₪{savings.monthlyGain.toLocaleString()} בחודש
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Additional Projections */}
+                            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/20">
+                              <div className="text-center">
+                                <div className="text-xs font-light text-white/70 mb-1 font-heebo">
+                                  3 חודשים
+                                </div>
+                                <div className="text-lg font-normal text-white font-heebo">
+                                  ₪{savings.quarterlyGain.toLocaleString()}
+                                </div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-xs font-light text-white/70 mb-1 font-heebo">
+                                  שנתיים
+                                </div>
+                                <div className="text-lg font-normal text-white font-heebo">
+                                  ₪{savings.twoYearGain.toLocaleString()}
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Simple Action Buttons */}
-                        <div className="space-y-2">
+                        {/* Benefits Grid */}
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="bg-white border border-gray-100 rounded-xl p-3 text-center">
+                            <Sparkles className={`w-5 h-5 mx-auto mb-1 ${category.accentColor}`} />
+                            <div className="text-xs font-light text-gray-600 font-heebo">חיסכון אמיתי</div>
+                          </div>
+                          <div className="bg-white border border-gray-100 rounded-xl p-3 text-center">
+                            <Zap className={`w-5 h-5 mx-auto mb-1 ${category.accentColor}`} />
+                            <div className="text-xs font-light text-gray-600 font-heebo">מיידי</div>
+                          </div>
+                          <div className="bg-white border border-gray-100 rounded-xl p-3 text-center">
+                            <Award className={`w-5 h-5 mx-auto mb-1 ${category.accentColor}`} />
+                            <div className="text-xs font-light text-gray-600 font-heebo">מומלץ</div>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="space-y-2 pt-2">
                           <Button
                             onClick={onProceedToPlans}
                             size="lg"
-                            className="w-full h-11 rounded-xl font-semibold"
+                            className="w-full h-11 rounded-xl font-normal font-heebo shadow-sm"
                           >
                             התחילו לחסוך עכשיו
                             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -256,7 +307,7 @@ export const CategoryCompletionBanner = ({
                             onClick={onCheckAnother}
                             variant="outline"
                             size="lg"
-                            className="w-full h-10 rounded-xl font-medium"
+                            className="w-full h-10 rounded-xl font-light font-heebo"
                           >
                             בדקו סקטור נוסף
                           </Button>
@@ -270,10 +321,10 @@ export const CategoryCompletionBanner = ({
                         exit={{ opacity: 0 }}
                         className="text-center py-6"
                       >
-                        <div className={`inline-flex w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} items-center justify-center mb-3 shadow-md`}>
+                        <div className={`inline-flex w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} items-center justify-center mb-3 shadow-sm`}>
                           <Wallet className="w-8 h-8 text-white" />
                         </div>
-                        <p className="text-sm text-gray-600 font-inter">
+                        <p className="text-sm text-gray-500 font-heebo font-light">
                           בחרו סכום לצפייה בחיסכון
                         </p>
                       </motion.div>
