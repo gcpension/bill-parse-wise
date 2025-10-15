@@ -288,39 +288,85 @@ const AllPlans = () => {
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl py-6">
-        {/* Savings Banner & Wizard */}
+        {/* Enhanced Savings Banner & Wizard */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
           <div className="mb-6 animate-fade-in">
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6">
-                {/* Savings Display */}
-                <div className="flex items-center gap-6 flex-1">
-                  <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 border-2 border-gray-200">
-                    <TrendingDown className="w-10 h-10 text-gray-600" />
+            <div className="bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-8">
+                {/* Enhanced Savings Display */}
+                <div className="flex items-start gap-6 flex-1">
+                  {/* Icon Circle */}
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute inset-0 bg-gray-900/5 rounded-full blur-xl"></div>
+                    <div className="relative flex items-center justify-center w-24 h-24 rounded-full bg-white border-2 border-gray-300 shadow-md">
+                      <TrendingDown className="w-12 h-12 text-gray-700" strokeWidth={2.5} />
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-sm text-gray-600 font-medium mb-1 font-['Rubik']">
-                      חיסכון צפוי בשנה
+                  
+                  {/* Content */}
+                  <div className="flex-1 pt-2">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-bold text-gray-900 font-['Rubik']">
+                        החיסכון השנתי שלכם
+                      </h3>
+                      <Badge variant="outline" className="border-gray-300 text-gray-700 font-semibold">
+                        צפי
+                      </Badge>
                     </div>
-                    <div className="text-4xl font-black text-gray-900 font-['Rubik']">
-                      ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
+                    
+                    {/* Large Amount */}
+                    <div className="mb-3">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-5xl font-black text-gray-900 font-['Rubik'] tracking-tight">
+                          ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
+                        </span>
+                        <span className="text-2xl font-bold text-gray-500 font-['Rubik']">
+                          בשנה
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-xs text-gray-500 mt-1 font-['Rubik']">
-                      ₪{stats.maxSavings.toFixed(0)} לחודש • {stats.recommendedCount} מסלולים מומלצים
+                    
+                    {/* Details */}
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-1.5 font-medium font-['Rubik']">
+                        <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                        <span>₪{stats.maxSavings.toFixed(0)} לחודש</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 font-medium font-['Rubik']">
+                        <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                        <span>{stats.recommendedCount} מסלולים מומלצים</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 font-medium font-['Rubik']">
+                        <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                        <span>מתוך {filteredPlans.length} מסלולים</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Wizard Button */}
-                <Button
-                  onClick={() => navigate('/analyze')}
-                  size="lg"
-                  variant="outline"
-                  className="h-14 px-8 rounded-xl border-2 border-gray-300 hover:border-purple-400 hover:bg-purple-50 transition-all font-['Rubik'] font-semibold shadow-sm hover:shadow-md whitespace-nowrap"
-                >
-                  <Sparkles className="ml-2 h-5 w-5 text-purple-600" />
-                  אשף ההמלצות האישיות
-                </Button>
+                {/* Vertical Divider */}
+                <div className="hidden md:block w-px h-24 bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
+
+                {/* Enhanced Wizard Button */}
+                <div className="flex flex-col items-center gap-3 md:w-64">
+                  <div className="text-center mb-1">
+                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 font-['Rubik']">
+                      המלצה אישית
+                    </div>
+                    <div className="text-sm text-gray-600 font-['Rubik']">
+                      קבלו המלצות מותאמות אישית
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => navigate('/analyze')}
+                    size="lg"
+                    className="w-full h-14 px-6 rounded-2xl bg-gray-900 hover:bg-gray-800 text-white font-['Rubik'] font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  >
+                    <Sparkles className="ml-2 h-5 w-5" />
+                    אשף ההמלצות
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
