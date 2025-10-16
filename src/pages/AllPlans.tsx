@@ -33,7 +33,10 @@ import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
-import annualSavingsSketch from "@/assets/savings-clean.png";
+import { AutoRecommendationsCard } from "@/components/AutoRecommendationsCard";
+import { SmartRecommendationsEngine } from "@/lib/smartRecommendations";
+import { PersonalizedRecommendation } from "@/lib/personalizedRecommendations";
+import { manualPlans } from "@/data/manual-plans";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -64,17 +67,26 @@ const AllPlans = () => {
   const [showTopPlan, setShowTopPlan] = useState(false);
   const [selectedPlanForForm, setSelectedPlanForForm] = useState<PlanRecord | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [autoRecommendations, setAutoRecommendations] = useState<PersonalizedRecommendation[]>([]);
+  const [recommendedPlanIds, setRecommendedPlanIds] = useState<Set<string>>(new Set());
 
-  // Load stored analysis data
+  // Load stored analysis data and generate auto recommendations
   useEffect(() => {
     setIsLoading(true);
     const storedData = localStorage.getItem('analysisData');
+    
+    // Demo mode - if no analysis data, show demo recommendations
+    let shouldShowDemo = false;
+    let demoCategory: CategoryType = 'סלולר';
+    let demoBill = 150;
+    
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
         if (Array.isArray(parsedData) && parsedData.length > 0) {
           const firstCategory = parsedData[0];
-          setCurrentMonthlyBill(parseFloat(firstCategory.amount) || 0);
+          const billAmount = parseFloat(firstCategory.amount) || 0;
+          setCurrentMonthlyBill(billAmount);
           
           const categoryMapping: Record<string, CategoryType> = {
             'cellular': 'סלולר',
@@ -82,12 +94,88 @@ const AllPlans = () => {
             'internet': 'אינטרנט',
             'tv': 'טלוויזיה'
           };
-          setSelectedCategory(categoryMapping[firstCategory.category] || 'all');
+          const mappedCategory = categoryMapping[firstCategory.category] || 'all';
+          setSelectedCategory(mappedCategory);
+
+          // Generate automatic recommendations
+          if (billAmount > 0 && mappedCategory !== 'all') {
+            console.log('🤖 Generating auto recommendations for:', { billAmount, category: mappedCategory });
+            
+            // Map Hebrew category to English for filtering manual plans
+            const categoryForFilter: Record<CategoryType, string> = {
+              'חשמל': 'electricity',
+              'אינטרנט': 'internet',
+              'סלולר': 'mobile',
+              'טלוויזיה': 'tv',
+              'all': 'all'
+            };
+            
+            const englishCategory = categoryForFilter[mappedCategory];
+            const categoryPlans = englishCategory === 'all' 
+              ? manualPlans 
+              : manualPlans.filter(p => p.category === englishCategory);
+
+            if (categoryPlans.length > 0) {
+              const recommendations = SmartRecommendationsEngine.generateAutoRecommendations(
+                categoryPlans,
+                billAmount,
+                mappedCategory,
+                3
+              );
+              
+              setAutoRecommendations(recommendations);
+              
+              // Store recommended plan IDs for marking in grid
+              const planIds = new Set(recommendations.map(r => r.planId));
+              setRecommendedPlanIds(planIds);
+              
+              console.log('✅ Auto recommendations generated:', recommendations.length);
+            }
+          }
+        } else {
+          shouldShowDemo = true;
         }
       } catch (error) {
         console.error('Error parsing analysis data:', error);
+        shouldShowDemo = true;
+      }
+    } else {
+      shouldShowDemo = true;
+    }
+    
+    // Show demo recommendations if no real data
+    if (shouldShowDemo) {
+      console.log('🎭 Showing demo recommendations');
+      setCurrentMonthlyBill(demoBill);
+      setSelectedCategory(demoCategory);
+      
+      const categoryForFilter: Record<CategoryType, string> = {
+        'חשמל': 'electricity',
+        'אינטרנט': 'internet',
+        'סלולר': 'mobile',
+        'טלוויזיה': 'tv',
+        'all': 'all'
+      };
+      
+      const englishCategory = categoryForFilter[demoCategory];
+      const categoryPlans = manualPlans.filter(p => p.category === englishCategory);
+      
+      if (categoryPlans.length > 0) {
+        const recommendations = SmartRecommendationsEngine.generateAutoRecommendations(
+          categoryPlans,
+          demoBill,
+          demoCategory,
+          3
+        );
+        
+        setAutoRecommendations(recommendations);
+        const planIds = new Set(recommendations.map(r => r.planId));
+        setRecommendedPlanIds(planIds);
+        
+        console.log('✅ Demo recommendations generated:', recommendations.length);
       }
     }
+    
     setTimeout(() => setIsLoading(false), 800);
   }, []);
 
@@ -319,69 +407,44 @@ const AllPlans = () => {
           </div>
         </div>
 
-        {/* Enhanced Savings Banner - Centered */}
-        {!isLoading && stats && stats.recommendedCount > 0 && (
+        {/* Auto Recommendations Card */}
+        {!isLoading && autoRecommendations.length > 0 && (
           <div className="mb-8 animate-fade-in">
-            <div className="relative bg-gradient-to-br from-green-50/40 via-white to-green-50/20 border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-              <div className="grid md:grid-cols-2 gap-8 items-center p-8">
-                {/* Content - Right Side */}
-                <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1">
-                  {/* Icon Circle */}
-                  <div className="relative flex-shrink-0">
-                    <div className="absolute inset-0 bg-green-100 rounded-full blur-xl opacity-50"></div>
-                    <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-green-50 border border-green-200">
-                      <TrendingDown className="w-8 h-8 text-green-600" strokeWidth={2} />
-                    </div>
-                  </div>
-                  
-                  {/* Main Headline */}
-                  <div className="space-y-3">
-                    <h2 className="text-2xl font-light text-gray-900">
-                      החיסכון השנתי שלכם
-                    </h2>
-                    
-                    {/* Large Amount */}
-                    <div className="flex items-baseline justify-center md:justify-end gap-2">
-                      <span className="text-6xl font-light text-gray-900 tracking-tight">
-                        ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
-                      </span>
-                      <span className="text-2xl font-light text-gray-500">
-                        בשנה
-                      </span>
-                    </div>
-                    
-                    {/* Sales Message */}
-                    <p className="text-lg font-light text-gray-600 max-w-2xl">
-                      גלו כמה תחסכו עם המסלולים המומלצים - ללא התחייבות
-                    </p>
-                  </div>
-                  
-                  {/* Details */}
-                  <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 text-sm text-gray-500 pt-2">
-                    <div className="flex items-center gap-2 font-light">
-                      <span>₪{stats.maxSavings.toFixed(0)} חיסכון חודשי</span>
-                      <Sparkles className="w-4 h-4 text-green-500" />
-                    </div>
-                    <div className="flex items-center gap-2 font-light">
-                      <span>{stats.recommendedCount} מסלולים מומלצים</span>
-                      <Award className="w-4 h-4 text-green-500" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Sketch Illustration - Left Side */}
-                <div className="relative order-2">
-                  <div className="relative w-full h-48 md:h-64 flex items-center justify-center mix-blend-multiply">
-                    <img 
-                      src={annualSavingsSketch} 
-                      alt="חיסכון שנתי" 
-                      className="w-full h-full object-contain opacity-80"
-                      style={{ mixBlendMode: 'multiply' }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <AutoRecommendationsCard
+              recommendations={autoRecommendations}
+              plans={manualPlans}
+              currentMonthlyBill={currentMonthlyBill}
+              familySize={autoRecommendations[0] ? 
+                SmartRecommendationsEngine.generateAutoProfile(currentMonthlyBill, selectedCategory as string).profile.familySize 
+                : 2
+              }
+              onPlanSelect={(planId) => {
+                console.log('Selected plan:', planId);
+                // Find the plan in manual plans and convert to PlanRecord format
+                const selectedManualPlan = manualPlans.find(p => p.id === planId);
+                if (selectedManualPlan) {
+                  // Convert ManualPlan to PlanRecord for the form
+                  const planRecord: PlanRecord = {
+                    company: selectedManualPlan.company,
+                    service: selectedManualPlan.category === 'electricity' ? 'חשמל' :
+                            selectedManualPlan.category === 'internet' ? 'אינטרנט' :
+                            selectedManualPlan.category === 'mobile' ? 'סלולר' : 'טלוויזיה',
+                    plan: selectedManualPlan.planName,
+                    monthlyPrice: selectedManualPlan.regularPrice,
+                    yearlyPrice: selectedManualPlan.regularPrice * 12,
+                    transferBenefits: selectedManualPlan.features.join(', '),
+                    commitment: null,
+                    sla: null
+                  };
+                  setSelectedPlanForForm(planRecord);
+                  setIsFormOpen(true);
+                }
+              }}
+              onImproveRecommendations={() => {
+                // Could trigger the PersonalizedWizardFloat or navigate to full wizard
+                console.log('Improve recommendations clicked');
+              }}
+            />
           </div>
         )}
 
@@ -537,12 +600,30 @@ const AllPlans = () => {
                         : 0;
                       const isRecommended = savings > 0;
                       
+                      // Check if this plan is in the smart recommendations
+                      // Match by company and plan name
+                      const isSmartRecommended = autoRecommendations.some(rec => {
+                        const recPlan = manualPlans.find(mp => mp.id === rec.planId);
+                        return recPlan && 
+                               recPlan.company === plan.company && 
+                               recPlan.planName === plan.plan;
+                      });
+                      
+                      // Get the recommendation details if it's smart recommended
+                      const smartRecDetail = autoRecommendations.find(rec => {
+                        const recPlan = manualPlans.find(mp => mp.id === rec.planId);
+                        return recPlan && 
+                               recPlan.company === plan.company && 
+                               recPlan.planName === plan.plan;
+                      });
+                      
                       return (
                         <Card 
                           key={`${plan.company}-${plan.plan}-${index}`}
                           className={cn(
                             "hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group cursor-pointer relative animate-scale-in border-gray-200 bg-white",
-                            isRecommended && "ring-1 ring-green-400 bg-gradient-to-br from-green-50/30 to-white"
+                            isSmartRecommended && "ring-2 ring-primary/40 bg-gradient-to-br from-primary/5 to-white",
+                            !isSmartRecommended && isRecommended && "ring-1 ring-green-400 bg-gradient-to-br from-green-50/30 to-white"
                           )}
                           style={{
                             animationDelay: `${index * 50}ms`
@@ -551,7 +632,13 @@ const AllPlans = () => {
                           <CardContent className="p-6">
                             {/* Badges */}
                             <div className="flex flex-wrap gap-2 mb-4">
-                              {isRecommended && (
+                              {isSmartRecommended && (
+                                <Badge className="bg-primary text-primary-foreground font-normal shadow-sm">
+                                  <Star className="w-3 h-3 ml-1 fill-primary-foreground" />
+                                  התאמה חכמה {smartRecDetail && `${Math.round(smartRecDetail.personalizedScore)}%`}
+                                </Badge>
+                              )}
+                              {!isSmartRecommended && isRecommended && (
                                 <Badge className="bg-green-500 text-white font-normal shadow-sm">
                                   <Sparkles className="w-3 h-3 ml-1" />
                                   מומלץ במיוחד
