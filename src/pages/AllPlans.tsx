@@ -69,6 +69,7 @@ const AllPlans = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [autoRecommendations, setAutoRecommendations] = useState<PersonalizedRecommendation[]>([]);
   const [recommendedPlanIds, setRecommendedPlanIds] = useState<Set<string>>(new Set());
+  const [recommendationExplanation, setRecommendationExplanation] = useState<any>(null);
 
   // Load stored analysis data and generate auto recommendations
   useEffect(() => {
@@ -116,7 +117,7 @@ const AllPlans = () => {
               : manualPlans.filter(p => p.category === englishCategory);
 
             if (categoryPlans.length > 0) {
-              const recommendations = SmartRecommendationsEngine.generateAutoRecommendations(
+              const { recommendations, explanation } = SmartRecommendationsEngine.generateAutoRecommendations(
                 categoryPlans,
                 billAmount,
                 mappedCategory,
@@ -124,6 +125,7 @@ const AllPlans = () => {
               );
               
               setAutoRecommendations(recommendations);
+              setRecommendationExplanation(explanation);
               
               // Store recommended plan IDs for marking in grid
               const planIds = new Set(recommendations.map(r => r.planId));
@@ -161,7 +163,7 @@ const AllPlans = () => {
       const categoryPlans = manualPlans.filter(p => p.category === englishCategory);
       
       if (categoryPlans.length > 0) {
-        const recommendations = SmartRecommendationsEngine.generateAutoRecommendations(
+        const { recommendations, explanation } = SmartRecommendationsEngine.generateAutoRecommendations(
           categoryPlans,
           demoBill,
           demoCategory,
@@ -169,6 +171,7 @@ const AllPlans = () => {
         );
         
         setAutoRecommendations(recommendations);
+        setRecommendationExplanation(explanation);
         const planIds = new Set(recommendations.map(r => r.planId));
         setRecommendedPlanIds(planIds);
         

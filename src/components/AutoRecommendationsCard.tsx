@@ -14,13 +14,16 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ManualPlan } from '@/data/manual-plans';
 import { PersonalizedRecommendation } from '@/lib/personalizedRecommendations';
+import { RecommendationExplanation } from '@/lib/smartRecommendations';
 import { cn } from '@/lib/utils';
+import { Progress } from '@/components/ui/progress';
 
 interface AutoRecommendationsCardProps {
   recommendations: PersonalizedRecommendation[];
   plans: ManualPlan[];
   currentMonthlyBill: number;
   familySize: number;
+  explanation?: RecommendationExplanation;
   onPlanSelect?: (planId: string) => void;
   onImproveRecommendations?: () => void;
 }
@@ -30,10 +33,12 @@ export const AutoRecommendationsCard = ({
   plans,
   currentMonthlyBill,
   familySize,
+  explanation,
   onPlanSelect,
   onImproveRecommendations,
 }: AutoRecommendationsCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
   const [showImproveDialog, setShowImproveDialog] = useState(false);
   const [topPriority, setTopPriority] = useState<string>('');
 
@@ -85,10 +90,88 @@ export const AutoRecommendationsCard = ({
                 </h2>
               </div>
               <p className="text-muted-foreground font-assistant text-sm md:text-base">
-                על סמך: משפחה של ~{familySize} נפשות | תקציב ₪{currentMonthlyBill}
+                {explanation?.profileSummary || `על סמך: משפחה של ~${familySize} נפשות | תקציב ₪${currentMonthlyBill}`}
               </p>
+              {explanation && (
+                <Button
+                  variant="link"
+                  size="sm"
+                  onClick={() => setShowExplanation(!showExplanation)}
+                  className="text-primary hover:text-primary/80 p-0 h-auto font-assistant text-xs"
+                >
+                  <Info className="w-3 h-3 ml-1" />
+                  {showExplanation ? 'הסתר הסבר מפורט' : 'הצג על סמך אילו פרמטרים בחרנו'}
+                </Button>
+              )}
             </div>
           </div>
+
+          {/* Explanation Section */}
+          {showExplanation && explanation && (
+            <div className="mb-6 p-5 bg-primary/5 rounded-lg border border-primary/20">
+              <h3 className="text-lg font-bold text-foreground font-heebo mb-4 flex items-center gap-2">
+                <Info className="w-5 h-5 text-primary" />
+                פרמטרים שלקחנו בחשבון
+              </h3>
+              
+              {/* Parameters Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                {explanation.keyParameters.map((param, idx) => (
+                  <div key={idx} className="bg-card rounded-lg p-4 border border-border/50">
+                    <div className="flex items-start gap-3 mb-2">
+                      <span className="text-2xl">{param.icon}</span>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-semibold text-foreground font-heebo text-sm">
+                            {param.name}
+                          </span>
+                          <span className="text-xs text-muted-foreground font-assistant">
+                            משקל {Math.round(param.weight * 100)}%
+                          </span>
+                        </div>
+                        <div className="text-primary font-bold mb-1 font-heebo">
+                          {param.value}
+                        </div>
+                        <Progress value={param.weight * 100} className="h-1.5 mb-2" />
+                        <p className="text-xs text-muted-foreground font-assistant leading-relaxed">
+                          {param.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Match Reasons */}
+              {explanation.matchReasons.length > 0 && (
+                <div className="mt-4 pt-4 border-t border-border/50">
+                  <h4 className="text-sm font-semibold text-foreground font-heebo mb-2">
+                    למה זה המסלול הטוב ביותר עבורך:
+                  </h4>
+                  <div className="space-y-2">
+                    {explanation.matchReasons.map((reason, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-sm text-muted-foreground font-assistant">
+                        <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                        <span>{reason}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Confidence Badge */}
+              <div className="mt-4 pt-4 border-t border-border/50">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground font-assistant">
+                    רמת דיוק ההמלצה:
+                  </span>
+                  <Badge variant="secondary" className="font-heebo">
+                    {Math.round(explanation.confidenceLevel * 100)}% דיוק
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Main Recommendation */}
           <div className="bg-card rounded-xl border border-border/50 p-6 mb-6 hover:border-primary/30 transition-colors">
