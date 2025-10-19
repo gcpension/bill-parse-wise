@@ -79,7 +79,7 @@ const EnhancedPlanCardModern = ({
     <Card 
       className={cn(
         "group relative overflow-hidden transition-all duration-500 hover:shadow-2xl border-border/40",
-        "bg-gradient-to-br from-card/95 to-muted/20 backdrop-blur-sm hover:scale-[1.02]",
+        "bg-gradient-to-br from-card/95 to-muted/20 backdrop-blur-sm",
         isRecommended && "ring-2 ring-green-500/40 shadow-xl shadow-green-500/10",
         showDetails && "scale-105 z-10",
         className
@@ -88,7 +88,7 @@ const EnhancedPlanCardModern = ({
     >
       {/* Animated Background Gradient */}
       <div className={cn(
-        "absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-r",
+        "absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-r pointer-events-none",
         getCategoryColor(plan.service)
       )} />
 
@@ -262,10 +262,13 @@ const EnhancedPlanCardModern = ({
         {/* Action Buttons */}
         <div className="space-y-1.5 pt-1.5">
           <Button 
-            onClick={() => onSelect(plan)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect(plan);
+            }}
             size="sm"
             className={cn(
-              "w-full font-bold text-xs h-8 shadow-md hover:shadow-lg transition-all duration-300",
+              "w-full font-bold text-xs h-8 shadow-md hover:shadow-lg transition-all duration-300 relative z-10",
               isRecommended 
                 ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white" 
                 : "bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground"
@@ -287,8 +290,11 @@ const EnhancedPlanCardModern = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setShowDetails(!showDetails)}
-            className="w-full font-medium text-[10px] h-6 hover:bg-muted/50 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowDetails(!showDetails);
+            }}
+            className="w-full font-medium text-[10px] h-6 hover:bg-muted/50 transition-colors relative z-10"
           >
             {showDetails ? (
               <>
@@ -306,7 +312,7 @@ const EnhancedPlanCardModern = ({
       </CardContent>
 
       {/* Bottom Glow Effect */}
-      <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
     </Card>
   );
 };
