@@ -236,7 +236,7 @@ const AllPlans = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50/50 to-white font-heebo antialiased">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50/50 to-white font-assistant antialiased">
       {/* Floating Top Plan CTA */}
       {showTopPlan && topPlan && (
         <div 

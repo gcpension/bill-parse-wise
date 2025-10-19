@@ -142,132 +142,131 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-lg p-0 overflow-hidden">
-        {/* Header */}
-        <div className="relative bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-5">
+      <DialogContent className="max-w-2xl p-0 overflow-hidden font-heebo">
+        {/* Clean Header */}
+        <div className="relative bg-white border-b p-6">
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="absolute left-3 top-3 text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 h-8 w-8"
+            className="absolute left-4 top-4 text-gray-400 hover:text-gray-600"
           >
             <X className="h-4 w-4" />
           </Button>
           
-          <div className="space-y-2 pr-8">
-            <Badge variant="secondary" className="bg-white/20 text-white border-0 text-xs">
+          <div className="space-y-1 pr-10">
+            <Badge variant="outline" className="text-xs font-normal mb-2">
               {plan.service}
             </Badge>
-            <h2 className="text-xl font-bold leading-tight">{plan.plan}</h2>
-            <p className="text-primary-foreground/90 text-sm">{plan.company}</p>
+            <h2 className="text-2xl font-light text-gray-900">{plan.plan}</h2>
+            <p className="text-sm text-gray-500 font-light">{plan.company}</p>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-5 space-y-4">
-          {/* Pricing Section */}
-          <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg p-4 border border-primary/20">
-            <div className="flex items-start justify-between mb-3">
+        <div className="p-6 space-y-6 bg-gray-50">
+          {/* Pricing Section - Clean & Professional */}
+          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
+            <div className="flex items-center justify-between">
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <DollarSign className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">מחיר חודשי</span>
-                </div>
-                <div className="text-3xl font-bold text-primary">₪{currentPrice}</div>
+                <div className="text-sm text-gray-500 font-light mb-1">מחיר חודשי</div>
+                <div className="text-4xl font-light text-gray-900">₪{currentPrice}</div>
               </div>
               {plan.yearlyPrice && (
                 <div className="text-left">
-                  <div className="text-xs text-muted-foreground mb-1">מחיר שנתי</div>
-                  <div className="text-lg font-bold">₪{plan.yearlyPrice}</div>
+                  <div className="text-xs text-gray-500 font-light mb-1">מחיר שנתי</div>
+                  <div className="text-xl font-light text-gray-700">₪{plan.yearlyPrice}</div>
                 </div>
               )}
             </div>
             
             {savingsVsAvg > 0 && (
-              <div className="flex items-center gap-2 pt-3 border-t border-primary/10">
-                <TrendingDown className="h-4 w-4 text-green-600" />
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-green-700 dark:text-green-400">
-                    חיסכון של ₪{Math.round(savingsVsAvg)} לחודש
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    לעומת ממוצע השוק (₪{Math.round(avgPrice)})
+              <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <TrendingDown className="h-4 w-4 text-green-600" />
+                  <div>
+                    <div className="text-sm font-normal text-gray-900">
+                      חיסכון של ₪{Math.round(savingsVsAvg)} לחודש
+                    </div>
+                    <div className="text-xs text-gray-500 font-light">
+                      לעומת ממוצע השוק (₪{Math.round(avgPrice)})
+                    </div>
                   </div>
                 </div>
-                <Badge variant="secondary" className="bg-green-500/20 text-green-700 dark:text-green-300">
+                <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 font-normal">
                   -{savingsPercent}%
                 </Badge>
               </div>
             )}
           </div>
 
-          {/* Technical Specifications */}
+          {/* Technical Specifications - Clean Grid */}
           {technicalSpecs.length > 0 && (
-            <div className="space-y-2">
-              <h3 className="text-sm font-bold flex items-center gap-2">
-                <Zap className="h-4 w-4 text-primary" />
-                מה כלול במסלול?
+            <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
+              <h3 className="text-sm font-normal text-gray-900 mb-4 flex items-center gap-2">
+                <Zap className="h-4 w-4 text-gray-400" />
+                מה כלול במסלול
               </h3>
               
-              <div className="grid gap-2">
+              <div className="grid gap-3">
                 {technicalSpecs.map((spec, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-l from-primary/5 to-transparent rounded-lg border border-primary/10">
-                    <span className="text-sm font-medium">{spec.label}</span>
-                    <span className="font-bold text-sm text-primary">{spec.value}</span>
+                  <div key={index} className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded border border-gray-100">
+                    <span className="text-sm text-gray-600 font-light">{spec.label}</span>
+                    <span className="text-sm font-normal text-gray-900">{spec.value}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Contract & Service Details */}
-          <div className="space-y-2">
-            <h3 className="text-sm font-bold flex items-center gap-2">
-              <FileText className="h-4 w-4 text-primary" />
+          {/* Service Details - Minimal */}
+          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
+            <h3 className="text-sm font-normal text-gray-900 mb-4 flex items-center gap-2">
+              <FileText className="h-4 w-4 text-gray-400" />
               פרטי שירות
             </h3>
             
-            <div className="grid gap-2">
+            <div className="grid gap-3">
               {plan.commitment && (
-                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border">
+                <div className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded border border-gray-100">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">זמן התחייבות</span>
+                    <Calendar className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm text-gray-600 font-light">זמן התחייבות</span>
                   </div>
-                  <span className="font-bold text-sm">{plan.commitment}</span>
+                  <span className="text-sm font-normal text-gray-900">{plan.commitment}</span>
                 </div>
               )}
               
               {plan.sla && (
-                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border">
+                <div className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded border border-gray-100">
                   <div className="flex items-center gap-2">
-                    <Award className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">ציון שירות (SLA)</span>
+                    <Award className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm text-gray-600 font-light">ציון שירות (SLA)</span>
                   </div>
-                  <span className="font-bold text-sm">{plan.sla}</span>
+                  <span className="text-sm font-normal text-gray-900">{plan.sla}</span>
                 </div>
               )}
               
-              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border">
+              <div className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded border border-gray-100">
                 <div className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">מיקום בשוק</span>
+                  <DollarSign className="h-4 w-4 text-gray-400" />
+                  <span className="text-sm text-gray-600 font-light">מיקום בשוק</span>
                 </div>
-                <Badge variant="outline" className="font-bold">
+                <Badge variant="outline" className="font-normal text-gray-700">
                   {valueMetrics.marketPosition}
                 </Badge>
               </div>
             </div>
           </div>
 
-          {/* Transfer Benefits */}
+          {/* Transfer Benefits - Subtle */}
           {plan.transferBenefits && (
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
-              <div className="flex items-start gap-2 mb-2">
-                <span className="text-lg">🎁</span>
+            <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+              <div className="flex items-start gap-3">
+                <div className="text-lg">🎁</div>
                 <div>
-                  <h3 className="font-bold text-sm text-amber-800 dark:text-amber-200 mb-1">הטבת מעבר</h3>
-                  <p className="text-sm text-amber-900/80 dark:text-amber-100/80 leading-relaxed">
+                  <h3 className="text-sm font-normal text-gray-900 mb-1">הטבת מעבר</h3>
+                  <p className="text-sm text-gray-700 font-light leading-relaxed">
                     {plan.transferBenefits}
                   </p>
                 </div>
@@ -275,29 +274,29 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
             </div>
           )}
 
-          {/* Annual Savings Highlight */}
+          {/* Annual Savings - Minimal */}
           {savingsVsAvg > 0 && (
-            <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg p-4 border border-green-500/20">
+            <div className="bg-green-50 rounded-lg p-5 border border-green-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">חיסכון שנתי משוער</div>
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                    ₪{Math.round(savingsVsAvg * 12)}
+                  <div className="text-xs text-gray-600 font-light mb-1">חיסכון שנתי משוער</div>
+                  <div className="text-3xl font-light text-gray-900">
+                    ₪{Math.round(savingsVsAvg * 12).toLocaleString()}
                   </div>
                 </div>
-                <CheckCircle2 className="h-10 w-10 text-green-500" />
+                <CheckCircle2 className="h-8 w-8 text-green-600" />
               </div>
             </div>
           )}
 
-          {/* CTA Button */}
+          {/* CTA Button - Clean */}
           <Button
             onClick={() => {
               onSelectForSwitch(plan);
               onClose();
             }}
             size="lg"
-            className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg font-bold"
+            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-normal shadow-sm"
           >
             עברו למסלול
             <ArrowRight className="mr-2 h-5 w-5" />
