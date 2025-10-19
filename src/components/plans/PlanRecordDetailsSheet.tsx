@@ -1,16 +1,15 @@
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "@/components/ui/card";
 import { PlanRecord } from "@/hooks/useAllPlans";
 import { 
-  CheckCircle, Package, ArrowRight, Phone, 
-  MessageSquare, Zap, X, TrendingDown, Target, CheckCircle2, Shield,
-  Award, Sparkles, Calendar, Users, Clock, Info
+  CheckCircle2, ArrowRight, TrendingDown, Target, Shield,
+  Award, Sparkles, Calendar, Users, Clock, Info, Star, X
 } from "lucide-react";
 import { useAllPlans } from "@/hooks/useAllPlans";
+import { cn } from "@/lib/utils";
 
 interface PlanRecordDetailsSheetProps {
   plan: PlanRecord | null;
@@ -86,221 +85,201 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
   const matchReasons = getMatchReason();
 
   return (
-    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent 
-        side="left" 
-        className="w-full sm:max-w-4xl overflow-y-auto p-0 bg-background"
-      >
-        {/* Header */}
-        <div className="sticky top-0 z-10 bg-gradient-to-b from-background to-background/95 backdrop-blur-sm border-b">
-          <div className="p-6 pb-4">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="outline" className="font-normal">{plan.service}</Badge>
-                  {plan.transferBenefits && (
-                    <Badge className="bg-amber-500/10 text-amber-700 border-amber-200">
-                      🎁 הטבת מעבר
-                    </Badge>
-                  )}
-                </div>
-                <h2 className="text-3xl font-bold mb-1">{plan.plan}</h2>
-                <p className="text-lg text-muted-foreground">{plan.company}</p>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                className="shrink-0"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-            
-            {/* Key Metrics */}
-            <div className="flex items-center gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Target className="h-4 w-4 text-primary" />
-                </div>
-                <div>
-                  <div className="font-bold text-foreground">₪{currentPrice}</div>
-                  <div className="text-xs text-muted-foreground">לחודש</div>
-                </div>
-              </div>
-              
-              {savingsVsAvg > 0 && (
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
-                    <TrendingDown className="h-4 w-4 text-green-600" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-green-600">₪{Math.round(savingsVsAvg)}</div>
-                    <div className="text-xs text-muted-foreground">חיסכון חודשי</div>
-                  </div>
-                </div>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-2xl p-0 overflow-hidden border-2">
+        {/* Gradient Header */}
+        <div className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground p-6 pb-20">
+          <div className="absolute inset-0 bg-grid-white/10" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="absolute left-4 top-4 text-primary-foreground hover:bg-primary-foreground/10"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+          
+          <div className="relative space-y-3">
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="bg-white/20 text-white border-0 backdrop-blur-sm">
+                {plan.service}
+              </Badge>
+              {plan.transferBenefits && (
+                <Badge className="bg-amber-500 text-white border-0">
+                  🎁 הטבה
+                </Badge>
               )}
-              
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                  <Award className="h-4 w-4 text-blue-600" />
-                </div>
-                <div>
-                  <div className="font-bold text-foreground">{overallScore}/100</div>
-                  <div className="text-xs text-muted-foreground">ציון כולל</div>
-                </div>
-              </div>
             </div>
+            <h2 className="text-2xl font-bold">{plan.plan}</h2>
+            <p className="text-primary-foreground/90 text-lg">{plan.company}</p>
           </div>
         </div>
 
+        {/* Price Card - Overlapping */}
+        <div className="relative -mt-16 px-6">
+          <Card className="border-2 shadow-xl bg-card">
+            <CardContent className="p-6">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="flex items-center justify-center gap-1 mb-1">
+                    <Target className="h-4 w-4 text-primary" />
+                    <span className="text-xs text-muted-foreground">מחיר</span>
+                  </div>
+                  <div className="text-2xl font-bold text-primary">₪{currentPrice}</div>
+                  <div className="text-xs text-muted-foreground">לחודש</div>
+                </div>
+                
+                {savingsVsAvg > 0 && (
+                  <div>
+                    <div className="flex items-center justify-center gap-1 mb-1">
+                      <TrendingDown className="h-4 w-4 text-green-600" />
+                      <span className="text-xs text-muted-foreground">חיסכון</span>
+                    </div>
+                    <div className="text-2xl font-bold text-green-600">₪{Math.round(savingsVsAvg)}</div>
+                    <div className="text-xs text-muted-foreground">בחודש</div>
+                  </div>
+                )}
+                
+                <div>
+                  <div className="flex items-center justify-center gap-1 mb-1">
+                    <Award className="h-4 w-4 text-blue-600" />
+                    <span className="text-xs text-muted-foreground">ציון</span>
+                  </div>
+                  <div className="text-2xl font-bold text-blue-600">{overallScore}</div>
+                  <div className="text-xs text-muted-foreground">מתוך 100</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="px-6 pb-6 space-y-4">
           {/* Why This Plan */}
-          <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Sparkles className="h-5 w-5 text-primary" />
-                למה המסלול הזה מתאים לכם?
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
+          {matchReasons.length > 0 && (
+            <div className="bg-gradient-to-br from-primary/5 via-primary/3 to-transparent rounded-xl p-4 border border-primary/20">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                </div>
+                <h3 className="font-bold">למה המסלול הזה?</h3>
+              </div>
+              <div className="space-y-2">
                 {matchReasons.map((reason, index) => (
-                  <div key={index} className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                  <div key={index} className="flex gap-2 items-start">
+                    <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <div className="font-medium">{reason.title}</div>
-                      <div className="text-sm text-muted-foreground">{reason.description}</div>
+                      <div className="font-medium text-sm">{reason.title}</div>
+                      <div className="text-xs text-muted-foreground">{reason.description}</div>
                     </div>
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          )}
 
           {/* Pricing Analysis */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <TrendingDown className="h-5 w-5" />
-                ניתוח מחיר
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">מחיר חודשי</span>
-                  <span className="text-2xl font-bold">₪{currentPrice}</span>
+          {savingsVsAvg > 0 && (
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl p-4 border border-green-200 dark:border-green-800">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
+                    <Sparkles className="h-4 w-4 text-green-600" />
+                  </div>
+                  <h3 className="font-bold text-green-800 dark:text-green-200">חיסכון שנתי</h3>
                 </div>
-                <Separator />
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">ממוצע שוק</span>
-                  <span className="font-medium">₪{Math.round(avgPrice)}</span>
-                </div>
-                {savingsVsAvg > 0 && (
-                  <>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-green-600">חיסכון לעומת ממוצע</span>
-                      <span className="font-bold text-green-600">₪{Math.round(savingsVsAvg)}</span>
-                    </div>
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-2">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Sparkles className="h-4 w-4 text-green-600" />
-                        <span className="font-medium text-green-800">חיסכון שנתי משוער</span>
-                      </div>
-                      <div className="text-2xl font-bold text-green-700">
-                        ₪{Math.round(savingsVsAvg * 12)}
-                      </div>
-                    </div>
-                  </>
-                )}
+                <Badge variant="secondary" className="bg-green-500/20 text-green-700 dark:text-green-300 border-0">
+                  -{savingsPercent}%
+                </Badge>
               </div>
-            </CardContent>
-          </Card>
+              <div className="text-3xl font-bold text-green-700 dark:text-green-300 mb-1">
+                ₪{Math.round(savingsVsAvg * 12)}
+              </div>
+              <div className="text-sm text-green-700/70 dark:text-green-300/70">
+                לעומת ממוצע השוק (₪{Math.round(avgPrice)})
+              </div>
+            </div>
+          )}
 
           {/* Transfer Benefits */}
           {plan.transferBenefits && (
-            <Card className="border-amber-200 bg-gradient-to-br from-amber-50/50 to-transparent">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  🎁 הטבת מעבר
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm leading-relaxed">{plan.transferBenefits}</p>
-              </CardContent>
-            </Card>
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-xl p-4 border border-amber-200 dark:border-amber-800">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">🎁</span>
+                <h3 className="font-bold text-amber-800 dark:text-amber-200">הטבת מעבר</h3>
+              </div>
+              <p className="text-sm text-amber-900/80 dark:text-amber-100/80 leading-relaxed">
+                {plan.transferBenefits}
+              </p>
+            </div>
           )}
 
-          {/* Key Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Info className="h-5 w-5" />
-                פרטים נוספים
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="h-4 w-4" />
-                    <span>תקופת התחייבות</span>
-                  </div>
-                  <p className="font-medium">12 חודשים</p>
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span>זמן מעבר</span>
-                  </div>
-                  <p className="font-medium">3-5 ימי עסקים</p>
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Users className="h-4 w-4" />
-                    <span>מתאים ל</span>
-                  </div>
-                  <p className="font-medium">{getTargetAudience()}</p>
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Shield className="h-4 w-4" />
-                    <span>מיקום בשוק</span>
-                  </div>
-                  <p className="font-medium">{valueMetrics.marketPosition}</p>
-                </div>
+          {/* Key Details Grid */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-muted/50 rounded-lg p-3 border">
+              <div className="flex items-center gap-2 mb-1">
+                <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">התחייבות</span>
               </div>
-            </CardContent>
-          </Card>
+              <p className="font-bold text-sm">12 חודשים</p>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-3 border">
+              <div className="flex items-center gap-2 mb-1">
+                <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">זמן מעבר</span>
+              </div>
+              <p className="font-bold text-sm">3-5 ימים</p>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-3 border">
+              <div className="flex items-center gap-2 mb-1">
+                <Users className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">מתאים ל</span>
+              </div>
+              <p className="font-bold text-sm">{getTargetAudience()}</p>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-3 border">
+              <div className="flex items-center gap-2 mb-1">
+                <Shield className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">מיקום</span>
+              </div>
+              <p className="font-bold text-sm">{valueMetrics.marketPosition}</p>
+            </div>
+          </div>
+          
+          {/* Trust Indicators */}
+          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border">
+            <div className="flex items-center gap-2">
+              <Shield className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium">מוגן ע״י רשות התחרות</span>
+            </div>
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star 
+                  key={i} 
+                  className={cn(
+                    "h-3.5 w-3.5",
+                    i < 4 ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground/30"
+                  )} 
+                />
+              ))}
+            </div>
+          </div>
 
-          {/* CTA Card */}
-          <Card className="border-primary bg-gradient-to-br from-primary/5 to-primary/10 sticky bottom-6">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <h3 className="font-bold text-lg mb-1">מוכנים לעבור למסלול הזה?</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {savingsVsAvg > 0 && `תחסכו ₪${Math.round(savingsVsAvg * 12)} בשנה`}
-                  </p>
-                </div>
-                <Button
-                  onClick={() => {
-                    onSelectForSwitch(plan);
-                    onClose();
-                  }}
-                  size="lg"
-                  className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg"
-                >
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                  עברו עכשיו
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          {/* CTA Button */}
+          <Button
+            onClick={() => {
+              onSelectForSwitch(plan);
+              onClose();
+            }}
+            size="lg"
+            className="w-full bg-gradient-to-r from-primary via-primary to-primary/90 hover:from-primary/90 hover:via-primary/95 hover:to-primary shadow-lg text-base font-bold h-12"
+          >
+            <ArrowRight className="ml-2 h-5 w-5" />
+            עברו למסלול - 
+            {savingsVsAvg > 0 && ` חסכו ₪${Math.round(savingsVsAvg * 12)} בשנה`}
+          </Button>
         </div>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }
