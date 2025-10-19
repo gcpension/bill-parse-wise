@@ -34,6 +34,7 @@ import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
 import annualSavingsSketch from "@/assets/savings-clean.png";
+import EnhancedPlanCardModern from "@/components/plans/EnhancedPlanCardModern";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -530,112 +531,28 @@ const AllPlans = () => {
                   </div>
 
                   {/* Plans Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {plans.map((plan, index) => {
                       const savings = currentMonthlyBill > 0 && plan.monthlyPrice! < currentMonthlyBill 
                         ? currentMonthlyBill - plan.monthlyPrice! 
                         : 0;
                       const isRecommended = savings > 0;
+                      const logo = companyLogos[plan.company];
                       
                       return (
-                        <Card 
+                        <EnhancedPlanCardModern
                           key={`${plan.company}-${plan.plan}-${index}`}
-                          className={cn(
-                            "hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group cursor-pointer relative animate-scale-in border-gray-200 bg-white",
-                            isRecommended && "ring-1 ring-green-400 bg-gradient-to-br from-green-50/30 to-white"
-                          )}
+                          plan={plan}
+                          isRecommended={isRecommended}
+                          savings={savings}
+                          onSelect={handleSelectPlan}
+                          rank={index === 0 ? 1 : index === 1 ? 2 : index === 2 ? 3 : undefined}
+                          companyLogo={logo}
+                          className="animate-scale-in"
                           style={{
                             animationDelay: `${index * 50}ms`
-                          }}
-                        >
-                          <CardContent className="p-6">
-                            {/* Badges */}
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {isRecommended && (
-                                <Badge className="bg-green-500 text-white font-normal shadow-sm">
-                                  <Sparkles className="w-3 h-3 ml-1" />
-                                  מומלץ במיוחד
-                                </Badge>
-                              )}
-                              {index === 0 && (
-                                <Badge variant="outline" className="border-yellow-400 bg-yellow-50 text-yellow-700 font-normal">
-                                  <Star className="w-3 h-3 ml-1 fill-yellow-400" />
-                                  זול ביותר
-                                </Badge>
-                              )}
-                              {index < 3 && (
-                                <Badge variant="outline" className="border-gray-300 text-gray-600 font-normal">
-                                  Top {index + 1}
-                                </Badge>
-                              )}
-                            </div>
-
-                            {/* Plan Name */}
-                            <h3 className="text-lg font-normal text-gray-900 mb-3 line-clamp-2 min-h-[56px]">
-                              {plan.plan}
-                            </h3>
-
-                            {/* Benefits */}
-                            {plan.transferBenefits && (
-                              <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                                <div className="flex items-start gap-2">
-                                  <span className="text-base">🎁</span>
-                                  <p className="text-xs text-gray-600 font-light line-clamp-2 flex-1">
-                                    {plan.transferBenefits}
-                                  </p>
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Price Section */}
-                            <div className="mb-4 pt-4 border-t border-gray-100">
-                              <div className="flex items-baseline justify-center gap-1 mb-1">
-                                <span className="text-4xl font-light text-gray-900 tracking-tight">
-                                  {plan.monthlyPrice}
-                                </span>
-                                <span className="text-base text-gray-500 font-light">₪</span>
-                              </div>
-                              <div className="text-center text-sm text-gray-500 font-light">לחודש</div>
-                              {isRecommended && (
-                                <div className="text-center mt-3 px-3 py-2 bg-green-50 rounded-lg border border-green-200">
-                                  <div className="flex items-center justify-center gap-1">
-                                    <TrendingDown className="w-4 h-4 text-green-600" />
-                                    <span className="text-sm font-medium text-green-700">
-                                      חיסכון של ₪{savings.toFixed(0)} בחודש
-                                    </span>
-                                  </div>
-                                  <div className="text-xs text-green-600 mt-1 font-light">
-                                    ₪{(savings * 12).toFixed(0)} בשנה!
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Action Button */}
-                            <Button
-                              onClick={() => handleSelectPlan(plan)}
-                              size="lg"
-                              className={cn(
-                                "w-full font-normal shadow-sm hover:shadow transition-all duration-300",
-                                isRecommended 
-                                  ? "bg-green-500 hover:bg-green-600 text-white" 
-                                  : "bg-gray-900 hover:bg-gray-800 text-white"
-                              )}
-                            >
-                              {isRecommended ? (
-                                <>
-                                  <CheckCircle2 className="ml-2 h-4 w-4" />
-                                  עברו למסלול המומלץ
-                                </>
-                              ) : (
-                                <>
-                                  <Rocket className="ml-2 h-4 w-4" />
-                                  בחרו מסלול זה
-                                </>
-                              )}
-                            </Button>
-                          </CardContent>
-                        </Card>
+                          } as React.CSSProperties}
+                        />
                       );
                     })}
                   </div>
