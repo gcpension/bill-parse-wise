@@ -167,25 +167,6 @@ const InteractivePlanCard = ({
               </div>
             </div>
 
-            {/* Rating & Reviews */}
-            <div className="flex items-center gap-4 mb-3">
-              <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star 
-                    key={i} 
-                    className={cn(
-                      "w-4 h-4",
-                      i < 4 ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-                    )} 
-                  />
-                ))}
-                <span className="text-sm font-medium text-foreground ml-1">4.2</span>
-              </div>
-              <div className="flex items-center gap-1 text-muted-foreground">
-                <Users className="w-4 h-4" />
-                <span className="text-sm">{Math.floor(Math.random() * 200) + 50} ביקורות</span>
-              </div>
-            </div>
           </div>
         </div>
       </CardHeader>

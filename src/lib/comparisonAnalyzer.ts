@@ -306,28 +306,12 @@ export class ComparisonAnalyzer {
   }
 
   /**
-   * Calculate reliability score based on provider reputation and plan stability
+   * Calculate reliability score - REMOVED: No official data available
+   * Returns 0 as we only show real data from official sources
    */
   private static calculateReliabilityScore(plan: ManualPlan): number {
-    // Provider reputation scores (simplified)
-    const providerScores: Record<string, number> = {
-      'בזק': 90,
-      'פרטנר': 85,
-      'סלקום': 88,
-      'הוט': 82,
-      'רמי לוי': 75,
-      'פלאפון': 85,
-      'גולן טלקום': 70,
-      'אקטיב': 72,
-      'אלקטרה פאוור': 80,
-      'אמישראגז חשמל': 85,
-      'פזגז': 82,
-      'הוט אנרגי': 80,
-      'סלקום אנרגי': 85,
-      'פרטנר פאוור': 83
-    };
-    
-    return providerScores[plan.company] || 75;
+    // No official reliability data available - returning 0
+    return 0;
   }
 
   /**

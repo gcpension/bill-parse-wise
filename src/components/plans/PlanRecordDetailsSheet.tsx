@@ -164,9 +164,9 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
         </div>
 
         {/* Compact Content */}
-        <div className="p-4 space-y-4 bg-gray-50">
+        <div className="p-5 space-y-5 bg-gradient-to-b from-white to-gray-50/50">
           {/* Pricing - Compact */}
-          <div className="bg-white rounded p-4 border border-gray-200">
+          <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200/60">
             <div className="flex items-baseline justify-between mb-3">
               <div>
                 <div className="text-3xl font-light text-gray-900">₪{currentPrice}</div>
@@ -202,7 +202,7 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
 
           {/* Technical Specs - Compact Grid */}
           {technicalSpecs.length > 0 && (
-            <div className="bg-white rounded p-4 border border-gray-200">
+            <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200/60">
               <h3 className="text-sm font-medium text-gray-900 mb-3 flex items-center gap-1.5">
                 <Zap className="h-3.5 w-3.5 text-gray-400" />
                 מה כלול
@@ -220,7 +220,7 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
           )}
 
           {/* Service Details - Compact */}
-          <div className="bg-white rounded p-4 border border-gray-200">
+          <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200/60">
             <h3 className="text-sm font-medium text-gray-900 mb-3 flex items-center gap-1.5">
               <FileText className="h-3.5 w-3.5 text-gray-400" />
               פרטי שירות

@@ -85,58 +85,6 @@ const PlanInsights = ({ plan, className }: PlanInsightsProps) => {
       }
     }
 
-    // Market trends (simulated)
-    const trends = [
-      {
-        type: 'info',
-        icon: TrendingUp,
-        title: 'מגמת שוק',
-        description: 'ביקוש גובר למסלול זה ב-3 החודשים האחרונים',
-        priority: 'low'
-      },
-      {
-        type: 'warning',
-        icon: Clock,
-        title: 'הצעה מוגבלת',
-        description: 'מחיר מיוחד זה עשוי להיגמר בקרוב',
-        priority: 'medium'
-      },
-      {
-        type: 'info',
-        icon: Users,
-        title: 'פופולרי',
-        description: `${Math.floor(Math.random() * 30) + 20}% מהלקוחות החליפו למסלול זה`,
-        priority: 'low'
-      }
-    ];
-
-    // Add random trending insight
-    if (Math.random() > 0.5) {
-      insights.push(trends[Math.floor(Math.random() * trends.length)]);
-    }
-
-    // AI-powered recommendations (simulated)
-    const aiInsights = [
-      {
-        type: 'success',
-        icon: Lightbulb,
-        title: 'המלצת AI',
-        description: 'בהתבסס על הפרופיל שלך, מסלול זה יחסוך לך ₪89 לחודש',
-        priority: 'high'
-      },
-      {
-        type: 'info',
-        icon: Info,
-        title: 'תובנה חכמה',
-        description: 'משתמשים דומים לך דירגו את השירות 4.7/5',
-        priority: 'medium'
-      }
-    ];
-
-    if (Math.random() > 0.3) {
-      insights.push(aiInsights[Math.floor(Math.random() * aiInsights.length)]);
-    }
-
     return insights.sort((a, b) => {
       const priorityOrder = { high: 3, medium: 2, low: 1 };
       return priorityOrder[b.priority] - priorityOrder[a.priority];
@@ -221,19 +169,7 @@ const PlanInsights = ({ plan, className }: PlanInsightsProps) => {
           );
         })}
 
-        {/* Summary Stats */}
-        <div className="mt-4 p-3 bg-gradient-to-r from-muted/20 to-muted/10 rounded-xl border border-border/20">
-          <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-1">
-              <DollarSign className="h-3 w-3 text-green-600" />
-              <span className="font-medium">חיסכון צפוי: ₪{Math.floor(Math.random() * 100) + 30}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <TrendingUp className="h-3 w-3 text-blue-600" />
-              <span className="font-medium">התאמה: {Math.floor(Math.random() * 20) + 80}%</span>
-            </div>
-          </div>
-        </div>
+        {/* Summary Stats - Removed fake data */}
       </CardContent>
     </Card>
   );

@@ -429,12 +429,6 @@ const EnhancedPlanGrid = ({
                         {plan.company}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium text-muted-foreground font-assistant">
-                        {(Math.random() * 1.5 + 3.5).toFixed(1)}
-                      </span>
-                    </div>
                   </div>
                   
                   <h3 className="text-xl font-bold text-foreground font-heebo mb-2">
