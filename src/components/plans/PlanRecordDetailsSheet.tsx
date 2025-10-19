@@ -142,131 +142,207 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md p-0 overflow-hidden font-heebo max-h-[90vh] overflow-y-auto">
-        {/* Compact Header */}
-        <div className="relative bg-white border-b p-4">
+      <DialogContent className="max-w-2xl p-0 overflow-hidden font-heebo max-h-[90vh] overflow-y-auto animate-scale-in">
+        {/* Enhanced Header with gradient */}
+        <div className="relative bg-gradient-to-bl from-primary/5 via-white to-accent/5 border-b p-6">
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="absolute left-3 top-3 h-7 w-7 text-gray-400 hover:text-gray-600"
+            className="absolute left-4 top-4 h-8 w-8 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all hover-scale"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </Button>
           
-          <div className="space-y-1 pr-10">
-            <Badge variant="outline" className="text-xs font-normal mb-1.5">
-              {plan.service}
-            </Badge>
-            <h2 className="text-xl font-normal text-gray-900">{plan.plan}</h2>
-            <p className="text-sm text-gray-500 font-light">{plan.company}</p>
+          <div className="space-y-3 pr-12 animate-fade-in">
+            <div className="flex items-center gap-2">
+              <Badge className="text-xs font-medium bg-primary/10 text-primary border-primary/20 px-3 py-1">
+                {plan.service}
+              </Badge>
+              {savingsVsAvg > 0 && (
+                <Badge className="text-xs font-medium bg-green-50 text-green-700 border-green-200 px-3 py-1 animate-pulse">
+                  🔥 מבצע חם
+                </Badge>
+              )}
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 leading-tight">{plan.plan}</h2>
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                <span className="text-lg font-bold text-primary">{plan.company.charAt(0)}</span>
+              </div>
+              <div>
+                <p className="text-base font-medium text-gray-700">{plan.company}</p>
+                <p className="text-xs text-gray-500">{valueMetrics.marketPosition}</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Compact Content */}
-        <div className="p-5 space-y-5 bg-gradient-to-b from-white to-gray-50/50">
-          {/* Pricing - Compact */}
-          <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200/60">
-            <div className="flex items-baseline justify-between mb-3">
-              <div>
-                <div className="text-3xl font-light text-gray-900">₪{currentPrice}</div>
-                <div className="text-xs text-gray-500 font-light">לחודש</div>
+        {/* Enhanced Content with animations */}
+        <div className="p-6 space-y-5 bg-gradient-to-b from-white via-gray-50/30 to-white">
+          
+          {/* Hero Pricing Card */}
+          <div className="relative bg-gradient-to-br from-primary/5 via-white to-accent/5 rounded-2xl p-6 shadow-lg border-2 border-primary/10 overflow-hidden hover-scale transition-all duration-300 animate-fade-in">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-accent/5 rounded-full blur-2xl"></div>
+            
+            <div className="relative">
+              <div className="flex items-start justify-between mb-4">
+                <div className="space-y-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">
+                      ₪{currentPrice}
+                    </span>
+                    <span className="text-lg text-gray-600 font-medium">/חודש</span>
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    מחיר קבוע ללא הפתעות
+                  </div>
+                </div>
+                {plan.yearlyPrice && (
+                  <div className="text-left bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50">
+                    <div className="text-2xl font-bold text-gray-900">₪{plan.yearlyPrice}</div>
+                    <div className="text-xs text-gray-600 font-medium">תשלום שנתי</div>
+                    <div className="text-xs text-green-600 mt-1">חסכו {Math.round(((currentPrice * 12 - plan.yearlyPrice) / (currentPrice * 12)) * 100)}%</div>
+                  </div>
+                )}
               </div>
-              {plan.yearlyPrice && (
-                <div className="text-left">
-                  <div className="text-lg font-light text-gray-700">₪{plan.yearlyPrice}</div>
-                  <div className="text-xs text-gray-500 font-light">לשנה</div>
+              
+              {savingsVsAvg > 0 && (
+                <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200/50 animate-fade-in">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                        <TrendingDown className="h-4 w-4 text-green-600" />
+                      </div>
+                      <div>
+                        <div className="text-base font-bold text-green-900">
+                          חיסכון ₪{Math.round(savingsVsAvg)} לחודש
+                        </div>
+                        <div className="text-xs text-green-700">
+                          ₪{Math.round(savingsVsAvg * 12)} לשנה
+                        </div>
+                      </div>
+                    </div>
+                    <Badge className="bg-green-100 text-green-800 border-green-300 px-3 py-1 text-sm font-bold">
+                      -{savingsPercent}%
+                    </Badge>
+                  </div>
+                  <div className="text-xs text-green-700 bg-white/50 rounded-lg p-2">
+                    💡 זול ב-₪{Math.round(savingsVsAvg)} לעומת הממוצע בשוק (₪{Math.round(avgPrice)})
+                  </div>
                 </div>
               )}
             </div>
-            
-            {savingsVsAvg > 0 && (
-              <div className="pt-3 border-t border-gray-100">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <TrendingDown className="h-3.5 w-3.5 text-green-600" />
-                    <span className="text-sm font-normal text-gray-900">
-                      חיסכון ₪{Math.round(savingsVsAvg)}/חודש
-                    </span>
-                  </div>
-                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs">
-                    -{savingsPercent}%
-                  </Badge>
-                </div>
-                <div className="text-xs text-gray-500 font-light mt-0.5">
-                  לעומת ממוצע ₪{Math.round(avgPrice)}
-                </div>
-              </div>
-            )}
           </div>
 
-          {/* Technical Specs - Compact Grid */}
+          {/* Technical Specs - Enhanced Grid */}
           {technicalSpecs.length > 0 && (
-            <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200/60">
-              <h3 className="text-sm font-medium text-gray-900 mb-3 flex items-center gap-1.5">
-                <Zap className="h-3.5 w-3.5 text-gray-400" />
-                מה כלול
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200/60 hover:shadow-lg transition-shadow duration-300 animate-fade-in">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-lg flex items-center justify-center">
+                  <Zap className="h-4 w-4 text-blue-600" />
+                </div>
+                מה כלול במסלול
               </h3>
               
-              <div className="grid gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 {technicalSpecs.map((spec, index) => (
-                  <div key={index} className="flex items-center justify-between py-2 px-2.5 bg-gray-50 rounded text-sm">
-                    <span className="text-gray-600 font-light">{spec.label}</span>
-                    <span className="font-normal text-gray-900">{spec.value}</span>
+                  <div 
+                    key={index} 
+                    className="relative group p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200/50 hover:border-primary/30 hover:shadow-md transition-all duration-300 hover-scale"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div className="absolute top-2 right-2 w-1 h-1 bg-primary rounded-full group-hover:w-2 group-hover:h-2 transition-all"></div>
+                    <div className="text-xs text-gray-500 font-medium mb-1">{spec.label}</div>
+                    <div className="text-base font-bold text-gray-900">{spec.value}</div>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Service Details - Compact */}
-          <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200/60">
-            <h3 className="text-sm font-medium text-gray-900 mb-3 flex items-center gap-1.5">
-              <FileText className="h-3.5 w-3.5 text-gray-400" />
-              פרטי שירות
+          {/* Service Details - Enhanced */}
+          <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200/60 hover:shadow-lg transition-shadow duration-300 animate-fade-in">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
+                <FileText className="h-4 w-4 text-purple-600" />
+              </div>
+              תנאי השירות
             </h3>
             
-            <div className="grid gap-2">
+            <div className="space-y-3">
               {plan.commitment && (
-                <div className="flex items-center justify-between py-2 px-2.5 bg-gray-50 rounded text-sm">
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5 text-gray-400" />
-                    <span className="text-gray-600 font-light">התחייבות</span>
+                <div className="group p-4 bg-gradient-to-r from-blue-50/50 to-cyan-50/50 rounded-xl border border-blue-100/50 hover:border-blue-200 transition-all hover-scale">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Calendar className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-blue-600 font-medium">תקופת התחייבות</div>
+                        <div className="text-base font-bold text-gray-900">{plan.commitment}</div>
+                      </div>
+                    </div>
                   </div>
-                  <span className="font-normal text-gray-900">{plan.commitment}</span>
                 </div>
               )}
               
               {plan.sla && plan.sla !== "לא זמין" && (
-                <div className="flex items-center justify-between py-2 px-2.5 bg-gray-50 rounded text-sm">
-                  <div className="flex items-center gap-1.5">
-                    <Award className="h-3.5 w-3.5 text-gray-400" />
-                    <span className="text-gray-600 font-light">ציון שירות</span>
+                <div className="group p-4 bg-gradient-to-r from-amber-50/50 to-yellow-50/50 rounded-xl border border-amber-100/50 hover:border-amber-200 transition-all hover-scale">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Award className="h-5 w-5 text-amber-600" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-amber-600 font-medium">רמת שירות (SLA)</div>
+                        <div className="text-base font-bold text-gray-900">{plan.sla}</div>
+                      </div>
+                    </div>
                   </div>
-                  <span className="font-normal text-gray-900">{plan.sla}</span>
                 </div>
               )}
               
-              <div className="flex items-center justify-between py-2 px-2.5 bg-gray-50 rounded text-sm">
-                <div className="flex items-center gap-1.5">
-                  <DollarSign className="h-3.5 w-3.5 text-gray-400" />
-                  <span className="text-gray-600 font-light">מיקום בשוק</span>
+              <div className="group p-4 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 rounded-xl border border-emerald-100/50 hover:border-emerald-200 transition-all hover-scale">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <DollarSign className="h-5 w-5 text-emerald-600" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-emerald-600 font-medium">מיקום בשוק</div>
+                      <div className="text-base font-bold text-gray-900">{valueMetrics.marketPosition}</div>
+                    </div>
+                  </div>
+                  <Badge className="bg-emerald-100 text-emerald-700 border-emerald-300 px-3 py-1">
+                    ציון {overallScore}
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="text-xs font-normal text-gray-700">
-                  {valueMetrics.marketPosition}
-                </Badge>
               </div>
             </div>
           </div>
 
-          {/* Transfer Benefits - Compact */}
+          {/* Transfer Benefits - Enhanced */}
           {plan.transferBenefits && (
-            <div className="bg-amber-50 rounded p-3 border border-amber-200">
-              <div className="flex items-start gap-2">
-                <div className="text-base">🎁</div>
+            <div className="relative bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 rounded-2xl p-6 border-2 border-amber-200/50 shadow-md overflow-hidden hover-scale transition-all duration-300 animate-fade-in">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-24 h-24 bg-amber-200/20 rounded-full blur-2xl"></div>
+              <div className="absolute bottom-0 left-0 w-20 h-20 bg-orange-200/20 rounded-full blur-xl"></div>
+              
+              <div className="relative flex items-start gap-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-amber-200 to-orange-200 rounded-2xl flex items-center justify-center text-2xl shadow-lg flex-shrink-0 animate-pulse">
+                  🎁
+                </div>
                 <div className="flex-1">
-                  <h3 className="text-sm font-medium text-gray-900 mb-1">הטבת מעבר</h3>
-                  <p className="text-sm text-gray-700 font-light leading-relaxed">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                    הטבות מיוחדות למצטרפים
+                    <Badge className="bg-red-100 text-red-700 border-red-300 text-xs px-2 py-0.5 animate-pulse">
+                      חדש
+                    </Badge>
+                  </h3>
+                  <p className="text-sm text-gray-700 leading-relaxed bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-amber-200/30">
                     {plan.transferBenefits}
                   </p>
                 </div>
@@ -274,32 +350,51 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
             </div>
           )}
 
-          {/* Annual Savings - Compact */}
+          {/* Annual Savings - Hero Card */}
           {savingsVsAvg > 0 && (
-            <div className="bg-green-50 rounded p-3 border border-green-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs text-gray-600 font-light mb-0.5">חיסכון שנתי</div>
-                  <div className="text-2xl font-light text-gray-900">
-                    ₪{Math.round(savingsVsAvg * 12).toLocaleString()}
+            <div className="relative bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 rounded-2xl p-6 shadow-xl overflow-hidden animate-fade-in">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
+              
+              <div className="relative flex items-center justify-between">
+                <div className="space-y-2">
+                  <div className="text-white/90 text-sm font-medium">💰 החיסכון השנתי שלכם</div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-black text-white">
+                      ₪{Math.round(savingsVsAvg * 12).toLocaleString()}
+                    </span>
+                    <span className="text-lg text-white/80 font-medium">לשנה</span>
+                  </div>
+                  <div className="text-white/90 text-xs bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 inline-block">
+                    זה כמו ₪{Math.round(savingsVsAvg)} בחודש חינם!
                   </div>
                 </div>
-                <CheckCircle2 className="h-7 w-7 text-green-600" />
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <CheckCircle2 className="h-10 w-10 text-white animate-pulse" />
+                </div>
               </div>
             </div>
           )}
 
-          {/* CTA Button - Compact */}
-          <Button
-            onClick={() => {
-              onSelectForSwitch(plan);
-              onClose();
-            }}
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-normal"
-          >
-            עברו למסלול
-            <ArrowRight className="mr-2 h-4 w-4" />
-          </Button>
+          {/* CTA Button - Hero Style */}
+          <div className="sticky bottom-0 pt-2 pb-2 bg-gradient-to-t from-white via-white to-transparent">
+            <Button
+              onClick={() => {
+                onSelectForSwitch(plan);
+                onClose();
+              }}
+              className="w-full h-14 bg-gradient-to-r from-primary via-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover-scale group"
+            >
+              <span className="flex items-center gap-3">
+                עברו למסלול הזה עכשיו
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-[-4px] transition-transform" />
+              </span>
+            </Button>
+            <p className="text-center text-xs text-gray-500 mt-2">
+              ✨ המעבר קל, מהיר וללא עלויות
+            </p>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
