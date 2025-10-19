@@ -35,6 +35,7 @@ import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
 import annualSavingsSketch from "@/assets/savings-clean.png";
 import EnhancedPlanCardModern from "@/components/plans/EnhancedPlanCardModern";
+import { PlanRecordDetailsSheet } from "@/components/plans/PlanRecordDetailsSheet";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -65,6 +66,8 @@ const AllPlans = () => {
   const [showTopPlan, setShowTopPlan] = useState(false);
   const [selectedPlanForForm, setSelectedPlanForForm] = useState<PlanRecord | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedPlanForDetails, setSelectedPlanForDetails] = useState<PlanRecord | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   // Load stored analysis data
   useEffect(() => {
@@ -210,6 +213,16 @@ const AllPlans = () => {
     setIsFormOpen(false);
     setSelectedPlanForForm(null);
     localStorage.removeItem('selectedPlanForSwitch');
+  };
+
+  const handleShowDetails = (plan: PlanRecord) => {
+    setSelectedPlanForDetails(plan);
+    setIsDetailsOpen(true);
+  };
+
+  const handleDetailsClose = () => {
+    setIsDetailsOpen(false);
+    setSelectedPlanForDetails(null);
   };
 
   const getCategoryColor = (category: CategoryType) => {
@@ -546,6 +559,7 @@ const AllPlans = () => {
                           isRecommended={isRecommended}
                           savings={savings}
                           onSelect={handleSelectPlan}
+                          onShowDetails={handleShowDetails}
                           rank={index === 0 ? 1 : index === 1 ? 2 : index === 2 ? 3 : undefined}
                           companyLogo={logo}
                           className="animate-scale-in"
@@ -685,6 +699,16 @@ const AllPlans = () => {
           <UnifiedServiceForm onComplete={handleFormClose} />
         </DialogContent>
       </Dialog>
+
+      {/* Plan Details Sheet */}
+      {selectedPlanForDetails && (
+        <PlanRecordDetailsSheet
+          plan={selectedPlanForDetails}
+          isOpen={isDetailsOpen}
+          onClose={handleDetailsClose}
+          onSelectForSwitch={handleSelectPlan}
+        />
+      )}
 
       {/* Personalized Wizard Float */}
       <PersonalizedWizardFloat />

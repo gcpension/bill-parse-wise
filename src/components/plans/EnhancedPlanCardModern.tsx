@@ -31,6 +31,7 @@ interface EnhancedPlanCardModernProps {
   isRecommended?: boolean;
   savings?: number;
   onSelect: (plan: PlanRecord) => void;
+  onShowDetails?: (plan: PlanRecord) => void;
   rank?: number;
   className?: string;
   companyLogo?: string;
@@ -42,6 +43,7 @@ const EnhancedPlanCardModern = ({
   isRecommended = false,
   savings = 0,
   onSelect,
+  onShowDetails,
   rank,
   className,
   companyLogo,
@@ -292,7 +294,11 @@ const EnhancedPlanCardModern = ({
             size="sm"
             onClick={(e) => {
               e.stopPropagation();
-              setShowDetails(!showDetails);
+              if (onShowDetails) {
+                onShowDetails(plan);
+              } else {
+                setShowDetails(!showDetails);
+              }
             }}
             className="w-full font-medium text-[10px] h-6 hover:bg-muted/50 transition-colors relative z-10"
           >
