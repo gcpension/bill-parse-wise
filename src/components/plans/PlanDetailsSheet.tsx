@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ManualPlan } from "@/data/manual-plans";
-import { PlanRecord } from "@/hooks/useAllPlans";
 import { 
   CheckCircle, Package, ArrowRight, Download, Upload, Database, Phone, 
   MessageSquare, Zap, X, TrendingDown, BarChart3, Target, CheckCircle2, Shield
@@ -13,10 +12,10 @@ import {
 import { useAllPlans } from "@/hooks/useAllPlans";
 
 interface PlanDetailsSheetProps {
-  plan: ManualPlan | PlanRecord | null;
+  plan: ManualPlan | null;
   isOpen: boolean;
   onClose: () => void;
-  onSelectForSwitch: (plan: ManualPlan | PlanRecord) => void;
+  onSelectForSwitch: (plan: ManualPlan) => void;
 }
 
 export function PlanDetailsSheet({ plan, isOpen, onClose, onSelectForSwitch }: PlanDetailsSheetProps) {
@@ -24,42 +23,28 @@ export function PlanDetailsSheet({ plan, isOpen, onClose, onSelectForSwitch }: P
   
   if (!plan) return null;
 
-  // Type guard to check if plan is PlanRecord
-  const isPlanRecord = (p: ManualPlan | PlanRecord): p is PlanRecord => {
-    return 'service' in p && 'monthlyPrice' in p;
-  };
-
-  // Extract common fields
-  const planName = isPlanRecord(plan) ? plan.plan : plan.planName;
-  const planCompany = isPlanRecord(plan) ? plan.company : plan.provider;
-  const planCategory = isPlanRecord(plan) ? plan.service : plan.category;
-  const planPrice = isPlanRecord(plan) ? (plan.monthlyPrice || 0) : plan.regularPrice;
-  const planIntroPrice = isPlanRecord(plan) ? undefined : plan.introPrice;
-  const planFeatures = isPlanRecord(plan) ? [] : plan.features;
-  const planTransferBenefits = isPlanRecord(plan) ? plan.transferBenefits : undefined;
-
-  const hasIntroOffer = planIntroPrice && planIntroPrice < planPrice;
-  const hasTechSpecs = !isPlanRecord(plan) && (plan.downloadSpeed || plan.uploadSpeed || plan.dataAmount || plan.speed || plan.callMinutes || plan.smsAmount);
+  const hasIntroOffer = plan.introPrice && plan.introPrice < plan.regularPrice;
+  const hasTechSpecs = plan.downloadSpeed || plan.uploadSpeed || plan.dataAmount || plan.speed || plan.callMinutes || plan.smsAmount;
   
   // Calculate market comparison data
-  const sameCategoryPlans = allPlans.filter(p => p.service === planCategory);
+  const sameCategoryPlans = allPlans.filter(p => p.service === plan.category);
   const avgPrice = sameCategoryPlans.length > 0 
     ? sameCategoryPlans.reduce((sum, p) => sum + (p.monthlyPrice || 0), 0) / sameCategoryPlans.filter(p => p.monthlyPrice).length
-    : planPrice;
+    : plan.regularPrice;
   
-  const currentPrice = hasIntroOffer ? planIntroPrice! : planPrice;
+  const currentPrice = hasIntroOffer ? plan.introPrice! : plan.regularPrice;
   const savingsVsAvg = avgPrice - currentPrice;
   const savingsPercent = avgPrice > 0 ? Math.round((savingsVsAvg / avgPrice) * 100) : 0;
   
   // Plan score calculation
   const priceScore = Math.max(0, Math.min(100, 100 - ((currentPrice / avgPrice) * 100 - 100)));
-  const featuresScore = Math.min(100, (planFeatures.length / 10) * 100);
+  const featuresScore = Math.min(100, (plan.features.length / 10) * 100);
   const overallScore = Math.round((priceScore * 0.6 + featuresScore * 0.4));
   
   // Determine who this plan is for
   const getTargetAudience = () => {
     if (currentPrice < avgPrice * 0.8) return "משפחות המחפשות לחסוך";
-    if (planFeatures.length > 8) return "משתמשים מתקדמים";
+    if (plan.features.length > 8) return "משתמשים מתקדמים";
     if (hasIntroOffer) return "לקוחות חדשים";
     return "קהל רחב";
   };
