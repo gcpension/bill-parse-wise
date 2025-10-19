@@ -47,6 +47,65 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
     valueForMoney: overallScore,
     marketPosition: currentPrice < avgPrice ? 'חסכוני' : currentPrice > avgPrice * 1.2 ? 'פרימיום' : 'סטנדרטי'
   };
+
+  // Extract technical specifications based on service type
+  const getTechnicalSpecs = () => {
+    const benefits = plan.transferBenefits || '';
+    const specs: { label: string; value: string }[] = [];
+
+    if (plan.service.includes('סלולר')) {
+      // Cellular specs
+      const gbMatch = benefits.match(/(\d+)GB/);
+      const minutesMatch = benefits.match(/(\d+)\s*דק['׳]?\s*לחו["״]?ל/);
+      const callsMatch = benefits.match(/שיחות\s*(והודעות)?\s*ללא הגבלה/);
+      const esimMatch = benefits.match(/eSIM/);
+      const fivegMatch = benefits.match(/5G/);
+
+      if (gbMatch) specs.push({ label: 'נפח גלישה', value: `${gbMatch[1]} GB` });
+      if (callsMatch) specs.push({ label: 'שיחות', value: 'ללא הגבלה' });
+      if (minutesMatch) specs.push({ label: 'דקות לחו"ל', value: `${minutesMatch[1]} דקות` });
+      if (fivegMatch) specs.push({ label: 'רשת', value: '5G' });
+      if (esimMatch) specs.push({ label: 'eSIM', value: 'כלול' });
+    } 
+    else if (plan.service.includes('אינטרנט')) {
+      // Internet specs
+      const speedMatch = benefits.match(/(\d+)\s*מגה/i);
+      const infraMatch = benefits.match(/(ספק|תשתית)/);
+      const routerMatch = benefits.match(/נתב\s*(\d+)\s*₪/);
+      const fiberMatch = benefits.match(/סיב אופטי|אופטי/);
+
+      if (speedMatch) specs.push({ label: 'מהירות', value: `${speedMatch[1]} מגה` });
+      if (fiberMatch) specs.push({ label: 'טכנולוגיה', value: 'סיב אופטי' });
+      if (infraMatch) specs.push({ label: 'סוג', value: 'ספק + תשתית' });
+      if (routerMatch) specs.push({ label: 'נתב', value: `${routerMatch[1]} ₪/חודש` });
+    }
+    else if (plan.service.includes('טלוויזיה') || plan.service.includes('TV')) {
+      // TV specs
+      const channelsMatch = benefits.match(/(\d+)\s*ערוצים/);
+      const sportsMatch = benefits.match(/ספורט|sport/i);
+      const kidsMatch = benefits.match(/ילדים|kids/i);
+      const vodMatch = benefits.match(/VOD|וידאו לפי דרישה/i);
+      const hdMatch = benefits.match(/HD|4K/);
+
+      if (channelsMatch) specs.push({ label: 'מספר ערוצים', value: channelsMatch[1] });
+      if (sportsMatch) specs.push({ label: 'ערוצי ספורט', value: 'כלול' });
+      if (kidsMatch) specs.push({ label: 'ערוצי ילדים', value: 'כלול' });
+      if (vodMatch) specs.push({ label: 'VOD', value: 'כלול' });
+      if (hdMatch) specs.push({ label: 'איכות', value: hdMatch[0] });
+    }
+    else if (plan.service.includes('חשמל')) {
+      // Electricity specs
+      const greenMatch = benefits.match(/ירוק|אנרגיה מתחדשת|סולרי/i);
+      const tariffMatch = benefits.match(/תעריף (יום|לילה)/i);
+      
+      if (greenMatch) specs.push({ label: 'סוג אנרגיה', value: 'אנרגיה ירוקה' });
+      if (tariffMatch) specs.push({ label: 'תעריף', value: tariffMatch[0] });
+    }
+
+    return specs;
+  };
+
+  const technicalSpecs = getTechnicalSpecs();
   
   // Get user's reason for this plan
   const getMatchReason = () => {
@@ -142,11 +201,30 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
             )}
           </div>
 
-          {/* Technical Details */}
+          {/* Technical Specifications */}
+          {technicalSpecs.length > 0 && (
+            <div className="space-y-2">
+              <h3 className="text-sm font-bold flex items-center gap-2">
+                <Zap className="h-4 w-4 text-primary" />
+                מה כלול במסלול?
+              </h3>
+              
+              <div className="grid gap-2">
+                {technicalSpecs.map((spec, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-l from-primary/5 to-transparent rounded-lg border border-primary/10">
+                    <span className="text-sm font-medium">{spec.label}</span>
+                    <span className="font-bold text-sm text-primary">{spec.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Contract & Service Details */}
           <div className="space-y-2">
             <h3 className="text-sm font-bold flex items-center gap-2">
               <FileText className="h-4 w-4 text-primary" />
-              פרטים טכניים
+              פרטי שירות
             </h3>
             
             <div className="grid gap-2">
@@ -172,7 +250,7 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
               
               <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border">
                 <div className="flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-muted-foreground" />
+                  <DollarSign className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">מיקום בשוק</span>
                 </div>
                 <Badge variant="outline" className="font-bold">
