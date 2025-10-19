@@ -93,92 +93,92 @@ const EnhancedPlanCardModern = ({
       )} />
 
       {/* Top Badges Row */}
-      <div className="absolute top-3 right-3 flex flex-col gap-2 z-20">
+      <div className="absolute top-2 right-2 flex flex-col gap-1 z-20">
         {isRecommended && (
-          <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0 shadow-lg animate-pulse-subtle">
-            <Sparkles className="w-3 h-3 ml-1" />
-            מומלץ במיוחד
+          <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0 shadow-sm text-[10px] px-1.5 py-0">
+            <Sparkles className="w-2.5 h-2.5 ml-0.5" />
+            מומלץ
           </Badge>
         )}
         {rankBadge && (
-          <Badge className={`${rankBadge.color} text-white border-0 shadow-lg`}>
-            <rankBadge.icon className="w-3 h-3 ml-1" />
+          <Badge className={`${rankBadge.color} text-white border-0 shadow-sm text-[10px] px-1.5 py-0`}>
+            <rankBadge.icon className="w-2.5 h-2.5 ml-0.5" />
             {rankBadge.text}
           </Badge>
         )}
       </div>
 
-      <CardHeader className="pb-3 pt-12">
-        <div className="flex items-start gap-3 mb-3">
+      <CardHeader className="pb-2 pt-8">
+        <div className="flex items-start gap-2 mb-2">
           {/* Category Icon with Gradient */}
           <div className={cn(
-            "p-3 rounded-xl bg-gradient-to-r text-white shadow-lg shrink-0",
+            "p-1.5 rounded-lg bg-gradient-to-r text-white shadow-md shrink-0",
             getCategoryColor(plan.service)
           )}>
-            <CategoryIcon className="w-5 h-5" />
+            <CategoryIcon className="w-3.5 h-3.5" />
           </div>
           
           <div className="flex-1 min-w-0">
             {/* Company Logo or Name */}
             {companyLogo ? (
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-10 h-10 bg-background rounded-lg shadow-sm flex items-center justify-center p-1.5 border">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <div className="w-6 h-6 bg-background rounded shadow-sm flex items-center justify-center p-0.5 border">
                   <img src={companyLogo} alt={plan.company} className="max-w-full max-h-full object-contain" />
                 </div>
-                <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
                   {plan.company}
                 </h3>
               </div>
             ) : (
-              <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-1">
+              <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors mb-0.5">
                 {plan.company}
               </h3>
             )}
             
             {/* Plan Name */}
-            <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+            <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">
               {plan.plan}
             </p>
           </div>
         </div>
 
         {/* Service Type Badge */}
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="outline" className="border-border/60 text-muted-foreground font-normal">
+        <div className="flex flex-wrap gap-1">
+          <Badge variant="outline" className="border-border/60 text-muted-foreground font-normal text-[10px] px-1.5 py-0">
             {plan.service}
           </Badge>
           {plan.transferBenefits && (
-            <Badge variant="outline" className="border-primary/30 text-primary font-normal">
-              🎁 הטבת מעבר
+            <Badge variant="outline" className="border-primary/30 text-primary font-normal text-[10px] px-1.5 py-0">
+              🎁 מעבר
             </Badge>
           )}
         </div>
       </CardHeader>
 
-      <CardContent className="pt-0 space-y-4">
+      <CardContent className="pt-0 space-y-2">
         {/* Price Section - Enhanced */}
-        <div className="relative bg-gradient-to-br from-primary/5 via-primary/10 to-accent/5 rounded-2xl p-4 border border-primary/20">
+        <div className="relative bg-gradient-to-br from-primary/5 via-primary/10 to-accent/5 rounded-lg p-2.5 border border-primary/20">
           <div className="flex items-center justify-between">
             <div>
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-primary">₪{plan.monthlyPrice}</span>
-                <span className="text-sm text-muted-foreground">/חודש</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-bold text-primary">₪{plan.monthlyPrice}</span>
+                <span className="text-xs text-muted-foreground">/חודש</span>
               </div>
               {savings > 0 && (
-                <div className="flex items-center gap-1.5 mt-2">
-                  <TrendingDown className="w-4 h-4 text-green-600" />
-                  <span className="text-sm font-bold text-green-700">
-                    חיסכון ₪{savings.toFixed(0)} בחודש
+                <div className="flex items-center gap-1 mt-1">
+                  <TrendingDown className="w-3 h-3 text-green-600" />
+                  <span className="text-xs font-bold text-green-700">
+                    חיסכון ₪{savings.toFixed(0)}
                   </span>
                 </div>
               )}
             </div>
             {savings > 0 && (
               <div className="text-center">
-                <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white shadow-lg">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white shadow-md">
                   <div className="text-center">
-                    <div className="text-lg font-bold leading-none">₪{(savings * 12).toFixed(0)}</div>
-                    <div className="text-[9px] leading-none mt-0.5">בשנה</div>
+                    <div className="text-sm font-bold leading-none">₪{(savings * 12).toFixed(0)}</div>
+                    <div className="text-[8px] leading-none mt-0.5">בשנה</div>
                   </div>
                 </div>
               </div>
@@ -188,40 +188,37 @@ const EnhancedPlanCardModern = ({
 
         {/* Transfer Benefits - If Exists */}
         {plan.transferBenefits && (
-          <div className="bg-gradient-to-r from-amber-50/50 to-orange-50/50 border border-amber-200/50 rounded-xl p-3">
-            <div className="flex items-start gap-2">
-              <span className="text-lg shrink-0">🎁</span>
-              <div>
-                <h4 className="text-xs font-semibold text-amber-900 mb-0.5">הטבת מעבר מיוחדת</h4>
-                <p className="text-xs text-amber-800/90 leading-relaxed">
-                  {plan.transferBenefits}
-                </p>
-              </div>
+          <div className="bg-gradient-to-r from-amber-50/50 to-orange-50/50 border border-amber-200/50 rounded-lg p-2">
+            <div className="flex items-start gap-1.5">
+              <span className="text-sm shrink-0">🎁</span>
+              <p className="text-[10px] text-amber-800/90 leading-snug line-clamp-2">
+                {plan.transferBenefits}
+              </p>
             </div>
           </div>
         )}
 
         {/* Key Information Grid */}
-        <div className="grid grid-cols-2 gap-2">
-          <div className="bg-muted/30 rounded-lg p-2.5 border border-border/30">
-            <div className="flex items-center gap-1.5 mb-1">
-              <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
-              <span className="text-xs font-medium text-muted-foreground">התחייבות</span>
+        <div className="grid grid-cols-2 gap-1.5">
+          <div className="bg-muted/30 rounded p-1.5 border border-border/30">
+            <div className="flex items-center gap-1 mb-0.5">
+              <Calendar className="w-2.5 h-2.5 text-muted-foreground" />
+              <span className="text-[10px] font-medium text-muted-foreground">התחייבות</span>
             </div>
-            <p className="text-sm font-bold text-foreground">12 חודשים</p>
+            <p className="text-xs font-bold text-foreground">12 חודשים</p>
           </div>
           
-          <div className="bg-muted/30 rounded-lg p-2.5 border border-border/30">
-            <div className="flex items-center gap-1.5 mb-1">
-              <Shield className="w-3.5 h-3.5 text-muted-foreground" />
-              <span className="text-xs font-medium text-muted-foreground">אמינות</span>
+          <div className="bg-muted/30 rounded p-1.5 border border-border/30">
+            <div className="flex items-center gap-1 mb-0.5">
+              <Shield className="w-2.5 h-2.5 text-muted-foreground" />
+              <span className="text-[10px] font-medium text-muted-foreground">אמינות</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5">
               {[...Array(5)].map((_, i) => (
                 <Star 
                   key={i} 
                   className={cn(
-                    "w-3 h-3",
+                    "w-2.5 h-2.5",
                     i < 4 ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground/30"
                   )} 
                 />
@@ -232,43 +229,43 @@ const EnhancedPlanCardModern = ({
 
         {/* Additional Details - Expandable */}
         {showDetails && (
-          <div className="space-y-3 animate-fade-in pt-2 border-t border-border/50">
-            <div className="grid grid-cols-3 gap-3 text-center">
-              <div className="space-y-1">
-                <div className="text-lg font-bold text-green-600">99%</div>
-                <div className="text-[10px] text-muted-foreground leading-tight">זמינות שירות</div>
+          <div className="space-y-2 animate-fade-in pt-1.5 border-t border-border/50">
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div className="space-y-0.5">
+                <div className="text-sm font-bold text-green-600">99%</div>
+                <div className="text-[9px] text-muted-foreground leading-tight">זמינות</div>
               </div>
-              <div className="space-y-1">
-                <div className="text-lg font-bold text-blue-600">24/7</div>
-                <div className="text-[10px] text-muted-foreground leading-tight">תמיכה</div>
+              <div className="space-y-0.5">
+                <div className="text-sm font-bold text-blue-600">24/7</div>
+                <div className="text-[9px] text-muted-foreground leading-tight">תמיכה</div>
               </div>
-              <div className="space-y-1">
-                <div className="text-lg font-bold text-purple-600">4.8</div>
-                <div className="text-[10px] text-muted-foreground leading-tight">דירוג לקוחות</div>
+              <div className="space-y-0.5">
+                <div className="text-sm font-bold text-purple-600">4.8</div>
+                <div className="text-[9px] text-muted-foreground leading-tight">דירוג</div>
               </div>
             </div>
 
             {/* Additional Info */}
-            <div className="bg-muted/20 rounded-lg p-3 space-y-2">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Users className="w-3.5 h-3.5" />
-                <span>מעל 10,000 לקוחות מרוצים</span>
+            <div className="bg-muted/20 rounded p-2 space-y-1.5">
+              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                <Users className="w-3 h-3" />
+                <span>10,000+ לקוחות</span>
               </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Clock className="w-3.5 h-3.5" />
-                <span>זמן מעבר: 3-5 ימי עסקים</span>
+              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                <Clock className="w-3 h-3" />
+                <span>מעבר: 3-5 ימים</span>
               </div>
             </div>
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="space-y-2 pt-2">
+        <div className="space-y-1.5 pt-1.5">
           <Button 
             onClick={() => onSelect(plan)}
-            size="lg"
+            size="sm"
             className={cn(
-              "w-full font-bold text-base shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105",
+              "w-full font-bold text-xs h-8 shadow-md hover:shadow-lg transition-all duration-300",
               isRecommended 
                 ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white" 
                 : "bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground"
@@ -276,13 +273,13 @@ const EnhancedPlanCardModern = ({
           >
             {isRecommended ? (
               <>
-                <CheckCircle2 className="ml-2 h-5 w-5" />
-                עברו למסלול המומלץ
+                <CheckCircle2 className="ml-1.5 h-3.5 w-3.5" />
+                עברו למסלול
               </>
             ) : (
               <>
-                <ArrowLeft className="ml-2 h-5 w-5" />
-                בחרו מסלול זה
+                <ArrowLeft className="ml-1.5 h-3.5 w-3.5" />
+                בחרו מסלול
               </>
             )}
           </Button>
@@ -291,17 +288,17 @@ const EnhancedPlanCardModern = ({
             variant="outline"
             size="sm"
             onClick={() => setShowDetails(!showDetails)}
-            className="w-full font-medium text-sm hover:bg-muted/50 transition-colors"
+            className="w-full font-medium text-[10px] h-6 hover:bg-muted/50 transition-colors"
           >
             {showDetails ? (
               <>
-                <EyeOff className="ml-2 h-4 w-4" />
-                הסתר פרטים
+                <EyeOff className="ml-1 h-3 w-3" />
+                הסתר
               </>
             ) : (
               <>
-                <Eye className="ml-2 h-4 w-4" />
-                הצג פרטים נוספים
+                <Eye className="ml-1 h-3 w-3" />
+                פרטים
               </>
             )}
           </Button>

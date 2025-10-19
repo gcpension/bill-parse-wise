@@ -531,7 +531,7 @@ const AllPlans = () => {
                   </div>
 
                   {/* Plans Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                     {plans.map((plan, index) => {
                       const savings = currentMonthlyBill > 0 && plan.monthlyPrice! < currentMonthlyBill 
                         ? currentMonthlyBill - plan.monthlyPrice! 
