@@ -142,130 +142,130 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl p-0 overflow-hidden font-heebo">
-        {/* Clean Header */}
-        <div className="relative bg-white border-b p-6">
+      <DialogContent className="max-w-md p-0 overflow-hidden font-heebo max-h-[90vh] overflow-y-auto">
+        {/* Compact Header */}
+        <div className="relative bg-white border-b p-4">
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="absolute left-4 top-4 text-gray-400 hover:text-gray-600"
+            className="absolute left-3 top-3 h-7 w-7 text-gray-400 hover:text-gray-600"
           >
             <X className="h-4 w-4" />
           </Button>
           
           <div className="space-y-1 pr-10">
-            <Badge variant="outline" className="text-xs font-normal mb-2">
+            <Badge variant="outline" className="text-xs font-normal mb-1.5">
               {plan.service}
             </Badge>
-            <h2 className="text-2xl font-light text-gray-900">{plan.plan}</h2>
+            <h2 className="text-xl font-normal text-gray-900">{plan.plan}</h2>
             <p className="text-sm text-gray-500 font-light">{plan.company}</p>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-6 bg-gray-50">
-          {/* Pricing Section - Clean & Professional */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between">
+        {/* Compact Content */}
+        <div className="p-4 space-y-4 bg-gray-50">
+          {/* Pricing - Compact */}
+          <div className="bg-white rounded p-4 border border-gray-200">
+            <div className="flex items-baseline justify-between mb-3">
               <div>
-                <div className="text-sm text-gray-500 font-light mb-1">מחיר חודשי</div>
-                <div className="text-4xl font-light text-gray-900">₪{currentPrice}</div>
+                <div className="text-3xl font-light text-gray-900">₪{currentPrice}</div>
+                <div className="text-xs text-gray-500 font-light">לחודש</div>
               </div>
               {plan.yearlyPrice && (
                 <div className="text-left">
-                  <div className="text-xs text-gray-500 font-light mb-1">מחיר שנתי</div>
-                  <div className="text-xl font-light text-gray-700">₪{plan.yearlyPrice}</div>
+                  <div className="text-lg font-light text-gray-700">₪{plan.yearlyPrice}</div>
+                  <div className="text-xs text-gray-500 font-light">לשנה</div>
                 </div>
               )}
             </div>
             
             {savingsVsAvg > 0 && (
-              <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <TrendingDown className="h-4 w-4 text-green-600" />
-                  <div>
-                    <div className="text-sm font-normal text-gray-900">
-                      חיסכון של ₪{Math.round(savingsVsAvg)} לחודש
-                    </div>
-                    <div className="text-xs text-gray-500 font-light">
-                      לעומת ממוצע השוק (₪{Math.round(avgPrice)})
-                    </div>
+              <div className="pt-3 border-t border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <TrendingDown className="h-3.5 w-3.5 text-green-600" />
+                    <span className="text-sm font-normal text-gray-900">
+                      חיסכון ₪{Math.round(savingsVsAvg)}/חודש
+                    </span>
                   </div>
+                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs">
+                    -{savingsPercent}%
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 font-normal">
-                  -{savingsPercent}%
-                </Badge>
+                <div className="text-xs text-gray-500 font-light mt-0.5">
+                  לעומת ממוצע ₪{Math.round(avgPrice)}
+                </div>
               </div>
             )}
           </div>
 
-          {/* Technical Specifications - Clean Grid */}
+          {/* Technical Specs - Compact Grid */}
           {technicalSpecs.length > 0 && (
-            <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
-              <h3 className="text-sm font-normal text-gray-900 mb-4 flex items-center gap-2">
-                <Zap className="h-4 w-4 text-gray-400" />
-                מה כלול במסלול
+            <div className="bg-white rounded p-4 border border-gray-200">
+              <h3 className="text-sm font-medium text-gray-900 mb-3 flex items-center gap-1.5">
+                <Zap className="h-3.5 w-3.5 text-gray-400" />
+                מה כלול
               </h3>
               
-              <div className="grid gap-3">
+              <div className="grid gap-2">
                 {technicalSpecs.map((spec, index) => (
-                  <div key={index} className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded border border-gray-100">
-                    <span className="text-sm text-gray-600 font-light">{spec.label}</span>
-                    <span className="text-sm font-normal text-gray-900">{spec.value}</span>
+                  <div key={index} className="flex items-center justify-between py-2 px-2.5 bg-gray-50 rounded text-sm">
+                    <span className="text-gray-600 font-light">{spec.label}</span>
+                    <span className="font-normal text-gray-900">{spec.value}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Service Details - Minimal */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
-            <h3 className="text-sm font-normal text-gray-900 mb-4 flex items-center gap-2">
-              <FileText className="h-4 w-4 text-gray-400" />
+          {/* Service Details - Compact */}
+          <div className="bg-white rounded p-4 border border-gray-200">
+            <h3 className="text-sm font-medium text-gray-900 mb-3 flex items-center gap-1.5">
+              <FileText className="h-3.5 w-3.5 text-gray-400" />
               פרטי שירות
             </h3>
             
-            <div className="grid gap-3">
+            <div className="grid gap-2">
               {plan.commitment && (
-                <div className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded border border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-600 font-light">זמן התחייבות</span>
+                <div className="flex items-center justify-between py-2 px-2.5 bg-gray-50 rounded text-sm">
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5 text-gray-400" />
+                    <span className="text-gray-600 font-light">התחייבות</span>
                   </div>
-                  <span className="text-sm font-normal text-gray-900">{plan.commitment}</span>
+                  <span className="font-normal text-gray-900">{plan.commitment}</span>
                 </div>
               )}
               
-              {plan.sla && (
-                <div className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded border border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <Award className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-600 font-light">ציון שירות (SLA)</span>
+              {plan.sla && plan.sla !== "לא זמין" && (
+                <div className="flex items-center justify-between py-2 px-2.5 bg-gray-50 rounded text-sm">
+                  <div className="flex items-center gap-1.5">
+                    <Award className="h-3.5 w-3.5 text-gray-400" />
+                    <span className="text-gray-600 font-light">ציון שירות</span>
                   </div>
-                  <span className="text-sm font-normal text-gray-900">{plan.sla}</span>
+                  <span className="font-normal text-gray-900">{plan.sla}</span>
                 </div>
               )}
               
-              <div className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded border border-gray-100">
-                <div className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-gray-400" />
-                  <span className="text-sm text-gray-600 font-light">מיקום בשוק</span>
+              <div className="flex items-center justify-between py-2 px-2.5 bg-gray-50 rounded text-sm">
+                <div className="flex items-center gap-1.5">
+                  <DollarSign className="h-3.5 w-3.5 text-gray-400" />
+                  <span className="text-gray-600 font-light">מיקום בשוק</span>
                 </div>
-                <Badge variant="outline" className="font-normal text-gray-700">
+                <Badge variant="outline" className="text-xs font-normal text-gray-700">
                   {valueMetrics.marketPosition}
                 </Badge>
               </div>
             </div>
           </div>
 
-          {/* Transfer Benefits - Subtle */}
+          {/* Transfer Benefits - Compact */}
           {plan.transferBenefits && (
-            <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
-              <div className="flex items-start gap-3">
-                <div className="text-lg">🎁</div>
-                <div>
-                  <h3 className="text-sm font-normal text-gray-900 mb-1">הטבת מעבר</h3>
+            <div className="bg-amber-50 rounded p-3 border border-amber-200">
+              <div className="flex items-start gap-2">
+                <div className="text-base">🎁</div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-gray-900 mb-1">הטבת מעבר</h3>
                   <p className="text-sm text-gray-700 font-light leading-relaxed">
                     {plan.transferBenefits}
                   </p>
@@ -274,32 +274,31 @@ export function PlanRecordDetailsSheet({ plan, isOpen, onClose, onSelectForSwitc
             </div>
           )}
 
-          {/* Annual Savings - Minimal */}
+          {/* Annual Savings - Compact */}
           {savingsVsAvg > 0 && (
-            <div className="bg-green-50 rounded-lg p-5 border border-green-200">
+            <div className="bg-green-50 rounded p-3 border border-green-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-xs text-gray-600 font-light mb-1">חיסכון שנתי משוער</div>
-                  <div className="text-3xl font-light text-gray-900">
+                  <div className="text-xs text-gray-600 font-light mb-0.5">חיסכון שנתי</div>
+                  <div className="text-2xl font-light text-gray-900">
                     ₪{Math.round(savingsVsAvg * 12).toLocaleString()}
                   </div>
                 </div>
-                <CheckCircle2 className="h-8 w-8 text-green-600" />
+                <CheckCircle2 className="h-7 w-7 text-green-600" />
               </div>
             </div>
           )}
 
-          {/* CTA Button - Clean */}
+          {/* CTA Button - Compact */}
           <Button
             onClick={() => {
               onSelectForSwitch(plan);
               onClose();
             }}
-            size="lg"
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-normal shadow-sm"
+            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-normal"
           >
             עברו למסלול
-            <ArrowRight className="mr-2 h-5 w-5" />
+            <ArrowRight className="mr-2 h-4 w-4" />
           </Button>
         </div>
       </DialogContent>
