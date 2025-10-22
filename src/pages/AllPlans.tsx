@@ -20,7 +20,8 @@ import {
   ChevronDown,
   X,
   Info,
-  Rocket
+  Rocket,
+  SlidersHorizontal
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +30,8 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
@@ -68,6 +71,15 @@ const AllPlans = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedPlanForDetails, setSelectedPlanForDetails] = useState<PlanRecord | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  
+  // Advanced filters
+  const [dataVolumeFilter, setDataVolumeFilter] = useState<string>("all");
+  const [speedFilter, setSpeedFilter] = useState<string>("all");
+  const [commitmentFilter, setCommitmentFilter] = useState<string>("all");
+  const [has5G, setHas5G] = useState(false);
+  const [hasEsim, setHasEsim] = useState(false);
+  const [hasFiber, setHasFiber] = useState(false);
 
   // Load stored analysis data
   useEffect(() => {
@@ -145,6 +157,62 @@ const AllPlans = () => {
     // Filter out plans without price
     filtered = filtered.filter(p => p.monthlyPrice && p.monthlyPrice > 0);
 
+    // Advanced filters
+    const benefits = (plan: PlanRecord) => plan.transferBenefits?.toLowerCase() || '';
+    
+    // Data volume filter (cellular)
+    if (dataVolumeFilter !== "all" && (selectedCategory === 'סלולר' || selectedCategory === 'all')) {
+      filtered = filtered.filter(plan => {
+        if (plan.service !== 'סלולר' && !plan.service.includes('סלולר')) return true; // Skip non-cellular
+        const b = benefits(plan);
+        if (dataVolumeFilter === "100+") {
+          if (b.includes('ללא הגבלה') || b.includes('אינסוף')) return true;
+          const gbMatch = b.match(/(\d+)\s*gb/i);
+          return gbMatch && parseInt(gbMatch[1]) >= 100;
+        }
+        if (dataVolumeFilter === "unlimited") {
+          return b.includes('ללא הגבלה') || b.includes('אינסוף');
+        }
+        return true;
+      });
+    }
+
+    // Speed filter (internet)
+    if (speedFilter !== "all" && (selectedCategory === 'אינטרנט' || selectedCategory === 'all')) {
+      filtered = filtered.filter(plan => {
+        if (!plan.service.includes('אינטרנט') && !plan.service.includes('טריפל')) return true; // Skip non-internet
+        const b = benefits(plan);
+        const speedMatch = b.match(/(\d+)\s*מגה/i);
+        const speed = speedMatch ? parseInt(speedMatch[1]) : 0;
+        if (speedFilter === "100") return speed < 100;
+        if (speedFilter === "100-500") return speed >= 100 && speed < 500;
+        if (speedFilter === "500+") return speed >= 500;
+        return true;
+      });
+    }
+
+    // Commitment filter
+    if (commitmentFilter !== "all") {
+      filtered = filtered.filter(plan => {
+        if (!plan.commitment) return commitmentFilter === "none";
+        if (commitmentFilter === "none") return plan.commitment.includes('ללא');
+        if (commitmentFilter === "12") return plan.commitment.includes('12');
+        if (commitmentFilter === "24") return plan.commitment.includes('24');
+        return true;
+      });
+    }
+
+    // Special features
+    if (has5G || hasEsim || hasFiber) {
+      filtered = filtered.filter(plan => {
+        const b = benefits(plan);
+        if (has5G && !b.includes('5g')) return false;
+        if (hasEsim && !b.includes('esim') && !b.includes('e-sim')) return false;
+        if (hasFiber && !b.includes('סיב אופטי') && !b.includes('fiber')) return false;
+        return true;
+      });
+    }
+
     // Sort
     const sorted = [...filtered].sort((a, b) => {
       switch (sortBy) {
@@ -160,7 +228,7 @@ const AllPlans = () => {
     });
 
     return sorted;
-  }, [allPlans, selectedCategory, searchQuery, sortBy]);
+  }, [allPlans, selectedCategory, searchQuery, sortBy, dataVolumeFilter, speedFilter, commitmentFilter, has5G, hasEsim, hasFiber]);
 
   // Group plans by company
   const plansByCompany = useMemo(() => {
@@ -402,9 +470,22 @@ const AllPlans = () => {
         {/* Filters Section - Compact */}
         <Card className="mb-8 shadow-sm border-gray-200 bg-white">
           <CardContent className="p-5">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-xs font-light text-gray-500">סינון וחיפוש</h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                className="text-xs"
+              >
+                <SlidersHorizontal className="h-3.5 w-3.5 ml-1" />
+                פילטרים מתקדמים
+              </Button>
+            </div>
+
             {/* Category Pills */}
             <div className="mb-5">
-              <h3 className="text-xs font-light text-gray-500 mb-2.5">סינון לפי קטגוריה</h3>
+              <h3 className="text-xs font-light text-gray-500 mb-2.5">קטגוריה</h3>
               <div className="flex flex-wrap gap-1.5">
                 {categories.map((category) => {
                   const Icon = category.icon;
@@ -453,6 +534,100 @@ const AllPlans = () => {
                 </select>
               </div>
             </div>
+
+            {/* Advanced Filters */}
+            {showAdvancedFilters && (
+              <div className="mt-5 pt-5 border-t border-gray-200 space-y-4 animate-fade-in">
+                <h4 className="text-xs font-semibold text-gray-700">פילטרים מתקדמים</h4>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {/* Data Volume Filter (Cellular) */}
+                  {(selectedCategory === 'all' || selectedCategory === 'סלולר') && (
+                    <div>
+                      <Label className="text-xs text-gray-600 mb-1.5 block">נפח גלישה</Label>
+                      <select
+                        value={dataVolumeFilter}
+                        onChange={(e) => setDataVolumeFilter(e.target.value)}
+                        className="w-full h-9 px-3 text-xs rounded-lg border border-gray-200 bg-white text-gray-900 font-light focus:outline-none focus:ring-2 focus:ring-gray-300"
+                      >
+                        <option value="all">הכל</option>
+                        <option value="100+">100GB ומעלה</option>
+                        <option value="unlimited">ללא הגבלה</option>
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Speed Filter (Internet) */}
+                  {(selectedCategory === 'all' || selectedCategory === 'אינטרנט') && (
+                    <div>
+                      <Label className="text-xs text-gray-600 mb-1.5 block">מהירות אינטרנט</Label>
+                      <select
+                        value={speedFilter}
+                        onChange={(e) => setSpeedFilter(e.target.value)}
+                        className="w-full h-9 px-3 text-xs rounded-lg border border-gray-200 bg-white text-gray-900 font-light focus:outline-none focus:ring-2 focus:ring-gray-300"
+                      >
+                        <option value="all">הכל</option>
+                        <option value="100">עד 100 מגה</option>
+                        <option value="100-500">100-500 מגה</option>
+                        <option value="500+">500+ מגה</option>
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Commitment Filter */}
+                  <div>
+                    <Label className="text-xs text-gray-600 mb-1.5 block">התחייבות</Label>
+                    <select
+                      value={commitmentFilter}
+                      onChange={(e) => setCommitmentFilter(e.target.value)}
+                      className="w-full h-9 px-3 text-xs rounded-lg border border-gray-200 bg-white text-gray-900 font-light focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    >
+                      <option value="all">הכל</option>
+                      <option value="none">ללא התחייבות</option>
+                      <option value="12">12 חודשים</option>
+                      <option value="24">24 חודשים</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Special Features Checkboxes */}
+                <div>
+                  <Label className="text-xs text-gray-600 mb-2 block">תכונות מיוחדות</Label>
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <Checkbox
+                        id="has5g"
+                        checked={has5G}
+                        onCheckedChange={(checked) => setHas5G(checked as boolean)}
+                      />
+                      <Label htmlFor="has5g" className="text-xs cursor-pointer text-gray-700">
+                        5G בלבד
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <Checkbox
+                        id="hasEsim"
+                        checked={hasEsim}
+                        onCheckedChange={(checked) => setHasEsim(checked as boolean)}
+                      />
+                      <Label htmlFor="hasEsim" className="text-xs cursor-pointer text-gray-700">
+                        תמיכה ב-eSIM
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <Checkbox
+                        id="hasFiber"
+                        checked={hasFiber}
+                        onCheckedChange={(checked) => setHasFiber(checked as boolean)}
+                      />
+                      <Label htmlFor="hasFiber" className="text-xs cursor-pointer text-gray-700">
+                        סיב אופטי בלבד
+                      </Label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
