@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Send, Loader2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Send, Loader2, Sparkles, MessageCircle } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
 import { PlanRecord } from '@/hooks/useAllPlans';
-import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -17,14 +17,20 @@ interface ChatInterfaceProps {
 }
 
 export const ChatInterface = ({ plans }: ChatInterfaceProps) => {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([
     { 
       role: 'assistant', 
-      content: 'שלום! 👋 אני כאן לעזור לך למצוא את המסלולים הטובים ביותר. ספר לי, באיזה שירות אתה מעוניין? (חשמל, סלולר, אינטרנט, או טלוויזיה)' 
+      content: '👋 היי! בואו נמצא לכם את המסלול המושלם במהירות.\n\nאיזה שירות מעניין אתכם?' 
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [conversationData, setConversationData] = useState<{
+    service?: string;
+    budget?: number;
+    currentProvider?: string;
+  }>({});
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -37,23 +43,12 @@ export const ChatInterface = ({ plans }: ChatInterfaceProps) => {
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
-    // Validate input length
-    if (input.length > 1000) {
-      toast({
-        title: 'שגיאה',
-        description: 'ההודעה ארוכה מדי. אנא קצר אותה.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     const userMessage: Message = { role: 'user', content: input.trim() };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
     try {
-      // Use Supabase client instead of direct fetch
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-assistant`, {
         method: 'POST',
         headers: {
@@ -61,16 +56,8 @@ export const ChatInterface = ({ plans }: ChatInterfaceProps) => {
           'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ 
-          messages: [...messages, userMessage].slice(-20), // Limit message history
-          availablePlans: plans.slice(0, 100).map(p => ({
-            company: p.company,
-            service: p.service,
-            plan: p.plan,
-            monthlyPrice: p.monthlyPrice,
-            yearlyPrice: p.yearlyPrice,
-            transferBenefits: p.transferBenefits,
-            commitment: p.commitment
-          }))
+          messages: [...messages, userMessage],
+          conversationData
         }),
       });
 
@@ -126,6 +113,25 @@ export const ChatInterface = ({ plans }: ChatInterfaceProps) => {
                 };
                 return newMessages;
               });
+              
+              // Check if we should navigate to plans
+              if (assistantMessage.includes('[NAVIGATE_TO_PLANS]')) {
+                const cleanMessage = assistantMessage.replace('[NAVIGATE_TO_PLANS]', '').trim();
+                setMessages(prev => {
+                  const newMessages = [...prev];
+                  newMessages[newMessages.length - 1] = {
+                    role: 'assistant',
+                    content: cleanMessage
+                  };
+                  return newMessages;
+                });
+                
+                // Navigate after a short delay
+                setTimeout(() => {
+                  localStorage.setItem('chatFilters', JSON.stringify(conversationData));
+                  navigate('/plans');
+                }, 1500);
+              }
             }
           } catch (e) {
             textBuffer = line + '\n' + textBuffer;
@@ -155,54 +161,109 @@ export const ChatInterface = ({ plans }: ChatInterfaceProps) => {
     }
   };
 
+  // Quick action buttons
+  const quickActions = [
+    { label: '📱 סלולר', value: 'סלולר' },
+    { label: '💡 חשמל', value: 'חשמל' },
+    { label: '🌐 אינטרנט', value: 'אינטרנט' },
+    { label: '📺 טלוויזיה', value: 'טלוויזיה' },
+  ];
+
+  const handleQuickAction = (value: string) => {
+    setInput(value);
+  };
+
   return (
-    <div className="flex flex-col h-full">
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-        <div className="space-y-4">
+    <div className="flex flex-col h-full bg-gradient-to-b from-white to-gray-50">
+      <ScrollArea className="flex-1 px-6 py-8" ref={scrollRef}>
+        <div className="max-w-3xl mx-auto space-y-6">
           {messages.map((msg, idx) => (
             <div
               key={idx}
-              className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex gap-3 animate-fade-in ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              style={{ animationDelay: `${idx * 100}ms` }}
             >
+              {msg.role === 'assistant' && (
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                  <Sparkles className="h-5 w-5 text-white" />
+                </div>
+              )}
               <div
-                className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                className={`max-w-[75%] rounded-2xl px-5 py-4 shadow-sm ${
                   msg.role === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted'
+                    ? 'bg-gradient-to-br from-gray-900 to-gray-800 text-white'
+                    : 'bg-white border border-gray-200'
                 }`}
               >
-                <p className="whitespace-pre-wrap text-sm">{msg.content}</p>
+                <p className="whitespace-pre-wrap text-base leading-relaxed">{msg.content}</p>
               </div>
+              {msg.role === 'user' && (
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                  <MessageCircle className="h-5 w-5 text-gray-700" />
+                </div>
+              )}
             </div>
           ))}
+          
           {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-muted rounded-lg px-4 py-2">
-                <Loader2 className="h-4 w-4 animate-spin" />
+            <div className="flex gap-3 justify-start animate-fade-in">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                <Sparkles className="h-5 w-5 text-white" />
               </div>
+              <div className="bg-white border border-gray-200 rounded-2xl px-5 py-4 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+                  <span className="text-gray-500 text-sm">מחשב תשובה...</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Quick Actions - Show only if no messages yet or first message */}
+          {messages.length <= 1 && !isLoading && (
+            <div className="flex flex-wrap gap-2 justify-center mt-6 animate-fade-in">
+              {quickActions.map((action) => (
+                <Button
+                  key={action.value}
+                  variant="outline"
+                  onClick={() => handleQuickAction(action.value)}
+                  className="rounded-full hover:bg-gray-100 transition-all hover:scale-105"
+                >
+                  {action.label}
+                </Button>
+              ))}
             </div>
           )}
         </div>
       </ScrollArea>
       
-      <div className="border-t p-4">
-        <div className="flex gap-2">
-          <Textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="הקלד את הודעתך כאן..."
-            className="resize-none"
-            rows={2}
-            disabled={isLoading}
-          />
-          <Button 
-            onClick={sendMessage} 
-            disabled={!input.trim() || isLoading}
-            size="icon"
-          >
-            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-          </Button>
+      <div className="border-t bg-white px-6 py-5">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex gap-3 items-end">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="כתבו את התשובה שלכם..."
+              className="flex-1 rounded-full px-5 py-6 text-base border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+              disabled={isLoading}
+            />
+            <Button 
+              onClick={sendMessage} 
+              disabled={!input.trim() || isLoading}
+              size="lg"
+              className="rounded-full px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
+            >
+              {isLoading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+            </Button>
+          </div>
+          <p className="text-xs text-gray-500 text-center mt-3">
+            המערכת תנתח את צרכיכם ותציג את המסלולים המתאימים ביותר
+          </p>
         </div>
       </div>
     </div>
