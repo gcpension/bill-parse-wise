@@ -161,109 +161,167 @@ export const ChatInterface = ({ plans }: ChatInterfaceProps) => {
     }
   };
 
-  // Quick action buttons
+  // Quick action buttons with emojis and descriptions
   const quickActions = [
-    { label: '📱 סלולר', value: 'סלולר' },
-    { label: '💡 חשמל', value: 'חשמל' },
-    { label: '🌐 אינטרנט', value: 'אינטרנט' },
-    { label: '📺 טלוויזיה', value: 'טלוויזיה' },
+    { 
+      label: 'סלולר', 
+      value: 'אני מחפש מסלול סלולר', 
+      emoji: '📱',
+      description: 'מסלולי סלולר מתקדמים'
+    },
+    { 
+      label: 'חשמל', 
+      value: 'אני מחפש מסלול חשמל', 
+      emoji: '⚡',
+      description: 'חיסכון בחשבון החשמל'
+    },
+    { 
+      label: 'אינטרנט', 
+      value: 'אני מחפש מסלול אינטרנט', 
+      emoji: '🌐',
+      description: 'אינטרנט מהיר ויציב'
+    },
+    { 
+      label: 'טלוויזיה', 
+      value: 'אני מחפש מסלול טלוויזיה', 
+      emoji: '📺',
+      description: 'ערוצים ושידורים'
+    },
   ];
 
   const handleQuickAction = (value: string) => {
     setInput(value);
+    setTimeout(() => sendMessage(), 100);
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-white to-gray-50">
-      <ScrollArea className="flex-1 px-6 py-8" ref={scrollRef}>
-        <div className="max-w-3xl mx-auto space-y-6">
+    <div className="flex flex-col h-full relative overflow-hidden">
+      {/* Animated background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 opacity-50 animate-pulse" 
+           style={{ animationDuration: '8s' }} 
+      />
+      
+      <ScrollArea className="flex-1 px-4 md:px-8 py-6 relative z-10" ref={scrollRef}>
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* Welcome banner with animation */}
+          {messages.length <= 1 && (
+            <div className="text-center space-y-6 animate-fade-in mb-8">
+              <div className="inline-block">
+                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center shadow-2xl animate-scale-in">
+                  <Sparkles className="h-10 w-10 text-white animate-pulse" />
+                </div>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                בואו נמצא את המסלול המושלם עבורכם
+              </h2>
+              <p className="text-gray-600 text-lg">
+                תהליך מהיר וחכם שיחסוך לכם זמן וכסף
+              </p>
+            </div>
+          )}
+
           {messages.map((msg, idx) => (
             <div
               key={idx}
-              className={`flex gap-3 animate-fade-in ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              style={{ animationDelay: `${idx * 100}ms` }}
+              className={`flex gap-3 md:gap-4 animate-fade-in ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              style={{ animationDelay: `${idx * 50}ms` }}
             >
               {msg.role === 'assistant' && (
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-                  <Sparkles className="h-5 w-5 text-white" />
+                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                  <Sparkles className="h-6 w-6 text-white" />
                 </div>
               )}
               <div
-                className={`max-w-[75%] rounded-2xl px-5 py-4 shadow-sm ${
+                className={`group max-w-[80%] md:max-w-[75%] rounded-3xl px-6 py-4 shadow-md hover:shadow-xl transition-all duration-300 ${
                   msg.role === 'user'
-                    ? 'bg-gradient-to-br from-gray-900 to-gray-800 text-white'
-                    : 'bg-white border border-gray-200'
+                    ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white transform hover:scale-[1.02]'
+                    : 'bg-white/90 backdrop-blur-sm border-2 border-gray-100 transform hover:scale-[1.02]'
                 }`}
               >
-                <p className="whitespace-pre-wrap text-base leading-relaxed">{msg.content}</p>
+                <p className="whitespace-pre-wrap text-base md:text-lg leading-relaxed">{msg.content}</p>
               </div>
               {msg.role === 'user' && (
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                  <MessageCircle className="h-5 w-5 text-gray-700" />
+                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                  <MessageCircle className="h-6 w-6 text-white" />
                 </div>
               )}
             </div>
           ))}
           
           {isLoading && (
-            <div className="flex gap-3 justify-start animate-fade-in">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <Sparkles className="h-5 w-5 text-white" />
+            <div className="flex gap-4 justify-start animate-fade-in">
+              <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+                <Sparkles className="h-6 w-6 text-white animate-pulse" />
               </div>
-              <div className="bg-white border border-gray-200 rounded-2xl px-5 py-4 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
-                  <span className="text-gray-500 text-sm">מחשב תשובה...</span>
+              <div className="bg-white/90 backdrop-blur-sm border-2 border-gray-100 rounded-3xl px-6 py-4 shadow-md">
+                <div className="flex items-center gap-3">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                  <span className="text-gray-600 text-sm font-medium">AI חושב...</span>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Quick Actions - Show only if no messages yet or first message */}
+          {/* Enhanced Quick Actions */}
           {messages.length <= 1 && !isLoading && (
-            <div className="flex flex-wrap gap-2 justify-center mt-6 animate-fade-in">
-              {quickActions.map((action) => (
-                <Button
+            <div className="grid grid-cols-2 gap-3 md:gap-4 mt-8 animate-fade-in" style={{ animationDelay: '300ms' }}>
+              {quickActions.map((action, idx) => (
+                <button
                   key={action.value}
-                  variant="outline"
                   onClick={() => handleQuickAction(action.value)}
-                  className="rounded-full hover:bg-gray-100 transition-all hover:scale-105"
+                  className="group relative p-6 rounded-2xl bg-white/80 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-400 hover:shadow-xl transition-all duration-300 hover:scale-105 animate-scale-in"
+                  style={{ animationDelay: `${idx * 100}ms` }}
                 >
-                  {action.label}
-                </Button>
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="relative z-10 text-center space-y-2">
+                    <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">{action.emoji}</div>
+                    <div className="font-bold text-lg text-gray-900">{action.label}</div>
+                    <div className="text-sm text-gray-600">{action.description}</div>
+                  </div>
+                </button>
               ))}
             </div>
           )}
         </div>
       </ScrollArea>
       
-      <div className="border-t bg-white px-6 py-5">
-        <div className="max-w-3xl mx-auto">
+      {/* Enhanced input area */}
+      <div className="relative z-10 border-t-2 border-gray-200/50 bg-white/90 backdrop-blur-xl px-4 md:px-8 py-6 shadow-2xl">
+        <div className="max-w-4xl mx-auto">
           <div className="flex gap-3 items-end">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="כתבו את התשובה שלכם..."
-              className="flex-1 rounded-full px-5 py-6 text-base border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-              disabled={isLoading}
-            />
+            <div className="flex-1 relative">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="כתבו את תשובתכם כאן..."
+                className="w-full rounded-2xl px-6 py-6 text-base md:text-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 transition-all shadow-sm"
+                disabled={isLoading}
+              />
+            </div>
             <Button 
               onClick={sendMessage} 
               disabled={!input.trim() || isLoading}
               size="lg"
-              className="rounded-full px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
+              className="rounded-2xl px-8 py-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <Loader2 className="h-6 w-6 animate-spin" />
               ) : (
-                <Send className="h-5 w-5" />
+                <Send className="h-6 w-6" />
               )}
             </Button>
           </div>
-          <p className="text-xs text-gray-500 text-center mt-3">
-            המערכת תנתח את צרכיכם ותציג את המסלולים המתאימים ביותר
-          </p>
+          <div className="mt-3 text-center">
+            <p className="text-xs text-gray-500 inline-flex items-center gap-2">
+              <Sparkles className="h-3 w-3" />
+              בינה מלאכותית מתקדמת תמצא עבורכם את המסלול האידיאלי
+            </p>
+          </div>
         </div>
       </div>
     </div>
