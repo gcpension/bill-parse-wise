@@ -324,7 +324,7 @@ const Home = () => {
           onClick={() => setShowAI(false)}
         >
           <div 
-            className="w-full max-w-4xl h-[80vh] bg-white rounded-2xl shadow-2xl overflow-hidden"
+            className="w-full max-w-2xl h-[70vh] bg-white rounded-2xl shadow-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <AIAssistant plans={allPlans} />

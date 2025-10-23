@@ -14,16 +14,16 @@ export const AIAssistant = ({ plans }: AIAssistantProps) => {
   const [activeTab, setActiveTab] = useState<'chat' | 'voice'>('chat');
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 to-white">
-      <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-black px-6 py-6 shadow-2xl">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl animate-pulse">
-              <Sparkles className="text-white text-2xl h-7 w-7" />
+    <div className="flex flex-col h-full bg-white">
+      <div className="bg-gray-900 px-6 py-4 border-b border-gray-200">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center">
+              <Sparkles className="text-white h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white mb-1">עוזר AI מתקדם</h2>
-              <p className="text-sm text-gray-300">טכנולוגיית בינה מלאכותית חדשנית</p>
+              <h2 className="text-lg font-bold text-white">עוזר AI</h2>
+              <p className="text-xs text-gray-400">מוכן לעזור</p>
             </div>
           </div>
         </div>
@@ -33,31 +33,31 @@ export const AIAssistant = ({ plans }: AIAssistantProps) => {
           onValueChange={(v) => setActiveTab(v as 'chat' | 'voice')}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-2 bg-gray-800/50 backdrop-blur-sm border-2 border-gray-700 p-1 rounded-2xl">
+          <TabsList className="grid w-full grid-cols-2 bg-gray-800 p-1 rounded-xl">
             <TabsTrigger 
               value="chat" 
-              className="gap-2 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white transition-all duration-300 data-[state=active]:shadow-lg py-3"
+              className="gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:text-gray-900 py-2"
             >
-              <MessageSquare className="h-5 w-5" />
-              <span className="font-semibold">צ'אט טקסט</span>
+              <MessageSquare className="h-4 w-4" />
+              <span className="font-medium text-sm">צ'אט</span>
             </TabsTrigger>
             <TabsTrigger 
               value="voice" 
-              className="gap-2 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white transition-all duration-300 data-[state=active]:shadow-lg py-3"
+              className="gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:text-gray-900 py-2"
             >
-              <Mic className="h-5 w-5" />
-              <span className="font-semibold">שיחה קולית</span>
+              <Mic className="h-4 w-4" />
+              <span className="font-medium text-sm">קול</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="chat" className="h-full m-0 mt-0">
-            <div className="h-[calc(85vh-180px)] rounded-b-2xl overflow-hidden shadow-xl">
+            <div className="h-[calc(80vh-140px)] overflow-hidden">
               <ChatInterface plans={plans} />
             </div>
           </TabsContent>
 
           <TabsContent value="voice" className="h-full m-0 mt-0">
-            <div className="h-[calc(85vh-180px)] rounded-b-2xl overflow-hidden shadow-xl">
+            <div className="h-[calc(80vh-140px)] overflow-hidden">
               <VoiceInterface />
             </div>
           </TabsContent>
