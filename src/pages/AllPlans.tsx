@@ -386,45 +386,65 @@ const AllPlans = () => {
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl py-8">
-        {/* Company Logos Section */}
-        <div className="mb-8 text-center">
-          <div className="flex flex-wrap justify-center items-center gap-6 py-6">
-            {Object.entries(companyLogos).map(([company, logo]) => (
-              <div key={company} className="grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
-                <img 
-                  src={logo} 
-                  alt={company}
-                  className="h-8 w-auto object-contain"
-                />
-              </div>
-            ))}
+        {/* Company Logos Section - Enhanced */}
+        <div className="mb-10">
+          <div className="text-center mb-6">
+            <h2 className="text-lg font-medium text-gray-700 mb-2">החברות המובילות בישראל</h2>
+            <p className="text-sm text-gray-500">משווים עבורכם את כל הספקים הגדולים במקום אחד</p>
+          </div>
+          <div className="relative bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-200/60 shadow-sm p-6 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none"></div>
+            <div className="relative flex flex-wrap justify-center items-center gap-8">
+              {Object.entries(companyLogos).map(([company, logo], index) => (
+                <div 
+                  key={company} 
+                  className="grayscale hover:grayscale-0 transition-all duration-500 opacity-50 hover:opacity-100 hover:scale-110 cursor-pointer group"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-primary/10 rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <img 
+                      src={logo} 
+                      alt={company}
+                      className="relative h-10 w-auto object-contain transition-transform duration-300"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Enhanced Savings Banner - Centered */}
+        {/* Enhanced Savings Banner - Modern Hero */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
-          <div className="mb-8 animate-fade-in">
-            <div className="relative bg-gradient-to-br from-green-50/40 via-white to-green-50/20 border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-              <div className="grid md:grid-cols-2 gap-8 items-center p-8">
+          <div className="mb-10 animate-fade-in">
+            <div className="relative bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 rounded-3xl shadow-2xl overflow-hidden">
+              {/* Animated background pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+              </div>
+              
+              <div className="relative grid md:grid-cols-2 gap-8 items-center p-10">
                 {/* Content - Right Side */}
-                <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1">
+                <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1 text-white">
                   {/* Icon Circle */}
-                  <div className="relative flex-shrink-0">
-                    <div className="absolute inset-0 bg-green-100 rounded-full blur-xl opacity-50"></div>
-                    <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-green-50 border border-green-200">
-                      <TrendingDown className="w-8 h-8 text-green-600" strokeWidth={2} />
+                  <div className="relative flex-shrink-0 animate-bounce" style={{ animationDuration: '3s' }}>
+                    <div className="absolute inset-0 bg-white rounded-full blur-2xl opacity-30"></div>
+                    <div className="relative flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/30">
+                      <TrendingDown className="w-10 h-10 text-white drop-shadow-lg" strokeWidth={2.5} />
                     </div>
                   </div>
                   
                   {/* Main Headline */}
-                  <div className="space-y-3">
-                    <h2 className="text-2xl font-light text-gray-900">
-                      החיסכון השנתי שלכם
-                    </h2>
+                  <div className="space-y-4">
+                    <div className="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
+                      <p className="text-sm font-medium text-white">💰 החיסכון השנתי שלכם</p>
+                    </div>
                     
                     {/* Large Amount */}
-                    <div className="flex items-baseline justify-center md:justify-end gap-2">
-                      <span className="text-6xl font-light text-gray-900 tracking-tight">
+                    <div className="flex items-baseline justify-center md:justify-end gap-3">
+                      <span className="text-7xl font-bold text-white drop-shadow-2xl tracking-tight">
                         ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
                       </span>
                       <span className="text-2xl font-light text-gray-500">
