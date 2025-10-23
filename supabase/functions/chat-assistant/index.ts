@@ -5,13 +5,86 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Rate limiting map (simple in-memory, in production use Redis)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 20; // requests per window
+const RATE_WINDOW = 60000; // 1 minute
+
+function checkRateLimit(identifier: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(identifier);
+  
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(identifier, { count: 1, resetTime: now + RATE_WINDOW });
+    return true;
+  }
+  
+  if (record.count >= RATE_LIMIT) {
+    return false;
+  }
+  
+  record.count++;
+  return true;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // Rate limiting
+    const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
+    if (!checkRateLimit(clientIP)) {
+      return new Response(JSON.stringify({ 
+        error: 'חרגת ממספר הבקשות המותר. נסה שוב בעוד דקה.' 
+      }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const { messages, availablePlans } = await req.json();
+    
+    // Input validation
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return new Response(JSON.stringify({ 
+        error: 'נתונים לא תקינים' 
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Validate message structure and length
+    for (const msg of messages) {
+      if (!msg.role || !msg.content) {
+        return new Response(JSON.stringify({ 
+          error: 'נתונים לא תקינים' 
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (msg.content.length > 5000) {
+        return new Response(JSON.stringify({ 
+          error: 'הודעה ארוכה מדי' 
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+    }
+
+    // Limit total messages
+    if (messages.length > 100) {
+      return new Response(JSON.stringify({ 
+        error: 'יותר מדי הודעות בשיחה' 
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
     
     if (!messages || !Array.isArray(messages)) {
       throw new Error('Messages array is required');
@@ -67,6 +140,9 @@ ${availablePlans ? `יש לך ${availablePlans.length} מסלולים אמיתי
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('AI gateway error:', response.status, errorText);
+      
       if (response.status === 429) {
         return new Response(JSON.stringify({ 
           error: 'חרגנו ממגבלת הבקשות. אנא נסה שוב מאוחר יותר.' 
@@ -84,9 +160,12 @@ ${availablePlans ? `יש לך ${availablePlans.length} מסלולים אמיתי
         });
       }
       
-      const errorText = await response.text();
-      console.error('AI gateway error:', response.status, errorText);
-      throw new Error('AI gateway error');
+      return new Response(JSON.stringify({ 
+        error: 'אירעה שגיאה. אנא נסה שוב.' 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     return new Response(response.body, {
@@ -102,7 +181,7 @@ ${availablePlans ? `יש לך ${availablePlans.length} מסלולים אמיתי
     console.error('Chat assistant error:', error);
     return new Response(
       JSON.stringify({ 
-        error: error instanceof Error ? error.message : 'שגיאה לא ידועה' 
+        error: 'אירעה שגיאה לא צפויה. אנא נסה שוב מאוחר יותר.' 
       }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

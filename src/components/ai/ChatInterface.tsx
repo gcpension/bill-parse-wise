@@ -5,6 +5,7 @@ import { Send, Loader2 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
 import { PlanRecord } from '@/hooks/useAllPlans';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -36,23 +37,32 @@ export const ChatInterface = ({ plans }: ChatInterfaceProps) => {
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
-    const userMessage: Message = { role: 'user', content: input };
+    // Validate input length
+    if (input.length > 1000) {
+      toast({
+        title: 'שגיאה',
+        description: 'ההודעה ארוכה מדי. אנא קצר אותה.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const userMessage: Message = { role: 'user', content: input.trim() };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
     try {
-      const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-assistant`;
-      
-      const response = await fetch(CHAT_URL, {
+      // Use Supabase client instead of direct fetch
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-assistant`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ 
-          messages: [...messages, userMessage],
-          availablePlans: plans.map(p => ({
+          messages: [...messages, userMessage].slice(-20), // Limit message history
+          availablePlans: plans.slice(0, 100).map(p => ({
             company: p.company,
             service: p.service,
             plan: p.plan,
@@ -64,7 +74,12 @@ export const ChatInterface = ({ plans }: ChatInterfaceProps) => {
         }),
       });
 
-      if (!response.ok || !response.body) {
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'שגיאה בחיבור לשרת');
+      }
+
+      if (!response.body) {
         throw new Error('שגיאה בחיבור לשרת');
       }
 
