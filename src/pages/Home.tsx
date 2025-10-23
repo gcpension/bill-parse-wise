@@ -320,13 +320,19 @@ const Home = () => {
       {/* AI Assistant Dialog */}
       {showAI && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in"
           onClick={() => setShowAI(false)}
         >
           <div 
-            className="w-full max-w-2xl h-[70vh] bg-white rounded-2xl shadow-2xl overflow-hidden"
+            className="relative w-full max-w-3xl h-[75vh] animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
+            <button
+              onClick={() => setShowAI(false)}
+              className="absolute -top-5 -right-5 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center hover:bg-gray-100 hover:rotate-90 transition-all duration-300 z-10 border-4 border-gray-100"
+            >
+              <span className="text-gray-900 text-2xl">×</span>
+            </button>
             <AIAssistant plans={allPlans} />
           </div>
         </div>
