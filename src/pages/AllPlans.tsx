@@ -39,6 +39,7 @@ import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm"
 import annualSavingsSketch from "@/assets/savings-clean.png";
 import EnhancedPlanCardModern from "@/components/plans/EnhancedPlanCardModern";
 import { PlanRecordDetailsSheet } from "@/components/plans/PlanRecordDetailsSheet";
+import { AIAssistant } from "@/components/ai/AIAssistant";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -907,6 +908,9 @@ const AllPlans = () => {
 
       {/* Personalized Wizard Float */}
       <PersonalizedWizardFloat />
+      
+      {/* AI Assistant */}
+      <AIAssistant plans={allPlans} />
     </div>
   );
 };
