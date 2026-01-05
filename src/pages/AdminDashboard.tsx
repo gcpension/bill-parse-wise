@@ -57,6 +57,7 @@ interface ServiceRequest {
   updated_at: string;
   selected_plan_name: string | null;
   selected_plan_price: number | null;
+  selected_plan_features: any;
   national_id_or_corp: string;
   company_name: string | null;
   poa: boolean | null;
@@ -70,6 +71,9 @@ interface ServiceRequest {
   current_customer_number: string | null;
   current_phone_number: string | null;
   current_sim_number: string | null;
+  current_line_number: string | null;
+  current_subscriber_number: string | null;
+  current_decoder_number: string | null;
   additional_notes: string | null;
 }
 
@@ -432,6 +436,7 @@ export default function AdminDashboard() {
                       <TableHead className="text-right">שם מלא</TableHead>
                       <TableHead className="text-right">טלפון</TableHead>
                       <TableHead className="text-right">סקטור</TableHead>
+                      <TableHead className="text-right">מסלול נבחר</TableHead>
                       <TableHead className="text-right">סטטוס</TableHead>
                       <TableHead className="text-right">חתימה</TableHead>
                       <TableHead className="text-right">תאריך</TableHead>
@@ -454,6 +459,20 @@ export default function AdminDashboard() {
                           <Badge variant="outline">
                             {sectorLabels[request.sector] || request.sector}
                           </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {request.selected_plan_name ? (
+                            <div className="text-sm">
+                              <span className="font-medium">{request.selected_plan_name}</span>
+                              {request.selected_plan_price && (
+                                <span className="text-muted-foreground mr-1">
+                                  (₪{request.selected_plan_price})
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">-</span>
+                          )}
                         </TableCell>
                         <TableCell>
                           <Badge className={statusColors[request.status] || statusColors.pending}>
@@ -644,15 +663,30 @@ export default function AdminDashboard() {
               {selectedRequest.selected_plan_name && (
                 <div className="space-y-3">
                   <h3 className="font-semibold border-b pb-2">תכנית שנבחרה</h3>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">שם תכנית:</span>
-                      <p className="font-medium">{selectedRequest.selected_plan_name}</p>
-                    </div>
-                    {selectedRequest.selected_plan_price && (
+                  <div className="space-y-3 text-sm">
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <span className="text-muted-foreground">מחיר:</span>
-                        <p className="font-medium">₪{selectedRequest.selected_plan_price}</p>
+                        <span className="text-muted-foreground">שם תכנית:</span>
+                        <p className="font-medium">{selectedRequest.selected_plan_name}</p>
+                      </div>
+                      {selectedRequest.selected_plan_price && (
+                        <div>
+                          <span className="text-muted-foreground">מחיר:</span>
+                          <p className="font-medium">₪{selectedRequest.selected_plan_price} לחודש</p>
+                        </div>
+                      )}
+                    </div>
+                    {selectedRequest.selected_plan_features && selectedRequest.selected_plan_features.length > 0 && (
+                      <div>
+                        <span className="text-muted-foreground">תכונות התכנית:</span>
+                        <ul className="mt-1 space-y-1">
+                          {selectedRequest.selected_plan_features.map((feature, index) => (
+                            <li key={index} className="flex items-center gap-2">
+                              <CheckCircle className="h-3 w-3 text-green-500" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     )}
                   </div>
