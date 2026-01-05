@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -25,8 +25,7 @@ import {
   ArrowRight,
   Download,
   FileSpreadsheet,
-  Pen,
-  Trash2
+  Pen
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { he } from 'date-fns/locale';
@@ -40,7 +39,6 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import * as XLSX from 'xlsx';
 import { createHebrewPDF } from '@/lib/pdfUtils';
-import SignatureCanvas from 'react-signature-canvas';
 
 interface ServiceRequest {
   id: string;
@@ -66,6 +64,7 @@ interface ServiceRequest {
   fees_ack: boolean | null;
   esign_ok: boolean | null;
   signature_status: string | null;
+  signature_data: string | null;
   current_meter_number: string | null;
   current_account_number: string | null;
   current_customer_number: string | null;
@@ -105,10 +104,8 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null);
-  const [showSignatureDialog, setShowSignatureDialog] = useState(false);
-  const [signingRequest, setSigningRequest] = useState<ServiceRequest | null>(null);
-  const [signatureData, setSignatureData] = useState<string | null>(null);
-  const signatureRef = useRef<SignatureCanvas | null>(null);
+  const [showSignaturePreview, setShowSignaturePreview] = useState(false);
+  const [previewSignature, setPreviewSignature] = useState<string | null>(null);
   const { toast } = useToast();
 
   const fetchRequests = async () => {
@@ -193,7 +190,7 @@ export default function AdminDashboard() {
   };
 
   // Generate comprehensive PDF with all details and signature
-  const generateFullPDF = async (request: ServiceRequest, signature?: string) => {
+  const generateFullPDF = async (request: ServiceRequest) => {
     const title = `ייפוי כוח ובקשת מעבר ספק - ${request.reference_number || 'טיוטה'}`;
     
     const content: string[] = [
@@ -258,8 +255,8 @@ export default function AdminDashboard() {
       '',
       '=== חתימה ===',
       '',
-      signature ? '✓ המסמך נחתם דיגיטלית' : '⏳ ממתין לחתימה',
-      signature ? `תאריך חתימה: ${format(new Date(), 'dd/MM/yyyy HH:mm', { locale: he })}` : '',
+      request.signature_data ? '✓ המסמך נחתם דיגיטלית' : '⏳ ממתין לחתימה',
+      request.signature_status === 'signed' ? `תאריך חתימה: ${format(new Date(request.updated_at), 'dd/MM/yyyy HH:mm', { locale: he })}` : '',
       '',
       '________________________________',
       `חתימת הלקוח: ${request.full_name}`,
@@ -269,10 +266,10 @@ export default function AdminDashboard() {
     const pdf = await createHebrewPDF(title, content);
     
     // Add signature image if exists
-    if (signature) {
+    if (request.signature_data) {
       const pageHeight = pdf.internal.pageSize.height;
       try {
-        pdf.addImage(signature, 'PNG', 100, pageHeight - 60, 50, 25);
+        pdf.addImage(request.signature_data, 'PNG', 100, pageHeight - 60, 50, 25);
       } catch (error) {
         console.log('Could not add signature image');
       }
@@ -287,64 +284,10 @@ export default function AdminDashboard() {
     });
   };
 
-  // Handle digital signature
-  const openSignatureDialog = (request: ServiceRequest) => {
-    setSigningRequest(request);
-    setShowSignatureDialog(true);
-    setSignatureData(null);
-  };
-
-  const clearSignature = () => {
-    signatureRef.current?.clear();
-    setSignatureData(null);
-  };
-
-  const saveSignature = async () => {
-    if (!signatureRef.current || signatureRef.current.isEmpty()) {
-      toast({
-        title: 'נא לחתום',
-        description: 'יש לחתום לפני השמירה',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    const signatureDataUrl = signatureRef.current.toDataURL('image/png');
-    setSignatureData(signatureDataUrl);
-
-    // Update the request status in database
-    if (signingRequest) {
-      const { error } = await supabase
-        .from('service_requests')
-        .update({ 
-          signature_status: 'signed',
-          esign_ok: true,
-          status: 'pending',
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', signingRequest.id);
-
-      if (error) {
-        console.error('Error updating signature status:', error);
-        toast({
-          title: 'שגיאה',
-          description: 'לא ניתן לשמור את החתימה',
-          variant: 'destructive',
-        });
-        return;
-      }
-
-      // Generate and download PDF with signature
-      await generateFullPDF(signingRequest, signatureDataUrl);
-      
-      toast({
-        title: 'החתימה נשמרה בהצלחה',
-        description: 'המסמך החתום הורד לצפייה',
-      });
-
-      setShowSignatureDialog(false);
-      fetchRequests(); // Refresh data
-    }
+  // View signature
+  const viewSignature = (signatureData: string) => {
+    setPreviewSignature(signatureData);
+    setShowSignaturePreview(true);
   };
 
   return (
@@ -535,14 +478,16 @@ export default function AdminDashboard() {
                             >
                               <Eye className="h-4 w-4" />
                             </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="sm"
-                              onClick={() => openSignatureDialog(request)}
-                              title="חתימה"
-                            >
-                              <Pen className="h-4 w-4" />
-                            </Button>
+                            {request.signature_data && (
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => viewSignature(request.signature_data!)}
+                                title="צפה בחתימה"
+                              >
+                                <Pen className="h-4 w-4" />
+                              </Button>
+                            )}
                             <Button 
                               variant="ghost" 
                               size="sm"
@@ -577,13 +522,15 @@ export default function AdminDashboard() {
             <div className="space-y-6">
               {/* Action Buttons */}
               <div className="flex gap-2 flex-wrap">
-                <Button 
-                  onClick={() => openSignatureDialog(selectedRequest)}
-                  className="gap-2"
-                >
-                  <Pen className="h-4 w-4" />
-                  חתימה דיגיטלית
-                </Button>
+                {selectedRequest.signature_data && (
+                  <Button 
+                    onClick={() => viewSignature(selectedRequest.signature_data!)}
+                    className="gap-2"
+                  >
+                    <Pen className="h-4 w-4" />
+                    צפה בחתימה
+                  </Button>
+                )}
                 <Button 
                   variant="outline"
                   onClick={() => generateFullPDF(selectedRequest)}
@@ -753,57 +700,27 @@ export default function AdminDashboard() {
         </DialogContent>
       </Dialog>
 
-      {/* Signature Dialog */}
-      <Dialog open={showSignatureDialog} onOpenChange={setShowSignatureDialog}>
-        <DialogContent className="max-w-lg" dir="rtl">
+      {/* Signature Preview Dialog */}
+      <Dialog open={showSignaturePreview} onOpenChange={setShowSignaturePreview}>
+        <DialogContent className="max-w-md" dir="rtl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Pen className="h-5 w-5" />
-              חתימה דיגיטלית על ייפוי כוח
+              צפייה בחתימה
             </DialogTitle>
           </DialogHeader>
           
-          {signingRequest && (
+          {previewSignature && (
             <div className="space-y-4">
-              {/* POA Text */}
-              <div className="bg-muted p-4 rounded-lg text-sm space-y-2 max-h-48 overflow-y-auto">
-                <p className="font-semibold">ייפוי כוח</p>
-                <p>אני, <strong>{signingRequest.full_name}</strong>, ת.ז <strong>{signingRequest.national_id_or_corp}</strong>,</p>
-                <p>נותן/ת בזאת ייפוי כוח לחברת "השוואת מחירים" לפעול בשמי ולטפל במעבר הספק מ-<strong>{signingRequest.current_provider || 'הספק הנוכחי'}</strong> ל-<strong>{signingRequest.target_provider || 'הספק החדש'}</strong> בסקטור <strong>{sectorLabels[signingRequest.sector]}</strong>.</p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  ייפוי כוח זה מאפשר לחברה לבצע פעולות בשמי הכוללות: קבלת מידע מהספק הנוכחי, הגשת בקשת מעבר, חתימה על מסמכים נדרשים, וביצוע פעולות נלוות לתהליך המעבר.
-                </p>
+              <div className="border-2 rounded-lg p-4 bg-white">
+                <img 
+                  src={previewSignature} 
+                  alt="חתימת הלקוח" 
+                  className="max-w-full h-auto mx-auto"
+                />
               </div>
-
-              {/* Signature Canvas */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium">חתימה:</label>
-                <div className="border-2 border-dashed rounded-lg bg-white">
-                  <SignatureCanvas
-                    ref={signatureRef}
-                    canvasProps={{
-                      className: 'w-full h-32',
-                      style: { width: '100%', height: '128px' }
-                    }}
-                    backgroundColor="white"
-                  />
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex gap-2 justify-end">
-                <Button variant="outline" onClick={clearSignature} className="gap-2">
-                  <Trash2 className="h-4 w-4" />
-                  נקה חתימה
-                </Button>
-                <Button onClick={saveSignature} className="gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  שמור וחתום
-                </Button>
-              </div>
-
-              <p className="text-xs text-muted-foreground text-center">
-                בלחיצה על "שמור וחתום" אני מאשר/ת כי קראתי את ייפוי הכוח ומסכים/ה לתנאיו
+              <p className="text-sm text-muted-foreground text-center">
+                חתימה דיגיטלית שהתקבלה מהלקוח
               </p>
             </div>
           )}
