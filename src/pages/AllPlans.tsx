@@ -20,8 +20,7 @@ import {
   ChevronDown,
   X,
   Info,
-  Rocket,
-  SlidersHorizontal
+  Rocket
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -30,16 +29,11 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
 import annualSavingsSketch from "@/assets/savings-clean.png";
-import EnhancedPlanCardModern from "@/components/plans/EnhancedPlanCardModern";
-import { PlanRecordDetailsSheet } from "@/components/plans/PlanRecordDetailsSheet";
-import { AIAssistant } from "@/components/ai/AIAssistant";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -70,17 +64,6 @@ const AllPlans = () => {
   const [showTopPlan, setShowTopPlan] = useState(false);
   const [selectedPlanForForm, setSelectedPlanForForm] = useState<PlanRecord | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [selectedPlanForDetails, setSelectedPlanForDetails] = useState<PlanRecord | null>(null);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  
-  // Advanced filters
-  const [dataVolumeFilter, setDataVolumeFilter] = useState<string>("all");
-  const [speedFilter, setSpeedFilter] = useState<string>("all");
-  const [commitmentFilter, setCommitmentFilter] = useState<string>("all");
-  const [has5G, setHas5G] = useState(false);
-  const [hasEsim, setHasEsim] = useState(false);
-  const [hasFiber, setHasFiber] = useState(false);
 
   // Load stored analysis data
   useEffect(() => {
@@ -158,62 +141,6 @@ const AllPlans = () => {
     // Filter out plans without price
     filtered = filtered.filter(p => p.monthlyPrice && p.monthlyPrice > 0);
 
-    // Advanced filters
-    const benefits = (plan: PlanRecord) => plan.transferBenefits?.toLowerCase() || '';
-    
-    // Data volume filter (cellular)
-    if (dataVolumeFilter !== "all" && (selectedCategory === 'סלולר' || selectedCategory === 'all')) {
-      filtered = filtered.filter(plan => {
-        if (plan.service !== 'סלולר' && !plan.service.includes('סלולר')) return true; // Skip non-cellular
-        const b = benefits(plan);
-        if (dataVolumeFilter === "100+") {
-          if (b.includes('ללא הגבלה') || b.includes('אינסוף')) return true;
-          const gbMatch = b.match(/(\d+)\s*gb/i);
-          return gbMatch && parseInt(gbMatch[1]) >= 100;
-        }
-        if (dataVolumeFilter === "unlimited") {
-          return b.includes('ללא הגבלה') || b.includes('אינסוף');
-        }
-        return true;
-      });
-    }
-
-    // Speed filter (internet)
-    if (speedFilter !== "all" && (selectedCategory === 'אינטרנט' || selectedCategory === 'all')) {
-      filtered = filtered.filter(plan => {
-        if (!plan.service.includes('אינטרנט') && !plan.service.includes('טריפל')) return true; // Skip non-internet
-        const b = benefits(plan);
-        const speedMatch = b.match(/(\d+)\s*מגה/i);
-        const speed = speedMatch ? parseInt(speedMatch[1]) : 0;
-        if (speedFilter === "100") return speed < 100;
-        if (speedFilter === "100-500") return speed >= 100 && speed < 500;
-        if (speedFilter === "500+") return speed >= 500;
-        return true;
-      });
-    }
-
-    // Commitment filter
-    if (commitmentFilter !== "all") {
-      filtered = filtered.filter(plan => {
-        if (!plan.commitment) return commitmentFilter === "none";
-        if (commitmentFilter === "none") return plan.commitment.includes('ללא');
-        if (commitmentFilter === "12") return plan.commitment.includes('12');
-        if (commitmentFilter === "24") return plan.commitment.includes('24');
-        return true;
-      });
-    }
-
-    // Special features
-    if (has5G || hasEsim || hasFiber) {
-      filtered = filtered.filter(plan => {
-        const b = benefits(plan);
-        if (has5G && !b.includes('5g')) return false;
-        if (hasEsim && !b.includes('esim') && !b.includes('e-sim')) return false;
-        if (hasFiber && !b.includes('סיב אופטי') && !b.includes('fiber')) return false;
-        return true;
-      });
-    }
-
     // Sort
     const sorted = [...filtered].sort((a, b) => {
       switch (sortBy) {
@@ -229,7 +156,7 @@ const AllPlans = () => {
     });
 
     return sorted;
-  }, [allPlans, selectedCategory, searchQuery, sortBy, dataVolumeFilter, speedFilter, commitmentFilter, has5G, hasEsim, hasFiber]);
+  }, [allPlans, selectedCategory, searchQuery, sortBy]);
 
   // Group plans by company
   const plansByCompany = useMemo(() => {
@@ -284,16 +211,6 @@ const AllPlans = () => {
     localStorage.removeItem('selectedPlanForSwitch');
   };
 
-  const handleShowDetails = (plan: PlanRecord) => {
-    setSelectedPlanForDetails(plan);
-    setIsDetailsOpen(true);
-  };
-
-  const handleDetailsClose = () => {
-    setIsDetailsOpen(false);
-    setSelectedPlanForDetails(null);
-  };
-
   const getCategoryColor = (category: CategoryType) => {
     switch (category) {
       case 'חשמל': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
@@ -305,7 +222,7 @@ const AllPlans = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50/50 to-white font-assistant antialiased">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50/50 to-white font-heebo antialiased">
       {/* Floating Top Plan CTA */}
       {showTopPlan && topPlan && (
         <div 
@@ -387,65 +304,45 @@ const AllPlans = () => {
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl py-8">
-        {/* Company Logos Section - Enhanced */}
-        <div className="mb-10">
-          <div className="text-center mb-6">
-            <h2 className="text-lg font-medium text-gray-700 mb-2">החברות המובילות בישראל</h2>
-            <p className="text-sm text-gray-500">משווים עבורכם את כל הספקים הגדולים במקום אחד</p>
-          </div>
-          <div className="relative bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-200/60 shadow-sm p-6 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none"></div>
-            <div className="relative flex flex-wrap justify-center items-center gap-8">
-              {Object.entries(companyLogos).map(([company, logo], index) => (
-                <div 
-                  key={company} 
-                  className="grayscale hover:grayscale-0 transition-all duration-500 opacity-50 hover:opacity-100 hover:scale-110 cursor-pointer group"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-primary/10 rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <img 
-                      src={logo} 
-                      alt={company}
-                      className="relative h-10 w-auto object-contain transition-transform duration-300"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Company Logos Section */}
+        <div className="mb-8 text-center">
+          <div className="flex flex-wrap justify-center items-center gap-6 py-6">
+            {Object.entries(companyLogos).map(([company, logo]) => (
+              <div key={company} className="grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
+                <img 
+                  src={logo} 
+                  alt={company}
+                  className="h-8 w-auto object-contain"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Enhanced Savings Banner - Modern Hero */}
+        {/* Enhanced Savings Banner - Centered */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
-          <div className="mb-10 animate-fade-in">
-            <div className="relative bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 rounded-3xl shadow-2xl overflow-hidden">
-              {/* Animated background pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse"></div>
-                <div className="absolute bottom-0 left-0 w-80 h-80 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-              </div>
-              
-              <div className="relative grid md:grid-cols-2 gap-8 items-center p-10">
+          <div className="mb-8 animate-fade-in">
+            <div className="relative bg-gradient-to-br from-green-50/40 via-white to-green-50/20 border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+              <div className="grid md:grid-cols-2 gap-8 items-center p-8">
                 {/* Content - Right Side */}
-                <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1 text-white">
+                <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1">
                   {/* Icon Circle */}
-                  <div className="relative flex-shrink-0 animate-bounce" style={{ animationDuration: '3s' }}>
-                    <div className="absolute inset-0 bg-white rounded-full blur-2xl opacity-30"></div>
-                    <div className="relative flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/30">
-                      <TrendingDown className="w-10 h-10 text-white drop-shadow-lg" strokeWidth={2.5} />
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute inset-0 bg-green-100 rounded-full blur-xl opacity-50"></div>
+                    <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-green-50 border border-green-200">
+                      <TrendingDown className="w-8 h-8 text-green-600" strokeWidth={2} />
                     </div>
                   </div>
                   
                   {/* Main Headline */}
-                  <div className="space-y-4">
-                    <div className="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
-                      <p className="text-sm font-medium text-white">💰 החיסכון השנתי שלכם</p>
-                    </div>
+                  <div className="space-y-3">
+                    <h2 className="text-2xl font-light text-gray-900">
+                      החיסכון השנתי שלכם
+                    </h2>
                     
                     {/* Large Amount */}
-                    <div className="flex items-baseline justify-center md:justify-end gap-3">
-                      <span className="text-7xl font-bold text-white drop-shadow-2xl tracking-tight">
+                    <div className="flex items-baseline justify-center md:justify-end gap-2">
+                      <span className="text-6xl font-light text-gray-900 tracking-tight">
                         ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
                       </span>
                       <span className="text-2xl font-light text-gray-500">
@@ -491,22 +388,9 @@ const AllPlans = () => {
         {/* Filters Section - Compact */}
         <Card className="mb-8 shadow-sm border-gray-200 bg-white">
           <CardContent className="p-5">
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="text-xs font-light text-gray-500">סינון וחיפוש</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                className="text-xs"
-              >
-                <SlidersHorizontal className="h-3.5 w-3.5 ml-1" />
-                פילטרים מתקדמים
-              </Button>
-            </div>
-
             {/* Category Pills */}
             <div className="mb-5">
-              <h3 className="text-xs font-light text-gray-500 mb-2.5">קטגוריה</h3>
+              <h3 className="text-xs font-light text-gray-500 mb-2.5">סינון לפי קטגוריה</h3>
               <div className="flex flex-wrap gap-1.5">
                 {categories.map((category) => {
                   const Icon = category.icon;
@@ -555,100 +439,6 @@ const AllPlans = () => {
                 </select>
               </div>
             </div>
-
-            {/* Advanced Filters */}
-            {showAdvancedFilters && (
-              <div className="mt-5 pt-5 border-t border-gray-200 space-y-4 animate-fade-in">
-                <h4 className="text-xs font-semibold text-gray-700">פילטרים מתקדמים</h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {/* Data Volume Filter (Cellular) */}
-                  {(selectedCategory === 'all' || selectedCategory === 'סלולר') && (
-                    <div>
-                      <Label className="text-xs text-gray-600 mb-1.5 block">נפח גלישה</Label>
-                      <select
-                        value={dataVolumeFilter}
-                        onChange={(e) => setDataVolumeFilter(e.target.value)}
-                        className="w-full h-9 px-3 text-xs rounded-lg border border-gray-200 bg-white text-gray-900 font-light focus:outline-none focus:ring-2 focus:ring-gray-300"
-                      >
-                        <option value="all">הכל</option>
-                        <option value="100+">100GB ומעלה</option>
-                        <option value="unlimited">ללא הגבלה</option>
-                      </select>
-                    </div>
-                  )}
-
-                  {/* Speed Filter (Internet) */}
-                  {(selectedCategory === 'all' || selectedCategory === 'אינטרנט') && (
-                    <div>
-                      <Label className="text-xs text-gray-600 mb-1.5 block">מהירות אינטרנט</Label>
-                      <select
-                        value={speedFilter}
-                        onChange={(e) => setSpeedFilter(e.target.value)}
-                        className="w-full h-9 px-3 text-xs rounded-lg border border-gray-200 bg-white text-gray-900 font-light focus:outline-none focus:ring-2 focus:ring-gray-300"
-                      >
-                        <option value="all">הכל</option>
-                        <option value="100">עד 100 מגה</option>
-                        <option value="100-500">100-500 מגה</option>
-                        <option value="500+">500+ מגה</option>
-                      </select>
-                    </div>
-                  )}
-
-                  {/* Commitment Filter */}
-                  <div>
-                    <Label className="text-xs text-gray-600 mb-1.5 block">התחייבות</Label>
-                    <select
-                      value={commitmentFilter}
-                      onChange={(e) => setCommitmentFilter(e.target.value)}
-                      className="w-full h-9 px-3 text-xs rounded-lg border border-gray-200 bg-white text-gray-900 font-light focus:outline-none focus:ring-2 focus:ring-gray-300"
-                    >
-                      <option value="all">הכל</option>
-                      <option value="none">ללא התחייבות</option>
-                      <option value="12">12 חודשים</option>
-                      <option value="24">24 חודשים</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Special Features Checkboxes */}
-                <div>
-                  <Label className="text-xs text-gray-600 mb-2 block">תכונות מיוחדות</Label>
-                  <div className="flex flex-wrap gap-4">
-                    <div className="flex items-center space-x-2 space-x-reverse">
-                      <Checkbox
-                        id="has5g"
-                        checked={has5G}
-                        onCheckedChange={(checked) => setHas5G(checked as boolean)}
-                      />
-                      <Label htmlFor="has5g" className="text-xs cursor-pointer text-gray-700">
-                        5G בלבד
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2 space-x-reverse">
-                      <Checkbox
-                        id="hasEsim"
-                        checked={hasEsim}
-                        onCheckedChange={(checked) => setHasEsim(checked as boolean)}
-                      />
-                      <Label htmlFor="hasEsim" className="text-xs cursor-pointer text-gray-700">
-                        תמיכה ב-eSIM
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2 space-x-reverse">
-                      <Checkbox
-                        id="hasFiber"
-                        checked={hasFiber}
-                        onCheckedChange={(checked) => setHasFiber(checked as boolean)}
-                      />
-                      <Label htmlFor="hasFiber" className="text-xs cursor-pointer text-gray-700">
-                        סיב אופטי בלבד
-                      </Label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
           </CardContent>
         </Card>
 
@@ -740,29 +530,112 @@ const AllPlans = () => {
                   </div>
 
                   {/* Plans Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {plans.map((plan, index) => {
                       const savings = currentMonthlyBill > 0 && plan.monthlyPrice! < currentMonthlyBill 
                         ? currentMonthlyBill - plan.monthlyPrice! 
                         : 0;
                       const isRecommended = savings > 0;
-                      const logo = companyLogos[plan.company];
                       
                       return (
-                        <EnhancedPlanCardModern
+                        <Card 
                           key={`${plan.company}-${plan.plan}-${index}`}
-                          plan={plan}
-                          isRecommended={isRecommended}
-                          savings={savings}
-                          onSelect={handleSelectPlan}
-                          onShowDetails={handleShowDetails}
-                          rank={index === 0 ? 1 : index === 1 ? 2 : index === 2 ? 3 : undefined}
-                          companyLogo={logo}
-                          className="animate-scale-in"
+                          className={cn(
+                            "hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group cursor-pointer relative animate-scale-in border-gray-200 bg-white",
+                            isRecommended && "ring-1 ring-green-400 bg-gradient-to-br from-green-50/30 to-white"
+                          )}
                           style={{
                             animationDelay: `${index * 50}ms`
-                          } as React.CSSProperties}
-                        />
+                          }}
+                        >
+                          <CardContent className="p-6">
+                            {/* Badges */}
+                            <div className="flex flex-wrap gap-2 mb-4">
+                              {isRecommended && (
+                                <Badge className="bg-green-500 text-white font-normal shadow-sm">
+                                  <Sparkles className="w-3 h-3 ml-1" />
+                                  מומלץ במיוחד
+                                </Badge>
+                              )}
+                              {index === 0 && (
+                                <Badge variant="outline" className="border-yellow-400 bg-yellow-50 text-yellow-700 font-normal">
+                                  <Star className="w-3 h-3 ml-1 fill-yellow-400" />
+                                  זול ביותר
+                                </Badge>
+                              )}
+                              {index < 3 && (
+                                <Badge variant="outline" className="border-gray-300 text-gray-600 font-normal">
+                                  Top {index + 1}
+                                </Badge>
+                              )}
+                            </div>
+
+                            {/* Plan Name */}
+                            <h3 className="text-lg font-normal text-gray-900 mb-3 line-clamp-2 min-h-[56px]">
+                              {plan.plan}
+                            </h3>
+
+                            {/* Benefits */}
+                            {plan.transferBenefits && (
+                              <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                <div className="flex items-start gap-2">
+                                  <span className="text-base">🎁</span>
+                                  <p className="text-xs text-gray-600 font-light line-clamp-2 flex-1">
+                                    {plan.transferBenefits}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Price Section */}
+                            <div className="mb-4 pt-4 border-t border-gray-100">
+                              <div className="flex items-baseline justify-center gap-1 mb-1">
+                                <span className="text-4xl font-light text-gray-900 tracking-tight">
+                                  {plan.monthlyPrice}
+                                </span>
+                                <span className="text-base text-gray-500 font-light">₪</span>
+                              </div>
+                              <div className="text-center text-sm text-gray-500 font-light">לחודש</div>
+                              {isRecommended && (
+                                <div className="text-center mt-3 px-3 py-2 bg-green-50 rounded-lg border border-green-200">
+                                  <div className="flex items-center justify-center gap-1">
+                                    <TrendingDown className="w-4 h-4 text-green-600" />
+                                    <span className="text-sm font-medium text-green-700">
+                                      חיסכון של ₪{savings.toFixed(0)} בחודש
+                                    </span>
+                                  </div>
+                                  <div className="text-xs text-green-600 mt-1 font-light">
+                                    ₪{(savings * 12).toFixed(0)} בשנה!
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Action Button */}
+                            <Button
+                              onClick={() => handleSelectPlan(plan)}
+                              size="lg"
+                              className={cn(
+                                "w-full font-normal shadow-sm hover:shadow transition-all duration-300",
+                                isRecommended 
+                                  ? "bg-green-500 hover:bg-green-600 text-white" 
+                                  : "bg-gray-900 hover:bg-gray-800 text-white"
+                              )}
+                            >
+                              {isRecommended ? (
+                                <>
+                                  <CheckCircle2 className="ml-2 h-4 w-4" />
+                                  עברו למסלול המומלץ
+                                </>
+                              ) : (
+                                <>
+                                  <Rocket className="ml-2 h-4 w-4" />
+                                  בחרו מסלול זה
+                                </>
+                              )}
+                            </Button>
+                          </CardContent>
+                        </Card>
                       );
                     })}
                   </div>
@@ -896,21 +769,8 @@ const AllPlans = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Plan Details Sheet */}
-      {selectedPlanForDetails && (
-        <PlanRecordDetailsSheet
-          plan={selectedPlanForDetails}
-          isOpen={isDetailsOpen}
-          onClose={handleDetailsClose}
-          onSelectForSwitch={handleSelectPlan}
-        />
-      )}
-
       {/* Personalized Wizard Float */}
       <PersonalizedWizardFloat />
-      
-      {/* AI Assistant */}
-      <AIAssistant plans={allPlans} />
     </div>
   );
 };

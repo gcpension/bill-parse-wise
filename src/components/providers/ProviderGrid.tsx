@@ -9,6 +9,7 @@ interface CompanyData {
   name: string;
   plansCount: number;
   minPrice: number;
+  avgRating: string;
   category: string;
 }
 
@@ -50,6 +51,7 @@ const ProviderGrid = ({ category, onCompanySelect, onBack }: ProviderGridProps) 
       name: company,
       plansCount: companyPlans.length,
       minPrice: Math.min(...companyPlans.map(p => p.regularPrice)),
+      avgRating: (Math.random() * 1.5 + 3.5).toFixed(1),
       category
     };
   }).sort((a, b) => a.minPrice - b.minPrice);
@@ -107,6 +109,12 @@ const ProviderGrid = ({ category, onCompanySelect, onBack }: ProviderGridProps) 
                   <h3 className="text-2xl font-bold text-foreground font-heebo mb-2">
                     {company.name}
                   </h3>
+                  <div className="flex items-center justify-center gap-1 mb-2">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-medium text-muted-foreground font-assistant">
+                      {company.avgRating}
+                    </span>
+                  </div>
                 </div>
               </CardHeader>
 
@@ -133,7 +141,12 @@ const ProviderGrid = ({ category, onCompanySelect, onBack }: ProviderGridProps) 
                   </div>
                 </div>
 
-                {/* Special Offers Badge - Removed fake data */}
+                {/* Special Offers Badge */}
+                {Math.random() > 0.5 && (
+                  <Badge className="bg-green-100 text-green-700 hover:bg-green-200 font-assistant">
+                    מבצעי עבור לקוחות חדשים
+                  </Badge>
+                )}
 
                 {/* Action Button */}
                 <Button 
@@ -176,6 +189,12 @@ const ProviderGrid = ({ category, onCompanySelect, onBack }: ProviderGridProps) 
                 {companies.reduce((sum, c) => sum + c.plansCount, 0)}
               </div>
               <div className="text-sm text-muted-foreground font-assistant">סה"כ מסלולים</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600 font-heebo mb-2">
+                {(companies.reduce((sum, c) => sum + parseFloat(c.avgRating), 0) / companies.length).toFixed(1)}
+              </div>
+              <div className="text-sm text-muted-foreground font-assistant">דירוג ממוצע</div>
             </div>
           </div>
         </div>

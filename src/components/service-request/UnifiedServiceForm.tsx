@@ -8,7 +8,6 @@ import { CheckCircle, Loader2, Info } from 'lucide-react';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/integrations/supabase/client';
 import {
   Collapsible,
   CollapsibleContent,
@@ -43,18 +42,16 @@ export default function UnifiedServiceForm({ initialData, onComplete }: UnifiedS
     setIsLoading(true);
 
     try {
-      // Use Supabase client
-      const { data, error } = await supabase.functions.invoke('create-service-request', {
-        body: formData
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-service-request`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify(formData)
       });
 
-      if (error) {
-        throw error;
-      }
-
-      if (!data?.success) {
-        throw new Error(data?.error || 'Failed to submit');
-      }
+      if (!response.ok) throw new Error('Failed to submit');
 
       toast({
         title: 'הבקשה נשלחה בהצלחה!',
@@ -62,11 +59,10 @@ export default function UnifiedServiceForm({ initialData, onComplete }: UnifiedS
       });
 
       if (onComplete) onComplete();
-    } catch (error: any) {
-      console.error('Submit error:', error);
+    } catch (error) {
       toast({
         title: 'שגיאה בשליחה',
-        description: error.message || 'אנא נסה שנית',
+        description: 'אנא נסה שנית',
         variant: 'destructive'
       });
     } finally {

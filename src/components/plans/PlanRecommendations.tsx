@@ -40,6 +40,9 @@ const PlanRecommendations = ({
         score += Math.max(0, 20 - budgetDiff / 10);
       }
 
+      // Simulated popularity score
+      score += Math.random() * 25;
+
       // Feature richness
       score += plan.features.length * 2;
       return {
@@ -50,20 +53,19 @@ const PlanRecommendations = ({
     return scored.sort((a, b) => b.score - a.score).slice(0, 4);
   };
 
-  // Popular plans (based on price competitiveness)
+  // Popular plans (simulated)
   const getPopularPlans = () => {
     return plans.map(plan => ({
       plan,
-      popularity: 100 - plan.regularPrice / 10 // Lower price = higher popularity
+      popularity: Math.random() * 100
     })).sort((a, b) => b.popularity - a.popularity).slice(0, 4);
   };
 
-  // Best savings plans (based on price difference from average)
+  // Best savings plans (simulated)
   const getBestSavingsPlans = () => {
-    const avgPrice = plans.reduce((sum, p) => sum + p.regularPrice, 0) / plans.length;
     return plans.map(plan => ({
       plan,
-      savings: Math.floor(Math.max(0, avgPrice - plan.regularPrice))
+      savings: Math.floor(Math.random() * 200) + 50
     })).sort((a, b) => b.savings - a.savings).slice(0, 4);
   };
   const getCurrentRecommendations = () => {

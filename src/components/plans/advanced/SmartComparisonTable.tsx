@@ -137,6 +137,21 @@ export const SmartComparisonTable = ({ comparisonMatrix, plans, onPlanSelect }: 
           </CardContent>
         </Card>
 
+        <Card className="bg-gradient-to-br from-orange-100/50 via-amber-50 to-orange-100/30 border-2 border-orange-300/30 hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <CardContent className="p-6 text-center">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Zap className="w-6 h-6 text-orange-600" />
+              <h3 className="font-bold text-orange-600 font-heebo">הכי אמין</h3>
+            </div>
+            <div className="text-xl font-black text-orange-600">
+              {getPlan(comparisonMatrix.summary.mostReliable)?.company}
+            </div>
+            <div className="text-sm text-orange-600/80 mt-1 font-assistant">ציון אמינות גבוה</div>
+            <Badge className="mt-2 bg-orange-100 text-orange-700 border-orange-300">
+              אמינות גבוהה
+            </Badge>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Enhanced Comparison Tabs */}
@@ -333,6 +348,7 @@ export const SmartComparisonTable = ({ comparisonMatrix, plans, onPlanSelect }: 
                       <th className="text-center p-6 font-bold border-b-2 border-border">יחס מחיר</th>
                       <th className="text-center p-6 font-bold border-b-2 border-border">תכונות</th>
                       <th className="text-center p-6 font-bold border-b-2 border-border">נוחות</th>
+                      <th className="text-center p-6 font-bold border-b-2 border-border">אמינות</th>
                       <th className="text-center p-6 font-bold border-b-2 border-border rounded-tr-xl">מחיר</th>
                     </tr>
                   </thead>
@@ -383,6 +399,11 @@ export const SmartComparisonTable = ({ comparisonMatrix, plans, onPlanSelect }: 
                           <td className="text-center p-6">
                             <div className={cn("text-xl font-bold", getScoreColor(comparison.score.usability))}>
                               {comparison.score.usability}
+                            </div>
+                          </td>
+                          <td className="text-center p-6">
+                            <div className={cn("text-xl font-bold", getScoreColor(comparison.score.reliability))}>
+                              {comparison.score.reliability}
                             </div>
                           </td>
                           <td className="text-center p-6">

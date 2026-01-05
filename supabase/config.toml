@@ -1,7 +1,0 @@
-project_id = "qrdczgenetblylaoiupz"
-
-[functions.chat-assistant]
-verify_jwt = false
-
-[functions.voice-assistant]
-verify_jwt = false

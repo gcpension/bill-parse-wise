@@ -1,10 +1,6 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.1.1";
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { corsHeaders } from "../_shared/cors.ts";
 
 interface ServiceRequest {
   full_name: string;
@@ -25,114 +21,31 @@ interface ServiceRequest {
   [key: string]: any;
 }
 
-// Rate limiting
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 5; // requests per window
-const RATE_WINDOW = 300000; // 5 minutes
-
-function checkRateLimit(identifier: string): boolean {
-  const now = Date.now();
-  const record = rateLimitMap.get(identifier);
-  
-  if (!record || now > record.resetTime) {
-    rateLimitMap.set(identifier, { count: 1, resetTime: now + RATE_WINDOW });
-    return true;
-  }
-  
-  if (record.count >= RATE_LIMIT) {
-    return false;
-  }
-  
-  record.count++;
-  return true;
-}
-
-function validateEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email) && email.length <= 255;
-}
-
-function validatePhone(phone: string): boolean {
-  const phoneRegex = /^0(5[0-9]|[2-4]|7[0-9]|8|9)[0-9]{7,8}$/;
-  return phoneRegex.test(phone.replace(/[-\s]/g, ''));
-}
-
-function validateId(id: string): boolean {
-  const cleanId = id.replace(/\D/g, '');
-  return cleanId.length >= 8 && cleanId.length <= 9;
-}
-
-function sanitizeString(str: string, maxLength: number = 200): string {
-  return str.trim().slice(0, maxLength);
-}
-
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    // Rate limiting
-    const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
-    if (!checkRateLimit(clientIP)) {
-      return new Response(JSON.stringify({ success: false, error: "rate_limit_exceeded" }), {
-        status: 429,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
     const data: ServiceRequest = await req.json();
 
-    // Validate required fields
+    // Basic required field validation
     const requiredFields = ["full_name", "national_id_or_corp", "email", "phone", "service_address", "action_type", "sector", "customer_type"];
     for (const field of requiredFields) {
       if (!data[field as keyof ServiceRequest]) {
-        return new Response(JSON.stringify({ success: false, error: "invalid_data" }), {
+        return new Response(JSON.stringify({ success: false, error: `missing_${field}` }), {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
     }
-
-    // Validate email
-    if (!validateEmail(data.email)) {
-      return new Response(JSON.stringify({ success: false, error: "invalid_data" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Validate phone
-    if (!validatePhone(data.phone)) {
-      return new Response(JSON.stringify({ success: false, error: "invalid_data" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Validate ID
-    if (!validateId(data.national_id_or_corp)) {
-      return new Response(JSON.stringify({ success: false, error: "invalid_data" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Validate switch requires target provider
+    // If switch then target_provider required
     if (data.action_type === "switch" && !data.target_provider) {
-      return new Response(JSON.stringify({ success: false, error: "invalid_data" }), {
+      return new Response(JSON.stringify({ success: false, error: "missing_target_provider" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    // Sanitize string inputs
-    data.full_name = sanitizeString(data.full_name, 100);
-    data.email = sanitizeString(data.email, 255);
-    data.phone = sanitizeString(data.phone, 20);
-    if (data.current_provider) data.current_provider = sanitizeString(data.current_provider, 100);
-    if (data.target_provider) data.target_provider = sanitizeString(data.target_provider, 100);
-    if (data.company_name) data.company_name = sanitizeString(data.company_name, 200);
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -175,7 +88,7 @@ serve(async (req: Request) => {
 
     if (insertErr || !inserted) {
       console.error("insert error", insertErr);
-      return new Response(JSON.stringify({ success: false, error: "שגיאה בשמירת הנתונים" }), {
+      return new Response(JSON.stringify({ success: false, error: "db_insert_failed" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -219,7 +132,7 @@ serve(async (req: Request) => {
     });
   } catch (error) {
     console.error("unexpected error", error);
-    return new Response(JSON.stringify({ success: false, error: "אירעה שגיאה לא צפויה" }), {
+    return new Response(JSON.stringify({ success: false, error: error.message ?? "unknown" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

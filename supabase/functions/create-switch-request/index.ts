@@ -6,28 +6,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-// Rate limiting
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 3;
-const RATE_WINDOW = 600000; // 10 minutes
-
-function checkRateLimit(identifier: string): boolean {
-  const now = Date.now();
-  const record = rateLimitMap.get(identifier);
-  
-  if (!record || now > record.resetTime) {
-    rateLimitMap.set(identifier, { count: 1, resetTime: now + RATE_WINDOW });
-    return true;
-  }
-  
-  if (record.count >= RATE_LIMIT) {
-    return false;
-  }
-  
-  record.count++;
-  return true;
-}
-
 interface SwitchRequest {
   personalDetails: {
     firstName: string;
@@ -85,49 +63,12 @@ serve(async (req) => {
   }
 
   try {
-    // Rate limiting
-    const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
-    if (!checkRateLimit(clientIP)) {
-      return new Response(JSON.stringify({ 
-        success: false, 
-        error: 'חרגת ממספר הבקשות המותר' 
-      }), {
-        status: 429,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
     )
 
     const requestData: SwitchRequest = await req.json()
-    
-    // Basic validation
-    if (!requestData.personalDetails || !requestData.consent || !requestData.signature) {
-      return new Response(JSON.stringify({ 
-        success: false, 
-        error: 'נתונים חסרים' 
-      }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    // Verify all consents are true
-    const requiredConsents = ['dataProcessingConsent', 'powerOfAttorneyConsent', 'termsAndConditionsConsent', 'exitFeesAwareness', 'gdprConsent', 'finalConfirmation'];
-    for (const consent of requiredConsents) {
-      if (requestData.consent[consent as keyof typeof requestData.consent] !== true) {
-        return new Response(JSON.stringify({ 
-          success: false, 
-          error: 'יש לאשר את כל ההסכמות' 
-        }), {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
-    }
     
     // Get client IP address
     const clientIP = req.headers.get('x-forwarded-for') || 
@@ -225,13 +166,7 @@ serve(async (req) => {
 
     if (insertError) {
       console.error('Database insert error:', insertError)
-      return new Response(JSON.stringify({ 
-        success: false, 
-        error: 'שגיאה בשמירת הבקשה' 
-      }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      throw new Error('Failed to create switch request')
     }
 
     // Log consent for audit trail
