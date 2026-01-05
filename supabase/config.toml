@@ -6,6 +6,9 @@ verify_jwt = false
 [functions.send-notification-email]
 verify_jwt = false
 
+[functions.send-customer-email]
+verify_jwt = false
+
 [functions.comsign-callback]
 verify_jwt = false
 

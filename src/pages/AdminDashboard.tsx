@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { 
   Table, 
   TableBody, 
@@ -13,6 +15,13 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { 
   Search, 
   RefreshCw, 
@@ -27,7 +36,14 @@ import {
   Download,
   FileSpreadsheet,
   Pen,
-  LogOut
+  LogOut,
+  Filter,
+  X,
+  Save,
+  Calendar,
+  MessageSquare,
+  BarChart3,
+  Mail
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { he } from 'date-fns/locale';
@@ -77,6 +93,8 @@ interface ServiceRequest {
   current_subscriber_number: string | null;
   current_decoder_number: string | null;
   additional_notes: string | null;
+  internal_notes: string | null;
+  status_history: any;
 }
 
 const statusColors: Record<string, string> = {
@@ -100,6 +118,7 @@ const statusLabels: Record<string, string> = {
 const sectorLabels: Record<string, string> = {
   cellular: 'סלולר',
   internet: 'אינטרנט',
+  internet_isp: 'אינטרנט',
   tv: 'טלוויזיה',
   electricity: 'חשמל',
   general: 'כללי',
@@ -116,6 +135,18 @@ export default function AdminDashboard() {
   const { user, signOut } = useAdminAuth();
   const navigate = useNavigate();
 
+  // Advanced filters
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterSector, setFilterSector] = useState<string>('all');
+  const [filterDateFrom, setFilterDateFrom] = useState<string>('');
+  const [filterDateTo, setFilterDateTo] = useState<string>('');
+
+  // Internal notes editing
+  const [editingNotes, setEditingNotes] = useState<string | null>(null);
+  const [notesText, setNotesText] = useState('');
+  const [savingNotes, setSavingNotes] = useState(false);
+
   const handleLogout = async () => {
     await signOut();
     navigate('/admin-login');
@@ -130,6 +161,11 @@ export default function AdminDashboard() {
 
     if (error) {
       console.error('Error fetching requests:', error);
+      toast({
+        title: 'שגיאה בטעינת נתונים',
+        description: error.message,
+        variant: 'destructive'
+      });
     } else {
       setRequests(data || []);
     }
@@ -140,18 +176,110 @@ export default function AdminDashboard() {
     fetchRequests();
   }, []);
 
-  const filteredRequests = requests.filter(req => 
-    req.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    req.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    req.phone?.includes(searchTerm) ||
-    req.reference_number?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter logic
+  const filteredRequests = requests.filter(req => {
+    // Text search
+    const matchesSearch = 
+      req.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      req.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      req.phone?.includes(searchTerm) ||
+      req.reference_number?.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // Status filter
+    const matchesStatus = filterStatus === 'all' || req.status === filterStatus;
+    
+    // Sector filter
+    const matchesSector = filterSector === 'all' || req.sector === filterSector;
+    
+    // Date filters
+    const reqDate = new Date(req.created_at);
+    const matchesDateFrom = !filterDateFrom || reqDate >= new Date(filterDateFrom);
+    const matchesDateTo = !filterDateTo || reqDate <= new Date(filterDateTo + 'T23:59:59');
+    
+    return matchesSearch && matchesStatus && matchesSector && matchesDateFrom && matchesDateTo;
+  });
+
+  const clearFilters = () => {
+    setFilterStatus('all');
+    setFilterSector('all');
+    setFilterDateFrom('');
+    setFilterDateTo('');
+    setSearchTerm('');
+  };
+
+  const hasActiveFilters = filterStatus !== 'all' || filterSector !== 'all' || filterDateFrom || filterDateTo || searchTerm;
 
   const stats = {
     total: requests.length,
     pending: requests.filter(r => r.status === 'awaiting_signature' || r.status === 'pending').length,
     inProgress: requests.filter(r => r.status === 'in_progress').length,
     completed: requests.filter(r => r.status === 'completed').length,
+  };
+
+  // Update status
+  const updateStatus = async (requestId: string, newStatus: string) => {
+    const request = requests.find(r => r.id === requestId);
+    if (!request) return;
+
+    const statusHistory = request.status_history || [];
+    statusHistory.push({
+      from: request.status,
+      to: newStatus,
+      changedAt: new Date().toISOString(),
+      changedBy: user?.email
+    });
+
+    const { error } = await supabase
+      .from('service_requests')
+      .update({ 
+        status: newStatus,
+        status_history: statusHistory,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', requestId);
+
+    if (error) {
+      toast({
+        title: 'שגיאה בעדכון סטטוס',
+        description: error.message,
+        variant: 'destructive'
+      });
+    } else {
+      toast({
+        title: 'הסטטוס עודכן',
+        description: `סטטוס הבקשה עודכן ל-${statusLabels[newStatus]}`
+      });
+      fetchRequests();
+    }
+  };
+
+  // Save internal notes
+  const saveInternalNotes = async (requestId: string) => {
+    setSavingNotes(true);
+    
+    const { error } = await supabase
+      .from('service_requests')
+      .update({ 
+        internal_notes: notesText,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', requestId);
+
+    if (error) {
+      toast({
+        title: 'שגיאה בשמירת הערות',
+        description: error.message,
+        variant: 'destructive'
+      });
+    } else {
+      toast({
+        title: 'ההערות נשמרו',
+        description: 'ההערות הפנימיות נשמרו בהצלחה'
+      });
+      setEditingNotes(null);
+      fetchRequests();
+    }
+    setSavingNotes(false);
   };
 
   // Export to Excel with Hebrew support
@@ -164,45 +292,35 @@ export default function AdminDashboard() {
       'אימייל': req.email,
       'סקטור': sectorLabels[req.sector] || req.sector,
       'סוג לקוח': req.customer_type === 'private' ? 'פרטי' : 'עסקי',
-      'סוג פעולה': req.action_type === 'switch' ? 'מעבר ספק' : req.action_type,
       'ספק נוכחי': req.current_provider || '-',
       'ספק יעד': req.target_provider || '-',
+      'מסלול נבחר': req.selected_plan_name || '-',
+      'מחיר מסלול': req.selected_plan_price || '-',
       'סטטוס': statusLabels[req.status] || req.status,
       'כתובת - עיר': req.service_address?.city || '-',
       'כתובת - רחוב': req.service_address?.street || '-',
-      'כתובת - מספר': req.service_address?.number || '-',
-      'שם חברה': req.company_name || '-',
-      'תכנית נבחרה': req.selected_plan_name || '-',
-      'מחיר תכנית': req.selected_plan_price || '-',
       'ייפוי כוח': req.poa ? 'כן' : 'לא',
-      'אישור תנאים': req.privacy_tos ? 'כן' : 'לא',
-      'אישור עמלות': req.fees_ack ? 'כן' : 'לא',
-      'חתימה דיגיטלית': req.esign_ok ? 'כן' : 'לא',
-      'סטטוס חתימה': req.signature_status || '-',
-      'הערות': req.additional_notes || '-',
+      'חתימה': req.signature_status === 'signed' ? 'נחתם' : 'ממתין',
+      'הערות פנימיות': req.internal_notes || '-',
       'תאריך יצירה': format(new Date(req.created_at), 'dd/MM/yyyy HH:mm', { locale: he }),
-      'תאריך עדכון': format(new Date(req.updated_at), 'dd/MM/yyyy HH:mm', { locale: he }),
     }));
 
     const ws = XLSX.utils.json_to_sheet(excelData);
-    
-    // Set RTL and column widths
-    ws['!cols'] = Object.keys(excelData[0] || {}).map(() => ({ wch: 20 }));
+    ws['!cols'] = Object.keys(excelData[0] || {}).map(() => ({ wch: 18 }));
     
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'בקשות שירות');
     
-    // Generate filename with date
     const fileName = `בקשות_שירות_${format(new Date(), 'dd-MM-yyyy')}.xlsx`;
     XLSX.writeFile(wb, fileName);
     
     toast({
       title: 'הקובץ הורד בהצלחה',
-      description: `${fileName}`,
+      description: fileName,
     });
   };
 
-  // Generate comprehensive PDF with all details and signature
+  // Generate comprehensive PDF
   const generateFullPDF = async (request: ServiceRequest) => {
     const title = `ייפוי כוח ובקשת מעבר ספק - ${request.reference_number || 'טיוטה'}`;
     
@@ -229,14 +347,11 @@ export default function AdminDashboard() {
       '=== פרטי המעבר ===',
       '',
       `סקטור: ${sectorLabels[request.sector] || request.sector}`,
-      `סוג פעולה: ${request.action_type === 'switch' ? 'מעבר ספק' : request.action_type}`,
       request.current_provider ? `ספק נוכחי: ${request.current_provider}` : '',
       request.target_provider ? `ספק יעד: ${request.target_provider}` : '',
-      request.current_account_number ? `מספר חשבון נוכחי: ${request.current_account_number}` : '',
-      request.current_customer_number ? `מספר לקוח נוכחי: ${request.current_customer_number}` : '',
+      request.current_account_number ? `מספר חשבון: ${request.current_account_number}` : '',
       request.current_meter_number ? `מספר מונה: ${request.current_meter_number}` : '',
-      request.current_phone_number ? `מספר טלפון נוכחי: ${request.current_phone_number}` : '',
-      request.current_sim_number ? `מספר SIM: ${request.current_sim_number}` : '',
+      request.current_phone_number ? `מספר טלפון: ${request.current_phone_number}` : '',
       '',
       '=== תכנית שנבחרה ===',
       '',
@@ -246,19 +361,9 @@ export default function AdminDashboard() {
       '=== הצהרות והסכמות ===',
       '',
       `✓ אישור ייפוי כוח: ${request.poa ? 'כן' : 'לא'}`,
-      `✓ אישור תנאי שימוש ופרטיות: ${request.privacy_tos ? 'כן' : 'לא'}`,
-      `✓ אישור עמלות ודמי ביטול: ${request.fees_ack ? 'כן' : 'לא'}`,
-      `✓ הסכמה לחתימה דיגיטלית: ${request.esign_ok ? 'כן' : 'לא'}`,
-      '',
-      '=== תנאים והגבלות ===',
-      '',
-      '1. אני מאשר/ת כי הפרטים המופיעים במסמך זה הם נכונים ומדויקים.',
-      '2. אני מסכים/ה כי החברה תפעל בשמי מול הספקים הרלוונטיים.',
-      '3. אני מבין/ה כי תהליך המעבר עשוי לקחת עד 10 ימי עסקים.',
-      '4. ידוע לי כי יתכנו דמי ביטול מהספק הנוכחי.',
-      '5. אני מאשר/ת קבלת עדכונים בנוגע לתהליך המעבר.',
-      '',
-      request.additional_notes ? `=== הערות נוספות ===\n\n${request.additional_notes}` : '',
+      `✓ אישור תנאי שימוש: ${request.privacy_tos ? 'כן' : 'לא'}`,
+      `✓ אישור עמלות: ${request.fees_ack ? 'כן' : 'לא'}`,
+      `✓ חתימה דיגיטלית: ${request.esign_ok ? 'כן' : 'לא'}`,
       '',
       '=== פרטי הבקשה ===',
       '',
@@ -269,11 +374,9 @@ export default function AdminDashboard() {
       '=== חתימה ===',
       '',
       request.signature_data ? '✓ המסמך נחתם דיגיטלית' : '⏳ ממתין לחתימה',
-      request.signature_status === 'signed' ? `תאריך חתימה: ${format(new Date(request.updated_at), 'dd/MM/yyyy HH:mm', { locale: he })}` : '',
       '',
       '________________________________',
       `חתימת הלקוח: ${request.full_name}`,
-      '',
     ].filter(line => line !== '');
 
     const pdf = await createHebrewPDF(title, content);
@@ -303,19 +406,31 @@ export default function AdminDashboard() {
     setShowSignaturePreview(true);
   };
 
+  // Start editing notes
+  const startEditingNotes = (request: ServiceRequest) => {
+    setEditingNotes(request.id);
+    setNotesText(request.internal_notes || '');
+  };
+
   return (
     <div className="min-h-screen bg-background" dir="rtl">
       {/* Header */}
-      <header className="border-b bg-card">
+      <header className="border-b bg-card sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <h1 className="text-2xl font-bold text-foreground">דשבורד ניהול</h1>
               <p className="text-muted-foreground text-sm">
                 {user?.email && <span>מחובר: {user.email}</span>}
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Link to="/admin/reports">
+                <Button variant="outline" className="gap-2">
+                  <BarChart3 className="h-4 w-4" />
+                  דוחות
+                </Button>
+              </Link>
               <Button 
                 variant="outline" 
                 className="gap-2"
@@ -407,30 +522,105 @@ export default function AdminDashboard() {
         {/* Requests Table */}
         <Card>
           <CardHeader>
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                בקשות שירות
-              </CardTitle>
-              <div className="flex items-center gap-2 w-full md:w-auto">
-                <div className="relative flex-1 md:w-64">
-                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    placeholder="חיפוש..." 
-                    className="pr-9"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  בקשות שירות
+                  {hasActiveFilters && (
+                    <Badge variant="secondary" className="mr-2">
+                      {filteredRequests.length} תוצאות
+                    </Badge>
+                  )}
+                </CardTitle>
+                <div className="flex items-center gap-2 w-full md:w-auto">
+                  <div className="relative flex-1 md:w-64">
+                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      placeholder="חיפוש..." 
+                      className="pr-9"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                  <Button 
+                    variant={showFilters ? "default" : "outline"}
+                    size="icon"
+                    onClick={() => setShowFilters(!showFilters)}
+                    title="סינון מתקדם"
+                  >
+                    <Filter className="h-4 w-4" />
+                  </Button>
+                  {hasActiveFilters && (
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      onClick={clearFilters}
+                      title="נקה סינון"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    onClick={fetchRequests}
+                    disabled={loading}
+                  >
+                    <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                  </Button>
                 </div>
-                <Button 
-                  variant="outline" 
-                  size="icon"
-                  onClick={fetchRequests}
-                  disabled={loading}
-                >
-                  <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                </Button>
               </div>
+
+              {/* Advanced Filters */}
+              {showFilters && (
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-muted/50 rounded-lg">
+                  <div className="space-y-2">
+                    <Label className="text-sm">סטטוס</Label>
+                    <Select value={filterStatus} onValueChange={setFilterStatus}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="כל הסטטוסים" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">כל הסטטוסים</SelectItem>
+                        {Object.entries(statusLabels).map(([value, label]) => (
+                          <SelectItem key={value} value={value}>{label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm">סקטור</Label>
+                    <Select value={filterSector} onValueChange={setFilterSector}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="כל הסקטורים" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">כל הסקטורים</SelectItem>
+                        {Object.entries(sectorLabels).map(([value, label]) => (
+                          <SelectItem key={value} value={value}>{label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm">מתאריך</Label>
+                    <Input 
+                      type="date" 
+                      value={filterDateFrom}
+                      onChange={(e) => setFilterDateFrom(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm">עד תאריך</Label>
+                    <Input 
+                      type="date" 
+                      value={filterDateTo}
+                      onChange={(e) => setFilterDateTo(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </CardHeader>
           <CardContent>
@@ -443,8 +633,13 @@ export default function AdminDashboard() {
               <div className="text-center py-12">
                 <FileText className="h-12 w-12 mx-auto text-muted-foreground opacity-50" />
                 <p className="mt-2 text-muted-foreground">
-                  {searchTerm ? 'לא נמצאו תוצאות' : 'אין בקשות במערכת'}
+                  {hasActiveFilters ? 'לא נמצאו תוצאות לסינון זה' : 'אין בקשות במערכת'}
                 </p>
+                {hasActiveFilters && (
+                  <Button variant="link" onClick={clearFilters} className="mt-2">
+                    נקה סינון
+                  </Button>
+                )}
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -457,7 +652,6 @@ export default function AdminDashboard() {
                       <TableHead className="text-right">סקטור</TableHead>
                       <TableHead className="text-right">מסלול נבחר</TableHead>
                       <TableHead className="text-right">סטטוס</TableHead>
-                      <TableHead className="text-right">חתימה</TableHead>
                       <TableHead className="text-right">תאריך</TableHead>
                       <TableHead className="text-right">פעולות</TableHead>
                     </TableRow>
@@ -494,14 +688,21 @@ export default function AdminDashboard() {
                           )}
                         </TableCell>
                         <TableCell>
-                          <Badge className={statusColors[request.status] || statusColors.pending}>
-                            {statusLabels[request.status] || request.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={request.signature_status === 'signed' ? 'default' : 'secondary'}>
-                            {request.signature_status === 'signed' ? 'נחתם' : 'ממתין'}
-                          </Badge>
+                          <Select 
+                            value={request.status} 
+                            onValueChange={(value) => updateStatus(request.id, value)}
+                          >
+                            <SelectTrigger className={`w-32 h-8 text-xs ${statusColors[request.status]}`}>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.entries(statusLabels).map(([value, label]) => (
+                                <SelectItem key={value} value={value}>
+                                  {label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </TableCell>
                         <TableCell className="text-sm text-muted-foreground">
                           {format(new Date(request.created_at), 'dd/MM/yyyy', { locale: he })}
@@ -516,16 +717,14 @@ export default function AdminDashboard() {
                             >
                               <Eye className="h-4 w-4" />
                             </Button>
-                            {request.signature_data && (
-                              <Button 
-                                variant="ghost" 
-                                size="sm"
-                                onClick={() => viewSignature(request.signature_data!)}
-                                title="צפה בחתימה"
-                              >
-                                <Pen className="h-4 w-4" />
-                              </Button>
-                            )}
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => startEditingNotes(request)}
+                              title="הערות פנימיות"
+                            >
+                              <MessageSquare className={`h-4 w-4 ${request.internal_notes ? 'text-blue-500' : ''}`} />
+                            </Button>
                             <Button 
                               variant="ghost" 
                               size="sm"
@@ -580,12 +779,27 @@ export default function AdminDashboard() {
               </div>
 
               {/* Status */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap">
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">סטטוס:</span>
-                  <Badge className={statusColors[selectedRequest.status]}>
-                    {statusLabels[selectedRequest.status] || selectedRequest.status}
-                  </Badge>
+                  <Select 
+                    value={selectedRequest.status} 
+                    onValueChange={(value) => {
+                      updateStatus(selectedRequest.id, value);
+                      setSelectedRequest({ ...selectedRequest, status: value });
+                    }}
+                  >
+                    <SelectTrigger className={`w-36 ${statusColors[selectedRequest.status]}`}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(statusLabels).map(([value, label]) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">חתימה:</span>
@@ -615,12 +829,6 @@ export default function AdminDashboard() {
                     <span className="text-muted-foreground">אימייל:</span>
                     <p className="font-medium" dir="ltr">{selectedRequest.email}</p>
                   </div>
-                  {selectedRequest.company_name && (
-                    <div className="col-span-2">
-                      <span className="text-muted-foreground">שם חברה:</span>
-                      <p className="font-medium">{selectedRequest.company_name}</p>
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -636,10 +844,6 @@ export default function AdminDashboard() {
                     <span className="text-muted-foreground">סוג לקוח:</span>
                     <p className="font-medium">{selectedRequest.customer_type === 'private' ? 'פרטי' : 'עסקי'}</p>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">סוג פעולה:</span>
-                    <p className="font-medium">{selectedRequest.action_type === 'switch' ? 'מעבר ספק' : selectedRequest.action_type}</p>
-                  </div>
                   {selectedRequest.current_provider && (
                     <div>
                       <span className="text-muted-foreground">ספק נוכחי:</span>
@@ -652,31 +856,8 @@ export default function AdminDashboard() {
                       <p className="font-medium">{selectedRequest.target_provider}</p>
                     </div>
                   )}
-                  {selectedRequest.current_account_number && (
-                    <div>
-                      <span className="text-muted-foreground">מספר חשבון:</span>
-                      <p className="font-medium">{selectedRequest.current_account_number}</p>
-                    </div>
-                  )}
-                  {selectedRequest.current_customer_number && (
-                    <div>
-                      <span className="text-muted-foreground">מספר לקוח:</span>
-                      <p className="font-medium">{selectedRequest.current_customer_number}</p>
-                    </div>
-                  )}
                 </div>
               </div>
-
-              {/* Address */}
-              {selectedRequest.service_address && (
-                <div className="space-y-3">
-                  <h3 className="font-semibold border-b pb-2">כתובת שירות</h3>
-                  <p className="text-sm">
-                    {selectedRequest.service_address.street} {selectedRequest.service_address.number}, {selectedRequest.service_address.city}
-                    {selectedRequest.service_address.zip && ` (${selectedRequest.service_address.zip})`}
-                  </p>
-                </div>
-              )}
 
               {/* Plan */}
               {selectedRequest.selected_plan_name && (
@@ -695,11 +876,11 @@ export default function AdminDashboard() {
                         </div>
                       )}
                     </div>
-                    {selectedRequest.selected_plan_features && selectedRequest.selected_plan_features.length > 0 && (
+                    {selectedRequest.selected_plan_features && Array.isArray(selectedRequest.selected_plan_features) && selectedRequest.selected_plan_features.length > 0 && (
                       <div>
-                        <span className="text-muted-foreground">תכונות התכנית:</span>
+                        <span className="text-muted-foreground">תכונות:</span>
                         <ul className="mt-1 space-y-1">
-                          {selectedRequest.selected_plan_features.map((feature, index) => (
+                          {selectedRequest.selected_plan_features.map((feature: string, index: number) => (
                             <li key={index} className="flex items-center gap-2">
                               <CheckCircle className="h-3 w-3 text-green-500" />
                               <span>{feature}</span>
@@ -712,34 +893,78 @@ export default function AdminDashboard() {
                 </div>
               )}
 
-              {/* Consents */}
+              {/* Internal Notes */}
               <div className="space-y-3">
-                <h3 className="font-semibold border-b pb-2">הסכמות והצהרות</h3>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant={selectedRequest.poa ? "default" : "secondary"}>
-                    {selectedRequest.poa ? <CheckCircle className="h-3 w-3 ml-1" /> : <XCircle className="h-3 w-3 ml-1" />}
-                    ייפוי כוח
-                  </Badge>
-                  <Badge variant={selectedRequest.privacy_tos ? "default" : "secondary"}>
-                    {selectedRequest.privacy_tos ? <CheckCircle className="h-3 w-3 ml-1" /> : <XCircle className="h-3 w-3 ml-1" />}
-                    תנאי שימוש
-                  </Badge>
-                  <Badge variant={selectedRequest.fees_ack ? "default" : "secondary"}>
-                    {selectedRequest.fees_ack ? <CheckCircle className="h-3 w-3 ml-1" /> : <XCircle className="h-3 w-3 ml-1" />}
-                    אישור עמלות
-                  </Badge>
-                  <Badge variant={selectedRequest.esign_ok ? "default" : "secondary"}>
-                    {selectedRequest.esign_ok ? <CheckCircle className="h-3 w-3 ml-1" /> : <XCircle className="h-3 w-3 ml-1" />}
-                    חתימה דיגיטלית
-                  </Badge>
-                </div>
+                <h3 className="font-semibold border-b pb-2 flex items-center gap-2">
+                  <MessageSquare className="h-4 w-4" />
+                  הערות פנימיות
+                </h3>
+                {editingNotes === selectedRequest.id ? (
+                  <div className="space-y-2">
+                    <Textarea
+                      value={notesText}
+                      onChange={(e) => setNotesText(e.target.value)}
+                      placeholder="הוסף הערות פנימיות..."
+                      rows={3}
+                    />
+                    <div className="flex gap-2">
+                      <Button 
+                        size="sm" 
+                        onClick={() => saveInternalNotes(selectedRequest.id)}
+                        disabled={savingNotes}
+                      >
+                        {savingNotes ? <RefreshCw className="h-4 w-4 animate-spin ml-2" /> : <Save className="h-4 w-4 ml-2" />}
+                        שמור
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => setEditingNotes(null)}
+                      >
+                        ביטול
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    {selectedRequest.internal_notes ? (
+                      <p className="text-sm whitespace-pre-wrap bg-muted/50 p-3 rounded-lg">{selectedRequest.internal_notes}</p>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">אין הערות פנימיות</p>
+                    )}
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="mt-2"
+                      onClick={() => startEditingNotes(selectedRequest)}
+                    >
+                      <Pen className="h-4 w-4 ml-2" />
+                      {selectedRequest.internal_notes ? 'ערוך הערות' : 'הוסף הערות'}
+                    </Button>
+                  </div>
+                )}
               </div>
 
-              {/* Additional Notes */}
-              {selectedRequest.additional_notes && (
+              {/* Status History */}
+              {selectedRequest.status_history && selectedRequest.status_history.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="font-semibold border-b pb-2">הערות נוספות</h3>
-                  <p className="text-sm whitespace-pre-wrap">{selectedRequest.additional_notes}</p>
+                  <h3 className="font-semibold border-b pb-2">היסטוריית סטטוס</h3>
+                  <div className="space-y-2 text-sm">
+                    {selectedRequest.status_history.map((change: any, index: number) => (
+                      <div key={index} className="flex items-center gap-2 text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        <span>{format(new Date(change.changedAt), 'dd/MM/yyyy HH:mm', { locale: he })}</span>
+                        <span>-</span>
+                        <Badge variant="outline" className="text-xs">
+                          {statusLabels[change.from] || change.from}
+                        </Badge>
+                        <ArrowRight className="h-3 w-3" />
+                        <Badge variant="outline" className="text-xs">
+                          {statusLabels[change.to] || change.to}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -750,6 +975,42 @@ export default function AdminDashboard() {
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Internal Notes Edit Dialog */}
+      <Dialog open={editingNotes !== null && !selectedRequest} onOpenChange={() => setEditingNotes(null)}>
+        <DialogContent className="max-w-md" dir="rtl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5" />
+              הערות פנימיות
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Textarea
+              value={notesText}
+              onChange={(e) => setNotesText(e.target.value)}
+              placeholder="הוסף הערות פנימיות..."
+              rows={4}
+            />
+            <div className="flex gap-2">
+              <Button 
+                onClick={() => editingNotes && saveInternalNotes(editingNotes)}
+                disabled={savingNotes}
+                className="flex-1"
+              >
+                {savingNotes ? <RefreshCw className="h-4 w-4 animate-spin ml-2" /> : <Save className="h-4 w-4 ml-2" />}
+                שמור
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => setEditingNotes(null)}
+              >
+                ביטול
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
 
