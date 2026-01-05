@@ -124,14 +124,7 @@ serve(async (req: Request) => {
       });
     }
 
-    // If switch action, target_provider is required
-    if (data.action_type === "switch" && !data.target_provider) {
-      console.error("Missing target provider for switch action");
-      return new Response(JSON.stringify({ success: false, error: "missing_target_provider" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    // target_provider is optional - user might just want to leave current provider
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
