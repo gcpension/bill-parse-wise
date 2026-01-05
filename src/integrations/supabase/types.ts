@@ -48,6 +48,7 @@ export type Database = {
           fees_ack: boolean | null
           full_name: string
           id: string
+          internal_notes: string | null
           internet_infra_data: Json | null
           internet_isp_data: Json | null
           national_id_or_corp: string
@@ -68,6 +69,7 @@ export type Database = {
           signer_name: string | null
           signer_title: string | null
           status: string
+          status_history: Json | null
           target_account_number: string | null
           target_customer_number: string | null
           target_provider: string | null
@@ -108,6 +110,7 @@ export type Database = {
           fees_ack?: boolean | null
           full_name: string
           id?: string
+          internal_notes?: string | null
           internet_infra_data?: Json | null
           internet_isp_data?: Json | null
           national_id_or_corp: string
@@ -128,6 +131,7 @@ export type Database = {
           signer_name?: string | null
           signer_title?: string | null
           status?: string
+          status_history?: Json | null
           target_account_number?: string | null
           target_customer_number?: string | null
           target_provider?: string | null
@@ -168,6 +172,7 @@ export type Database = {
           fees_ack?: boolean | null
           full_name?: string
           id?: string
+          internal_notes?: string | null
           internet_infra_data?: Json | null
           internet_isp_data?: Json | null
           national_id_or_corp?: string
@@ -188,6 +193,7 @@ export type Database = {
           signer_name?: string | null
           signer_title?: string | null
           status?: string
+          status_history?: Json | null
           target_account_number?: string | null
           target_customer_number?: string | null
           target_provider?: string | null

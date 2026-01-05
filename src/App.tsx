@@ -17,12 +17,13 @@ import { ProviderSwitch } from "./pages/ProviderSwitch";
 import ResultsPreview from "./pages/ResultsPreview";
 import SwitchWizard from "./pages/SwitchWizard";
 import RequestStatus from "./pages/RequestStatus";
-// Import the newly created AllPlans page
 import AllPlans from "./pages/AllPlans";
 import ServiceRequest from "./pages/ServiceRequest";
 import IntegrationTestPage from "./components/IntegrationTestPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminAuth from "./pages/AdminAuth";
+import AdminReports from "./pages/AdminReports";
+import CustomerRequestStatus from "./pages/CustomerRequestStatus";
 import { AdminRoute } from "./components/AdminRoute";
 
 const queryClient = new QueryClient();
@@ -55,6 +56,9 @@ const App = () => (
               <Route path="/plans/all" element={<AllPlans />} />
               <Route path="/service-request" element={<ServiceRequest />} />
               <Route path="/request-status/:requestId?" element={<RequestStatus />} />
+              {/* Customer status tracking */}
+              <Route path="/track-request" element={<CustomerRequestStatus />} />
+              <Route path="/my-request" element={<CustomerRequestStatus />} />
               <Route
                 path="/switch/:category"
                 element={<ProviderSwitch />}
@@ -66,6 +70,11 @@ const App = () => (
               <Route path="/admin" element={
                 <AdminRoute>
                   <AdminDashboard />
+                </AdminRoute>
+              } />
+              <Route path="/admin/reports" element={
+                <AdminRoute>
+                  <AdminReports />
                 </AdminRoute>
               } />
               <Route path="/integration-test" element={<IntegrationTestPage />} />
