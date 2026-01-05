@@ -63,6 +63,7 @@ export type Database = {
           selected_plan_name: string | null
           selected_plan_price: number | null
           service_address: Json
+          signature_data: string | null
           signature_status: string | null
           signer_name: string | null
           signer_title: string | null
@@ -122,6 +123,7 @@ export type Database = {
           selected_plan_name?: string | null
           selected_plan_price?: number | null
           service_address?: Json
+          signature_data?: string | null
           signature_status?: string | null
           signer_name?: string | null
           signer_title?: string | null
@@ -181,6 +183,7 @@ export type Database = {
           selected_plan_name?: string | null
           selected_plan_price?: number | null
           service_address?: Json
+          signature_data?: string | null
           signature_status?: string | null
           signer_name?: string | null
           signer_title?: string | null

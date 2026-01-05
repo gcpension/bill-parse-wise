@@ -78,6 +78,10 @@ interface ServiceRequest {
   fees_ack?: boolean;
   esign_ok?: boolean;
   
+  // Signature
+  signature_data?: string;
+  signature_status?: string;
+  
   // Sector-specific data
   cellular_data?: any;
   internet_isp_data?: any;
@@ -158,11 +162,16 @@ serve(async (req: Request) => {
       });
     }
 
+    // Determine status based on signature
+    const hasSignature = !!data.signature_data;
+    const status = hasSignature ? "pending" : "awaiting_signature";
+    const signatureStatus = hasSignature ? "signed" : "awaiting";
+
     // Prepare insert payload with all fields
     const insertPayload = {
       reference_number: referenceNumber,
-      status: "awaiting_signature",
-      signature_status: "awaiting",
+      status: status,
+      signature_status: signatureStatus,
       
       // General
       action_type: data.action_type || "switch",
@@ -225,7 +234,10 @@ serve(async (req: Request) => {
       poa: data.poa || false,
       privacy_tos: data.privacy_tos || false,
       fees_ack: data.fees_ack || false,
-      esign_ok: data.esign_ok || false,
+      esign_ok: hasSignature,
+      
+      // Signature
+      signature_data: data.signature_data || null,
       
       // Sector-specific
       cellular_data: data.cellular_data || null,
