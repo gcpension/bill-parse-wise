@@ -1,1 +1,25 @@
 project_id = "qrdczgenetblylaoiupz"
+
+[functions.create-service-request]
+verify_jwt = false
+
+[functions.send-notification-email]
+verify_jwt = false
+
+[functions.comsign-callback]
+verify_jwt = false
+
+[functions.signtrust-callback]
+verify_jwt = false
+
+[functions.signtrust-integration]
+verify_jwt = false
+
+[functions.submit-to-google-sheets]
+verify_jwt = false
+
+[functions.create-switch-request]
+verify_jwt = false
+
+[functions.send-switch-notification]
+verify_jwt = false
