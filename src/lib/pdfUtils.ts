@@ -1,6 +1,8 @@
 import jsPDF from 'jspdf';
+import '@fontsource/noto-sans-hebrew';
 
 let fontRegistered = false;
+let fontData: string | null = null;
 
 const toBase64 = (blob: Blob): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -10,8 +12,19 @@ const toBase64 = (blob: Blob): Promise<string> =>
     reader.readAsDataURL(blob);
   });
 
-const ensureHebrewFont = async (pdf: jsPDF) => {
-  if (fontRegistered) return;
+const ensureHebrewFont = async (pdf: jsPDF): Promise<boolean> => {
+  if (fontRegistered && fontData) {
+    try {
+      pdf.addFileToVFS('NotoSansHebrew-Regular.ttf', fontData);
+      pdf.addFont('NotoSansHebrew-Regular.ttf', 'NotoSansHebrew', 'normal');
+      pdf.setFont('NotoSansHebrew', 'normal');
+      return true;
+    } catch (e) {
+      console.warn('Font already registered');
+      pdf.setFont('NotoSansHebrew', 'normal');
+      return true;
+    }
+  }
   
   try {
     // Try to load local font first
@@ -20,18 +33,21 @@ const ensureHebrewFont = async (pdf: jsPDF) => {
       const blob = await res.blob();
       const dataUrl = await toBase64(blob);
       const base64 = dataUrl.split(',')[1] || dataUrl;
+      fontData = base64;
       pdf.addFileToVFS('NotoSansHebrew-Regular.ttf', base64);
       pdf.addFont('NotoSansHebrew-Regular.ttf', 'NotoSansHebrew', 'normal');
+      pdf.setFont('NotoSansHebrew', 'normal');
       fontRegistered = true;
       console.log('Hebrew font loaded successfully');
-      return;
+      return true;
     }
   } catch (error) {
-    console.warn('Local Hebrew font not found, using fallback');
+    console.warn('Local Hebrew font not found, using fallback:', error);
   }
   
   // Set flag to avoid repeated attempts
   fontRegistered = true;
+  return false;
 };
 
 // Function to handle Hebrew text direction properly
@@ -48,7 +64,7 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
   });
 
   // Try to load Hebrew font
-  await ensureHebrewFont(pdf);
+  const fontLoaded = await ensureHebrewFont(pdf);
   
   const pageWidth = pdf.internal.pageSize.width;
   const pageHeight = pdf.internal.pageSize.height;
@@ -59,15 +75,12 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
   const maxWidth = pageWidth - (2 * margin);
 
   // Set font - use Hebrew if available, otherwise fallback
-  if (fontRegistered) {
-    try {
-      pdf.setFont('NotoSansHebrew', 'normal');
-    } catch (error) {
-      console.warn('Hebrew font not available, using Arial Unicode');
-      pdf.setFont('helvetica', 'normal');
-    }
+  if (fontLoaded) {
+    pdf.setFont('NotoSansHebrew', 'normal');
+    console.log('Using NotoSansHebrew font for PDF');
   } else {
     pdf.setFont('helvetica', 'normal');
+    console.warn('Fallback to helvetica - Hebrew may not render correctly');
   }
 
   // Title with better formatting
@@ -101,12 +114,10 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
     // Check if we need a new page
     if (y > pageHeight - 40) {
       pdf.addPage();
-      if (fontRegistered) {
-        try {
-          pdf.setFont('NotoSansHebrew', 'normal');
-        } catch {
-          pdf.setFont('helvetica', 'normal');
-        }
+      try {
+        pdf.setFont('NotoSansHebrew', 'normal');
+      } catch {
+        pdf.setFont('helvetica', 'normal');
       }
       y = 30;
     }
@@ -151,15 +162,13 @@ export const createHebrewPDF = async (title: string, content: string[]): Promise
     // Handle text wrapping for long lines
     const wrappedLines = pdf.splitTextToSize(processHebrewText(line), maxWidth - 10);
     
-    wrappedLines.forEach((wrappedLine: string, index: number) => {
+    wrappedLines.forEach((wrappedLine: string) => {
       if (y > pageHeight - 40) {
         pdf.addPage();
-        if (fontRegistered) {
-          try {
-            pdf.setFont('NotoSansHebrew', 'normal');
-          } catch {
-            pdf.setFont('helvetica', 'normal');
-          }
+        try {
+          pdf.setFont('NotoSansHebrew', 'normal');
+        } catch {
+          pdf.setFont('helvetica', 'normal');
         }
         y = 30;
       }
