@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,11 +26,12 @@ import {
   ArrowRight,
   Download,
   FileSpreadsheet,
-  Pen
+  Pen,
+  LogOut
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { he } from 'date-fns/locale';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -111,6 +113,13 @@ export default function AdminDashboard() {
   const [showSignaturePreview, setShowSignaturePreview] = useState(false);
   const [previewSignature, setPreviewSignature] = useState<string | null>(null);
   const { toast } = useToast();
+  const { user, signOut } = useAdminAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/admin-login');
+  };
 
   const fetchRequests = async () => {
     setLoading(true);
@@ -302,7 +311,9 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-foreground">דשבורד ניהול</h1>
-              <p className="text-muted-foreground text-sm">צפייה בכל בקשות השירות</p>
+              <p className="text-muted-foreground text-sm">
+                {user?.email && <span>מחובר: {user.email}</span>}
+              </p>
             </div>
             <div className="flex items-center gap-2">
               <Button 
@@ -320,6 +331,14 @@ export default function AdminDashboard() {
                   חזרה לאתר
                 </Button>
               </Link>
+              <Button 
+                variant="destructive" 
+                className="gap-2"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4" />
+                יציאה
+              </Button>
             </div>
           </div>
         </div>

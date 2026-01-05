@@ -22,6 +22,8 @@ import AllPlans from "./pages/AllPlans";
 import ServiceRequest from "./pages/ServiceRequest";
 import IntegrationTestPage from "./components/IntegrationTestPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminAuth from "./pages/AdminAuth";
+import { AdminRoute } from "./components/AdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -59,7 +61,13 @@ const App = () => (
               />
               <Route path="/help" element={<Help />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/admin" element={<AdminDashboard />} />
+              {/* Admin routes */}
+              <Route path="/admin-login" element={<AdminAuth />} />
+              <Route path="/admin" element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              } />
               <Route path="/integration-test" element={<IntegrationTestPage />} />
               {/* Redirect old routes to analyze */}
               <Route path="/dashboard" element={<Navigate to="/analyze" replace />} />
