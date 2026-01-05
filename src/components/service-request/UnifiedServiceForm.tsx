@@ -4,10 +4,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckCircle, Loader2, Info } from 'lucide-react';
+import { CheckCircle, Loader2, Info, Copy } from 'lucide-react';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Collapsible,
   CollapsibleContent,
@@ -27,9 +28,12 @@ const providerOptions = [
 export default function UnifiedServiceForm({ initialData, onComplete }: UnifiedServiceFormProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState('');
   const [formData, setFormData] = useState<Partial<ServiceRequestFormData>>({
     customer_type: 'private',
     preferred_language: 'he',
+    action_type: 'switch',
     ...initialData
   });
 
@@ -42,27 +46,53 @@ export default function UnifiedServiceForm({ initialData, onComplete }: UnifiedS
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-service-request`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-        },
-        body: JSON.stringify(formData)
+      // Prepare data for submission
+      const submitData = {
+        ...formData,
+        sector: formData.sector || initialData?.sector || 'general',
+        service_address: formData.service_address || { street: '', number: '', city: '', zip: '' }
+      };
+
+      console.log('Submitting form data:', submitData);
+
+      // Call edge function
+      const { data: response, error } = await supabase.functions.invoke('create-service-request', {
+        body: submitData
       });
 
-      if (!response.ok) throw new Error('Failed to submit');
+      if (error) {
+        console.error('Submission error:', error);
+        throw new Error(error.message || 'Failed to submit');
+      }
 
+      if (!response?.success) {
+        if (response?.error === 'duplicate_request') {
+          toast({
+            title: 'בקשה כפולה',
+            description: `כבר קיימת בקשה פעילה. מספר אסמכתה: ${response.existing_reference}`,
+            variant: 'destructive'
+          });
+          return;
+        }
+        throw new Error(response?.error || 'Unknown error');
+      }
+
+      // Success!
+      setReferenceNumber(response.reference_number);
+      setIsSubmitted(true);
+      
       toast({
         title: 'הבקשה נשלחה בהצלחה!',
-        description: 'תקבל SMS עם קישור לחתימה דיגיטלית'
+        description: `מספר אסמכתה: ${response.reference_number}`
       });
 
       if (onComplete) onComplete();
-    } catch (error) {
+      
+    } catch (error: any) {
+      console.error('Form submission error:', error);
       toast({
         title: 'שגיאה בשליחה',
-        description: 'אנא נסה שנית',
+        description: error.message || 'אנא נסה שנית',
         variant: 'destructive'
       });
     } finally {
@@ -70,8 +100,69 @@ export default function UnifiedServiceForm({ initialData, onComplete }: UnifiedS
     }
   };
 
+  const copyReferenceNumber = () => {
+    if (referenceNumber) {
+      navigator.clipboard.writeText(referenceNumber);
+      toast({
+        title: 'הועתק!',
+        description: 'מספר האסמכתה הועתק ללוח'
+      });
+    }
+  };
+
   const isBusinessCustomer = formData.customer_type === 'business';
   const [disclaimerExpanded, setDisclaimerExpanded] = useState(false);
+
+  // Success state
+  if (isSubmitted) {
+    return (
+      <div className="text-center space-y-6 py-8">
+        <div className="flex justify-center mb-6">
+          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+            <CheckCircle className="h-10 w-10 text-green-600" />
+          </div>
+        </div>
+        
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold text-green-800">הבקשה נשלחה בהצלחה!</h2>
+          <p className="text-muted-foreground">
+            כל הפרטים נשמרו במערכת ותטופל בהקדם
+          </p>
+        </div>
+
+        <div className="p-6 bg-green-50 border border-green-200 rounded-lg">
+          <div className="space-y-4">
+            <div>
+              <span className="text-sm font-medium text-green-800">מספר אסמכתה</span>
+              <div className="flex items-center justify-center gap-2 mt-1">
+                <code className="text-lg font-mono bg-white px-3 py-2 rounded border text-green-700">
+                  {referenceNumber}
+                </code>
+                <Button variant="outline" size="sm" onClick={copyReferenceNumber}>
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            
+            <div className="text-sm text-green-700 space-y-1">
+              <p>• שמרו את מספר האסמכתה למעקב</p>
+              <p>• תקבלו הודעת אישור לאימייל תוך 24 שעות</p>
+              <p>• המעבר יבוצע תוך 7-30 ימי עבודה</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex gap-4 justify-center">
+          <Button variant="outline" onClick={() => window.location.href = '/'}>
+            חזרה לעמוד הבית
+          </Button>
+          <Button onClick={() => window.location.href = '/all-plans'}>
+            חזרה להשוואת מסלולים
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 font-heebo">
