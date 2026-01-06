@@ -31,10 +31,10 @@ export const PersonalizedWizardFloat = () => {
   const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
 
-  // Generate recommendations when we have all data
-  const recommendations = useMemo(() => {
+  // Generate recommendations with advanced AI when we have all data
+  const aiAnalysis = useMemo(() => {
     if (!wizardData.service || !wizardData.familySize || !wizardData.budget) {
-      return [];
+      return null;
     }
 
     const userProfile: UserProfile = {
@@ -74,14 +74,22 @@ export const PersonalizedWizardFloat = () => {
     const category = categoryMap[wizardData.service];
     const filteredPlans = manualPlans.filter(plan => plan.category === category);
     
-    const recs = PersonalizedRecommendationEngine.generatePersonalizedRecommendations(
+    // Use advanced AI analysis
+    const analysis = PersonalizedRecommendationEngine.analyzeWithAdvancedAI(
       filteredPlans,
       userProfile,
       category
     );
 
-    return recs.slice(0, 5); // Top 5 recommendations
+    return {
+      recommendations: analysis.recommendations.slice(0, 5),
+      aiInsights: analysis.aiInsights,
+      marketAnalysis: analysis.marketAnalysis,
+      personalizedTips: analysis.personalizedTips
+    };
   }, [wizardData]);
+
+  const recommendations = aiAnalysis?.recommendations || [];
 
   const handleServiceSelect = (service: WizardData['service']) => {
     setWizardData({ ...wizardData, service });
@@ -183,35 +191,42 @@ export const PersonalizedWizardFloat = () => {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button - Top Right Position */}
       <AnimatePresence>
         {!isOpen && (
           <motion.div
-            initial={{ scale: 0, opacity: 0, rotate: -180 }}
-            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-            exit={{ scale: 0, opacity: 0, rotate: 180 }}
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            className="fixed bottom-6 right-6 z-50"
+            initial={{ scale: 0, opacity: 0, y: -20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0, opacity: 0, y: -20 }}
+            whileHover={{ scale: 1.05 }}
+            className="fixed top-24 left-6 z-50"
           >
             <Button
               onClick={() => setIsOpen(true)}
               size="lg"
-              className="group relative h-16 px-8 rounded-full bg-gradient-to-r from-primary via-purple-600 to-primary hover:from-primary/90 hover:via-purple-700 hover:to-primary/90 text-white shadow-2xl hover:shadow-primary/50 transition-all duration-500 font-heebo font-normal overflow-hidden"
+              className="group relative h-14 px-6 rounded-2xl bg-gradient-to-r from-primary via-purple-600 to-primary hover:from-primary/90 hover:via-purple-700 hover:to-primary/90 text-white shadow-xl hover:shadow-primary/40 transition-all duration-500 font-heebo font-normal overflow-hidden border border-white/20"
             >
               {/* Animated background effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               
+              {/* Pulsing glow effect */}
               <motion.div
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 rounded-2xl bg-primary/30 blur-xl"
+                animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              />
+              
+              <motion.div
+                animate={{ rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
-                <Sparkles className="ml-2 h-6 w-6 relative z-10" />
+                <Sparkles className="ml-2 h-5 w-5 relative z-10" />
               </motion.div>
               
-              <span className="relative z-10">אשף המלצות אישי</span>
+              <span className="relative z-10 text-sm">אשף ההמלצות החכם</span>
               
-              <Badge className="mr-2 bg-white/30 text-white border-0 backdrop-blur-sm relative z-10 shadow-lg">
-                AI
+              <Badge className="mr-2 bg-white/30 text-white border-0 backdrop-blur-sm relative z-10 shadow-lg text-[10px] px-2 py-0.5">
+                AI Pro
               </Badge>
             </Button>
           </motion.div>
@@ -222,11 +237,11 @@ export const PersonalizedWizardFloat = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ scale: 0.8, opacity: 0, y: 50, x: 50 }}
+            initial={{ scale: 0.8, opacity: 0, y: -50, x: -50 }}
             animate={{ scale: 1, opacity: 1, y: 0, x: 0 }}
-            exit={{ scale: 0.8, opacity: 0, y: 50, x: 50 }}
+            exit={{ scale: 0.8, opacity: 0, y: -50, x: -50 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="fixed bottom-6 right-6 z-50 w-[440px] max-w-[calc(100vw-3rem)]"
+            className="fixed top-24 left-6 z-50 w-[440px] max-w-[calc(100vw-3rem)]"
           >
             <Card className="shadow-2xl border-2 border-primary/30 overflow-hidden backdrop-blur-sm bg-background/95 hover:shadow-primary/20 transition-shadow duration-300">
               {/* Header */}
@@ -338,29 +353,36 @@ export const PersonalizedWizardFloat = () => {
                               המסלולים מסודרים לפי התאמה אישית מבוססת AI
                             </p>
                             
-                            {/* הסבר למה המסלולים נבחרו */}
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-right">
-                              <div className="flex items-start gap-2">
-                                <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                                <div className="text-xs text-blue-700 font-heebo font-light leading-relaxed">
-                                  בחרנו את המסלולים בהתאם ל:
-                                  <span className="font-normal"> {wizardData.familySize} נפשות במשפחה</span>,
-                                  <span className="font-normal"> תקציב של ₪{wizardData.budget}</span>,
-                                  <span className="font-normal"> {
-                                    wizardData.priorities?.price === 5 ? 'דגש על מחיר נמוך' :
-                                    wizardData.priorities?.speed === 5 ? 'דגש על מהירות גבוהה' :
-                                    wizardData.priorities?.reliability === 5 ? 'דגש על אמינות' :
-                                    'איזון בין כל הפרמטרים'
-                                  }</span>
-                                  {' '}ו<span className="font-normal">שימוש {
-                                    wizardData.usageLevel === 'light' ? 'קל' :
-                                    wizardData.usageLevel === 'medium' ? 'בינוני' :
-                                    wizardData.usageLevel === 'heavy' ? 'כבד' :
-                                    'אינטנסיבי'
-                                  }</span>.
+                            {/* AI Insights Section */}
+                            {aiAnalysis?.aiInsights && aiAnalysis.aiInsights.length > 0 && (
+                              <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4 mb-4 text-right">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <Sparkles className="w-4 h-4 text-purple-600" />
+                                  <span className="text-sm font-medium text-purple-700 font-heebo">תובנות AI</span>
+                                </div>
+                                <div className="space-y-2">
+                                  {aiAnalysis.aiInsights.slice(0, 2).map((insight, idx) => (
+                                    <div key={idx} className="text-xs text-purple-700 font-heebo font-light leading-relaxed">
+                                      {insight}
+                                    </div>
+                                  ))}
                                 </div>
                               </div>
-                            </div>
+                            )}
+
+                            {/* Market Analysis */}
+                            {aiAnalysis?.marketAnalysis && (
+                              <div className="grid grid-cols-2 gap-2 mb-4">
+                                <div className="bg-muted/50 rounded-lg p-3 text-center">
+                                  <div className="text-lg font-bold text-foreground">₪{aiAnalysis.marketAnalysis.avgPrice}</div>
+                                  <div className="text-xs text-muted-foreground">ממוצע בשוק</div>
+                                </div>
+                                <div className="bg-emerald-50 rounded-lg p-3 text-center">
+                                  <div className="text-lg font-bold text-emerald-600">₪{aiAnalysis.marketAnalysis.priceRange.min}</div>
+                                  <div className="text-xs text-emerald-700">המחיר הנמוך ביותר</div>
+                                </div>
+                              </div>
+                            )}
                           </div>
 
                           <div className="space-y-3 max-h-[400px] overflow-y-auto">

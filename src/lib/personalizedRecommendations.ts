@@ -680,4 +680,169 @@ export class PersonalizedRecommendationEngine {
     };
     return scores[company] || 70;
   }
+
+  /**
+   * Advanced AI Analysis - Enhanced scoring with multiple factors
+   */
+  static analyzeWithAdvancedAI(
+    plans: ManualPlan[], 
+    userProfile: UserProfile, 
+    category: string
+  ): {
+    recommendations: PersonalizedRecommendation[];
+    aiInsights: string[];
+    marketAnalysis: {
+      avgPrice: number;
+      priceRange: { min: number; max: number };
+      bestValuePlan: string;
+      mostFeaturesPlan: string;
+    };
+    personalizedTips: string[];
+  } {
+    console.log('🤖 Running Advanced AI Analysis...');
+    
+    // Get base recommendations
+    const recommendations = this.generatePersonalizedRecommendations(plans, userProfile, category);
+    
+    // Calculate market analysis
+    const prices = plans.filter(p => p.regularPrice > 0).map(p => p.regularPrice);
+    const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    
+    // Find best value (lowest price with most features)
+    const valueScores = plans.map(p => ({
+      plan: p,
+      score: (p.features.length / (p.regularPrice || 1)) * 100
+    })).sort((a, b) => b.score - a.score);
+    
+    const featureScores = [...plans].sort((a, b) => b.features.length - a.features.length);
+    
+    // Generate AI insights based on user profile
+    const aiInsights: string[] = [];
+    
+    // Family size insights
+    if (userProfile.familySize >= 4) {
+      aiInsights.push(`🏠 למשפחה גדולה כמו שלכם (${userProfile.familySize} נפשות), מסלולים עם הנחות משפחתיות יכולים לחסוך עד 30%`);
+    }
+    
+    // Budget insights
+    if (userProfile.monthlyBudget < avgPrice) {
+      aiInsights.push(`💡 התקציב שלכם (₪${userProfile.monthlyBudget}) נמוך מהממוצע בשוק (₪${Math.round(avgPrice)}). מצאנו מסלולים שמתאימים!`);
+    } else if (userProfile.monthlyBudget > avgPrice * 1.5) {
+      aiInsights.push(`✨ עם התקציב שלכם יש לכם גישה למסלולים פרימיום עם יותר תכונות`);
+    }
+    
+    // Work from home insights
+    if (userProfile.workFromHome && category === 'internet') {
+      aiInsights.push(`💻 עבודה מהבית דורשת חיבור יציב - העדפנו מסלולים עם SLA גבוה`);
+    }
+    
+    // Priority-based insights
+    if (userProfile.priorities.price >= 4) {
+      aiInsights.push(`💰 זיהינו שמחיר חשוב לכם - סידרנו את המסלולים הזולים ביותר בראש`);
+    }
+    if (userProfile.priorities.reliability >= 4) {
+      aiInsights.push(`🔒 אמינות חשובה לכם - בדקנו את דירוגי השירות של כל ספק`);
+    }
+    
+    // Generate personalized tips
+    const personalizedTips: string[] = [];
+    
+    // Timing tip
+    const currentMonth = new Date().getMonth();
+    if (currentMonth === 0 || currentMonth === 6) {
+      personalizedTips.push(`📅 טיפ: תחילת שנה/חציון הם זמנים טובים למשא ומתן על מחירים`);
+    }
+    
+    // Switching tip
+    if (userProfile.currentProvider) {
+      personalizedTips.push(`🔄 מעבר מ-${userProfile.currentProvider} עשוי להזכות אתכם בהטבות מיוחדות ללקוחות חדשים`);
+    }
+    
+    // Bundle tip
+    if (category === 'internet' && userProfile.categorySpecific?.internet?.streaming) {
+      personalizedTips.push(`📺 חבילות משולבות (אינטרנט + טלוויזיה) יכולות לחסוך עד 20%`);
+    }
+    
+    // Contract tip
+    if (userProfile.contractFlexibility === 'no_commitment') {
+      personalizedTips.push(`📋 מסלולים ללא התחייבות בדרך כלל יקרים ב-10-15% אבל נותנים גמישות מלאה`);
+    }
+    
+    return {
+      recommendations,
+      aiInsights,
+      marketAnalysis: {
+        avgPrice: Math.round(avgPrice),
+        priceRange: { min: minPrice, max: maxPrice },
+        bestValuePlan: valueScores[0]?.plan.planName || '',
+        mostFeaturesPlan: featureScores[0]?.planName || '',
+      },
+      personalizedTips
+    };
+  }
+
+  /**
+   * Smart comparison between plans
+   */
+  static compareSmartly(
+    plan1: ManualPlan,
+    plan2: ManualPlan,
+    userProfile: UserProfile
+  ): {
+    winner: ManualPlan;
+    reasons: string[];
+    tradeoffs: string[];
+  } {
+    let plan1Score = 0;
+    let plan2Score = 0;
+    const reasons: string[] = [];
+    const tradeoffs: string[] = [];
+    
+    // Price comparison
+    const priceDiff = (plan1.regularPrice || 0) - (plan2.regularPrice || 0);
+    if (priceDiff < 0) {
+      plan1Score += 20 * userProfile.priorities.price;
+      reasons.push(`${plan1.planName} זול יותר ב-₪${Math.abs(priceDiff)}`);
+    } else if (priceDiff > 0) {
+      plan2Score += 20 * userProfile.priorities.price;
+      reasons.push(`${plan2.planName} זול יותר ב-₪${priceDiff}`);
+    }
+    
+    // Features comparison
+    const featuresDiff = plan1.features.length - plan2.features.length;
+    if (featuresDiff > 0) {
+      plan1Score += 15 * userProfile.priorities.features;
+      reasons.push(`${plan1.planName} כולל ${featuresDiff} תכונות נוספות`);
+    } else if (featuresDiff < 0) {
+      plan2Score += 15 * userProfile.priorities.features;
+      reasons.push(`${plan2.planName} כולל ${Math.abs(featuresDiff)} תכונות נוספות`);
+    }
+    
+    // Provider reliability
+    const rel1 = this.getProviderReliabilityScore(plan1.company);
+    const rel2 = this.getProviderReliabilityScore(plan2.company);
+    if (rel1 > rel2 + 5) {
+      plan1Score += 10 * userProfile.priorities.reliability;
+      reasons.push(`${plan1.company} בעל מוניטין טוב יותר`);
+    } else if (rel2 > rel1 + 5) {
+      plan2Score += 10 * userProfile.priorities.reliability;
+      reasons.push(`${plan2.company} בעל מוניטין טוב יותר`);
+    }
+    
+    // Tradeoffs
+    if (plan1Score > plan2Score && (plan1.regularPrice || 0) > (plan2.regularPrice || 0)) {
+      tradeoffs.push(`${plan1.planName} יקר יותר אבל מציע יותר ערך`);
+    }
+    if (plan2Score > plan1Score && (plan2.regularPrice || 0) > (plan1.regularPrice || 0)) {
+      tradeoffs.push(`${plan2.planName} יקר יותר אבל מציע יותר ערך`);
+    }
+    
+    return {
+      winner: plan1Score >= plan2Score ? plan1 : plan2,
+      reasons,
+      tradeoffs
+    };
+  }
 }
