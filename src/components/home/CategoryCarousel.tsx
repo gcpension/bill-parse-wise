@@ -126,7 +126,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
       </AnimatePresence>
 
       {/* Carousel */}
-      <div className="relative overflow-hidden flex justify-center">
+      <div className="relative overflow-hidden">
         {/* Navigation - Desktop */}
         <button
           onClick={() => currentIndex > 0 && setCurrentIndex(prev => prev - 1)}
@@ -156,14 +156,19 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
           <ChevronLeft className="w-4 h-4 text-gray-700" />
         </button>
 
-        {/* Cards Container */}
+        {/* Cards Container - Fixed swipe for mobile */}
         <motion.div
           drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.1}
+          dragConstraints={{ left: -((categories.length - 1) * (CARD_WIDTH_MOBILE + CARD_GAP)), right: 0 }}
+          dragElastic={0.2}
           onDragStart={() => setIsDragging(true)}
           onDragEnd={handleDragEnd}
-          className="flex gap-3 cursor-grab active:cursor-grabbing justify-center"
+          animate={{ 
+            x: -currentIndex * (CARD_WIDTH_MOBILE + CARD_GAP) + (typeof window !== 'undefined' && window.innerWidth < 768 ? 16 : (window.innerWidth / 2 - CARD_WIDTH_MOBILE / 2 - 100))
+          }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          className="flex gap-3 cursor-grab active:cursor-grabbing touch-pan-x"
+          style={{ touchAction: 'pan-x' }}
         >
           {categories.map((category, index) => {
             const data = categoryData[category];
