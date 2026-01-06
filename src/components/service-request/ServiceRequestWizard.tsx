@@ -41,19 +41,29 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
       try {
         const planData = JSON.parse(selectedPlan);
         
-        // Auto-detect action type and target provider
-        const detectedSector = planData.category === 'mobile' ? 'cellular' : planData.category;
+        // Map Hebrew service names to sector codes
+        const sectorMapping: Record<string, string> = {
+          'סלולר': 'cellular',
+          'אינטרנט': 'internet_isp',
+          'טלוויזיה': 'tv',
+          'חשמל': 'electricity',
+          'mobile': 'cellular',
+          'internet': 'internet_isp',
+          'television': 'tv',
+          'electricity': 'electricity'
+        };
+        
+        const detectedSector = sectorMapping[planData.category] || planData.category || 'cellular';
         const detectedProvider = planData.company;
         
         setFormData(prev => ({
           ...prev,
-          action_type: 'switch', // Auto-detected as switch when coming from plan selection
+          action_type: 'switch',
           sector: detectedSector,
           target_provider: detectedProvider,
-          // Auto-fill additional context from selected plan
           selected_plan_name: planData.planName,
           selected_plan_price: planData.price,
-          selected_plan_features: planData.features
+          selected_plan_features: planData.features || []
         }));
         
         // Set to step 1 (Basic Data) since step 0 is pre-filled

@@ -191,12 +191,19 @@ const AllPlans = () => {
   }, [filteredPlans, currentMonthlyBill]);
 
   const handleSelectPlan = (plan: PlanRecord) => {
+    // Build features array from available plan data
+    const features: string[] = [];
+    if (plan.transferBenefits) features.push(plan.transferBenefits);
+    if (plan.commitment) features.push(`התחייבות: ${plan.commitment}`);
+    if (plan.sla) features.push(`ציון שירות: ${plan.sla}`);
+    
     // Store plan data for the form
     const planData = {
       planName: plan.plan,
       company: plan.company,
       price: plan.monthlyPrice,
       category: plan.service,
+      features: features,
       switchType: 'switch'
     };
     localStorage.setItem('selectedPlanForSwitch', JSON.stringify(planData));
