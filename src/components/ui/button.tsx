@@ -5,11 +5,11 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 touch-action-manipulation select-none active:scale-[0.97] active:opacity-90",
   {
     variants: {
       variant: {
-        default: "bg-primary text-white font-semibold shadow-lg hover:bg-primary/90 hover:shadow-xl transition-all duration-300",
+        default: "bg-primary text-white font-semibold shadow-lg hover:bg-primary/90 hover:shadow-xl",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -18,14 +18,14 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        purple: "bg-primary text-white font-semibold shadow-lg hover:bg-primary/90 hover:shadow-xl transition-all duration-300 border-0",
+        purple: "bg-primary text-white font-semibold shadow-lg hover:bg-primary/90 hover:shadow-xl border-0",
       },
       size: {
-        default: "h-12 px-6 py-3 md:h-10 md:px-4 md:py-2",
-        sm: "h-10 px-4 py-2 md:h-9 md:px-3",
-        lg: "h-14 px-10 py-4 md:h-11 md:px-8",
-        icon: "h-12 w-12 md:h-10 md:w-10",
-        touch: "h-14 px-8 py-4 text-base font-semibold",
+        default: "h-12 px-6 py-3 md:h-10 md:px-4 md:py-2 min-h-[44px]",
+        sm: "h-10 px-4 py-2 md:h-9 md:px-3 min-h-[40px]",
+        lg: "h-14 px-10 py-4 md:h-11 md:px-8 min-h-[48px]",
+        icon: "h-12 w-12 md:h-10 md:w-10 min-h-[44px] min-w-[44px]",
+        touch: "h-14 px-8 py-4 text-base font-semibold min-h-[56px]",
       },
     },
     defaultVariants: {

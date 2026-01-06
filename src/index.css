@@ -376,6 +376,9 @@ body {
     min-height: var(--touch-target-min);
     min-width: var(--touch-target-min);
     padding: var(--touch-spacing);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
   }
   
   .touch-grid {
@@ -385,12 +388,98 @@ body {
   .touch-card {
     padding: var(--touch-padding);
     border-radius: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
   }
   
   .touch-card:active {
-    transform: scale(0.95);
+    transform: scale(0.97);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  
+  /* Enhanced touch button */
+  .touch-button {
+    min-height: 48px;
+    min-width: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+  }
+  
+  .touch-button:active {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  
+  /* Touch feedback ripple effect */
+  .touch-ripple {
+    position: relative;
+    overflow: hidden;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .touch-ripple::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(0,0,0,0.1) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .touch-ripple:active::after {
+    opacity: 1;
+  }
+  
+  /* Smooth scroll for touch */
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+  }
+  
+  /* Pull to refresh prevention */
+  .no-overscroll {
+    overscroll-behavior-y: none;
+  }
+  
+  /* Safe area padding for notched devices */
+  .safe-area-padding {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Mobile-first interactive elements */
+  @media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets on touch devices */
+    .touch-target {
+      min-height: 48px;
+      min-width: 48px;
+    }
+    
+    /* Remove hover effects that don't work well on touch */
+    .hover-scale:hover {
+      transform: none;
+    }
+    
+    .hover-scale:active {
+      transform: scale(0.97);
+    }
+    
+    /* Better button feedback */
+    button, 
+    [role="button"],
+    a {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
   }
 }
 
