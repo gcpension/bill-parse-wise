@@ -197,6 +197,14 @@ const AllPlans = () => {
     if (plan.commitment) features.push(`התחייבות: ${plan.commitment}`);
     if (plan.sla) features.push(`ציון שירות: ${plan.sla}`);
     
+    console.log('Selected plan:', {
+      plan: plan.plan,
+      company: plan.company,
+      price: plan.monthlyPrice,
+      service: plan.service,
+      features: features
+    });
+    
     // Store plan data for the form
     const planData = {
       planName: plan.plan,

@@ -50,12 +50,17 @@ export default function UnifiedServiceForm({ initialData, onComplete }: UnifiedS
   const [signatureData, setSignatureData] = useState<string | null>(null);
   const signatureRef = useRef<SignatureCanvas>(null);
   
-  const [formData, setFormData] = useState<Partial<ServiceRequestFormData>>({
-    customer_type: 'private',
-    preferred_language: 'he',
-    action_type: 'switch',
-    sector: initialData?.sector || 'cellular',
-    ...initialData
+  const [formData, setFormData] = useState<Partial<ServiceRequestFormData>>(() => {
+    const initial: Partial<ServiceRequestFormData> = {
+      customer_type: 'private',
+      preferred_language: 'he',
+      action_type: 'switch' as const,
+      sector: initialData?.sector || 'cellular',
+      ...initialData
+    };
+    console.log('UnifiedServiceForm initialData:', initialData);
+    console.log('UnifiedServiceForm formData initialized:', initial);
+    return initial;
   });
 
   const updateField = (field: string, value: any) => {
