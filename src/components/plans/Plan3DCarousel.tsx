@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Star, TrendingDown, Rocket, Award, Sparkles, Zap, Wifi, Smartphone, Tv, Check, Clock, Shield } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft, Gift, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { PlanRecord } from '@/hooks/useAllPlans';
 
@@ -12,22 +11,6 @@ interface Plan3DCarouselProps {
   onSelectPlan: (plan: PlanRecord) => void;
   companyLogos: Record<string, string>;
 }
-
-const getCategoryIcon = (service: string) => {
-  if (service === 'סלולר') return Smartphone;
-  if (service.includes('אינטרנט')) return Wifi;
-  if (service.includes('טלוויזיה')) return Tv;
-  if (service === 'חשמל') return Zap;
-  return Sparkles;
-};
-
-const getCategoryGradient = (service: string) => {
-  if (service === 'סלולר') return 'from-emerald-500 to-teal-600';
-  if (service.includes('אינטרנט')) return 'from-blue-500 to-indigo-600';
-  if (service.includes('טלוויזיה')) return 'from-rose-500 to-pink-600';
-  if (service === 'חשמל') return 'from-amber-500 to-orange-600';
-  return 'from-violet-500 to-purple-600';
-};
 
 const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
   plans,
@@ -96,30 +79,30 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
   return (
     <div 
       ref={containerRef}
-      className="relative w-full py-12 select-none focus:outline-none"
+      className="relative w-full py-10 select-none focus:outline-none"
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
-      {/* Navigation Buttons */}
+      {/* Navigation */}
       <button
         onClick={handlePrev}
-        className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white shadow-xl border border-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:text-slate-900 hover:scale-105 transition-all duration-300 group"
+        className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:shadow-xl transition-all"
         aria-label="הקודם"
       >
-        <ChevronRight className="w-6 h-6 group-hover:scale-110 transition-transform" />
+        <ChevronRight className="w-6 h-6" />
       </button>
       
       <button
         onClick={handleNext}
-        className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white shadow-xl border border-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:text-slate-900 hover:scale-105 transition-all duration-300 group"
+        className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:shadow-xl transition-all"
         aria-label="הבא"
       >
-        <ChevronLeft className="w-6 h-6 group-hover:scale-110 transition-transform" />
+        <ChevronLeft className="w-6 h-6" />
       </button>
 
-      {/* 3D Carousel Container */}
+      {/* Carousel */}
       <motion.div
-        className="relative h-[520px] flex items-center justify-center"
+        className="relative h-[520px] flex items-center justify-center overflow-hidden"
         style={{ perspective: '1200px' }}
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -134,174 +117,121 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
               : 0;
             const isPlanRecommended = planSavings > 0;
             const logo = companyLogos[plan.company];
-            const CategoryIcon = getCategoryIcon(plan.service);
-            const gradient = getCategoryGradient(plan.service);
 
             const absPosition = Math.abs(position);
-            const scale = isCenter ? 1 : 0.72 - absPosition * 0.06;
-            const translateX = position * (isCenter ? 0 : 180);
-            const rotateY = position * 12;
-            const opacity = isCenter ? 1 : 0.6 - absPosition * 0.12;
+            const scale = isCenter ? 1 : 0.85 - absPosition * 0.05;
+            const translateX = position * 160;
+            const rotateY = position * 8;
+            const opacity = 1;
             const zIndex = 10 - absPosition;
+            const blur = isCenter ? 0 : absPosition * 1;
 
             return (
               <motion.div
                 key={`${plan.company}-${plan.plan}-${originalIndex}`}
-                className="absolute cursor-pointer"
-                initial={{ opacity: 0, scale: 0.8 }}
+                className="absolute"
+                initial={{ opacity: 0, scale: 0.9 }}
                 animate={{
                   opacity,
                   scale,
                   x: translateX,
                   rotateY: `${rotateY}deg`,
                   zIndex,
+                  filter: `blur(${blur}px)`,
                 }}
-                exit={{ opacity: 0, scale: 0.8 }}
+                exit={{ opacity: 0, scale: 0.9 }}
                 transition={{
                   type: "spring",
-                  stiffness: 260,
-                  damping: 26,
+                  stiffness: 300,
+                  damping: 30,
                 }}
                 onClick={() => {
-                  if (isCenter) {
-                    onSelectPlan(plan);
-                  } else {
+                  if (!isCenter) {
                     setActiveIndex(originalIndex);
                   }
                 }}
-                whileHover={isCenter ? { scale: 1.03, y: -8 } : { scale: scale + 0.02 }}
                 style={{
                   transformStyle: 'preserve-3d',
+                  cursor: isCenter ? 'default' : 'pointer'
                 }}
               >
                 <div
                   className={cn(
-                    "w-[340px] rounded-3xl overflow-hidden transition-all duration-500",
+                    "w-[340px] bg-white rounded-xl overflow-hidden transition-all duration-300",
                     isCenter 
-                      ? "shadow-2xl shadow-slate-400/30" 
-                      : "shadow-xl shadow-slate-300/20",
-                    isPlanRecommended && isCenter
-                      ? "ring-2 ring-emerald-400 ring-offset-4 ring-offset-white"
-                      : ""
+                      ? "shadow-2xl ring-1 ring-slate-200" 
+                      : "shadow-lg ring-1 ring-slate-100"
                   )}
                 >
-                  {/* Gradient Header */}
+                  {/* Header */}
                   <div className={cn(
-                    "relative p-6 pb-8 bg-gradient-to-br",
-                    isCenter ? gradient : "from-slate-100 to-slate-50"
+                    "p-5 border-b",
+                    isCenter ? "border-slate-200 bg-slate-50/80" : "border-slate-100 bg-slate-50/50"
                   )}>
-                    {/* Decorative Elements */}
-                    {isCenter && (
-                      <>
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
-                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-xl" />
-                      </>
-                    )}
-                    
-                    {/* Top Badges */}
-                    {isCenter && (
-                      <div className="absolute top-4 left-4 flex gap-2">
-                        {isPlanRecommended && (
-                          <Badge className="bg-white/95 text-emerald-700 font-bold shadow-lg px-3 py-1.5 backdrop-blur-sm">
-                            <Star className="w-3.5 h-3.5 ml-1.5 fill-emerald-500 text-emerald-500" />
-                            מומלץ
-                          </Badge>
-                        )}
-                        {originalIndex === 0 && (
-                          <Badge className="bg-white/95 text-amber-700 font-bold shadow-lg px-3 py-1.5 backdrop-blur-sm">
-                            <Award className="w-3.5 h-3.5 ml-1.5 text-amber-500" />
-                            הזול ביותר
-                          </Badge>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Company Info */}
-                    <div className="relative flex items-center gap-4">
+                    <div className="flex items-center gap-4">
                       {logo ? (
-                        <div className={cn(
-                          "w-16 h-16 rounded-2xl flex items-center justify-center p-2.5 shadow-lg",
-                          isCenter ? "bg-white" : "bg-white/80"
-                        )}>
+                        <div className="w-14 h-14 rounded-lg bg-white flex items-center justify-center p-2 border border-slate-200 shadow-sm">
                           <img src={logo} alt={plan.company} className="max-w-full max-h-full object-contain" />
                         </div>
                       ) : (
-                        <div className={cn(
-                          "w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg",
-                          isCenter ? "bg-white" : "bg-white/80"
-                        )}>
-                          <CategoryIcon className={cn(
-                            "w-8 h-8",
-                            isCenter ? "text-slate-700" : "text-slate-400"
-                          )} />
+                        <div className="w-14 h-14 rounded-lg bg-slate-100 flex items-center justify-center border border-slate-200">
+                          <span className="text-xl font-bold text-slate-400">{plan.company.charAt(0)}</span>
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
                         <h3 className={cn(
-                          "font-bold text-xl truncate",
-                          isCenter ? "text-white" : "text-slate-700"
-                        )}>
-                          {plan.company}
-                        </h3>
-                        <div className={cn(
-                          "flex items-center gap-2 mt-1",
-                          isCenter ? "text-white/80" : "text-slate-500"
-                        )}>
-                          <CategoryIcon className="w-4 h-4" />
-                          <span className="text-sm font-medium">{plan.service}</span>
-                        </div>
+                          "font-bold truncate",
+                          isCenter ? "text-slate-900 text-lg" : "text-slate-500 text-base"
+                        )}>{plan.company}</h3>
+                        <span className={cn(
+                          "text-sm",
+                          isCenter ? "text-slate-500" : "text-slate-400"
+                        )}>{plan.service}</span>
                       </div>
+                      {isCenter && isPlanRecommended && (
+                        <div className="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-semibold">
+                          מומלץ
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  {/* Card Body */}
-                  <div className="bg-white p-6">
+                  {/* Body */}
+                  <div className="p-5">
                     {/* Plan Name */}
-                    <h4 className={cn(
-                      "font-semibold line-clamp-2 min-h-[52px] leading-relaxed mb-4",
-                      isCenter ? "text-slate-800 text-lg" : "text-slate-500 text-base"
+                    <p className={cn(
+                      "line-clamp-2 min-h-[44px] mb-5",
+                      isCenter ? "text-slate-700 text-sm font-medium" : "text-slate-400 text-sm"
                     )}>
                       {plan.plan}
-                    </h4>
+                    </p>
 
-                    {/* Price Section */}
+                    {/* Price */}
                     <div className={cn(
-                      "rounded-2xl p-5 mb-5 text-center",
-                      isCenter 
-                        ? isPlanRecommended 
-                          ? "bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100" 
-                          : "bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-100"
-                        : "bg-slate-50"
+                      "text-center py-6 rounded-lg mb-5",
+                      isCenter ? "bg-slate-100/80" : "bg-slate-50"
                     )}>
                       <div className="flex items-baseline justify-center gap-1">
                         <span className={cn(
-                          "font-extrabold tracking-tight",
-                          isCenter ? "text-5xl text-slate-900" : "text-3xl text-slate-500"
+                          "font-bold",
+                          isCenter ? "text-5xl text-slate-900" : "text-4xl text-slate-400"
                         )}>
                           {plan.monthlyPrice}
                         </span>
                         <span className={cn(
-                          "font-bold",
-                          isCenter ? "text-2xl text-slate-400" : "text-lg text-slate-400"
+                          isCenter ? "text-2xl text-slate-400" : "text-xl text-slate-300"
                         )}>₪</span>
-                        <span className="text-sm text-slate-400 font-medium mr-1">/חודש</span>
                       </div>
-
+                      <span className={cn(
+                        "text-sm mt-1 block",
+                        isCenter ? "text-slate-500" : "text-slate-400"
+                      )}>לחודש</span>
+                      
                       {isCenter && isPlanRecommended && (
-                        <motion.div 
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full shadow-lg shadow-emerald-200/50 font-bold"
-                        >
-                          <TrendingDown className="w-5 h-5" />
-                          <span>חסכו ₪{planSavings.toFixed(0)} בחודש</span>
-                        </motion.div>
-                      )}
-
-                      {isCenter && plan.yearlyPrice && !isPlanRecommended && (
-                        <p className="text-sm text-slate-400 mt-3 font-medium">
-                          ₪{plan.yearlyPrice.toLocaleString()} לשנה
-                        </p>
+                        <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm">
+                          <span className="text-sm text-slate-600">חיסכון</span>
+                          <span className="text-sm font-bold text-slate-900">₪{planSavings.toFixed(0)}/חודש</span>
+                        </div>
                       )}
                     </div>
 
@@ -309,50 +239,28 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
                     {isCenter && (
                       <div className="space-y-3 mb-5">
                         {plan.transferBenefits && (
-                          <div className="flex items-start gap-3 p-3 bg-violet-50 rounded-xl border border-violet-100">
-                            <div className="w-8 h-8 rounded-lg bg-violet-500 flex items-center justify-center flex-shrink-0">
-                              <Sparkles className="w-4 h-4 text-white" />
-                            </div>
-                            <div>
-                              <p className="text-xs text-violet-600 font-semibold mb-0.5">הטבת מעבר</p>
-                              <p className="text-sm text-violet-800 font-medium leading-snug">{plan.transferBenefits}</p>
-                            </div>
+                          <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <Gift className="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5" />
+                            <span className="text-sm text-slate-600 leading-relaxed">{plan.transferBenefits}</span>
                           </div>
                         )}
-                        
-                        <div className="flex gap-3">
-                          {plan.commitment && (
-                            <div className="flex-1 flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                              <Clock className="w-4 h-4 text-slate-400" />
-                              <span className="text-xs text-slate-600 font-medium">{plan.commitment}</span>
-                            </div>
-                          )}
-                          {plan.sla && (
-                            <div className="flex-1 flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                              <Shield className="w-4 h-4 text-slate-400" />
-                              <span className="text-xs text-slate-600 font-medium">שירות: {plan.sla}</span>
-                            </div>
-                          )}
-                        </div>
+                        {plan.commitment && (
+                          <div className="flex items-center gap-3 text-sm text-slate-500 px-1">
+                            <Clock className="w-4 h-4 text-slate-400" />
+                            <span>{plan.commitment}</span>
+                          </div>
+                        )}
                       </div>
                     )}
 
-                    {/* CTA Button */}
+                    {/* CTA */}
                     {isCenter && (
                       <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onSelectPlan(plan);
-                        }}
-                        className={cn(
-                          "w-full h-14 font-bold text-base transition-all duration-300 rounded-xl shadow-lg group",
-                          isPlanRecommended
-                            ? "bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-emerald-200/50"
-                            : "bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-900 hover:to-slate-800 text-white shadow-slate-300/50"
-                        )}
+                        onClick={() => onSelectPlan(plan)}
+                        className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-base"
                       >
-                        <Rocket className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                        {isPlanRecommended ? "עברו למסלול הזה" : "בחרו מסלול זה"}
+                        בחירת מסלול
+                        <ArrowLeft className="mr-2 h-5 w-5" />
                       </Button>
                     )}
                   </div>
@@ -363,8 +271,8 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
         </AnimatePresence>
       </motion.div>
 
-      {/* Dots Navigation */}
-      <div className="flex justify-center items-center gap-2 mt-8">
+      {/* Progress Dots */}
+      <div className="flex justify-center items-center gap-2 mt-6">
         {plans.slice(0, Math.min(plans.length, 12)).map((_, index) => (
           <button
             key={index}
@@ -372,30 +280,20 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
             className={cn(
               "transition-all duration-300 rounded-full",
               activeIndex === index
-                ? "w-10 h-3 bg-gradient-to-r from-slate-700 to-slate-800 shadow-sm"
-                : "w-3 h-3 bg-slate-200 hover:bg-slate-300"
+                ? "w-8 h-2 bg-slate-900"
+                : "w-2 h-2 bg-slate-300 hover:bg-slate-400"
             )}
-            aria-label={`עבור למסלול ${index + 1}`}
           />
         ))}
         {plans.length > 12 && (
-          <span className="text-sm text-slate-400 font-medium mr-3">
-            +{plans.length - 12} נוספים
-          </span>
+          <span className="text-sm text-slate-400 mr-2">+{plans.length - 12}</span>
         )}
       </div>
 
       {/* Counter */}
-      <div className="text-center mt-5">
-        <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-white rounded-full shadow-sm border border-slate-100">
-          <span className="text-sm text-slate-500">
-            מסלול
-          </span>
-          <span className="text-lg font-bold text-slate-800">{activeIndex + 1}</span>
-          <span className="text-sm text-slate-400">מתוך</span>
-          <span className="text-lg font-bold text-slate-800">{plans.length}</span>
-        </div>
-      </div>
+      <p className="text-center text-sm text-slate-500 mt-4 font-medium">
+        {activeIndex + 1} מתוך {plans.length}
+      </p>
     </div>
   );
 };
