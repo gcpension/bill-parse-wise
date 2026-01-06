@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, ChevronLeft, Save, CheckCircle } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Save, CheckCircle, Copy } from 'lucide-react';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
 
 // Import steps
 import GeneralChoicesStep from './steps/GeneralChoicesStep';
@@ -29,6 +30,7 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<ServiceRequestFormData>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState<string | null>(null);
   const { toast } = useToast();
 
   // Load draft and selected plan from localStorage on mount
@@ -144,28 +146,59 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      // Enhanced submission with better error handling
-      console.log('Submitting form data:', formData);
+      console.log('Submitting form data to edge function:', formData);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Prepare data for submission
+      const submitData = {
+        ...formData,
+        sector: formData.sector || 'general',
+        customer_type: formData.customer_type || 'private',
+        service_address: formData.service_address || { street: '', number: '', city: '', zip: '' },
+      };
+
+      // Call edge function to create service request
+      const { data: response, error } = await supabase.functions.invoke('create-service-request', {
+        body: submitData
+      });
+
+      if (error) {
+        console.error('Submission error:', error);
+        throw new Error(error.message || 'Failed to submit');
+      }
+
+      if (!response?.success) {
+        if (response?.error === 'duplicate_request') {
+          toast({
+            title: 'בקשה כפולה',
+            description: `כבר קיימת בקשה פעילה. מספר אסמכתה: ${response.existing_reference}`,
+            variant: 'destructive'
+          });
+          setReferenceNumber(response.existing_reference);
+          setCurrentStep(steps.length);
+          return;
+        }
+        throw new Error(response?.error || 'Unknown error');
+      }
+
+      // Success!
+      setReferenceNumber(response.reference_number);
       
       toast({
         title: 'הבקשה נשלחה בהצלחה! 🎉',
-        description: 'תקבל SMS עם קישור לחתימה דיגיטלית ועדכונים על הסטטוס',
+        description: `מספר אסמכתה: ${response.reference_number}`,
       });
       
       // Clear the draft
       localStorage.removeItem(STORAGE_KEY);
       
-      // Show completion message and keep form data for reference
-      setCurrentStep(steps.length); // Go to completion step
+      // Show completion message
+      setCurrentStep(steps.length);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting form:', error);
       toast({
         title: 'שגיאה בשליחת הבקשה',
-        description: 'אנא בדוק את החיבור לאינטרנט ונסה שוב',
+        description: error.message || 'אנא בדוק את החיבור לאינטרנט ונסה שוב',
         variant: 'destructive',
       });
     } finally {
@@ -238,10 +271,43 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
             <h2 className="text-2xl font-light text-gray-900">
               הבקשה נשלחה בהצלחה!
             </h2>
+            
+            {referenceNumber && (
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 max-w-sm mx-auto">
+                <p className="text-sm text-gray-500 mb-2">מספר אסמכתה:</p>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="font-mono text-lg font-medium text-gray-900">{referenceNumber}</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      navigator.clipboard.writeText(referenceNumber);
+                      toast({
+                        title: 'הועתק!',
+                        description: 'מספר האסמכתה הועתק ללוח'
+                      });
+                    }}
+                    className="h-8 w-8 p-0"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-400 mt-2">שמור מספר זה למעקב אחר הבקשה</p>
+              </div>
+            )}
+            
             <p className="text-gray-600 font-light max-w-md mx-auto">
-              תקבל SMS עם קישור לחתימה דיגיטלית ועדכונים על הסטטוס
+              תקבל עדכונים על הסטטוס במייל ובהודעת SMS
             </p>
-            <div className="pt-4">
+            
+            <div className="flex gap-3 justify-center pt-4">
+              <Button 
+                variant="outline"
+                onClick={() => window.location.href = '/track-request'}
+                className="px-6 rounded-lg font-normal"
+              >
+                מעקב בקשה
+              </Button>
               <Button 
                 onClick={() => {
                   if (onComplete) {
@@ -250,7 +316,6 @@ export default function ServiceRequestWizard({ onComplete }: ServiceRequestWizar
                     window.location.href = '/';
                   }
                 }} 
-                size="lg"
                 className="bg-gray-900 hover:bg-gray-800 text-white px-8 rounded-lg font-normal shadow-sm"
               >
                 {onComplete ? 'סגור' : 'חזור לדף הבית'}
