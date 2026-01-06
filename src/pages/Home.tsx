@@ -55,6 +55,11 @@ const Home = () => {
     selected: boolean;
     lines?: number;
   }>>({
+    triple: {
+      provider: '',
+      amount: '',
+      selected: false
+    },
     electricity: {
       provider: '',
       amount: '',
