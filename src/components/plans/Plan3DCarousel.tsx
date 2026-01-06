@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Calendar, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Calendar, Check, Star, Shield, Clock, Gift, Zap, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { PlanRecord } from '@/hooks/useAllPlans';
@@ -12,69 +12,268 @@ interface Plan3DCarouselProps {
   companyLogos: Record<string, string>;
 }
 
+// Company section carousel component
+const CompanyCarousel: React.FC<{
+  company: string;
+  plans: PlanRecord[];
+  currentMonthlyBill: number;
+  onSelectPlan: (plan: PlanRecord) => void;
+  logo?: string;
+}> = ({ company, plans, currentMonthlyBill, onSelectPlan, logo }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleNext = () => {
+    setActiveIndex((prev) => Math.min(prev + 1, plans.length - 1));
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const recommendedCount = plans.filter(p => 
+    currentMonthlyBill > 0 && p.monthlyPrice && p.monthlyPrice < currentMonthlyBill
+  ).length;
+
+  const parseFeatures = (plan: PlanRecord): string[] => {
+    const features: string[] = [];
+    if (plan.transferBenefits) {
+      const parts = plan.transferBenefits.split(/[,،;•]/);
+      features.push(...parts.slice(0, 4).map(p => p.trim()).filter(Boolean));
+    }
+    return features;
+  };
+
+  return (
+    <div className="mb-12 last:mb-0">
+      {/* Company Header */}
+      <div className="flex items-center justify-between mb-6 pb-4 border-b border-border">
+        <div className="flex items-center gap-4">
+          {logo ? (
+            <div className="w-14 h-14 rounded-xl bg-card border border-border shadow-sm flex items-center justify-center p-2">
+              <img src={logo} alt={company} className="max-w-full max-h-full object-contain" />
+            </div>
+          ) : (
+            <div className="w-14 h-14 rounded-xl bg-muted border border-border flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-muted-foreground" />
+            </div>
+          )}
+          <div>
+            <h2 className="text-xl font-bold text-foreground">{company}</h2>
+            <div className="flex items-center gap-3 mt-1">
+              <span className="text-sm text-muted-foreground">{plans.length} מסלולים</span>
+              {recommendedCount > 0 && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium">
+                  <Star className="w-3 h-3" />
+                  {recommendedCount} מומלצים
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        {/* Navigation Buttons */}
+        {plans.length > 3 && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handlePrev}
+              disabled={activeIndex === 0}
+              className={cn(
+                "w-10 h-10 rounded-full border flex items-center justify-center transition-all",
+                activeIndex === 0 
+                  ? "border-border/50 text-muted-foreground/50 cursor-not-allowed"
+                  : "border-border bg-card text-foreground hover:bg-muted shadow-sm"
+              )}
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={activeIndex >= plans.length - 3}
+              className={cn(
+                "w-10 h-10 rounded-full border flex items-center justify-center transition-all",
+                activeIndex >= plans.length - 3
+                  ? "border-border/50 text-muted-foreground/50 cursor-not-allowed"
+                  : "border-border bg-card text-foreground hover:bg-muted shadow-sm"
+              )}
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Plans Horizontal Scroll */}
+      <div className="relative overflow-hidden">
+        <motion.div
+          ref={scrollRef}
+          className="flex gap-5"
+          animate={{ x: activeIndex * -340 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        >
+          {plans.map((plan, index) => {
+            const savings = currentMonthlyBill > 0 && plan.monthlyPrice && plan.monthlyPrice < currentMonthlyBill
+              ? currentMonthlyBill - plan.monthlyPrice
+              : 0;
+            const isRecommended = savings > 0;
+            const isBestValue = index === 0;
+            const features = parseFeatures(plan);
+
+            return (
+              <motion.div
+                key={`${plan.company}-${plan.plan}-${index}`}
+                className="flex-shrink-0 w-[320px]"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <div className={cn(
+                  "h-full rounded-2xl border bg-card overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
+                  isRecommended 
+                    ? "border-emerald-200 ring-1 ring-emerald-100" 
+                    : "border-border hover:border-foreground/20"
+                )}>
+                  {/* Top Ribbon */}
+                  {isRecommended && (
+                    <div className="bg-gradient-to-l from-emerald-500 to-emerald-600 text-white py-2 px-4">
+                      <div className="flex items-center justify-center gap-2 text-sm font-semibold">
+                        <Sparkles className="w-4 h-4" />
+                        <span>חסכו ₪{savings.toFixed(0)} לחודש</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="p-5">
+                    {/* Badges */}
+                    <div className="flex items-center gap-2 mb-4">
+                      {isBestValue && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-amber-100 text-amber-700 text-xs font-semibold">
+                          <Zap className="w-3 h-3" />
+                          הזול ביותר
+                        </span>
+                      )}
+                      <span className="px-2 py-1 rounded-md bg-muted text-muted-foreground text-xs">
+                        {plan.service}
+                      </span>
+                    </div>
+
+                    {/* Plan Name */}
+                    <h3 className="text-lg font-bold text-foreground mb-4 line-clamp-2 min-h-[56px] leading-snug">
+                      {plan.plan}
+                    </h3>
+
+                    {/* Price Card */}
+                    <div className="bg-muted/50 rounded-xl p-4 mb-5 text-center">
+                      <div className="flex items-baseline justify-center gap-1">
+                        <span className="text-4xl font-bold text-foreground">{plan.monthlyPrice}</span>
+                        <div className="text-right">
+                          <span className="text-lg text-muted-foreground">₪</span>
+                          <div className="text-xs text-muted-foreground -mt-1">לחודש</div>
+                        </div>
+                      </div>
+                      {plan.yearlyPrice && (
+                        <div className="text-xs text-muted-foreground mt-2">
+                          ₪{plan.yearlyPrice.toLocaleString()} לשנה
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Features List */}
+                    <div className="space-y-3 mb-5">
+                      {features.length > 0 ? (
+                        features.slice(0, 3).map((feature, idx) => (
+                          <div key={idx} className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <Check className="w-3 h-3 text-foreground" />
+                            </div>
+                            <span className="text-sm text-foreground/80 leading-relaxed">{feature}</span>
+                          </div>
+                        ))
+                      ) : plan.transferBenefits ? (
+                        <div className="flex items-start gap-3">
+                          <div className="w-5 h-5 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Gift className="w-3 h-3 text-foreground" />
+                          </div>
+                          <span className="text-sm text-foreground/80 leading-relaxed line-clamp-2">{plan.transferBenefits}</span>
+                        </div>
+                      ) : null}
+
+                      {plan.commitment && (
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                            <Clock className="w-3 h-3 text-muted-foreground" />
+                          </div>
+                          <span className="text-sm text-muted-foreground">{plan.commitment}</span>
+                        </div>
+                      )}
+
+                      {plan.sla && (
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                            <Shield className="w-3 h-3 text-muted-foreground" />
+                          </div>
+                          <span className="text-sm text-muted-foreground">ציון שירות: {plan.sla}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* CTA Button */}
+                    <Button
+                      onClick={() => onSelectPlan(plan)}
+                      className={cn(
+                        "w-full h-12 font-semibold rounded-xl text-base transition-all",
+                        isRecommended
+                          ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                          : "bg-foreground hover:bg-foreground/90 text-background"
+                      )}
+                    >
+                      בחירת מסלול
+                      <ArrowLeft className="mr-2 h-5 w-5" />
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      </div>
+
+      {/* Scroll Indicator */}
+      {plans.length > 3 && (
+        <div className="flex justify-center items-center gap-1.5 mt-5">
+          {Array.from({ length: Math.ceil(plans.length / 3) }).map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveIndex(idx * 3)}
+              className={cn(
+                "transition-all rounded-full",
+                Math.floor(activeIndex / 3) === idx
+                  ? "w-6 h-2 bg-foreground"
+                  : "w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+              )}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
   plans,
   currentMonthlyBill,
   onSelectPlan,
   companyLogos
 }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const visibleCount = 5;
-  
-  const getVisiblePlans = () => {
-    const result: { plan: PlanRecord; position: number; originalIndex: number }[] = [];
-    const halfVisible = Math.floor(visibleCount / 2);
-    
-    for (let i = -halfVisible; i <= halfVisible; i++) {
-      let index = activeIndex + i;
-      if (index < 0) index = plans.length + index;
-      if (index >= plans.length) index = index - plans.length;
-      
-      if (plans[index]) {
-        result.push({
-          plan: plans[index],
-          position: i,
-          originalIndex: index
-        });
-      }
-    }
-    
-    return result;
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % plans.length);
-  };
-
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + plans.length) % plans.length);
-  };
-
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 50;
-    if (info.offset.x > threshold) {
-      handlePrev();
-    } else if (info.offset.x < -threshold) {
-      handleNext();
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowLeft') handleNext();
-    if (e.key === 'ArrowRight') handlePrev();
-  };
-
-  // Parse features from plan description
-  const parseFeatures = (plan: PlanRecord): string[] => {
-    const features: string[] = [];
-    if (plan.transferBenefits) {
-      const parts = plan.transferBenefits.split(/[,،;]/);
-      features.push(...parts.slice(0, 3).map(p => p.trim()).filter(Boolean));
-    }
-    return features;
-  };
+  // Group plans by company
+  const plansByCompany = useMemo(() => {
+    const grouped = new Map<string, PlanRecord[]>();
+    plans.forEach(plan => {
+      const existing = grouped.get(plan.company) || [];
+      grouped.set(plan.company, [...existing, plan]);
+    });
+    return grouped;
+  }, [plans]);
 
   if (plans.length === 0) {
     return (
@@ -84,246 +283,24 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
     );
   }
 
-  const visiblePlans = getVisiblePlans();
-
   return (
-    <div 
-      ref={containerRef}
-      className="relative w-full py-10 select-none focus:outline-none"
-      tabIndex={0}
-      onKeyDown={handleKeyDown}
-    >
-      {/* Navigation */}
-      <button
-        onClick={handlePrev}
-        className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-background shadow-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:shadow-xl transition-all"
-        aria-label="הקודם"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-      
-      <button
-        onClick={handleNext}
-        className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-background shadow-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:shadow-xl transition-all"
-        aria-label="הבא"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-
-      {/* Carousel */}
-      <motion.div
-        className="relative h-[560px] flex items-center justify-center overflow-hidden"
-        style={{ perspective: '1200px' }}
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.1}
-        onDragEnd={handleDragEnd}
-      >
-        <AnimatePresence mode="popLayout">
-          {visiblePlans.map(({ plan, position, originalIndex }) => {
-            const isCenter = position === 0;
-            const planSavings = currentMonthlyBill > 0 && plan.monthlyPrice && plan.monthlyPrice < currentMonthlyBill
-              ? currentMonthlyBill - plan.monthlyPrice
-              : 0;
-            const isPlanRecommended = planSavings > 0;
-            const logo = companyLogos[plan.company];
-            const features = parseFeatures(plan);
-
-            const absPosition = Math.abs(position);
-            const scale = isCenter ? 1 : 0.82 - absPosition * 0.04;
-            const translateX = position * 170;
-            const rotateY = position * 6;
-            const opacity = 1;
-            const zIndex = 10 - absPosition;
-            const blur = isCenter ? 0 : absPosition * 1.5;
-
-            return (
-              <motion.div
-                key={`${plan.company}-${plan.plan}-${originalIndex}`}
-                className="absolute"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{
-                  opacity,
-                  scale,
-                  x: translateX,
-                  rotateY: `${rotateY}deg`,
-                  zIndex,
-                  filter: `blur(${blur}px)`,
-                }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 30,
-                }}
-                onClick={() => {
-                  if (!isCenter) {
-                    setActiveIndex(originalIndex);
-                  }
-                }}
-                style={{
-                  transformStyle: 'preserve-3d',
-                  cursor: isCenter ? 'default' : 'pointer'
-                }}
-              >
-                <div
-                  className={cn(
-                    "w-[360px] bg-card rounded-2xl overflow-hidden transition-all duration-300 border",
-                    isCenter 
-                      ? "shadow-2xl border-border" 
-                      : "shadow-md border-border/50"
-                  )}
-                >
-                  {/* Top Badge */}
-                  {isCenter && isPlanRecommended && (
-                    <div className="bg-foreground text-background py-2 px-4 text-center">
-                      <div className="flex items-center justify-center gap-2">
-                        <Sparkles className="w-4 h-4" />
-                        <span className="text-sm font-semibold">מומלץ עבורך • חיסכון של ₪{planSavings.toFixed(0)} לחודש</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Header */}
-                  <div className="p-6 pb-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-2">
-                          {logo ? (
-                            <div className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center p-1.5 border border-border">
-                              <img src={logo} alt={plan.company} className="max-w-full max-h-full object-contain" />
-                            </div>
-                          ) : (
-                            <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center border border-border">
-                              <span className="text-lg font-bold text-muted-foreground">{plan.company.charAt(0)}</span>
-                            </div>
-                          )}
-                          <div>
-                            <h3 className={cn(
-                              "font-bold",
-                              isCenter ? "text-foreground text-lg" : "text-muted-foreground text-base"
-                            )}>{plan.company}</h3>
-                            <span className="text-xs text-muted-foreground">{plan.service}</span>
-                          </div>
-                        </div>
-                        <p className={cn(
-                          "text-sm line-clamp-2 mt-3",
-                          isCenter ? "text-foreground/80" : "text-muted-foreground"
-                        )}>
-                          {plan.plan}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Price Section */}
-                  <div className={cn(
-                    "mx-6 p-5 rounded-xl mb-4",
-                    isCenter ? "bg-muted" : "bg-muted/50"
-                  )}>
-                    <div className="flex items-end justify-center gap-1">
-                      <span className={cn(
-                        "font-bold leading-none",
-                        isCenter ? "text-5xl text-foreground" : "text-4xl text-muted-foreground"
-                      )}>
-                        {plan.monthlyPrice}
-                      </span>
-                      <div className="flex flex-col items-start mb-1">
-                        <span className={cn(
-                          "text-lg font-medium",
-                          isCenter ? "text-muted-foreground" : "text-muted-foreground/70"
-                        )}>₪</span>
-                        <span className={cn(
-                          "text-xs -mt-0.5",
-                          isCenter ? "text-muted-foreground" : "text-muted-foreground/60"
-                        )}>לחודש</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Features List */}
-                  {isCenter && (
-                    <div className="px-6 pb-4">
-                      <div className="space-y-2.5">
-                        {features.length > 0 ? (
-                          features.map((feature, idx) => (
-                            <div key={idx} className="flex items-start gap-3">
-                              <div className="w-5 h-5 rounded-full bg-foreground/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <Check className="w-3 h-3 text-foreground" />
-                              </div>
-                              <span className="text-sm text-foreground/80 leading-relaxed">{feature}</span>
-                            </div>
-                          ))
-                        ) : plan.transferBenefits ? (
-                          <div className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-foreground/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <Check className="w-3 h-3 text-foreground" />
-                            </div>
-                            <span className="text-sm text-foreground/80 leading-relaxed">{plan.transferBenefits}</span>
-                          </div>
-                        ) : null}
-                        
-                        {plan.commitment && (
-                          <div className="flex items-center gap-3 pt-1">
-                            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                              <Calendar className="w-3 h-3 text-muted-foreground" />
-                            </div>
-                            <span className="text-sm text-muted-foreground">{plan.commitment}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* CTA */}
-                  {isCenter && (
-                    <div className="px-6 pb-6 pt-2">
-                      <Button
-                        onClick={() => onSelectPlan(plan)}
-                        className="w-full h-12 bg-foreground hover:bg-foreground/90 text-background font-semibold rounded-xl text-base"
-                      >
-                        בחירת מסלול
-                        <ArrowLeft className="mr-2 h-5 w-5" />
-                      </Button>
-                    </div>
-                  )}
-
-                  {/* Non-center minimal info */}
-                  {!isCenter && (
-                    <div className="px-6 pb-6">
-                      <div className="h-12" />
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Progress Dots */}
-      <div className="flex justify-center items-center gap-2 mt-6">
-        {plans.slice(0, Math.min(plans.length, 12)).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setActiveIndex(index)}
-            className={cn(
-              "transition-all duration-300 rounded-full",
-              activeIndex === index
-                ? "w-8 h-2 bg-foreground"
-                : "w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
-            )}
+    <div className="w-full py-6">
+      {Array.from(plansByCompany.entries()).map(([company, companyPlans], index) => (
+        <motion.div
+          key={company}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+        >
+          <CompanyCarousel
+            company={company}
+            plans={companyPlans}
+            currentMonthlyBill={currentMonthlyBill}
+            onSelectPlan={onSelectPlan}
+            logo={companyLogos[company]}
           />
-        ))}
-        {plans.length > 12 && (
-          <span className="text-sm text-muted-foreground mr-2">+{plans.length - 12}</span>
-        )}
-      </div>
-
-      {/* Counter */}
-      <p className="text-center text-sm text-muted-foreground mt-4 font-medium">
-        {activeIndex + 1} מתוך {plans.length}
-      </p>
+        </motion.div>
+      ))}
     </div>
   );
 };
