@@ -237,25 +237,28 @@ const AllPlans = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50/50 to-white font-heebo antialiased">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 font-heebo antialiased">
       {/* Floating Top Plan CTA */}
       {showTopPlan && topPlan && (
         <div 
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-slide-up"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
           style={{
             animation: 'slideUp 0.3s ease-out'
           }}
         >
-          <Card className="shadow-2xl border-2 border-green-400 bg-gradient-to-r from-green-600 to-green-500 text-white max-w-md">
+          <Card className="shadow-2xl border-0 bg-gradient-to-r from-emerald-600 to-teal-500 text-white max-w-md backdrop-blur-xl">
             <CardContent className="p-4 flex items-center gap-4">
               <div className="flex-1">
-                <div className="font-bold text-sm mb-1">💎 המסלול המומלץ ביותר</div>
-                <div className="text-xs opacity-90">{topPlan.company} - ₪{topPlan.monthlyPrice}/חודש</div>
+                <div className="font-semibold text-sm mb-1 flex items-center gap-2">
+                  <Star className="w-4 h-4 fill-yellow-300 text-yellow-300" />
+                  המסלול המומלץ ביותר
+                </div>
+                <div className="text-sm opacity-90">{topPlan.company} - ₪{topPlan.monthlyPrice}/חודש</div>
               </div>
               <Button
                 onClick={() => handleSelectPlan(topPlan)}
                 size="sm"
-                className="bg-white text-green-600 hover:bg-gray-100 font-bold shadow-lg"
+                className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold shadow-lg"
               >
                 <Rocket className="ml-1 h-4 w-4" />
                 עברו עכשיו
@@ -265,32 +268,32 @@ const AllPlans = () => {
         </div>
       )}
 
-      {/* Header */}
-      <div className="bg-white/90 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-40 shadow-sm">
-        <div className="container mx-auto px-4 max-w-7xl py-5">
+      {/* Header - Clean & Modern */}
+      <div className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-40">
+        <div className="container mx-auto px-4 max-w-7xl py-4">
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="mb-4 text-gray-600 hover:text-gray-900 transition-colors"
+            className="mb-3 text-slate-500 hover:text-slate-800 transition-colors -mr-3"
           >
             <ArrowLeft className="ml-2 h-4 w-4" />
-            <span className="font-normal">חזרה לדף הבית</span>
+            <span>חזרה לדף הבית</span>
           </Button>
           
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-light text-gray-900 tracking-tight">
-                מסלולים זמינים
+            <div className="space-y-1">
+              <h1 className="text-2xl md:text-3xl font-semibold text-slate-900">
+                בחרו את המסלול המושלם
               </h1>
               {currentMonthlyBill > 0 && stats && (
-                <div className="flex flex-wrap gap-2 text-sm">
-                  <Badge variant="outline" className="bg-white border-gray-300 font-normal text-gray-700">
-                    משלמים היום: <span className="font-medium text-gray-900 mr-1">₪{currentMonthlyBill}</span>
-                  </Badge>
+                <div className="flex flex-wrap items-center gap-3 text-sm">
+                  <span className="text-slate-500">
+                    התשלום הנוכחי: <span className="font-medium text-slate-700">₪{currentMonthlyBill}/חודש</span>
+                  </span>
                   {stats.maxSavings > 0 && (
-                    <Badge className="bg-green-500 text-white font-normal border-0 shadow-sm">
-                      <TrendingDown className="ml-1 h-3 w-3" />
-                      חיסכון עד ₪{stats.maxSavings.toFixed(0)} בחודש
+                    <Badge className="bg-emerald-500 text-white font-medium border-0 shadow-sm px-3">
+                      <TrendingDown className="ml-1 h-3.5 w-3.5" />
+                      חסכו עד ₪{stats.maxSavings.toFixed(0)} בחודש
                     </Badge>
                   )}
                 </div>
@@ -298,101 +301,87 @@ const AllPlans = () => {
             </div>
             
             <div className="flex items-center gap-3">
-              <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as ViewMode)}>
-                <TabsList className="bg-gray-100 border-gray-200">
-                  <TabsTrigger value="grid" className="gap-2 font-normal">
-                    <Grid3x3 className="h-4 w-4" />
-                    כרטיסים
-                  </TabsTrigger>
-                  <TabsTrigger value="list" className="gap-2 font-normal">
-                    <List className="h-4 w-4" />
-                    רשימה
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-              <Badge variant="outline" className="font-normal border-gray-300 text-gray-600">
-                {filteredPlans.length} מסלולים
-              </Badge>
+              <div className="bg-slate-100 rounded-lg p-1 flex">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={cn(
+                    "px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2",
+                    viewMode === 'grid' 
+                      ? "bg-white text-slate-900 shadow-sm" 
+                      : "text-slate-500 hover:text-slate-700"
+                  )}
+                >
+                  <Grid3x3 className="h-4 w-4" />
+                  כרטיסים
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={cn(
+                    "px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2",
+                    viewMode === 'list' 
+                      ? "bg-white text-slate-900 shadow-sm" 
+                      : "text-slate-500 hover:text-slate-700"
+                  )}
+                >
+                  <List className="h-4 w-4" />
+                  רשימה
+                </button>
+              </div>
+              <div className="hidden md:flex items-center gap-1 px-3 py-1.5 bg-slate-100 rounded-lg text-sm text-slate-600">
+                <span className="font-semibold text-slate-800">{filteredPlans.length}</span>
+                <span>מסלולים</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 max-w-7xl py-8">
-        {/* Company Logos Section */}
-        <div className="mb-8 text-center">
-          <div className="flex flex-wrap justify-center items-center gap-6 py-6">
+      <div className="container mx-auto px-4 max-w-7xl py-6">
+        {/* Trusted Partners Section */}
+        <div className="mb-6">
+          <p className="text-center text-xs text-slate-400 mb-3">שותפים מובילים</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 py-3">
             {Object.entries(companyLogos).map(([company, logo]) => (
-              <div key={company} className="grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
+              <div 
+                key={company} 
+                className="grayscale hover:grayscale-0 opacity-40 hover:opacity-100 transition-all duration-300 hover:scale-110"
+              >
                 <img 
                   src={logo} 
                   alt={company}
-                  className="h-8 w-auto object-contain"
+                  className="h-7 w-auto object-contain"
                 />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Enhanced Savings Banner - Centered */}
+        {/* Savings Summary Banner */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
-          <div className="mb-8 animate-fade-in">
-            <div className="relative bg-gradient-to-br from-green-50/40 via-white to-green-50/20 border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-              <div className="grid md:grid-cols-2 gap-8 items-center p-8">
-                {/* Content - Right Side */}
-                <div className="flex flex-col items-center md:items-end justify-center gap-6 text-center md:text-right order-1">
-                  {/* Icon Circle */}
-                  <div className="relative flex-shrink-0">
-                    <div className="absolute inset-0 bg-green-100 rounded-full blur-xl opacity-50"></div>
-                    <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-green-50 border border-green-200">
-                      <TrendingDown className="w-8 h-8 text-green-600" strokeWidth={2} />
-                    </div>
+          <div className="mb-6 animate-fade-in">
+            <div className="relative bg-gradient-to-l from-emerald-50 via-white to-teal-50 border border-emerald-100 rounded-xl overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-100/20 via-transparent to-transparent"></div>
+              <div className="relative flex flex-col md:flex-row items-center justify-between p-6 gap-4">
+                {/* Content */}
+                <div className="flex items-center gap-5">
+                  <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-200">
+                    <TrendingDown className="w-7 h-7 text-white" />
                   </div>
-                  
-                  {/* Main Headline */}
-                  <div className="space-y-3">
-                    <h2 className="text-2xl font-light text-gray-900">
-                      החיסכון השנתי שלכם
-                    </h2>
-                    
-                    {/* Large Amount */}
-                    <div className="flex items-baseline justify-center md:justify-end gap-2">
-                      <span className="text-6xl font-light text-gray-900 tracking-tight">
-                        ₪{(stats.maxSavings * 12).toFixed(0).toLocaleString()}
-                      </span>
-                      <span className="text-2xl font-light text-gray-500">
-                        בשנה
-                      </span>
-                    </div>
-                    
-                    {/* Sales Message */}
-                    <p className="text-lg font-light text-gray-600 max-w-2xl">
-                      גלו כמה תחסכו עם המסלולים המומלצים - ללא התחייבות
+                  <div className="text-right">
+                    <h3 className="text-lg font-semibold text-slate-800 mb-0.5">
+                      חסכו עד <span className="text-emerald-600">₪{(stats.maxSavings * 12).toLocaleString()}</span> בשנה
+                    </h3>
+                    <p className="text-sm text-slate-500">
+                      {stats.recommendedCount} מסלולים זולים יותר מהתשלום הנוכחי שלכם
                     </p>
                   </div>
-                  
-                  {/* Details */}
-                  <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 text-sm text-gray-500 pt-2">
-                    <div className="flex items-center gap-2 font-light">
-                      <span>₪{stats.maxSavings.toFixed(0)} חיסכון חודשי</span>
-                      <Sparkles className="w-4 h-4 text-green-500" />
-                    </div>
-                    <div className="flex items-center gap-2 font-light">
-                      <span>{stats.recommendedCount} מסלולים מומלצים</span>
-                      <Award className="w-4 h-4 text-green-500" />
-                    </div>
-                  </div>
                 </div>
-
-                {/* Sketch Illustration - Left Side */}
-                <div className="relative order-2">
-                  <div className="relative w-full h-48 md:h-64 flex items-center justify-center mix-blend-multiply">
-                    <img 
-                      src={annualSavingsSketch} 
-                      alt="חיסכון שנתי" 
-                      className="w-full h-full object-contain opacity-80"
-                      style={{ mixBlendMode: 'multiply' }}
-                    />
+                
+                {/* Quick Stats */}
+                <div className="flex items-center gap-4 text-sm">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 rounded-lg border border-emerald-100">
+                    <Sparkles className="w-4 h-4 text-emerald-500" />
+                    <span className="text-slate-600">חיסכון חודשי: <span className="font-semibold text-emerald-600">₪{stats.maxSavings.toFixed(0)}</span></span>
                   </div>
                 </div>
               </div>
@@ -400,62 +389,59 @@ const AllPlans = () => {
           </div>
         )}
 
-        {/* Filters Section - Compact */}
-        <Card className="mb-8 shadow-sm border-gray-200 bg-white">
-          <CardContent className="p-5">
-            {/* Category Pills */}
-            <div className="mb-5">
-              <h3 className="text-xs font-light text-gray-500 mb-2.5">סינון לפי קטגוריה</h3>
-              <div className="flex flex-wrap gap-1.5">
-                {categories.map((category) => {
-                  const Icon = category.icon;
-                  return (
-                    <button
-                      key={category.id}
-                      onClick={() => setSelectedCategory(category.id)}
-                      className={cn(
-                        "px-3 py-1.5 rounded-lg font-light transition-all duration-200 flex items-center gap-1.5 text-xs",
-                        selectedCategory === category.id
-                          ? "bg-gray-900 text-white shadow-sm"
-                          : "bg-gray-100 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-200"
-                      )}
-                    >
-                      <Icon className="w-3.5 h-3.5" />
-                      {category.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Search and Sort - Compact */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="relative">
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
-                <Input
-                  type="text"
-                  placeholder="חיפוש לפי חברה או שם מסלול..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pr-9 h-9 text-sm border-gray-200 focus:border-gray-300 font-light"
-                />
-              </div>
-              
-              <div className="relative">
-                <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as SortType)}
-                  className="w-full h-9 pr-9 pl-3 text-sm rounded-lg border border-gray-200 bg-white text-gray-900 font-light focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent"
+        {/* Filters Section */}
+        <div className="mb-6 space-y-4">
+          {/* Category Pills */}
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => {
+              const Icon = category.icon;
+              const isActive = selectedCategory === category.id;
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={cn(
+                    "px-4 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 text-sm border",
+                    isActive
+                      ? "bg-slate-900 text-white border-slate-900 shadow-md"
+                      : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                  )}
                 >
-                  <option value="price-asc">מחיר: מהנמוך לגבוה</option>
-                  <option value="price-desc">מחיר: מהגבוה לנמוך</option>
-                  <option value="name">שם החברה</option>
-                </select>
-              </div>
+                  <Icon className={cn("w-4 h-4", isActive ? "text-white" : "text-slate-400")} />
+                  {category.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Search and Sort */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Input
+                type="text"
+                placeholder="חיפוש לפי חברה או שם מסלול..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pr-10 h-11 text-sm border-slate-200 bg-white focus:border-slate-400 focus:ring-slate-400"
+              />
             </div>
-          </CardContent>
-        </Card>
+            
+            <div className="relative sm:w-52">
+              <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortType)}
+                className="w-full h-11 pr-10 pl-4 text-sm rounded-lg border border-slate-200 bg-white text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent appearance-none cursor-pointer"
+              >
+                <option value="price-asc">מחיר: מהנמוך לגבוה</option>
+                <option value="price-desc">מחיר: מהגבוה לנמוך</option>
+                <option value="name">שם החברה</option>
+              </select>
+              <ChevronDown className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+            </div>
+          </div>
+        </div>
 
         {/* Plans Display */}
         {isLoading ? (
@@ -506,7 +492,7 @@ const AllPlans = () => {
           </Card>
         ) : viewMode === 'grid' ? (
           // Grid View - Grouped by Company
-          <div className="space-y-8 animate-fade-in">
+          <div className="space-y-10 animate-fade-in">
             {Array.from(plansByCompany.entries()).map(([company, plans], companyIndex) => {
               const logo = companyLogos[company];
               const recommendedInCompany = plans.filter(p => 
@@ -516,28 +502,26 @@ const AllPlans = () => {
               return (
                 <div 
                   key={company} 
-                  className="space-y-4 animate-fade-in"
-                  style={{
-                    animationDelay: `${companyIndex * 100}ms`
-                  }}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${companyIndex * 80}ms` }}
                 >
                   {/* Company Header */}
-                  <div className="flex items-center gap-4 pb-4 border-b border-gray-200 group">
+                  <div className="flex items-center gap-4 mb-5 pb-4 border-b border-slate-100">
                     {logo && (
-                      <div className="w-16 h-16 bg-white rounded-lg shadow-sm flex items-center justify-center p-2 border border-gray-100 group-hover:shadow transition-all duration-300">
+                      <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center p-2.5 border border-slate-100">
                         <img src={logo} alt={company} className="max-w-full max-h-full object-contain" />
                       </div>
                     )}
                     <div className="flex-1">
-                      <h2 className="text-2xl font-light text-gray-900 group-hover:text-gray-700 transition-colors">
+                      <h2 className="text-xl font-semibold text-slate-800">
                         {company}
                       </h2>
-                      <div className="flex items-center gap-2 mt-1">
-                        <p className="text-sm text-gray-500 font-light">{plans.length} מסלולים זמינים</p>
+                      <div className="flex items-center gap-3 mt-1">
+                        <span className="text-sm text-slate-500">{plans.length} מסלולים</span>
                         {recommendedInCompany > 0 && (
-                          <Badge className="bg-green-500 text-white text-xs font-normal border-0">
+                          <Badge className="bg-emerald-100 text-emerald-700 text-xs font-medium border-0">
                             <CheckCircle2 className="ml-1 h-3 w-3" />
-                            {recommendedInCompany} מומלצים
+                            {recommendedInCompany} זולים יותר
                           </Badge>
                         )}
                       </div>
@@ -545,82 +529,77 @@ const AllPlans = () => {
                   </div>
 
                   {/* Plans Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {plans.map((plan, index) => {
                       const savings = currentMonthlyBill > 0 && plan.monthlyPrice! < currentMonthlyBill 
                         ? currentMonthlyBill - plan.monthlyPrice! 
                         : 0;
                       const isRecommended = savings > 0;
+                      const isBestValue = index === 0;
                       
                       return (
                         <Card 
                           key={`${plan.company}-${plan.plan}-${index}`}
                           className={cn(
-                            "hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group cursor-pointer relative animate-scale-in border-gray-200 bg-white",
-                            isRecommended && "ring-1 ring-green-400 bg-gradient-to-br from-green-50/30 to-white"
+                            "group relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
+                            isRecommended 
+                              ? "border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-white shadow-emerald-100" 
+                              : "border border-slate-200 bg-white hover:border-slate-300"
                           )}
-                          style={{
-                            animationDelay: `${index * 50}ms`
-                          }}
+                          style={{ animationDelay: `${index * 40}ms` }}
                         >
-                          <CardContent className="p-6">
-                            {/* Badges */}
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {isRecommended && (
-                                <Badge className="bg-green-500 text-white font-normal shadow-sm">
-                                  <Sparkles className="w-3 h-3 ml-1" />
-                                  מומלץ במיוחד
-                                </Badge>
-                              )}
-                              {index === 0 && (
-                                <Badge variant="outline" className="border-yellow-400 bg-yellow-50 text-yellow-700 font-normal">
-                                  <Star className="w-3 h-3 ml-1 fill-yellow-400" />
-                                  זול ביותר
-                                </Badge>
-                              )}
-                              {index < 3 && (
-                                <Badge variant="outline" className="border-gray-300 text-gray-600 font-normal">
-                                  Top {index + 1}
-                                </Badge>
-                              )}
-                            </div>
+                          {/* Top Badges */}
+                          <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-10">
+                            {isRecommended && (
+                              <Badge className="bg-emerald-500 text-white font-semibold shadow-md px-2.5 py-1">
+                                <Star className="w-3 h-3 ml-1 fill-white" />
+                                מומלץ
+                              </Badge>
+                            )}
+                            {isBestValue && (
+                              <Badge className="bg-amber-500 text-white font-semibold shadow-md px-2.5 py-1">
+                                <Award className="w-3 h-3 ml-1" />
+                                הזול ביותר
+                              </Badge>
+                            )}
+                          </div>
 
+                          <CardContent className="p-5 pt-12">
                             {/* Plan Name */}
-                            <h3 className="text-lg font-normal text-gray-900 mb-3 line-clamp-2 min-h-[56px]">
+                            <h3 className="text-base font-semibold text-slate-800 mb-3 line-clamp-2 min-h-[48px] leading-relaxed">
                               {plan.plan}
                             </h3>
 
-                            {/* Benefits */}
+                            {/* Benefits Tag */}
                             {plan.transferBenefits && (
-                              <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                                <div className="flex items-start gap-2">
-                                  <span className="text-base">🎁</span>
-                                  <p className="text-xs text-gray-600 font-light line-clamp-2 flex-1">
-                                    {plan.transferBenefits}
-                                  </p>
+                              <div className="mb-4">
+                                <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-violet-50 border border-violet-100 rounded-lg text-xs text-violet-700">
+                                  <span>🎁</span>
+                                  <span className="font-medium line-clamp-1">{plan.transferBenefits}</span>
                                 </div>
                               </div>
                             )}
 
                             {/* Price Section */}
-                            <div className="mb-4 pt-4 border-t border-gray-100">
-                              <div className="flex items-baseline justify-center gap-1 mb-1">
-                                <span className="text-4xl font-light text-gray-900 tracking-tight">
+                            <div className="py-4 border-t border-slate-100">
+                              <div className="flex items-baseline justify-center gap-1">
+                                <span className="text-4xl font-bold text-slate-900 tracking-tight">
                                   {plan.monthlyPrice}
                                 </span>
-                                <span className="text-base text-gray-500 font-light">₪</span>
+                                <span className="text-lg text-slate-400 font-medium">₪</span>
+                                <span className="text-sm text-slate-400 mr-1">/חודש</span>
                               </div>
-                              <div className="text-center text-sm text-gray-500 font-light">לחודש</div>
+                              
                               {isRecommended && (
-                                <div className="text-center mt-3 px-3 py-2 bg-green-50 rounded-lg border border-green-200">
-                                  <div className="flex items-center justify-center gap-1">
-                                    <TrendingDown className="w-4 h-4 text-green-600" />
-                                    <span className="text-sm font-medium text-green-700">
-                                      חיסכון של ₪{savings.toFixed(0)} בחודש
+                                <div className="mt-3 p-2.5 bg-emerald-50 rounded-lg border border-emerald-100">
+                                  <div className="flex items-center justify-center gap-1.5 text-sm">
+                                    <TrendingDown className="w-4 h-4 text-emerald-600" />
+                                    <span className="font-semibold text-emerald-700">
+                                      חסכו ₪{savings.toFixed(0)}/חודש
                                     </span>
                                   </div>
-                                  <div className="text-xs text-green-600 mt-1 font-light">
-                                    ₪{(savings * 12).toFixed(0)} בשנה!
+                                  <div className="text-xs text-emerald-600 text-center mt-0.5">
+                                    = ₪{(savings * 12).toLocaleString()} בשנה
                                   </div>
                                 </div>
                               )}
@@ -629,25 +608,15 @@ const AllPlans = () => {
                             {/* Action Button */}
                             <Button
                               onClick={() => handleSelectPlan(plan)}
-                              size="lg"
                               className={cn(
-                                "w-full font-normal shadow-sm hover:shadow transition-all duration-300",
+                                "w-full h-11 font-semibold text-sm transition-all duration-300 shadow-sm group-hover:shadow-md",
                                 isRecommended 
-                                  ? "bg-green-500 hover:bg-green-600 text-white" 
-                                  : "bg-gray-900 hover:bg-gray-800 text-white"
+                                  ? "bg-emerald-600 hover:bg-emerald-700 text-white" 
+                                  : "bg-slate-800 hover:bg-slate-900 text-white"
                               )}
                             >
-                              {isRecommended ? (
-                                <>
-                                  <CheckCircle2 className="ml-2 h-4 w-4" />
-                                  עברו למסלול המומלץ
-                                </>
-                              ) : (
-                                <>
-                                  <Rocket className="ml-2 h-4 w-4" />
-                                  בחרו מסלול זה
-                                </>
-                              )}
+                              <Rocket className="ml-2 h-4 w-4" />
+                              {isRecommended ? "עברו למסלול זה" : "בחרו מסלול זה"}
                             </Button>
                           </CardContent>
                         </Card>
