@@ -189,65 +189,43 @@ const Company3DCarousel: React.FC<{
 
   return (
     <div className="mb-12 md:mb-20 last:mb-0">
-      {/* Company Header - Professional glass design */}
+      {/* Company Header - Clean professional design */}
       <div className="mx-3 md:mx-6 mb-6 md:mb-8">
-        <div className={cn(
-          "relative overflow-hidden rounded-2xl md:rounded-3xl",
-          theme.headerBg,
-          "shadow-xl"
-        )}>
-          {/* Decorative elements */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+        <div className="flex items-center gap-4 md:gap-5 p-4 md:p-5 rounded-xl bg-card border border-border shadow-sm">
+          {/* Logo */}
+          <div className={cn(
+            "w-14 h-14 md:w-16 md:h-16 rounded-xl flex-shrink-0",
+            "flex items-center justify-center p-2.5 md:p-3",
+            "bg-gradient-to-br",
+            theme.headerBg,
+            "shadow-md"
+          )}>
+            {logo ? (
+              <img src={logo} alt={company} className="max-w-full max-h-full object-contain brightness-0 invert" />
+            ) : (
+              <Building2 className="w-7 h-7 md:w-8 md:h-8 text-white" />
+            )}
           </div>
-          
-          <div className="relative p-5 md:p-8">
-            <div className="flex items-center gap-4 md:gap-6">
-              {/* Logo Container */}
-              <div className="relative">
-                <div className={cn(
-                  "w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl",
-                  "bg-white shadow-lg",
-                  "flex items-center justify-center p-2.5 md:p-4",
-                  "ring-2 ring-white/20"
-                )}>
-                  {logo ? (
-                    <img src={logo} alt={company} className="max-w-full max-h-full object-contain" />
-                  ) : (
-                    <Building2 className="w-7 h-7 md:w-10 md:h-10 text-gray-400" />
-                  )}
-                </div>
-                {/* Plans count badge */}
-                <div className={cn(
-                  "absolute -bottom-1 -right-1 md:-bottom-2 md:-right-2",
-                  "w-6 h-6 md:w-8 md:h-8 rounded-full",
-                  theme.accent,
-                  "flex items-center justify-center",
-                  "text-white text-xs md:text-sm font-bold",
-                  "shadow-lg ring-2 ring-white"
-                )}>
-                  {plans.length}
-                </div>
-              </div>
 
-              {/* Company Info */}
-              <div className="flex-1 min-w-0">
-                <h2 className="text-xl md:text-3xl font-bold text-white mb-1 md:mb-2 truncate">
-                  {company}
-                </h2>
-                <div className="flex flex-wrap items-center gap-2 md:gap-3">
-                  <span className="text-white/70 text-xs md:text-sm">
-                    {plans.length} מסלולים זמינים
-                  </span>
-                  {recommendedCount > 0 && (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[10px] md:text-xs font-semibold shadow-md">
-                      <Sparkles className="w-3 h-3" />
-                      {recommendedCount} חוסכים לך כסף
-                    </span>
-                  )}
-                </div>
-              </div>
+          {/* Company Info */}
+          <div className="flex-1 min-w-0">
+            <h2 className="text-lg md:text-xl font-bold text-foreground mb-1 truncate">
+              {company}
+            </h2>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={cn(
+                "px-2 py-0.5 rounded-full text-xs font-medium",
+                theme.accentLight,
+                theme.accentText
+              )}>
+                {plans.length} מסלולים
+              </span>
+              {recommendedCount > 0 && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium">
+                  <Sparkles className="w-3 h-3" />
+                  {recommendedCount} חוסכים
+                </span>
+              )}
             </div>
           </div>
         </div>
