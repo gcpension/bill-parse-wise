@@ -107,52 +107,147 @@ const Company3DCarousel: React.FC<{
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Get company color based on company name hash
-  const getCompanyColor = (companyName: string) => {
-    const colors = [
-      { bg: 'from-blue-600 to-blue-800', border: 'border-blue-500/30', badge: 'bg-blue-100 text-blue-800' },
-      { bg: 'from-purple-600 to-purple-800', border: 'border-purple-500/30', badge: 'bg-purple-100 text-purple-800' },
-      { bg: 'from-emerald-600 to-emerald-800', border: 'border-emerald-500/30', badge: 'bg-emerald-100 text-emerald-800' },
-      { bg: 'from-orange-600 to-orange-800', border: 'border-orange-500/30', badge: 'bg-orange-100 text-orange-800' },
-      { bg: 'from-rose-600 to-rose-800', border: 'border-rose-500/30', badge: 'bg-rose-100 text-rose-800' },
-      { bg: 'from-cyan-600 to-cyan-800', border: 'border-cyan-500/30', badge: 'bg-cyan-100 text-cyan-800' },
-      { bg: 'from-indigo-600 to-indigo-800', border: 'border-indigo-500/30', badge: 'bg-indigo-100 text-indigo-800' },
+  // Get company color theme based on company name
+  const getCompanyTheme = (companyName: string) => {
+    const themes = [
+      { 
+        headerBg: 'bg-gradient-to-l from-slate-800 via-slate-700 to-slate-600',
+        accent: 'bg-blue-500',
+        accentLight: 'bg-blue-50',
+        accentText: 'text-blue-600',
+        border: 'border-blue-200',
+        cardBg: 'bg-gradient-to-br from-blue-50/50 to-white',
+        priceBg: 'bg-blue-50',
+        dot: 'bg-blue-500'
+      },
+      { 
+        headerBg: 'bg-gradient-to-l from-violet-800 via-purple-700 to-violet-600',
+        accent: 'bg-purple-500',
+        accentLight: 'bg-purple-50',
+        accentText: 'text-purple-600',
+        border: 'border-purple-200',
+        cardBg: 'bg-gradient-to-br from-purple-50/50 to-white',
+        priceBg: 'bg-purple-50',
+        dot: 'bg-purple-500'
+      },
+      { 
+        headerBg: 'bg-gradient-to-l from-teal-800 via-teal-700 to-emerald-600',
+        accent: 'bg-teal-500',
+        accentLight: 'bg-teal-50',
+        accentText: 'text-teal-600',
+        border: 'border-teal-200',
+        cardBg: 'bg-gradient-to-br from-teal-50/50 to-white',
+        priceBg: 'bg-teal-50',
+        dot: 'bg-teal-500'
+      },
+      { 
+        headerBg: 'bg-gradient-to-l from-amber-800 via-orange-700 to-amber-600',
+        accent: 'bg-orange-500',
+        accentLight: 'bg-orange-50',
+        accentText: 'text-orange-600',
+        border: 'border-orange-200',
+        cardBg: 'bg-gradient-to-br from-orange-50/50 to-white',
+        priceBg: 'bg-orange-50',
+        dot: 'bg-orange-500'
+      },
+      { 
+        headerBg: 'bg-gradient-to-l from-rose-800 via-pink-700 to-rose-600',
+        accent: 'bg-rose-500',
+        accentLight: 'bg-rose-50',
+        accentText: 'text-rose-600',
+        border: 'border-rose-200',
+        cardBg: 'bg-gradient-to-br from-rose-50/50 to-white',
+        priceBg: 'bg-rose-50',
+        dot: 'bg-rose-500'
+      },
+      { 
+        headerBg: 'bg-gradient-to-l from-cyan-800 via-sky-700 to-cyan-600',
+        accent: 'bg-cyan-500',
+        accentLight: 'bg-cyan-50',
+        accentText: 'text-cyan-600',
+        border: 'border-cyan-200',
+        cardBg: 'bg-gradient-to-br from-cyan-50/50 to-white',
+        priceBg: 'bg-cyan-50',
+        dot: 'bg-cyan-500'
+      },
+      { 
+        headerBg: 'bg-gradient-to-l from-indigo-800 via-indigo-700 to-blue-600',
+        accent: 'bg-indigo-500',
+        accentLight: 'bg-indigo-50',
+        accentText: 'text-indigo-600',
+        border: 'border-indigo-200',
+        cardBg: 'bg-gradient-to-br from-indigo-50/50 to-white',
+        priceBg: 'bg-indigo-50',
+        dot: 'bg-indigo-500'
+      },
     ];
     const hash = companyName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return colors[hash % colors.length];
+    return themes[hash % themes.length];
   };
 
-  const companyColor = getCompanyColor(company);
+  const theme = getCompanyTheme(company);
 
   return (
-    <div className="mb-16 md:mb-24 last:mb-0 pt-6 md:pt-8">
-      {/* Company Header - Enhanced with gradient background */}
-      <div className={cn(
-        "mx-4 md:mx-8 mb-6 md:mb-10 p-4 md:p-6 rounded-2xl",
-        "bg-gradient-to-l",
-        companyColor.bg,
-        "shadow-xl"
-      )}>
-        <div className="flex items-center gap-4 md:gap-6">
-          {logo ? (
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white shadow-lg flex items-center justify-center p-3 md:p-4">
-              <img src={logo} alt={company} className="max-w-full max-h-full object-contain" />
-            </div>
-          ) : (
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <Building2 className="w-8 h-8 md:w-10 md:h-10 text-white" />
-            </div>
-          )}
-          <div className="flex-1">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">{company}</h2>
-            <div className="flex items-center gap-3 md:gap-4">
-              <span className="text-white/80 text-sm md:text-base">{plans.length} מסלולים זמינים</span>
-              {recommendedCount > 0 && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs md:text-sm font-medium">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  {recommendedCount} מסלולים חוסכים
-                </span>
-              )}
+    <div className="mb-12 md:mb-20 last:mb-0">
+      {/* Company Header - Professional glass design */}
+      <div className="mx-3 md:mx-6 mb-6 md:mb-8">
+        <div className={cn(
+          "relative overflow-hidden rounded-2xl md:rounded-3xl",
+          theme.headerBg,
+          "shadow-xl"
+        )}>
+          {/* Decorative elements */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+          </div>
+          
+          <div className="relative p-5 md:p-8">
+            <div className="flex items-center gap-4 md:gap-6">
+              {/* Logo Container */}
+              <div className="relative">
+                <div className={cn(
+                  "w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl",
+                  "bg-white shadow-lg",
+                  "flex items-center justify-center p-2.5 md:p-4",
+                  "ring-2 ring-white/20"
+                )}>
+                  {logo ? (
+                    <img src={logo} alt={company} className="max-w-full max-h-full object-contain" />
+                  ) : (
+                    <Building2 className="w-7 h-7 md:w-10 md:h-10 text-gray-400" />
+                  )}
+                </div>
+                {/* Plans count badge */}
+                <div className={cn(
+                  "absolute -bottom-1 -right-1 md:-bottom-2 md:-right-2",
+                  "w-6 h-6 md:w-8 md:h-8 rounded-full",
+                  theme.accent,
+                  "flex items-center justify-center",
+                  "text-white text-xs md:text-sm font-bold",
+                  "shadow-lg ring-2 ring-white"
+                )}>
+                  {plans.length}
+                </div>
+              </div>
+
+              {/* Company Info */}
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xl md:text-3xl font-bold text-white mb-1 md:mb-2 truncate">
+                  {company}
+                </h2>
+                <div className="flex flex-wrap items-center gap-2 md:gap-3">
+                  <span className="text-white/70 text-xs md:text-sm">
+                    {plans.length} מסלולים זמינים
+                  </span>
+                  {recommendedCount > 0 && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[10px] md:text-xs font-semibold shadow-md">
+                      <Sparkles className="w-3 h-3" />
+                      {recommendedCount} חוסכים לך כסף
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -212,13 +307,17 @@ const Company3DCarousel: React.FC<{
                 >
                   <div
                     className={cn(
-                      "w-[260px] md:w-[300px] rounded-2xl border-2 bg-card overflow-hidden transition-all duration-300",
+                      "w-[260px] md:w-[300px] rounded-2xl overflow-hidden transition-all duration-300",
                       isCenter 
-                        ? `shadow-2xl ${companyColor.border}` 
-                        : "shadow-lg border-border/50",
+                        ? `shadow-2xl border-2 ${theme.border}` 
+                        : "shadow-lg border border-border/50",
+                      isCenter ? theme.cardBg : "bg-card",
                       isRecommended && isCenter && "ring-2 ring-emerald-500/50"
                     )}
                   >
+                    {/* Top accent bar */}
+                    <div className={cn("h-1", theme.accent)} />
+                    
                     {/* Savings Badge */}
                     {isRecommended && (
                       <div className="bg-emerald-600 text-white py-1.5 md:py-2 px-3 md:px-4">
@@ -230,9 +329,13 @@ const Company3DCarousel: React.FC<{
                     )}
 
                     <div className="p-3 md:p-5">
-                      {/* Service Type */}
+                      {/* Service Type Badge */}
                       <div className="mb-2 md:mb-3">
-                        <span className="px-2 py-0.5 md:py-1 rounded-md bg-muted text-muted-foreground text-[10px] md:text-xs">
+                        <span className={cn(
+                          "px-2.5 py-1 rounded-full text-[10px] md:text-xs font-medium",
+                          theme.accentLight,
+                          theme.accentText
+                        )}>
                           {plan.service}
                         </span>
                       </div>
@@ -242,10 +345,15 @@ const Company3DCarousel: React.FC<{
                         {plan.plan}
                       </h3>
 
-                      {/* Price */}
-                      <div className="bg-muted/50 rounded-xl p-3 md:p-4 mb-3 md:mb-4 text-center">
+                      {/* Price - with company color */}
+                      <div className={cn(
+                        "rounded-xl p-3 md:p-4 mb-3 md:mb-4 text-center",
+                        theme.priceBg
+                      )}>
                         <div className="flex items-baseline justify-center gap-1">
-                          <span className="text-2xl md:text-3xl font-bold text-foreground">{plan.monthlyPrice}</span>
+                          <span className={cn("text-2xl md:text-3xl font-bold", theme.accentText)}>
+                            {plan.monthlyPrice}
+                          </span>
                           <span className="text-base md:text-lg text-muted-foreground">₪/חודש</span>
                         </div>
                         {plan.yearlyPrice && (
@@ -315,8 +423,8 @@ const Company3DCarousel: React.FC<{
         </div>
       </div>
 
-      {/* Dots Indicator - Mobile friendly touch targets */}
-      <div className="flex justify-center items-center gap-1.5 md:gap-2 mt-3 md:mt-4">
+      {/* Dots Indicator - with company color */}
+      <div className="flex justify-center items-center gap-1.5 md:gap-2 mt-4 md:mt-6">
         {plans.map((_, idx) => (
           <button
             key={idx}
@@ -324,7 +432,7 @@ const Company3DCarousel: React.FC<{
             className={cn(
               "transition-all rounded-full touch-manipulation",
               idx === activeIndex
-                ? "w-6 md:w-8 h-2 bg-foreground"
+                ? `w-6 md:w-8 h-2 ${theme.dot}`
                 : "w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
             )}
             style={{ minWidth: '8px', minHeight: '8px' }}
