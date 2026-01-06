@@ -22,7 +22,8 @@ import {
   Info,
   Rocket,
   LayoutGrid,
-  Layers
+  Layers,
+  Package
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -51,7 +52,7 @@ const companyLogos: Record<string, string> = {
   'אלקטרה': '/src/assets/logos/electra-logo.png',
 };
 
-type CategoryType = 'חשמל' | 'אינטרנט' | 'סלולר' | 'טלוויזיה' | 'all';
+type CategoryType = 'חשמל' | 'אינטרנט' | 'סלולר' | 'טלוויזיה' | 'טריפל' | 'all';
 type SortType = 'price-asc' | 'price-desc' | 'name';
 type ViewMode = 'carousel' | 'grid' | 'list';
 
@@ -83,7 +84,8 @@ const AllPlans = () => {
             'cellular': 'סלולר',
             'electricity': 'חשמל',
             'internet': 'אינטרנט',
-            'tv': 'טלוויזיה'
+            'tv': 'טלוויזיה',
+            'triple': 'טריפל'
           };
           setSelectedCategory(categoryMapping[firstCategory.category] || 'all');
         }
@@ -106,10 +108,11 @@ const AllPlans = () => {
   // Categories configuration
   const categories = [
     { id: 'all' as CategoryType, label: 'כל המסלולים', icon: Filter },
-    { id: 'חשמל' as CategoryType, label: 'חשמל', icon: Zap },
-    { id: 'אינטרנט' as CategoryType, label: 'אינטרנט', icon: Wifi },
+    { id: 'טריפל' as CategoryType, label: 'טריפל', icon: Package, highlight: true },
     { id: 'סלולר' as CategoryType, label: 'סלולר', icon: Smartphone },
+    { id: 'אינטרנט' as CategoryType, label: 'אינטרנט', icon: Wifi },
     { id: 'טלוויזיה' as CategoryType, label: 'טלוויזיה', icon: Tv },
+    { id: 'חשמל' as CategoryType, label: 'חשמל', icon: Zap },
   ];
 
   // Filter, sort and categorize plans
@@ -123,11 +126,13 @@ const AllPlans = () => {
         if (selectedCategory === 'סלולר') {
           return service === 'סלולר';
         } else if (selectedCategory === 'אינטרנט') {
-          return service.includes('אינטרנט') || service.includes('טריפל');
+          return service.includes('אינטרנט') && !service.includes('טריפל');
         } else if (selectedCategory === 'טלוויזיה') {
-          return service.includes('טלוויזיה') || service.includes('טריפל');
+          return service.includes('טלוויזיה') && !service.includes('טריפל');
         } else if (selectedCategory === 'חשמל') {
           return service === 'חשמל';
+        } else if (selectedCategory === 'טריפל') {
+          return service.includes('טריפל');
         }
         return false;
       });
@@ -235,6 +240,7 @@ const AllPlans = () => {
       case 'אינטרנט': return 'text-blue-600 bg-blue-50 border-blue-200';
       case 'סלולר': return 'text-green-600 bg-green-50 border-green-200';
       case 'טלוויזיה': return 'text-red-600 bg-red-50 border-red-200';
+      case 'טריפל': return 'text-purple-600 bg-purple-50 border-purple-200';
       default: return 'text-gray-600 bg-gray-50 border-gray-200';
     }
   };
@@ -387,6 +393,7 @@ const AllPlans = () => {
             {categories.map((category) => {
               const Icon = category.icon;
               const isActive = selectedCategory === category.id;
+              const isHighlight = 'highlight' in category && category.highlight;
               return (
                 <button
                   key={category.id}
@@ -394,12 +401,22 @@ const AllPlans = () => {
                   className={cn(
                     "px-3 md:px-4 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-1.5 md:gap-2 text-xs md:text-sm border whitespace-nowrap flex-shrink-0 touch-manipulation",
                     isActive
-                      ? "bg-slate-900 text-white border-slate-900 shadow-md"
-                      : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50 active:bg-slate-100"
+                      ? isHighlight 
+                        ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-purple-600 shadow-md shadow-purple-200"
+                        : "bg-slate-900 text-white border-slate-900 shadow-md"
+                      : isHighlight
+                        ? "bg-purple-50 text-purple-700 border-purple-300 hover:bg-purple-100 hover:border-purple-400"
+                        : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50 active:bg-slate-100"
                   )}
                 >
-                  <Icon className={cn("w-3.5 h-3.5 md:w-4 md:h-4", isActive ? "text-white" : "text-slate-400")} />
+                  <Icon className={cn(
+                    "w-3.5 h-3.5 md:w-4 md:h-4", 
+                    isActive ? "text-white" : isHighlight ? "text-purple-500" : "text-slate-400"
+                  )} />
                   {category.label}
+                  {isHighlight && !isActive && (
+                    <span className="text-[10px] px-1.5 py-0.5 bg-purple-200 text-purple-700 rounded-full font-semibold">חדש</span>
+                  )}
                 </button>
               );
             })}

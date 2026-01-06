@@ -5,7 +5,7 @@ export interface VerifiedPlan {
   id: string;
   company: string;
   planName: string;
-  category: 'cellular' | 'internet' | 'tv' | 'electricity';
+  category: 'cellular' | 'internet' | 'tv' | 'electricity' | 'triple';
   monthlyPrice: number;
   promoPrice?: number;
   promoMonths?: number;
@@ -21,6 +21,11 @@ export interface VerifiedPlan {
   includes4K?: boolean;
   includesNetflix?: boolean;
   includesHBO?: boolean;
+  // Triple bundle specific
+  includesTV?: boolean;
+  includesInternet?: boolean;
+  includesCellular?: boolean;
+  cellularLines?: number;
 }
 
 // Real cellular plans verified from Israeli telecom providers - 2025
@@ -554,11 +559,257 @@ export const verifiedInternetPlans: VerifiedPlan[] = [
   },
 ];
 
+// Triple Bundle Plans - TV + Internet + Cellular packages
+export const verifiedTriplePlans: VerifiedPlan[] = [
+  // HOT Triple
+  {
+    id: 'triple-hot-family',
+    company: 'HOT',
+    planName: 'חבילת משפחה טריפל',
+    category: 'triple',
+    monthlyPrice: 279,
+    promoPrice: 199,
+    promoMonths: 3,
+    speed: '500Mbps',
+    channels: 120,
+    dataAmount: '200GB לקו',
+    cellularLines: 2,
+    includes4K: true,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['טלוויזיה + אינטרנט + 2 קווי סלולר', 'ממיר 4K', 'WiFi 6', 'שירות אחד מאוחד'],
+    recommended: true,
+    badge: 'הכי פופולרי'
+  },
+  {
+    id: 'triple-hot-premium',
+    company: 'HOT',
+    planName: 'חבילת פרימיום טריפל',
+    category: 'triple',
+    monthlyPrice: 349,
+    speed: '1Gbps',
+    channels: 150,
+    dataAmount: '500GB לקו',
+    cellularLines: 4,
+    includes4K: true,
+    includesNetflix: true,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['הכל כלול', 'Netflix', 'סיבים 1 גיגה', 'עד 4 קווי סלולר', 'ספורט מלא'],
+    badge: 'הכל כלול'
+  },
+  {
+    id: 'triple-hot-basic',
+    company: 'HOT',
+    planName: 'חבילה בסיסית טריפל',
+    category: 'triple',
+    monthlyPrice: 229,
+    speed: '200Mbps',
+    channels: 80,
+    dataAmount: '100GB לקו',
+    cellularLines: 2,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['טלוויזיה + אינטרנט + 2 קווי סלולר', 'ממיר HD', 'מחיר משתלם'],
+  },
+
+  // Partner Triple
+  {
+    id: 'triple-partner-family',
+    company: 'פרטנר',
+    planName: 'משפחה טריפל',
+    category: 'triple',
+    monthlyPrice: 269,
+    promoPrice: 189,
+    promoMonths: 6,
+    speed: '500Mbps',
+    channels: 80,
+    dataAmount: '300GB לקו',
+    cellularLines: 3,
+    includes4K: true,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['פרטנר TV + סיבים + 3 קווי סלולר', 'ניהול באפליקציה', 'שירות דיגיטלי'],
+    recommended: true,
+    badge: 'הכי משתלם'
+  },
+  {
+    id: 'triple-partner-premium',
+    company: 'פרטנר',
+    planName: 'פרימיום טריפל',
+    category: 'triple',
+    monthlyPrice: 329,
+    speed: '1Gbps',
+    channels: 100,
+    dataAmount: '500GB לקו',
+    cellularLines: 4,
+    includes4K: true,
+    includesNetflix: true,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['Netflix כלול', 'סיבים 1 גיגה', '4 קווי סלולר 5G', 'כל הערוצים'],
+    badge: 'פרימיום'
+  },
+  {
+    id: 'triple-partner-lite',
+    company: 'פרטנר',
+    planName: 'לייט טריפל',
+    category: 'triple',
+    monthlyPrice: 199,
+    speed: '100Mbps',
+    channels: 60,
+    dataAmount: '150GB לקו',
+    cellularLines: 2,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['חבילה קלה', 'ללא התחייבות', '2 קווי סלולר'],
+    badge: 'ללא התחייבות'
+  },
+
+  // Cellcom Triple
+  {
+    id: 'triple-cellcom-family',
+    company: 'סלקום',
+    planName: 'חבילת משפחה טריפל',
+    category: 'triple',
+    monthlyPrice: 259,
+    promoPrice: 179,
+    promoMonths: 3,
+    speed: '500Mbps',
+    channels: 70,
+    dataAmount: '400GB לקו',
+    cellularLines: 3,
+    includes4K: true,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['סלקום TV + סיבים + 3 קווי סלולר', 'יציבות גבוהה', 'תמיכה 24/7'],
+    recommended: true,
+    badge: 'בחירת העורכים'
+  },
+  {
+    id: 'triple-cellcom-unlimited',
+    company: 'סלקום',
+    planName: 'ללא הגבלה טריפל',
+    category: 'triple',
+    monthlyPrice: 399,
+    speed: '1Gbps',
+    channels: 90,
+    dataAmount: 'ללא הגבלה',
+    cellularLines: 4,
+    includes4K: true,
+    includesNetflix: true,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['גלישה ללא הגבלה', 'כל הערוצים', 'Netflix', '4 קווים', 'VIP'],
+    badge: 'ללא הגבלה'
+  },
+  {
+    id: 'triple-cellcom-basic',
+    company: 'סלקום',
+    planName: 'בסיסי טריפל',
+    category: 'triple',
+    monthlyPrice: 219,
+    speed: '200Mbps',
+    channels: 50,
+    dataAmount: '200GB לקו',
+    cellularLines: 2,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['חבילה משולבת', 'מחיר נוח', '2 קווי סלולר'],
+  },
+
+  // YES + Bezeq + Pelephone Triple
+  {
+    id: 'triple-yes-family',
+    company: 'YES + בזק',
+    planName: 'משפחה טריפל',
+    category: 'triple',
+    monthlyPrice: 289,
+    promoPrice: 209,
+    promoMonths: 3,
+    speed: '500Mbps',
+    channels: 100,
+    dataAmount: '300GB לקו',
+    cellularLines: 2,
+    includes4K: true,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['YES TV + בזק סיבים + פלאפון', 'Apple TV 4K', 'תשתית בזק'],
+    recommended: true,
+    badge: 'איכות מעולה'
+  },
+  {
+    id: 'triple-yes-premium',
+    company: 'YES + בזק',
+    planName: 'פרימיום טריפל',
+    category: 'triple',
+    monthlyPrice: 379,
+    speed: '1Gbps',
+    channels: 120,
+    dataAmount: '1000GB לקו',
+    cellularLines: 4,
+    includes4K: true,
+    includesNetflix: true,
+    includesHBO: true,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['Netflix + HBO', 'סיבים 1 גיגה', '4 קווי פלאפון 5G', 'הכל כלול'],
+    badge: 'VIP'
+  },
+
+  // Rami Levy Triple (Budget option)
+  {
+    id: 'triple-rami-basic',
+    company: 'רמי לוי',
+    planName: 'משפחה חסכונית',
+    category: 'triple',
+    monthlyPrice: 149,
+    speed: '100Mbps',
+    channels: 40,
+    dataAmount: '50GB לקו',
+    cellularLines: 2,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['STING TV + אינטרנט + 2 קווי סלולר', 'מחיר שובר שוק', 'ללא התחייבות'],
+    badge: 'הכי זול בשוק'
+  },
+  {
+    id: 'triple-rami-family',
+    company: 'רמי לוי',
+    planName: 'משפחה פלוס',
+    category: 'triple',
+    monthlyPrice: 199,
+    speed: '200Mbps',
+    channels: 65,
+    dataAmount: '100GB לקו',
+    cellularLines: 3,
+    includesTV: true,
+    includesInternet: true,
+    includesCellular: true,
+    features: ['STING TV מלא + אינטרנט מהיר + 3 קווים', 'מחיר תחרותי'],
+    recommended: true,
+    badge: 'חיסכון מקסימלי'
+  },
+];
+
 // All verified plans combined
 export const allVerifiedPlans: VerifiedPlan[] = [
   ...verifiedCellularPlans,
   ...verifiedTVPlans,
   ...verifiedInternetPlans,
+  ...verifiedTriplePlans,
 ];
 
 // Helper to get plans by category
