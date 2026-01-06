@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Check, Clock, Shield, Gift, Building2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Check, Clock, Shield, Gift, Building2, Wifi, Smartphone, Tv, Zap, Signal, Database, Monitor, Users, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { PlanRecord } from '@/hooks/useAllPlans';
@@ -11,6 +11,81 @@ interface Plan3DCarouselProps {
   onSelectPlan: (plan: PlanRecord) => void;
   companyLogos: Record<string, string>;
 }
+
+// Parse plan details from the plan data
+const parsePlanDetails = (plan: PlanRecord) => {
+  const details: { icon: typeof Wifi; label: string; value: string }[] = [];
+  const planLower = (plan.plan + ' ' + (plan.transferBenefits || '')).toLowerCase();
+  const service = plan.service.toLowerCase();
+  
+  // Internet speed detection
+  const speedMatch = planLower.match(/(\d+)\s*(מגה|mbps|gb|גיגה|mega)/i);
+  const fiberMatch = planLower.match(/(סיבים|fiber)/i);
+  if (speedMatch || fiberMatch) {
+    let speed = speedMatch ? speedMatch[1] : '';
+    if (planLower.includes('1 גיגה') || planLower.includes('1000')) {
+      speed = '1Gbps';
+    } else if (speed) {
+      speed = `${speed}Mbps`;
+    }
+    if (speed || fiberMatch) {
+      details.push({ 
+        icon: Wifi, 
+        label: 'מהירות', 
+        value: speed || 'סיבים' 
+      });
+    }
+  }
+  
+  // Cellular data detection
+  const dataMatch = planLower.match(/(\d+)\s*(gb|ג'יגה|גיגה|ג\'יגה)/i);
+  const unlimitedData = planLower.includes('ללא הגבלה') || planLower.includes('אנלימיטד');
+  if (service.includes('סלולר') || service.includes('טריפל')) {
+    if (unlimitedData) {
+      details.push({ icon: Database, label: 'גלישה', value: 'ללא הגבלה' });
+    } else if (dataMatch) {
+      details.push({ icon: Database, label: 'גלישה', value: `${dataMatch[1]}GB` });
+    }
+  }
+  
+  // TV channels detection
+  const channelsMatch = planLower.match(/(\d+)\s*(ערוצ|channel)/i);
+  if (service.includes('טלוויזיה') || service.includes('טריפל')) {
+    if (channelsMatch) {
+      details.push({ icon: Tv, label: 'ערוצים', value: channelsMatch[1] });
+    }
+    // Check for streaming services
+    if (planLower.includes('netflix')) {
+      details.push({ icon: Monitor, label: 'סטרימינג', value: 'Netflix כלול' });
+    }
+  }
+  
+  // Triple bundle detection
+  if (service.includes('טריפל')) {
+    const linesMatch = planLower.match(/(\d+)\s*(קו|line)/i);
+    if (linesMatch) {
+      details.push({ icon: Users, label: 'קווי סלולר', value: linesMatch[1] });
+    }
+  }
+  
+  // 5G support
+  if (planLower.includes('5g')) {
+    details.push({ icon: Signal, label: 'רשת', value: '5G' });
+  }
+  
+  return details;
+};
+
+// Get service category icon
+const getServiceIcon = (service: string) => {
+  const serviceLower = service.toLowerCase();
+  if (serviceLower.includes('סלולר')) return Smartphone;
+  if (serviceLower.includes('אינטרנט')) return Wifi;
+  if (serviceLower.includes('טלוויזיה')) return Tv;
+  if (serviceLower.includes('חשמל')) return Zap;
+  if (serviceLower.includes('טריפל')) return Package;
+  return Smartphone;
+};
 
 // 3D Carousel for each company
 const Company3DCarousel: React.FC<{
@@ -232,7 +307,7 @@ const Company3DCarousel: React.FC<{
       </div>
 
       {/* 3D Carousel Container - Mobile optimized */}
-      <div className="relative h-[320px] md:h-[420px] flex items-center justify-center" style={{ perspective: '1200px' }}>
+      <div className="relative h-[380px] md:h-[480px] flex items-center justify-center" style={{ perspective: '1200px' }}>
         {/* Navigation Buttons - Mobile adjusted */}
         <button
           onClick={handlePrev}
@@ -259,6 +334,8 @@ const Company3DCarousel: React.FC<{
               const isRecommended = savings > 0;
               const isCenter = index === activeIndex;
               const features = parseFeatures(plan);
+              const planDetails = parsePlanDetails(plan);
+              const ServiceIcon = getServiceIcon(plan.service);
 
               return (
                 <motion.div
@@ -285,7 +362,7 @@ const Company3DCarousel: React.FC<{
                 >
                   <div
                     className={cn(
-                      "w-[260px] md:w-[300px] rounded-2xl overflow-hidden transition-all duration-300",
+                      "w-[280px] md:w-[320px] rounded-2xl overflow-hidden transition-all duration-300",
                       isCenter 
                         ? `shadow-2xl border-2 ${theme.border}` 
                         : "shadow-lg border border-border/50",
@@ -294,7 +371,7 @@ const Company3DCarousel: React.FC<{
                     )}
                   >
                     {/* Top accent bar */}
-                    <div className={cn("h-1", theme.accent)} />
+                    <div className={cn("h-1.5", theme.accent)} />
                     
                     {/* Savings Badge */}
                     {isRecommended && (
@@ -306,69 +383,89 @@ const Company3DCarousel: React.FC<{
                       </div>
                     )}
 
-                    <div className="p-3 md:p-5">
-                      {/* Service Type Badge */}
-                      <div className="mb-2 md:mb-3">
+                    <div className="p-3 md:p-4">
+                      {/* Service Type Badge with Icon */}
+                      <div className="flex items-center gap-2 mb-2">
                         <span className={cn(
-                          "px-2.5 py-1 rounded-full text-[10px] md:text-xs font-medium",
+                          "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] md:text-xs font-medium",
                           theme.accentLight,
                           theme.accentText
                         )}>
+                          <ServiceIcon className="w-3 h-3" />
                           {plan.service}
                         </span>
                       </div>
 
                       {/* Plan Name */}
-                      <h3 className="text-base md:text-lg font-bold text-foreground mb-3 md:mb-4 line-clamp-2 min-h-[40px] md:min-h-[48px]">
+                      <h3 className="text-sm md:text-base font-bold text-foreground mb-2 line-clamp-2 min-h-[36px] md:min-h-[40px]">
                         {plan.plan}
                       </h3>
 
+                      {/* Plan Details Grid - Always visible */}
+                      {planDetails.length > 0 && (
+                        <div className={cn(
+                          "grid gap-1.5 mb-3 p-2 rounded-lg",
+                          isCenter ? "bg-muted/50" : "bg-muted/30",
+                          planDetails.length > 2 ? "grid-cols-2" : "grid-cols-1"
+                        )}>
+                          {planDetails.slice(0, isCenter ? 4 : 2).map((detail, idx) => {
+                            const DetailIcon = detail.icon;
+                            return (
+                              <div key={idx} className="flex items-center gap-1.5">
+                                <DetailIcon className={cn("w-3.5 h-3.5 flex-shrink-0", theme.accentText)} />
+                                <div className="flex flex-col min-w-0">
+                                  <span className="text-[9px] text-muted-foreground leading-tight">{detail.label}</span>
+                                  <span className="text-[11px] md:text-xs font-semibold text-foreground truncate">{detail.value}</span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+
                       {/* Price - with company color */}
                       <div className={cn(
-                        "rounded-xl p-3 md:p-4 mb-3 md:mb-4 text-center",
+                        "rounded-xl p-2.5 md:p-3 mb-2.5 text-center",
                         theme.priceBg
                       )}>
                         <div className="flex items-baseline justify-center gap-1">
-                          <span className={cn("text-2xl md:text-3xl font-bold", theme.accentText)}>
+                          <span className={cn("text-xl md:text-2xl font-bold", theme.accentText)}>
                             {plan.monthlyPrice}
                           </span>
-                          <span className="text-base md:text-lg text-muted-foreground">₪/חודש</span>
+                          <span className="text-sm md:text-base text-muted-foreground">₪/חודש</span>
                         </div>
                         {plan.yearlyPrice && (
-                          <div className="text-[10px] md:text-xs text-muted-foreground mt-1">
+                          <div className="text-[10px] md:text-xs text-muted-foreground mt-0.5">
                             ₪{plan.yearlyPrice.toLocaleString()} לשנה
                           </div>
                         )}
                       </div>
 
                       {/* Features - Only show when center - Mobile optimized */}
-                      {isCenter && (
-                        <div className="space-y-1.5 md:space-y-2 mb-3 md:mb-4">
-                          {features.length > 0 ? (
-                            features.slice(0, isMobile ? 2 : 3).map((feature, idx) => (
-                              <div key={idx} className="flex items-start gap-1.5 md:gap-2">
-                                <Check className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                                <span className="text-xs md:text-sm text-foreground/80 line-clamp-1">{feature}</span>
-                              </div>
-                            ))
-                          ) : plan.transferBenefits ? (
-                            <div className="flex items-start gap-1.5 md:gap-2">
-                              <Gift className="w-3.5 h-3.5 md:w-4 md:h-4 text-foreground/60 mt-0.5 flex-shrink-0" />
-                              <span className="text-xs md:text-sm text-foreground/80 line-clamp-2">{plan.transferBenefits}</span>
+                      {isCenter && features.length > 0 && (
+                        <div className="space-y-1 mb-2.5">
+                          {features.slice(0, isMobile ? 2 : 3).map((feature, idx) => (
+                            <div key={idx} className="flex items-start gap-1.5">
+                              <Check className="w-3 h-3 md:w-3.5 md:h-3.5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                              <span className="text-[11px] md:text-xs text-foreground/80 line-clamp-1">{feature}</span>
                             </div>
-                          ) : null}
+                          ))}
+                        </div>
+                      )}
 
+                      {/* Commitment & SLA row */}
+                      {isCenter && (plan.commitment || plan.sla) && (
+                        <div className="flex flex-wrap items-center gap-2 mb-2.5 text-[10px] md:text-xs text-muted-foreground">
                           {plan.commitment && (
-                            <div className="flex items-center gap-1.5 md:gap-2">
-                              <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-muted-foreground" />
-                              <span className="text-xs md:text-sm text-muted-foreground">{plan.commitment}</span>
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              <span>{plan.commitment}</span>
                             </div>
                           )}
-
-                          {plan.sla && !isMobile && (
-                            <div className="flex items-center gap-2">
-                              <Shield className="w-4 h-4 text-muted-foreground" />
-                              <span className="text-sm text-muted-foreground">שירות: {plan.sla}</span>
+                          {plan.sla && (
+                            <div className="flex items-center gap-1">
+                              <Shield className="w-3 h-3" />
+                              <span>שירות: {plan.sla}</span>
                             </div>
                           )}
                         </div>
@@ -382,7 +479,7 @@ const Company3DCarousel: React.FC<{
                             onSelectPlan(plan);
                           }}
                           className={cn(
-                            "w-full h-10 md:h-11 font-semibold rounded-xl transition-all text-sm md:text-base touch-manipulation",
+                            "w-full h-9 md:h-10 font-semibold rounded-xl transition-all text-xs md:text-sm touch-manipulation",
                             isRecommended
                               ? "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white"
                               : "bg-foreground hover:bg-foreground/90 active:bg-foreground/80 text-background"
