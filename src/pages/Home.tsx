@@ -225,7 +225,7 @@ const Home = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors touch-manipulation"
+              className="md:hidden p-3 rounded-xl hover:bg-gray-100 transition-all touch-button min-h-[48px] min-w-[48px] flex items-center justify-center active:scale-95 active:bg-gray-200"
               aria-label="תפריט"
             >
               {isMobileMenuOpen ? (
@@ -279,10 +279,10 @@ const Home = () => {
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
-                        "px-4 py-3 rounded-xl font-medium font-heebo text-base transition-all touch-manipulation",
+                        "px-4 py-4 rounded-xl font-medium font-heebo text-base transition-all touch-card min-h-[48px] flex items-center",
                         link.active
                           ? "bg-cyan-50 text-cyan-600"
-                          : "text-gray-600 hover:bg-gray-50 active:bg-gray-100"
+                          : "text-gray-600 hover:bg-gray-50 active:bg-gray-100 active:scale-[0.98]"
                       )}
                     >
                       {link.label}
