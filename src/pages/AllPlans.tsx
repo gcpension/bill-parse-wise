@@ -20,7 +20,9 @@ import {
   ChevronDown,
   X,
   Info,
-  Rocket
+  Rocket,
+  LayoutGrid,
+  Layers
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +35,7 @@ import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
+import Plan3DCarousel from "@/components/plans/Plan3DCarousel";
 import annualSavingsSketch from "@/assets/savings-clean.png";
 
 // Company logos mapping
@@ -50,7 +53,7 @@ const companyLogos: Record<string, string> = {
 
 type CategoryType = 'חשמל' | 'אינטרנט' | 'סלולר' | 'טלוויזיה' | 'all';
 type SortType = 'price-asc' | 'price-desc' | 'name';
-type ViewMode = 'grid' | 'list';
+type ViewMode = 'carousel' | 'grid' | 'list';
 
 const AllPlans = () => {
   const navigate = useNavigate();
@@ -59,7 +62,7 @@ const AllPlans = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortType>('price-asc');
   const [currentMonthlyBill, setCurrentMonthlyBill] = useState<number>(0);
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [viewMode, setViewMode] = useState<ViewMode>('carousel');
   const [isLoading, setIsLoading] = useState(true);
   const [showTopPlan, setShowTopPlan] = useState(false);
   const [selectedPlanForForm, setSelectedPlanForForm] = useState<PlanRecord | null>(null);
@@ -303,6 +306,18 @@ const AllPlans = () => {
             <div className="flex items-center gap-3">
               <div className="bg-slate-100 rounded-lg p-1 flex">
                 <button
+                  onClick={() => setViewMode('carousel')}
+                  className={cn(
+                    "px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2",
+                    viewMode === 'carousel' 
+                      ? "bg-white text-slate-900 shadow-sm" 
+                      : "text-slate-500 hover:text-slate-700"
+                  )}
+                >
+                  <Layers className="h-4 w-4" />
+                  קרוסלה
+                </button>
+                <button
                   onClick={() => setViewMode('grid')}
                   className={cn(
                     "px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2",
@@ -490,6 +505,16 @@ const AllPlans = () => {
               )}
             </CardContent>
           </Card>
+        ) : viewMode === 'carousel' ? (
+          // 3D Carousel View
+          <div className="animate-fade-in">
+            <Plan3DCarousel
+              plans={filteredPlans}
+              currentMonthlyBill={currentMonthlyBill}
+              onSelectPlan={handleSelectPlan}
+              companyLogos={companyLogos}
+            />
+          </div>
         ) : viewMode === 'grid' ? (
           // Grid View - Grouped by Company
           <div className="space-y-10 animate-fade-in">
