@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -64,15 +64,26 @@ export const PersonalizedWizardFloat = () => {
       supportImportance: 'important',
     };
 
-    const categoryMap: Record<string, 'electricity' | 'internet' | 'mobile' | 'tv'> = {
+    const categoryMap: Record<string, string> = {
       'cellular': 'mobile',
       'internet': 'internet',
       'electricity': 'electricity',
       'tv': 'tv',
     };
 
-    const category = categoryMap[wizardData.service];
-    const filteredPlans = manualPlans.filter(plan => plan.category === category);
+    const category = categoryMap[wizardData.service] || wizardData.service;
+    
+    // Filter plans by category
+    const filteredPlans = manualPlans.filter(plan => {
+      const planCategory = plan.category;
+      return planCategory === category || 
+             (wizardData.service === 'cellular' && planCategory === 'mobile') ||
+             (wizardData.service === 'internet' && planCategory === 'internet') ||
+             (wizardData.service === 'electricity' && planCategory === 'electricity') ||
+             (wizardData.service === 'tv' && planCategory === 'tv');
+    });
+    
+    console.log(`📊 Wizard filtering: service=${wizardData.service}, category=${category}, found ${filteredPlans.length} plans`);
     
     // Use advanced AI analysis
     const analysis = PersonalizedRecommendationEngine.analyzeWithAdvancedAI(
@@ -331,14 +342,15 @@ export const PersonalizedWizardFloat = () => {
                           transition={{ duration: 0.4 }}
                           className="space-y-4"
                         >
-                          <div className="text-center mb-6">
+                          {/* Header */}
+                          <div className="text-center mb-4">
                             <motion.div
                               initial={{ scale: 0 }}
                               animate={{ scale: 1 }}
                               transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
                             >
                               <div className="relative inline-block mb-3">
-                                <CheckCircle2 className="w-16 h-16 mx-auto text-green-600" />
+                                <CheckCircle2 className="w-14 h-14 mx-auto text-green-600" />
                                 <motion.div
                                   className="absolute inset-0 rounded-full bg-green-500/20"
                                   animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
@@ -346,177 +358,232 @@ export const PersonalizedWizardFloat = () => {
                                 />
                               </div>
                             </motion.div>
-                            <h3 className="text-xl font-light font-heebo bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-2">
-                              מצאנו עבורכם {recommendations.length} מסלולים מתאימים!
+                            <h3 className="text-lg font-normal font-heebo bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-1">
+                              {recommendations.length > 0 
+                                ? `מצאנו ${recommendations.length} מסלולים מתאימים!`
+                                : 'לא נמצאו מסלולים מתאימים'
+                              }
                             </h3>
-                            <p className="text-sm text-muted-foreground font-heebo font-light mb-4">
-                              המסלולים מסודרים לפי התאמה אישית מבוססת AI
+                            <p className="text-xs text-muted-foreground font-heebo">
+                              {services.find(s => s.id === wizardData.service)?.label} • {wizardData.familySize} נפשות • עד ₪{wizardData.budget}/חודש
                             </p>
-                            
-                            {/* AI Insights Section */}
-                            {aiAnalysis?.aiInsights && aiAnalysis.aiInsights.length > 0 && (
-                              <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4 mb-4 text-right">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <Sparkles className="w-4 h-4 text-purple-600" />
-                                  <span className="text-sm font-medium text-purple-700 font-heebo">תובנות AI</span>
-                                </div>
-                                <div className="space-y-2">
-                                  {aiAnalysis.aiInsights.slice(0, 2).map((insight, idx) => (
-                                    <div key={idx} className="text-xs text-purple-700 font-heebo font-light leading-relaxed">
-                                      {insight}
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Market Analysis */}
-                            {aiAnalysis?.marketAnalysis && (
-                              <div className="grid grid-cols-2 gap-2 mb-4">
-                                <div className="bg-muted/50 rounded-lg p-3 text-center">
-                                  <div className="text-lg font-bold text-foreground">₪{aiAnalysis.marketAnalysis.avgPrice}</div>
-                                  <div className="text-xs text-muted-foreground">ממוצע בשוק</div>
-                                </div>
-                                <div className="bg-emerald-50 rounded-lg p-3 text-center">
-                                  <div className="text-lg font-bold text-emerald-600">₪{aiAnalysis.marketAnalysis.priceRange.min}</div>
-                                  <div className="text-xs text-emerald-700">המחיר הנמוך ביותר</div>
-                                </div>
-                              </div>
-                            )}
                           </div>
 
-                          <div className="space-y-3 max-h-[400px] overflow-y-auto">
-                            {recommendations.map((rec, idx) => {
-                              const plan = manualPlans.find(p => p.id === rec.planId);
-                              if (!plan) return null;
+                          {recommendations.length === 0 ? (
+                            <div className="text-center py-8">
+                              <div className="text-muted-foreground font-heebo mb-4">
+                                לא נמצאו מסלולים התואמים את ההעדפות שלכם.
+                              </div>
+                              <Button onClick={handleReset} variant="outline">
+                                נסו שוב עם העדפות אחרות
+                              </Button>
+                            </div>
+                          ) : (
+                            <>
+                              {/* Market Analysis Summary */}
+                              {aiAnalysis?.marketAnalysis && (
+                                <div className="grid grid-cols-3 gap-2 mb-3">
+                                  <div className="bg-muted/50 rounded-lg p-2 text-center">
+                                    <div className="text-sm font-bold text-foreground">₪{aiAnalysis.marketAnalysis.avgPrice}</div>
+                                    <div className="text-[10px] text-muted-foreground">ממוצע</div>
+                                  </div>
+                                  <div className="bg-emerald-50 rounded-lg p-2 text-center">
+                                    <div className="text-sm font-bold text-emerald-600">₪{aiAnalysis.marketAnalysis.priceRange.min}</div>
+                                    <div className="text-[10px] text-emerald-700">נמוך</div>
+                                  </div>
+                                  <div className="bg-purple-50 rounded-lg p-2 text-center">
+                                    <div className="text-sm font-bold text-purple-600">₪{aiAnalysis.marketAnalysis.priceRange.max}</div>
+                                    <div className="text-[10px] text-purple-700">גבוה</div>
+                                  </div>
+                                </div>
+                              )}
 
-                              return (
-                                <motion.div
-                                  key={rec.planId}
-                                  initial={{ opacity: 0, x: -50, rotateY: -15 }}
-                                  animate={{ opacity: 1, x: 0, rotateY: 0 }}
-                                  whileHover={{ scale: 1.02, y: -4 }}
-                                  transition={{ 
-                                    delay: idx * 0.1,
-                                    type: "spring",
-                                    stiffness: 200
-                                  }}
-                                  className={cn(
-                                    "group relative p-5 rounded-xl border-2 transition-all cursor-pointer overflow-hidden",
-                                    idx === 0 
-                                      ? "border-primary bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10 shadow-lg shadow-primary/20" 
-                                      : "border-border bg-card hover:border-primary/40 hover:shadow-md"
-                                  )}
+                              {/* AI Insights */}
+                              {aiAnalysis?.aiInsights && aiAnalysis.aiInsights.length > 0 && (
+                                <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-3 mb-3 text-right">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <Sparkles className="w-3 h-3 text-purple-600" />
+                                    <span className="text-xs font-medium text-purple-700 font-heebo">תובנות AI</span>
+                                  </div>
+                                  <div className="text-[11px] text-purple-700 font-heebo font-light leading-relaxed">
+                                    {aiAnalysis.aiInsights[0]}
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Plans List */}
+                              <div className="space-y-3 max-h-[350px] overflow-y-auto pr-1">
+                                {recommendations.slice(0, 5).map((rec, idx) => {
+                                  const plan = manualPlans.find(p => p.id === rec.planId);
+                                  if (!plan) return null;
+
+                                  const serviceIcon = wizardData.service === 'cellular' ? Smartphone :
+                                                     wizardData.service === 'internet' ? Wifi :
+                                                     wizardData.service === 'electricity' ? Zap : Tv;
+
+                                  return (
+                                    <motion.div
+                                      key={rec.planId}
+                                      initial={{ opacity: 0, x: -30 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      whileHover={{ scale: 1.01, y: -2 }}
+                                      transition={{ delay: idx * 0.08, type: "spring", stiffness: 200 }}
+                                      className={cn(
+                                        "group relative p-4 rounded-xl border-2 transition-all cursor-pointer",
+                                        idx === 0 
+                                          ? "border-primary bg-gradient-to-br from-primary/5 to-purple-50 shadow-md" 
+                                          : "border-border bg-card hover:border-primary/40"
+                                      )}
+                                      onClick={() => {
+                                        navigate(`/all-plans?plan=${plan.id}`);
+                                        setIsOpen(false);
+                                      }}
+                                    >
+                                      {/* Best recommendation badge */}
+                                      {idx === 0 && (
+                                        <Badge className="absolute -top-2 right-3 bg-gradient-to-r from-primary to-purple-600 text-white text-[10px] px-2 py-0.5">
+                                          <Sparkles className="w-2.5 h-2.5 ml-1" />
+                                          מומלץ ביותר
+                                        </Badge>
+                                      )}
+                                      
+                                      {/* Header row */}
+                                      <div className="flex justify-between items-start mb-2">
+                                        <div className="flex items-center gap-2">
+                                          <div className={cn(
+                                            "w-8 h-8 rounded-lg flex items-center justify-center",
+                                            idx === 0 ? "bg-primary/10" : "bg-muted"
+                                          )}>
+                                            {React.createElement(serviceIcon, { className: cn("w-4 h-4", idx === 0 ? "text-primary" : "text-muted-foreground") })}
+                                          </div>
+                                          <div>
+                                            <div className="font-medium text-foreground font-heebo text-sm">
+                                              {plan.company}
+                                            </div>
+                                            <div className="text-[11px] text-muted-foreground font-heebo line-clamp-1">
+                                              {plan.planName}
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className="text-left">
+                                          <div className="text-lg font-bold text-foreground font-heebo">
+                                            ₪{plan.regularPrice}
+                                          </div>
+                                          <div className="text-[10px] text-muted-foreground">לחודש</div>
+                                        </div>
+                                      </div>
+
+                                      {/* Plan details */}
+                                      <div className="grid grid-cols-2 gap-2 mb-2 text-[10px]">
+                                        {plan.speed && plan.speed !== 'לא רלוונטי' && (
+                                          <div className="flex items-center gap-1 text-muted-foreground">
+                                            <Gauge className="w-3 h-3" />
+                                            <span>{plan.speed}</span>
+                                          </div>
+                                        )}
+                                        {plan.downloadSpeed && (
+                                          <div className="flex items-center gap-1 text-muted-foreground">
+                                            <TrendingUp className="w-3 h-3" />
+                                            <span>{plan.downloadSpeed}</span>
+                                          </div>
+                                        )}
+                                        {plan.dataAmount && (
+                                          <div className="flex items-center gap-1 text-muted-foreground">
+                                            <Wifi className="w-3 h-3" />
+                                            <span>{plan.dataAmount}</span>
+                                          </div>
+                                        )}
+                                        {plan.introPrice > 0 && plan.introPrice < plan.regularPrice && (
+                                          <div className="flex items-center gap-1 text-green-600">
+                                            <DollarSign className="w-3 h-3" />
+                                            <span>₪{plan.introPrice} ל-{plan.introMonths} חודשים</span>
+                                          </div>
+                                        )}
+                                      </div>
+
+                                      {/* Features */}
+                                      {plan.features.length > 0 && (
+                                        <div className="flex flex-wrap gap-1 mb-2">
+                                          {plan.features.slice(0, 3).map((feature, i) => (
+                                            <Badge key={i} variant="secondary" className="text-[9px] px-1.5 py-0 font-normal">
+                                              {feature.length > 25 ? feature.substring(0, 25) + '...' : feature}
+                                            </Badge>
+                                          ))}
+                                          {plan.features.length > 3 && (
+                                            <Badge variant="outline" className="text-[9px] px-1.5 py-0">
+                                              +{plan.features.length - 3}
+                                            </Badge>
+                                          )}
+                                        </div>
+                                      )}
+
+                                      {/* Match score and reasons */}
+                                      <div className="flex items-center gap-2 mb-2">
+                                        <div className="flex-1 bg-muted rounded-full h-1.5 overflow-hidden">
+                                          <motion.div 
+                                            className="bg-gradient-to-r from-primary to-purple-600 h-1.5 rounded-full"
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${rec.personalizedScore}%` }}
+                                            transition={{ duration: 0.8, delay: idx * 0.1 }}
+                                          />
+                                        </div>
+                                        <span className="text-[10px] font-medium text-primary">{Math.round(rec.personalizedScore)}% התאמה</span>
+                                      </div>
+
+                                      {/* Top reason */}
+                                      {rec.reasonsForRecommendation.length > 0 && (
+                                        <div className="flex items-start gap-1.5 text-[10px] text-muted-foreground">
+                                          <CheckCircle2 className="w-3 h-3 text-green-600 flex-shrink-0 mt-0.5" />
+                                          <span className="line-clamp-1">{rec.reasonsForRecommendation[0]}</span>
+                                        </div>
+                                      )}
+
+                                      {/* Savings indicator */}
+                                      {rec.expectedSavings.monthly > 0 && (
+                                        <div className="mt-2 flex items-center gap-1 text-[10px] text-green-600 bg-green-50 px-2 py-1 rounded-md w-fit">
+                                          <TrendingUp className="w-3 h-3" />
+                                          חיסכון: ₪{Math.round(rec.expectedSavings.monthly)}/חודש
+                                        </div>
+                                      )}
+                                    </motion.div>
+                                  );
+                                })}
+                              </div>
+
+                              {/* Personalized Tips */}
+                              {aiAnalysis?.personalizedTips && aiAnalysis.personalizedTips.length > 0 && (
+                                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-3">
+                                  <div className="text-[11px] text-amber-800 font-heebo">
+                                    💡 {aiAnalysis.personalizedTips[0]}
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Action buttons */}
+                              <div className="flex gap-2 pt-3">
+                                <Button
+                                  onClick={handleReset}
+                                  variant="outline"
+                                  size="sm"
+                                  className="flex-1 text-xs"
+                                >
+                                  <ArrowRight className="ml-1 h-3 w-3" />
+                                  התחל מחדש
+                                </Button>
+                                <Button
                                   onClick={() => {
-                                    navigate(`/all-plans?plan=${plan.id}`);
+                                    navigate(`/all-plans?service=${wizardData.service}`);
                                     setIsOpen(false);
                                   }}
+                                  size="sm"
+                                  className="flex-1 bg-gradient-to-r from-primary to-purple-600 text-xs"
                                 >
-                                  {/* Shine effect on hover */}
-                                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                                  
-                                  {idx === 0 && (
-                                    <motion.div
-                                      initial={{ scale: 0, rotate: -180 }}
-                                      animate={{ scale: 1, rotate: 0 }}
-                                      transition={{ delay: 0.5, type: "spring" }}
-                                    >
-                                      <Badge className="mb-3 bg-gradient-to-r from-primary to-purple-600 text-white shadow-lg relative">
-                                        <Sparkles className="w-3 h-3 ml-1" />
-                                        ההמלצה הטובה ביותר
-                                      </Badge>
-                                    </motion.div>
-                                  )}
-                                  
-                                  <div className="flex justify-between items-start mb-3 relative z-10">
-                                    <div className="flex-1">
-                                      <div className="font-normal text-foreground font-heebo text-lg mb-1">
-                                        {plan.company}
-                                      </div>
-                                      <div className="text-sm text-muted-foreground font-heebo font-light line-clamp-1">
-                                        {plan.planName}
-                                      </div>
-                                    </div>
-                                    <motion.div 
-                                      className="text-left bg-gradient-to-br from-primary/10 to-purple-100 px-3 py-2 rounded-lg"
-                                      whileHover={{ scale: 1.05 }}
-                                    >
-                                      <div className="text-2xl font-light bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent font-heebo">
-                                        ₪{plan.regularPrice}
-                                      </div>
-                                      <div className="text-xs text-muted-foreground font-heebo font-light">
-                                        לחודש
-                                      </div>
-                                    </motion.div>
-                                  </div>
-
-                                  <div className="flex items-center gap-3 mb-3 relative z-10">
-                                    <div className="flex-1 bg-muted rounded-full h-2.5 overflow-hidden shadow-inner">
-                                      <motion.div 
-                                        className="bg-gradient-to-r from-primary to-purple-600 h-2.5 rounded-full shadow-sm"
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${rec.personalizedScore}%` }}
-                                        transition={{ duration: 1, delay: idx * 0.1 + 0.3, ease: "easeOut" }}
-                                      />
-                                    </div>
-                                    <Badge variant="secondary" className="font-normal text-primary font-heebo shadow-sm">
-                                      {Math.round(rec.personalizedScore)}%
-                                    </Badge>
-                                  </div>
-
-                                  <div className="space-y-1.5 relative z-10">
-                                    {rec.reasonsForRecommendation.slice(0, 2).map((reason, i) => (
-                                      <motion.div 
-                                        key={i} 
-                                        initial={{ opacity: 0, x: -10 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: idx * 0.1 + 0.5 + i * 0.1 }}
-                                        className="flex items-start gap-2 text-xs text-muted-foreground font-['Rubik']"
-                                      >
-                                        <CheckCircle2 className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
-                                        <span>{reason}</span>
-                                      </motion.div>
-                                    ))}
-                                  </div>
-
-                                  {rec.expectedSavings.monthly > 0 && (
-                                    <motion.div 
-                                      className="mt-3 pt-3 border-t border-border relative z-10"
-                                      initial={{ opacity: 0, y: 10 }}
-                                      animate={{ opacity: 1, y: 0 }}
-                                      transition={{ delay: idx * 0.1 + 0.7 }}
-                                    >
-                                      <div className="flex items-center gap-2 text-sm font-normal text-green-600 font-heebo bg-green-50 px-3 py-2 rounded-lg">
-                                        <TrendingUp className="w-4 h-4" />
-                                        חיסכון: ₪{Math.round(rec.expectedSavings.monthly)} לחודש
-                                      </div>
-                                    </motion.div>
-                                  )}
-                                </motion.div>
-                              );
-                            })}
-                          </div>
-
-                          <div className="flex gap-3 pt-4">
-                            <Button
-                              onClick={handleBack}
-                              variant="outline"
-                              className="flex-1 font-['Rubik'] hover:bg-muted transition-colors"
-                            >
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                              חזרה
-                            </Button>
-                            <Button
-                              onClick={() => {
-                                navigate(`/all-plans?service=${wizardData.service}`);
-                                setIsOpen(false);
-                              }}
-                              className="flex-1 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 font-['Rubik'] shadow-lg hover:shadow-primary/50 transition-all"
-                            >
-                              ראה את כל המסלולים
-                              <ArrowLeft className="mr-2 h-4 w-4" />
-                            </Button>
-                          </div>
+                                  כל המסלולים
+                                  <ArrowLeft className="mr-1 h-3 w-3" />
+                                </Button>
+                              </div>
+                            </>
+                          )}
                         </motion.div>
                       ) : (
                         <>
