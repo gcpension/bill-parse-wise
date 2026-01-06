@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { CheckCircle, ChevronLeft, ChevronRight, Zap, Wifi, Smartphone, Tv } from 'lucide-react';
+import { CheckCircle, ChevronLeft, ChevronRight, Zap, Wifi, Smartphone, Tv, Package } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
@@ -13,6 +13,7 @@ interface CategoryData {
   image: string;
   providers: string[];
   gradient: string;
+  badge?: string;
 }
 
 interface CategoryCarouselProps {
@@ -21,6 +22,14 @@ interface CategoryCarouselProps {
 }
 
 const categoryData: Record<string, CategoryData> = {
+  triple: {
+    name: 'טריפל',
+    icon: Package,
+    image: tvFamily,
+    providers: ['HOT', 'פרטנר', 'סלקום', 'YES + בזק', 'רמי לוי'],
+    gradient: 'from-purple-600/90 via-indigo-500/70 to-violet-500/50',
+    badge: 'חיסכון מקסימלי!'
+  },
   electricity: {
     name: 'חשמל',
     icon: Zap,
