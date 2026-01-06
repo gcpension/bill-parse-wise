@@ -24,7 +24,10 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminAuth from "./pages/AdminAuth";
 import AdminReports from "./pages/AdminReports";
 import CustomerRequestStatus from "./pages/CustomerRequestStatus";
+import ProviderPage from "./pages/ProviderPage";
 import { AdminRoute } from "./components/AdminRoute";
+import { AIChatBot } from "./components/chat/AIChatBot";
+import { WebsiteSchema, OrganizationSchema } from "./components/seo/SchemaOrg";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +35,8 @@ const App = () => (
   <ErrorBoundary fallbackMessage="אירעה שגיאה במערכת השוואת הספקים">
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <WebsiteSchema />
+        <OrganizationSchema />
         <Toaster />
         <Sonner />
         <BrowserRouter
@@ -56,6 +61,8 @@ const App = () => (
               <Route path="/plans/all" element={<AllPlans />} />
               <Route path="/service-request" element={<ServiceRequest />} />
               <Route path="/request-status/:requestId?" element={<RequestStatus />} />
+              {/* Provider page for SEO */}
+              <Route path="/provider/:providerId" element={<ProviderPage />} />
               {/* Customer status tracking */}
               <Route path="/track-request" element={<CustomerRequestStatus />} />
               <Route path="/my-request" element={<CustomerRequestStatus />} />
@@ -84,6 +91,8 @@ const App = () => (
               <Route path="/forms/:category" element={<Navigate to="/analyze" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            {/* AI Chatbot - available on all pages */}
+            <AIChatBot />
           </div>
         </BrowserRouter>
       </TooltipProvider>
