@@ -243,78 +243,82 @@ const AllPlans = () => {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 font-heebo antialiased">
       {/* Empty - Top plan CTA removed */}
 
-      {/* Header - Clean & Modern */}
-      <div className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-40">
-        <div className="container mx-auto px-4 max-w-7xl py-4">
+      {/* Header - Clean & Modern - Mobile Optimized */}
+      <div className="bg-white/95 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-40">
+        <div className="container mx-auto px-3 md:px-4 max-w-7xl py-3 md:py-4">
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="mb-3 text-slate-500 hover:text-slate-800 transition-colors -mr-3"
+            className="mb-2 md:mb-3 text-slate-500 hover:text-slate-800 transition-colors -mr-2 md:-mr-3 text-sm touch-manipulation"
           >
-            <ArrowLeft className="ml-2 h-4 w-4" />
-            <span>חזרה לדף הבית</span>
+            <ArrowLeft className="ml-1 md:ml-2 h-4 w-4" />
+            <span>חזרה</span>
           </Button>
           
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex flex-col gap-3 md:gap-4">
             <div className="space-y-1">
-              <h1 className="text-2xl md:text-3xl font-semibold text-slate-900">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-900">
                 בחרו את המסלול המושלם
               </h1>
               {currentMonthlyBill > 0 && stats && (
-                <div className="flex flex-wrap items-center gap-3 text-sm">
+                <div className="flex flex-wrap items-center gap-2 md:gap-3 text-xs md:text-sm">
                   <span className="text-slate-500">
-                    התשלום הנוכחי: <span className="font-medium text-slate-700">₪{currentMonthlyBill}/חודש</span>
+                    התשלום: <span className="font-medium text-slate-700">₪{currentMonthlyBill}/חודש</span>
                   </span>
                   {stats.maxSavings > 0 && (
-                    <Badge className="bg-emerald-500 text-white font-medium border-0 shadow-sm px-3">
-                      <TrendingDown className="ml-1 h-3.5 w-3.5" />
-                      חסכו עד ₪{stats.maxSavings.toFixed(0)} בחודש
+                    <Badge className="bg-emerald-500 text-white font-medium border-0 shadow-sm px-2 md:px-3 text-xs">
+                      <TrendingDown className="ml-1 h-3 w-3 md:h-3.5 md:w-3.5" />
+                      חסכו ₪{stats.maxSavings.toFixed(0)}
                     </Badge>
                   )}
                 </div>
               )}
             </div>
             
-            <div className="flex items-center gap-3">
-              <div className="bg-slate-100 rounded-lg p-1 flex">
+            {/* View mode + count - Stacked on mobile */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+              {/* View Mode Toggle - Scrollable on mobile */}
+              <div className="bg-slate-100 rounded-lg p-1 flex overflow-x-auto">
                 <button
                   onClick={() => setViewMode('carousel')}
                   className={cn(
-                    "px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2",
+                    "px-2.5 md:px-3 py-2 md:py-1.5 rounded-md text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 md:gap-2 whitespace-nowrap flex-1 justify-center touch-manipulation",
                     viewMode === 'carousel' 
                       ? "bg-white text-slate-900 shadow-sm" 
                       : "text-slate-500 hover:text-slate-700"
                   )}
                 >
                   <Layers className="h-4 w-4" />
-                  קרוסלה
+                  <span className="hidden sm:inline">קרוסלה</span>
                 </button>
                 <button
                   onClick={() => setViewMode('grid')}
                   className={cn(
-                    "px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2",
+                    "px-2.5 md:px-3 py-2 md:py-1.5 rounded-md text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 md:gap-2 whitespace-nowrap flex-1 justify-center touch-manipulation",
                     viewMode === 'grid' 
                       ? "bg-white text-slate-900 shadow-sm" 
                       : "text-slate-500 hover:text-slate-700"
                   )}
                 >
                   <Grid3x3 className="h-4 w-4" />
-                  כרטיסים
+                  <span className="hidden sm:inline">כרטיסים</span>
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
                   className={cn(
-                    "px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2",
+                    "px-2.5 md:px-3 py-2 md:py-1.5 rounded-md text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 md:gap-2 whitespace-nowrap flex-1 justify-center touch-manipulation",
                     viewMode === 'list' 
                       ? "bg-white text-slate-900 shadow-sm" 
                       : "text-slate-500 hover:text-slate-700"
                   )}
                 >
                   <List className="h-4 w-4" />
-                  רשימה
+                  <span className="hidden sm:inline">רשימה</span>
                 </button>
               </div>
-              <div className="hidden md:flex items-center gap-1 px-3 py-1.5 bg-slate-100 rounded-lg text-sm text-slate-600">
+              
+              {/* Plans count - visible on all screens */}
+              <div className="flex items-center justify-center gap-1 px-3 py-1.5 bg-slate-100 rounded-lg text-xs md:text-sm text-slate-600">
                 <span className="font-semibold text-slate-800">{filteredPlans.length}</span>
                 <span>מסלולים</span>
               </div>
@@ -323,11 +327,11 @@ const AllPlans = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 max-w-7xl py-6">
-        {/* Trusted Partners Section */}
-        <div className="mb-6">
+      <div className="container mx-auto px-3 md:px-4 max-w-7xl py-4 md:py-6">
+        {/* Trusted Partners Section - Hidden on small mobile */}
+        <div className="mb-4 md:mb-6 hidden sm:block">
           <p className="text-center text-xs text-slate-400 mb-3">שותפים מובילים</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 py-3">
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 py-2 md:py-3">
             {Object.entries(companyLogos).map(([company, logo]) => (
               <div 
                 key={company} 
@@ -336,36 +340,36 @@ const AllPlans = () => {
                 <img 
                   src={logo} 
                   alt={company}
-                  className="h-7 w-auto object-contain"
+                  className="h-5 md:h-7 w-auto object-contain"
                 />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Savings Summary Banner */}
+        {/* Savings Summary Banner - Mobile optimized */}
         {!isLoading && stats && stats.recommendedCount > 0 && (
-          <div className="mb-6 animate-fade-in">
+          <div className="mb-4 md:mb-6 animate-fade-in">
             <div className="relative bg-gradient-to-l from-emerald-50 via-white to-teal-50 border border-emerald-100 rounded-xl overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-100/20 via-transparent to-transparent"></div>
-              <div className="relative flex flex-col md:flex-row items-center justify-between p-6 gap-4">
+              <div className="relative flex flex-col items-center justify-between p-4 md:p-6 gap-3 md:gap-4">
                 {/* Content */}
-                <div className="flex items-center gap-5">
-                  <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-200">
-                    <TrendingDown className="w-7 h-7 text-white" />
+                <div className="flex items-center gap-3 md:gap-5 w-full">
+                  <div className="flex-shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-200">
+                    <TrendingDown className="w-5 h-5 md:w-7 md:h-7 text-white" />
                   </div>
-                  <div className="text-right">
-                    <h3 className="text-lg font-semibold text-slate-800 mb-0.5">
+                  <div className="text-right flex-1">
+                    <h3 className="text-base md:text-lg font-semibold text-slate-800 mb-0.5">
                       חסכו עד <span className="text-emerald-600">₪{(stats.maxSavings * 12).toLocaleString()}</span> בשנה
                     </h3>
-                    <p className="text-sm text-slate-500">
-                      {stats.recommendedCount} מסלולים זולים יותר מהתשלום הנוכחי שלכם
+                    <p className="text-xs md:text-sm text-slate-500">
+                      {stats.recommendedCount} מסלולים זולים יותר
                     </p>
                   </div>
                 </div>
                 
-                {/* Quick Stats */}
-                <div className="flex items-center gap-4 text-sm">
+                {/* Quick Stats - Hidden on very small screens */}
+                <div className="hidden sm:flex items-center gap-4 text-sm w-full justify-center">
                   <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 rounded-lg border border-emerald-100">
                     <Sparkles className="w-4 h-4 text-emerald-500" />
                     <span className="text-slate-600">חיסכון חודשי: <span className="font-semibold text-emerald-600">₪{stats.maxSavings.toFixed(0)}</span></span>
@@ -376,10 +380,10 @@ const AllPlans = () => {
           </div>
         )}
 
-        {/* Filters Section */}
-        <div className="mb-6 space-y-4">
-          {/* Category Pills */}
-          <div className="flex flex-wrap gap-2">
+        {/* Filters Section - Mobile optimized */}
+        <div className="mb-4 md:mb-6 space-y-3 md:space-y-4">
+          {/* Category Pills - Horizontal scroll on mobile */}
+          <div className="flex overflow-x-auto gap-2 pb-2 -mx-3 px-3 md:mx-0 md:px-0 md:flex-wrap scrollbar-hide">
             {categories.map((category) => {
               const Icon = category.icon;
               const isActive = selectedCategory === category.id;
@@ -388,41 +392,41 @@ const AllPlans = () => {
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
                   className={cn(
-                    "px-4 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 text-sm border",
+                    "px-3 md:px-4 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-1.5 md:gap-2 text-xs md:text-sm border whitespace-nowrap flex-shrink-0 touch-manipulation",
                     isActive
                       ? "bg-slate-900 text-white border-slate-900 shadow-md"
-                      : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                      : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50 active:bg-slate-100"
                   )}
                 >
-                  <Icon className={cn("w-4 h-4", isActive ? "text-white" : "text-slate-400")} />
+                  <Icon className={cn("w-3.5 h-3.5 md:w-4 md:h-4", isActive ? "text-white" : "text-slate-400")} />
                   {category.label}
                 </button>
               );
             })}
           </div>
 
-          {/* Search and Sort */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1">
+          {/* Search and Sort - Stacked on mobile */}
+          <div className="flex flex-col gap-2 md:gap-3">
+            <div className="relative">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <Input
                 type="text"
-                placeholder="חיפוש לפי חברה או שם מסלול..."
+                placeholder="חיפוש..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pr-10 h-11 text-sm border-slate-200 bg-white focus:border-slate-400 focus:ring-slate-400"
+                className="pr-10 h-10 md:h-11 text-sm border-slate-200 bg-white focus:border-slate-400 focus:ring-slate-400"
               />
             </div>
             
-            <div className="relative sm:w-52">
+            <div className="relative">
               <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortType)}
-                className="w-full h-11 pr-10 pl-4 text-sm rounded-lg border border-slate-200 bg-white text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent appearance-none cursor-pointer"
+                className="w-full h-10 md:h-11 pr-10 pl-4 text-sm rounded-lg border border-slate-200 bg-white text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent appearance-none cursor-pointer touch-manipulation"
               >
-                <option value="price-asc">מחיר: מהנמוך לגבוה</option>
-                <option value="price-desc">מחיר: מהגבוה לנמוך</option>
+                <option value="price-asc">מחיר: נמוך לגבוה</option>
+                <option value="price-desc">מחיר: גבוה לנמוך</option>
                 <option value="name">שם החברה</option>
               </select>
               <ChevronDown className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />

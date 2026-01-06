@@ -8,6 +8,7 @@ import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Ligh
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
@@ -202,42 +203,95 @@ const Home = () => {
     setShowBanner(false);
     setBannerCategory('');
   };
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return <div className="min-h-screen bg-white relative overflow-hidden pt-16">{/* Add padding-top to account for fixed navbar */}
-      {/* Sticky Top Navigation Bar with scroll effect */}
+      {/* Sticky Top Navigation Bar with scroll effect - Mobile Optimized */}
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled 
-          ? "bg-white/80 backdrop-blur-md shadow-sm py-3" 
-          : "bg-white border-b border-gray-200 py-4"
+          ? "bg-white/95 backdrop-blur-md shadow-md py-2 md:py-3" 
+          : "bg-white border-b border-gray-200 py-3 md:py-4"
       )}>
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
           <div className="flex items-center justify-between">
-            {/* Logo on the left */}
+            {/* Logo */}
             <div className="flex items-center">
-              <h1 className="text-3xl font-light text-cyan-600 font-heebo">
+              <h1 className="text-2xl md:text-3xl font-light text-cyan-600 font-heebo">
                 EasySwitch
               </h1>
             </div>
             
-            {/* Navigation Links on the right */}
-            <div className="flex items-center space-x-8">
-              <a href="/" className="text-cyan-600 font-medium hover:text-cyan-700 transition-colors font-heebo">
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors touch-manipulation"
+              aria-label="תפריט"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6 text-gray-700" />
+              ) : (
+                <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+            
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-6 lg:space-x-8 rtl:space-x-reverse">
+              <a href="/" className="text-cyan-600 font-medium hover:text-cyan-700 transition-colors font-heebo text-sm lg:text-base">
                 דף הבית
               </a>
-              <a href="/magazine" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo">
+              <a href="/magazine" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo text-sm lg:text-base">
                 מגזין
               </a>
-              <a href="/tips" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo">
+              <a href="/tips" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo text-sm lg:text-base">
                 טיפים
               </a>
-              <a href="/about" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo">
+              <a href="/about" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo text-sm lg:text-base">
                 אודות
               </a>
-              <a href="/contact" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo">
+              <a href="/contact" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo text-sm lg:text-base">
                 צור קשר
               </a>
             </div>
           </div>
+          
+          {/* Mobile Navigation Menu */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="md:hidden mt-3 pb-2 border-t border-gray-100 pt-3"
+              >
+                <div className="flex flex-col space-y-1">
+                  {[
+                    { href: '/', label: 'דף הבית', active: true },
+                    { href: '/magazine', label: 'מגזין' },
+                    { href: '/tips', label: 'טיפים' },
+                    { href: '/about', label: 'אודות' },
+                    { href: '/contact', label: 'צור קשר' },
+                  ].map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        "px-4 py-3 rounded-xl font-medium font-heebo text-base transition-all touch-manipulation",
+                        link.active
+                          ? "bg-cyan-50 text-cyan-600"
+                          : "text-gray-600 hover:bg-gray-50 active:bg-gray-100"
+                      )}
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </nav>
 
@@ -408,21 +462,21 @@ const Home = () => {
           />
         </div>
         
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-6 lg:py-8">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-4 md:py-6 lg:py-8">
           <div className="text-center">
             
-            {/* Compact Title */}
+            {/* Compact Title - Mobile Optimized */}
             <div className="mb-3 animate-fade-in opacity-0" style={{
               animationDelay: '0.2s',
               animationFillMode: 'forwards'
             }}>
               <h1 className="relative">
-                {/* Main Text */}
-                <span className="relative block text-5xl lg:text-6xl xl:text-7xl font-light font-assistant leading-tight text-foreground">
+                {/* Main Text - Responsive sizing */}
+                <span className="relative block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light font-assistant leading-tight text-foreground">
                   <span className="block">
                     באיזה תחום תרצו
                   </span>
-                  <span className="block mt-2">
+                  <span className="block mt-1 md:mt-2">
                     להתחיל <span className="text-purple-700 font-medium">לחסוֹך</span> היום?
                   </span>
                 </span>
