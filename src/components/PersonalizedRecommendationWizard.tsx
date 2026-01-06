@@ -888,197 +888,169 @@ export const PersonalizedRecommendationWizard = ({
     }
   };
 
+  // Calculate total progress across all categories
+  const totalStepsAllCategories = useMemo(() => {
+    let total = 0;
+    categories.forEach((cat, idx) => {
+      const baseSteps = idx === 0 ? 1 : 0;
+      total += baseSteps + 2; // Each category has 2 sector-specific steps
+    });
+    return total;
+  }, [categories]);
+
+  const completedStepsTotal = useMemo(() => {
+    let completed = 0;
+    for (let i = 0; i < currentCategoryIndex; i++) {
+      const baseSteps = i === 0 ? 1 : 0;
+      completed += baseSteps + 2;
+    }
+    completed += currentStep;
+    return completed;
+  }, [currentCategoryIndex, currentStep]);
+
+  const overallProgress = Math.round((completedStepsTotal / totalStepsAllCategories) * 100);
+
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl max-h-[90vh] bg-background rounded-2xl shadow-2xl border-2 border-primary/10 flex overflow-hidden">
-        {/* Sidebar - Progress & Steps */}
-        <div className="w-80 bg-gradient-to-b from-primary/5 via-primary-glow/5 to-background border-l border-primary/10 flex flex-col flex-shrink-0">
-          {/* Header */}
-          <div className="p-6 border-b border-primary/10">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center shadow-lg">
-                {categoryConfig[category].icon}
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-foreground">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-end md:items-center justify-center">
+      {/* Mobile: Full screen bottom sheet / Desktop: Centered modal */}
+      <div className="w-full md:max-w-4xl h-[95vh] md:h-auto md:max-h-[90vh] bg-background md:rounded-2xl rounded-t-3xl shadow-2xl flex flex-col overflow-hidden animate-slide-up">
+        
+        {/* Compact Header - Mobile Optimized */}
+        <div className="relative bg-gradient-to-l from-primary/10 via-primary/5 to-background border-b border-primary/20 px-4 py-4 md:p-6">
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="absolute left-3 top-3 md:left-4 md:top-4 w-10 h-10 rounded-full bg-muted/80 hover:bg-destructive/10 hover:text-destructive flex items-center justify-center transition-all duration-200 z-10"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          
+          {/* Category & Progress */}
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center shadow-lg text-white">
+              {categoryConfig[category].icon}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg md:text-xl font-bold text-foreground truncate">
+                אשף המלצות אישיות
+              </h2>
+              <div className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground">
+                <Badge variant="outline" className="bg-primary/10 border-primary/30 text-primary font-medium">
                   {categoryConfig[category].label}
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  {categories.length > 1 && (
-                    <>סקטור {currentCategoryIndex + 1}/{categories.length}</>
-                  )}
-                </p>
+                </Badge>
+                {categories.length > 1 && (
+                  <span>• סקטור {currentCategoryIndex + 1}/{categories.length}</span>
+                )}
               </div>
             </div>
-            
-            {/* Overall Progress */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-medium text-muted-foreground">התקדמות</span>
-                <span className="font-bold text-primary">{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
-              </div>
-              <Progress 
-                value={((currentStep + 1) / steps.length) * 100} 
-                className="h-2"
+          </div>
+
+          {/* Progress Bar with Steps */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs font-medium">
+              <span className="text-muted-foreground">התקדמות כללית</span>
+              <span className="text-primary font-bold">{overallProgress}%</span>
+            </div>
+            <div className="relative h-2 bg-muted rounded-full overflow-hidden">
+              <div 
+                className="absolute inset-y-0 right-0 bg-gradient-to-l from-primary to-primary-glow rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${overallProgress}%` }}
               />
             </div>
-          </div>
-
-          {/* Step List */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-2">
-            {steps.map((step, index) => {
-              const isCompleted = index < currentStep;
-              const isCurrent = index === currentStep;
-              const isUpcoming = index > currentStep;
-              
-              return (
-                <div 
-                  key={step.id}
-                  className={cn(
-                    "relative p-4 rounded-xl transition-all duration-300 cursor-pointer group",
-                    isCurrent && "bg-primary/10 border-2 border-primary shadow-md",
-                    isCompleted && "bg-success/5 border border-success/20 hover:bg-success/10",
-                    isUpcoming && "bg-muted/20 border border-border/30 hover:bg-muted/40"
-                  )}
-                  onClick={() => {
-                    if (index < currentStep) {
-                      setCurrentStep(index);
-                    }
-                  }}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0",
-                      isCurrent && "bg-primary text-primary-foreground shadow-lg scale-110",
-                      isCompleted && "bg-success text-success-foreground",
-                      isUpcoming && "bg-muted text-muted-foreground"
-                    )}>
-                      {isCompleted ? (
-                        <CheckCircle className="w-5 h-5" />
-                      ) : (
-                        <div className="text-lg font-bold">{index + 1}</div>
-                      )}
-                    </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <div className={cn(
-                        "font-semibold text-sm transition-colors",
-                        isCurrent && "text-primary",
-                        isCompleted && "text-success",
-                        isUpcoming && "text-muted-foreground"
-                      )}>
-                        {step.title}
-                      </div>
-                      <div className={cn(
-                        "text-xs transition-opacity",
-                        isCurrent ? "text-primary/70 opacity-100" : "text-muted-foreground opacity-60"
-                      )}>
-                        {isCompleted && "הושלם ✓"}
-                        {isCurrent && "בתהליך..."}
-                        {isUpcoming && "ממתין"}
-                      </div>
-                    </div>
-
-                    {isCurrent && (
-                      <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            
+            {/* Step Indicators - Horizontal on mobile */}
+            <div className="flex items-center justify-center gap-2 pt-2">
+              {steps.map((step, index) => {
+                const isCompleted = index < currentStep;
+                const isCurrent = index === currentStep;
+                return (
+                  <button
+                    key={step.id}
+                    onClick={() => index < currentStep && setCurrentStep(index)}
+                    disabled={index > currentStep}
+                    className={cn(
+                      "relative flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-full transition-all duration-300 font-bold text-sm",
+                      isCurrent && "bg-primary text-primary-foreground shadow-lg shadow-primary/30 scale-110",
+                      isCompleted && "bg-success text-success-foreground cursor-pointer hover:scale-105",
+                      !isCurrent && !isCompleted && "bg-muted text-muted-foreground"
                     )}
-                  </div>
-
-                  {/* Connection Line */}
-                  {index < steps.length - 1 && (
-                    <div className={cn(
-                      "absolute right-[2.25rem] top-14 w-0.5 h-4 transition-colors",
-                      isCompleted ? "bg-success/30" : "bg-border/30"
-                    )} />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Help Section */}
-          <div className="p-4 border-t border-primary/10 bg-gradient-to-t from-muted/30 to-transparent">
-            <div className="flex items-start gap-3 p-3 rounded-xl bg-primary/5 border border-primary/20">
-              <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-              <div className="text-xs text-muted-foreground">
-                <p className="font-medium text-foreground mb-1">💡 עצה</p>
-                <p>ענו בכנות כדי לקבל המלצות מדויקות יותר</p>
-              </div>
+                  >
+                    {isCompleted ? (
+                      <CheckCircle className="w-5 h-5" />
+                    ) : (
+                      index + 1
+                    )}
+                    {isCurrent && (
+                      <span className="absolute -bottom-6 text-xs font-medium text-primary whitespace-nowrap max-w-[80px] truncate hidden md:block">
+                        {step.title}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Top Bar with Close */}
-          <div className="p-4 border-b border-border/50 bg-muted/20 flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-                {steps[currentStep]?.title}
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                שלב {currentStep + 1} מתוך {steps.length}
-              </p>
-            </div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={onClose}
-              className="hover:bg-destructive/10 hover:text-destructive rounded-full"
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
+        {/* Current Step Title - Mobile */}
+        <div className="md:hidden px-4 py-3 bg-muted/30 border-b border-border/50">
+          <h3 className="text-base font-semibold text-foreground text-center">
+            {steps[currentStep]?.title}
+          </h3>
+          <p className="text-xs text-muted-foreground text-center mt-0.5">
+            שלב {currentStep + 1} מתוך {steps.length}
+          </p>
+        </div>
 
-          {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="p-8 max-w-3xl mx-auto">
-              <div className="animate-fade-in">
-                {renderStepContent()}
-              </div>
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          <div className="p-4 md:p-8 pb-6">
+            <div className="max-w-2xl mx-auto animate-fade-in">
+              {renderStepContent()}
             </div>
           </div>
+        </div>
 
-          {/* Bottom Navigation */}
-          <div className="border-t border-border/50 bg-gradient-to-t from-muted/30 to-transparent p-6">
-            <div className="max-w-3xl mx-auto flex justify-between items-center">
+        {/* Bottom Navigation - Sticky & Touch-Friendly */}
+        <div className="border-t border-border/50 bg-gradient-to-t from-background via-background to-background/80 p-4 md:p-6 safe-area-inset-bottom">
+          <div className="max-w-2xl mx-auto">
+            {/* Auto-save indicator */}
+            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mb-3 md:mb-4">
+              <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+              <span>נשמר אוטומטית</span>
+            </div>
+            
+            <div className="flex gap-3">
               <Button
                 variant="outline"
                 onClick={handlePrevious}
                 disabled={currentStep === 0}
-                className="flex items-center gap-2 h-11 px-5 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+                className="flex-1 h-14 md:h-12 text-base md:text-sm font-semibold rounded-xl transition-all duration-300 disabled:opacity-40"
               >
-                <ArrowRight className="h-4 w-4 rotate-180" />
+                <ArrowRight className="h-5 w-5 md:h-4 md:w-4 rotate-180 ml-2" />
                 קודם
               </Button>
 
-              <div className="text-center">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-                  <span className="font-medium">שמירה אוטומטית</span>
-                </div>
-              </div>
-
               <Button
                 onClick={handleNext}
-                className="flex items-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-primary to-primary-glow hover:shadow-lg transition-all duration-300 hover:scale-105"
+                className="flex-[2] h-14 md:h-12 text-base md:text-sm font-bold rounded-xl bg-gradient-to-r from-primary to-primary-glow hover:shadow-lg hover:shadow-primary/30 transition-all duration-300"
               >
                 {currentStep === steps.length - 1 ? (
                   currentCategoryIndex < categories.length - 1 ? (
                     <>
-                      סקטור הבא
-                      <ArrowLeft className="h-4 w-4 rotate-180" />
+                      <span>לסקטור הבא</span>
+                      <ArrowLeft className="h-5 w-5 md:h-4 md:w-4 rotate-180 mr-2" />
                     </>
                   ) : (
                     <>
-                      <Sparkles className="h-4 w-4" />
-                      קבל המלצות
+                      <Sparkles className="h-5 w-5 md:h-4 md:w-4 ml-2" />
+                      <span>קבל המלצות!</span>
                     </>
                   )
                 ) : (
                   <>
-                    המשך
-                    <ArrowLeft className="h-4 w-4 rotate-180" />
+                    <span>המשך</span>
+                    <ArrowLeft className="h-5 w-5 md:h-4 md:w-4 rotate-180 mr-2" />
                   </>
                 )}
               </Button>

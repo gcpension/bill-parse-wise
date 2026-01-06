@@ -638,26 +638,30 @@ const AllPlans = () => {
                             </div>
 
                             {/* Action Buttons */}
-                            <div className="flex gap-2">
+                            <div className="space-y-2">
+                              {/* View Details - More Prominent */}
                               <Button
                                 variant="outline"
                                 onClick={() => handleViewDetails(plan)}
-                                className="flex-1 h-11 font-medium text-sm transition-all"
+                                className="w-full h-12 font-semibold text-sm bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 text-blue-700 hover:from-blue-100 hover:to-indigo-100 hover:border-blue-300 hover:shadow-md transition-all duration-300 group"
                               >
-                                <Eye className="ml-1.5 h-4 w-4" />
-                                עוד מידע
+                                <Eye className="ml-2 h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform" />
+                                <span>צפה בכל הפרטים</span>
+                                <Info className="mr-auto h-4 w-4 text-blue-400" />
                               </Button>
+                              
+                              {/* Select Plan */}
                               <Button
                                 onClick={() => handleSelectPlan(plan)}
                                 className={cn(
-                                  "flex-1 h-11 font-semibold text-sm transition-all duration-300 shadow-sm group-hover:shadow-md",
+                                  "w-full h-12 font-bold text-sm transition-all duration-300 shadow-sm group-hover:shadow-lg",
                                   isRecommended 
-                                    ? "bg-emerald-600 hover:bg-emerald-700 text-white" 
-                                    : "bg-slate-800 hover:bg-slate-900 text-white"
+                                    ? "bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white" 
+                                    : "bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white"
                                 )}
                               >
-                                <Rocket className="ml-1.5 h-4 w-4" />
-                                בחרו
+                                <Rocket className="ml-2 h-5 w-5" />
+                                {isRecommended ? 'בחרו וחסכו!' : 'בחרו מסלול'}
                               </Button>
                             </div>
                           </CardContent>
@@ -753,13 +757,13 @@ const AllPlans = () => {
                                 </div>
 
                                 <Button
-                                  variant="ghost"
+                                  variant="outline"
                                   onClick={() => handleViewDetails(plan)}
                                   size="sm"
-                                  className="font-['Rubik'] whitespace-nowrap"
+                                  className="font-['Rubik'] whitespace-nowrap bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300"
                                 >
-                                  <Eye className="ml-1 h-3.5 w-3.5" />
-                                  מידע
+                                  <Eye className="ml-1 h-4 w-4 text-blue-500" />
+                                  פרטים מלאים
                                 </Button>
                                 <Button
                                   onClick={() => handleSelectPlan(plan)}
