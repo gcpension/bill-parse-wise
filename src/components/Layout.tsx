@@ -20,7 +20,7 @@ export const Layout = ({
   children, 
   className = '', 
   showBackToTop = true,
-  enablePullToRefresh = false,
+  enablePullToRefresh = true,
   enableSwipeNavigation = true,
 }: LayoutProps) => {
   const [isLoading, setIsLoading] = useState(false);
