@@ -126,7 +126,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
       </AnimatePresence>
 
       {/* Carousel */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden flex justify-center">
         {/* Navigation - Desktop */}
         <button
           onClick={() => currentIndex > 0 && setCurrentIndex(prev => prev - 1)}
@@ -163,11 +163,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
           dragElastic={0.1}
           onDragStart={() => setIsDragging(true)}
           onDragEnd={handleDragEnd}
-          animate={{ 
-            x: `calc(50% - ${currentIndex * (CARD_WIDTH_MOBILE + CARD_GAP)}px - ${CARD_WIDTH_MOBILE / 2}px)` 
-          }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="flex gap-3 cursor-grab active:cursor-grabbing px-4 md:px-8"
+          className="flex gap-3 cursor-grab active:cursor-grabbing justify-center"
         >
           {categories.map((category, index) => {
             const data = categoryData[category];
