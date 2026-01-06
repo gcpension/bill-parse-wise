@@ -3,9 +3,10 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Textarea } from '@/components/ui/textarea';
 import ProviderSelector, { defaultProviders } from '@/components/ui/provider-selector';
 import { ServiceRequestFormData } from '@/types/serviceRequest';
-import { Info, User, Mail, Phone, MapPin, Building2, Languages, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { Info, User, Mail, Phone, MapPin, Building2, Languages, CheckCircle2, AlertCircle, Loader2, CreditCard, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { FieldInfoTooltip, fieldInfo } from '@/components/ui/field-info-tooltip';
 
@@ -498,6 +499,86 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                   onSelect={(providerId) => handleFieldChange('target_provider', providerId)}
                   excludeProvider={formData.current_provider}
                 />
+              </div>
+            )}
+
+            {/* Selected Plan Details - show when target provider is selected for switch action */}
+            {needsTargetProvider && formData.target_provider && (
+              <div className="mt-3 pt-3 border-t border-slate-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-5 h-5 bg-gradient-to-br from-green-500/10 to-green-500/5 rounded flex items-center justify-center">
+                    <Sparkles className="w-3 h-3 text-green-600" />
+                  </div>
+                  <h4 className="text-xs font-bold text-slate-800">פרטי המסלול הנבחר</h4>
+                  {formData.selected_plan_name && (
+                    <span className="text-[9px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
+                      נטען אוטומטית
+                    </span>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <div>
+                    <div className="flex items-center mb-0.5">
+                      <Label htmlFor="selected_plan_name" className="text-[8px] font-semibold text-slate-700">
+                        שם המסלול
+                      </Label>
+                      <InfoTooltip content="שם תוכנית או מסלול שבחרת אצל הספק החדש" />
+                    </div>
+                    <Input
+                      id="selected_plan_name"
+                      value={formData.selected_plan_name || ''}
+                      onChange={(e) => handleFieldChange('selected_plan_name', e.target.value)}
+                      placeholder="לדוגמה: חבילת גולן 50GB"
+                      className="h-8 text-sm border-slate-200"
+                    />
+                  </div>
+
+                  <div>
+                    <div className="flex items-center mb-0.5">
+                      <Label htmlFor="selected_plan_price" className="text-[8px] font-semibold text-slate-700">
+                        מחיר חודשי (₪)
+                      </Label>
+                      <InfoTooltip content="המחיר החודשי של המסלול" />
+                    </div>
+                    <div className="relative">
+                      <CreditCard className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                      <Input
+                        id="selected_plan_price"
+                        type="number"
+                        value={formData.selected_plan_price || ''}
+                        onChange={(e) => handleFieldChange('selected_plan_price', parseFloat(e.target.value) || undefined)}
+                        placeholder="לדוגמה: 49.90"
+                        className="h-8 text-sm pr-8 border-slate-200"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-2">
+                  <div className="flex items-center mb-0.5">
+                    <Label htmlFor="selected_plan_features" className="text-[8px] font-semibold text-slate-700">
+                      תכונות/הטבות המסלול (אופציונלי)
+                    </Label>
+                    <InfoTooltip content="תכונות עיקריות של המסלול, הפרד בפסיקים" />
+                  </div>
+                  <Textarea
+                    id="selected_plan_features"
+                    value={Array.isArray(formData.selected_plan_features) ? formData.selected_plan_features.join(', ') : (formData.selected_plan_features || '')}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      // Store as array if contains commas, otherwise as string
+                      if (value.includes(',')) {
+                        handleFieldChange('selected_plan_features', value.split(',').map(f => f.trim()).filter(Boolean));
+                      } else {
+                        handleFieldChange('selected_plan_features', value ? [value] : undefined);
+                      }
+                    }}
+                    placeholder="לדוגמה: 50GB גלישה, שיחות ללא הגבלה, SMS ללא הגבלה"
+                    className="min-h-[60px] text-sm border-slate-200 resize-none"
+                  />
+                  <p className="text-[8px] text-slate-500 mt-0.5">הפרד בין התכונות בפסיקים</p>
+                </div>
               </div>
             )}
           </div>
