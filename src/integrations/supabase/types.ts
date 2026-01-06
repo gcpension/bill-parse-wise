@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      reviews: {
+        Row: {
+          category: string
+          cons: string[] | null
+          content: string
+          created_at: string
+          helpful_count: number | null
+          id: string
+          is_verified: boolean | null
+          pros: string[] | null
+          provider_name: string
+          rating: number
+          reviewer_name: string
+          title: string | null
+        }
+        Insert: {
+          category: string
+          cons?: string[] | null
+          content: string
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          is_verified?: boolean | null
+          pros?: string[] | null
+          provider_name: string
+          rating: number
+          reviewer_name: string
+          title?: string | null
+        }
+        Update: {
+          category?: string
+          cons?: string[] | null
+          content?: string
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          is_verified?: boolean | null
+          pros?: string[] | null
+          provider_name?: string
+          rating?: number
+          reviewer_name?: string
+          title?: string | null
+        }
+        Relationships: []
+      }
       service_requests: {
         Row: {
           account_number: string | null
