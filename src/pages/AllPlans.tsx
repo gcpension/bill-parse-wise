@@ -241,35 +241,7 @@ const AllPlans = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 font-heebo antialiased">
-      {/* Floating Top Plan CTA */}
-      {showTopPlan && topPlan && (
-        <div 
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
-          style={{
-            animation: 'slideUp 0.3s ease-out'
-          }}
-        >
-          <Card className="shadow-2xl border-0 bg-gradient-to-r from-emerald-600 to-teal-500 text-white max-w-md backdrop-blur-xl">
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="flex-1">
-                <div className="font-semibold text-sm mb-1 flex items-center gap-2">
-                  <Star className="w-4 h-4 fill-yellow-300 text-yellow-300" />
-                  המסלול המומלץ ביותר
-                </div>
-                <div className="text-sm opacity-90">{topPlan.company} - ₪{topPlan.monthlyPrice}/חודש</div>
-              </div>
-              <Button
-                onClick={() => handleSelectPlan(topPlan)}
-                size="sm"
-                className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold shadow-lg"
-              >
-                <Rocket className="ml-1 h-4 w-4" />
-                עברו עכשיו
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+      {/* Empty - Top plan CTA removed */}
 
       {/* Header - Clean & Modern */}
       <div className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-40">
