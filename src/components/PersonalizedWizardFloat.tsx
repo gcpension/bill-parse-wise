@@ -202,7 +202,7 @@ export const PersonalizedWizardFloat = () => {
 
   return (
     <>
-      {/* Floating Button - Top Right Position */}
+      {/* Floating Button - Responsive Position */}
       <AnimatePresence>
         {!isOpen && (
           <motion.div
@@ -210,12 +210,12 @@ export const PersonalizedWizardFloat = () => {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0, opacity: 0, y: -20 }}
             whileHover={{ scale: 1.05 }}
-            className="fixed top-24 left-6 z-50"
+            className="fixed bottom-4 left-4 md:top-24 md:bottom-auto md:left-6 z-50"
           >
             <Button
               onClick={() => setIsOpen(true)}
               size="lg"
-              className="group relative h-14 px-6 rounded-2xl bg-gradient-to-r from-primary via-purple-600 to-primary hover:from-primary/90 hover:via-purple-700 hover:to-primary/90 text-white shadow-xl hover:shadow-primary/40 transition-all duration-500 font-heebo font-normal overflow-hidden border border-white/20"
+              className="group relative h-12 md:h-14 px-4 md:px-6 rounded-2xl bg-gradient-to-r from-primary via-purple-600 to-primary hover:from-primary/90 hover:via-purple-700 hover:to-primary/90 text-white shadow-xl hover:shadow-primary/40 transition-all duration-500 font-heebo font-normal overflow-hidden border border-white/20 touch-manipulation"
             >
               {/* Animated background effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
@@ -234,9 +234,10 @@ export const PersonalizedWizardFloat = () => {
                 <Sparkles className="ml-2 h-5 w-5 relative z-10" />
               </motion.div>
               
-              <span className="relative z-10 text-sm">אשף ההמלצות החכם</span>
+              <span className="relative z-10 text-xs md:text-sm hidden sm:inline">אשף ההמלצות החכם</span>
+              <span className="relative z-10 text-xs sm:hidden">אשף AI</span>
               
-              <Badge className="mr-2 bg-white/30 text-white border-0 backdrop-blur-sm relative z-10 shadow-lg text-[10px] px-2 py-0.5">
+              <Badge className="mr-2 bg-white/30 text-white border-0 backdrop-blur-sm relative z-10 shadow-lg text-[10px] px-2 py-0.5 hidden md:inline-flex">
                 AI Pro
               </Badge>
             </Button>
@@ -244,7 +245,7 @@ export const PersonalizedWizardFloat = () => {
         )}
       </AnimatePresence>
 
-      {/* Wizard Window */}
+      {/* Wizard Window - Full screen on mobile */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -252,9 +253,9 @@ export const PersonalizedWizardFloat = () => {
             animate={{ scale: 1, opacity: 1, y: 0, x: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: -50, x: -50 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="fixed top-24 left-6 z-50 w-[440px] max-w-[calc(100vw-3rem)]"
+            className="fixed inset-4 md:inset-auto md:top-24 md:left-6 z-50 md:w-[440px] md:max-w-[calc(100vw-3rem)]"
           >
-            <Card className="shadow-2xl border-2 border-primary/30 overflow-hidden backdrop-blur-sm bg-background/95 hover:shadow-primary/20 transition-shadow duration-300">
+            <Card className="shadow-2xl border-2 border-primary/30 overflow-hidden backdrop-blur-sm bg-background/95 hover:shadow-primary/20 transition-shadow duration-300 h-full md:h-auto flex flex-col">
               {/* Header */}
               <div className="bg-gradient-to-r from-primary via-purple-600 to-primary p-5 relative overflow-hidden">
                 {/* Animated background particles */}
@@ -333,7 +334,7 @@ export const PersonalizedWizardFloat = () => {
                     exit={{ height: 0 }}
                     className="overflow-hidden"
                   >
-                    <CardContent className="p-6 bg-gradient-to-b from-background to-muted/20">
+                    <CardContent className="p-4 md:p-6 bg-gradient-to-b from-background to-muted/20 flex-1 overflow-y-auto">
                       {showResults ? (
                         // Results View
                         <motion.div
