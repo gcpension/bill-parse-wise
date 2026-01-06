@@ -38,6 +38,8 @@ import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
 import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
 import Plan3DCarousel from "@/components/plans/Plan3DCarousel";
 import annualSavingsSketch from "@/assets/savings-clean.png";
+import { PlanRecordDetailsSheet } from "@/components/plans/PlanRecordDetailsSheet";
+import { Eye } from "lucide-react";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -68,6 +70,8 @@ const AllPlans = () => {
   const [showTopPlan, setShowTopPlan] = useState(false);
   const [selectedPlanForForm, setSelectedPlanForForm] = useState<PlanRecord | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedPlanForDetails, setSelectedPlanForDetails] = useState<PlanRecord | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   // Load stored analysis data
   useEffect(() => {
@@ -232,6 +236,16 @@ const AllPlans = () => {
     setIsFormOpen(false);
     setSelectedPlanForForm(null);
     localStorage.removeItem('selectedPlanForSwitch');
+  };
+
+  const handleViewDetails = (plan: PlanRecord) => {
+    setSelectedPlanForDetails(plan);
+    setIsDetailsOpen(true);
+  };
+
+  const handleDetailsClose = () => {
+    setIsDetailsOpen(false);
+    setSelectedPlanForDetails(null);
   };
 
   const getCategoryColor = (category: CategoryType) => {
@@ -623,19 +637,29 @@ const AllPlans = () => {
                               )}
                             </div>
 
-                            {/* Action Button */}
-                            <Button
-                              onClick={() => handleSelectPlan(plan)}
-                              className={cn(
-                                "w-full h-11 font-semibold text-sm transition-all duration-300 shadow-sm group-hover:shadow-md",
-                                isRecommended 
-                                  ? "bg-emerald-600 hover:bg-emerald-700 text-white" 
-                                  : "bg-slate-800 hover:bg-slate-900 text-white"
-                              )}
-                            >
-                              <Rocket className="ml-2 h-4 w-4" />
-                              {isRecommended ? "עברו למסלול זה" : "בחרו מסלול זה"}
-                            </Button>
+                            {/* Action Buttons */}
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                onClick={() => handleViewDetails(plan)}
+                                className="flex-1 h-11 font-medium text-sm transition-all"
+                              >
+                                <Eye className="ml-1.5 h-4 w-4" />
+                                עוד מידע
+                              </Button>
+                              <Button
+                                onClick={() => handleSelectPlan(plan)}
+                                className={cn(
+                                  "flex-1 h-11 font-semibold text-sm transition-all duration-300 shadow-sm group-hover:shadow-md",
+                                  isRecommended 
+                                    ? "bg-emerald-600 hover:bg-emerald-700 text-white" 
+                                    : "bg-slate-800 hover:bg-slate-900 text-white"
+                                )}
+                              >
+                                <Rocket className="ml-1.5 h-4 w-4" />
+                                בחרו
+                              </Button>
+                            </div>
                           </CardContent>
                         </Card>
                       );
@@ -729,6 +753,15 @@ const AllPlans = () => {
                                 </div>
 
                                 <Button
+                                  variant="ghost"
+                                  onClick={() => handleViewDetails(plan)}
+                                  size="sm"
+                                  className="font-['Rubik'] whitespace-nowrap"
+                                >
+                                  <Eye className="ml-1 h-3.5 w-3.5" />
+                                  מידע
+                                </Button>
+                                <Button
                                   onClick={() => handleSelectPlan(plan)}
                                   size="sm"
                                   className={cn(
@@ -790,6 +823,18 @@ const AllPlans = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Plan Details Sheet */}
+      <PlanRecordDetailsSheet
+        plan={selectedPlanForDetails}
+        isOpen={isDetailsOpen}
+        onClose={handleDetailsClose}
+        onSelectForSwitch={(plan) => {
+          handleDetailsClose();
+          handleSelectPlan(plan);
+        }}
+        currentMonthlyBill={currentMonthlyBill}
+      />
 
       {/* Personalized Wizard Float */}
       <PersonalizedWizardFloat />
