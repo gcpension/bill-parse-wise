@@ -107,28 +107,53 @@ const Company3DCarousel: React.FC<{
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Get company color based on company name hash
+  const getCompanyColor = (companyName: string) => {
+    const colors = [
+      { bg: 'from-blue-600 to-blue-800', border: 'border-blue-500/30', badge: 'bg-blue-100 text-blue-800' },
+      { bg: 'from-purple-600 to-purple-800', border: 'border-purple-500/30', badge: 'bg-purple-100 text-purple-800' },
+      { bg: 'from-emerald-600 to-emerald-800', border: 'border-emerald-500/30', badge: 'bg-emerald-100 text-emerald-800' },
+      { bg: 'from-orange-600 to-orange-800', border: 'border-orange-500/30', badge: 'bg-orange-100 text-orange-800' },
+      { bg: 'from-rose-600 to-rose-800', border: 'border-rose-500/30', badge: 'bg-rose-100 text-rose-800' },
+      { bg: 'from-cyan-600 to-cyan-800', border: 'border-cyan-500/30', badge: 'bg-cyan-100 text-cyan-800' },
+      { bg: 'from-indigo-600 to-indigo-800', border: 'border-indigo-500/30', badge: 'bg-indigo-100 text-indigo-800' },
+    ];
+    const hash = companyName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return colors[hash % colors.length];
+  };
+
+  const companyColor = getCompanyColor(company);
+
   return (
-    <div className="mb-10 md:mb-16 last:mb-0">
-      {/* Company Header - Mobile optimized */}
-      <div className="flex items-center justify-center gap-3 md:gap-4 mb-4 md:mb-8 px-4">
-        {logo ? (
-          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-card border border-border shadow-sm flex items-center justify-center p-1.5 md:p-2">
-            <img src={logo} alt={company} className="max-w-full max-h-full object-contain" />
-          </div>
-        ) : (
-          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-muted border border-border flex items-center justify-center">
-            <Building2 className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
-          </div>
-        )}
-        <div className="text-center">
-          <h2 className="text-lg md:text-2xl font-bold text-foreground">{company}</h2>
-          <div className="flex items-center justify-center gap-2 md:gap-3 mt-0.5 md:mt-1">
-            <span className="text-xs md:text-sm text-muted-foreground">{plans.length} מסלולים</span>
-            {recommendedCount > 0 && (
-              <span className="inline-flex items-center gap-1 px-1.5 md:px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] md:text-xs font-medium">
-                {recommendedCount} חוסכים
-              </span>
-            )}
+    <div className="mb-16 md:mb-24 last:mb-0 pt-6 md:pt-8">
+      {/* Company Header - Enhanced with gradient background */}
+      <div className={cn(
+        "mx-4 md:mx-8 mb-6 md:mb-10 p-4 md:p-6 rounded-2xl",
+        "bg-gradient-to-l",
+        companyColor.bg,
+        "shadow-xl"
+      )}>
+        <div className="flex items-center gap-4 md:gap-6">
+          {logo ? (
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white shadow-lg flex items-center justify-center p-3 md:p-4">
+              <img src={logo} alt={company} className="max-w-full max-h-full object-contain" />
+            </div>
+          ) : (
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <Building2 className="w-8 h-8 md:w-10 md:h-10 text-white" />
+            </div>
+          )}
+          <div className="flex-1">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">{company}</h2>
+            <div className="flex items-center gap-3 md:gap-4">
+              <span className="text-white/80 text-sm md:text-base">{plans.length} מסלולים זמינים</span>
+              {recommendedCount > 0 && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs md:text-sm font-medium">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  {recommendedCount} מסלולים חוסכים
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -187,10 +212,10 @@ const Company3DCarousel: React.FC<{
                 >
                   <div
                     className={cn(
-                      "w-[260px] md:w-[300px] rounded-2xl border bg-card overflow-hidden transition-shadow duration-300",
+                      "w-[260px] md:w-[300px] rounded-2xl border-2 bg-card overflow-hidden transition-all duration-300",
                       isCenter 
-                        ? "shadow-2xl border-foreground/20" 
-                        : "shadow-lg border-border",
+                        ? `shadow-2xl ${companyColor.border}` 
+                        : "shadow-lg border-border/50",
                       isRecommended && isCenter && "ring-2 ring-emerald-500/50"
                     )}
                   >
@@ -335,7 +360,7 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
   }
 
   return (
-    <div className="w-full py-8">
+    <div className="w-full py-8 space-y-4">
       {Array.from(plansByCompany.entries()).map(([company, companyPlans], index) => (
         <motion.div
           key={company}
