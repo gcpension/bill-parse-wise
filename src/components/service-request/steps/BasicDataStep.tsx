@@ -510,75 +510,85 @@ export default function BasicDataStep({ formData, updateFormData }: BasicDataSte
                     <Sparkles className="w-3 h-3 text-green-600" />
                   </div>
                   <h4 className="text-xs font-bold text-slate-800">פרטי המסלול הנבחר</h4>
-                  {formData.selected_plan_name && (
-                    <span className="text-[9px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
-                      נטען אוטומטית
-                    </span>
-                  )}
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <div>
-                    <div className="flex items-center mb-0.5">
-                      <Label htmlFor="selected_plan_name" className="text-[8px] font-semibold text-slate-700">
-                        שם המסלול
-                      </Label>
-                      <InfoTooltip content="שם תוכנית או מסלול שבחרת אצל הספק החדש" />
+                {/* If plan was loaded from selection - show readonly display */}
+                {formData.selected_plan_name ? (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                      <span className="text-xs font-semibold text-green-700">מסלול נבחר מהרשימה</span>
                     </div>
-                    <Input
-                      id="selected_plan_name"
-                      value={formData.selected_plan_name || ''}
-                      onChange={(e) => handleFieldChange('selected_plan_name', e.target.value)}
-                      placeholder="לדוגמה: חבילת גולן 50GB"
-                      className="h-8 text-sm border-slate-200"
-                    />
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <span className="text-[9px] text-slate-500">שם המסלול:</span>
+                        <p className="text-sm font-bold text-slate-800">{formData.selected_plan_name}</p>
+                      </div>
+                      {formData.selected_plan_price && (
+                        <div>
+                          <span className="text-[9px] text-slate-500">מחיר חודשי:</span>
+                          <p className="text-sm font-bold text-green-600">₪{formData.selected_plan_price}</p>
+                        </div>
+                      )}
+                    </div>
+                    {formData.selected_plan_features && Array.isArray(formData.selected_plan_features) && formData.selected_plan_features.length > 0 && (
+                      <div className="mt-2 pt-2 border-t border-green-200">
+                        <span className="text-[9px] text-slate-500">תכונות:</span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {formData.selected_plan_features.map((feature, idx) => (
+                            <span key={idx} className="text-[9px] bg-white px-2 py-0.5 rounded border border-green-200 text-slate-600">
+                              {feature}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
+                ) : (
+                  /* Manual entry if no plan was pre-selected */
+                  <div className="space-y-2">
+                    <p className="text-[9px] text-slate-500 mb-2">
+                      💡 טיפ: בחר מסלול מ<a href="/plans" className="text-primary underline">דף התוכניות</a> למילוי אוטומטי
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div>
+                        <div className="flex items-center mb-0.5">
+                          <Label htmlFor="selected_plan_name" className="text-[8px] font-semibold text-slate-700">
+                            שם המסלול (אופציונלי)
+                          </Label>
+                          <InfoTooltip content="שם תוכנית או מסלול שבחרת אצל הספק החדש" />
+                        </div>
+                        <Input
+                          id="selected_plan_name"
+                          value={formData.selected_plan_name || ''}
+                          onChange={(e) => handleFieldChange('selected_plan_name', e.target.value)}
+                          placeholder="לדוגמה: חבילת גולן 50GB"
+                          className="h-8 text-sm border-slate-200"
+                        />
+                      </div>
 
-                  <div>
-                    <div className="flex items-center mb-0.5">
-                      <Label htmlFor="selected_plan_price" className="text-[8px] font-semibold text-slate-700">
-                        מחיר חודשי (₪)
-                      </Label>
-                      <InfoTooltip content="המחיר החודשי של המסלול" />
-                    </div>
-                    <div className="relative">
-                      <CreditCard className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
-                      <Input
-                        id="selected_plan_price"
-                        type="number"
-                        value={formData.selected_plan_price || ''}
-                        onChange={(e) => handleFieldChange('selected_plan_price', parseFloat(e.target.value) || undefined)}
-                        placeholder="לדוגמה: 49.90"
-                        className="h-8 text-sm pr-8 border-slate-200"
-                      />
+                      <div>
+                        <div className="flex items-center mb-0.5">
+                          <Label htmlFor="selected_plan_price" className="text-[8px] font-semibold text-slate-700">
+                            מחיר חודשי (₪)
+                          </Label>
+                          <InfoTooltip content="המחיר החודשי של המסלול" />
+                        </div>
+                        <div className="relative">
+                          <CreditCard className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                          <Input
+                            id="selected_plan_price"
+                            type="number"
+                            value={formData.selected_plan_price || ''}
+                            onChange={(e) => handleFieldChange('selected_plan_price', parseFloat(e.target.value) || undefined)}
+                            placeholder="לדוגמה: 49.90"
+                            className="h-8 text-sm pr-8 border-slate-200"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="mt-2">
-                  <div className="flex items-center mb-0.5">
-                    <Label htmlFor="selected_plan_features" className="text-[8px] font-semibold text-slate-700">
-                      תכונות/הטבות המסלול (אופציונלי)
-                    </Label>
-                    <InfoTooltip content="תכונות עיקריות של המסלול, הפרד בפסיקים" />
-                  </div>
-                  <Textarea
-                    id="selected_plan_features"
-                    value={Array.isArray(formData.selected_plan_features) ? formData.selected_plan_features.join(', ') : (formData.selected_plan_features || '')}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      // Store as array if contains commas, otherwise as string
-                      if (value.includes(',')) {
-                        handleFieldChange('selected_plan_features', value.split(',').map(f => f.trim()).filter(Boolean));
-                      } else {
-                        handleFieldChange('selected_plan_features', value ? [value] : undefined);
-                      }
-                    }}
-                    placeholder="לדוגמה: 50GB גלישה, שיחות ללא הגבלה, SMS ללא הגבלה"
-                    className="min-h-[60px] text-sm border-slate-200 resize-none"
-                  />
-                  <p className="text-[8px] text-slate-500 mt-0.5">הפרד בין התכונות בפסיקים</p>
-                </div>
+                )}
               </div>
             )}
           </div>
