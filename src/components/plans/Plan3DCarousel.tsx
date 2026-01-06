@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Check, Clock, Shield, Gift, Building2, Wifi, Smartphone, Tv, Zap, Signal, Database, Monitor, Users, Package } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Check, Clock, Shield, Gift, Building2, Wifi, Smartphone, Tv, Zap, Signal, Database, Monitor, Users, Package, Star, TrendingUp, Crown, Gem, Award, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { PlanRecord } from '@/hooks/useAllPlans';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface Plan3DCarouselProps {
   plans: PlanRecord[];
@@ -12,65 +13,163 @@ interface Plan3DCarouselProps {
   companyLogos: Record<string, string>;
 }
 
-// Parse plan details from the plan data
-const parsePlanDetails = (plan: PlanRecord) => {
-  const details: { icon: typeof Wifi; label: string; value: string }[] = [];
+// Plan tier system to explain price differences
+type PlanTier = 'basic' | 'standard' | 'premium' | 'ultimate';
+
+const getPlanTier = (plan: PlanRecord): { tier: PlanTier; label: string; icon: typeof Star; color: string; bgColor: string; description: string } => {
+  const price = plan.monthlyPrice || 0;
   const planLower = (plan.plan + ' ' + (plan.transferBenefits || '')).toLowerCase();
   const service = plan.service.toLowerCase();
   
-  // Internet speed detection
-  const speedMatch = planLower.match(/(\d+)\s*(מגה|mbps|gb|גיגה|mega)/i);
-  const fiberMatch = planLower.match(/(סיבים|fiber)/i);
-  if (speedMatch || fiberMatch) {
-    let speed = speedMatch ? speedMatch[1] : '';
-    if (planLower.includes('1 גיגה') || planLower.includes('1000')) {
-      speed = '1Gbps';
-    } else if (speed) {
-      speed = `${speed}Mbps`;
-    }
-    if (speed || fiberMatch) {
-      details.push({ 
-        icon: Wifi, 
-        label: 'מהירות', 
-        value: speed || 'סיבים' 
-      });
-    }
-  }
+  // Determine tier based on price and features
+  let tier: PlanTier = 'basic';
   
-  // Cellular data detection
-  const dataMatch = planLower.match(/(\d+)\s*(gb|ג'יגה|גיגה|ג\'יגה)/i);
-  const unlimitedData = planLower.includes('ללא הגבלה') || planLower.includes('אנלימיטד');
-  if (service.includes('סלולר') || service.includes('טריפל')) {
-    if (unlimitedData) {
-      details.push({ icon: Database, label: 'גלישה', value: 'ללא הגבלה' });
-    } else if (dataMatch) {
-      details.push({ icon: Database, label: 'גלישה', value: `${dataMatch[1]}GB` });
-    }
-  }
-  
-  // TV channels detection
-  const channelsMatch = planLower.match(/(\d+)\s*(ערוצ|channel)/i);
-  if (service.includes('טלוויזיה') || service.includes('טריפל')) {
-    if (channelsMatch) {
-      details.push({ icon: Tv, label: 'ערוצים', value: channelsMatch[1] });
-    }
-    // Check for streaming services
-    if (planLower.includes('netflix')) {
-      details.push({ icon: Monitor, label: 'סטרימינג', value: 'Netflix כלול' });
-    }
-  }
-  
-  // Triple bundle detection
   if (service.includes('טריפל')) {
-    const linesMatch = planLower.match(/(\d+)\s*(קו|line)/i);
+    if (price > 300) tier = 'ultimate';
+    else if (price > 200) tier = 'premium';
+    else if (price > 150) tier = 'standard';
+    else tier = 'basic';
+  } else if (service.includes('סלולר')) {
+    if (price > 60 || planLower.includes('ללא הגבלה')) tier = 'ultimate';
+    else if (price > 40 || planLower.includes('500') || planLower.includes('1000')) tier = 'premium';
+    else if (price > 25) tier = 'standard';
+    else tier = 'basic';
+  } else if (service.includes('אינטרנט')) {
+    if (price > 140 || planLower.includes('1 גיגה') || planLower.includes('1000')) tier = 'ultimate';
+    else if (price > 100 || planLower.includes('500')) tier = 'premium';
+    else if (price > 70) tier = 'standard';
+    else tier = 'basic';
+  } else if (service.includes('טלוויזיה')) {
+    if (price > 170 || planLower.includes('netflix') || planLower.includes('hbo')) tier = 'ultimate';
+    else if (price > 130 || planLower.includes('4k')) tier = 'premium';
+    else if (price > 90) tier = 'standard';
+    else tier = 'basic';
+  }
+  
+  const tierConfig = {
+    basic: { 
+      label: 'בסיסי', 
+      icon: Star, 
+      color: 'text-slate-600', 
+      bgColor: 'bg-slate-100',
+      description: 'מתאים לשימוש קל • מחיר נמוך • הכי חסכוני'
+    },
+    standard: { 
+      label: 'סטנדרט', 
+      icon: TrendingUp, 
+      color: 'text-blue-600', 
+      bgColor: 'bg-blue-100',
+      description: 'איזון בין מחיר לביצועים • מתאים לרוב המשתמשים'
+    },
+    premium: { 
+      label: 'פרימיום', 
+      icon: Crown, 
+      color: 'text-purple-600', 
+      bgColor: 'bg-purple-100',
+      description: 'ביצועים גבוהים • תוכן עשיר • הטבות נוספות'
+    },
+    ultimate: { 
+      label: 'אולטימטיבי', 
+      icon: Gem, 
+      color: 'text-amber-600', 
+      bgColor: 'bg-amber-100',
+      description: 'הכל כלול • ללא הגבלות • חוויה מקסימלית'
+    },
+  };
+  
+  return { tier, ...tierConfig[tier] };
+};
+
+// Enhanced plan details extraction
+const parsePlanDetails = (plan: PlanRecord) => {
+  const details: { icon: typeof Wifi; label: string; value: string; highlight?: boolean }[] = [];
+  const planLower = (plan.plan + ' ' + (plan.transferBenefits || '')).toLowerCase();
+  const service = plan.service.toLowerCase();
+  
+  // Internet speed detection - more comprehensive
+  if (service.includes('אינטרנט') || service.includes('טריפל')) {
+    if (planLower.includes('1 גיגה') || planLower.includes('1000') || planLower.includes('1gbps')) {
+      details.push({ icon: Wifi, label: 'מהירות', value: '1Gbps', highlight: true });
+    } else if (planLower.includes('500')) {
+      details.push({ icon: Wifi, label: 'מהירות', value: '500Mbps', highlight: true });
+    } else if (planLower.includes('200')) {
+      details.push({ icon: Wifi, label: 'מהירות', value: '200Mbps' });
+    } else if (planLower.includes('100')) {
+      details.push({ icon: Wifi, label: 'מהירות', value: '100Mbps' });
+    } else if (planLower.includes('סיבים') || planLower.includes('fiber')) {
+      details.push({ icon: Wifi, label: 'חיבור', value: 'סיבים אופטיים', highlight: true });
+    }
+  }
+  
+  // Cellular data detection - enhanced
+  if (service.includes('סלולר') || service.includes('טריפל')) {
+    if (planLower.includes('ללא הגבלה') || planLower.includes('אנלימיטד') || planLower.includes('unlimited')) {
+      details.push({ icon: Database, label: 'גלישה', value: '∞ ללא הגבלה', highlight: true });
+    } else if (planLower.includes('1000gb') || planLower.includes('1000 ג')) {
+      details.push({ icon: Database, label: 'גלישה', value: '1000GB', highlight: true });
+    } else if (planLower.includes('500gb') || planLower.includes('500 ג')) {
+      details.push({ icon: Database, label: 'גלישה', value: '500GB', highlight: true });
+    } else if (planLower.includes('400gb') || planLower.includes('400 ג')) {
+      details.push({ icon: Database, label: 'גלישה', value: '400GB' });
+    } else if (planLower.includes('300gb') || planLower.includes('300 ג')) {
+      details.push({ icon: Database, label: 'גלישה', value: '300GB' });
+    } else if (planLower.includes('200gb') || planLower.includes('200 ג')) {
+      details.push({ icon: Database, label: 'גלישה', value: '200GB' });
+    } else if (planLower.includes('150gb') || planLower.includes('150 ג')) {
+      details.push({ icon: Database, label: 'גלישה', value: '150GB' });
+    } else if (planLower.includes('100gb') || planLower.includes('100 ג')) {
+      details.push({ icon: Database, label: 'גלישה', value: '100GB' });
+    } else if (planLower.includes('50gb') || planLower.includes('50 ג')) {
+      details.push({ icon: Database, label: 'גלישה', value: '50GB' });
+    } else {
+      const dataMatch = planLower.match(/(\d+)\s*(gb|ג'יגה|גיגה|ג\'יגה)/i);
+      if (dataMatch) {
+        details.push({ icon: Database, label: 'גלישה', value: `${dataMatch[1]}GB` });
+      }
+    }
+  }
+  
+  // TV channels detection - enhanced
+  if (service.includes('טלוויזיה') || service.includes('טריפל')) {
+    const channelsMatch = planLower.match(/(\d+)\s*(ערוצ|channel)/i);
+    if (channelsMatch) {
+      const channels = parseInt(channelsMatch[1]);
+      details.push({ 
+        icon: Tv, 
+        label: 'ערוצים', 
+        value: `${channels} ערוצים`,
+        highlight: channels > 100
+      });
+    } else if (planLower.includes('כל הערוצים')) {
+      details.push({ icon: Tv, label: 'ערוצים', value: 'כל הערוצים', highlight: true });
+    }
+    
+    // Streaming services
+    const streaming: string[] = [];
+    if (planLower.includes('netflix')) streaming.push('Netflix');
+    if (planLower.includes('hbo')) streaming.push('HBO');
+    if (planLower.includes('disney')) streaming.push('Disney+');
+    if (streaming.length > 0) {
+      details.push({ icon: Monitor, label: 'סטרימינג', value: streaming.join('+'), highlight: true });
+    }
+    
+    // 4K
+    if (planLower.includes('4k')) {
+      details.push({ icon: Monitor, label: 'איכות', value: '4K Ultra HD', highlight: true });
+    }
+  }
+  
+  // Triple bundle - cellular lines
+  if (service.includes('טריפל')) {
+    const linesMatch = planLower.match(/(\d+)\s*(קו|line|מכשיר)/i);
     if (linesMatch) {
-      details.push({ icon: Users, label: 'קווי סלולר', value: linesMatch[1] });
+      details.push({ icon: Users, label: 'קווי סלולר', value: `${linesMatch[1]} קווים` });
     }
   }
   
   // 5G support
   if (planLower.includes('5g')) {
-    details.push({ icon: Signal, label: 'רשת', value: '5G' });
+    details.push({ icon: Signal, label: 'רשת', value: 'דור 5 (5G)', highlight: true });
   }
   
   return details;
@@ -307,7 +406,7 @@ const Company3DCarousel: React.FC<{
       </div>
 
       {/* 3D Carousel Container - Mobile optimized */}
-      <div className="relative h-[380px] md:h-[480px] flex items-center justify-center" style={{ perspective: '1200px' }}>
+      <div className="relative h-[420px] md:h-[540px] flex items-center justify-center" style={{ perspective: '1200px' }}>
         {/* Navigation Buttons - Mobile adjusted */}
         <button
           onClick={handlePrev}
@@ -384,38 +483,77 @@ const Company3DCarousel: React.FC<{
                     )}
 
                     <div className="p-3 md:p-4">
-                      {/* Service Type Badge with Icon */}
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={cn(
-                          "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] md:text-xs font-medium",
-                          theme.accentLight,
-                          theme.accentText
-                        )}>
-                          <ServiceIcon className="w-3 h-3" />
-                          {plan.service}
-                        </span>
-                      </div>
+                      {/* Tier Badge with Info - explains price differences */}
+                      {(() => {
+                        const tierInfo = getPlanTier(plan);
+                        const TierIcon = tierInfo.icon;
+                        return (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className={cn(
+                                    "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] md:text-xs font-semibold",
+                                    tierInfo.bgColor,
+                                    tierInfo.color
+                                  )}>
+                                    <TierIcon className="w-3 h-3" />
+                                    {tierInfo.label}
+                                    <Info className="w-2.5 h-2.5 opacity-60" />
+                                  </span>
+                                  <span className={cn(
+                                    "flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-medium",
+                                    theme.accentLight,
+                                    theme.accentText
+                                  )}>
+                                    <ServiceIcon className="w-2.5 h-2.5" />
+                                    {plan.service}
+                                  </span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent side="top" className="max-w-[200px] text-center">
+                                <p className="text-xs font-medium mb-1">למה המחיר הזה?</p>
+                                <p className="text-[10px] text-muted-foreground">{tierInfo.description}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        );
+                      })()}
 
                       {/* Plan Name */}
                       <h3 className="text-sm md:text-base font-bold text-foreground mb-2 line-clamp-2 min-h-[36px] md:min-h-[40px]">
                         {plan.plan}
                       </h3>
 
-                      {/* Plan Details Grid - Always visible */}
+                      {/* Plan Details Grid - Enhanced with highlights */}
                       {planDetails.length > 0 && (
                         <div className={cn(
-                          "grid gap-1.5 mb-3 p-2 rounded-lg",
-                          isCenter ? "bg-muted/50" : "bg-muted/30",
+                          "grid gap-1.5 mb-3 p-2.5 rounded-xl border",
+                          isCenter ? "bg-gradient-to-br from-muted/60 to-muted/30 border-border" : "bg-muted/30 border-transparent",
                           planDetails.length > 2 ? "grid-cols-2" : "grid-cols-1"
                         )}>
-                          {planDetails.slice(0, isCenter ? 4 : 2).map((detail, idx) => {
+                          {planDetails.slice(0, isCenter ? 6 : 2).map((detail, idx) => {
                             const DetailIcon = detail.icon;
                             return (
-                              <div key={idx} className="flex items-center gap-1.5">
-                                <DetailIcon className={cn("w-3.5 h-3.5 flex-shrink-0", theme.accentText)} />
+                              <div key={idx} className={cn(
+                                "flex items-center gap-1.5 p-1 rounded-md transition-colors",
+                                detail.highlight && "bg-primary/5"
+                              )}>
+                                <div className={cn(
+                                  "w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0",
+                                  detail.highlight ? theme.accent + " text-white" : theme.accentLight
+                                )}>
+                                  <DetailIcon className={cn(
+                                    "w-3.5 h-3.5",
+                                    detail.highlight ? "text-white" : theme.accentText
+                                  )} />
+                                </div>
                                 <div className="flex flex-col min-w-0">
-                                  <span className="text-[9px] text-muted-foreground leading-tight">{detail.label}</span>
-                                  <span className="text-[11px] md:text-xs font-semibold text-foreground truncate">{detail.value}</span>
+                                  <span className="text-[8px] text-muted-foreground leading-tight uppercase tracking-wide">{detail.label}</span>
+                                  <span className={cn(
+                                    "text-[11px] md:text-xs font-bold truncate",
+                                    detail.highlight ? "text-foreground" : "text-foreground/80"
+                                  )}>{detail.value}</span>
                                 </div>
                               </div>
                             );
@@ -425,7 +563,7 @@ const Company3DCarousel: React.FC<{
 
                       {/* Price - with company color */}
                       <div className={cn(
-                        "rounded-xl p-2.5 md:p-3 mb-2.5 text-center",
+                        "rounded-xl p-2.5 md:p-3 mb-2.5 text-center relative overflow-hidden",
                         theme.priceBg
                       )}>
                         <div className="flex items-baseline justify-center gap-1">
