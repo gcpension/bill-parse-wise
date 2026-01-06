@@ -30,9 +30,11 @@ import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnim
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { QuickActions } from '@/components/QuickActions';
 import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
-import { CategoryCompletionBanner } from '@/components/CategoryCompletionBanner';
 import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
+import CategoryCarousel from '@/components/home/CategoryCarousel';
+import EnhancedAmountInput from '@/components/home/EnhancedAmountInput';
+
 const Home = () => {
   const [mounted, setMounted] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
@@ -498,92 +500,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Clean Categories Section - Enhanced with animations */}
+      {/* Clean Categories Section - Enhanced Carousel */}
       <section id="services" className="bg-white relative scroll-mt-20 pt-6">
         <div className="container mx-auto px-4 lg:px-6 max-w-6xl pb-12">
-          {/* Category Selection - Modern Image-Based Design */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {Object.entries(categoryData).map(([category, data], index) => {
-              const Icon = data.icon;
-              const isSelected = selectedCategories[category].selected;
-              return (
-                <div 
-                  key={category} 
-                  className="animate-fade-in opacity-0" 
-                  style={{
-                    animationDelay: `${0.6 + index * 0.1}s`,
-                    animationFillMode: 'forwards'
-                  }}
-                >
-                  <div 
-                    className="group relative h-48 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl"
-                    onClick={() => handleCategorySelect(category)}
-                  >
-                    {/* Background Image */}
-                    <div className="absolute inset-0">
-                      <img 
-                        src={data.image} 
-                        alt={data.name} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      {/* Gradient Overlay */}
-                      <div className={`absolute inset-0 transition-all duration-500 ${
-                        isSelected 
-                          ? 'bg-gradient-to-t from-cyan-300/80 via-cyan-200/50 to-blue-100/30' 
-                          : 'bg-gradient-to-t from-gray-300/75 via-gray-200/45 to-gray-100/25 group-hover:from-cyan-300/75 group-hover:via-cyan-200/45'
-                      }`}></div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                      {/* Top Section - Icon & Badge */}
-                      <div className="flex justify-between items-start">
-                        <div className={`p-3 rounded-2xl backdrop-blur-md transition-all duration-300 ${
-                          isSelected 
-                            ? 'bg-white/20 shadow-lg' 
-                            : 'bg-white/10 group-hover:bg-white/20'
-                        }`}>
-                          <Icon className="w-7 h-7 text-white" strokeWidth={2.5} />
-                        </div>
-                        
-                        {isSelected && (
-                          <div className="bg-cyan-500 text-white rounded-full p-2 shadow-lg animate-scale-in">
-                            <CheckCircle className="w-5 h-5" />
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Bottom Section - Title & Info */}
-                      <div>
-                        <h3 className="text-2xl font-heebo font-light text-white mb-2">
-                          {data.name}
-                        </h3>
-                        <p className="text-white/80 text-sm font-assistant mb-3">
-                          {data.providers.length} ספקים זמינים
-                        </p>
-                        
-                        {/* Selection Indicator */}
-                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md transition-all duration-300 ${
-                          isSelected 
-                            ? 'bg-cyan-500 text-white shadow-lg' 
-                            : 'bg-white/20 text-white group-hover:bg-white/30'
-                        }`}>
-                          <span className="text-sm font-heebo font-normal">
-                            {isSelected ? 'נבחר ✓' : 'לחץ לבחירה'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Shine Effect on Hover */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-[slide-right_1.5s_ease-in-out]"></div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {/* Category Selection - Swipeable Carousel */}
+          <CategoryCarousel
+            selectedCategories={selectedCategories}
+            onCategorySelect={handleCategorySelect}
+          />
 
           {/* Interactive Steps Banner */}
           <div ref={stepsBanner.elementRef} className={`transition-all duration-700 ${stepsBanner.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -1092,8 +1016,8 @@ const Home = () => {
       {/* Quick Actions Section */}
       
       
-      {/* Category Completion Banner */}
-      <CategoryCompletionBanner isVisible={showBanner} selectedCategory={bannerCategory} currentAmount={selectedCategories[bannerCategory]?.amount || ''} onAmountChange={handleAmountChange} onCheckAnother={handleCheckAnother} onProceedToPlans={handleProceedToPlans} onClose={handleCloseBanner} />
+      {/* Enhanced Amount Input */}
+      <EnhancedAmountInput isVisible={showBanner} selectedCategory={bannerCategory} currentAmount={selectedCategories[bannerCategory]?.amount || ''} onAmountChange={handleAmountChange} onCheckAnother={handleCheckAnother} onProceedToPlans={handleProceedToPlans} onClose={handleCloseBanner} />
 
       {/* Back to Top Button */}
       <BackToTop />
