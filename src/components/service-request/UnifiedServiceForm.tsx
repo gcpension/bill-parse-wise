@@ -526,6 +526,40 @@ export default function UnifiedServiceForm({ initialData, onComplete }: UnifiedS
           </button>
         </div>
 
+        {/* Selected Plan Display - Show when plan data is passed */}
+        {formData.selected_plan_name && (
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <span className="text-sm font-bold text-green-800">המסלול שנבחר</span>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <span className="text-xs text-gray-500">שם המסלול:</span>
+                <p className="text-base font-bold text-gray-900">{formData.selected_plan_name}</p>
+              </div>
+              {formData.selected_plan_price && (
+                <div>
+                  <span className="text-xs text-gray-500">מחיר חודשי:</span>
+                  <p className="text-base font-bold text-green-600">₪{formData.selected_plan_price}</p>
+                </div>
+              )}
+            </div>
+            {formData.selected_plan_features && Array.isArray(formData.selected_plan_features) && formData.selected_plan_features.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-green-200">
+                <span className="text-xs text-gray-500">תכונות המסלול:</span>
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {formData.selected_plan_features.map((feature, idx) => (
+                    <span key={idx} className="text-xs bg-white px-2 py-1 rounded border border-green-200 text-gray-700">
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Sector Selection */}
         <div>
           <Label className="text-sm font-medium text-foreground mb-1.5 block">סוג שירות *</Label>

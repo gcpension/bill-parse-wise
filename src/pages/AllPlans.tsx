@@ -772,7 +772,27 @@ const AllPlans = () => {
               מלאו את הפרטים הבאים להשלמת המעבר למסלול החדש
             </DialogDescription>
           </DialogHeader>
-          <UnifiedServiceForm onComplete={handleFormClose} />
+          {selectedPlanForForm && (
+            <UnifiedServiceForm 
+              onComplete={handleFormClose}
+              initialData={{
+                action_type: 'switch',
+                sector: selectedPlanForForm.service === 'סלולר' ? 'cellular' 
+                  : selectedPlanForForm.service.includes('אינטרנט') ? 'internet_isp'
+                  : selectedPlanForForm.service.includes('טלוויזיה') ? 'tv'
+                  : selectedPlanForForm.service === 'חשמל' ? 'electricity'
+                  : 'cellular',
+                target_provider: selectedPlanForForm.company,
+                selected_plan_name: selectedPlanForForm.plan,
+                selected_plan_price: selectedPlanForForm.monthlyPrice,
+                selected_plan_features: [
+                  selectedPlanForForm.transferBenefits,
+                  selectedPlanForForm.commitment ? `התחייבות: ${selectedPlanForForm.commitment}` : null,
+                  selectedPlanForForm.sla ? `ציון שירות: ${selectedPlanForForm.sla}` : null
+                ].filter(Boolean) as string[]
+              }}
+            />
+          )}
         </DialogContent>
       </Dialog>
 
