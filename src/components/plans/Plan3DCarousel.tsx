@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowLeft, Gift, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Calendar, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { PlanRecord } from '@/hooks/useAllPlans';
@@ -66,9 +66,19 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
     if (e.key === 'ArrowRight') handlePrev();
   };
 
+  // Parse features from plan description
+  const parseFeatures = (plan: PlanRecord): string[] => {
+    const features: string[] = [];
+    if (plan.transferBenefits) {
+      const parts = plan.transferBenefits.split(/[,،;]/);
+      features.push(...parts.slice(0, 3).map(p => p.trim()).filter(Boolean));
+    }
+    return features;
+  };
+
   if (plans.length === 0) {
     return (
-      <div className="text-center py-20 text-slate-500">
+      <div className="text-center py-20 text-muted-foreground">
         לא נמצאו מסלולים
       </div>
     );
@@ -86,23 +96,23 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
       {/* Navigation */}
       <button
         onClick={handlePrev}
-        className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:shadow-xl transition-all"
+        className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-background shadow-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:shadow-xl transition-all"
         aria-label="הקודם"
       >
-        <ChevronRight className="w-6 h-6" />
+        <ChevronRight className="w-5 h-5" />
       </button>
       
       <button
         onClick={handleNext}
-        className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:shadow-xl transition-all"
+        className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-background shadow-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:shadow-xl transition-all"
         aria-label="הבא"
       >
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-5 h-5" />
       </button>
 
       {/* Carousel */}
       <motion.div
-        className="relative h-[520px] flex items-center justify-center overflow-hidden"
+        className="relative h-[560px] flex items-center justify-center overflow-hidden"
         style={{ perspective: '1200px' }}
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -117,14 +127,15 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
               : 0;
             const isPlanRecommended = planSavings > 0;
             const logo = companyLogos[plan.company];
+            const features = parseFeatures(plan);
 
             const absPosition = Math.abs(position);
-            const scale = isCenter ? 1 : 0.85 - absPosition * 0.05;
-            const translateX = position * 160;
-            const rotateY = position * 8;
+            const scale = isCenter ? 1 : 0.82 - absPosition * 0.04;
+            const translateX = position * 170;
+            const rotateY = position * 6;
             const opacity = 1;
             const zIndex = 10 - absPosition;
-            const blur = isCenter ? 0 : absPosition * 1;
+            const blur = isCenter ? 0 : absPosition * 1.5;
 
             return (
               <motion.div
@@ -157,113 +168,132 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
               >
                 <div
                   className={cn(
-                    "w-[340px] bg-white rounded-xl overflow-hidden transition-all duration-300",
+                    "w-[360px] bg-card rounded-2xl overflow-hidden transition-all duration-300 border",
                     isCenter 
-                      ? "shadow-2xl ring-1 ring-slate-200" 
-                      : "shadow-lg ring-1 ring-slate-100"
+                      ? "shadow-2xl border-border" 
+                      : "shadow-md border-border/50"
                   )}
                 >
-                  {/* Header */}
-                  <div className={cn(
-                    "p-5 border-b",
-                    isCenter ? "border-slate-200 bg-slate-50/80" : "border-slate-100 bg-slate-50/50"
-                  )}>
-                    <div className="flex items-center gap-4">
-                      {logo ? (
-                        <div className="w-14 h-14 rounded-lg bg-white flex items-center justify-center p-2 border border-slate-200 shadow-sm">
-                          <img src={logo} alt={plan.company} className="max-w-full max-h-full object-contain" />
-                        </div>
-                      ) : (
-                        <div className="w-14 h-14 rounded-lg bg-slate-100 flex items-center justify-center border border-slate-200">
-                          <span className="text-xl font-bold text-slate-400">{plan.company.charAt(0)}</span>
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <h3 className={cn(
-                          "font-bold truncate",
-                          isCenter ? "text-slate-900 text-lg" : "text-slate-500 text-base"
-                        )}>{plan.company}</h3>
-                        <span className={cn(
-                          "text-sm",
-                          isCenter ? "text-slate-500" : "text-slate-400"
-                        )}>{plan.service}</span>
+                  {/* Top Badge */}
+                  {isCenter && isPlanRecommended && (
+                    <div className="bg-foreground text-background py-2 px-4 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <Sparkles className="w-4 h-4" />
+                        <span className="text-sm font-semibold">מומלץ עבורך • חיסכון של ₪{planSavings.toFixed(0)} לחודש</span>
                       </div>
-                      {isCenter && isPlanRecommended && (
-                        <div className="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-semibold">
-                          מומלץ
+                    </div>
+                  )}
+
+                  {/* Header */}
+                  <div className="p-6 pb-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3 mb-2">
+                          {logo ? (
+                            <div className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center p-1.5 border border-border">
+                              <img src={logo} alt={plan.company} className="max-w-full max-h-full object-contain" />
+                            </div>
+                          ) : (
+                            <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center border border-border">
+                              <span className="text-lg font-bold text-muted-foreground">{plan.company.charAt(0)}</span>
+                            </div>
+                          )}
+                          <div>
+                            <h3 className={cn(
+                              "font-bold",
+                              isCenter ? "text-foreground text-lg" : "text-muted-foreground text-base"
+                            )}>{plan.company}</h3>
+                            <span className="text-xs text-muted-foreground">{plan.service}</span>
+                          </div>
                         </div>
-                      )}
+                        <p className={cn(
+                          "text-sm line-clamp-2 mt-3",
+                          isCenter ? "text-foreground/80" : "text-muted-foreground"
+                        )}>
+                          {plan.plan}
+                        </p>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Body */}
-                  <div className="p-5">
-                    {/* Plan Name */}
-                    <p className={cn(
-                      "line-clamp-2 min-h-[44px] mb-5",
-                      isCenter ? "text-slate-700 text-sm font-medium" : "text-slate-400 text-sm"
-                    )}>
-                      {plan.plan}
-                    </p>
-
-                    {/* Price */}
-                    <div className={cn(
-                      "text-center py-6 rounded-lg mb-5",
-                      isCenter ? "bg-slate-100/80" : "bg-slate-50"
-                    )}>
-                      <div className="flex items-baseline justify-center gap-1">
-                        <span className={cn(
-                          "font-bold",
-                          isCenter ? "text-5xl text-slate-900" : "text-4xl text-slate-400"
-                        )}>
-                          {plan.monthlyPrice}
-                        </span>
-                        <span className={cn(
-                          isCenter ? "text-2xl text-slate-400" : "text-xl text-slate-300"
-                        )}>₪</span>
-                      </div>
+                  {/* Price Section */}
+                  <div className={cn(
+                    "mx-6 p-5 rounded-xl mb-4",
+                    isCenter ? "bg-muted" : "bg-muted/50"
+                  )}>
+                    <div className="flex items-end justify-center gap-1">
                       <span className={cn(
-                        "text-sm mt-1 block",
-                        isCenter ? "text-slate-500" : "text-slate-400"
-                      )}>לחודש</span>
-                      
-                      {isCenter && isPlanRecommended && (
-                        <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm">
-                          <span className="text-sm text-slate-600">חיסכון</span>
-                          <span className="text-sm font-bold text-slate-900">₪{planSavings.toFixed(0)}/חודש</span>
-                        </div>
-                      )}
+                        "font-bold leading-none",
+                        isCenter ? "text-5xl text-foreground" : "text-4xl text-muted-foreground"
+                      )}>
+                        {plan.monthlyPrice}
+                      </span>
+                      <div className="flex flex-col items-start mb-1">
+                        <span className={cn(
+                          "text-lg font-medium",
+                          isCenter ? "text-muted-foreground" : "text-muted-foreground/70"
+                        )}>₪</span>
+                        <span className={cn(
+                          "text-xs -mt-0.5",
+                          isCenter ? "text-muted-foreground" : "text-muted-foreground/60"
+                        )}>לחודש</span>
+                      </div>
                     </div>
+                  </div>
 
-                    {/* Features */}
-                    {isCenter && (
-                      <div className="space-y-3 mb-5">
-                        {plan.transferBenefits && (
-                          <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-                            <Gift className="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5" />
-                            <span className="text-sm text-slate-600 leading-relaxed">{plan.transferBenefits}</span>
+                  {/* Features List */}
+                  {isCenter && (
+                    <div className="px-6 pb-4">
+                      <div className="space-y-2.5">
+                        {features.length > 0 ? (
+                          features.map((feature, idx) => (
+                            <div key={idx} className="flex items-start gap-3">
+                              <div className="w-5 h-5 rounded-full bg-foreground/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <Check className="w-3 h-3 text-foreground" />
+                              </div>
+                              <span className="text-sm text-foreground/80 leading-relaxed">{feature}</span>
+                            </div>
+                          ))
+                        ) : plan.transferBenefits ? (
+                          <div className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-foreground/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <Check className="w-3 h-3 text-foreground" />
+                            </div>
+                            <span className="text-sm text-foreground/80 leading-relaxed">{plan.transferBenefits}</span>
                           </div>
-                        )}
+                        ) : null}
+                        
                         {plan.commitment && (
-                          <div className="flex items-center gap-3 text-sm text-slate-500 px-1">
-                            <Clock className="w-4 h-4 text-slate-400" />
-                            <span>{plan.commitment}</span>
+                          <div className="flex items-center gap-3 pt-1">
+                            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                              <Calendar className="w-3 h-3 text-muted-foreground" />
+                            </div>
+                            <span className="text-sm text-muted-foreground">{plan.commitment}</span>
                           </div>
                         )}
                       </div>
-                    )}
+                    </div>
+                  )}
 
-                    {/* CTA */}
-                    {isCenter && (
+                  {/* CTA */}
+                  {isCenter && (
+                    <div className="px-6 pb-6 pt-2">
                       <Button
                         onClick={() => onSelectPlan(plan)}
-                        className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-base"
+                        className="w-full h-12 bg-foreground hover:bg-foreground/90 text-background font-semibold rounded-xl text-base"
                       >
                         בחירת מסלול
                         <ArrowLeft className="mr-2 h-5 w-5" />
                       </Button>
-                    )}
-                  </div>
+                    </div>
+                  )}
+
+                  {/* Non-center minimal info */}
+                  {!isCenter && (
+                    <div className="px-6 pb-6">
+                      <div className="h-12" />
+                    </div>
+                  )}
                 </div>
               </motion.div>
             );
@@ -280,18 +310,18 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
             className={cn(
               "transition-all duration-300 rounded-full",
               activeIndex === index
-                ? "w-8 h-2 bg-slate-900"
-                : "w-2 h-2 bg-slate-300 hover:bg-slate-400"
+                ? "w-8 h-2 bg-foreground"
+                : "w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
             )}
           />
         ))}
         {plans.length > 12 && (
-          <span className="text-sm text-slate-400 mr-2">+{plans.length - 12}</span>
+          <span className="text-sm text-muted-foreground mr-2">+{plans.length - 12}</span>
         )}
       </div>
 
       {/* Counter */}
-      <p className="text-center text-sm text-slate-500 mt-4 font-medium">
+      <p className="text-center text-sm text-muted-foreground mt-4 font-medium">
         {activeIndex + 1} מתוך {plans.length}
       </p>
     </div>
