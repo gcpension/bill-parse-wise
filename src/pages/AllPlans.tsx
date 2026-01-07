@@ -553,6 +553,7 @@ const AllPlans = () => {
               plans={filteredPlans}
               currentMonthlyBill={currentMonthlyBill}
               onSelectPlan={handleSelectPlan}
+              onViewDetails={handleViewDetails}
               companyLogos={companyLogos}
             />
           </div>
@@ -659,6 +660,21 @@ const AllPlans = () => {
                             </Button>
 
                             <CardContent className="p-5 pt-12 flex-1 flex flex-col">
+                              {/* Company Name */}
+                              <div className="flex items-center gap-2 mb-2">
+                                {companyLogos[plan.company] && (
+                                  <img 
+                                    src={companyLogos[plan.company]} 
+                                    alt={plan.company} 
+                                    className="w-6 h-6 object-contain"
+                                  />
+                                )}
+                                <span className="text-sm font-bold text-primary">{plan.company}</span>
+                                <span className="text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full">
+                                  {plan.service}
+                                </span>
+                              </div>
+
                               {/* Plan Name */}
                               <h3 className="text-base font-semibold text-slate-800 mb-2 line-clamp-2 min-h-[48px] leading-relaxed">
                                 {plan.plan}
@@ -819,10 +835,20 @@ const AllPlans = () => {
                     isRecommended && "bg-emerald-50/50 border-emerald-200"
                   )}>
                     <div className="flex items-center gap-4">
-                      {/* Company & Plan */}
+                      {/* Company Logo & Plan */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                          {companyLogos[plan.company] && (
+                            <img 
+                              src={companyLogos[plan.company]} 
+                              alt={plan.company} 
+                              className="w-6 h-6 object-contain"
+                            />
+                          )}
                           <span className="font-bold text-lg">{plan.company}</span>
+                          <span className="text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full">
+                            {plan.service}
+                          </span>
                           {valueScore.dealQuality === 'excellent' && (
                             <Badge className="bg-green-100 text-green-700 text-xs">🔥 עסקה מעולה</Badge>
                           )}
