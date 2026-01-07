@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Phone, Mail, CreditCard, Building2, Check, AlertCircle, Loader2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { User, Phone, Mail, CreditCard, Building2, Check, AlertCircle, Loader2, ChevronLeft } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 interface PersonalInfoData {
@@ -84,6 +83,20 @@ export const PersonalInfoStep = ({
   });
 
   const [shakeField, setShakeField] = useState<string | null>(null);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to focused field on mobile
+  useEffect(() => {
+    if (focusedField && formRef.current) {
+      const element = document.getElementById(focusedField);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [focusedField]);
 
   const validateField = (name: string, value: string): boolean => {
     switch (name) {
@@ -132,10 +145,15 @@ export const PersonalInfoStep = ({
   };
 
   const handleBlur = (name: string) => {
+    setFocusedField(null);
     setFields(prev => ({
       ...prev,
       [name]: { ...prev[name], isTouched: true }
     }));
+  };
+
+  const handleFocus = (name: string) => {
+    setFocusedField(name);
   };
 
   const handleNext = () => {
@@ -144,11 +162,13 @@ export const PersonalInfoStep = ({
       : ['fullName', 'nationalId', 'phone', 'email', 'companyName', 'companyId'];
     
     let hasError = false;
+    let firstErrorField: string | null = null;
     
     requiredFields.forEach(fieldName => {
       const field = fields[fieldName];
       if (!field.value || !field.isValid) {
         hasError = true;
+        if (!firstErrorField) firstErrorField = fieldName;
         setShakeField(fieldName);
         setTimeout(() => setShakeField(null), 500);
         setFields(prev => ({
@@ -158,10 +178,24 @@ export const PersonalInfoStep = ({
       }
     });
 
-    if (!hasError) {
+    if (hasError && firstErrorField) {
+      const element = document.getElementById(firstErrorField);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.focus();
+      }
+    } else if (!hasError) {
       onNext();
     }
   };
+
+  // Calculate progress
+  const requiredFields = data.customerType === 'private' 
+    ? ['fullName', 'nationalId', 'phone', 'email']
+    : ['fullName', 'nationalId', 'phone', 'email', 'companyName', 'companyId'];
+  
+  const filledCount = requiredFields.filter(f => fields[f].isValid).length;
+  const progress = (filledCount / requiredFields.length) * 100;
 
   const renderField = (
     name: string,
@@ -169,91 +203,123 @@ export const PersonalInfoStep = ({
     icon: React.ReactNode,
     type: string = "text",
     placeholder: string = "",
-    inputMode?: "text" | "numeric" | "tel" | "email"
+    inputMode?: "text" | "numeric" | "tel" | "email",
+    autoComplete?: string
   ) => {
     const field = fields[name];
     const showError = field.isTouched && field.isValid === false;
     const showSuccess = field.isValid === true;
+    const isFocused = focusedField === name;
 
     return (
       <motion.div
-        className="space-y-2"
-        animate={shakeField === name ? { x: [0, -10, 10, -10, 10, 0] } : {}}
+        className="relative"
+        animate={shakeField === name ? { x: [0, -8, 8, -8, 8, 0] } : {}}
         transition={{ duration: 0.4 }}
       >
-        <Label htmlFor={name} className="text-sm font-medium flex items-center gap-2">
-          {icon}
-          {label}
-        </Label>
-        <div className="relative">
+        {/* Floating Label Style Card */}
+        <div className={cn(
+          "relative rounded-2xl border-2 transition-all duration-200 bg-white overflow-hidden",
+          isFocused && "ring-2 ring-offset-1",
+          isFocused && !showError && `ring-primary/30 ${categoryColor.border}`,
+          showError && "border-red-300 ring-red-200",
+          showSuccess && "border-green-300",
+          !isFocused && !showError && !showSuccess && "border-muted-foreground/20"
+        )}>
+          {/* Label Row */}
+          <div className={cn(
+            "flex items-center gap-2 px-4 pt-3 pb-1 transition-colors",
+            isFocused && categoryColor.bg
+          )}>
+            <div className={cn(
+              "transition-colors",
+              isFocused ? categoryColor.text : "text-muted-foreground"
+            )}>
+              {icon}
+            </div>
+            <Label 
+              htmlFor={name} 
+              className={cn(
+                "text-xs font-medium transition-colors",
+                isFocused ? categoryColor.text : "text-muted-foreground"
+              )}
+            >
+              {label}
+            </Label>
+            
+            {/* Status Indicator */}
+            <div className="mr-auto">
+              <AnimatePresence mode="wait">
+                {field.isValidating && (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                  >
+                    <Loader2 className="w-4 h-4 text-muted-foreground animate-spin" />
+                  </motion.div>
+                )}
+                {!field.isValidating && showSuccess && (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="bg-green-100 rounded-full p-0.5"
+                  >
+                    <Check className="w-3 h-3 text-green-600" />
+                  </motion.div>
+                )}
+                {!field.isValidating && showError && (
+                  <motion.div
+                    key="error"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="bg-red-100 rounded-full p-0.5"
+                  >
+                    <AlertCircle className="w-3 h-3 text-red-500" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+          
+          {/* Input */}
           <Input
             id={name}
             type={type}
             inputMode={inputMode}
+            autoComplete={autoComplete}
             value={field.value}
             onChange={(e) => handleChange(name, e.target.value)}
             onBlur={() => handleBlur(name)}
+            onFocus={() => handleFocus(name)}
             placeholder={placeholder}
             className={cn(
-              "h-14 text-base px-4 transition-all duration-200 text-[16px]",
-              showError && "border-red-400 focus:border-red-500 focus:ring-red-200",
-              showSuccess && "border-green-400 focus:border-green-500 focus:ring-green-200",
-              !showError && !showSuccess && "focus:ring-primary/20"
+              "border-0 h-12 text-lg px-4 pb-3 pt-0 focus-visible:ring-0 focus-visible:ring-offset-0",
+              "placeholder:text-muted-foreground/40"
             )}
+            style={{ fontSize: '16px' }} // Prevent iOS zoom
           />
-          
-          {/* Validation Indicator */}
-          <div className="absolute left-3 top-1/2 -translate-y-1/2">
-            <AnimatePresence mode="wait">
-              {field.isValidating && (
-                <motion.div
-                  key="loading"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                >
-                  <Loader2 className="w-5 h-5 text-muted-foreground animate-spin" />
-                </motion.div>
-              )}
-              {!field.isValidating && showSuccess && (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                >
-                  <Check className="w-5 h-5 text-green-500" />
-                </motion.div>
-              )}
-              {!field.isValidating && showError && (
-                <motion.div
-                  key="error"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                >
-                  <AlertCircle className="w-5 h-5 text-red-500" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
         </div>
         
         {/* Error Message */}
         <AnimatePresence>
           {showError && (
             <motion.p
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="text-sm text-red-500 pr-1"
+              initial={{ opacity: 0, y: -5, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: 'auto' }}
+              exit={{ opacity: 0, y: -5, height: 0 }}
+              className="text-sm text-red-500 pr-4 pt-1.5"
             >
-              {name === 'nationalId' && 'מספר ת.ז. לא תקין'}
-              {name === 'phone' && 'מספר טלפון לא תקין'}
-              {name === 'email' && 'כתובת אימייל לא תקינה'}
-              {name === 'fullName' && 'יש להזין שם מלא'}
-              {name === 'companyName' && 'יש להזין שם חברה'}
-              {name === 'companyId' && 'מספר ח.פ./ע.מ. לא תקין'}
+              {name === 'nationalId' && '⚠️ מספר ת.ז. לא תקין'}
+              {name === 'phone' && '⚠️ מספר טלפון לא תקין'}
+              {name === 'email' && '⚠️ כתובת אימייל לא תקינה'}
+              {name === 'fullName' && '⚠️ יש להזין שם מלא'}
+              {name === 'companyName' && '⚠️ יש להזין שם חברה'}
+              {name === 'companyId' && '⚠️ מספר ח.פ./ע.מ. לא תקין (9 ספרות)'}
             </motion.p>
           )}
         </AnimatePresence>
@@ -263,135 +329,161 @@ export const PersonalInfoStep = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
+      ref={formRef}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
+      className="space-y-5"
     >
-      <Card className="border-0 shadow-lg">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-bold flex items-center gap-3">
-            <div className={cn(
-              "w-10 h-10 rounded-xl flex items-center justify-center",
-              "bg-gradient-to-br",
-              categoryColor.primary,
-              "text-white"
-            )}>
-              <User className="w-5 h-5" />
-            </div>
-            פרטים אישיים
-          </CardTitle>
-        </CardHeader>
-        
-        <CardContent className="space-y-6">
-          {/* Customer Type Toggle */}
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">סוג לקוח</Label>
-            <Tabs 
-              value={data.customerType} 
-              onValueChange={(v) => onUpdate({ customerType: v as 'private' | 'business' })}
-              dir="rtl"
-            >
-              <TabsList className="grid w-full grid-cols-2 h-14 p-1">
-                <TabsTrigger 
-                  value="private" 
-                  className="flex items-center gap-2 data-[state=active]:shadow-md h-full"
-                >
-                  <User className="w-4 h-4" />
-                  <span>פרטי</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="business" 
-                  className="flex items-center gap-2 data-[state=active]:shadow-md h-full"
-                >
-                  <Building2 className="w-4 h-4" />
-                  <span>עסקי</span>
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
+      {/* Progress Bar */}
+      <div className="space-y-2">
+        <div className="flex justify-between items-center text-sm">
+          <span className="font-medium">מילוי פרטים</span>
+          <span className={cn("font-bold", categoryColor.text)}>
+            {filledCount}/{requiredFields.length}
+          </span>
+        </div>
+        <div className="h-2 bg-muted rounded-full overflow-hidden">
+          <motion.div 
+            className={cn("h-full rounded-full bg-gradient-to-r", categoryColor.primary)}
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          />
+        </div>
+      </div>
 
-          {/* Form Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Customer Type Toggle - Modern Pills */}
+      <div className="flex gap-3 p-1.5 bg-muted/50 rounded-2xl">
+        <button
+          onClick={() => onUpdate({ customerType: 'private' })}
+          className={cn(
+            "flex-1 flex items-center justify-center gap-2 py-4 rounded-xl transition-all duration-200 font-medium",
+            data.customerType === 'private' 
+              ? cn("bg-white shadow-md", categoryColor.text)
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <User className="w-5 h-5" />
+          <span>לקוח פרטי</span>
+        </button>
+        <button
+          onClick={() => onUpdate({ customerType: 'business' })}
+          className={cn(
+            "flex-1 flex items-center justify-center gap-2 py-4 rounded-xl transition-all duration-200 font-medium",
+            data.customerType === 'business' 
+              ? cn("bg-white shadow-md", categoryColor.text)
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <Building2 className="w-5 h-5" />
+          <span>עסקי</span>
+        </button>
+      </div>
+
+      {/* Form Fields */}
+      <div className="space-y-4">
+        {renderField(
+          'fullName',
+          'שם מלא',
+          <User className="w-4 h-4" />,
+          'text',
+          'ישראל ישראלי',
+          'text',
+          'name'
+        )}
+        
+        {renderField(
+          'nationalId',
+          'תעודת זהות',
+          <CreditCard className="w-4 h-4" />,
+          'text',
+          '123456789',
+          'numeric'
+        )}
+        
+        {renderField(
+          'phone',
+          'טלפון נייד',
+          <Phone className="w-4 h-4" />,
+          'tel',
+          '050-1234567',
+          'tel',
+          'tel'
+        )}
+        
+        {renderField(
+          'email',
+          'דואר אלקטרוני',
+          <Mail className="w-4 h-4" />,
+          'email',
+          'email@example.com',
+          'email',
+          'email'
+        )}
+      </div>
+
+      {/* Business Fields */}
+      <AnimatePresence>
+        {data.customerType === 'business' && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-4 pt-2"
+          >
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Building2 className="w-4 h-4" />
+              <span>פרטי העסק</span>
+            </div>
+            
             {renderField(
-              'fullName',
-              'שם מלא',
-              <User className="w-4 h-4 text-muted-foreground" />,
+              'companyName',
+              'שם החברה',
+              <Building2 className="w-4 h-4" />,
               'text',
-              'ישראל ישראלי'
+              'שם החברה בע"מ',
+              'text',
+              'organization'
             )}
             
             {renderField(
-              'nationalId',
-              'תעודת זהות',
-              <CreditCard className="w-4 h-4 text-muted-foreground" />,
+              'companyId',
+              'ח.פ. / ע.מ.',
+              <CreditCard className="w-4 h-4" />,
               'text',
               '123456789',
               'numeric'
             )}
-            
-            {renderField(
-              'phone',
-              'טלפון נייד',
-              <Phone className="w-4 h-4 text-muted-foreground" />,
-              'tel',
-              '050-1234567',
-              'tel'
-            )}
-            
-            {renderField(
-              'email',
-              'דוא"ל',
-              <Mail className="w-4 h-4 text-muted-foreground" />,
-              'email',
-              'email@example.com',
-              'email'
-            )}
-          </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-          {/* Business Fields */}
-          <AnimatePresence>
-            {data.customerType === 'business' && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t"
-              >
-                {renderField(
-                  'companyName',
-                  'שם חברה',
-                  <Building2 className="w-4 h-4 text-muted-foreground" />,
-                  'text',
-                  'שם החברה בע"מ'
-                )}
-                
-                {renderField(
-                  'companyId',
-                  'ח.פ. / ע.מ.',
-                  <CreditCard className="w-4 h-4 text-muted-foreground" />,
-                  'text',
-                  '123456789',
-                  'numeric'
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Next Button */}
-          <Button
-            onClick={handleNext}
-            className={cn(
-              "w-full h-14 text-lg font-medium mt-6",
-              "bg-gradient-to-r",
-              categoryColor.primary,
-              "hover:opacity-90 transition-opacity active:scale-[0.98]"
-            )}
-          >
-            המשך לשלב הבא
-          </Button>
-        </CardContent>
-      </Card>
+      {/* Next Button - Full width, prominent */}
+      <div className="pt-4">
+        <Button
+          onClick={handleNext}
+          disabled={progress < 100}
+          className={cn(
+            "w-full h-16 text-lg font-bold rounded-2xl shadow-lg transition-all duration-200",
+            "bg-gradient-to-r",
+            categoryColor.primary,
+            "hover:opacity-90 hover:shadow-xl active:scale-[0.98]",
+            "disabled:opacity-50 disabled:cursor-not-allowed"
+          )}
+        >
+          <span>המשך לפרטי השירות</span>
+          <ChevronLeft className="w-5 h-5 mr-2" />
+        </Button>
+        
+        {progress < 100 && (
+          <p className="text-center text-sm text-muted-foreground mt-3">
+            יש למלא את כל השדות להמשך
+          </p>
+        )}
+      </div>
     </motion.div>
   );
 };

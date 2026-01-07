@@ -326,30 +326,53 @@ export const ModernSwitchForm = ({
 
   // Form content
   const formContent = (
-    <div className="space-y-6" dir="rtl">
-      {/* Header Info */}
+    <div className="space-y-5" dir="rtl">
+      {/* Header Info - Compact for mobile */}
       {currentStep < 4 && (
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200">
+        <div className="flex items-center justify-between">
+          <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs">
             <Shield className="w-3 h-3 ml-1" />
-            מאובטח SSL
+            מאובטח
           </Badge>
-          <Badge variant="secondary" className={cn(categoryColor.bg, categoryColor.text, categoryColor.border, "border")}>
+          <Badge variant="secondary" className={cn(categoryColor.bg, categoryColor.text, categoryColor.border, "border text-xs")}>
             <Clock className="w-3 h-3 ml-1" />
-            3 דקות
+            ~3 דק׳
           </Badge>
         </div>
       )}
 
-      {/* Stepper */}
+      {/* Stepper - Hidden on mobile, use progress bar instead */}
       {currentStep < 4 && (
-        <FormStepper 
-          currentStep={currentStep} 
-          categoryColor={categoryColor.primary}
-        />
+        <div className="hidden md:block">
+          <FormStepper 
+            currentStep={currentStep} 
+            categoryColor={categoryColor.primary}
+          />
+        </div>
       )}
 
-      {/* Plan Hero Card */}
+      {/* Mobile Step Indicator */}
+      {currentStep < 4 && (
+        <div className="md:hidden">
+          <div className="flex items-center justify-between text-sm mb-2">
+            <span className="font-bold">{
+              currentStep === 1 ? 'פרטים אישיים' :
+              currentStep === 2 ? 'פרטי השירות' :
+              'חתימה ואישור'
+            }</span>
+            <span className="text-muted-foreground">שלב {currentStep} מתוך 3</span>
+          </div>
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+            <motion.div 
+              className={cn("h-full rounded-full bg-gradient-to-r", categoryColor.primary)}
+              animate={{ width: `${(currentStep / 3) * 100}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Plan Hero Card - Compact on mobile */}
       {currentStep < 4 && (
         <PlanHeroCard
           company={selectedPlan.company}
@@ -369,7 +392,7 @@ export const ModernSwitchForm = ({
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.25 }}
         >
           {renderStepContent()}
         </motion.div>

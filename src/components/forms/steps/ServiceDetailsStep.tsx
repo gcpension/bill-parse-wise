@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, MapPin, Hash, Calendar, Building, Home, Check, AlertCircle } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FileText, MapPin, Hash, Calendar, Building, Home, Check, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -52,35 +51,53 @@ export const ServiceDetailsStep = ({
 }: ServiceDetailsStepProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to focused field on mobile
+  useEffect(() => {
+    if (focusedField) {
+      const element = document.getElementById(focusedField);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [focusedField]);
 
   const getCategoryFields = () => {
-    switch (category) {
+    const baseCategory = category.includes('חשמל') ? 'חשמל' 
+      : category.includes('סלולר') ? 'סלולר'
+      : category.includes('אינטרנט') ? 'אינטרנט'
+      : category.includes('טלוויזיה') ? 'טלוויזיה'
+      : 'כללי';
+
+    switch (baseCategory) {
       case 'חשמל':
         return [
-          { name: 'currentProvider', label: 'ספק חשמל נוכחי', icon: Building, required: false },
-          { name: 'accountNumber', label: 'מספר חשבון / חוזה', icon: Hash, required: true },
+          { name: 'currentProvider', label: 'ספק חשמל נוכחי', icon: Building, required: false, placeholder: 'לדוגמה: חברת החשמל' },
+          { name: 'accountNumber', label: 'מספר חשבון / חוזה', icon: Hash, required: true, placeholder: 'מספר החשבון מהחשבונית' },
         ];
       case 'סלולר':
         return [
-          { name: 'currentProvider', label: 'ספק סלולר נוכחי', icon: Building, required: false },
-          { name: 'phoneNumber', label: 'מספר הקו', icon: Hash, required: true },
-          { name: 'simNumber', label: 'מספר SIM', icon: Hash, required: false },
+          { name: 'currentProvider', label: 'ספק סלולר נוכחי', icon: Building, required: false, placeholder: 'לדוגמה: פלאפון' },
+          { name: 'accountNumber', label: 'מספר הקו', icon: Hash, required: true, placeholder: '050-1234567' },
         ];
       case 'אינטרנט':
         return [
-          { name: 'currentProvider', label: 'ספק אינטרנט נוכחי', icon: Building, required: false },
-          { name: 'customerNumber', label: 'מספר לקוח', icon: Hash, required: false },
+          { name: 'currentProvider', label: 'ספק אינטרנט נוכחי', icon: Building, required: false, placeholder: 'לדוגמה: בזק' },
+          { name: 'customerNumber', label: 'מספר לקוח', icon: Hash, required: false, placeholder: 'מספר הלקוח שלך' },
         ];
       case 'טלוויזיה':
         return [
-          { name: 'currentProvider', label: 'ספק טלוויזיה נוכחי', icon: Building, required: false },
-          { name: 'customerNumber', label: 'מספר לקוח', icon: Hash, required: false },
-          { name: 'decoderNumber', label: 'מספר ממיר', icon: Hash, required: false },
+          { name: 'currentProvider', label: 'ספק טלוויזיה נוכחי', icon: Building, required: false, placeholder: 'לדוגמה: HOT' },
+          { name: 'customerNumber', label: 'מספר לקוח', icon: Hash, required: false, placeholder: 'מספר הלקוח שלך' },
         ];
       default:
         return [
-          { name: 'currentProvider', label: 'ספק נוכחי', icon: Building, required: false },
-          { name: 'accountNumber', label: 'מספר חשבון', icon: Hash, required: false },
+          { name: 'currentProvider', label: 'ספק נוכחי', icon: Building, required: false, placeholder: 'שם הספק הנוכחי' },
+          { name: 'accountNumber', label: 'מספר חשבון', icon: Hash, required: false, placeholder: 'מספר החשבון שלך' },
         ];
     }
   };
@@ -107,7 +124,12 @@ export const ServiceDetailsStep = ({
   };
 
   const handleBlur = (field: string) => {
+    setFocusedField(null);
     setTouched(prev => ({ ...prev, [field]: true }));
+  };
+
+  const handleFocus = (field: string) => {
+    setFocusedField(field);
   };
 
   const validate = (): boolean => {
@@ -145,14 +167,39 @@ export const ServiceDetailsStep = ({
 
     if (validate()) {
       onNext();
+    } else {
+      // Scroll to first error
+      const firstError = Object.keys(errors)[0];
+      if (firstError) {
+        const element = document.getElementById(firstError);
+        element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   };
+
+  // Calculate progress
+  const requiredFields = [
+    ...categoryFields.filter(f => f.required).map(f => f.name),
+    'serviceAddress.street',
+    'serviceAddress.city'
+  ];
+  
+  const getFieldValue = (field: string) => {
+    if (field.startsWith('serviceAddress.')) {
+      return (data.serviceAddress as any)?.[field.split('.')[1]] || '';
+    }
+    return (data as any)[field] || '';
+  };
+  
+  const filledCount = requiredFields.filter(f => getFieldValue(f).trim()).length;
+  const progress = requiredFields.length > 0 ? (filledCount / requiredFields.length) * 100 : 100;
 
   const renderField = (
     name: string,
     label: string,
     Icon: React.ComponentType<{ className?: string }>,
     required: boolean = false,
+    placeholder: string = "",
     type: string = "text"
   ) => {
     const value = name.startsWith('serviceAddress.') 
@@ -161,49 +208,91 @@ export const ServiceDetailsStep = ({
     
     const error = errors[name];
     const showError = touched[name] && error;
+    const showSuccess = touched[name] && !error && value.trim();
+    const isFocused = focusedField === name;
 
     return (
-      <div className="space-y-2">
-        <Label htmlFor={name} className="text-sm font-medium flex items-center gap-2">
-          <Icon className="w-4 h-4 text-muted-foreground" />
-          {label}
-          {required && <span className="text-red-500">*</span>}
-        </Label>
-        <div className="relative">
+      <div className="relative">
+        <div className={cn(
+          "relative rounded-2xl border-2 transition-all duration-200 bg-white overflow-hidden",
+          isFocused && "ring-2 ring-offset-1",
+          isFocused && !showError && `ring-primary/30 ${categoryColor.border}`,
+          showError && "border-red-300 ring-red-200",
+          showSuccess && "border-green-300",
+          !isFocused && !showError && !showSuccess && "border-muted-foreground/20"
+        )}>
+          {/* Label Row */}
+          <div className={cn(
+            "flex items-center gap-2 px-4 pt-3 pb-1 transition-colors",
+            isFocused && categoryColor.bg
+          )}>
+            <div className={cn(
+              "transition-colors",
+              isFocused ? categoryColor.text : "text-muted-foreground"
+            )}>
+              <Icon className="w-4 h-4" />
+            </div>
+            <Label 
+              htmlFor={name} 
+              className={cn(
+                "text-xs font-medium transition-colors",
+                isFocused ? categoryColor.text : "text-muted-foreground"
+              )}
+            >
+              {label}
+              {required && <span className="text-red-500 mr-1">*</span>}
+            </Label>
+            
+            {/* Status Indicator */}
+            <div className="mr-auto">
+              {showSuccess && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-green-100 rounded-full p-0.5"
+                >
+                  <Check className="w-3 h-3 text-green-600" />
+                </motion.div>
+              )}
+              {showError && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-red-100 rounded-full p-0.5"
+                >
+                  <AlertCircle className="w-3 h-3 text-red-500" />
+                </motion.div>
+              )}
+            </div>
+          </div>
+          
+          {/* Input */}
           <Input
             id={name}
             type={type}
             value={value}
             onChange={(e) => handleFieldChange(name, e.target.value)}
             onBlur={() => handleBlur(name)}
+            onFocus={() => handleFocus(name)}
+            placeholder={placeholder}
             className={cn(
-              "h-14 text-base px-4 text-[16px]",
-              showError && "border-red-400 focus:border-red-500"
+              "border-0 h-12 text-lg px-4 pb-3 pt-0 focus-visible:ring-0 focus-visible:ring-offset-0",
+              "placeholder:text-muted-foreground/40"
             )}
+            style={{ fontSize: '16px' }}
           />
-          
-          {touched[name] && !error && value && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2">
-              <Check className="w-5 h-5 text-green-500" />
-            </div>
-          )}
-          
-          {showError && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2">
-              <AlertCircle className="w-5 h-5 text-red-500" />
-            </div>
-          )}
         </div>
         
+        {/* Error Message */}
         <AnimatePresence>
           {showError && (
             <motion.p
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="text-sm text-red-500"
+              initial={{ opacity: 0, y: -5, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: 'auto' }}
+              exit={{ opacity: 0, y: -5, height: 0 }}
+              className="text-sm text-red-500 pr-4 pt-1.5"
             >
-              {error}
+              ⚠️ {error}
             </motion.p>
           )}
         </AnimatePresence>
@@ -220,108 +309,120 @@ export const ServiceDetailsStep = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
+      ref={formRef}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
+      className="space-y-5"
     >
-      <Card className="border-0 shadow-lg">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-bold flex items-center gap-3">
-            <div className={cn(
-              "w-10 h-10 rounded-xl flex items-center justify-center",
-              "bg-gradient-to-br",
-              categoryColor.primary,
-              "text-white"
-            )}>
-              <FileText className="w-5 h-5" />
-            </div>
-            פרטי השירות
-          </CardTitle>
-        </CardHeader>
+      {/* Progress Bar */}
+      <div className="space-y-2">
+        <div className="flex justify-between items-center text-sm">
+          <span className="font-medium">פרטי השירות</span>
+          <span className={cn("font-bold", categoryColor.text)}>
+            {filledCount}/{requiredFields.length}
+          </span>
+        </div>
+        <div className="h-2 bg-muted rounded-full overflow-hidden">
+          <motion.div 
+            className={cn("h-full rounded-full bg-gradient-to-r", categoryColor.primary)}
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          />
+        </div>
+      </div>
+
+      {/* Category-specific Fields */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+          <FileText className="w-4 h-4" />
+          <span>פרטי הספק הנוכחי</span>
+        </div>
         
-        <CardContent className="space-y-6">
-          {/* Category-specific Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {categoryFields.map(field => (
-              <div key={field.name}>
-                {renderField(field.name, field.label, field.icon, field.required)}
-              </div>
-            ))}
+        {categoryFields.map(field => (
+          <div key={field.name}>
+            {renderField(field.name, field.label, field.icon, field.required, field.placeholder)}
           </div>
+        ))}
+      </div>
 
-          {/* Address Section */}
-          <div className="pt-4 border-t space-y-4">
-            <div className="flex items-center gap-2 text-lg font-semibold">
-              <MapPin className={cn("w-5 h-5", categoryColor.text)} />
-              כתובת השירות
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {renderField('serviceAddress.street', 'רחוב ומספר', Home, true)}
-              {renderField('serviceAddress.city', 'עיר', Building, true)}
-            </div>
-            
-            <div className="md:w-1/2">
-              {renderField('serviceAddress.zipCode', 'מיקוד', Hash, false)}
-            </div>
-          </div>
+      {/* Address Section */}
+      <div className="space-y-4 pt-2">
+        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+          <MapPin className={cn("w-4 h-4", categoryColor.text)} />
+          <span>כתובת השירות</span>
+        </div>
+        
+        {renderField('serviceAddress.street', 'רחוב ומספר', Home, true, 'לדוגמה: הרצל 1')}
+        {renderField('serviceAddress.city', 'עיר', Building, true, 'לדוגמה: תל אביב')}
+        {renderField('serviceAddress.zipCode', 'מיקוד', Hash, false, 'לדוגמה: 1234567')}
+      </div>
 
-          {/* Preferred Date */}
-          <div className="pt-4 border-t space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="preferredSwitchDate" className="text-sm font-medium flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-muted-foreground" />
-                תאריך מעבר מועדף
-              </Label>
-              <Input
-                id="preferredSwitchDate"
-                type="date"
-                min={getMinDate()}
-                value={data.preferredSwitchDate || ''}
-                onChange={(e) => handleFieldChange('preferredSwitchDate', e.target.value)}
-                className="h-12 text-base px-4 md:w-1/2"
-              />
-            </div>
-          </div>
+      {/* Preferred Date */}
+      <div className="space-y-4 pt-2">
+        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+          <Calendar className={cn("w-4 h-4", categoryColor.text)} />
+          <span>תאריך מעבר מועדף (אופציונלי)</span>
+        </div>
+        
+        <div className={cn(
+          "relative rounded-2xl border-2 transition-all duration-200 bg-white overflow-hidden",
+          "border-muted-foreground/20"
+        )}>
+          <Input
+            id="preferredSwitchDate"
+            type="date"
+            min={getMinDate()}
+            value={data.preferredSwitchDate || ''}
+            onChange={(e) => handleFieldChange('preferredSwitchDate', e.target.value)}
+            className="border-0 h-14 text-lg px-4 focus-visible:ring-0 focus-visible:ring-offset-0"
+            style={{ fontSize: '16px' }}
+          />
+        </div>
+      </div>
 
-          {/* Additional Notes */}
-          <div className="space-y-2">
-            <Label htmlFor="additionalNotes" className="text-sm font-medium">
-              הערות נוספות (אופציונלי)
-            </Label>
-            <Textarea
-              id="additionalNotes"
-              value={data.additionalNotes || ''}
-              onChange={(e) => handleFieldChange('additionalNotes', e.target.value)}
-              placeholder="מידע נוסף שברצונכם לציין..."
-              className="min-h-[100px] text-base resize-none"
-            />
-          </div>
+      {/* Additional Notes */}
+      <div className="space-y-2 pt-2">
+        <Label htmlFor="additionalNotes" className="text-sm font-medium text-muted-foreground">
+          הערות נוספות (אופציונלי)
+        </Label>
+        <Textarea
+          id="additionalNotes"
+          value={data.additionalNotes || ''}
+          onChange={(e) => handleFieldChange('additionalNotes', e.target.value)}
+          placeholder="מידע נוסף שברצונכם לציין..."
+          className="min-h-[100px] text-base rounded-2xl border-2 border-muted-foreground/20 resize-none focus-visible:ring-2 focus-visible:ring-primary/30"
+          style={{ fontSize: '16px' }}
+        />
+      </div>
 
-          {/* Navigation Buttons */}
-          <div className="flex flex-col-reverse md:flex-row gap-3 pt-4">
-            <Button
-              variant="outline"
-              onClick={onBack}
-              className="h-12 md:h-14 flex-1"
-            >
-              חזרה
-            </Button>
-            <Button
-              onClick={handleNext}
-              className={cn(
-                "h-12 md:h-14 flex-1 text-lg font-medium",
-                "bg-gradient-to-r",
-                categoryColor.primary,
-                "hover:opacity-90 transition-opacity"
-              )}
-            >
-              המשך לחתימה
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Navigation Buttons */}
+      <div className="flex gap-3 pt-4">
+        <Button
+          variant="outline"
+          onClick={onBack}
+          className="flex-1 h-14 text-lg rounded-2xl border-2"
+        >
+          <ChevronRight className="w-5 h-5 ml-2" />
+          חזרה
+        </Button>
+        <Button
+          onClick={handleNext}
+          disabled={progress < 100}
+          className={cn(
+            "flex-[2] h-14 text-lg font-bold rounded-2xl shadow-lg",
+            "bg-gradient-to-r",
+            categoryColor.primary,
+            "hover:opacity-90 hover:shadow-xl active:scale-[0.98]",
+            "disabled:opacity-50"
+          )}
+        >
+          המשך לחתימה
+          <ChevronLeft className="w-5 h-5 mr-2" />
+        </Button>
+      </div>
     </motion.div>
   );
 };
