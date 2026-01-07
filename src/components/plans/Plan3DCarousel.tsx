@@ -1,10 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Check, Clock, Shield, Gift, Building2, Wifi, Smartphone, Tv, Zap, Signal, Database, Monitor, Users, Package, Star, TrendingUp, Crown, Gem, Award, Info } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Check, Clock, Shield, Gift, Building2, Wifi, Smartphone, Tv, Zap, Signal, Database, Monitor, Users, Package, Star, TrendingUp, Crown, Gem, Award, Info, Heart, Scale, TrendingDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { PlanRecord } from '@/hooks/useAllPlans';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { usePlanPreferences } from '@/hooks/usePlanPreferences';
+import { calculateValueScore, getDealQualityColor, getDealQualityLabel } from '@/lib/planValueCalculator';
 
 interface Plan3DCarouselProps {
   plans: PlanRecord[];
@@ -12,168 +16,6 @@ interface Plan3DCarouselProps {
   onSelectPlan: (plan: PlanRecord) => void;
   companyLogos: Record<string, string>;
 }
-
-// Plan tier system to explain price differences
-type PlanTier = 'basic' | 'standard' | 'premium' | 'ultimate';
-
-const getPlanTier = (plan: PlanRecord): { tier: PlanTier; label: string; icon: typeof Star; color: string; bgColor: string; description: string } => {
-  const price = plan.monthlyPrice || 0;
-  const planLower = (plan.plan + ' ' + (plan.transferBenefits || '')).toLowerCase();
-  const service = plan.service.toLowerCase();
-  
-  // Determine tier based on price and features
-  let tier: PlanTier = 'basic';
-  
-  if (service.includes('טריפל')) {
-    if (price > 300) tier = 'ultimate';
-    else if (price > 200) tier = 'premium';
-    else if (price > 150) tier = 'standard';
-    else tier = 'basic';
-  } else if (service.includes('סלולר')) {
-    if (price > 60 || planLower.includes('ללא הגבלה')) tier = 'ultimate';
-    else if (price > 40 || planLower.includes('500') || planLower.includes('1000')) tier = 'premium';
-    else if (price > 25) tier = 'standard';
-    else tier = 'basic';
-  } else if (service.includes('אינטרנט')) {
-    if (price > 140 || planLower.includes('1 גיגה') || planLower.includes('1000')) tier = 'ultimate';
-    else if (price > 100 || planLower.includes('500')) tier = 'premium';
-    else if (price > 70) tier = 'standard';
-    else tier = 'basic';
-  } else if (service.includes('טלוויזיה')) {
-    if (price > 170 || planLower.includes('netflix') || planLower.includes('hbo')) tier = 'ultimate';
-    else if (price > 130 || planLower.includes('4k')) tier = 'premium';
-    else if (price > 90) tier = 'standard';
-    else tier = 'basic';
-  }
-  
-  const tierConfig = {
-    basic: { 
-      label: 'בסיסי', 
-      icon: Star, 
-      color: 'text-slate-600', 
-      bgColor: 'bg-slate-100',
-      description: 'מתאים לשימוש קל • מחיר נמוך • הכי חסכוני'
-    },
-    standard: { 
-      label: 'סטנדרט', 
-      icon: TrendingUp, 
-      color: 'text-blue-600', 
-      bgColor: 'bg-blue-100',
-      description: 'איזון בין מחיר לביצועים • מתאים לרוב המשתמשים'
-    },
-    premium: { 
-      label: 'פרימיום', 
-      icon: Crown, 
-      color: 'text-purple-600', 
-      bgColor: 'bg-purple-100',
-      description: 'ביצועים גבוהים • תוכן עשיר • הטבות נוספות'
-    },
-    ultimate: { 
-      label: 'אולטימטיבי', 
-      icon: Gem, 
-      color: 'text-amber-600', 
-      bgColor: 'bg-amber-100',
-      description: 'הכל כלול • ללא הגבלות • חוויה מקסימלית'
-    },
-  };
-  
-  return { tier, ...tierConfig[tier] };
-};
-
-// Enhanced plan details extraction
-const parsePlanDetails = (plan: PlanRecord) => {
-  const details: { icon: typeof Wifi; label: string; value: string; highlight?: boolean }[] = [];
-  const planLower = (plan.plan + ' ' + (plan.transferBenefits || '')).toLowerCase();
-  const service = plan.service.toLowerCase();
-  
-  // Internet speed detection - more comprehensive
-  if (service.includes('אינטרנט') || service.includes('טריפל')) {
-    if (planLower.includes('1 גיגה') || planLower.includes('1000') || planLower.includes('1gbps')) {
-      details.push({ icon: Wifi, label: 'מהירות', value: '1Gbps', highlight: true });
-    } else if (planLower.includes('500')) {
-      details.push({ icon: Wifi, label: 'מהירות', value: '500Mbps', highlight: true });
-    } else if (planLower.includes('200')) {
-      details.push({ icon: Wifi, label: 'מהירות', value: '200Mbps' });
-    } else if (planLower.includes('100')) {
-      details.push({ icon: Wifi, label: 'מהירות', value: '100Mbps' });
-    } else if (planLower.includes('סיבים') || planLower.includes('fiber')) {
-      details.push({ icon: Wifi, label: 'חיבור', value: 'סיבים אופטיים', highlight: true });
-    }
-  }
-  
-  // Cellular data detection - enhanced
-  if (service.includes('סלולר') || service.includes('טריפל')) {
-    if (planLower.includes('ללא הגבלה') || planLower.includes('אנלימיטד') || planLower.includes('unlimited')) {
-      details.push({ icon: Database, label: 'גלישה', value: '∞ ללא הגבלה', highlight: true });
-    } else if (planLower.includes('1000gb') || planLower.includes('1000 ג')) {
-      details.push({ icon: Database, label: 'גלישה', value: '1000GB', highlight: true });
-    } else if (planLower.includes('500gb') || planLower.includes('500 ג')) {
-      details.push({ icon: Database, label: 'גלישה', value: '500GB', highlight: true });
-    } else if (planLower.includes('400gb') || planLower.includes('400 ג')) {
-      details.push({ icon: Database, label: 'גלישה', value: '400GB' });
-    } else if (planLower.includes('300gb') || planLower.includes('300 ג')) {
-      details.push({ icon: Database, label: 'גלישה', value: '300GB' });
-    } else if (planLower.includes('200gb') || planLower.includes('200 ג')) {
-      details.push({ icon: Database, label: 'גלישה', value: '200GB' });
-    } else if (planLower.includes('150gb') || planLower.includes('150 ג')) {
-      details.push({ icon: Database, label: 'גלישה', value: '150GB' });
-    } else if (planLower.includes('100gb') || planLower.includes('100 ג')) {
-      details.push({ icon: Database, label: 'גלישה', value: '100GB' });
-    } else if (planLower.includes('50gb') || planLower.includes('50 ג')) {
-      details.push({ icon: Database, label: 'גלישה', value: '50GB' });
-    } else {
-      const dataMatch = planLower.match(/(\d+)\s*(gb|ג'יגה|גיגה|ג\'יגה)/i);
-      if (dataMatch) {
-        details.push({ icon: Database, label: 'גלישה', value: `${dataMatch[1]}GB` });
-      }
-    }
-  }
-  
-  // TV channels detection - enhanced
-  if (service.includes('טלוויזיה') || service.includes('טריפל')) {
-    const channelsMatch = planLower.match(/(\d+)\s*(ערוצ|channel)/i);
-    if (channelsMatch) {
-      const channels = parseInt(channelsMatch[1]);
-      details.push({ 
-        icon: Tv, 
-        label: 'ערוצים', 
-        value: `${channels} ערוצים`,
-        highlight: channels > 100
-      });
-    } else if (planLower.includes('כל הערוצים')) {
-      details.push({ icon: Tv, label: 'ערוצים', value: 'כל הערוצים', highlight: true });
-    }
-    
-    // Streaming services
-    const streaming: string[] = [];
-    if (planLower.includes('netflix')) streaming.push('Netflix');
-    if (planLower.includes('hbo')) streaming.push('HBO');
-    if (planLower.includes('disney')) streaming.push('Disney+');
-    if (streaming.length > 0) {
-      details.push({ icon: Monitor, label: 'סטרימינג', value: streaming.join('+'), highlight: true });
-    }
-    
-    // 4K
-    if (planLower.includes('4k')) {
-      details.push({ icon: Monitor, label: 'איכות', value: '4K Ultra HD', highlight: true });
-    }
-  }
-  
-  // Triple bundle - cellular lines
-  if (service.includes('טריפל')) {
-    const linesMatch = planLower.match(/(\d+)\s*(קו|line|מכשיר)/i);
-    if (linesMatch) {
-      details.push({ icon: Users, label: 'קווי סלולר', value: `${linesMatch[1]} קווים` });
-    }
-  }
-  
-  // 5G support
-  if (planLower.includes('5g')) {
-    details.push({ icon: Signal, label: 'רשת', value: 'דור 5 (5G)', highlight: true });
-  }
-  
-  return details;
-};
 
 // Get service category icon
 const getServiceIcon = (service: string) => {
@@ -186,14 +28,32 @@ const getServiceIcon = (service: string) => {
   return Smartphone;
 };
 
+// Get feature chips for a plan
+const getFeatureChips = (plan: PlanRecord): string[] => {
+  const chips: string[] = [];
+  const planText = `${plan.plan} ${plan.commitment || ''}`.toLowerCase();
+  
+  if (planText.includes('5g')) chips.push('5G');
+  if (planText.includes('ללא הגבלה') || planText.includes('אינסופי')) chips.push('ללא הגבלה');
+  if (planText.includes('סיבים') || planText.includes('fiber')) chips.push('סיבים');
+  if (planText.includes('ללא התחייבות') || planText.includes('בלי התחייבות')) chips.push('ללא התחייבות');
+  
+  return chips.slice(0, 3);
+};
+
 // 3D Carousel for each company
 const Company3DCarousel: React.FC<{
   company: string;
   plans: PlanRecord[];
+  allPlans: PlanRecord[];
   currentMonthlyBill: number;
   onSelectPlan: (plan: PlanRecord) => void;
   logo?: string;
-}> = ({ company, plans, currentMonthlyBill, onSelectPlan, logo }) => {
+  toggleFavorite: (company: string, plan: string) => void;
+  isFavorite: (company: string, plan: string) => boolean;
+  toggleCompare: (company: string, plan: string) => boolean;
+  isInCompare: (company: string, plan: string) => boolean;
+}> = ({ company, plans, allPlans, currentMonthlyBill, onSelectPlan, logo, toggleFavorite, isFavorite, toggleCompare, isInCompare }) => {
   const [activeIndex, setActiveIndex] = useState(Math.floor(plans.length / 2));
 
   const handlePrev = () => {
@@ -214,56 +74,22 @@ const Company3DCarousel: React.FC<{
     }
   };
 
-  const parseFeatures = (plan: PlanRecord): string[] => {
-    const features: string[] = [];
-    if (plan.transferBenefits) {
-      const parts = plan.transferBenefits.split(/[,،;•]/);
-      features.push(...parts.slice(0, 3).map(p => p.trim()).filter(Boolean));
-    }
-    return features;
-  };
-
   const getCardStyle = (index: number, isMobile: boolean) => {
     const diff = index - activeIndex;
     const absDiff = Math.abs(diff);
     
-    // Mobile-friendly spacing
     const xMultiplier = isMobile ? 140 : 280;
     const xMultiplier2 = isMobile ? 100 : 220;
     const xMultiplier3 = isMobile ? 80 : 180;
     
     if (absDiff === 0) {
-      return {
-        x: 0,
-        scale: 1,
-        zIndex: 30,
-        opacity: 1,
-        rotateY: 0,
-      };
+      return { x: 0, scale: 1, zIndex: 30, opacity: 1, rotateY: 0 };
     } else if (absDiff === 1) {
-      return {
-        x: diff * xMultiplier,
-        scale: isMobile ? 0.75 : 0.85,
-        zIndex: 20,
-        opacity: isMobile ? 0.5 : 0.7,
-        rotateY: diff * -15,
-      };
+      return { x: diff * xMultiplier, scale: isMobile ? 0.75 : 0.85, zIndex: 20, opacity: isMobile ? 0.5 : 0.7, rotateY: diff * -15 };
     } else if (absDiff === 2) {
-      return {
-        x: diff * xMultiplier2,
-        scale: isMobile ? 0.6 : 0.7,
-        zIndex: 10,
-        opacity: isMobile ? 0.2 : 0.4,
-        rotateY: diff * -20,
-      };
+      return { x: diff * xMultiplier2, scale: isMobile ? 0.6 : 0.7, zIndex: 10, opacity: isMobile ? 0.2 : 0.4, rotateY: diff * -20 };
     } else {
-      return {
-        x: diff * xMultiplier3,
-        scale: isMobile ? 0.5 : 0.6,
-        zIndex: 0,
-        opacity: 0,
-        rotateY: diff * -25,
-      };
+      return { x: diff * xMultiplier3, scale: isMobile ? 0.5 : 0.6, zIndex: 0, opacity: 0, rotateY: diff * -25 };
     }
   };
 
@@ -271,7 +97,6 @@ const Company3DCarousel: React.FC<{
     currentMonthlyBill > 0 && p.monthlyPrice && p.monthlyPrice < currentMonthlyBill
   ).length;
 
-  // Detect mobile
   const [isMobile, setIsMobile] = useState(false);
   
   React.useEffect(() => {
@@ -281,79 +106,16 @@ const Company3DCarousel: React.FC<{
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Get company color theme based on company name
+  // Company color themes
   const getCompanyTheme = (companyName: string) => {
     const themes = [
-      { 
-        headerBg: 'bg-gradient-to-l from-slate-800 via-slate-700 to-slate-600',
-        accent: 'bg-blue-500',
-        accentLight: 'bg-blue-50',
-        accentText: 'text-blue-600',
-        border: 'border-blue-200',
-        cardBg: 'bg-gradient-to-br from-blue-50/50 to-white',
-        priceBg: 'bg-blue-50',
-        dot: 'bg-blue-500'
-      },
-      { 
-        headerBg: 'bg-gradient-to-l from-violet-800 via-purple-700 to-violet-600',
-        accent: 'bg-purple-500',
-        accentLight: 'bg-purple-50',
-        accentText: 'text-purple-600',
-        border: 'border-purple-200',
-        cardBg: 'bg-gradient-to-br from-purple-50/50 to-white',
-        priceBg: 'bg-purple-50',
-        dot: 'bg-purple-500'
-      },
-      { 
-        headerBg: 'bg-gradient-to-l from-teal-800 via-teal-700 to-emerald-600',
-        accent: 'bg-teal-500',
-        accentLight: 'bg-teal-50',
-        accentText: 'text-teal-600',
-        border: 'border-teal-200',
-        cardBg: 'bg-gradient-to-br from-teal-50/50 to-white',
-        priceBg: 'bg-teal-50',
-        dot: 'bg-teal-500'
-      },
-      { 
-        headerBg: 'bg-gradient-to-l from-amber-800 via-orange-700 to-amber-600',
-        accent: 'bg-orange-500',
-        accentLight: 'bg-orange-50',
-        accentText: 'text-orange-600',
-        border: 'border-orange-200',
-        cardBg: 'bg-gradient-to-br from-orange-50/50 to-white',
-        priceBg: 'bg-orange-50',
-        dot: 'bg-orange-500'
-      },
-      { 
-        headerBg: 'bg-gradient-to-l from-rose-800 via-pink-700 to-rose-600',
-        accent: 'bg-rose-500',
-        accentLight: 'bg-rose-50',
-        accentText: 'text-rose-600',
-        border: 'border-rose-200',
-        cardBg: 'bg-gradient-to-br from-rose-50/50 to-white',
-        priceBg: 'bg-rose-50',
-        dot: 'bg-rose-500'
-      },
-      { 
-        headerBg: 'bg-gradient-to-l from-cyan-800 via-sky-700 to-cyan-600',
-        accent: 'bg-cyan-500',
-        accentLight: 'bg-cyan-50',
-        accentText: 'text-cyan-600',
-        border: 'border-cyan-200',
-        cardBg: 'bg-gradient-to-br from-cyan-50/50 to-white',
-        priceBg: 'bg-cyan-50',
-        dot: 'bg-cyan-500'
-      },
-      { 
-        headerBg: 'bg-gradient-to-l from-indigo-800 via-indigo-700 to-blue-600',
-        accent: 'bg-indigo-500',
-        accentLight: 'bg-indigo-50',
-        accentText: 'text-indigo-600',
-        border: 'border-indigo-200',
-        cardBg: 'bg-gradient-to-br from-indigo-50/50 to-white',
-        priceBg: 'bg-indigo-50',
-        dot: 'bg-indigo-500'
-      },
+      { headerBg: 'bg-gradient-to-l from-slate-800 via-slate-700 to-slate-600', accent: 'bg-blue-500', accentLight: 'bg-blue-50', accentText: 'text-blue-600', border: 'border-blue-200', cardBg: 'bg-gradient-to-br from-blue-50/50 to-white', priceBg: 'bg-blue-50', dot: 'bg-blue-500' },
+      { headerBg: 'bg-gradient-to-l from-violet-800 via-purple-700 to-violet-600', accent: 'bg-purple-500', accentLight: 'bg-purple-50', accentText: 'text-purple-600', border: 'border-purple-200', cardBg: 'bg-gradient-to-br from-purple-50/50 to-white', priceBg: 'bg-purple-50', dot: 'bg-purple-500' },
+      { headerBg: 'bg-gradient-to-l from-teal-800 via-teal-700 to-emerald-600', accent: 'bg-teal-500', accentLight: 'bg-teal-50', accentText: 'text-teal-600', border: 'border-teal-200', cardBg: 'bg-gradient-to-br from-teal-50/50 to-white', priceBg: 'bg-teal-50', dot: 'bg-teal-500' },
+      { headerBg: 'bg-gradient-to-l from-amber-800 via-orange-700 to-amber-600', accent: 'bg-orange-500', accentLight: 'bg-orange-50', accentText: 'text-orange-600', border: 'border-orange-200', cardBg: 'bg-gradient-to-br from-orange-50/50 to-white', priceBg: 'bg-orange-50', dot: 'bg-orange-500' },
+      { headerBg: 'bg-gradient-to-l from-rose-800 via-pink-700 to-rose-600', accent: 'bg-rose-500', accentLight: 'bg-rose-50', accentText: 'text-rose-600', border: 'border-rose-200', cardBg: 'bg-gradient-to-br from-rose-50/50 to-white', priceBg: 'bg-rose-50', dot: 'bg-rose-500' },
+      { headerBg: 'bg-gradient-to-l from-cyan-800 via-sky-700 to-cyan-600', accent: 'bg-cyan-500', accentLight: 'bg-cyan-50', accentText: 'text-cyan-600', border: 'border-cyan-200', cardBg: 'bg-gradient-to-br from-cyan-50/50 to-white', priceBg: 'bg-cyan-50', dot: 'bg-cyan-500' },
+      { headerBg: 'bg-gradient-to-l from-indigo-800 via-indigo-700 to-blue-600', accent: 'bg-indigo-500', accentLight: 'bg-indigo-50', accentText: 'text-indigo-600', border: 'border-indigo-200', cardBg: 'bg-gradient-to-br from-indigo-50/50 to-white', priceBg: 'bg-indigo-50', dot: 'bg-indigo-500' },
     ];
     const hash = companyName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return themes[hash % themes.length];
@@ -363,17 +125,10 @@ const Company3DCarousel: React.FC<{
 
   return (
     <div className="mb-12 md:mb-20 last:mb-0">
-      {/* Company Header - Clean professional design */}
+      {/* Company Header */}
       <div className="mx-3 md:mx-6 mb-6 md:mb-8">
         <div className="flex items-center gap-4 md:gap-5 p-4 md:p-5 rounded-xl bg-card border border-border shadow-sm">
-          {/* Logo */}
-          <div className={cn(
-            "w-14 h-14 md:w-16 md:h-16 rounded-xl flex-shrink-0",
-            "flex items-center justify-center p-2.5 md:p-3",
-            "bg-gradient-to-br",
-            theme.headerBg,
-            "shadow-md"
-          )}>
+          <div className={cn("w-14 h-14 md:w-16 md:h-16 rounded-xl flex-shrink-0 flex items-center justify-center p-2.5 md:p-3 bg-gradient-to-br shadow-md", theme.headerBg)}>
             {logo ? (
               <img src={logo} alt={company} className="max-w-full max-h-full object-contain brightness-0 invert" />
             ) : (
@@ -381,17 +136,10 @@ const Company3DCarousel: React.FC<{
             )}
           </div>
 
-          {/* Company Info */}
           <div className="flex-1 min-w-0">
-            <h2 className="text-lg md:text-xl font-bold text-foreground mb-1 truncate">
-              {company}
-            </h2>
+            <h2 className="text-lg md:text-xl font-bold text-foreground mb-1 truncate">{company}</h2>
             <div className="flex flex-wrap items-center gap-2">
-              <span className={cn(
-                "px-2 py-0.5 rounded-full text-xs font-medium",
-                theme.accentLight,
-                theme.accentText
-              )}>
+              <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium", theme.accentLight, theme.accentText)}>
                 {plans.length} מסלולים
               </span>
               {recommendedCount > 0 && (
@@ -405,9 +153,9 @@ const Company3DCarousel: React.FC<{
         </div>
       </div>
 
-      {/* 3D Carousel Container - Mobile optimized */}
-      <div className="relative h-[420px] md:h-[540px] flex items-center justify-center" style={{ perspective: '1200px' }}>
-        {/* Navigation Buttons - Mobile adjusted */}
+      {/* 3D Carousel Container */}
+      <div className="relative h-[480px] md:h-[580px] flex items-center justify-center" style={{ perspective: '1200px' }}>
+        {/* Navigation Buttons */}
         <button
           onClick={handlePrev}
           className="absolute right-1 md:right-4 z-40 w-10 h-10 md:w-12 md:h-12 rounded-full bg-card/90 backdrop-blur-sm border border-border shadow-lg flex items-center justify-center transition-all hover:bg-muted hover:scale-110 touch-manipulation active:scale-95"
@@ -427,14 +175,16 @@ const Company3DCarousel: React.FC<{
           <AnimatePresence mode="popLayout">
             {plans.map((plan, index) => {
               const style = getCardStyle(index, isMobile);
+              const valueScore = calculateValueScore(plan, allPlans);
               const savings = currentMonthlyBill > 0 && plan.monthlyPrice && plan.monthlyPrice < currentMonthlyBill
                 ? currentMonthlyBill - plan.monthlyPrice
                 : 0;
               const isRecommended = savings > 0;
               const isCenter = index === activeIndex;
-              const features = parseFeatures(plan);
-              const planDetails = parsePlanDetails(plan);
               const ServiceIcon = getServiceIcon(plan.service);
+              const featureChips = getFeatureChips(plan);
+              const planIsFavorite = isFavorite(plan.company, plan.plan);
+              const planIsInCompare = isInCompare(plan.company, plan.plan);
 
               return (
                 <motion.div
@@ -448,11 +198,7 @@ const Company3DCarousel: React.FC<{
                     opacity: style.opacity,
                     zIndex: style.zIndex,
                   }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 30,
-                  }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   onClick={() => !isCenter && setActiveIndex(index)}
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
@@ -461,19 +207,29 @@ const Company3DCarousel: React.FC<{
                 >
                   <div
                     className={cn(
-                      "w-[280px] md:w-[320px] rounded-2xl overflow-hidden transition-all duration-300",
+                      "w-[280px] md:w-[340px] rounded-2xl overflow-hidden transition-all duration-300",
                       isCenter 
                         ? `shadow-2xl border-2 ${theme.border}` 
                         : "shadow-lg border border-border/50",
                       isCenter ? theme.cardBg : "bg-card",
-                      isRecommended && isCenter && "ring-2 ring-emerald-500/50"
+                      isRecommended && isCenter && "ring-2 ring-emerald-500/50",
+                      planIsInCompare && "ring-2 ring-primary"
                     )}
                   >
                     {/* Top accent bar */}
                     <div className={cn("h-1.5", theme.accent)} />
                     
+                    {/* Deal Quality Badge */}
+                    {valueScore.dealQuality === 'excellent' && (
+                      <div className="bg-green-600 text-white py-1.5 md:py-2 px-3 md:px-4">
+                        <div className="flex items-center justify-center gap-2 text-xs md:text-sm font-semibold">
+                          🔥 עסקה מעולה
+                        </div>
+                      </div>
+                    )}
+                    
                     {/* Savings Badge */}
-                    {isRecommended && (
+                    {isRecommended && valueScore.dealQuality !== 'excellent' && (
                       <div className="bg-emerald-600 text-white py-1.5 md:py-2 px-3 md:px-4">
                         <div className="flex items-center justify-center gap-2 text-xs md:text-sm font-semibold">
                           <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -482,134 +238,111 @@ const Company3DCarousel: React.FC<{
                       </div>
                     )}
 
-                    <div className="p-3 md:p-4">
-                      {/* Tier Badge with Info - explains price differences */}
-                      {(() => {
-                        const tierInfo = getPlanTier(plan);
-                        const TierIcon = tierInfo.icon;
-                        return (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <div className="flex items-center justify-between mb-2">
-                                  <span className={cn(
-                                    "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] md:text-xs font-semibold",
-                                    tierInfo.bgColor,
-                                    tierInfo.color
-                                  )}>
-                                    <TierIcon className="w-3 h-3" />
-                                    {tierInfo.label}
-                                    <Info className="w-2.5 h-2.5 opacity-60" />
-                                  </span>
-                                  <span className={cn(
-                                    "flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-medium",
-                                    theme.accentLight,
-                                    theme.accentText
-                                  )}>
-                                    <ServiceIcon className="w-2.5 h-2.5" />
-                                    {plan.service}
-                                  </span>
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent side="top" className="max-w-[200px] text-center">
-                                <p className="text-xs font-medium mb-1">למה המחיר הזה?</p>
-                                <p className="text-[10px] text-muted-foreground">{tierInfo.description}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        );
-                      })()}
+                    <div className="p-3 md:p-4 relative">
+                      {/* Favorite & Compare Buttons */}
+                      <div className="absolute top-2 left-2 flex gap-1 z-10">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleFavorite(plan.company, plan.plan); }}
+                          className={cn(
+                            "w-8 h-8 rounded-full flex items-center justify-center transition-all",
+                            planIsFavorite ? "bg-red-100 text-red-500" : "bg-white/80 text-gray-400 hover:text-red-500"
+                          )}
+                        >
+                          <Heart className={cn("w-4 h-4", planIsFavorite && "fill-current")} />
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleCompare(plan.company, plan.plan); }}
+                          className={cn(
+                            "w-8 h-8 rounded-full flex items-center justify-center transition-all",
+                            planIsInCompare ? "bg-primary/20 text-primary" : "bg-white/80 text-gray-400 hover:text-primary"
+                          )}
+                        >
+                          <Scale className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      {/* Service Badge */}
+                      <div className="flex items-center justify-between mb-2">
+                        <span className={cn("flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-medium", theme.accentLight, theme.accentText)}>
+                          <ServiceIcon className="w-2.5 h-2.5" />
+                          {plan.service}
+                        </span>
+                        <Badge className={cn("text-[10px]", getDealQualityColor(valueScore.dealQuality))}>
+                          {getDealQualityLabel(valueScore.dealQuality)}
+                        </Badge>
+                      </div>
 
                       {/* Plan Name */}
                       <h3 className="text-sm md:text-base font-bold text-foreground mb-2 line-clamp-2 min-h-[36px] md:min-h-[40px]">
                         {plan.plan}
                       </h3>
 
-                      {/* Plan Details Grid - Enhanced with highlights */}
-                      {planDetails.length > 0 && (
-                        <div className={cn(
-                          "grid gap-1.5 mb-3 p-2.5 rounded-xl border",
-                          isCenter ? "bg-gradient-to-br from-muted/60 to-muted/30 border-border" : "bg-muted/30 border-transparent",
-                          planDetails.length > 2 ? "grid-cols-2" : "grid-cols-1"
-                        )}>
-                          {planDetails.slice(0, isCenter ? 6 : 2).map((detail, idx) => {
-                            const DetailIcon = detail.icon;
-                            return (
-                              <div key={idx} className={cn(
-                                "flex items-center gap-1.5 p-1 rounded-md transition-colors",
-                                detail.highlight && "bg-primary/5"
-                              )}>
-                                <div className={cn(
-                                  "w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0",
-                                  detail.highlight ? theme.accent + " text-white" : theme.accentLight
-                                )}>
-                                  <DetailIcon className={cn(
-                                    "w-3.5 h-3.5",
-                                    detail.highlight ? "text-white" : theme.accentText
-                                  )} />
-                                </div>
-                                <div className="flex flex-col min-w-0">
-                                  <span className="text-[8px] text-muted-foreground leading-tight uppercase tracking-wide">{detail.label}</span>
-                                  <span className={cn(
-                                    "text-[11px] md:text-xs font-bold truncate",
-                                    detail.highlight ? "text-foreground" : "text-foreground/80"
-                                  )}>{detail.value}</span>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-
-                      {/* Price - with company color */}
-                      <div className={cn(
-                        "rounded-xl p-2.5 md:p-3 mb-2.5 text-center relative overflow-hidden",
-                        theme.priceBg
-                      )}>
-                        <div className="flex items-baseline justify-center gap-1">
-                          <span className={cn("text-xl md:text-2xl font-bold", theme.accentText)}>
-                            {plan.monthlyPrice}
-                          </span>
-                          <span className="text-sm md:text-base text-muted-foreground">₪/חודש</span>
-                        </div>
-                        {plan.yearlyPrice && (
-                          <div className="text-[10px] md:text-xs text-muted-foreground mt-0.5">
-                            ₪{plan.yearlyPrice.toLocaleString()} לשנה
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Features - Only show when center - Mobile optimized */}
-                      {isCenter && features.length > 0 && (
-                        <div className="space-y-1 mb-2.5">
-                          {features.slice(0, isMobile ? 2 : 3).map((feature, idx) => (
-                            <div key={idx} className="flex items-start gap-1.5">
-                              <Check className="w-3 h-3 md:w-3.5 md:h-3.5 text-emerald-600 mt-0.5 flex-shrink-0" />
-                              <span className="text-[11px] md:text-xs text-foreground/80 line-clamp-1">{feature}</span>
-                            </div>
+                      {/* Feature Chips */}
+                      {featureChips.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {featureChips.map(chip => (
+                            <Badge key={chip} variant="secondary" className="text-[10px] px-1.5 py-0.5">
+                              {chip}
+                            </Badge>
                           ))}
                         </div>
                       )}
 
-                      {/* Commitment & SLA row */}
-                      {isCenter && (plan.commitment || plan.sla) && (
-                        <div className="flex flex-wrap items-center gap-2 mb-2.5 text-[10px] md:text-xs text-muted-foreground">
-                          {plan.commitment && (
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              <span>{plan.commitment}</span>
-                            </div>
-                          )}
-                          {plan.sla && (
-                            <div className="flex items-center gap-1">
-                              <Shield className="w-3 h-3" />
-                              <span>שירות: {plan.sla}</span>
-                            </div>
-                          )}
+                      {/* Price */}
+                      <div className={cn("rounded-xl p-2.5 md:p-3 mb-3 text-center", theme.priceBg)}>
+                        <div className="flex items-baseline justify-center gap-1">
+                          <span className={cn("text-2xl md:text-3xl font-bold", theme.accentText)}>
+                            {plan.monthlyPrice}
+                          </span>
+                          <span className="text-sm md:text-base text-muted-foreground">₪/חודש</span>
+                        </div>
+                        
+                        {/* Price comparison */}
+                        {valueScore.percentFromAverage !== 0 && (
+                          <div className={`text-xs flex items-center justify-center gap-1 mt-1 ${
+                            valueScore.percentFromAverage > 0 ? 'text-green-600' : 'text-red-600'
+                          }`}>
+                            <TrendingDown className={`h-3 w-3 ${valueScore.percentFromAverage < 0 ? 'rotate-180' : ''}`} />
+                            {Math.abs(valueScore.percentFromAverage)}% {valueScore.percentFromAverage > 0 ? 'זול מהממוצע' : 'יקר מהממוצע'}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Value Score - Only when center */}
+                      {isCenter && (
+                        <div className="mb-3 p-2.5 bg-muted/50 rounded-lg">
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-muted-foreground">ציון ערך</span>
+                            <span className="font-bold">{valueScore.total}/100</span>
+                          </div>
+                          <Progress value={valueScore.total} className="h-2" />
                         </div>
                       )}
 
-                      {/* CTA Button - Mobile optimized */}
+                      {/* Why Choose - Only when center */}
+                      {isCenter && valueScore.whyChoose.length > 0 && (
+                        <div className="mb-3 p-2.5 bg-emerald-50 rounded-lg border border-emerald-100">
+                          <p className="text-[10px] font-medium text-emerald-800 mb-1.5">💡 למה לבחור?</p>
+                          <ul className="space-y-1">
+                            {valueScore.whyChoose.slice(0, 2).map((reason, i) => (
+                              <li key={i} className="text-[11px] flex items-start gap-1.5 text-emerald-700">
+                                <Check className="h-3 w-3 mt-0.5 flex-shrink-0" />
+                                <span>{reason}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Commitment info */}
+                      {isCenter && plan.commitment && (
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground mb-3">
+                          <Clock className="w-3 h-3" />
+                          <span>{plan.commitment}</span>
+                        </div>
+                      )}
+
+                      {/* CTA Button */}
                       {isCenter && (
                         <Button
                           onClick={(e) => {
@@ -617,14 +350,14 @@ const Company3DCarousel: React.FC<{
                             onSelectPlan(plan);
                           }}
                           className={cn(
-                            "w-full h-9 md:h-10 font-semibold rounded-xl transition-all text-xs md:text-sm touch-manipulation",
+                            "w-full h-10 md:h-11 font-semibold rounded-xl transition-all text-sm touch-manipulation",
                             isRecommended
                               ? "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white"
                               : "bg-foreground hover:bg-foreground/90 active:bg-foreground/80 text-background"
                           )}
                         >
-                          בחירת מסלול
-                          <ArrowLeft className="mr-2 h-3.5 w-3.5 md:h-4 md:w-4" />
+                          {isRecommended ? 'בחרו וחסכו!' : 'בחירת מסלול'}
+                          <ArrowLeft className="mr-2 h-4 w-4" />
                         </Button>
                       )}
                     </div>
@@ -636,7 +369,7 @@ const Company3DCarousel: React.FC<{
         </div>
       </div>
 
-      {/* Dots Indicator - with company color */}
+      {/* Dots Indicator */}
       <div className="flex justify-center items-center gap-1.5 md:gap-2 mt-4 md:mt-6">
         {plans.map((_, idx) => (
           <button
@@ -662,6 +395,14 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
   onSelectPlan,
   companyLogos
 }) => {
+  // Plan preferences (favorites, compare)
+  const {
+    toggleFavorite,
+    isFavorite,
+    toggleCompare,
+    isInCompare,
+  } = usePlanPreferences();
+
   // Group plans by company
   const plansByCompany = useMemo(() => {
     const grouped = new Map<string, PlanRecord[]>();
@@ -692,9 +433,14 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
           <Company3DCarousel
             company={company}
             plans={companyPlans}
+            allPlans={plans}
             currentMonthlyBill={currentMonthlyBill}
             onSelectPlan={onSelectPlan}
             logo={companyLogos[company]}
+            toggleFavorite={toggleFavorite}
+            isFavorite={isFavorite}
+            toggleCompare={toggleCompare}
+            isInCompare={isInCompare}
           />
         </motion.div>
       ))}
