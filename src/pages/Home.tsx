@@ -304,9 +304,9 @@ const Home = () => {
 
 
       {/* Hero Section with Clean Background */}
-      <section className="relative py-6 lg:py-8 overflow-hidden">
-        {/* Hand-drawn sketch element - top right */}
-        <div className="absolute top-8 right-12 w-[160px] h-[160px] pointer-events-none opacity-75">
+      <section className="relative py-8 md:py-6 lg:py-8 overflow-hidden">
+        {/* Hand-drawn sketch element - top right - Hidden on mobile */}
+        <div className="absolute top-8 right-12 w-[160px] h-[160px] pointer-events-none opacity-75 hidden md:block">
           <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
             {/* Light bulb - smart idea */}
             <g transform="translate(85, 20)">
@@ -379,8 +379,8 @@ const Home = () => {
           </svg>
         </div>
         
-        {/* EASYSWITCH branding - broken text style */}
-        <div className="absolute top-8 left-8 pointer-events-none">
+        {/* EASYSWITCH branding - broken text style - Hidden on mobile */}
+        <div className="absolute top-8 left-8 pointer-events-none hidden md:block">
           <svg width="240" height="120" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
             <defs>
               {/* Purple gradient */}
@@ -469,11 +469,22 @@ const Home = () => {
           />
         </div>
         
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-4 md:py-6 lg:py-8">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-6 md:py-6 lg:py-8">
           <div className="text-center">
             
+            {/* Mobile EASY SWITCH Badge */}
+            <div className="md:hidden mb-6 animate-fade-in opacity-0" style={{
+              animationDelay: '0.1s',
+              animationFillMode: 'forwards'
+            }}>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-purple-700 shadow-lg shadow-purple-500/30">
+                <Sparkles className="w-4 h-4 text-white" />
+                <span className="text-white font-bold text-sm tracking-wide">EASY SWITCH</span>
+              </div>
+            </div>
+            
             {/* Compact Title - Mobile Optimized */}
-            <div className="mb-3 animate-fade-in opacity-0" style={{
+            <div className="mb-4 md:mb-3 animate-fade-in opacity-0" style={{
               animationDelay: '0.2s',
               animationFillMode: 'forwards'
             }}>
