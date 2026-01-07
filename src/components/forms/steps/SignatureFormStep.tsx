@@ -189,13 +189,19 @@ export const SignatureFormStep = ({
               <SignatureCanvas
                 ref={sigCanvas}
                 canvasProps={{
-                  className: "w-full h-48 md:h-56 touch-none",
-                  style: { touchAction: 'none' }
+                  className: "w-full h-40 md:h-56 touch-none",
+                  style: { 
+                    touchAction: 'none',
+                    width: '100%',
+                    height: 'auto',
+                    minHeight: '160px'
+                  }
                 }}
                 onEnd={handleSignatureEnd}
                 penColor="#1a1a1a"
                 minWidth={1.5}
                 maxWidth={3}
+                velocityFilterWeight={0.7}
               />
               
               {/* Placeholder */}
