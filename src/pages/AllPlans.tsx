@@ -40,6 +40,9 @@ import Plan3DCarousel from "@/components/plans/Plan3DCarousel";
 import annualSavingsSketch from "@/assets/savings-clean.png";
 import { PlanRecordDetailsSheet } from "@/components/plans/PlanRecordDetailsSheet";
 import { Eye } from "lucide-react";
+import SmartSearchBar from "@/components/plans/SmartSearchBar";
+import PlanCardSkeleton from "@/components/plans/PlanCardSkeleton";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -438,16 +441,12 @@ const AllPlans = () => {
 
           {/* Search and Sort - Stacked on mobile */}
           <div className="flex flex-col gap-2 md:gap-3">
-            <div className="relative">
-              <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <Input
-                type="text"
-                placeholder="חיפוש..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pr-10 h-10 md:h-11 text-sm border-slate-200 bg-white focus:border-slate-400 focus:ring-slate-400"
-              />
-            </div>
+            <SmartSearchBar
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="חיפוש מסלול או חברה..."
+              suggestions={Array.from(new Set(allPlans.map(p => p.company)))}
+            />
             
             <div className="relative">
               <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
@@ -467,32 +466,8 @@ const AllPlans = () => {
 
         {/* Plans Display */}
         {isLoading ? (
-          // Loading Skeleton
-          <div className="space-y-8">
-            {[1, 2].map((i) => (
-              <div key={i} className="space-y-4">
-                <div className="flex items-center gap-4 pb-3 border-b-2 border-purple-200">
-                  <Skeleton className="w-20 h-20 rounded-xl" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-8 w-48" />
-                    <Skeleton className="h-4 w-32" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[1, 2, 3].map((j) => (
-                    <Card key={j}>
-                      <CardContent className="p-6 space-y-4">
-                        <Skeleton className="h-6 w-24" />
-                        <Skeleton className="h-16 w-full" />
-                        <Skeleton className="h-12 w-full" />
-                        <Skeleton className="h-10 w-full" />
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          // Enhanced Skeleton Loading
+          <PlanCardSkeleton viewMode={viewMode} count={6} />
         ) : filteredPlans.length === 0 ? (
           <Card>
             <CardContent className="p-12 text-center">
