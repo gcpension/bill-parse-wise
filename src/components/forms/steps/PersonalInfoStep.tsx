@@ -195,7 +195,7 @@ export const PersonalInfoStep = ({
             onBlur={() => handleBlur(name)}
             placeholder={placeholder}
             className={cn(
-              "h-12 text-base px-4 transition-all duration-200",
+              "h-14 text-base px-4 transition-all duration-200 text-[16px]",
               showError && "border-red-400 focus:border-red-500 focus:ring-red-200",
               showSuccess && "border-green-400 focus:border-green-500 focus:ring-green-200",
               !showError && !showSuccess && "focus:ring-primary/20"
@@ -385,7 +385,7 @@ export const PersonalInfoStep = ({
               "w-full h-14 text-lg font-medium mt-6",
               "bg-gradient-to-r",
               categoryColor.primary,
-              "hover:opacity-90 transition-opacity"
+              "hover:opacity-90 transition-opacity active:scale-[0.98]"
             )}
           >
             המשך לשלב הבא

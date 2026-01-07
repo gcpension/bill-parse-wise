@@ -377,22 +377,22 @@ export const ModernSwitchForm = ({
     </div>
   );
 
-  // Mobile: Use Drawer
+  // Mobile: Use Drawer with full height
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-        <DrawerContent className="max-h-[95vh] overflow-y-auto">
-          <DrawerHeader className="pb-2">
+        <DrawerContent className="h-[92vh] flex flex-col">
+          <DrawerHeader className="pb-2 flex-shrink-0 border-b">
             <div className="flex items-center justify-between">
-              <DrawerTitle className={cn("text-xl font-bold", categoryColor.text)}>
+              <DrawerTitle className={cn("text-lg font-bold", categoryColor.text)}>
                 טופס מעבר ספק
               </DrawerTitle>
-              <Button variant="ghost" size="icon" onClick={handleClose}>
+              <Button variant="ghost" size="icon" onClick={handleClose} className="h-8 w-8">
                 <X className="w-5 h-5" />
               </Button>
             </div>
           </DrawerHeader>
-          <div className="px-4 pb-8">
+          <div className="flex-1 overflow-y-auto px-4 pb-8 pt-4">
             {formContent}
           </div>
         </DrawerContent>

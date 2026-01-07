@@ -177,7 +177,7 @@ export const ServiceDetailsStep = ({
             onChange={(e) => handleFieldChange(name, e.target.value)}
             onBlur={() => handleBlur(name)}
             className={cn(
-              "h-12 text-base px-4",
+              "h-14 text-base px-4 text-[16px]",
               showError && "border-red-400 focus:border-red-500"
             )}
           />
