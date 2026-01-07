@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Shield, Clock } from "lucide-react";
+import { X, Shield, Clock, Save } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { useHapticFeedback } from "@/hooks/useHapticFeedback";
 
 import FormStepper from "./ui/FormStepper";
 import PlanHeroCard from "./ui/PlanHeroCard";
+import DraftRestorePrompt from "./ui/DraftRestorePrompt";
 import PersonalInfoStep from "./steps/PersonalInfoStep";
 import ServiceDetailsStep from "./steps/ServiceDetailsStep";
 import SignatureFormStep from "./steps/SignatureFormStep";
@@ -79,11 +82,47 @@ export const ModernSwitchForm = ({
 }: ModernSwitchFormProps) => {
   const isMobile = useIsMobile();
   const { toast } = useToast();
+  const { trigger: haptic } = useHapticFeedback();
   
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState('');
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+  // Draft management
+  const planId = `${selectedPlan.company}_${selectedPlan.plan}`.replace(/\s/g, '_');
+  const {
+    hasDraft,
+    draftData,
+    savedAt,
+    saveDraft,
+    clearDraft,
+    restoreDraft,
+    dismissDraft,
+    showRestorePrompt,
+  } = useFormDraft<FormData>('switch_form', planId);
+
+  // Auto-save draft on form data changes
+  useEffect(() => {
+    if (currentStep < 4 && isOpen) {
+      const hasData = formData.fullName || formData.phone || formData.email;
+      if (hasData) {
+        const timeout = setTimeout(() => {
+          saveDraft(formData);
+          setLastSaved(new Date());
+        }, 2000); // Debounce 2 seconds
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [formData, currentStep, isOpen, saveDraft]);
+
+  // Restore draft data when user confirms
+  useEffect(() => {
+    if (draftData && !showRestorePrompt && hasDraft) {
+      setFormData(draftData);
+    }
+  }, [draftData, showRestorePrompt, hasDraft]);
 
   // Get category-specific colors
   const getCategoryColor = () => {
@@ -143,9 +182,16 @@ export const ModernSwitchForm = ({
     return `${prefix}-${timestamp}-${random}`;
   };
 
+  // Handle step change with haptic feedback
+  const handleStepChange = useCallback((newStep: number) => {
+    haptic('selection');
+    setCurrentStep(newStep);
+  }, [haptic]);
+
   // Handle form submission
   const handleSubmit = async (signatureData: string) => {
     setIsSubmitting(true);
+    haptic('medium');
     
     try {
       const refNum = generateReferenceNumber();
@@ -211,14 +257,19 @@ export const ModernSwitchForm = ({
         throw new Error('Failed to save request');
       }
 
+      // Clear draft on successful submission
+      clearDraft();
+      
+      haptic('success');
       toast({
-        title: "הבקשה נשלחה בהצלחה!",
+        title: "הבקשה נשלחה בהצלחה! 🎉",
         description: `מספר אסמכתה: ${refNum}`,
       });
 
       setCurrentStep(4);
     } catch (error) {
       console.error('Submission error:', error);
+      haptic('error');
       toast({
         title: "שגיאה בשליחת הבקשה",
         description: "אנא נסו שוב מאוחר יותר",
@@ -232,7 +283,8 @@ export const ModernSwitchForm = ({
   // Handle close with confirmation
   const handleClose = () => {
     if (currentStep > 1 && currentStep < 4) {
-      if (window.confirm('האם אתה בטוח שברצונך לצאת? הנתונים שהזנת לא יישמרו.')) {
+      haptic('warning');
+      if (window.confirm('האם אתה בטוח שברצונך לצאת? הנתונים שלך נשמרים כטיוטה.')) {
         setCurrentStep(1);
         setFormData(initialFormData);
         onClose();
@@ -260,7 +312,7 @@ export const ModernSwitchForm = ({
               companyId: formData.companyId,
             }}
             onUpdate={(data) => setFormData(prev => ({ ...prev, ...data }))}
-            onNext={() => setCurrentStep(2)}
+            onNext={() => handleStepChange(2)}
             categoryColor={categoryColor}
           />
         );
@@ -277,8 +329,8 @@ export const ModernSwitchForm = ({
             }}
             category={selectedPlan.service}
             onUpdate={(data) => setFormData(prev => ({ ...prev, ...data }))}
-            onNext={() => setCurrentStep(3)}
-            onBack={() => setCurrentStep(1)}
+            onNext={() => handleStepChange(3)}
+            onBack={() => handleStepChange(1)}
             categoryColor={categoryColor}
           />
         );
@@ -295,7 +347,7 @@ export const ModernSwitchForm = ({
               price: selectedPlan.monthlyPrice,
             }}
             onSubmit={handleSubmit}
-            onBack={() => setCurrentStep(2)}
+            onBack={() => handleStepChange(2)}
             isSubmitting={isSubmitting}
             categoryColor={categoryColor}
           />
@@ -326,6 +378,17 @@ export const ModernSwitchForm = ({
   // Form content
   const formContent = (
     <div className="space-y-5" dir="rtl">
+      {/* Draft Restore Prompt */}
+      {currentStep === 1 && (
+        <DraftRestorePrompt
+          isVisible={showRestorePrompt}
+          savedAt={savedAt}
+          onRestore={restoreDraft}
+          onDismiss={dismissDraft}
+          categoryColor={categoryColor}
+        />
+      )}
+
       {/* Header Info - Compact for mobile */}
       {currentStep < 4 && (
         <div className="flex items-center justify-between">
@@ -333,10 +396,23 @@ export const ModernSwitchForm = ({
             <Shield className="w-3 h-3 ml-1" />
             מאובטח
           </Badge>
-          <Badge variant="secondary" className={cn(categoryColor.bg, categoryColor.text, categoryColor.border, "border text-xs")}>
-            <Clock className="w-3 h-3 ml-1" />
-            ~3 דק׳
-          </Badge>
+          
+          <div className="flex items-center gap-2">
+            {lastSaved && currentStep < 4 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center gap-1 text-xs text-muted-foreground"
+              >
+                <Save className="w-3 h-3" />
+                <span>נשמר</span>
+              </motion.div>
+            )}
+            <Badge variant="secondary" className={cn(categoryColor.bg, categoryColor.text, categoryColor.border, "border text-xs")}>
+              <Clock className="w-3 h-3 ml-1" />
+              ~3 דק׳
+            </Badge>
+          </div>
         </div>
       )}
 
