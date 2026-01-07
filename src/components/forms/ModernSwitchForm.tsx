@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Shield, Clock } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -400,41 +399,54 @@ export const ModernSwitchForm = ({
     </div>
   );
 
-  // Mobile: Use Drawer with full height
-  if (isMobile) {
-    return (
-      <Drawer open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-        <DrawerContent className="h-[92vh] flex flex-col">
-          <DrawerHeader className="pb-2 flex-shrink-0 border-b">
-            <div className="flex items-center justify-between">
-              <DrawerTitle className={cn("text-lg font-bold", categoryColor.text)}>
-                טופס מעבר ספק
-              </DrawerTitle>
-              <Button variant="ghost" size="icon" onClick={handleClose} className="h-8 w-8">
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-          </DrawerHeader>
-          <div className="flex-1 overflow-y-auto px-4 pb-8 pt-4">
-            {formContent}
-          </div>
-        </DrawerContent>
-      </Drawer>
-    );
-  }
-
-  // Desktop: Use Dialog
+  // Use Dialog for both mobile and desktop with responsive styling
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="max-w-3xl max-h-[95vh] overflow-y-auto">
-        <DialogHeader className="pb-2">
+      <DialogContent 
+        className={cn(
+          "overflow-hidden flex flex-col",
+          // Mobile: Full screen style
+          isMobile && "w-full h-[100dvh] max-w-full max-h-full rounded-none p-0 gap-0",
+          // Desktop: Regular dialog
+          !isMobile && "max-w-3xl max-h-[95vh]"
+        )}
+        // Prevent closing on outside click for mobile
+        onPointerDownOutside={(e) => isMobile && e.preventDefault()}
+        onInteractOutside={(e) => isMobile && e.preventDefault()}
+      >
+        {/* Header */}
+        <DialogHeader className={cn(
+          "flex-shrink-0 border-b",
+          isMobile ? "px-4 py-3" : "pb-4"
+        )}>
           <div className="flex items-center justify-between">
-            <DialogTitle className={cn("text-2xl font-bold", categoryColor.text)}>
+            <DialogTitle className={cn(
+              "font-bold",
+              categoryColor.text,
+              isMobile ? "text-lg" : "text-2xl"
+            )}>
               טופס מעבר ספק
             </DialogTitle>
+            {isMobile && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={handleClose} 
+                className="h-9 w-9 -ml-2"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            )}
           </div>
         </DialogHeader>
-        {formContent}
+        
+        {/* Scrollable Content */}
+        <div className={cn(
+          "flex-1 overflow-y-auto overscroll-contain no-pull-refresh",
+          isMobile ? "px-4 py-4 pb-safe" : "px-6 py-4"
+        )}>
+          {formContent}
+        </div>
       </DialogContent>
     </Dialog>
   );
