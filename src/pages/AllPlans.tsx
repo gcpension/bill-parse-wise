@@ -791,42 +791,25 @@ const AllPlans = () => {
         )}
       </div>
       
-      {/* Form Dialog - Compact Single Form */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader className="pb-4">
-            <DialogTitle className="text-xl font-light font-heebo">
-              {selectedPlanForForm && (
-                <>השלמת מעבר ל-{selectedPlanForForm.company}</>
-              )}
-            </DialogTitle>
-            <DialogDescription className="font-heebo font-light text-sm">
-              מלאו את הפרטים הבאים להשלמת המעבר למסלול החדש
-            </DialogDescription>
-          </DialogHeader>
-          {selectedPlanForForm && (
-            <UnifiedServiceForm 
-              onComplete={handleFormClose}
-              initialData={{
-                action_type: 'switch',
-                sector: selectedPlanForForm.service === 'סלולר' ? 'cellular' 
-                  : selectedPlanForForm.service.includes('אינטרנט') ? 'internet_isp'
-                  : selectedPlanForForm.service.includes('טלוויזיה') ? 'tv'
-                  : selectedPlanForForm.service === 'חשמל' ? 'electricity'
-                  : 'cellular',
-                target_provider: selectedPlanForForm.company,
-                selected_plan_name: selectedPlanForForm.plan,
-                selected_plan_price: selectedPlanForForm.monthlyPrice,
-                selected_plan_features: [
-                  selectedPlanForForm.transferBenefits,
-                  selectedPlanForForm.commitment ? `התחייבות: ${selectedPlanForForm.commitment}` : null,
-                  selectedPlanForForm.sla ? `ציון שירות: ${selectedPlanForForm.sla}` : null
-                ].filter(Boolean) as string[]
-              }}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Modern Switch Form */}
+      {selectedPlanForForm && (
+        <ModernSwitchForm
+          isOpen={isFormOpen}
+          onClose={handleFormClose}
+          selectedPlan={{
+            company: selectedPlanForForm.company,
+            plan: selectedPlanForForm.plan,
+            monthlyPrice: selectedPlanForForm.monthlyPrice || 0,
+            service: selectedPlanForForm.service,
+            features: [
+              selectedPlanForForm.transferBenefits,
+              selectedPlanForForm.commitment ? `התחייבות: ${selectedPlanForForm.commitment}` : null,
+              selectedPlanForForm.sla ? `ציון שירות: ${selectedPlanForForm.sla}` : null
+            ].filter(Boolean) as string[]
+          }}
+          currentBill={currentMonthlyBill}
+        />
+      )}
 
       {/* Plan Details Sheet */}
       <PlanRecordDetailsSheet
