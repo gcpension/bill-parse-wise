@@ -161,6 +161,17 @@ const Home = () => {
       }));
     }
   };
+  const handleProviderChange = (provider: string) => {
+    if (bannerCategory) {
+      setSelectedCategories(prev => ({
+        ...prev,
+        [bannerCategory]: {
+          ...prev[bannerCategory],
+          provider
+        }
+      }));
+    }
+  };
   const handleStartAnalysis = () => {
     const selectedData = Object.entries(selectedCategories).filter(([_, data]) => data.selected && data.amount).map(([category, data]) => ({
       category,
@@ -1033,7 +1044,17 @@ const Home = () => {
       
       
       {/* Enhanced Amount Input */}
-      <EnhancedAmountInput isVisible={showBanner} selectedCategory={bannerCategory} currentAmount={selectedCategories[bannerCategory]?.amount || ''} onAmountChange={handleAmountChange} onCheckAnother={handleCheckAnother} onProceedToPlans={handleProceedToPlans} onClose={handleCloseBanner} />
+      <EnhancedAmountInput 
+        isVisible={showBanner} 
+        selectedCategory={bannerCategory} 
+        currentAmount={selectedCategories[bannerCategory]?.amount || ''} 
+        onAmountChange={handleAmountChange} 
+        onCheckAnother={handleCheckAnother} 
+        onProceedToPlans={handleProceedToPlans} 
+        onClose={handleCloseBanner}
+        selectedProvider={selectedCategories[bannerCategory]?.provider || ''}
+        onProviderChange={handleProviderChange}
+      />
 
       {/* Back to Top Button */}
       <BackToTop />

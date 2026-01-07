@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { 
   X, ArrowLeft, TrendingUp, 
   Zap, Wifi, Smartphone, Tv, Package,
-  Plus, Minus, Sparkles, Star, CheckCircle2
+  Plus, Minus, Sparkles, Star, CheckCircle2, Clock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import CompanySelector from './CompanySelector';
+import { getLastAmount, getQuickAmountSuggestions } from '@/hooks/useUserPreferences';
 
 interface EnhancedAmountInputProps {
   isVisible: boolean;
@@ -16,6 +18,8 @@ interface EnhancedAmountInputProps {
   onCheckAnother: () => void;
   onProceedToPlans: () => void;
   onClose: () => void;
+  selectedProvider?: string;
+  onProviderChange?: (provider: string) => void;
 }
 
 const categoryConfig: Record<string, { 
@@ -81,7 +85,9 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
   onAmountChange,
   onCheckAnother,
   onProceedToPlans,
-  onClose
+  onClose,
+  selectedProvider = '',
+  onProviderChange,
 }) => {
   const config = categoryConfig[selectedCategory] || categoryConfig.electricity;
   const Icon = config.icon;
@@ -93,10 +99,23 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
   const monthlySavings = Math.round(amount * savingsRate);
   const yearlySavings = monthlySavings * 12;
 
-  // Preset amounts based on category
-  const presets = selectedCategory === 'triple' 
-    ? [250, 350, 450, 550, 650, 800]
-    : [100, 150, 200, 300, 400, 500];
+  // Get smart presets - combine last amount with suggestions
+  const lastAmount = getLastAmount(selectedCategory);
+  const defaultPresets = getQuickAmountSuggestions(selectedCategory);
+  const presets = lastAmount && !defaultPresets.includes(lastAmount)
+    ? [lastAmount, ...defaultPresets.slice(0, 5)]
+    : defaultPresets;
+
+  // Auto-fill last amount on mount if no current amount
+  useEffect(() => {
+    if (isVisible && !currentAmount && lastAmount) {
+      // Small delay to show the animation
+      const timer = setTimeout(() => {
+        onAmountChange(lastAmount.toString());
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, selectedCategory]);
 
   const incrementAmount = () => onAmountChange(Math.min(amount + 50, 1500).toString());
   const decrementAmount = () => onAmountChange(Math.max(amount - 50, 0).toString());
@@ -188,6 +207,18 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
 
             {/* Content */}
             <div className="px-4 pb-6 space-y-5">
+              {/* Company Selector - NEW */}
+              {onProviderChange && (
+                <div className="space-y-2">
+                  <p className="text-muted-foreground text-sm font-assistant text-center">מי הספק הנוכחי שלכם?</p>
+                  <CompanySelector
+                    category={selectedCategory}
+                    selectedCompany={selectedProvider}
+                    onSelect={onProviderChange}
+                  />
+                </div>
+              )}
+
               {/* Amount Input Section */}
               <div className="text-center">
                 <p className="text-muted-foreground text-sm mb-3 font-assistant">כמה אתם משלמים היום?</p>
@@ -230,27 +261,33 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
                 </div>
               </div>
 
-              {/* Quick Presets - Pills */}
+              {/* Quick Presets - Pills with last amount indicator */}
               <div className="flex flex-wrap justify-center gap-2">
-                {presets.map((preset, index) => (
-                  <motion.button
-                    key={preset}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => onAmountChange(preset.toString())}
-                    className={cn(
-                      "px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
-                      amount === preset
-                        ? `bg-gradient-to-r ${config.gradient} text-white shadow-lg`
-                        : "bg-muted text-muted-foreground hover:bg-muted/80"
-                    )}
-                  >
-                    ₪{preset}
-                  </motion.button>
-                ))}
+                {presets.map((preset, index) => {
+                  const isLast = preset === lastAmount;
+                  return (
+                    <motion.button
+                      key={preset}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => onAmountChange(preset.toString())}
+                      className={cn(
+                        "px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-1.5",
+                        amount === preset
+                          ? `bg-gradient-to-r ${config.gradient} text-white shadow-lg`
+                          : isLast
+                            ? "bg-primary/10 text-primary border-2 border-dashed border-primary/30"
+                            : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      )}
+                    >
+                      {isLast && amount !== preset && <Clock className="w-3 h-3" />}
+                      ₪{preset}
+                    </motion.button>
+                  );
+                })}
               </div>
 
               {/* Savings Display - Premium Card */}
