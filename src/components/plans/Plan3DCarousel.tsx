@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Check, Clock, Shield, Gift, Building2, Wifi, Smartphone, Tv, Zap, Signal, Database, Monitor, Users, Package, Star, TrendingUp, Crown, Gem, Award, Info, Heart, Scale, TrendingDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Check, Clock, Shield, Gift, Building2, Wifi, Smartphone, Tv, Zap, Signal, Database, Monitor, Users, Package, Star, TrendingUp, Crown, Gem, Award, Info, Heart, Scale, TrendingDown, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -13,6 +13,7 @@ import { calculateValueScore, getDealQualityColor, getDealQualityLabel } from '@
 interface Plan3DCarouselProps {
   plans: PlanRecord[];
   currentMonthlyBill: number;
+  onViewDetails?: (plan: PlanRecord) => void;
   onSelectPlan: (plan: PlanRecord) => void;
   companyLogos: Record<string, string>;
 }
@@ -48,12 +49,13 @@ const Company3DCarousel: React.FC<{
   allPlans: PlanRecord[];
   currentMonthlyBill: number;
   onSelectPlan: (plan: PlanRecord) => void;
+  onViewDetails?: (plan: PlanRecord) => void;
   logo?: string;
   toggleFavorite: (company: string, plan: string) => void;
   isFavorite: (company: string, plan: string) => boolean;
   toggleCompare: (company: string, plan: string) => boolean;
   isInCompare: (company: string, plan: string) => boolean;
-}> = ({ company, plans, allPlans, currentMonthlyBill, onSelectPlan, logo, toggleFavorite, isFavorite, toggleCompare, isInCompare }) => {
+}> = ({ company, plans, allPlans, currentMonthlyBill, onSelectPlan, onViewDetails, logo, toggleFavorite, isFavorite, toggleCompare, isInCompare }) => {
   const [activeIndex, setActiveIndex] = useState(Math.floor(plans.length / 2));
 
   const handlePrev = () => {
@@ -261,15 +263,30 @@ const Company3DCarousel: React.FC<{
                         </button>
                       </div>
 
-                      {/* Service Badge */}
+                      {/* Company Name & Service Badge */}
                       <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          {logo && (
+                            <img src={logo} alt={company} className="w-5 h-5 object-contain" />
+                          )}
+                          <span className="text-xs font-bold text-foreground">{company}</span>
+                        </div>
                         <span className={cn("flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-medium", theme.accentLight, theme.accentText)}>
                           <ServiceIcon className="w-2.5 h-2.5" />
                           {plan.service}
                         </span>
+                      </div>
+
+                      {/* Deal Quality Badge */}
+                      <div className="flex items-center justify-between mb-2">
                         <Badge className={cn("text-[10px]", getDealQualityColor(valueScore.dealQuality))}>
                           {getDealQualityLabel(valueScore.dealQuality)}
                         </Badge>
+                        {valueScore.bestFor.length > 0 && (
+                          <span className="text-[9px] text-muted-foreground">
+                            מומלץ ל{valueScore.bestFor[0]}
+                          </span>
+                        )}
                       </div>
 
                       {/* Plan Name */}
@@ -342,23 +359,41 @@ const Company3DCarousel: React.FC<{
                         </div>
                       )}
 
-                      {/* CTA Button */}
+                      {/* CTA Buttons */}
                       {isCenter && (
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onSelectPlan(plan);
-                          }}
-                          className={cn(
-                            "w-full h-10 md:h-11 font-semibold rounded-xl transition-all text-sm touch-manipulation",
-                            isRecommended
-                              ? "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white"
-                              : "bg-foreground hover:bg-foreground/90 active:bg-foreground/80 text-background"
+                        <div className="space-y-2">
+                          {/* View Details Button */}
+                          {onViewDetails && (
+                            <Button
+                              variant="outline"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onViewDetails(plan);
+                              }}
+                              className="w-full h-9 font-medium rounded-xl text-sm bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 text-blue-700 hover:from-blue-100 hover:to-indigo-100"
+                            >
+                              <Eye className="ml-2 h-4 w-4" />
+                              צפה בפרטים מלאים
+                            </Button>
                           )}
-                        >
-                          {isRecommended ? 'בחרו וחסכו!' : 'בחירת מסלול'}
-                          <ArrowLeft className="mr-2 h-4 w-4" />
-                        </Button>
+                          
+                          {/* Select Plan Button */}
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onSelectPlan(plan);
+                            }}
+                            className={cn(
+                              "w-full h-10 md:h-11 font-semibold rounded-xl transition-all text-sm touch-manipulation",
+                              isRecommended
+                                ? "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white"
+                                : "bg-foreground hover:bg-foreground/90 active:bg-foreground/80 text-background"
+                            )}
+                          >
+                            {isRecommended ? 'בחרו וחסכו!' : 'בחירת מסלול'}
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                          </Button>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -392,6 +427,7 @@ const Company3DCarousel: React.FC<{
 const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
   plans,
   currentMonthlyBill,
+  onViewDetails,
   onSelectPlan,
   companyLogos
 }) => {
@@ -436,6 +472,7 @@ const Plan3DCarousel: React.FC<Plan3DCarouselProps> = ({
             allPlans={plans}
             currentMonthlyBill={currentMonthlyBill}
             onSelectPlan={onSelectPlan}
+            onViewDetails={onViewDetails}
             logo={companyLogos[company]}
             toggleFavorite={toggleFavorite}
             isFavorite={isFavorite}
