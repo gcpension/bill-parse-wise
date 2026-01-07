@@ -35,7 +35,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { cn } from "@/lib/utils";
 import { useAllPlans, PlanRecord } from "@/hooks/useAllPlans";
 import { PersonalizedWizardFloat } from "@/components/PersonalizedWizardFloat";
-import UnifiedServiceForm from "@/components/service-request/UnifiedServiceForm";
+import ModernSwitchForm from "@/components/forms/ModernSwitchForm";
 import Plan3DCarousel from "@/components/plans/Plan3DCarousel";
 import annualSavingsSketch from "@/assets/savings-clean.png";
 import { PlanRecordDetailsSheet } from "@/components/plans/PlanRecordDetailsSheet";
