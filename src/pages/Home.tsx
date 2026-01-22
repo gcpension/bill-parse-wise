@@ -34,6 +34,7 @@ import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
 import CategoryCarousel from '@/components/home/CategoryCarousel';
 import EnhancedAmountInput from '@/components/home/EnhancedAmountInput';
+import { StickyCtaButton } from '@/components/mobile';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -1054,6 +1055,17 @@ const Home = () => {
         onClose={handleCloseBanner}
         selectedProvider={selectedCategories[bannerCategory]?.provider || ''}
         onProviderChange={handleProviderChange}
+      />
+
+      {/* Sticky CTA Button - Mobile Only */}
+      <StickyCtaButton
+        isVisible={!showBanner && Object.values(selectedCategories).some(c => c.selected)}
+        selectedCount={Object.values(selectedCategories).filter(c => c.selected).length}
+        totalSavings={Object.values(selectedCategories)
+          .filter(c => c.selected && c.amount)
+          .reduce((sum, c) => sum + (parseFloat(c.amount) || 0) * 0.3 * 12, 0)}
+        onClick={handleStartAnalysis}
+        variant={Object.values(selectedCategories).some(c => c.selected && c.amount) ? 'results' : 'start'}
       />
 
       {/* Back to Top Button */}
