@@ -129,11 +129,11 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
         </div>
       </div>
 
-      {/* Mobile: Native Scroll Carousel */}
+      {/* Mobile: Native Scroll Carousel - Enhanced Touch */}
       <div className="md:hidden">
         <div 
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 pb-4"
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 pb-4 scroll-momentum"
           style={{ 
             scrollbarWidth: 'none', 
             msOverflowStyle: 'none',
@@ -149,15 +149,16 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
               <motion.div
                 key={category}
                 className="flex-shrink-0 snap-center"
-                style={{ width: 'calc(85vw - 32px)', maxWidth: '280px' }}
-                whileTap={{ scale: 0.98 }}
+                style={{ width: 'calc(85vw - 32px)', maxWidth: '300px' }}
+                whileTap={{ scale: 0.97 }}
               >
                 <div
                   onClick={() => onCategorySelect(category)}
                   className={cn(
-                    "relative h-52 rounded-2xl overflow-hidden cursor-pointer",
+                    "relative h-56 rounded-3xl overflow-hidden cursor-pointer touch-card",
                     "transition-all duration-300",
-                    isSelected && "ring-4 ring-primary ring-offset-2 ring-offset-background shadow-xl"
+                    "active:scale-[0.98]",
+                    isSelected && "ring-4 ring-primary ring-offset-2 ring-offset-background shadow-xl shadow-primary/20"
                   )}
                 >
                   {/* Background Image */}
@@ -182,11 +183,11 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
                   )}
 
                   {/* Content */}
-                  <div className="absolute inset-0 p-4 flex flex-col justify-between">
+                  <div className="absolute inset-0 p-5 flex flex-col justify-between">
                     {/* Top Row */}
                     <div className="flex justify-between items-start">
-                      <div className="p-3 rounded-xl bg-white/25 backdrop-blur-sm">
-                        <Icon className="w-6 h-6 text-white" strokeWidth={2.5} />
+                      <div className="p-3.5 rounded-2xl bg-white/25 backdrop-blur-sm shadow-lg">
+                        <Icon className="w-7 h-7 text-white" strokeWidth={2.5} />
                       </div>
                       
                       <AnimatePresence>
@@ -195,9 +196,9 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             exit={{ scale: 0, rotate: 180 }}
-                            className="bg-white text-primary rounded-full p-2 shadow-lg"
+                            className="bg-white text-primary rounded-full p-2.5 shadow-lg"
                           >
-                            <CheckCircle className="w-5 h-5" />
+                            <CheckCircle className="w-6 h-6" />
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -205,31 +206,33 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
                     {/* Bottom Content */}
                     <div>
-                      <h3 className="text-2xl font-bold text-white mb-1 font-heebo drop-shadow-md">
+                      <h3 className="text-2xl font-bold text-white mb-2 font-heebo drop-shadow-lg">
                         {data.name}
                       </h3>
-                      <p className="text-white/90 text-sm mb-3 font-assistant">
+                      <p className="text-white/90 text-sm mb-4 font-assistant">
                         {data.providers.length} ספקים להשוואה
                       </p>
                       
-                      <div
+                      <motion.div
+                        whileTap={{ scale: 0.95 }}
                         className={cn(
-                          "inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold",
+                          "inline-flex items-center gap-2 px-6 py-3 rounded-full text-base font-bold",
                           "transition-all duration-300 shadow-lg",
+                          "min-h-[48px]", // Touch-friendly
                           isSelected 
                             ? "bg-white text-gray-900" 
-                            : "bg-white/30 text-white backdrop-blur-sm"
+                            : "bg-white/30 text-white backdrop-blur-sm active:bg-white/50"
                         )}
                       >
                         {isSelected ? (
                           <>
-                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <CheckCircle className="w-5 h-5 text-primary" />
                             נבחר ✓
                           </>
                         ) : (
                           'הקש לבחירה'
                         )}
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
                 </div>
