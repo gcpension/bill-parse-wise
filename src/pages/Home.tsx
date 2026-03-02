@@ -26,6 +26,7 @@ import israeliTelecomLogos from '@/assets/logos/israeli-telecom-logos.png';
 import savingsAnalysisIllustration from '@/assets/savings-analysis-illustration-transparent.png';
 import israeliCompaniesLogos from '@/assets/logos/israeli-companies-real-logos.png';
 import BackToTop from '@/components/BackToTop';
+import { Navigation } from '@/components/Navigation';
 import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { QuickActions } from '@/components/QuickActions';
@@ -41,15 +42,6 @@ const Home = () => {
   const [showBanner, setShowBanner] = useState(false);
   const [bannerCategory, setBannerCategory] = useState<string>('');
   const [isScrolled, setIsScrolled] = useState(false);
-  
-  // Scroll detection for navbar
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
   const [selectedCategories, setSelectedCategories] = useState<Record<string, {
     provider: string;
     amount: string;
@@ -222,97 +214,11 @@ const Home = () => {
     setShowBanner(false);
     setBannerCategory('');
   };
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
 
-  return <div className="min-h-screen bg-white relative overflow-hidden pt-16">{/* Add padding-top to account for fixed navbar */}
-      {/* Sticky Top Navigation Bar with scroll effect - Mobile Optimized */}
-      <nav className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled 
-          ? "bg-white/95 backdrop-blur-md shadow-md py-2 md:py-3" 
-          : "bg-white border-b border-gray-200 py-3 md:py-4"
-      )}>
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center">
-              <h1 className="text-2xl md:text-3xl font-light text-cyan-600 font-heebo">
-                EasySwitch
-              </h1>
-            </div>
-            
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-3 rounded-xl hover:bg-gray-100 transition-all touch-button min-h-[48px] min-w-[48px] flex items-center justify-center active:scale-95 active:bg-gray-200"
-              aria-label="תפריט"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6 text-gray-700" />
-              ) : (
-                <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
-            
-            {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center space-x-6 lg:space-x-8 rtl:space-x-reverse">
-              <a href="/" className="text-cyan-600 font-medium hover:text-cyan-700 transition-colors font-heebo text-sm lg:text-base">
-                דף הבית
-              </a>
-              <a href="/magazine" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo text-sm lg:text-base">
-                מגזין
-              </a>
-              <a href="/tips" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo text-sm lg:text-base">
-                טיפים
-              </a>
-              <a href="/about" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo text-sm lg:text-base">
-                אודות
-              </a>
-              <a href="/contact" className="text-gray-600 font-medium hover:text-cyan-600 transition-colors font-heebo text-sm lg:text-base">
-                צור קשר
-              </a>
-            </div>
-          </div>
-          
-          {/* Mobile Navigation Menu */}
-          <AnimatePresence>
-            {isMobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="md:hidden mt-3 pb-2 border-t border-gray-100 pt-3"
-              >
-                <div className="flex flex-col space-y-1">
-                  {[
-                    { href: '/', label: 'דף הבית', active: true },
-                    { href: '/magazine', label: 'מגזין' },
-                    { href: '/tips', label: 'טיפים' },
-                    { href: '/about', label: 'אודות' },
-                    { href: '/contact', label: 'צור קשר' },
-                  ].map((link) => (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        "px-4 py-4 rounded-xl font-medium font-heebo text-base transition-all touch-card min-h-[48px] flex items-center",
-                        link.active
-                          ? "bg-cyan-50 text-cyan-600"
-                          : "text-gray-600 hover:bg-gray-50 active:bg-gray-100 active:scale-[0.98]"
-                      )}
-                    >
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </nav>
+  return <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Unified Navigation */}
+      <Navigation />
 
 
       {/* Hero Section with Clean Background */}
@@ -523,6 +429,20 @@ const Home = () => {
                   אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
                 </p>
               </div>
+            </div>
+
+            {/* Hero CTA Button */}
+            <div className="mt-8 animate-fade-in opacity-0" style={{
+              animationDelay: '0.6s',
+              animationFillMode: 'forwards'
+            }}>
+              <Button
+                size="lg"
+                onClick={() => navigate('/analyze')}
+                className="bg-purple-600 hover:bg-purple-700 text-white text-lg md:text-xl font-bold px-10 py-6 md:px-12 md:py-7 rounded-2xl shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 min-h-[56px]"
+              >
+                בדקו כמה תחסכו ←
+              </Button>
             </div>
           </div>
         </div>
