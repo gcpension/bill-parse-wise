@@ -1,6 +1,8 @@
+import { useEffect, useRef, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Star, Quote } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { motion } from 'framer-motion';
 
 const testimonials = [
   {
@@ -19,7 +21,7 @@ const testimonials = [
     name: 'דוד לוי',
     location: 'ירושלים',
     image: 'https://i.pravatar.cc/150?img=12',
-    rating: 5,
+    rating: 4.5,
     date: 'לפני חודש',
     text: 'הייתי סקפטי בהתחלה, אבל באמת חסכתי מעל 1,500 ₪ בשנה על החשמל והאינטרנט. השירות היה מקצועי ומהיר.',
     savings: '1,500',
@@ -41,7 +43,7 @@ const testimonials = [
     name: 'אלי שמעון',
     location: 'רעננה',
     image: 'https://i.pravatar.cc/150?img=14',
-    rating: 5,
+    rating: 4.5,
     date: 'לפני שבוע',
     text: 'המלצה של חברים והחלטתי לנסות. תוך 5 דקות גיליתי שאני משלם יותר מדי והם עזרו לי לעבור לתכנית הרבה יותר משתלמת.',
     savings: '1,320',
@@ -71,8 +73,55 @@ const testimonials = [
   }
 ];
 
+// Find the testimonial with the highest savings for the featured card
+const featuredIndex = testimonials.reduce((maxIdx, t, idx, arr) => 
+  parseInt(t.savings.replace(',', '')) > parseInt(arr[maxIdx].savings.replace(',', '')) ? idx : maxIdx, 0);
+
+const StarRating = ({ rating }: { rating: number }) => (
+  <div className="flex items-center gap-0.5">
+    {[1, 2, 3, 4, 5].map((i) => (
+      <Star
+        key={i}
+        className={`w-4 h-4 ${
+          i <= Math.floor(rating)
+            ? 'text-yellow-500 fill-yellow-500'
+            : i - 0.5 <= rating
+            ? 'text-yellow-500 fill-yellow-500/50'
+            : 'text-gray-300'
+        }`}
+      />
+    ))}
+  </div>
+);
+
 export const TestimonialsSection = () => {
   const { elementRef } = useScrollAnimation(0.1);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Auto-scroll effect
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    let animId: number;
+    const speed = 0.5; // px per frame
+
+    const scroll = () => {
+      if (!isPaused && el) {
+        el.scrollLeft += speed;
+        // Reset when scrolled to the duplicate set
+        if (el.scrollLeft >= el.scrollWidth / 2) {
+          el.scrollLeft = 0;
+        }
+      }
+      animId = requestAnimationFrame(scroll);
+    };
+    animId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animId);
+  }, [isPaused]);
+
+  // Duplicate testimonials for infinite scroll
+  const allTestimonials = [...testimonials, ...testimonials];
 
   return (
     <section ref={elementRef} className="py-16 bg-gradient-to-b from-white to-purple-50/30">
@@ -87,64 +136,111 @@ export const TestimonialsSection = () => {
             אלפי משפחות כבר חוסכות
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            הצטרפו לאלפי משפחות ישראליות שכבר מחסכות אלפי שקלים בשנה בעזרת השירות שלנו
+            הצטרפו לאלפי משפחות ישראליות שכבר חוסכות אלפי שקלים בשנה
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <Card 
-              key={testimonial.id}
-              className="relative overflow-hidden border-purple-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white"
-              style={{
-                animationDelay: `${index * 0.1}s`
-              }}
-            >
-              <CardContent className="p-6">
-                {/* Quote Icon */}
-                <div className="absolute top-4 left-4 opacity-10">
-                  <Quote className="w-16 h-16 text-purple-600" />
-                </div>
+        {/* Desktop: Featured layout */}
+        <div className="hidden lg:grid lg:grid-cols-3 gap-6 mb-8">
+          {/* Side cards (left) */}
+          <div className="space-y-6">
+            {[testimonials[0], testimonials[2]].map((t, i) => (
+              <motion.div
+                key={t.id}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+              >
+                <TestimonialCard testimonial={t} />
+              </motion.div>
+            ))}
+          </div>
 
-                {/* Header */}
-                <div className="flex items-start gap-4 mb-4 relative z-10">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.name}
-                    className="w-14 h-14 rounded-full border-2 border-purple-200"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg text-foreground">{testimonial.name}</h3>
-                    <p className="text-sm text-muted-foreground">{testimonial.location}</p>
-                    <div className="flex items-center gap-1 mt-1">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                      ))}
+          {/* Featured center card */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            <Card className="relative overflow-hidden border-2 border-purple-300 shadow-2xl shadow-purple-500/10 bg-gradient-to-br from-white to-purple-50 h-full">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-500" />
+              <CardContent className="p-8 flex flex-col justify-between h-full">
+                <div>
+                  <div className="absolute top-6 left-6 opacity-10">
+                    <Quote className="w-20 h-20 text-purple-600" />
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold mb-4">
+                    <Star className="w-3.5 h-3.5 fill-purple-600" />
+                    החיסכון הגדול ביותר
+                  </div>
+                  <div className="flex items-start gap-4 mb-5 relative z-10">
+                    <img
+                      src={testimonials[featuredIndex].image}
+                      alt={testimonials[featuredIndex].name}
+                      className="w-16 h-16 rounded-full border-3 border-purple-200"
+                    />
+                    <div>
+                      <h3 className="font-bold text-xl text-foreground">{testimonials[featuredIndex].name}</h3>
+                      <p className="text-sm text-muted-foreground">{testimonials[featuredIndex].location}</p>
+                      <StarRating rating={testimonials[featuredIndex].rating} />
                     </div>
                   </div>
+                  <p className="text-foreground text-lg leading-relaxed relative z-10 mb-6">
+                    "{testimonials[featuredIndex].text}"
+                  </p>
                 </div>
-
-                {/* Testimonial Text */}
-                <p className="text-foreground mb-4 leading-relaxed relative z-10">
-                  "{testimonial.text}"
-                </p>
-
-                {/* Footer Info */}
                 <div className="pt-4 border-t border-purple-100">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-muted-foreground mb-1">{testimonial.service}</p>
-                      <p className="text-sm font-semibold text-purple-600">
-                        חיסכון: ₪{testimonial.savings} בשנה
+                      <p className="text-xs text-muted-foreground mb-1">{testimonials[featuredIndex].service}</p>
+                      <p className="text-lg font-bold text-purple-600">
+                        חיסכון: ₪{testimonials[featuredIndex].savings} בשנה
                       </p>
                     </div>
-                    <span className="text-xs text-muted-foreground">{testimonial.date}</span>
+                    <span className="text-xs text-muted-foreground">{testimonials[featuredIndex].date}</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          ))}
+          </motion.div>
+
+          {/* Side cards (right) */}
+          <div className="space-y-6">
+            {[testimonials[3], testimonials[1]].map((t, i) => (
+              <motion.div
+                key={t.id}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+              >
+                <TestimonialCard testimonial={t} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile: Auto-scrolling carousel */}
+        <div
+          className="lg:hidden"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+        >
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto scrollbar-hide pb-4"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {allTestimonials.map((t, idx) => (
+              <div key={`${t.id}-${idx}`} className="flex-shrink-0 w-[300px]">
+                <TestimonialCard testimonial={t} />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Trust Badge */}
@@ -152,9 +248,9 @@ export const TestimonialsSection = () => {
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-purple-50 rounded-full border border-purple-200">
             <div className="flex -space-x-2">
               {[47, 12, 38, 14, 45].map((img) => (
-                <img 
+                <img
                   key={img}
-                  src={`https://i.pravatar.cc/40?img=${img}`} 
+                  src={`https://i.pravatar.cc/40?img=${img}`}
                   alt=""
                   className="w-8 h-8 rounded-full border-2 border-white"
                 />
@@ -169,3 +265,41 @@ export const TestimonialsSection = () => {
     </section>
   );
 };
+
+interface TestimonialCardProps {
+  testimonial: typeof testimonials[0];
+}
+
+const TestimonialCard = ({ testimonial }: TestimonialCardProps) => (
+  <Card className="relative overflow-hidden border-purple-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white h-full">
+    <CardContent className="p-6">
+      <div className="absolute top-4 left-4 opacity-10">
+        <Quote className="w-12 h-12 text-purple-600" />
+      </div>
+      <div className="flex items-start gap-3 mb-3 relative z-10">
+        <img
+          src={testimonial.image}
+          alt={testimonial.name}
+          className="w-12 h-12 rounded-full border-2 border-purple-200"
+        />
+        <div className="flex-1">
+          <h3 className="font-bold text-foreground">{testimonial.name}</h3>
+          <p className="text-xs text-muted-foreground">{testimonial.location}</p>
+          <StarRating rating={testimonial.rating} />
+        </div>
+      </div>
+      <p className="text-foreground text-sm mb-3 leading-relaxed relative z-10">
+        "{testimonial.text}"
+      </p>
+      <div className="pt-3 border-t border-purple-100">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs text-muted-foreground">{testimonial.service}</p>
+            <p className="text-sm font-semibold text-purple-600">חיסכון: ₪{testimonial.savings} בשנה</p>
+          </div>
+          <span className="text-xs text-muted-foreground">{testimonial.date}</span>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);

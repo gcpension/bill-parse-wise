@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, X, Sparkles, TrendingUp, Star, Clock, FileText, Target } from 'lucide-react';
+import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, X, Sparkles, TrendingUp, Star, Clock, FileText, Target, HelpCircle, ChevronDown, Facebook, Instagram, Linkedin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import { cn } from '@/lib/utils';
@@ -489,113 +489,64 @@ const Home = () => {
       {/* Partners Section */}
       
 
-      {/* FAQ Section */}
-      <section ref={faqSection.elementRef} className={`bg-white relative transition-all duration-700 ${faqSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="container mx-auto px-4 lg:px-6 max-w-4xl py-12">
+      {/* FAQ Section - Redesigned */}
+      <section ref={faqSection.elementRef} className={`relative transition-all duration-700 ${faqSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-purple-50/40 to-purple-100/30" />
+        <div className="container mx-auto px-4 lg:px-6 max-w-4xl py-16 relative z-10">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heebo font-light text-cyan-700 mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 rounded-full mb-4">
+              <HelpCircle className="w-5 h-5 text-purple-600" />
+              <span className="text-purple-700 font-medium text-sm">שאלות נפוצות</span>
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-heebo font-light text-foreground mb-4">
               שאלות נפוצות
             </h2>
-            <p className="text-lg text-gray-600 font-assistant">
+            <p className="text-lg text-muted-foreground font-assistant">
               כל מה שרציתם לדעת על התהליך
             </p>
           </div>
 
-          <div className="space-y-4">
-            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-              <details className="group">
-                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
-                    האם השירות באמת חינמי?
-                  </h3>
-                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-gray-600 font-assistant leading-relaxed">
-                    כן, השירות חינמי לחלוטין! אנחנו מקבלים עמלה מהספקים כשאתם עוברים אליהם, 
-                    אבל זה לא משפיע על המחירים שאתם מקבלים. אתם לא משלמים לנו כלום.
-                  </p>
-                </div>
-              </details>
-            </Card>
-
-            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-              <details className="group">
-                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
-                    כמה זמן לוקח התהליך?
-                  </h3>
-                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-gray-600 font-assistant leading-relaxed">
-                    הניתוח לוקח כמה דקות בלבד. המעבר בפועל יכול לקחת 7-14 ימי עסקים, 
-                    תלוי בספק. אנחנו נטפל בכל הניירת עבורכם.
-                  </p>
-                </div>
-              </details>
-            </Card>
-
-            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-              <details className="group">
-                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
-                    מה קורה אם אני לא מרוצה מהמעבר?
-                  </h3>
-                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-gray-600 font-assistant leading-relaxed">
-                    אתם תמיד יכולים לחזור לספק הקודם או לעבור לספק אחר. 
-                    אנחנו כאן לתמוך בכם לאורך כל הדרך ולוודא שאתם מרוצים.
-                  </p>
-                </div>
-              </details>
-            </Card>
-
-            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-              <details className="group">
-                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
-                    האם המידע שלי מוגן?
-                  </h3>
-                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-gray-600 font-assistant leading-relaxed">
-                    בהחלט! אנחנו משתמשים בהצפנה מתקדמת וכל המידע מוגן לפי התקנים הגבוהים ביותר. 
-                    המידע שלכם לא יועבר לצדדים שלישיים ללא אישורכם המפורש.
-                  </p>
-                </div>
-              </details>
-            </Card>
-
-            <Card className="bg-white/70 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-              <details className="group">
-                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-normal text-cyan-700 font-heebo">
-                    האם יש מחויבות לתקופה מסוימת?
-                  </h3>
-                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-gray-600 font-assistant leading-relaxed">
-                    לא, אין שום מחויבות כלפינו. התחייבויות קיימות רק מול הספק החדש שתבחרו, 
-                    בהתאם לתנאי החוזה איתו. אנחנו נסביר לכם את כל התנאים לפני החתימה.
-                  </p>
-                </div>
-              </details>
-            </Card>
+          <div className="space-y-3">
+            {[
+              { q: 'האם השירות באמת חינמי?', a: 'כן, השירות חינמי לחלוטין! אנחנו מקבלים עמלה מהספקים כשאתם עוברים אליהם, אבל זה לא משפיע על המחירים שאתם מקבלים. אתם לא משלמים לנו כלום.' },
+              { q: 'כמה זמן לוקח התהליך?', a: 'הניתוח לוקח כמה דקות בלבד. המעבר בפועל יכול לקחת 7-14 ימי עסקים, תלוי בספק. אנחנו נטפל בכל הניירת עבורכם.' },
+              { q: 'מה קורה אם אני לא מרוצה מהמעבר?', a: 'אתם תמיד יכולים לחזור לספק הקודם או לעבור לספק אחר. אנחנו כאן לתמוך בכם לאורך כל הדרך ולוודא שאתם מרוצים.' },
+              { q: 'האם המידע שלי מוגן?', a: 'בהחלט! אנחנו משתמשים בהצפנה מתקדמת וכל המידע מוגן לפי התקנים הגבוהים ביותר. המידע שלכם לא יועבר לצדדים שלישיים ללא אישורכם המפורש.' },
+              { q: 'האם יש מחויבות לתקופה מסוימת?', a: 'לא, אין שום מחויבות כלפינו. התחייבויות קיימות רק מול הספק החדש שתבחרו, בהתאם לתנאי החוזה איתו. אנחנו נסביר לכם את כל התנאים לפני החתימה.' },
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.08 }}
+              >
+                <Card className="bg-white/80 backdrop-blur-sm border border-purple-100/60 hover:shadow-md transition-shadow duration-200 overflow-hidden group">
+                  <details className="group/details">
+                    <summary className="flex items-center gap-3 p-5 cursor-pointer list-none select-none">
+                      <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                        <HelpCircle className="w-4 h-4 text-purple-600" />
+                      </div>
+                      <h3 className="flex-1 text-lg font-medium text-foreground font-heebo">
+                        {item.q}
+                      </h3>
+                      <ChevronDown className="w-5 h-5 text-muted-foreground group-open/details:rotate-180 transition-transform duration-300" />
+                    </summary>
+                    <div className="overflow-hidden">
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        className="border-r-4 border-purple-500 mr-5 pr-5 pb-5 ml-5"
+                      >
+                        <p className="text-muted-foreground font-assistant leading-relaxed">
+                          {item.a}
+                        </p>
+                      </motion.div>
+                    </div>
+                  </details>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -606,7 +557,6 @@ const Home = () => {
 
       {/* Footer Section */}
       <footer className="bg-gradient-to-br from-gray-800 to-gray-900 text-white py-16 relative overflow-hidden">
-        {/* Background decorative elements */}
         <div className="absolute inset-0 pointer-events-none opacity-5">
           <div className="absolute top-10 left-10 w-32 h-32 bg-gray-600 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-gray-700 rounded-full blur-3xl"></div>
@@ -618,11 +568,11 @@ const Home = () => {
             {/* Company Info */}
             <div className="lg:col-span-1">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gray-600 rounded-2xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-purple-600 rounded-2xl flex items-center justify-center">
                   <Zap className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-heebo font-light">Switch IL</h3>
+                  <h3 className="text-2xl font-heebo font-light">EasySwitch</h3>
                   <p className="text-gray-300 text-sm font-assistant">פלטפורמת החיסכון המובילה בישראל</p>
                 </div>
               </div>
@@ -635,36 +585,14 @@ const Home = () => {
             {/* Services */}
             <div className="lg:col-span-1">
               <h4 className="text-xl font-heebo font-normal mb-6 flex items-center gap-2">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+                <Zap className="w-5 h-5 text-gray-400" />
                 שירותים
               </h4>
               <ul className="space-y-4 font-assistant">
-                <li>
-                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group">
-                    <Smartphone className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
-                    סלולר
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group">
-                    <Wifi className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
-                    אינטרנט
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group">
-                    <Tv className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
-                    טלוויזיה
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group">
-                    <Zap className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
-                    חשמל
-                  </a>
-                </li>
+                <li><a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group"><Smartphone className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />סלולר</a></li>
+                <li><a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group"><Wifi className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />אינטרנט</a></li>
+                <li><a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group"><Tv className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />טלוויזיה</a></li>
+                <li><a href="#" className="flex items-center gap-3 text-gray-300 hover:text-gray-100 transition-colors duration-200 group"><Zap className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />חשמל</a></li>
               </ul>
             </div>
 
@@ -672,26 +600,10 @@ const Home = () => {
             <div className="lg:col-span-1">
               <h4 className="text-xl font-heebo font-normal mb-6">קישורים מהירים</h4>
               <ul className="space-y-4 font-assistant">
-                <li>
-                  <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">
-                    אודות
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">
-                    תנאי שימוש
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">
-                    מדיניות פרטיות
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">
-                    שאלות נפוצות
-                  </a>
-                </li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">אודות</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">תנאי שימוש</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">מדיניות פרטיות</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">שאלות נפוצות</a></li>
               </ul>
             </div>
 
@@ -707,12 +619,10 @@ const Home = () => {
                   <p className="text-white font-normal font-heebo">*3456</p>
                   <p className="text-gray-400 text-xs font-assistant">חיוב שיחה</p>
                 </div>
-                
                 <div className="bg-gray-700/50 p-4 rounded-xl border border-gray-600/50">
                   <p className="text-gray-300 text-sm font-assistant mb-1">מייל תמיכה</p>
-                  <p className="text-white font-normal font-mono text-sm">support@switchil.co.il</p>
+                  <p className="text-white font-normal font-mono text-sm">support@easyswitch.co.il</p>
                 </div>
-                
                 <div className="bg-gray-700/50 p-4 rounded-xl border border-gray-600/50">
                   <p className="text-gray-300 text-sm font-assistant mb-1">שעות פעילות</p>
                   <p className="text-white font-normal font-heebo">א'-ה' 8:00-20:00</p>
@@ -721,22 +631,44 @@ const Home = () => {
             </div>
           </div>
 
+          {/* Social Icons */}
+          <div className="flex items-center justify-center gap-4 mt-12 mb-8">
+            {[
+              { icon: Facebook, href: '#', label: 'Facebook' },
+              { icon: Instagram, href: '#', label: 'Instagram' },
+              { icon: Linkedin, href: '#', label: 'LinkedIn' },
+            ].map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                aria-label={social.label}
+                className="w-10 h-10 rounded-full bg-gray-700/60 border border-gray-600/50 flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 hover:border-purple-500 transition-all duration-300 hover:scale-110"
+              >
+                <social.icon className="w-5 h-5" />
+              </a>
+            ))}
+            {/* TikTok - custom SVG since lucide doesn't have it */}
+            <a
+              href="#"
+              aria-label="TikTok"
+              className="w-10 h-10 rounded-full bg-gray-700/60 border border-gray-600/50 flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 hover:border-purple-500 transition-all duration-300 hover:scale-110"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.49a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V13a8.28 8.28 0 005.58 2.15V11.7a4.81 4.81 0 01-3.77-1.78V6.69h3.77z"/>
+              </svg>
+            </a>
+          </div>
+
           {/* Bottom Section */}
-          <div className="border-t border-gray-700 mt-12 pt-8">
+          <div className="border-t border-gray-700 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-2 text-gray-400 text-sm font-assistant">
-                <span>© 2024 Switch IL. כל הזכויות שמורות.</span>
+                <span>© 2025 EasySwitch. כל הזכויות שמורות.</span>
               </div>
               <div className="flex items-center gap-6 text-sm font-assistant">
-                <a href="#" className="text-gray-400 hover:text-red-400 transition-colors duration-200">
-                  מדיניות פרטיות
-                </a>
-                <a href="#" className="text-gray-400 hover:text-red-400 transition-colors duration-200">
-                  תנאי שימוש
-                </a>
-                <a href="#" className="text-gray-400 hover:text-red-400 transition-colors duration-200">
-                  אודות
-                </a>
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors duration-200">מדיניות פרטיות</a>
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors duration-200">תנאי שימוש</a>
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors duration-200">אודות</a>
               </div>
             </div>
           </div>
