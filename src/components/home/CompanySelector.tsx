@@ -26,22 +26,37 @@ const companiesByCategory: Record<string, string[]> = {
   triple: ['הוט', 'פרטנר', 'סלקום', 'בזק'],
 };
 
-// Company colors for visual distinction
-const companyColors: Record<string, string> = {
-  'פלאפון': 'bg-orange-500',
-  'סלקום': 'bg-purple-500',
-  'פרטנר': 'bg-blue-500',
-  'הוט מובייל': 'bg-red-500',
-  'הוט': 'bg-red-500',
-  '019 מובייל': 'bg-green-500',
-  'רמי לוי': 'bg-yellow-500',
-  'גולן טלקום': 'bg-teal-500',
-  'בזק': 'bg-cyan-500',
-  'יס': 'bg-pink-500',
-  'חברת חשמל': 'bg-amber-500',
-  'פז אנרגיה': 'bg-emerald-500',
-  'אלקטרה פאוור': 'bg-indigo-500',
+// Company colors and emoji logos for visual distinction
+const companyBranding: Record<string, { color: string; emoji: string }> = {
+  'פלאפון': { color: 'bg-orange-500', emoji: '🟠' },
+  'סלקום': { color: 'bg-purple-500', emoji: '🟣' },
+  'פרטנר': { color: 'bg-blue-500', emoji: '🔵' },
+  'הוט מובייל': { color: 'bg-red-500', emoji: '🔴' },
+  'הוט': { color: 'bg-red-500', emoji: '🔴' },
+  '019 מובייל': { color: 'bg-green-500', emoji: '🟢' },
+  'רמי לוי': { color: 'bg-yellow-500', emoji: '🟡' },
+  'גולן טלקום': { color: 'bg-teal-500', emoji: '💎' },
+  'יו פון': { color: 'bg-sky-500', emoji: '📲' },
+  'בזק': { color: 'bg-cyan-600', emoji: '🌐' },
+  'יס': { color: 'bg-pink-500', emoji: '📡' },
+  'חברת חשמל': { color: 'bg-amber-500', emoji: '⚡' },
+  'פז אנרגיה': { color: 'bg-emerald-500', emoji: '🔋' },
+  'אלקטרה פאוור': { color: 'bg-indigo-500', emoji: '💡' },
+  'דור אלון אנרגיה': { color: 'bg-lime-600', emoji: '🏭' },
+  'סלקום אנרגיה': { color: 'bg-purple-500', emoji: '⚡' },
+  'אנרג׳יקס': { color: 'bg-green-600', emoji: '🌿' },
+  'OPC אנרגיה': { color: 'bg-blue-600', emoji: '🔌' },
+  'אורנג׳': { color: 'bg-orange-600', emoji: '🍊' },
+  'נטוויז׳ן': { color: 'bg-violet-500', emoji: '🌐' },
+  '012': { color: 'bg-blue-700', emoji: '🔷' },
+  'סלקום TV': { color: 'bg-purple-500', emoji: '📺' },
+  'פרטנר TV': { color: 'bg-blue-500', emoji: '📺' },
+  'STINGTV': { color: 'bg-yellow-600', emoji: '🐝' },
+  'cellcom tv': { color: 'bg-purple-600', emoji: '📺' },
 };
+
+const getCompanyBranding = (company: string) => 
+  companyBranding[company] || { color: 'bg-gray-500', emoji: '🏢' };
 
 const CompanySelector: React.FC<CompanySelectorProps> = ({
   category,
@@ -91,12 +106,11 @@ const CompanySelector: React.FC<CompanySelectorProps> = ({
             <div className="flex items-center gap-2">
               {selectedCompany ? (
                 <>
+                  <span className="text-lg">{getCompanyBranding(selectedCompany).emoji}</span>
                   <div className={cn(
-                    "w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold",
-                    companyColors[selectedCompany] || "bg-gray-500"
-                  )}>
-                    {selectedCompany.charAt(0)}
-                  </div>
+                    "w-2 h-2 rounded-full",
+                    getCompanyBranding(selectedCompany).color
+                  )} />
                   <span className="font-medium">{selectedCompany}</span>
                 </>
               ) : (
@@ -159,6 +173,7 @@ const CompanySelector: React.FC<CompanySelectorProps> = ({
               ) : (
                 filteredCompanies.map((company, index) => {
                   const isSelected = selectedCompany === company;
+                  const branding = getCompanyBranding(company);
                   return (
                     <motion.button
                       key={company}
@@ -176,10 +191,10 @@ const CompanySelector: React.FC<CompanySelectorProps> = ({
                       )}
                     >
                       <div className={cn(
-                        "w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold",
-                        companyColors[company] || "bg-gray-500"
+                        "w-9 h-9 rounded-xl flex items-center justify-center text-lg shadow-sm",
+                        branding.color + '/10'
                       )}>
-                        {company.charAt(0)}
+                        {branding.emoji}
                       </div>
                       <span className="flex-1 font-medium">{company}</span>
                       {isSelected && (

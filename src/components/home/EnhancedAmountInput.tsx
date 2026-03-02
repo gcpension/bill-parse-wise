@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 import { 
   X, ArrowLeft, TrendingUp, 
   Zap, Wifi, Smartphone, Tv, Package,
@@ -78,6 +79,13 @@ const categoryConfig: Record<string, {
   }
 };
 
+// Progress steps
+const getProgressStep = (hasProvider: boolean, hasAmount: boolean) => {
+  if (!hasProvider) return 1;
+  if (!hasAmount) return 2;
+  return 3;
+};
+
 const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
   isVisible,
   selectedCategory,
@@ -93,23 +101,27 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
   const Icon = config.icon;
   const amount = parseFloat(currentAmount) || 0;
   const hasAmount = amount > 0;
+  const [showShimmer, setShowShimmer] = useState(false);
 
   // Calculate savings
   const savingsRate = selectedCategory === 'triple' ? 0.35 : 0.3;
   const monthlySavings = Math.round(amount * savingsRate);
   const yearlySavings = monthlySavings * 12;
 
-  // Get smart presets - combine last amount with suggestions
+  // Progress
+  const currentStep = getProgressStep(!!selectedProvider, hasAmount);
+  const totalSteps = 3;
+
+  // Get smart presets
   const lastAmount = getLastAmount(selectedCategory);
   const defaultPresets = getQuickAmountSuggestions(selectedCategory);
   const presets = lastAmount && !defaultPresets.includes(lastAmount)
     ? [lastAmount, ...defaultPresets.slice(0, 5)]
     : defaultPresets;
 
-  // Auto-fill last amount on mount if no current amount
+  // Auto-fill last amount on mount
   useEffect(() => {
     if (isVisible && !currentAmount && lastAmount) {
-      // Small delay to show the animation
       const timer = setTimeout(() => {
         onAmountChange(lastAmount.toString());
       }, 300);
@@ -117,8 +129,21 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
     }
   }, [isVisible, selectedCategory]);
 
+  // Shimmer effect when savings update
+  useEffect(() => {
+    if (hasAmount) {
+      setShowShimmer(true);
+      const timer = setTimeout(() => setShowShimmer(false), 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [yearlySavings]);
+
   const incrementAmount = () => onAmountChange(Math.min(amount + 50, 1500).toString());
   const decrementAmount = () => onAmountChange(Math.max(amount - 50, 0).toString());
+
+  const handleSliderChange = (value: number[]) => {
+    onAmountChange(value[0].toString());
+  };
 
   return (
     <AnimatePresence>
@@ -129,36 +154,65 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-black/60 backdrop-blur-md z-50"
             onClick={onClose}
           />
 
-          {/* Modal - Modern Bottom Sheet */}
+          {/* Modal - Bottom Sheet */}
           <motion.div
-            initial={{ opacity: 0, y: '100%', scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: '100%', scale: 0.95 }}
-            transition={{ type: 'spring', damping: 28, stiffness: 380 }}
-            className="fixed inset-x-0 bottom-0 z-50 max-h-[90vh] overflow-hidden rounded-t-[2rem] bg-background shadow-2xl"
+            initial={{ opacity: 0, y: '100%' }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 350, mass: 0.8 }}
+            className="fixed inset-x-0 bottom-0 z-50 max-h-[92vh] overflow-y-auto rounded-t-[2rem] bg-background shadow-2xl"
           >
             {/* Decorative top gradient line */}
             <div className={cn("h-1 w-full bg-gradient-to-r", config.gradient)} />
             
             {/* Drag Handle */}
-            <div className="flex justify-center pt-3 pb-2">
+            <div className="flex justify-center pt-3 pb-1">
               <motion.div 
                 className="w-12 h-1.5 rounded-full bg-muted-foreground/30"
                 whileHover={{ scale: 1.1 }}
               />
             </div>
 
-            {/* Header - Glassmorphic */}
+            {/* Progress Indicator */}
+            <div className="px-6 pt-2 pb-3">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-muted-foreground font-assistant">
+                  שלב {currentStep} מתוך {totalSteps}
+                </span>
+                <span className="text-xs text-muted-foreground font-assistant">
+                  {currentStep === 1 ? 'בחירת ספק' : currentStep === 2 ? 'הזנת סכום' : 'צפייה בתוצאות'}
+                </span>
+              </div>
+              <div className="flex gap-1.5">
+                {Array.from({ length: totalSteps }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className={cn(
+                      "h-1.5 rounded-full flex-1 transition-all duration-500",
+                      i < currentStep
+                        ? `bg-gradient-to-r ${config.gradient}`
+                        : "bg-muted"
+                    )}
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ delay: i * 0.1, duration: 0.3 }}
+                    style={{ transformOrigin: 'right' }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Header */}
             <div className={cn(
               "relative mx-4 rounded-2xl overflow-hidden mb-4",
               "bg-gradient-to-br shadow-lg",
               config.gradient
             )}>
-              {/* Background pattern */}
               <div className="absolute inset-0 opacity-20">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/30 rounded-full blur-2xl" />
                 <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/20 rounded-full blur-xl" />
@@ -207,23 +261,33 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
 
             {/* Content */}
             <div className="px-4 pb-6 space-y-5">
-              {/* Company Selector - NEW */}
+              {/* Company Selector */}
               {onProviderChange && (
-                <div className="space-y-2">
+                <motion.div 
+                  className="space-y-2"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 }}
+                >
                   <p className="text-muted-foreground text-sm font-assistant text-center">מי הספק הנוכחי שלכם?</p>
                   <CompanySelector
                     category={selectedCategory}
                     selectedCompany={selectedProvider}
                     onSelect={onProviderChange}
                   />
-                </div>
+                </motion.div>
               )}
 
               {/* Amount Input Section */}
-              <div className="text-center">
+              <motion.div 
+                className="text-center"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
                 <p className="text-muted-foreground text-sm mb-3 font-assistant">כמה אתם משלמים היום?</p>
                 
-                {/* Amount Spinner - Enhanced */}
+                {/* Amount Spinner */}
                 <div className="flex items-center justify-center gap-6">
                   <motion.button
                     whileHover={{ scale: 1.1 }}
@@ -259,9 +323,25 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
                     <Plus className="w-6 h-6" />
                   </motion.button>
                 </div>
-              </div>
 
-              {/* Quick Presets - Pills with last amount indicator */}
+                {/* Slider */}
+                <div className="mt-4 px-2">
+                  <Slider
+                    value={[amount]}
+                    min={0}
+                    max={1500}
+                    step={10}
+                    onValueChange={handleSliderChange}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between mt-1.5 text-xs text-muted-foreground font-assistant">
+                    <span>₪1,500</span>
+                    <span>₪0</span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Quick Presets */}
               <div className="flex flex-wrap justify-center gap-2">
                 {presets.map((preset, index) => {
                   const isLast = preset === lastAmount;
@@ -270,7 +350,7 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
                       key={preset}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
+                      transition={{ delay: 0.25 + index * 0.04 }}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => onAmountChange(preset.toString())}
@@ -290,7 +370,7 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
                 })}
               </div>
 
-              {/* Savings Display - Premium Card */}
+              {/* Savings Display - with shimmer */}
               <AnimatePresence mode="wait">
                 {hasAmount && (
                   <motion.div
@@ -304,8 +384,53 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
                       "border-border/50"
                     )}
                   >
-                    {/* Decorative elements */}
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/40 to-transparent rounded-full blur-xl" />
+                    {/* Shimmer overlay */}
+                    <AnimatePresence>
+                      {showShimmer && (
+                        <motion.div
+                          initial={{ x: '100%' }}
+                          animate={{ x: '-100%' }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 1, ease: 'easeInOut' }}
+                          className="absolute inset-0 bg-gradient-to-l from-transparent via-white/30 to-transparent z-10 pointer-events-none"
+                        />
+                      )}
+                    </AnimatePresence>
+
+                    {/* Mini confetti particles */}
+                    {showShimmer && (
+                      <>
+                        {[...Array(6)].map((_, i) => (
+                          <motion.div
+                            key={`confetti-${i}`}
+                            initial={{ 
+                              opacity: 1, 
+                              y: 0, 
+                              x: 0,
+                              scale: 1 
+                            }}
+                            animate={{ 
+                              opacity: 0, 
+                              y: -40 - Math.random() * 30,
+                              x: (Math.random() - 0.5) * 80,
+                              scale: 0,
+                              rotate: Math.random() * 360
+                            }}
+                            transition={{ duration: 0.8 + Math.random() * 0.4, delay: i * 0.05 }}
+                            className="absolute z-20 pointer-events-none"
+                            style={{ 
+                              top: '50%', 
+                              left: `${20 + i * 12}%`,
+                              width: 6,
+                              height: 6,
+                              borderRadius: i % 2 === 0 ? '50%' : '2px',
+                              backgroundColor: ['#FFD700', '#FF6B6B', '#4ECDC4', '#A855F7', '#3B82F6', '#F59E0B'][i]
+                            }}
+                          />
+                        ))}
+                      </>
+                    )}
+
                     <Sparkles className="absolute top-3 left-3 w-4 h-4 text-amber-400 opacity-60" />
                     
                     <div className="relative flex items-center justify-between">
@@ -313,10 +438,7 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
                         <motion.div 
                           animate={{ rotate: [0, 10, -10, 0] }}
                           transition={{ repeat: Infinity, duration: 2 }}
-                          className={cn(
-                            "w-12 h-12 rounded-xl flex items-center justify-center shadow-lg",
-                            "bg-gradient-to-br from-emerald-400 to-emerald-600"
-                          )}
+                          className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg bg-gradient-to-br from-emerald-400 to-emerald-600"
                         >
                           <TrendingUp className="w-6 h-6 text-white" />
                         </motion.div>
@@ -324,7 +446,7 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
                           <p className="text-xs text-muted-foreground font-assistant">חיסכון שנתי משוער</p>
                           <motion.p 
                             key={yearlySavings}
-                            initial={{ scale: 1.2 }}
+                            initial={{ scale: 1.3 }}
                             animate={{ scale: 1 }}
                             className="text-2xl font-bold text-foreground font-heebo"
                           >
@@ -361,19 +483,25 @@ const EnhancedAmountInput: React.FC<EnhancedAmountInputProps> = ({
                   עוד קטגוריה
                 </Button>
                 
-                <Button
-                  onClick={onProceedToPlans}
-                  disabled={!hasAmount}
-                  className={cn(
-                    "flex-[2] h-14 rounded-2xl text-base font-medium",
-                    "bg-gradient-to-r shadow-lg hover:shadow-xl transition-all",
-                    "disabled:opacity-50 disabled:cursor-not-allowed",
-                    config.gradient
-                  )}
+                <motion.div 
+                  className="flex-[2]"
+                  animate={hasAmount ? { scale: [1, 1.02, 1] } : {}}
+                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                 >
-                  <span>צפייה בתוצאות</span>
-                  <ArrowLeft className="w-5 h-5 mr-2" />
-                </Button>
+                  <Button
+                    onClick={onProceedToPlans}
+                    disabled={!hasAmount}
+                    className={cn(
+                      "w-full h-14 rounded-2xl text-base font-medium",
+                      "bg-gradient-to-r shadow-lg hover:shadow-xl transition-all",
+                      "disabled:opacity-50 disabled:cursor-not-allowed",
+                      config.gradient
+                    )}
+                  >
+                    <span>צפייה בתוצאות</span>
+                    <ArrowLeft className="w-5 h-5 mr-2" />
+                  </Button>
+                </motion.div>
               </div>
             </div>
           </motion.div>
