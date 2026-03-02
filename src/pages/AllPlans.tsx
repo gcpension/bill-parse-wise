@@ -26,7 +26,8 @@ import {
   Package,
   Heart,
   Scale,
-  Eye
+  Eye,
+  Crown
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -46,6 +47,9 @@ import { FeatureFilters, filterPlansByFeatures } from "@/components/plans/Featur
 import { QuickCompare } from "@/components/plans/QuickCompare";
 import { calculateValueScore, getDealQualityColor, getDealQualityLabel } from "@/lib/planValueCalculator";
 import { motion } from "framer-motion";
+import { AllPlansHero } from "@/components/plans/AllPlansHero";
+import { AllPlansFilterBar } from "@/components/plans/AllPlansFilterBar";
+import { StickyPlanSummary } from "@/components/plans/StickyPlanSummary";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -79,6 +83,14 @@ const AllPlans = () => {
   const [selectedPlanForDetails, setSelectedPlanForDetails] = useState<PlanRecord | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [stickySelectedPlan, setStickySelectedPlan] = useState<PlanRecord | null>(null);
+  const [currentProvider, setCurrentProvider] = useState<string>('');
+  
+  // Advanced filter state
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
+  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [minValueScore, setMinValueScore] = useState(0);
+  const [greatDealsOnly, setGreatDealsOnly] = useState(false);
 
   // Plan preferences (favorites, compare, viewed)
   const {
@@ -113,6 +125,7 @@ const AllPlans = () => {
             'triple': 'טריפל'
           };
           setSelectedCategory(categoryMapping[firstCategory.category] || 'all');
+          if (firstCategory.provider) setCurrentProvider(firstCategory.provider);
         }
       } catch (error) {
         console.error('Error parsing analysis data:', error);
@@ -177,6 +190,27 @@ const AllPlans = () => {
     // Filter out plans without price
     filtered = filtered.filter(p => p.monthlyPrice && p.monthlyPrice > 0);
 
+    // Advanced filters: price range
+    filtered = filtered.filter(p => p.monthlyPrice! >= priceRange[0] && p.monthlyPrice! <= priceRange[1]);
+
+    // Advanced filters: selected providers
+    if (selectedProviders.length > 0) {
+      filtered = filtered.filter(p => selectedProviders.includes(p.company));
+    }
+
+    // Advanced filters: min value score
+    if (minValueScore > 0) {
+      filtered = filtered.filter(p => calculateValueScore(p, allPlans).total >= minValueScore);
+    }
+
+    // Advanced filters: great deals only
+    if (greatDealsOnly) {
+      filtered = filtered.filter(p => {
+        const vs = calculateValueScore(p, allPlans);
+        return vs.dealQuality === 'excellent' || vs.dealQuality === 'good';
+      });
+    }
+
     // Sort
     const sorted = [...filtered].sort((a, b) => {
       switch (sortBy) {
@@ -196,7 +230,7 @@ const AllPlans = () => {
     });
 
     return sorted;
-  }, [allPlans, selectedCategory, searchQuery, sortBy, selectedFeatures]);
+  }, [allPlans, selectedCategory, searchQuery, sortBy, selectedFeatures, priceRange, selectedProviders, minValueScore, greatDealsOnly]);
 
   // Group plans by company
   const plansByCompany = useMemo(() => {
@@ -222,6 +256,40 @@ const AllPlans = () => {
     
     return { minPrice, avgPrice, maxSavings, recommendedCount };
   }, [filteredPlans, currentMonthlyBill]);
+
+  // Available providers for filter
+  const availableProviders = useMemo(() => {
+    return Array.from(new Set(allPlans.filter(p => p.monthlyPrice && p.monthlyPrice > 0).map(p => p.company)));
+  }, [allPlans]);
+
+  // Max price for slider
+  const globalMaxPrice = useMemo(() => {
+    const prices = allPlans.filter(p => p.monthlyPrice && p.monthlyPrice > 0).map(p => p.monthlyPrice!);
+    return prices.length > 0 ? Math.ceil(Math.max(...prices) / 50) * 50 : 500;
+  }, [allPlans]);
+
+  // Active filter count
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (priceRange[0] > 0 || priceRange[1] < globalMaxPrice) count++;
+    if (selectedProviders.length > 0) count++;
+    if (minValueScore > 0) count++;
+    if (greatDealsOnly) count++;
+    return count;
+  }, [priceRange, selectedProviders, minValueScore, greatDealsOnly, globalMaxPrice]);
+
+  const handleProviderToggle = useCallback((provider: string) => {
+    setSelectedProviders(prev => 
+      prev.includes(provider) ? prev.filter(p => p !== provider) : [...prev, provider]
+    );
+  }, []);
+
+  const clearAdvancedFilters = useCallback(() => {
+    setPriceRange([0, globalMaxPrice]);
+    setSelectedProviders([]);
+    setMinValueScore(0);
+    setGreatDealsOnly(false);
+  }, [globalMaxPrice]);
 
   // Get compare plans
   const comparePlans = useMemo(() => {
@@ -305,95 +373,80 @@ const AllPlans = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 font-heebo antialiased">
-      {/* Header */}
-      <div className="bg-white/95 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-40">
-        <div className="container mx-auto px-3 md:px-4 max-w-7xl py-3 md:py-4">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/')}
-            className="mb-2 md:mb-3 text-slate-500 hover:text-slate-800 transition-colors -mr-2 md:-mr-3 text-sm touch-manipulation"
-          >
-            <ArrowLeft className="ml-1 md:ml-2 h-4 w-4" />
-            <span>חזרה</span>
-          </Button>
-          
-          <div className="flex flex-col gap-3 md:gap-4">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-900">
-                  בחרו את המסלול המושלם
-                </h1>
-                {currentMonthlyBill > 0 && stats && (
-                  <div className="flex flex-wrap items-center gap-2 md:gap-3 text-xs md:text-sm">
-                    <span className="text-slate-500">
-                      התשלום: <span className="font-medium text-slate-700">₪{currentMonthlyBill}/חודש</span>
-                    </span>
-                    {stats.maxSavings > 0 && (
-                      <Badge className="bg-emerald-500 text-white font-medium border-0 shadow-sm px-2 md:px-3 text-xs">
-                        <TrendingDown className="ml-1 h-3 w-3 md:h-3.5 md:w-3.5" />
-                        חסכו ₪{stats.maxSavings.toFixed(0)}
-                      </Badge>
-                    )}
-                  </div>
-                )}
-              </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 font-heebo antialiased pb-24">
+      {/* Hero Section */}
+      <AllPlansHero
+        selectedCategory={selectedCategory}
+        currentMonthlyBill={currentMonthlyBill}
+        maxSavings={stats?.maxSavings || 0}
+        totalPlans={filteredPlans.length}
+        currentProvider={currentProvider}
+      />
 
-              {/* Favorites counter */}
-              {getFavoriteCount() > 0 && (
-                <Badge variant="outline" className="gap-1 border-red-200 text-red-600">
-                  <Heart className="h-3 w-3 fill-current" />
-                  {getFavoriteCount()} מועדפים
-                </Badge>
-              )}
+      {/* Sticky Navigation Bar */}
+      <div className="bg-white/95 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-40">
+        <div className="container mx-auto px-3 md:px-4 max-w-7xl py-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/')}
+              className="text-muted-foreground hover:text-foreground transition-colors text-sm touch-manipulation self-start -mr-2"
+            >
+              <ArrowLeft className="ml-1 h-4 w-4" />
+              <span>חזרה</span>
+            </Button>
+            
+            <div className="bg-muted rounded-lg p-1 flex overflow-x-auto flex-1">
+              <button
+                onClick={() => setViewMode('carousel')}
+                className={cn(
+                  "px-2.5 md:px-3 py-2 md:py-1.5 rounded-md text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 md:gap-2 whitespace-nowrap flex-1 justify-center touch-manipulation",
+                  viewMode === 'carousel' 
+                    ? "bg-background text-foreground shadow-sm" 
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Layers className="h-4 w-4" />
+                <span className="hidden sm:inline">קרוסלה</span>
+              </button>
+              <button
+                onClick={() => setViewMode('grid')}
+                className={cn(
+                  "px-2.5 md:px-3 py-2 md:py-1.5 rounded-md text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 md:gap-2 whitespace-nowrap flex-1 justify-center touch-manipulation",
+                  viewMode === 'grid' 
+                    ? "bg-background text-foreground shadow-sm" 
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Grid3x3 className="h-4 w-4" />
+                <span className="hidden sm:inline">כרטיסים</span>
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={cn(
+                  "px-2.5 md:px-3 py-2 md:py-1.5 rounded-md text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 md:gap-2 whitespace-nowrap flex-1 justify-center touch-manipulation",
+                  viewMode === 'list' 
+                    ? "bg-background text-foreground shadow-sm" 
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <List className="h-4 w-4" />
+                <span className="hidden sm:inline">רשימה</span>
+              </button>
             </div>
             
-            {/* View mode + count */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-              <div className="bg-slate-100 rounded-lg p-1 flex overflow-x-auto">
-                <button
-                  onClick={() => setViewMode('carousel')}
-                  className={cn(
-                    "px-2.5 md:px-3 py-2 md:py-1.5 rounded-md text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 md:gap-2 whitespace-nowrap flex-1 justify-center touch-manipulation",
-                    viewMode === 'carousel' 
-                      ? "bg-white text-slate-900 shadow-sm" 
-                      : "text-slate-500 hover:text-slate-700"
-                  )}
-                >
-                  <Layers className="h-4 w-4" />
-                  <span className="hidden sm:inline">קרוסלה</span>
-                </button>
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={cn(
-                    "px-2.5 md:px-3 py-2 md:py-1.5 rounded-md text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 md:gap-2 whitespace-nowrap flex-1 justify-center touch-manipulation",
-                    viewMode === 'grid' 
-                      ? "bg-white text-slate-900 shadow-sm" 
-                      : "text-slate-500 hover:text-slate-700"
-                  )}
-                >
-                  <Grid3x3 className="h-4 w-4" />
-                  <span className="hidden sm:inline">כרטיסים</span>
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={cn(
-                    "px-2.5 md:px-3 py-2 md:py-1.5 rounded-md text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 md:gap-2 whitespace-nowrap flex-1 justify-center touch-manipulation",
-                    viewMode === 'list' 
-                      ? "bg-white text-slate-900 shadow-sm" 
-                      : "text-slate-500 hover:text-slate-700"
-                  )}
-                >
-                  <List className="h-4 w-4" />
-                  <span className="hidden sm:inline">רשימה</span>
-                </button>
-              </div>
-              
-              <div className="flex items-center justify-center gap-1 px-3 py-1.5 bg-slate-100 rounded-lg text-xs md:text-sm text-slate-600">
-                <span className="font-semibold text-slate-800">{filteredPlans.length}</span>
-                <span>מסלולים</span>
-              </div>
+            <div className="flex items-center justify-center gap-1 px-3 py-1.5 bg-muted rounded-lg text-xs md:text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">{filteredPlans.length}</span>
+              <span>מסלולים</span>
             </div>
+
+            {/* Favorites counter */}
+            {getFavoriteCount() > 0 && (
+              <Badge variant="outline" className="gap-1 border-destructive/30 text-destructive">
+                <Heart className="h-3 w-3 fill-current" />
+                {getFavoriteCount()} מועדפים
+              </Badge>
+            )}
           </div>
         </div>
       </div>
@@ -522,6 +575,22 @@ const AllPlans = () => {
           </div>
         </div>
 
+          {/* Advanced Filter Bar */}
+          <AllPlansFilterBar
+            priceRange={priceRange}
+            onPriceRangeChange={setPriceRange}
+            maxPrice={globalMaxPrice}
+            providers={availableProviders}
+            selectedProviders={selectedProviders}
+            onProviderToggle={handleProviderToggle}
+            minValueScore={minValueScore}
+            onMinValueScoreChange={setMinValueScore}
+            greatDealsOnly={greatDealsOnly}
+            onGreatDealsOnlyChange={setGreatDealsOnly}
+            onClearFilters={clearAdvancedFilters}
+            activeFilterCount={activeFilterCount}
+          />
+
         {/* Plans Display */}
         {isLoading ? (
           <PlanCardSkeleton viewMode={viewMode} count={6} />
@@ -602,6 +671,7 @@ const AllPlans = () => {
                         : 0;
                       const isRecommended = savings > 0;
                       const isBestValue = index === 0;
+                      const isTopRecommended = index === 0 && isRecommended;
                       const planIsFavorite = isFavorite(plan.company, plan.plan);
                       const planIsInCompare = isInCompare(plan.company, plan.plan);
                       const planWasViewed = wasViewed(plan.company, plan.plan);
@@ -618,27 +688,35 @@ const AllPlans = () => {
                           <Card 
                             className={cn(
                               "group relative overflow-hidden transition-all duration-300 hover:shadow-xl h-full flex flex-col",
-                              isRecommended 
-                                ? "border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-white shadow-emerald-100" 
-                                : "border border-slate-200 bg-white hover:border-slate-300",
+                              isTopRecommended
+                                ? "border-[3px] border-amber-400 bg-gradient-to-br from-amber-50/40 to-white shadow-lg shadow-amber-100 ring-1 ring-amber-200/50" 
+                                : isRecommended 
+                                  ? "border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-white shadow-emerald-100" 
+                                  : "border border-slate-200 bg-white hover:border-slate-300",
                               planIsInCompare && "ring-2 ring-primary",
                               planWasViewed && "border-l-4 border-l-blue-300"
                             )}
                           >
                             {/* Top Badges */}
                             <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-10">
-                              {valueScore.dealQuality === 'excellent' && (
+                              {isTopRecommended && (
+                                <Badge className="bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-bold shadow-lg px-3 py-1.5 text-sm">
+                                  <Crown className="w-4 h-4 ml-1" />
+                                  #1 מומלץ
+                                </Badge>
+                              )}
+                              {valueScore.dealQuality === 'excellent' && !isTopRecommended && (
                                 <Badge className="bg-green-500 text-white font-semibold shadow-md px-2.5 py-1 animate-pulse">
                                   🔥 עסקה מעולה
                                 </Badge>
                               )}
-                              {isRecommended && valueScore.dealQuality !== 'excellent' && (
+                              {isRecommended && !isTopRecommended && valueScore.dealQuality !== 'excellent' && (
                                 <Badge className="bg-emerald-500 text-white font-semibold shadow-md px-2.5 py-1">
                                   <Star className="w-3 h-3 ml-1 fill-white" />
                                   מומלץ
                                 </Badge>
                               )}
-                              {isBestValue && !isRecommended && (
+                              {isBestValue && !isRecommended && !isTopRecommended && (
                                 <Badge className="bg-amber-500 text-white font-semibold shadow-md px-2.5 py-1">
                                   <Award className="w-3 h-3 ml-1" />
                                   הזול ביותר
@@ -659,24 +737,30 @@ const AllPlans = () => {
                               <Heart className={cn("h-4 w-4", planIsFavorite && "fill-current")} />
                             </Button>
 
-                            <CardContent className="p-5 pt-12 flex-1 flex flex-col">
-                              {/* Company Name */}
-                              <div className="flex items-center gap-2 mb-2">
-                                {companyLogos[plan.company] && (
-                                  <img 
-                                    src={companyLogos[plan.company]} 
-                                    alt={plan.company} 
-                                    className="w-6 h-6 object-contain"
-                                  />
+                            <CardContent className="p-5 pt-14 flex-1 flex flex-col">
+                              {/* Provider Logo & Name */}
+                              <div className="flex items-center gap-3 mb-3">
+                                {companyLogos[plan.company] ? (
+                                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center p-1.5 border border-border">
+                                    <img 
+                                      src={companyLogos[plan.company]} 
+                                      alt={plan.company} 
+                                      className="max-w-full max-h-full object-contain"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                                    <span className="text-sm font-bold text-primary">{plan.company[0]}</span>
+                                  </div>
                                 )}
-                                <span className="text-sm font-bold text-primary">{plan.company}</span>
-                                <span className="text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full">
-                                  {plan.service}
-                                </span>
+                                <div>
+                                  <span className="text-sm font-bold text-foreground">{plan.company}</span>
+                                  <span className="text-xs text-muted-foreground block">{plan.service}</span>
+                                </div>
                               </div>
 
-                              {/* Plan Name */}
-                              <h3 className="text-base font-semibold text-slate-800 mb-2 line-clamp-2 min-h-[48px] leading-relaxed">
+                              {/* Plan Name - larger */}
+                              <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-2 min-h-[52px] leading-snug">
                                 {plan.plan}
                               </h3>
 
@@ -785,13 +869,8 @@ const AllPlans = () => {
                                 </div>
                                 
                                 <Button
-                                  onClick={() => handleSelectPlan(plan)}
-                                  className={cn(
-                                    "w-full h-11 font-bold text-sm transition-all duration-300 shadow-sm",
-                                    isRecommended 
-                                      ? "bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white" 
-                                      : "bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white"
-                                  )}
+                                  onClick={() => { setStickySelectedPlan(plan); handleSelectPlan(plan); }}
+                                  className="w-full h-11 font-bold text-sm transition-all duration-300 shadow-sm bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-[1.02] hover:shadow-md"
                                 >
                                   <Rocket className="ml-2 h-5 w-5" />
                                   {isRecommended ? 'בחרו וחסכו!' : 'בחרו מסלול'}
@@ -829,12 +908,17 @@ const AllPlans = () => {
                   transition={{ delay: index * 0.03 }}
                 >
                   <Card className={cn(
-                    "p-4 hover:shadow-md transition-shadow",
+                    "p-4 transition-all duration-200 hover:shadow-lg hover:bg-accent/30 cursor-pointer group",
                     planWasViewed && "border-l-4 border-l-blue-300",
                     planIsInCompare && "ring-2 ring-primary",
                     isRecommended && "bg-emerald-50/50 border-emerald-200"
                   )}>
                     <div className="flex items-center gap-4">
+                      {/* Numbering */}
+                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                        <span className="text-sm font-bold text-muted-foreground">{index + 1}</span>
+                      </div>
+
                       {/* Company Logo & Plan */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -892,7 +976,7 @@ const AllPlans = () => {
                           variant="ghost"
                           size="icon"
                           onClick={(e) => { e.stopPropagation(); toggleFavorite(plan.company, plan.plan); }}
-                          className={cn("h-9 w-9", planIsFavorite && "text-red-500")}
+                          className={cn("h-9 w-9", planIsFavorite && "text-destructive")}
                         >
                           <Heart className={cn("h-4 w-4", planIsFavorite && "fill-current")} />
                         </Button>
@@ -913,7 +997,12 @@ const AllPlans = () => {
                           <Eye className="h-4 w-4 ml-1" />
                           פרטים
                         </Button>
-                        <Button size="sm" onClick={() => handleSelectPlan(plan)}>
+                        <Button 
+                          size="sm" 
+                          onClick={() => { setStickySelectedPlan(plan); handleSelectPlan(plan); }}
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold hover:scale-105 transition-transform"
+                        >
+                          <Rocket className="h-4 w-4 ml-1" />
                           בחר
                         </Button>
                       </div>
@@ -969,6 +1058,14 @@ const AllPlans = () => {
 
       {/* Personalized Wizard Float */}
       <PersonalizedWizardFloat />
+
+      {/* Sticky Plan Summary */}
+      <StickyPlanSummary
+        selectedPlan={stickySelectedPlan}
+        currentMonthlyBill={currentMonthlyBill}
+        onContinue={() => { if (stickySelectedPlan) handleSelectPlan(stickySelectedPlan); }}
+        onDismiss={() => setStickySelectedPlan(null)}
+      />
     </div>
   );
 };
