@@ -104,29 +104,6 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
             )}
           </AnimatePresence>
         </div>
-        
-        {/* Progress Dots */}
-        <div className="flex items-center gap-2">
-          {categories.map((category, index) => {
-            const isSelected = selectedCategories[category]?.selected;
-            const isCurrent = index === currentIndex;
-            
-            return (
-              <button
-                key={category}
-                onClick={() => setCurrentIndex(index)}
-                className={cn(
-                  "rounded-full transition-all duration-300",
-                  isCurrent 
-                    ? "w-6 h-2 bg-primary" 
-                    : isSelected 
-                      ? "w-2 h-2 bg-primary/60" 
-                      : "w-2 h-2 bg-muted-foreground/30"
-                )}
-              />
-            );
-          })}
-        </div>
       </div>
 
       {/* Mobile: Native Scroll Carousel - Enhanced Touch */}
