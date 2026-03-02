@@ -1,4 +1,5 @@
 import jsPDF from 'jspdf';
+// @ts-ignore - font side-effect import
 import '@fontsource/noto-sans-hebrew';
 
 let fontRegistered = false;
