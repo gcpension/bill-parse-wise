@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, Router, Lightbulb, Cable, Plug, WifiOff, Battery, Monitor, Tablet, Headphones, Radio, Satellite, X, Sparkles, TrendingUp, Star, Clock, FileText, Search, Target } from 'lucide-react';
+import { Zap, Wifi, Smartphone, Tv, CheckCircle, ArrowRight, Phone, X, Sparkles, TrendingUp, Star, Clock, FileText, Target } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { enhancedToast } from '@/components/EnhancedToast';
 import { cn } from '@/lib/utils';
@@ -13,25 +13,12 @@ import electricityFamily from '@/assets/electricity-family.jpg';
 import cellularFamily from '@/assets/cellular-family.jpg';
 import internetFamily from '@/assets/internet-family.jpg';
 import tvFamily from '@/assets/tv-family.jpg';
-import familySavingsHero from '@/assets/family-savings-hero.jpg';
-import heroFamilyHome from '@/assets/hero-family-home.jpg';
-import heroMinimalBackground from '@/assets/hero-minimal-background.jpg';
-import minimalistSelectionIcon from '@/assets/minimalist-selection-icon.png';
-import minimalistAnalysisIcon from '@/assets/minimalist-analysis-icon.png';
-import minimalistCompletionIcon from '@/assets/minimalist-completion-icon.png';
-import heroBackgroundIllustration from '@/assets/hero-background-illustration.png';
-import middleSectionIllustration from '@/assets/clean-middle-illustration.png';
-import professionalServicesIllustration from '@/assets/professional-services-illustration.png';
-import israeliTelecomLogos from '@/assets/logos/israeli-telecom-logos.png';
-import savingsAnalysisIllustration from '@/assets/savings-analysis-illustration-transparent.png';
-import israeliCompaniesLogos from '@/assets/logos/israeli-companies-real-logos.png';
 import BackToTop from '@/components/BackToTop';
 import { Navigation } from '@/components/Navigation';
-import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { QuickActions } from '@/components/QuickActions';
 import { BreadcrumbNavigation } from '@/components/BreadcrumbNavigation';
-import SimpleStepsBanner from '@/components/marketing/SimpleStepsBanner';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
 import CategoryCarousel from '@/components/home/CategoryCarousel';
 import EnhancedAmountInput from '@/components/home/EnhancedAmountInput';
@@ -78,7 +65,6 @@ const Home = () => {
   const navigate = useNavigate();
 
   // Scroll animations for different sections
-  const stepsBanner = useScrollAnimation(0.1);
   const whyChooseUs = useScrollAnimation(0.1);
   const comparisonSection = useScrollAnimation(0.1);
   const faqSection = useScrollAnimation(0.1);
@@ -221,257 +207,79 @@ const Home = () => {
       <Navigation />
 
 
-      {/* Hero Section with Clean Background */}
-      <section className="relative py-8 md:py-6 lg:py-8 overflow-hidden">
-        {/* Hand-drawn sketch element - top right - Hidden on mobile */}
-        <div className="absolute top-8 right-12 w-[160px] h-[160px] pointer-events-none opacity-75 hidden md:block">
-          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            {/* Light bulb - smart idea */}
-            <g transform="translate(85, 20)">
-              {/* Bulb shape */}
-              <circle cx="0" cy="0" r="14" fill="none" stroke="#2d3748" strokeWidth="2.5"/>
-              {/* Filament inside */}
-              <path d="M -4,-2 Q 0,-6 4,-2" stroke="#2d3748" strokeWidth="1.5" fill="none"/>
-              <line x1="0" y1="-2" x2="0" y2="4" stroke="#2d3748" strokeWidth="1.5"/>
-              {/* Base of bulb */}
-              <rect x="-5" y="12" width="10" height="8" fill="none" stroke="#2d3748" strokeWidth="2"/>
-              <line x1="-5" y1="15" x2="5" y2="15" stroke="#2d3748" strokeWidth="1.5"/>
-              <line x1="-5" y1="17" x2="5" y2="17" stroke="#2d3748" strokeWidth="1.5"/>
-              {/* Light rays */}
-              <g stroke="#2d3748" strokeWidth="2" strokeLinecap="round">
-                <line x1="-18" y1="-8" x2="-22" y2="-10"/>
-                <line x1="-14" y1="-14" x2="-16" y2="-18"/>
-                <line x1="14" y1="-14" x2="16" y2="-18"/>
-                <line x1="18" y1="-8" x2="22" y2="-10"/>
-                <line x1="-18" y1="6" x2="-22" y2="8"/>
-                <line x1="18" y1="6" x2="22" y2="8"/>
-              </g>
-            </g>
-            
-            {/* Piggy bank / savings symbol */}
-            <g transform="translate(70, 75)">
-              {/* Body */}
-              <ellipse cx="0" cy="0" rx="16" ry="12" fill="none" stroke="#2d3748" strokeWidth="2"/>
-              {/* Snout */}
-              <ellipse cx="14" cy="0" rx="4" ry="3" fill="none" stroke="#2d3748" strokeWidth="2"/>
-              {/* Ear */}
-              <path d="M -8,-10 Q -6,-14 -4,-10" fill="none" stroke="#2d3748" strokeWidth="2"/>
-              {/* Legs */}
-              <line x1="-8" y1="10" x2="-8" y2="16" stroke="#2d3748" strokeWidth="2" strokeLinecap="round"/>
-              <line x1="8" y1="10" x2="8" y2="16" stroke="#2d3748" strokeWidth="2" strokeLinecap="round"/>
-              {/* Coin slot */}
-              <line x1="-4" y1="-8" x2="4" y2="-8" stroke="#2d3748" strokeWidth="2.5" strokeLinecap="round"/>
-            </g>
-            
-            {/* Coins falling */}
-            <g stroke="#2d3748" fill="none" strokeWidth="2">
-              <circle cx="95" cy="55" r="5"/>
-              <text x="95" y="58" textAnchor="middle" fill="#2d3748" fontSize="8" fontWeight="bold">₪</text>
-              
-              <circle cx="105" cy="65" r="4"/>
-              <circle cx="88" cy="62" r="3.5"/>
-            </g>
-            
-            {/* Dashed arrow connecting bulb to piggy bank */}
-            <path
-              d="M 82,48 Q 75,58 72,68"
-              stroke="#2d3748"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              strokeDasharray="3,3"
-            />
-            <path
-              d="M 72,68 L 74,63 M 72,68 L 77,67"
-              stroke="#2d3748"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-            />
-            
-            {/* Sparkles */}
-            <g stroke="#2d3748" fill="none" strokeWidth="2" strokeLinecap="round">
-              <path d="M 60,25 L 60,28 M 58,26.5 L 62,26.5"/>
-              <path d="M 110,42 L 110,45 M 108,43.5 L 112,43.5"/>
-            </g>
-          </svg>
-        </div>
-        
-        {/* EASYSWITCH branding - broken text style - Hidden on mobile */}
-        <div className="absolute top-8 left-8 pointer-events-none hidden md:block">
-          <svg width="240" height="120" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              {/* Purple gradient */}
-              <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#7e22ce', stopOpacity: 1 }} />
-                <stop offset="50%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
-              </linearGradient>
-            </defs>
-            
-            {/* EASY text with slight breaks */}
-            <g transform="translate(120, 40)">
-              <text
-                x="0"
-                y="0"
-                textAnchor="middle"
-                fill="url(#textGradient)"
-                fontSize="36"
-                fontWeight="900"
-                fontFamily="'Anton', 'Oswald', 'Bebas Neue', sans-serif"
-                letterSpacing="5"
-                style={{ 
-                  filter: 'drop-shadow(2px 2px 4px rgba(126, 34, 206, 0.3))',
-                  textTransform: 'uppercase'
-                }}
-                transform="rotate(-3)"
-              >
-                EASY
-              </text>
-            </g>
-            
-            {/* SWITCH text with slight breaks and offset */}
-            <g transform="translate(120, 80)">
-              <text
-                x="0"
-                y="0"
-                textAnchor="middle"
-                fill="url(#textGradient)"
-                fontSize="36"
-                fontWeight="900"
-                fontFamily="'Anton', 'Oswald', 'Bebas Neue', sans-serif"
-                letterSpacing="5"
-                style={{ 
-                  filter: 'drop-shadow(2px 2px 4px rgba(126, 34, 206, 0.3))',
-                  textTransform: 'uppercase'
-                }}
-                transform="rotate(2)"
-              >
-                SWITCH
-              </text>
-            </g>
-            
-            {/* Magic wand sketch - pencil style below SWITCH */}
-            <g transform="translate(120, 105)">
-              {/* Wand stick */}
-              <line x1="-12" y1="8" x2="0" y2="-4" stroke="#2d3748" strokeWidth="2" strokeLinecap="round"/>
-              {/* Star at top */}
-              <path d="M 0,-4 L 1.5,-8 L 3,-4 L 7,-2.5 L 3,-1 L 1.5,3 L 0,-1 L -4,-2.5 Z" fill="none" stroke="#2d3748" strokeWidth="1.5"/>
-              {/* Sparkles around wand - hand-drawn style */}
-              <g stroke="#2d3748" fill="none" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M -15,10 L -15,12 M -16,11 L -14,11"/>
-                <path d="M -8,6 L -8,8 M -9,7 L -7,7"/>
-                <circle cx="-18" cy="13" r="1" strokeWidth="1.2"/>
-              </g>
-            </g>
-            
-            {/* Decorative elements */}
-            <circle cx="30" cy="30" r="3" fill="#9333ea" opacity="0.6">
-              <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
-            </circle>
-            <circle cx="210" cy="50" r="2.5" fill="#a855f7" opacity="0.6">
-              <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.5s" repeatCount="indefinite"/>
-            </circle>
-            <circle cx="40" cy="95" r="2" fill="#7e22ce" opacity="0.5">
-              <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2.2s" repeatCount="indefinite"/>
-            </circle>
-          </svg>
-        </div>
-        
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <img 
-            src={middleSectionIllustration} 
-            alt="" 
-            className="w-full h-full object-contain object-center"
-          />
-        </div>
-        
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10 py-6 md:py-6 lg:py-8">
+      {/* Hero Section - Clean & Modern */}
+      <section className="relative py-10 md:py-14 lg:py-16 overflow-hidden">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl relative z-10">
           <div className="text-center">
-            
-            {/* Mobile EASY SWITCH Badge */}
-            <div className="md:hidden mb-6 animate-fade-in opacity-0" style={{
-              animationDelay: '0.1s',
-              animationFillMode: 'forwards'
-            }}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-purple-700 shadow-lg shadow-purple-500/30">
-                <Sparkles className="w-4 h-4 text-white" />
-                <span className="text-white font-bold text-sm tracking-wide">EASY SWITCH</span>
-              </div>
-            </div>
-            
-            {/* Compact Title - Mobile Optimized */}
-            <div className="mb-4 md:mb-3 animate-fade-in opacity-0" style={{
-              animationDelay: '0.2s',
-              animationFillMode: 'forwards'
-            }}>
-              <h1 className="relative">
-                {/* Main Text - Responsive sizing */}
-                <span className="relative block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light font-assistant leading-tight text-foreground">
-                  <span className="block">
-                    באיזה תחום תרצו
-                  </span>
-                  <span className="block mt-1 md:mt-2">
-                    להתחיל <span className="text-purple-700 font-medium">לחסוֹך</span> היום?
-                  </span>
-                </span>
-              </h1>
-            </div>
-            
-            {/* Subtitle with Glass Effect */}
-            <div className="animate-fade-in opacity-0 inline-block" style={{
-              animationDelay: '0.4s',
-              animationFillMode: 'forwards'
-            }}>
-              <div className="backdrop-blur-md bg-white/40 rounded-2xl px-6 py-2 border border-white/50 shadow-xl">
-                <p className="text-base lg:text-lg text-gray-700 font-light max-w-3xl leading-relaxed font-heebo">
-                  אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
-                </p>
-              </div>
-            </div>
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light font-assistant leading-tight text-foreground"
+            >
+              <span className="block">באיזה תחום תרצו</span>
+              <span className="block mt-1 md:mt-2">
+                להתחיל <span className="text-primary font-medium">לחסוֹך</span> היום?
+              </span>
+            </motion.h1>
 
-            {/* Hero CTA Button */}
-            <div className="mt-8 animate-fade-in opacity-0" style={{
-              animationDelay: '0.6s',
-              animationFillMode: 'forwards'
-            }}>
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mt-4 text-base lg:text-lg text-muted-foreground font-light max-w-3xl mx-auto leading-relaxed font-heebo"
+            >
+              אנחנו נמצא לכם את הספקים הזולים ביותר ונבצע עבורכם את כל המעבר
+            </motion.p>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="mt-8"
+            >
               <Button
                 size="lg"
                 onClick={() => navigate('/analyze')}
-                className="bg-purple-600 hover:bg-purple-700 text-white text-lg md:text-xl font-bold px-10 py-6 md:px-12 md:py-7 rounded-2xl shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 min-h-[56px]"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg md:text-xl font-bold px-10 py-6 md:px-12 md:py-7 rounded-2xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:scale-105 transition-all duration-300 min-h-[56px]"
               >
                 בדקו כמה תחסכו ←
               </Button>
-            </div>
+            </motion.div>
+
+            {/* Trust Signals */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="mt-8 flex flex-wrap items-center justify-center gap-3 md:gap-4"
+            >
+              {[
+                { icon: Star, text: '+15,000 משפחות' },
+                { icon: TrendingUp, text: 'חיסכון ממוצע 250 ₪/חודש' },
+                { icon: CheckCircle, text: '100% חינם' },
+              ].map((item, i) => (
+                <div key={i} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/60 border border-border text-sm text-muted-foreground font-medium">
+                  <item.icon className="w-3.5 h-3.5 text-primary" />
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Clean Categories Section - Enhanced Carousel */}
-      <section id="services" className="bg-white relative scroll-mt-20 pt-6">
-        <div className="container mx-auto px-4 lg:px-6 max-w-6xl pb-12">
+      <section id="services" className="bg-white relative scroll-mt-20 pt-2">
+        <div className="container mx-auto px-4 lg:px-6 max-w-6xl pb-4">
           {/* Category Selection - Swipeable Carousel */}
           <CategoryCarousel
             selectedCategories={selectedCategories}
             onCategorySelect={handleCategorySelect}
           />
-
-          {/* Interactive Steps Banner */}
-          <div ref={stepsBanner.elementRef} className={`transition-all duration-700 ${stepsBanner.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <SimpleStepsBanner />
-          </div>
-
-          {/* Clean CTA Section - Hidden when banner is visible */}
-          {!showBanner}
-
-          {/* Clean info section */}
-          <div className="text-center mt-12 max-w-4xl mx-auto">
-            
-          </div>
-
-          {/* How It Works - Clear & Large Section */}
-          
         </div>
       </section>
 
@@ -504,65 +312,39 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Process Flow - Elegant Cards */}
+          {/* Process Flow - Animated Cards */}
           <div className="relative mb-16">
             {/* Connection Line */}
             <div className="hidden md:block absolute top-12 left-[16.66%] right-[16.66%] h-0.5 bg-gradient-to-r from-purple-200 via-purple-400 to-purple-200 z-0"></div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-              {/* Step 1 */}
-              <div className="text-center group">
-                <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 text-white font-bold text-2xl mb-6 font-['Rubik'] shadow-lg shadow-purple-500/30 group-hover:shadow-xl group-hover:shadow-purple-500/40 transition-all duration-300 group-hover:scale-110">
-                  1
-                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 font-['Rubik']">
-                  מזינים פרטים
-                </h3>
-                <p className="text-gray-600 leading-relaxed font-['Rubik'] max-w-xs mx-auto mb-4">
-                  אתם מספרים לנו על השירותים הנוכחיים שלכם
-                </p>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100">
-                  <Clock className="w-4 h-4 text-purple-600" />
-                  <span className="text-sm font-semibold text-purple-700 font-['Rubik']">2 דקות</span>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="text-center group">
-                <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 text-white font-bold text-2xl mb-6 font-['Rubik'] shadow-lg shadow-purple-600/30 group-hover:shadow-xl group-hover:shadow-purple-600/40 transition-all duration-300 group-hover:scale-110">
-                  2
-                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 font-['Rubik']">
-                  אנחנו מנתחים
-                </h3>
-                <p className="text-gray-600 leading-relaxed font-['Rubik'] max-w-xs mx-auto mb-4">
-                  המערכת שלנו סורקת את כל השוק ומוצאת את ההצעות הטובות ביותר
-                </p>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100">
-                  <Sparkles className="w-4 h-4 text-purple-600" />
-                  <span className="text-sm font-semibold text-purple-700 font-['Rubik']">רגע קט</span>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="text-center group">
-                <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-700 to-purple-900 text-white font-bold text-2xl mb-6 font-['Rubik'] shadow-lg shadow-purple-700/30 group-hover:shadow-xl group-hover:shadow-purple-700/40 transition-all duration-300 group-hover:scale-110">
-                  3
-                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 font-['Rubik']">
-                  מבצעים מעבר
-                </h3>
-                <p className="text-gray-600 leading-relaxed font-['Rubik'] max-w-xs mx-auto mb-4">
-                  אנחנו מטפלים בכל הניירת, השיחות והתיאומים
-                </p>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100">
-                  <CheckCircle className="w-4 h-4 text-purple-600" />
-                  <span className="text-sm font-semibold text-purple-700 font-['Rubik']">אוטומטי</span>
-                </div>
-              </div>
+              {[
+                { num: 1, title: 'מזינים פרטים', desc: 'אתם מספרים לנו על השירותים הנוכחיים שלכם', badge: '2 דקות', badgeIcon: Clock, gradient: 'from-purple-500 to-purple-700' },
+                { num: 2, title: 'אנחנו מנתחים', desc: 'המערכת שלנו סורקת את כל השוק ומוצאת את ההצעות הטובות ביותר', badge: 'רגע קט', badgeIcon: Sparkles, gradient: 'from-purple-600 to-purple-800' },
+                { num: 3, title: 'מבצעים מעבר', desc: 'אנחנו מטפלים בכל הניירת, השיחות והתיאומים', badge: 'אוטומטי', badgeIcon: CheckCircle, gradient: 'from-purple-700 to-purple-900' },
+              ].map((step, idx) => (
+                <motion.div
+                  key={step.num}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.5, delay: idx * 0.2 }}
+                  className="text-center group"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    className={`relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${step.gradient} text-white font-bold text-2xl mb-6 font-['Rubik'] shadow-lg shadow-purple-500/30 group-hover:shadow-xl group-hover:shadow-purple-500/40 transition-shadow duration-300`}
+                  >
+                    {step.num}
+                  </motion.div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 font-['Rubik']">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed font-['Rubik'] max-w-xs mx-auto mb-4">{step.desc}</p>
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100">
+                    <step.badgeIcon className="w-4 h-4 text-purple-600" />
+                    <span className="text-sm font-semibold text-purple-700 font-['Rubik']">{step.badge}</span>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
 
