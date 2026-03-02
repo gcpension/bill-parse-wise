@@ -50,6 +50,7 @@ import { motion } from "framer-motion";
 import { AllPlansHero } from "@/components/plans/AllPlansHero";
 import { AllPlansFilterBar } from "@/components/plans/AllPlansFilterBar";
 import { StickyPlanSummary } from "@/components/plans/StickyPlanSummary";
+import { PlanConfirmDialog } from "@/components/plans/PlanConfirmDialog";
 
 // Company logos mapping
 const companyLogos: Record<string, string> = {
@@ -85,7 +86,8 @@ const AllPlans = () => {
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [stickySelectedPlan, setStickySelectedPlan] = useState<PlanRecord | null>(null);
   const [currentProvider, setCurrentProvider] = useState<string>('');
-  
+  const [confirmPlan, setConfirmPlan] = useState<PlanRecord | null>(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   // Advanced filter state
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
@@ -724,17 +726,22 @@ const AllPlans = () => {
                               )}
                             </div>
 
-                            {/* Favorite Button */}
+                            {/* Favorite Button with animation */}
                             <Button
                               variant="ghost"
                               size="icon"
                               onClick={(e) => { e.stopPropagation(); toggleFavorite(plan.company, plan.plan); }}
-                              className={cn(
-                                "absolute top-3 left-3 h-8 w-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md hover:scale-110 transition-transform z-10",
-                                planIsFavorite && "text-red-500 bg-red-50"
-                              )}
+                              className="absolute top-3 left-3 h-8 w-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md z-10 transition-all duration-300 hover:scale-110"
                             >
-                              <Heart className={cn("h-4 w-4", planIsFavorite && "fill-current")} />
+                              <motion.div
+                                animate={planIsFavorite ? { scale: [1, 1.4, 1] } : { scale: 1 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                <Heart className={cn(
+                                  "h-4 w-4 transition-colors duration-300",
+                                  planIsFavorite ? "fill-destructive text-destructive" : "text-muted-foreground"
+                                )} />
+                              </motion.div>
                             </Button>
 
                             <CardContent className="p-5 pt-14 flex-1 flex flex-col">
@@ -869,8 +876,8 @@ const AllPlans = () => {
                                 </div>
                                 
                                 <Button
-                                  onClick={() => { setStickySelectedPlan(plan); handleSelectPlan(plan); }}
-                                  className="w-full h-11 font-bold text-sm transition-all duration-300 shadow-sm bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-[1.02] hover:shadow-md"
+                                  onClick={() => { setStickySelectedPlan(plan); setConfirmPlan(plan); setIsConfirmOpen(true); }}
+                                  className="w-full h-11 font-bold text-sm transition-all duration-300 shadow-md bg-gradient-to-l from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 hover:scale-[1.03] hover:shadow-lg"
                                 >
                                   <Rocket className="ml-2 h-5 w-5" />
                                   {isRecommended ? 'בחרו וחסכו!' : 'בחרו מסלול'}
@@ -976,9 +983,17 @@ const AllPlans = () => {
                           variant="ghost"
                           size="icon"
                           onClick={(e) => { e.stopPropagation(); toggleFavorite(plan.company, plan.plan); }}
-                          className={cn("h-9 w-9", planIsFavorite && "text-destructive")}
+                          className="h-9 w-9 transition-all duration-300 hover:scale-110"
                         >
-                          <Heart className={cn("h-4 w-4", planIsFavorite && "fill-current")} />
+                          <motion.div
+                            animate={planIsFavorite ? { scale: [1, 1.4, 1] } : { scale: 1 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <Heart className={cn(
+                              "h-4 w-4 transition-colors duration-300",
+                              planIsFavorite ? "fill-destructive text-destructive" : "text-muted-foreground"
+                            )} />
+                          </motion.div>
                         </Button>
                         <Button
                           variant="ghost"
@@ -999,8 +1014,8 @@ const AllPlans = () => {
                         </Button>
                         <Button 
                           size="sm" 
-                          onClick={() => { setStickySelectedPlan(plan); handleSelectPlan(plan); }}
-                          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold hover:scale-105 transition-transform"
+                          onClick={() => { setStickySelectedPlan(plan); setConfirmPlan(plan); setIsConfirmOpen(true); }}
+                          className="bg-gradient-to-l from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-bold hover:scale-105 hover:shadow-lg transition-all duration-300"
                         >
                           <Rocket className="h-4 w-4 ml-1" />
                           בחר
@@ -1059,11 +1074,20 @@ const AllPlans = () => {
       {/* Personalized Wizard Float */}
       <PersonalizedWizardFloat />
 
+      {/* Plan Confirm Dialog */}
+      <PlanConfirmDialog
+        plan={confirmPlan}
+        isOpen={isConfirmOpen}
+        onClose={() => { setIsConfirmOpen(false); setConfirmPlan(null); }}
+        onConfirm={() => { setIsConfirmOpen(false); if (confirmPlan) handleSelectPlan(confirmPlan); setConfirmPlan(null); }}
+        currentMonthlyBill={currentMonthlyBill}
+      />
+
       {/* Sticky Plan Summary */}
       <StickyPlanSummary
         selectedPlan={stickySelectedPlan}
         currentMonthlyBill={currentMonthlyBill}
-        onContinue={() => { if (stickySelectedPlan) handleSelectPlan(stickySelectedPlan); }}
+        onContinue={() => { if (stickySelectedPlan) { setConfirmPlan(stickySelectedPlan); setIsConfirmOpen(true); } }}
         onDismiss={() => setStickySelectedPlan(null)}
       />
     </div>
